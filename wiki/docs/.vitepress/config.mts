@@ -21,6 +21,7 @@ export default defineConfig({
   themeConfig: {
     siteTitle: 'RoboSelect 文档',
     nav: [
+      { text: '交互式检索', link: '/explore' },
       { text: '部件手册', link: '/parts/' },
       { text: '参数口径', link: '/semantics' },
       { text: '总线协议', link: '/protocols' },

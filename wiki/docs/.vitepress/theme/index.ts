@@ -5,6 +5,7 @@ import { h } from 'vue'
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import PageComments from '../components/PageComments.vue'
+import PartExplorer from '../components/PartExplorer.vue'
 import './custom.css'
 
 export default {
@@ -16,5 +17,6 @@ export default {
   },
   enhanceApp({ app }) {
     app.component('PageComments', PageComments)
+    app.component('PartExplorer', PartExplorer)
   },
 } satisfies Theme

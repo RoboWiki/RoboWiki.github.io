@@ -119,6 +119,35 @@ def main() -> None:
     for d in ("parts/actuator", "parts/controller_high", "parts/controller_low", "parts/sensor"):
         (OUT / d).mkdir(parents=True, exist_ok=True)
 
+    # ── 静态目录快照：让静态站也能做交互式检索 ────────────────────────
+    # 为什么能搬：数据本来就是静态的（data/*.json），排序 / 筛选 / 搜索
+    # 都是纯客户端计算 —— 浏览器做这件事比 API 做更合适，
+    # 而且静态站能深链、能被搜索引擎收录、不用养服务器。
+    digest = []
+    for r in rows:
+        s = r.get("specs") or {}
+        digest.append({
+            "id": r["id"], "category": r["category"], "subtype": r["subtype"],
+            "subtypeLabel": r.get("subtype_label") or r["subtype"],
+            "vendor": r["vendor"], "model": r["model"],
+            "tier": r["source_tier"], "verified": bool(r["verified"]),
+            "price": r.get("price_cny"),
+            "image": s.get("image_url") or None,
+            "tauPeak": s.get("tau_peak_Nm"), "tauRated": s.get("tau_rated_Nm"),
+            "gear": s.get("gear"), "mass": s.get("mass_kg"),
+            "armature": s.get("armature_kgm2"),
+            "rpm": s.get("speed_noload_rpm"), "od": s.get("od_mm"), "len": s.get("l_mm"),
+            "notes": (r.get("notes") or "")[:600],
+            "specs": {k: v for k, v in s.items() if v is not None},
+        })
+    pub = OUT / "public"
+    pub.mkdir(parents=True, exist_ok=True)
+    (pub / "catalog.json").write_text(
+        json.dumps({"count": len(digest), "parts": digest},
+                   ensure_ascii=False, separators=(",", ":")),
+        encoding="utf-8")
+    print(f"  静态目录 {len(digest)} 条 / {(pub / 'catalog.json').stat().st_size // 1024} KB")
+
     sidebar: dict[str, list] = {}
     n_act = sum(1 for r in rows if r["category"] == "actuator")
     n_img = sum(1 for r in rows if (r.get("specs") or {}).get("image_url"))
