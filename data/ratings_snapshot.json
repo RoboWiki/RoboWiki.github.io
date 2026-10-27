@@ -12,8 +12,20 @@
     "5": 0
    },
    "own_hardware_count": 0,
-   "mine": null
+   "mine": null,
+   "votes": [
+    {
+     "issue": 1,
+     "author": "alice",
+     "part_id": "达妙-dm-dm-j4340-2ec-v1-1",
+     "score": 4,
+     "own_hardware": false,
+     "note": "理由",
+     "at": "2026-10-01T00:00:00Z"
+    }
+   ]
   }
  },
- "snapshot": true
+ "snapshot": true,
+ "source": "github-issues"
 }

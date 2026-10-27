@@ -1,0 +1,61 @@
+name: 部件评分
+description: 给一个部件打分（1–5）。需要 GitHub 账号 —— 一人一件一票，改主意就编辑这条 issue。
+title: "[评分] "
+labels: ["rating"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **怎么算一票**：这条 issue 的作者 + 标题里的部件 id 就是唯一键。
+        想改分直接**编辑这条 issue**，不要开新的 —— 重复开只会被聚合脚本按最新一条覆盖。
+
+        打分前请先看部件页上的官方参数与来源等级。没有实测也可以打分，但请勾选「我装过机」以示区别。
+
+  - type: input
+    id: part
+    attributes:
+      label: 部件 id
+      description: 从部件页点「去 GitHub 打分」会自动填在标题里，通常不用改。格式形如 `达妙-dm-dm-j4340-2ec-v1-1`。
+      placeholder: 达妙-dm-dm-j4340-2ec-v1-1
+    validations:
+      required: true
+
+  - type: dropdown
+    id: score
+    attributes:
+      label: 评分（1–5）
+      description: 5 = 会再买 / 会推荐；3 = 能用但有明显问题；1 = 不会再用
+      options:
+        - "5"
+        - "4"
+        - "3"
+        - "2"
+        - "1"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: own_hardware
+    attributes:
+      label: 使用情况
+      description: 这一项会单独统计 —— 装过机的人打的分，和只看参数打的，权重不同。
+      options:
+        - label: 我装过 / 用过这个件
+          required: false
+
+  - type: textarea
+    id: note
+    attributes:
+      label: 一句话理由
+      description: 写「好用 / 不好用」对下一个人没有价值。带上工况：负载、占空比、环境温度、跑了多久、坏在哪。
+      placeholder: 髋关节，整机 20 kg，连续 30 N·m 跑了三个月，外壳 55℃；背隙比标称大。
+    validations:
+      required: true
+
+  - type: input
+    id: device
+    attributes:
+      label: 用在什么上（可选）
+      placeholder: 四足 / 机械臂 / 云台 / 轮式底盘
+    validations:
+      required: false

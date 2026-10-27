@@ -1,0 +1,53 @@
+name: Aggregate ratings from issues
+
+# 评分数据源：GitHub issue（Issue Forms 表单）。
+# 为什么不用 Discussions 投票：投票只能手点创建，46 个部件没法维护。
+# 这条工作流做三件事：拉 issue → 聚合成 ratings_snapshot.json → 有变化就提交。
+# 提交后会触发一次 Pages 部署，于是站点上的分数就更新了。
+
+on:
+  issues:
+    types: [opened, edited, closed, reopened, labeled, unlabeled]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: read
+
+concurrency:
+  group: ratings
+  cancel-in-progress: true
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: export issues
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue list --label rating --state all --limit 1000 \
+            --json number,title,author,body,labels,state,createdAt \
+            > /tmp/issues.json
+          python -c "import json;d=json.load(open('/tmp/issues.json'));print(f'issues: {len(d)}')"
+
+      - name: aggregate
+        run: python scripts/aggregate_ratings.py /tmp/issues.json
+
+      - name: commit if changed
+        run: |
+          if git diff --quiet -- data/ratings_snapshot.json; then
+            echo "没有变化"
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ratings_snapshot.json data/ratings_errors.json
+          git commit -m "chore(ratings): 从 issue 重新聚合评分"
+          git push
