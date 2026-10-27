@@ -17,6 +17,7 @@ import { withBase } from 'vitepress'
 
 interface Part {
   id: string
+  slug: string
   category: string
   subtype: string
   subtypeLabel: string
@@ -206,7 +207,7 @@ const COMPARE_FIELDS: { k: keyof Part; t: string }[] = [
           </div>
 
           <div class="pd-body">
-            <div class="pd-model">{{ p.model }}</div>
+            <a class="pd-model" :href="withBase('/parts/' + p.category + '/' + p.slug)">{{ p.model }}</a>
             <div class="pd-vendor">{{ p.vendor }}</div>
             <div class="pd-chips">
               <span v-if="p.tauPeak != null">峰值τ <b>{{ num(p.tauPeak) }}</b></span>
@@ -298,7 +299,11 @@ html.dark .pd-img img { mix-blend-mode: normal; background: #fff; border-radius:
 .pd-tier.a { background: var(--vp-c-brand-soft); color: var(--vp-c-brand-1); }
 .pd-sub { position: absolute; top: 5px; left: 5px; font-size: 0.62rem; color: var(--vp-c-text-3); }
 .pd-body { padding: 0.5rem 0.6rem 0.55rem; display: flex; flex-direction: column; gap: 0.2rem; }
-.pd-model { font-size: 0.86rem; font-weight: 600; color: var(--vp-c-text-1); }
+.pd-model {
+  font-size: 0.86rem; font-weight: 600; color: var(--vp-c-text-1);
+  text-decoration: none;
+}
+a.pd-model:hover { color: var(--vp-c-brand-1); text-decoration: underline; }
 .pd-vendor { font-size: 0.72rem; color: var(--vp-c-text-3); }
 .pd-chips { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 0.15rem; }
 .pd-chips span {

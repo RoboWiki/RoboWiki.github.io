@@ -26,12 +26,13 @@ function mountGiscus() {
   s.src = 'https://giscus.app/client.js'
   s.async = true
   s.crossOrigin = 'anonymous'
+  const mapping = giscusCfg.mapping ?? 'pathname'
   const attrs: Record<string, string> = {
     'data-repo': giscusCfg.repo,
     'data-repo-id': giscusCfg.repoId,
     'data-category': giscusCfg.category,
     'data-category-id': giscusCfg.categoryId,
-    'data-mapping': giscusCfg.mapping ?? 'pathname',
+    'data-mapping': mapping,
     'data-strict': '0',
     'data-reactions-enabled': giscusCfg.reactionsEnabled ?? '1',
     'data-emit-metadata': '0',
@@ -39,6 +40,9 @@ function mountGiscus() {
     'data-theme': isDark.value ? 'dark' : 'light',
     'data-lang': giscusCfg.lang ?? 'zh-CN',
   }
+  // specific 模式用稳定的 term（不含 base、不含 .html）：
+  // 否则仓库改名（/roboselect/ → /RoboSelect/）会让所有讨论改键、集体消失。
+  if (mapping === 'specific') attrs['data-term'] = pageId.value
   for (const [k, v] of Object.entries(attrs)) s.setAttribute(k, v)
   giscusHost.value.appendChild(s)
 }

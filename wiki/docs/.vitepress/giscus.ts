@@ -46,7 +46,7 @@ export const giscus: GiscusConfig | null = {
   repoId: 'R_kgDOVZTWEQ',
   category: 'Announcements',
   categoryId: 'DIC_kwDOVZTWEc4DJv7l',
-  mapping: 'pathname',
+  mapping: 'specific',
   lang: 'zh-CN',
 }
 

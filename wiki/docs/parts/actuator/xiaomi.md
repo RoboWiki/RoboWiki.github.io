@@ -9,7 +9,7 @@ title: Xiaomi
 
 | 型号 | 峰值 τ N·m | 额定 τ N·m | 减速比 | 空载 rpm | 质量 kg | armature kg·m² | 价格 ¥ | 来源 |
 |---|---|---|---|---|---|---|---|---|
-| **CyberGear MS01** | 12 | — | 7.75 | 240 | 0.317 | — | — | `A✓` |
+| [**CyberGear MS01**](/parts/actuator/xiaomi-cybergear-ms01) | 12 | — | 7.75 | 240 | 0.317 | — | — | `A✓` |
 
 ## 这一页的讨论
 

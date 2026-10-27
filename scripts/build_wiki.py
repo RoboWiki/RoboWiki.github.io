@@ -36,6 +36,22 @@ def slug(s: str) -> str:
     return a
 
 
+def part_slug(part_id: str, vendor: str, model: str, seen: dict[str, str]) -> str:
+    """型号页的 URL 片段。
+
+    目录里的 id 含中文（`达妙-dm-dm-j4340-2ec-v1-1`），放进 URL 会被百分号编码成一串
+    `%E8%BE%BE...`，分享出去很难看。所以用 厂商+型号 的 ASCII 形式，
+    重名时补 6 位哈希 —— 保证唯一，且人眼看着认得。
+    """
+    base = re.sub(r"[^A-Za-z0-9]+", "-", f"{vendor}-{model}").strip("-").lower()
+    base = re.sub(r"-+", "-", base)[:60] or "part"
+    if base in seen and seen[base] != part_id:
+        base = f"{base}-{hashlib.sha1(part_id.encode()).hexdigest()[:6]}"
+    seen[base] = part_id
+    return base
+
+
+
 def num(v, digits: int = 3) -> str:
     if v is None or v == "":
         return "—"
@@ -59,6 +75,16 @@ def tier_badge(t: str, verified) -> str:
     return f"`{t}{mark}`"
 
 
+
+#: id -> 型号页地址。main() 里填；表格渲染时用它把型号变成可点的链接。
+HREF: dict[str, str] = {}
+
+
+def mdl(p: dict) -> str:
+    """型号单元格：有页面就链接，没有就纯文本。"""
+    href = HREF.get(p["id"])
+    return f"[**{p['model']}**]({href})" if href else f"**{p['model']}**"
+
 def actuator_table(items: list[dict]) -> str:
     head = ("| 型号 | 峰值 τ N·m | 额定 τ N·m | 减速比 | 空载 rpm | 质量 kg "
             "| armature kg·m² | 价格 ¥ | 来源 |\n"
@@ -67,7 +93,7 @@ def actuator_table(items: list[dict]) -> str:
     for p in sorted(items, key=lambda r: -(r["specs"].get("tau_peak_Nm") or 0)):
         s = p["specs"]
         lines.append(
-            f"| **{p['model']}** | {num(s.get('tau_peak_Nm'))} | {num(s.get('tau_rated_Nm'))} "
+            f"| {mdl(p)} | {num(s.get('tau_peak_Nm'))} | {num(s.get('tau_rated_Nm'))} "
             f"| {num(s.get('gear'))} | {num(s.get('speed_noload_rpm'))} | {num(s.get('mass_kg'))} "
             f"| {num(s.get('armature_kgm2'))} | "
             f"{'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
@@ -80,7 +106,7 @@ def generic_table(items: list[dict], cat: str) -> str:
         head = "| 型号 | SoC | CUDA | NPU TOPS | 内存 GB | 峰值 W | 价格 ¥ | 来源 |\n|---|---|---|---|---|---|---|---|"
         def row(p):
             s = p["specs"]
-            return (f"| **{p['model']}** | {s.get('soc') or '—'} | {s.get('cuda_cores') or '—'} "
+            return (f"| {mdl(p)} | {s.get('soc') or '—'} | {s.get('cuda_cores') or '—'} "
                     f"| {num(s.get('npu_tops'))} | {num(s.get('ram_gb'))} | {num(s.get('power_max_w'))} "
                     f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
                     f"| {tier_badge(p['source_tier'], p['verified'])} |")
@@ -88,7 +114,7 @@ def generic_table(items: list[dict], cat: str) -> str:
         head = "| 型号 | MCU | FOC 轴数 | CAN | 电流环 kHz | 最高 V | 价格 ¥ | 来源 |\n|---|---|---|---|---|---|---|---|"
         def row(p):
             s = p["specs"]
-            return (f"| **{p['model']}** | {s.get('mcu') or '—'} | {s.get('foc_axes') or '—'} "
+            return (f"| {mdl(p)} | {s.get('mcu') or '—'} | {s.get('foc_axes') or '—'} "
                     f"| {(str(s.get('can') or '—')) + (' FD' if s.get('canfd') else '')} "
                     f"| {num(s.get('current_loop_khz'))} | {num(s.get('voltage_max_V'))} "
                     f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
@@ -99,7 +125,7 @@ def generic_table(items: list[dict], cat: str) -> str:
             s = p["specs"]
             keys = ("bits", "depth_range_m", "range_m", "fps", "odr_hz", "iface")
             kv = "、".join(f"{k}={num(s[k])}" for k in keys if s.get(k))
-            return (f"| **{p['model']}** | {p.get('subtype_label') or p['subtype']} "
+            return (f"| {mdl(p)} | {p.get('subtype_label') or p['subtype']} "
                     f"| {s.get('iface') or '—'} | {kv or '—'} "
                     f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
                     f"| {tier_badge(p['source_tier'], p['verified'])} |")
@@ -119,15 +145,27 @@ def main() -> None:
     for d in ("parts/actuator", "parts/controller_high", "parts/controller_low", "parts/sensor"):
         (OUT / d).mkdir(parents=True, exist_ok=True)
 
+    # ── 每个型号独立一页 ─────────────────────────────────────────────
+    # 为什么要铺开成 191 页：这样「AK80-9 V3 到底怎么样」才有能分享、能被搜到、
+    # 能挂讨论的落点。厂商页只适合横向比，单型号的实测必须落在单型号页上。
+    seen_slug: dict[str, str] = {}
+    slugs: dict[str, str] = {}
+    for r in rows:
+        slugs[r["id"]] = part_slug(r["id"], r["vendor"], r["model"], seen_slug)
+
+    # 表格里的型号要能点进型号页
+    for r in rows:
+        HREF[r["id"]] = f'/parts/{r["category"]}/{slugs[r["id"]]}'
+
     # ── 静态目录快照：让静态站也能做交互式检索 ────────────────────────
-    # 为什么能搬：数据本来就是静态的（data/*.json），排序 / 筛选 / 搜索
-    # 都是纯客户端计算 —— 浏览器做这件事比 API 做更合适，
-    # 而且静态站能深链、能被搜索引擎收录、不用养服务器。
+    # 数据本来就是静态的（data/*.json），排序 / 筛选 / 搜索都是客户端计算，
+    # 浏览器做比 API 做更合适，而且静态站能深链、能被收录、不用养服务器。
     digest = []
     for r in rows:
         s = r.get("specs") or {}
         digest.append({
-            "id": r["id"], "category": r["category"], "subtype": r["subtype"],
+            "id": r["id"], "slug": slugs[r["id"]],
+            "category": r["category"], "subtype": r["subtype"],
             "subtypeLabel": r.get("subtype_label") or r["subtype"],
             "vendor": r["vendor"], "model": r["model"],
             "tier": r["source_tier"], "verified": bool(r["verified"]),
@@ -162,6 +200,79 @@ def main() -> None:
                     target.write_bytes(f.read_bytes())
                     copied += 1
     print(f"  产品图同步 {copied} 张（共 {len(list(dst_img.glob('*'))) if dst_img.exists() else 0} 张）")
+
+    # ── 生成 191 个型号页 ─────────────────────────────────────────────
+    SPEC_LABEL = {
+        "tau_peak_Nm": "峰值扭矩 (N·m)", "tau_rated_Nm": "额定扭矩 (N·m)",
+        "tau_basis": "扭矩口径", "speed_noload_rpm": "空载转速 (rpm)",
+        "speed_rated_rpm": "额定转速 (rpm)", "gear": "减速比",
+        "mass_kg": "质量 (kg)", "od_mm": "外径 (mm)", "l_mm": "长度 (mm)",
+        "rotor_inertia_kgm2": "转子惯量 (kg·m²)", "inertia_basis": "惯量口径",
+        "armature_kgm2": "armature (kg·m²)", "voltage_V": "额定电压 (V)",
+        "voltage_range_V": "电压范围 (V)", "kt_Nm_per_A": "转矩常数 (N·m/A)",
+        "r_phase_ohm": "相电阻 (Ω)", "l_phase_uh": "相电感 (µH)",
+        "pole_pairs": "极对数", "i_peak_A": "峰值电流 (A)", "i_rated_A": "额定电流 (A)",
+        "encoder": "编码器", "comm": "通信", "driver_integrated": "内置驱动",
+        "ip": "防护等级", "frictionloss_Nm": "摩擦 (N·m)",
+        "damping_Nms_rad": "阻尼 (N·m·s/rad)", "soc": "SoC",
+        "cuda_cores": "CUDA 核", "npu_tops": "NPU (TOPS)", "ram_gb": "内存 (GB)",
+        "power_max_w": "峰值功耗 (W)", "mcu": "MCU", "can": "CAN 路数",
+        "canfd": "CAN-FD", "current_loop_khz": "电流环 (kHz)",
+        "voltage_max_V": "最高电压 (V)", "foc_axes": "FOC 轴数",
+        "iface": "接口", "bits": "分辨率 (bit)", "fps": "帧率 (fps)",
+        "odr_hz": "ODR (Hz)", "range_m": "量程 (m)", "depth_range_m": "深度量程 (m)",
+        "image_url": "产品图", "image_source": "图片来源",
+    }
+
+    def spec_rows(specs: dict) -> str:
+        out = []
+        for k, v in specs.items():
+            if k in ("image_url", "image_source"):
+                continue
+            label = SPEC_LABEL.get(k, k)
+            val = "—" if v is None else (str(v) if isinstance(v, str) else num(v, 4))
+            out.append(f"| {label} | {val} |")
+        return "\n".join(out)
+
+    n_part = 0
+    for r in rows:
+        cat, pid = r["category"], r["id"]
+        s = r.get("specs") or {}
+        fname = OUT / "parts" / cat / f"{slugs[pid]}.md"
+        fname.parent.mkdir(parents=True, exist_ok=True)
+        img = s.get("image_url")
+        img_md = (f'\n<img src="{img}" alt="{r["model"]}" '
+                  f'style="max-height:220px;border-radius:8px;'
+                  f'border:1px solid var(--vp-c-divider);padding:6px;background:#fff" />\n'
+                  if img else "")
+        conflicts = "【来源冲突】" in (r.get("notes") or "")
+        fname.write_text(FRONT.format(title=f'{r["vendor"]} {r["model"]}') + f"""
+# {r["vendor"]} {r["model"]}
+
+{img_md}
+`{r.get("subtype_label") or r["subtype"]}` · 来源等级
+**{r["source_tier"]}{" ✓ 已核对" if r["verified"] else ""}**
+{f'· 核对日期 {r["last_checked"]}' if r.get("last_checked") else ""}
+{f'· 参考价 ¥{int(r["price_cny"]):,}' if r.get("price_cny") else "· 无公开报价"}
+
+{"::: warning 来源冲突" + chr(10) + "这份数据的两处来源给出了不同的值，下方 notes 里写明了分歧，未做覆盖。" + chr(10) + ":::" + chr(10) if conflicts else ""}
+## 参数
+
+| 字段 | 值 |
+|---|---|
+{spec_rows(s)}
+
+## 来源与口径
+
+- 来源：{r.get("url") or "—"}
+- 收录说明：{r.get("origin") or "—"}
+- 备注：{r.get("notes") or "—"}
+
+> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。
+""", encoding="utf-8")
+        n_part += 1
+    print(f"  型号页 {n_part} 个（每页底下挂 giscus 讨论）")
 
     sidebar: dict[str, list] = {}
     n_act = sum(1 for r in rows if r["category"] == "actuator")

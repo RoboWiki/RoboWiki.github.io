@@ -9,9 +9,9 @@ title: MIT Humanoid
 
 | 型号 | 峰值 τ N·m | 额定 τ N·m | 减速比 | 空载 rpm | 质量 kg | armature kg·m² | 价格 ¥ | 来源 |
 |---|---|---|---|---|---|---|---|---|
-| **MIT U12** | 72 | — | 6 | 382 | 1.1 | 0.02 | — | `A✓` |
-| **MIT U10** | 34 | — | 6 | 458.4 | 0.66 | 6.12e-03 | — | `A✓` |
-| **MIT Mini Cheetah (U8)** | 17 | — | 6 | 382 | 0.48 | 2.30e-03 | — | `A✓` |
+| [**MIT U12**](/parts/actuator/mit-humanoid-mit-u12) | 72 | — | 6 | 382 | 1.1 | 0.02 | — | `A✓` |
+| [**MIT U10**](/parts/actuator/mit-humanoid-mit-u10) | 34 | — | 6 | 458.4 | 0.66 | 6.12e-03 | — | `A✓` |
+| [**MIT Mini Cheetah (U8)**](/parts/actuator/mit-humanoid-mit-mini-cheetah-u8) | 17 | — | 6 | 382 | 0.48 | 2.30e-03 | — | `A✓` |
 
 ## 这一页的讨论
 
