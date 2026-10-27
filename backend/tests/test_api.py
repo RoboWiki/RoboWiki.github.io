@@ -60,8 +60,8 @@ def test_catalog_vendors_are_scoped(client):
     sen = client.get("/api/catalog", params={"category": "imu"}).json()
     act_v = {v["vendor"] for v in act["vendors"]}
     sen_v = {v["vendor"] for v in sen["vendors"]}
-    assert "达妙 DM" in act_v
-    assert "达妙 DM" not in sen_v       # 关节电机页不该混进传感器厂
+    assert "达妙 DAMIAO" in act_v
+    assert "达妙 DAMIAO" not in sen_v       # 关节电机页不该混进传感器厂
     
 
 

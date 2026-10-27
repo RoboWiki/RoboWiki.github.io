@@ -120,7 +120,7 @@ def main() -> None:
     for pid, price, cond in EVENT_DAMIAO:
         offers.append({
             "id": f"damiao-event-{pid.split('-')[-1]}",
-            "vendor": "达妙 DM", "part_id": pid, "kind": "event",
+            "vendor": "达妙 DAMIAO", "part_id": pid, "kind": "event",
             "title": "达妙大学生机器人竞赛采购优惠（2026）",
             "price_cny": price,
             "detail": f"{cond}。{PURCHASE_NOTE_DAMIAO}",
@@ -133,7 +133,7 @@ def main() -> None:
     # 3) 宇树赛事优惠：买二赠一
     offers.append({
         "id": "unitree-event-buy2get1",
-        "vendor": "Unitree", "part_id": None, "kind": "event",
+        "vendor": "宇树 Unitree", "part_id": None, "kind": "event",
         "title": "宇树 RM / RC 参赛队首次购买 买二赠一",
         "price_cny": None,
         "detail": ("RM、RC 参赛队凭参赛证明，首次购买可得「买二赠一」；"
@@ -173,7 +173,7 @@ def main() -> None:
     od.mkdir(parents=True, exist_ok=True)
     by_v: dict[str, list] = {}
     for o in offers:
-        key = {"达妙 DM": "damiao", "Unitree": "unitree",
+        key = {"达妙 DAMIAO": "damiao", "宇树 Unitree": "unitree",
                "灵足 RobStride": "lingzu-robstride"}.get(o["vendor"], "site")
         by_v.setdefault(key, []).append(o)
     for k, items in by_v.items():

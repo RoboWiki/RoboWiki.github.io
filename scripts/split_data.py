@@ -28,10 +28,10 @@ OFFERS = DATA / "offers"
 
 #: 厂商名 → 文件名（文件名要稳定：以后重命名中文厂商名，也不该动 URL 和数据路径）
 VENDOR_SLUG = {
-    "达妙 DM": "damiao",
-    "DJI RoboMaster": "dji-robomaster",
+    "达妙 DAMIAO": "damiao",
+    "大疆 DJI": "dji-robomaster",
     "灵足 RobStride": "lingzu-robstride",
-    "Unitree": "unitree",
+    "宇树 Unitree": "unitree",
     "CubeMars": "cubemars",
     "MyActuator": "myactuator",
     "ZeroErr": "zeroerr",

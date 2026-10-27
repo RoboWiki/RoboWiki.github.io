@@ -111,7 +111,7 @@ def test_patch_writes_history_with_reason(client):
 
     r = client.patch(f"/api/admin/parts/{pid}", headers=h, json={
         "changes": {"specs.tau_rated_Nm": 13.0},
-        "note": "据达妙 DM-J4340-2EC V1.1 选型手册 p17 参数表，额定 12 N·m",
+        "note": "据达妙 DAMIAO-J4340-2EC V1.1 选型手册 p17 参数表，额定 12 N·m",
         "source_url": "https://www.damiao.tech/",
     })
     assert r.status_code == 200

@@ -985,19 +985,20 @@ def main() -> None:
     field_groups = []
     seen_fields = set()
     for gname, keys in FGROUP:
-        rows = []
+        # 注意：变量名不能叫 rows —— 外层 rows 是零件列表，覆盖了侧边栏就没厂商了
+        fd_rows = []
         for k in keys:
             v = FIELD_SEMANTICS.get(k)
             if not v:
                 continue
             seen_fields.add(k)
-            rows.append(f'''<div class="fd">
+            fd_rows.append(f'''<div class="fd">
   <div class="fd-head"><code>{k}</code><b>{v.get('label','')}</b></div>
   <p>{v.get('meaning','')}</p>
   <p class="fd-miss"><span>缺了意味着</span>{v.get('missing_means','—')}</p>
 </div>''')
-        if rows:
-            field_groups.append(f'<h3>{gname}</h3><div class="fd-grid">{"".join(rows)}</div>')
+        if fd_rows:
+            field_groups.append(f'<h3>{gname}</h3><div class="fd-grid">{"".join(fd_rows)}</div>')
     rest = [f'''<div class="fd"><div class="fd-head"><code>{k}</code><b>{v.get('label','')}</b></div>
   <p>{v.get('meaning','')}</p>
   <p class="fd-miss"><span>缺了意味着</span>{v.get('missing_means','—')}</p></div>'''

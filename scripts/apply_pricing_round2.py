@@ -5,7 +5,7 @@
     单独一份让 diff 只涉及这两家，评审时一眼能看完。
 
 数据：
-    DJI RoboMaster（官方商城）
+    大疆 DJI（官方商城）
         GM6020        ¥899
         M2006 P36     ¥549
         M3508 P19     ¥499
@@ -66,7 +66,7 @@ def main() -> None:
         r["price_cny"] = float(price)
         if "价格来源" not in (r.get("notes") or ""):
             r["notes"] = ((r.get("notes") or "").strip()
-                          + f" 价格来源：DJI RoboMaster 官方商城（{TODAY}，含税零售价）。").strip()
+                          + f" 价格来源：大疆 DJI 官方商城（{TODAY}，含税零售价）。").strip()
         n += 1
     p.write_text(json.dumps(rows, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     print(f"大疆价格写入 {n} 条")
@@ -76,7 +76,7 @@ def main() -> None:
     old = json.loads(op.read_text(encoding="utf-8")) if op.exists() else []
     keep = [o for o in old if o.get("kind") != "retail"]
     out = keep + [
-        dict(kind="retail", vendor="Unitree", demo=False,
+        dict(kind="retail", vendor="宇树 Unitree", demo=False,
              source="天猫 Unitree 宇树旗舰店商品页（2026-10-28）",
              starts_on="2026-01-01", **o)
         for o in UNITREE_OFFERS
