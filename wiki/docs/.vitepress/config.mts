@@ -7,15 +7,22 @@ import sidebar from './sidebar.json' with { type: 'json' }
 export default defineConfig({
   title: 'RoboSelect',
   description: '四足机器人部件选型文档',
-  // 本地由 FastAPI 托管在 /wiki/；GitHub Pages 上是 /roboselect.github.io/。
+  // 两站合一后站点在根目录；GitHub Pages 是 project site，挂在 /RoboSelect/ 下。
   // 用环境变量切换，避免为部署改源文件。
-  base: process.env.WIKI_BASE || '/wiki/',
+  base: process.env.WIKI_BASE || '/',
   lang: 'zh-CN',
   // 明暗切换：'true' = 跟随系统 + 右上角手动切换（浅色 / 深色两套都做了）
   appearance: true,
   // 不用 cleanUrls：产物直接由 FastAPI StaticFiles(html=True) 托管，
-  // 保持 .html 后缀最省事，也避免 SPA 兜底路由抢路径。
+  // 保持 .html 后缀最省事，也避免兜底路由抢路径。
   cleanUrls: false,
+  // dev 模式下把 /api 代理到 FastAPI —— 否则评分组件在 5174 上只能读快照，
+  // 走不到「登录后打分」那条链路。生产由 FastAPI 同源托管，不需要代理。
+  vite: {
+    server: {
+      proxy: { '/api': { target: 'http://127.0.0.1:8000', changeOrigin: true } },
+    },
+  },
   head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
 
   themeConfig: {
@@ -26,7 +33,7 @@ export default defineConfig({
       { text: '参数口径', link: '/semantics' },
       { text: '总线协议', link: '/protocols' },
       { text: '数据来源', link: '/sources' },
-      { text: '选型台 ↗', link: '/' },
+      { text: '控制台 ↗', link: '/console/' },
     ],
     sidebar,
     outline: { label: '页面导航', level: [1, 4] },
@@ -40,11 +47,11 @@ export default defineConfig({
     skipToContentLabel: '跳转到内容',
     notFound: {
       title: '页面未找到',
-      quote: '这个型号还没有文档页。选型台里能查到它。',
-      linkLabel: '打开选型台',
-      linkText: '去选型台',
+      quote: '这个型号还没有文档页。交互式检索里能查到全部型号。',
+      linkLabel: '打开交互式检索',
+      linkText: '去检索',
     },
-    docPageLink: { text: '在选型台查看交互式排序' },
+    docPageLink: { text: '在交互式检索里按任意列排序' },
     footer: {
       message: '数据带来源、口径可追溯、不卖零件不收佣金',
       copyright: 'RoboSelect',

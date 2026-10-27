@@ -9,7 +9,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .api.routes import admin, auth, catalog, community, export, mcp, protocols, semantics, wiki
+from .api.routes import (admin, auth, catalog, community, export, mcp, protocols,
+                         ratings, semantics, wiki)
 from .core.config import ROOT, settings
 from .core.db import create_tables, seed_catalog, seed_community, session
 
@@ -41,7 +42,8 @@ app.add_middleware(
 )
 
 for r in (auth.router, catalog.router, community.router, export.router,
-          semantics.router, admin.router, protocols.router, wiki.router):
+          semantics.router, admin.router, protocols.router, wiki.router,
+          ratings.router):
     app.include_router(r, prefix=settings.api_v1)
 
 # MCP 不挂在 /api 下：Agent 按约定访问 /mcp
@@ -53,33 +55,44 @@ def health():
     return {"ok": True, "project": settings.project_name}
 
 
-# 文档站（VitePress）：形态参考 YunQianDoc —— 分层的厂商/品类页 + 每页一条讨论串。
-# 必须在 SPA 兜底路由之前 mount，否则深链会被 index.html 吃掉。
+# ── 静态站点托管 ────────────────────────────────────────────────────────────
+# 现在**只有一个前台**：VitePress 挂在 `/`（部件库、型号页、口径、协议、讨论）。
+# React 选型台不再是第二套站点，只作为「控制台」挂在 `/console/`：
+# 发帖、看信息流、后台改数 —— 这些都要写库，静态站做不到。
+#
+# 注册顺序即优先级：/api → /console → /（wiki）→ 兜底。
+# 挂 "/" 的 StaticFiles 必须最后，否则它会把前面全部吃掉。
 _WIKI_DIST = ROOT / "wiki" / "docs" / ".vitepress" / "dist"
+_SPA_DIST = ROOT / "frontend" / "dist"
+
+from fastapi import HTTPException  # noqa: E402
+from fastapi.responses import FileResponse, RedirectResponse  # noqa: E402
+from fastapi.staticfiles import StaticFiles  # noqa: E402
+
+if _SPA_DIST.exists():
+
+    @app.get("/console/{rest:path}", include_in_schema=False)
+    def console_spa(rest: str):
+        """控制台是客户端路由（/console/community、/console/post/3）。
+
+        不能挂 StaticFiles：它不会为客户端路由回退，而且 `/console/community`
+        会被它的前缀匹配吃掉直接 404。这里自己判断——文件在就发文件，否则发 index.html。
+        """
+        candidate = (_SPA_DIST / rest).resolve()
+        if rest and str(candidate).startswith(str(_SPA_DIST.resolve())) and candidate.is_file():
+            return FileResponse(candidate)
+        return FileResponse(_SPA_DIST / "index.html")
+
+
 if _WIKI_DIST.exists():
-    from fastapi.staticfiles import StaticFiles
-
-    app.mount("/wiki", StaticFiles(directory=str(_WIKI_DIST), html=True), name="wiki")
-
-
-# 前端：先服务真实文件，其余交给 index.html（SPA 客户端路由 /community、/post/3 等）。
-# 不能用 StaticFiles 挂 "/" —— 它不会为客户端路由回退，深链会 404。
-_DIST = ROOT / "frontend" / "dist"
+    app.mount("/", StaticFiles(directory=str(_WIKI_DIST), html=True), name="site")
 
 
 @app.get("/{full_path:path}", include_in_schema=False)
-def spa(full_path: str):
-    from fastapi import HTTPException
-    from fastapi.responses import FileResponse
-
+def fallback(full_path: str):
+    """剩下的路径：给没构建时的可读提示，不要返回 500。"""
     if full_path.startswith("api"):
         raise HTTPException(404, "not found")
-    if _DIST.exists():
-        if full_path:
-            candidate = (_DIST / full_path).resolve()
-            if str(candidate).startswith(str(_DIST.resolve())) and candidate.is_file():
-                return FileResponse(candidate)
-        index = _DIST / "index.html"
-        if index.exists():
-            return FileResponse(index)
-    return {"detail": "前端未构建：cd frontend && npm run build"}
+    if not _WIKI_DIST.exists():
+        return RedirectResponse("/api/docs")
+    raise HTTPException(404, "not found")

@@ -268,12 +268,21 @@ def test_export_draft(client):
     assert "armature" in r["mjcf_joints"][0]
 
 
-def test_spa_fallback(client):
-    """客户端路由必须回退到 index.html，否则分享链接 404。"""
-    for path in ("/community", "/top", "/post/1", "/u/roboselect"):
+def test_console_fallback(client):
+    """控制台在 /console 下，客户端路由必须回退到 index.html，否则分享链接 404。"""
+    for path in ("/console/", "/console/community", "/console/top",
+                 "/console/post/1", "/console/u/roboselect"):
         r = client.get(path)
         assert r.status_code == 200, path
-        assert "RoboSelect" in r.text or "<div id=\"root\">" in r.text
+        assert 'id="root"' in r.text, path
+
+
+def test_site_root_is_the_wiki(client):
+    """两站合一后 / 是 VitePress 站；未构建时给可读提示而不是 500。"""
+    r = client.get("/")
+    assert r.status_code in (200, 307)
+    if r.status_code == 200:
+        assert "RoboSelect" in r.text
 
 
 def test_api_unknown_path_404(client):

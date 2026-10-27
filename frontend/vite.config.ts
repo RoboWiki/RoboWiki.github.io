@@ -12,5 +12,11 @@ export default defineConfig({
     strictPort: true,
     proxy: { '/api': { target: 'http://127.0.0.1:8000', changeOrigin: true } },
   },
-  build: { outDir: 'dist', sourcemap: false },
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+    // 控制台挂在 /console 下（前台是 VitePress），资源路径要跟着走
+    assetsDir: 'assets',
+  },
+  base: '/console/',
 })

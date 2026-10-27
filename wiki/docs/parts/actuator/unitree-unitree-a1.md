@@ -44,29 +44,7 @@ title: Unitree Unitree A1
 </div>
 
 <div class="part-comm">
-<div class="part-comm-head">
-  <span class="part-comm-title">实际使用</span>
-  <span class="part-score-none">暂无评分</span>
-</div>
-
-<div class="part-score-empty">
-  <div class="part-score-big">—</div>
-  <div class="part-score-sub">0 人打分</div>
-</div>
-
-<p class="part-comm-hint">
-还没有人提交过使用反馈。<strong>有实测就来写</strong> —— 写在页尾的讨论里，
-第一行用 <code>评分: 4/5</code> 的格式，后面的内容请带上具体工况
-（负载、占空比、环境温度、跑了多久）。只写「好用 / 不好用」对下一个人没有价值。
-</p>
-
-<p class="part-comm-hint">
-为什么这里空着：这个站<strong>不灌示例评价</strong>。
-早先灌过 21 条「实测」，技术观察是真的，但温度、时长、作者都是编的 ——
-在一个立意是「真实使用信息」的站里，那比空着坏得多。
-</p>
-
-<a class="part-comm-jump" href="#这一页的讨论">跳到讨论 ↓</a>
+<PartRating part-id="unitree-unitree-a1" />
 </div>
 
 </div>

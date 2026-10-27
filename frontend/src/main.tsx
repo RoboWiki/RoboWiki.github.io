@@ -14,7 +14,9 @@ const qc = new QueryClient({
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={qc}>
-      <BrowserRouter>
+      {/* 控制台挂在 /console 下（前台已经交给 VitePress），
+          所以路由要带 basename，否则 <Link to="/community"> 会跳到主站。 */}
+      <BrowserRouter basename="/console">
         <App />
       </BrowserRouter>
     </QueryClientProvider>

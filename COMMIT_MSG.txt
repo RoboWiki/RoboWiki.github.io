@@ -1,0 +1,31 @@
+feat: 两站合一 + 评分系统
+
+两站合一
+- VitePress 现在挂在 / （唯一前台）：部件库、型号页、口径、协议、评分、讨论
+- React 选型台降为控制台，挂在 /console/：发帖、信息流、后台改数
+  （只留下真正需要写库的部分）
+- SPA 的 vite base 与 BrowserRouter basename 同步改成 /console
+- FastAPI 注册顺序：/api -> /console（带回退）-> /（wiki）-> 兜底
+  挂 / 的 StaticFiles 必须最后，否则吃掉前面全部
+- dev.ps1 / config base 同步；dev 下 /api 走代理，评分组件能连后端
+
+评分系统（自托管）
+- Rating 表：(user, part) 唯一，重复提交是「改分」不是刷票
+- GET /api/ratings/{id} 单件；GET /api/ratings 排行榜（min_count 门槛）
+- GET /api/ratings/summary 全站聚合，供静态站烤快照
+- POST/DELETE 打分与撤销；own_hardware 单列统计（装机票）
+- 没评过返回 count=0 / avg=None —— 0 分是差评，没评不是
+- 分布一起返回：只看均分会把「5 人 5 分」和「1 人 5 分 + 4 人 1 分」看成一样
+
+静态部署的降级
+- scripts/export_ratings.py 把库里的聚合导成 data/ratings_snapshot.json
+- build_wiki 把它拷进 public/ratings.json；CI 无库时写空表
+- PartRating.vue 三级降级：实时 API -> 构建快照 -> 空态，页面标明是哪种
+
+型号页
+- 右侧「实际使用」从写死的空态卡片换成 <PartRating>
+
+测试
+- 新增 10 项评分测试；conftest 每个用例前清限流桶
+  （限流器是进程内全局的，跨模块会互相喂到 429）
+- 更新控制台路径断言

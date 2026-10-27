@@ -177,3 +177,30 @@ class WikiComment(SQLModel, table=True):
     body: str
     parent_id: int | None = Field(default=None, foreign_key="wiki_comments.id")
     created_at: datetime = Field(default_factory=utcnow)
+
+
+class Rating(SQLModel, table=True):
+    """零件评分：一人一件一票，可改。
+
+    为什么评分必须自托管而不能靠 giscus：giscus 只有 reaction，没有分档；
+    而「这个件值不值」需要一个能聚合、能画分布、能进排序的数。
+    所以评分进本站库，评论继续交给 giscus（那道 GitHub 账号门槛由它兜住）。
+
+    唯一约束保证「一人一票」，重复提交是**改分**不是刷分。
+    """
+
+    __tablename__ = "ratings"
+    __table_args__ = (
+        UniqueConstraint("user_id", "part_id", name="uq_rating_once"),
+        Index("ix_rating_part", "part_id"),
+    )
+
+    id: int | None = Field(default=None, primary_key=True)
+    part_id: str = Field(foreign_key="parts.id", index=True)
+    user_id: int = Field(foreign_key="users.id", index=True)
+    score: int                                          # 1–5
+    #: 打分的依据（是否装过机）。没有这个字段，5 分可能来自「看着不错」
+    own_hardware: bool = False
+    note: str = ""                                      # 一句话理由，可空
+    created_at: datetime = Field(default_factory=utcnow)
+    updated_at: datetime = Field(default_factory=utcnow)
