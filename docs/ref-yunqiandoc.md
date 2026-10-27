@@ -64,7 +64,7 @@ giscusTalk({
 ```ts
 // wiki/docs/.vitepress/giscus.ts
 export const giscus = {
-  repo: 'zeitvex/roboselect',
+  repo: 'zeitvex/RoboSelect',
   repoId: 'R_kgDOVZTWEQ',
   category: 'Announcements',
   categoryId: 'DIC_kwDOVZTWEc4DJv7l',
@@ -76,7 +76,7 @@ export const giscus = {
 四个参数是这么来的（`gh` 能查前三个，App 安装必须人手点）：
 
 ```bash
-gh api -X PATCH repos/zeitvex/roboselect -F has_discussions=true   # 开 Discussions
+gh api -X PATCH repos/zeitvex/RoboSelect -F has_discussions=true   # 开 Discussions
 gh api graphql -F query=@gql.txt                                    # repoId + categoryId
 # App 安装无法用 CLI：打开 github.com/apps/giscus → Install → 只勾这一个仓库
 ```

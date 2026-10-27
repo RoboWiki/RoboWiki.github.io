@@ -42,7 +42,7 @@ export interface GiscusConfig {
 
 /** 填成对象即启用。填之前先看文件头的四条前提。 */
 export const giscus: GiscusConfig | null = {
-  repo: 'zeitvex/roboselect',
+  repo: 'zeitvex/RoboSelect',
   repoId: 'R_kgDOVZTWEQ',
   category: 'Announcements',
   categoryId: 'DIC_kwDOVZTWEc4DJv7l',
