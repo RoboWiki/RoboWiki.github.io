@@ -52,9 +52,8 @@ jobs:
       - name: install & build
         working-directory: wiki
         env:
-          # 仓库叫 roboselect.github.io，属于 project site，
-          # 所以站点挂在 /roboselect.github.io/ 下（不是根域名）
-          WIKI_BASE: /roboselect.github.io/
+          # 仓库叫 roboselect（project site），站点挂在 /roboselect/ 下
+          WIKI_BASE: /roboselect/
         run: |
           npm ci
           npm run build

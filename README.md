@@ -2,7 +2,7 @@
 
 **四足机器人选型 + 真实使用社区。**
 
-> **线上**：<https://zeitvex.github.io/roboselect.github.io/> —— 文档站（VitePress，纯静态）。
+> **线上**：<https://zeitvex.github.io/roboselect/> —— 文档站（VitePress，纯静态）。
 > 选型台与社区需要 Python 托管环境，本地 `uvicorn` 起来即完整。原因见 §4.1。
 
 选型台是底座，社区是主体。零件参数带口径、可校验、能导出到仿真；评价来自真装机，
@@ -197,13 +197,12 @@ cd wiki && npm install && npm run build
 
 ### 4.1 GitHub Pages 部署了什么、没部署什么
 
-仓库：<https://github.com/zeitvex/roboselect.github.io>
-线上：<https://zeitvex.github.io/roboselect.github.io/>
+仓库：<https://github.com/zeitvex/roboselect>（原名 `roboselect.github.io`，已改名）
+线上：<https://zeitvex.github.io/roboselect/>
 
-注意这个仓库名**不是** `<user>.github.io`，所以它是 **project site**，
-地址会带一层路径 `/roboselect.github.io/`，不是根域名。
-`wiki/docs/.vitepress/config.mts` 用 `WIKI_BASE` 环境变量切换 base，
-工作流里设成 `/roboselect.github.io/`，本地默认仍是 `/wiki/`。
+仓库名不是 `<user>.github.io`，所以是 **project site**，站点挂在 `/roboselect/` 下，
+不是根域名。`wiki/docs/.vitepress/config.mts` 用 `WIKI_BASE` 环境变量切换 base，
+工作流里设成 `/roboselect/`，本地默认仍是 `/wiki/`。
 
 | | Pages 上 | 为什么 |
 |---|---|---|
