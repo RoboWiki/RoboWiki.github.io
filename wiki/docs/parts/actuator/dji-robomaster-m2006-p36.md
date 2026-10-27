@@ -29,7 +29,7 @@ title: DJI RoboMaster M2006 P36
 | 减速比 | 36 |
 | 空载转速 (rpm) | 500 |
 | 质量 (kg) | — |
-| armature (kg·m²) | — |
+| 转子惯量 (kg·m²) | — |
 | 外径 (mm) | — |
 | 长度 (mm) | — |
 | 额定电压 (V) | — |
@@ -70,7 +70,7 @@ title: DJI RoboMaster M2006 P36
 <div class="pm-row"><span class="pm-k">扭矩密度</span><span class="pm-v">—</span><span class="pm-note">缺峰值扭矩或质量，不推算</span></div>
 <div class="pm-row"><span class="pm-k">峰值/额定比</span><span class="pm-v">—</span><span class="pm-note">缺额定扭矩；不要假设它等于峰值的一半</span></div>
 <div class="pm-row"><span class="pm-k">空载角速度 ω</span><span class="pm-v">52.4 rad/s</span><span class="pm-note">× 腿长 = 腿尖速度上限</span></div>
-<div class="pm-row"><span class="pm-k">反射惯量占比</span><span class="pm-v">—</span><span class="pm-note">缺 armature</span></div>
+<div class="pm-row"><span class="pm-k">反射惯量占比</span><span class="pm-v">—</span><span class="pm-note">缺转子惯量</span></div>
 </div>
 
 ::: tip 怎么用这三行
@@ -95,7 +95,7 @@ title: DJI RoboMaster M2006 P36
 | 长度 (mm) | — |
 | 转子惯量 (kg·m²) | — |
 | 惯量口径 | — |
-| armature (kg·m²) | — |
+| 转子惯量 (kg·m²) | — |
 | 额定电压 (V) | — |
 | 电压范围 (V) | — |
 | 转矩常数 (N·m/A) | — |
@@ -110,6 +110,10 @@ title: DJI RoboMaster M2006 P36
 | 通信 | CAN |
 | 内置驱动 | 0 |
 | 防护等级 | — |
+
+## 优惠与获取条件
+
+暂无优惠信息。本站不代理销售，也不收佣金 —— 有合作或团购价请提 issue，写清**价格 + 覆盖范围 + 有效期**，缺一项都不上卡片。
 
 ## 资料与链接
 

@@ -1,29 +1,30 @@
-﻿feat(ratings): 打分改成 GitHub issue 表单，去掉自建账号那一套
+﻿feat(ui): 全面重构界面 —— 站点身份、首页、部件库卡片
 
-问题：上一版的评分要读者再注册一次本站账号。这个站的读者本来就都有 GitHub 账号，
-多一道注册是不必要的门槛。
+标题与身份
+- siteTitle 从「RoboSelect 文档」改成「RoboSelect」，description 改成
+  「机器人部件选择社区：官方参数 + 真实使用者的评分与评价」
+- nav 重排：部件库 / 按厂商 / 参数口径 / 总线协议 / 数据来源 / 控制台
 
-搜过三条 GitHub 原生路径：
-- Discussions 投票：原生支持 1-5，但创建投票只能手点（GraphQL createDiscussion
-  至今不支持 poll，社区仍在提需求 #192371），46 个部件就要手建 46 个投票 -> 放弃
-- giscus 反应：只能表达 thumbs-up，没有 1-5 分档，也无法聚合进排序 -> 只作辅助
-- Issue Forms + Actions：GitHub 身份天然可信、表单结构化、Actions 能自动聚合、
-  每条评分可追溯到人和依据、维护者可关闭 -> 采用
+首页重做
+- 原来是一个表格 + 三条链接，现在是：kicker + 大标题 + CTA + 统计条
+  + 品类网格（10 类，空类标「待收录」）+ 三步使用说明
+- 统计条只放真实比率（87% 有转子惯量、93% 有额定扭矩），不放虚数
 
-新增
-- .github/ISSUE_TEMPLATE/rate-part.yml  评分表单（1-5 / 装过机 / 理由 / 用途）
-- .github/workflows/aggregate-ratings.yml  拉 issue -> 聚合 -> 有变化就提交
-- scripts/aggregate_ratings.py  解析 Issue Forms 正文并聚合
-  唯一键 = (作者, 部件 id)，同一人多条取最新 -> 改主意不会变成两票
-  只认 rating 标签且未关闭的 issue
-  部件 id 先看标题，再看表单字段；评分解析不出 1-5 就丢弃并记录
-- backend/tests/test_aggregate_ratings.py  6 项（含全角括号字段名、标题兜底）
+交互式检索 -> 部件库（/catalog）
+- 改名并改为 layout: page 满宽：原来 doc 布局把内容限制在 688px，
+  三列挤在左边、右侧大片空白
+- 卡片重做：图片 / 品牌 + 型号 / 4 个关键参数 / 价格 / 评分 / 操作
+- 关键参数按品类取（关节电机是峰值·减速比·质量·转子惯量；
+  上位机是 SoC·NPU·内存；IMU 是 ODR·接口；雷达相机是量程·帧率）
+- armature 的展示名统一改成「转子惯量」（部件页里仍注明是折算到输出端的
+  等效惯量，与本体转子惯量差 N^2 倍，口径不丢）
+- 排序增加「评分」「价格」
 
-型号页
-- PartRating 只留一个打分入口（去 GitHub 打分）+ 汇总
-- 删掉自建登录与提交表单 —— 两套入口等于两套数据源，必然分裂
-- 数据仍是三级降级：实时 API -> issue 聚合快照 -> 空态
+评分与优惠
+- catalog.json 里烤入 rating（avg/count）与 offer，静态站零请求即可显示
+- 卡片：有优惠价显示优惠价 + 划线原价 + 「优惠」角标；无价显示「询价」
+- 部件页新增「优惠与获取条件」：只给数字不给条件比不给更糟，
+  所以价格、条件、有效期、链接必须同时存在，demo 条目会被明确标出
 
-数据源分工
-- 公开站点评分 = GitHub issue 聚合（ratings_snapshot.json，Actions 提交）
-- export_ratings.py 改导 ratings_local.json，不再覆盖公开快照
+后续
+- 卡片结构按「以后扩到各类机器人部件」设计，加品类只需在 chips() 里加一条

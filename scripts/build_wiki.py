@@ -15,6 +15,7 @@ import json
 import pathlib
 import re
 import shutil
+from datetime import date
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -105,7 +106,7 @@ def mdl(p: dict) -> str:
 
 def actuator_table(items: list[dict]) -> str:
     head = ("| 型号 | 峰值 τ N·m | 额定 τ N·m | 减速比 | 空载 rpm | 质量 kg "
-            "| armature kg·m² | 价格 ¥ | 来源 |\n"
+            "| 转子惯量 kg·m² | 价格 ¥ | 来源 |\n"
             "|---|---|---|---|---|---|---|---|---|")
     lines = [head]
     for p in sorted(items, key=lambda r: -(r["specs"].get("tau_peak_Nm") or 0)):
@@ -191,9 +192,48 @@ def main() -> None:
     # ── 静态目录快照：让静态站也能做交互式检索 ────────────────────────
     # 数据本来就是静态的（data/*.json），排序 / 筛选 / 搜索都是客户端计算，
     # 浏览器做比 API 做更合适，而且静态站能深链、能被收录、不用养服务器。
+    #
+    # 卡片要显示的东西（评分、优惠）也在这里一次性烤进去 —— 静态站没有 API，
+    # 卡片上不该为空着而再发一次请求。
+    ratings: dict = {}
+    _rp = ROOT / "data" / "ratings_snapshot.json"
+    if _rp.exists():
+        try:
+            ratings = json.loads(_rp.read_text(encoding="utf-8")).get("parts") or {}
+        except Exception:
+            ratings = {}
+
+    offers: list[dict] = []
+    _op = ROOT / "data" / "offers.json"
+    if _op.exists():
+        try:
+            offers = json.loads(_op.read_text(encoding="utf-8"))
+        except Exception:
+            offers = []
+
+    def offer_of(r: dict) -> dict | None:
+        """给一个零件找优惠：先按 part_id 精确匹配，再按厂商匹配。
+        只取未过期的、且带优惠价的（页面会把条件一起显示）。"""
+        today = date.today().isoformat()
+        cand = [o for o in offers
+                if (o.get("part_id") == r["id"]) or (not o.get("part_id") and o.get("vendor") == r["vendor"])]
+        cand = [o for o in cand
+                if (o.get("expires_on") or "9999") >= today]
+        # 有具体优惠价的优先
+        cand.sort(key=lambda o: (o.get("price_cny") is None,))
+        if not cand:
+            return None
+        o = cand[0]
+        return {"title": o.get("title"), "kind": o.get("kind"),
+                "price": o.get("price_cny"), "condition": o.get("detail"),
+                "url": o.get("url"), "expires": o.get("expires_on"),
+                "demo": bool(o.get("demo"))}
+
     digest = []
     for r in rows:
         s = r.get("specs") or {}
+        rt = ratings.get(r["id"]) or {}
+        of = offer_of(r)
         digest.append({
             "id": r["id"], "slug": slugs[r["id"]],
             "category": r["category"], "subtype": r["subtype"],
@@ -202,10 +242,16 @@ def main() -> None:
             "tier": r["source_tier"], "verified": bool(r["verified"]),
             "price": r.get("price_cny"),
             "image": s.get("image_url") or None,
+            "rating": {"avg": rt.get("avg"), "count": rt.get("count") or 0},
+            "offer": of,
             "tauPeak": s.get("tau_peak_Nm"), "tauRated": s.get("tau_rated_Nm"),
             "gear": s.get("gear"), "mass": s.get("mass_kg"),
             "armature": s.get("armature_kgm2"),
             "rpm": s.get("speed_noload_rpm"), "od": s.get("od_mm"), "len": s.get("l_mm"),
+            "soc": s.get("soc"), "npuTops": s.get("npu_tops"), "ramGb": s.get("ram_gb"),
+            "mcu": s.get("mcu"), "can": s.get("can"), "iface": s.get("iface"),
+            "bits": s.get("bits"), "odrHz": s.get("odr_hz"), "fps": s.get("fps"),
+            "depthRange": s.get("depth_range_m"), "rangeM": s.get("range_m"),
             "notes": (r.get("notes") or "")[:600],
             "specs": {k: v for k, v in s.items() if v is not None},
         })
@@ -255,7 +301,7 @@ def main() -> None:
         "speed_rated_rpm": "额定转速 (rpm)", "gear": "减速比",
         "mass_kg": "质量 (kg)", "od_mm": "外径 (mm)", "l_mm": "长度 (mm)",
         "rotor_inertia_kgm2": "转子惯量 (kg·m²)", "inertia_basis": "惯量口径",
-        "armature_kgm2": "armature (kg·m²)", "voltage_V": "额定电压 (V)",
+        "armature_kgm2": "转子惯量 (kg·m²)", "voltage_V": "额定电压 (V)",
         "voltage_range_V": "电压范围 (V)", "kt_Nm_per_A": "转矩常数 (N·m/A)",
         "r_phase_ohm": "相电阻 (Ω)", "l_phase_uh": "相电感 (µH)",
         "pole_pairs": "极对数", "i_peak_A": "峰值电流 (A)", "i_rated_A": "额定电流 (A)",
@@ -320,7 +366,7 @@ def main() -> None:
             out.append(("反射惯量占比", f"{share:.0f}%",
                         f"假设单腿 {m_leg} kg、腿长 {l_leg} m 绕髋摆；占比越高腿越「黏」", lvl))
         else:
-            out.append(("反射惯量占比", "—", "缺 armature", "na"))
+            out.append(("反射惯量占比", "—", "缺转子惯量", "na"))
         return out
 
     from urllib.parse import quote_plus
@@ -373,7 +419,8 @@ def main() -> None:
         if cat == "actuator":
             if arm:
                 out.append(("仿真里填哪个字段",
-                            f"MJCF/URDF 的 armature 填 **{num(arm, 4)}**（这是输出端值）。"
+                            f"MJCF/URDF 的 armature 字段填 **{num(arm, 4)}**"
+                            f"（这是折算到输出端的等效惯量，与电机本体转子惯量差 N² 倍）。"
                             f"不要当转子惯量再乘 N² —— "
                             f"{'会差 ' + num((gear or 1) ** 2, 3) + ' 倍' if gear else '会差一个 N² 量级'}。"))
             if rpm:
@@ -497,6 +544,30 @@ def main() -> None:
 
         advice_md = "\n".join(f"- **{t}** —— {b}" for t, b in advice(r))
 
+        # 优惠：卡片上只显示价格，**条件写在这里** —— 只给一个数字不给条件，
+        # 比不给更糟（读者会拿它当到手价）。
+        of = offer_of(r)
+        if of and of.get("price") is not None:
+            offer_md = f"""**优惠价 {num(of['price'], 0)} 元**（原价 {num(r.get('price_cny'), 0)} 元）
+
+- 活动：{of.get('title') or '—'}
+- 获取条件：{of.get('condition') or '—'}
+- 有效期：至 {of.get('expires') or '—'}
+- 链接：{of.get('url') or '—'}
+{"- ⚠️ 这条是示例条目（`demo: true`），发布前必须替换成真实合作信息。" + chr(10) if of.get("demo") else ""}"""
+        elif of:
+            offer_md = f"""有一条相关信息：**{of.get('title') or '—'}**
+
+- 说明：{of.get('condition') or '—'}
+- 有效期：至 {of.get('expires') or '—'}
+- 链接：{of.get('url') or '—'}
+
+这条**没有具体优惠价**，所以卡片上不显示折扣 —— 只有价格没有条件的那种「优惠」本站不放。"""
+        else:
+            offer_md = ("暂无优惠信息。本站不代理销售，也不收佣金 —— "
+                        "有合作或团购价请提 issue，写清**价格 + 覆盖范围 + 有效期**，"
+                        "缺一项都不上卡片。")
+
         # 关节电机的深度指标
         metric_md = ""
         if cat == "actuator":
@@ -596,6 +667,10 @@ def main() -> None:
 |---|---|
 {spec_rows(s)}
 
+## 优惠与获取条件
+
+{offer_md}
+
 ## 资料与链接
 
 {resources(r)}
@@ -617,34 +692,154 @@ def main() -> None:
     n_rated = sum(1 for r in rows if (r.get("specs") or {}).get("tau_rated_Nm"))
     vendors = sorted({r["vendor"] for r in rows if r["category"] == "actuator"})
 
-    # ── 总览 ────────────────────────────────────────────────────────────
-    (OUT / "index.md").write_text(FRONT.format(title="总览") + f"""
-# RoboSelect 选型文档
+    # ── 首页：这是社区，不是说明书 ──────────────────────────────────────
+    n_rated_pct = round(n_rated / n_act * 100) if n_act else 0
+    n_arm_pct = round(n_arm / n_act * 100) if n_act else 0
+    cat_cards = "\n".join(
+        f'<a class="hc" href="/parts/{c}/"><b>{name}</b>'
+        f'<span>{sum(1 for r in rows if r["category"] == c) or "待收录"}</span>'
+        f'<em>{desc}</em></a>'
+        for c, name, desc in CATS)
+    (OUT / "index.md").write_text(
+        '---\ntitle: RoboSelect\nlayout: page\nsidebar: false\noutline: false\n---\n\n'
+        + f'''
+<div class="home">
+  <section class="home-hero">
+    <div class="home-kicker">机器人部件选择社区</div>
+    <h1>选部件，先看参数，再看<em>用过的人怎么说</em>。</h1>
+    <p>
+      每个部件一页：左边是官方参数（带来源等级与口径），右边是真实使用者的评分与评价。
+      不收佣金、不卖零件，所以判定不必讨好谁。
+    </p>
+    <div class="home-cta">
+      <a class="home-btn" href="/catalog">进部件库 →</a>
+      <a class="home-btn ghost" href="/semantics">参数口径怎么读</a>
+    </div>
+  </section>
 
-这里是把**同一份已核过的数据**换一种形态呈现：按厂商成页、可逐条讨论。
-交互式的排序、筛选、对比在 [选型台](/)；这里的价值是**每页底下的讨论串**。
+  <section class="home-stats">
+    <div><b>{len(rows)}</b><span>在库部件</span></div>
+    <div><b>{n_act}</b><span>关节电机 · {len(vendors)} 家</span></div>
+    <div><b>{n_arm_pct}%</b><span>有转子惯量（可直接进仿真）</span></div>
+    <div><b>{n_rated_pct}%</b><span>有额定扭矩</span></div>
+  </section>
 
-| | 数量 |
-|---|---|
-| 零件总数 | {len(rows)} |
-| 关节电机 | {n_act} |
-| 电机厂商 | {len(vendors)} |
-| 有 armature（可直接进仿真） | {n_arm} |
-| 有原厂产品图 | {n_img} |
-| 有额定扭矩（仅执行器有意义） | {n_rated} |
+  <section class="home-cats">
+    <h2>按品类</h2>
+    <div class="home-cat-grid">{cat_cards}</div>
+    <p class="home-note">
+      「待收录」不是漏了 —— 是没有可信来源。宁可空着，也不拿论文里的典型值充数。
+    </p>
+  </section>
 
-## 怎么读
+  <section class="home-how">
+    <h2>这一页该怎么用</h2>
+    <div class="home-how-grid">
+      <div>
+        <b>1 · 先看官方参数</b>
+        <p>来源等级 <code>A</code> 表示逐项对过厂商手册。缺的字段写 <code>—</code>，
+        不猜、不用额定代替峰值。每个数都能查到「谁在什么时候、凭什么改成了现在这样」。</p>
+      </div>
+      <div>
+        <b>2 · 再看使用者的分</b>
+        <p>评分走 GitHub issue，<strong>一人一件一票</strong>，装过机的单独统计。
+        评论在部件页底部（GitHub Discussions），用来说明「为什么给这个分」。</p>
+      </div>
+      <div>
+        <b>3 · 别只看峰值扭矩</b>
+        <p>部件页会算扭矩密度、峰值/额定比、反射惯量占比。高减速比件通常前两项好看、
+        第三项很糟 —— 那条腿会很「黏」。</p>
+      </div>
+    </div>
+  </section>
 
-- **[部件手册](/parts/)** —— 按品类和厂商分页，一张表看完一家所有型号
-- **[参数口径](/semantics)** —— 每个字段是什么意思、缺了意味着什么、6 条物理红线
-- **[总线与协议](/protocols)** —— 同一个「电流」在四个驱动里是四个量
-- **[数据来源](/sources)** —— 每条数据凭什么，以及我们拒绝做什么
+  <section class="home-links">
+    <a href="/parts/">按厂商浏览</a>
+    <a href="/semantics">参数口径</a>
+    <a href="/protocols">总线与协议</a>
+    <a href="/sources">数据来源与纪律</a>
+  </section>
+</div>
 
-## 这条规矩放在最前面
+<style>
+.home {{ max-width: 1180px; margin: 0 auto; padding: 2.2rem 1.5rem 4rem; }}
+.home-hero {{ padding: 1.2rem 0 1.8rem; border-bottom: 1px solid var(--vp-c-divider); }}
+.home-kicker {{
+  font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--vp-c-brand-1); font-weight: 700; margin-bottom: 0.6rem;
+}}
+.home-hero h1 {{
+  font-size: clamp(1.6rem, 3.4vw, 2.5rem); line-height: 1.25; font-weight: 800;
+  letter-spacing: -0.02em; margin: 0 0 0.8rem; border: none; padding: 0;
+  color: var(--vp-c-text-1);
+}}
+.home-hero h1 em {{
+  font-style: normal;
+  background: linear-gradient(135deg, var(--vp-c-brand-1), #4fc1ff);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}}
+.home-hero p {{ margin: 0 0 1.2rem; max-width: 62ch; font-size: 0.92rem;
+  line-height: 1.85; color: var(--vp-c-text-2); }}
+.home-cta {{ display: flex; gap: 0.6rem; flex-wrap: wrap; }}
+.home-btn {{
+  font-size: 0.86rem; font-weight: 600; padding: 0.5rem 1.05rem; border-radius: 999px;
+  background: var(--vp-c-brand-1); color: #fff; text-decoration: none;
+}}
+.home-btn.ghost {{
+  background: transparent; color: var(--vp-c-text-1);
+  border: 1px solid var(--vp-c-divider);
+}}
+.home-btn:hover {{ text-decoration: none; opacity: 0.92; }}
 
-本站不收佣金、不卖零件。**参数缺失一律写 `—`，不猜、不用同类填补、不用额定代替峰值。**
-看到 `—` 就去问厂商要手册，而不是让工具替你编一个数。
-""", encoding="utf-8")
+.home-stats {{
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1px; background: var(--vp-c-divider);
+  border: 1px solid var(--vp-c-divider); border-radius: 12px; overflow: hidden;
+  margin: 1.6rem 0;
+}}
+.home-stats > div {{ background: var(--vp-c-bg); padding: 0.9rem 1rem; }}
+.home-stats b {{
+  display: block; font-size: 1.5rem; font-weight: 800; line-height: 1.1;
+  color: var(--vp-c-brand-1); font-variant-numeric: tabular-nums;
+}}
+.home-stats span {{ font-size: 0.74rem; color: var(--vp-c-text-3); }}
+
+.home h2 {{
+  font-size: 1.02rem; font-weight: 700; margin: 0 0 0.8rem;
+  border: none; padding: 0; color: var(--vp-c-text-1);
+}}
+.home-cat-grid {{
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.5rem;
+}}
+.hc {{
+  display: flex; flex-direction: column; gap: 2px;
+  border: 1px solid var(--vp-c-divider); border-radius: 10px;
+  padding: 0.6rem 0.7rem; text-decoration: none;
+  background: var(--vp-c-bg); transition: border-color 0.18s, transform 0.18s;
+}}
+.hc:hover {{ border-color: var(--vp-c-brand-1); transform: translateY(-2px); text-decoration: none; }}
+.hc b {{ font-size: 0.84rem; color: var(--vp-c-text-1); }}
+.hc span {{ font-size: 0.74rem; color: var(--vp-c-brand-1); font-variant-numeric: tabular-nums; }}
+.hc em {{ font-size: 0.7rem; font-style: normal; color: var(--vp-c-text-3); }}
+.home-note {{ font-size: 0.74rem; color: var(--vp-c-text-3); margin-top: 0.7rem; }}
+
+.home-how-grid {{
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.8rem;
+  margin-top: 0.4rem;
+}}
+.home-how-grid > div {{
+  border-left: 3px solid var(--vp-c-brand-soft); padding: 0.1rem 0 0.1rem 0.8rem;
+}}
+.home-how-grid b {{ font-size: 0.84rem; color: var(--vp-c-text-1); }}
+.home-how-grid p {{ font-size: 0.78rem; line-height: 1.8; color: var(--vp-c-text-2); margin: 0.3rem 0 0; }}
+.home-links {{
+  display: flex; flex-wrap: wrap; gap: 1.1rem; margin-top: 2.2rem;
+  padding-top: 1.1rem; border-top: 1px solid var(--vp-c-divider);
+  font-size: 0.8rem;
+}}
+.home-links a {{ color: var(--vp-c-brand-1); }}
+</style>
+''', encoding="utf-8")
 
     # ── 部件总表 ────────────────────────────────────────────────────────
     cat_links = "\n".join(f"- **[{name}](/parts/{c}/)** —— {desc}（{sum(1 for r in rows if r['category'] == c)} 件）"
