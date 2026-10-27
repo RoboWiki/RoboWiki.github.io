@@ -232,6 +232,22 @@ def main() -> None:
                     copied += 1
     print(f"  产品图同步 {copied} 张（共 {len(list(dst_img.glob('*'))) if dst_img.exists() else 0} 张）")
 
+    # 评分快照：纯静态部署（GitHub Pages）没有后端，页面读不到 /api/ratings，
+    # 所以把「上次导出时」的聚合结果一起发布。页面上会标明这是快照。
+    snap = ROOT / "data" / "ratings_snapshot.json"
+    if snap.exists():
+        (pub / "ratings.json").write_bytes(snap.read_bytes())
+        try:
+            n = len(json.loads(snap.read_text(encoding="utf-8")).get("parts") or {})
+        except Exception:
+            n = 0
+        print(f"  评分快照 -> public/ratings.json（{n} 个零件有分）")
+    else:
+        (pub / "ratings.json").write_text(
+            json.dumps({"total_ratings": 0, "parts": {}, "snapshot": True},
+                       ensure_ascii=False), encoding="utf-8")
+        print("  评分快照：无，写空表")
+
     # ── 生成 191 个型号页 ─────────────────────────────────────────────
     SPEC_LABEL = {
         "tau_peak_Nm": "峰值扭矩 (N·m)", "tau_rated_Nm": "额定扭矩 (N·m)",
