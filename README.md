@@ -201,6 +201,35 @@ cd wiki && npm install && npm run build
 
 演示账号：`roboselect`（站务）/ `demo1`，密码都是 `roboselect`。
 
+### 4.0 本地迭代：两个热更回路
+
+改一行字等 30 秒构建不划算 —— 尤其文档站现在有 215 个页面。日常用 dev：
+
+```powershell
+pwsh scripts/dev.ps1            # 5174 文档站 + 5180 选型台
+```
+
+| 端口 | 是什么 | 改完多久生效 |
+|---|---|---|
+| 5174 | 文档站 VitePress dev（`base=/wiki/`） | **即时**（HMR，页面不刷新） |
+| 5180 | 选型台 Vite dev（`/api` 代理到 8000） | 即时 |
+| 8000 | FastAPI（`uvicorn app.main:app`） | 改 Python 要重起 |
+
+端口和 host 写死在 `vite.config.ts` / `dev.ps1`：两个都用 5174 会互相抢；
+Vite 默认只监听 `localhost`（`::1`），IPv4 的 curl / playwright 会连不上。
+
+**什么时候仍然必须跑完整构建**：验证「部署形态」时 ——
+
+- `WIKI_BASE` 换了（`/wiki/` ↔ `/RoboSelect/`），静态资源路径对不对
+- giscus 的 `data-term` 是否稳定（改名不掉讨论）
+- 产品图是否从 `frontend/public/parts` 同步过去
+
+这三点 dev 模式看不出来，所以收尾跑一次、推一次、验一次就够。
+
+> 踩过的坑：`npm run dev | Select-Object -First N` 会关掉管道把进程杀掉；
+> 用 `Get-Content -Raw` / `Set-Content` 读写中文 md 会按 ANSI 解码把文件写坏
+> （中文文件走编辑器，或 `.NET WriteAllText` + UTF-8 无 BOM）。
+
 环境变量（`ROBOSELECT_` 前缀）：
 
 | 变量 | 默认 | 说明 |
