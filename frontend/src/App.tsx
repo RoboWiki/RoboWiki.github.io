@@ -80,12 +80,16 @@ function AuthModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   )
 }
 
+// 控制台只放「要写库」的东西：发帖、信息流、排行榜、后台改数。
+// 部件库与参数口径归主站（VitePress），这里用外链跳过去，不做第二套。
 const NAV = [
-  { key: 'catalog', to: '/', label: '选型台' },
   { key: 'community', to: '/community', label: '社区' },
   { key: 'people', to: '/top', label: '贡献榜' },
-  { key: 'semantics', to: '/semantics', label: '口径' },
   { key: 'admin', to: '/admin', label: '后台' },
+]
+const EXTERNAL = [
+  { href: '/catalog', label: '机器人部件库 ↗' },
+  { href: '/semantics', label: '参数口径 ↗' },
 ]
 
 /** 明暗切换：圆形图标按钮，做法照 zeitvex.github.io 的设置齿轮 */
@@ -127,20 +131,22 @@ function Shell() {
 
   const section = loc.pathname.startsWith('/community') || loc.pathname.startsWith('/post') ? 'community'
     : loc.pathname.startsWith('/top') || loc.pathname.startsWith('/u/') ? 'people'
-      : loc.pathname.startsWith('/semantics') ? 'semantics'
-        : loc.pathname.startsWith('/admin') ? 'admin' : 'catalog'
+      : loc.pathname.startsWith('/admin') ? 'admin' : 'community'
 
   return (
     <Ctx.Provider value={ctx}>
       {/* 顶栏：chrome 层（灰），内容面留纯白 —— VS Code 的分层 */}
       <header className="sticky top-0 z-30 border-b border-slate-200 bg-[var(--chrome-bg)]/95 backdrop-blur">
         <div className="mx-auto flex h-[56px] max-w-[1240px] items-center gap-4 px-5">
-          <Link to="/" className="flex shrink-0 items-baseline gap-2" title="RoboSelect">
+          <a href="/" className="flex shrink-0 items-baseline gap-2" title="回主站">
             <span className="text-[17px] font-extrabold tracking-tight text-slate-900">
               Robo<span className="text-blue-600">Select</span>
             </span>
-            <span className="terminal-pill hidden md:inline">roboselect@parts:~$</span>
-          </Link>
+            {/* 这里不是主站，是控制台 —— 说清楚，免得读者以为站上只有这些 */}
+            <span className="rounded-full border border-slate-300 px-2 py-[1px] text-[10px] font-semibold text-slate-500">
+              控制台
+            </span>
+          </a>
 
           <nav className="hidden items-center gap-0.5 sm:flex">
             {NAV.map(n => {
@@ -156,6 +162,13 @@ function Shell() {
                 </Link>
               )
             })}
+            <span className="mx-2 h-4 w-px bg-slate-300" />
+            {EXTERNAL.map(x => (
+              <a key={x.href} href={x.href}
+                className="px-2.5 py-[18px] text-[13px] text-slate-500 transition hover:text-slate-800">
+                {x.label}
+              </a>
+            ))}
           </nav>
 
           <div className="ml-auto flex items-center gap-2">
@@ -218,9 +231,8 @@ function Shell() {
 
       <main className="mx-auto w-full max-w-[1240px] px-5 pb-24 pt-6">
         <Routes>
-          <Route path="/" element={<Catalog
-            onOpenPost={id => nav(`/post/${id}`)}
-            onCompose={partId => user ? setComposer({ open: true, partId, kind: 'review' }) : setAuthOpen(true)}
+          {/* 控制台首页就是社区信息流 —— 部件库已经归主站，不再在这里重复一套 */}
+          <Route path="/" element={<CommunityPage onOpenPost={id => nav(`/post/${id}`)}
             openAuth={() => setAuthOpen(true)} />} />
           <Route path="/community" element={<CommunityPage onOpenPost={id => nav(`/post/${id}`)} openAuth={() => setAuthOpen(true)} />} />
           <Route path="/post/:id" element={<PostPage />} />

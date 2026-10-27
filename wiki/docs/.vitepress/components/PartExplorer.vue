@@ -360,12 +360,17 @@ function glyphBox(p: Part) {
 .pd-sep { width: 1px; height: 18px; background: var(--vp-c-divider); margin: 0 0.25rem; }
 .pd-count { margin-left: auto; font-size: 0.78rem; color: var(--vp-c-text-3); }
 
-/* 卡片网格：铺满宽度，列数随窗口自适应 */
+/* 卡片网格：固定 5 列。auto-fill 在宽屏上会排到 6 列，卡片被压得太窄 ——
+   参数两列排不下，型号名也会折行。所以按断点写死列数。 */
 .pd-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(212px, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0.75rem;
 }
+@media (max-width: 1380px) { .pd-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 1080px) { .pd-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 800px)  { .pd-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px)  { .pd-grid { grid-template-columns: 1fr; } }
 .card {
   display: flex; flex-direction: column; overflow: hidden;
   border: 1px solid var(--vp-c-divider); border-radius: 10px;

@@ -27,12 +27,10 @@ export default defineConfig({
     // 品牌标：不再叫「文档」—— 这是个社区，不是一个说明书
     siteTitle: 'RoboSelect',
     nav: [
-      { text: '部件库', link: '/catalog' },
-      { text: '按厂商', link: '/parts/' },
+      { text: '机器人部件库', link: '/catalog' },
+      { text: '部件详情', link: '/parts/' },
       { text: '参数口径', link: '/semantics' },
-      { text: '总线协议', link: '/protocols' },
       { text: '数据来源', link: '/sources' },
-      { text: '控制台 ↗', link: '/console/' },
     ],
     sidebar,
     outline: { label: '本页', level: [2, 3] },

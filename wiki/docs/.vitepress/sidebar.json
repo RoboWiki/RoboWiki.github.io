@@ -14,22 +14,6 @@
       {
        "text": "总览",
        "link": "/parts/actuator/"
-      },
-      {
-       "text": "DJI RoboMaster",
-       "link": "/parts/actuator/dji-robomaster"
-      },
-      {
-       "text": "Unitree",
-       "link": "/parts/actuator/unitree"
-      },
-      {
-       "text": "灵足 RobStride",
-       "link": "/parts/actuator/robstride"
-      },
-      {
-       "text": "达妙 DM",
-       "link": "/parts/actuator/dm"
       }
      ]
     },

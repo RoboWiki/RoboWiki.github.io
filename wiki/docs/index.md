@@ -68,7 +68,6 @@ outline: false
   <section class="home-links">
     <a href="/parts/">按厂商浏览</a>
     <a href="/semantics">参数口径</a>
-    <a href="/protocols">总线与协议</a>
     <a href="/sources">数据来源与纪律</a>
   </section>
 </div>

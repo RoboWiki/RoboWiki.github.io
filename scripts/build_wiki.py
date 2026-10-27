@@ -756,7 +756,6 @@ def main() -> None:
   <section class="home-links">
     <a href="/parts/">按厂商浏览</a>
     <a href="/semantics">参数口径</a>
-    <a href="/protocols">总线与协议</a>
     <a href="/sources">数据来源与纪律</a>
   </section>
 </div>
@@ -911,41 +910,6 @@ def main() -> None:
 > 这些行是 `B` 级（来自公开文档/官网，未逐项核对），采购前请回原厂页面确认。
 """, encoding="utf-8")
 
-    # ── 协议口径（读 data/protocols.json，不复制）──────────────────────
-    protos = json.loads((DATA / "protocols.json").read_text(encoding="utf-8"))
-    prow = ["| 驱动 | 厂商 | 适用电机 | 电流编码 | 满量程 A | 减速比（协议 / 名义） | 控制模式 |",
-            "|---|---|---|---|---|---|---|"]
-    for p in protos["protocols"]:
-        g = "—" if p.get("gear_protocol") is None else f"{p['gear_protocol']:.4f}"
-        prow.append(f"| **{p['driver']}** | {p['vendor']} | {'、'.join(p['motors'])} "
-                    f"| {p['current_encoding']} | {p['current_full_scale_A']} "
-                    f"| {g} / {p['gear_nominal']} | {' / '.join(p['control_modes'])} |")
-    details = "\n\n".join(
-        f"### {p['driver']}（{p['vendor']}）\n\n"
-        f"- 电流编码：{p['current_encoding']}\n"
-        f"- 满量程：{p['current_full_scale_A']} A\n"
-        f"- 总线：{p['bus']}，控制频率 {p['ctrl_freq_hz']} Hz\n"
-        f"- 减速比：协议 `{p.get('gear_protocol')}` / 名义 {p['gear_nominal']}\n\n"
-        f"::: tip 口径提醒\n{p['notes']}\n\n证据：`{p['evidence']}`\n:::"
-        for p in protos["protocols"])
-    (OUT / "protocols.md").write_text(FRONT.format(title="总线与协议") + f"""
-# 总线与协议口径
-
-同一个「电流」在四个驱动里是四个不同的量。不写清编码满量程，跨厂商比电流/力矩就是错的。
-
-{prow[0]}
-{prow[1]}
-{chr(10).join(prow[2:])}
-
-{details}
-
-## 自检清单
-
-""" + "\n".join(f"{i}. {q}" for i, q in enumerate(protos["checklist"], 1)) + """
-
-> 来源：[yssickjgd/robowalker_train](https://github.com/yssickjgd/robowalker_train) 的驱动定标常量
-> + 各厂商手册。完整调研见仓库 `docs/ref-ustc-robowalker.md`。
-""", encoding="utf-8")
 
     # ── 参数口径（直接 import 后端的常量，杜绝漂移）──────────────────
     import sys
@@ -971,37 +935,200 @@ def main() -> None:
     section_field = rows3(field_rows, ["field", "label", "meaning"])
     section_ask = "\n".join(f"{i}. {q}" for i, q in enumerate(SUPPLIER_QUESTIONS, 1))
 
-    (OUT / "semantics.md").write_text(FRONT.format(title="参数口径") + f"""
-# 参数口径
+    # 红线做成卡片：6 列表格在小屏上没法读，而这一节是最该被读完的
+    def redline_cards() -> str:
+        out = []
+        for it in RED_LINES:
+            thr = ""
+            if it.get("review_above") is not None:
+                thr = (f'<span class="rl-th"><b>{it["review_above"]}</b> 需复核 · '
+                       f'<b>{it["absurd_above"]}</b> 不可信</span>')
+            formula = f'<code>{it["formula"]}</code>' if it.get("formula") else ""
+            out.append(f'''<div class="rl">
+  <div class="rl-head"><span class="rl-id">{it['id']}</span><b>{it['name']}</b>{formula}</div>
+  {thr}
+  <p class="rl-why">{it['why']}</p>
+  <p class="rl-how"><span>怎么核</span>{it['how_to_check']}</p>
+</div>''')
+        return "\n".join(out)
 
-这一页是 GET /api/semantics 的展示层，也被 MCP 工具
-`get_parameter_semantics` 直接复用。本站所有判定只有三种结论 ——
-`{TRINARY['values'][0]}` / `{TRINARY['values'][1]}` / `{TRINARY['values'][2]}`：
+    # 字段字典按用途分组，别一长条
+    FGROUP = [
+        ("扭矩与转速", ["tau_peak_Nm", "tau_rated_Nm", "tau_basis", "speed_noload_rpm",
+                    "speed_rated_rpm", "gear"]),
+        ("惯量与质量", ["mass_kg", "armature_kgm2", "rotor_inertia_kgm2", "inertia_basis",
+                    "od_mm", "l_mm"]),
+        ("电气", ["voltage_V", "voltage_range_V", "kt_Nm_per_A", "r_phase_ohm",
+                "l_phase_uh", "pole_pairs", "i_peak_A", "i_rated_A"]),
+        ("接口与防护", ["encoder", "comm", "driver_integrated", "ip"]),
+    ]
+    field_groups = []
+    seen_fields = set()
+    for gname, keys in FGROUP:
+        rows = []
+        for k in keys:
+            v = FIELD_SEMANTICS.get(k)
+            if not v:
+                continue
+            seen_fields.add(k)
+            rows.append(f'''<div class="fd">
+  <div class="fd-head"><code>{k}</code><b>{v.get('label','')}</b></div>
+  <p>{v.get('meaning','')}</p>
+  <p class="fd-miss"><span>缺了意味着</span>{v.get('missing_means','—')}</p>
+</div>''')
+        if rows:
+            field_groups.append(f'<h3>{gname}</h3><div class="fd-grid">{"".join(rows)}</div>')
+    rest = [f'''<div class="fd"><div class="fd-head"><code>{k}</code><b>{v.get('label','')}</b></div>
+  <p>{v.get('meaning','')}</p>
+  <p class="fd-miss"><span>缺了意味着</span>{v.get('missing_means','—')}</p></div>'''
+            for k, v in FIELD_SEMANTICS.items() if k not in seen_fields]
+    if rest:
+        field_groups.append(f'<h3>其他</h3><div class="fd-grid">{"".join(rest)}</div>')
 
-::: warning unknown 的意思
-{TRINARY.get('unknown_means', '证据不足，既不算兼容也不算不兼容。')}
-:::
+    (OUT / "semantics.md").write_text(
+        '---\ntitle: 参数口径\nlayout: page\nsidebar: false\noutline: false\n---\n\n'
+        + f'''
+<div class="sem">
+  <header class="sem-hero">
+    <div class="sem-kicker">参数口径</div>
+    <h1>同一个数，在不同厂商嘴里不是同一件事。</h1>
+    <p>
+      「峰值扭矩 40 N·m」可能指瞬时 1 秒、也可能指持续堵转；
+      「质量 0.362 kg」可能含线缆、也可能只是定转子。
+      这一页把所有字段的<b>定义、缺口含义、以及该停下来复核的阈值</b>写清楚，
+      也提供机器可读版本（<code>GET /api/semantics</code>，MCP 工具直接复用）。
+    </p>
+  </header>
 
-## 物理红线
+  <section class="sem-steps">
+    <div><b>1</b><span>先看<em>来源等级</em></span><p><code>A</code> 逐项对过厂商手册；<code>B</code> 来自公开网页；<code>C</code> 转述。等级决定你敢不敢直接用它做热设计。</p></div>
+    <div><b>2</b><span>再看<em>口径字段</em></span><p><code>tau_basis</code> 是 peak 还是 rated、<code>inertia_basis</code> 是 rotor 还是 output。这两个字段读错，后面全错。</p></div>
+    <div><b>3</b><span>缺的要当缺的</span><p><code>—</code> 是「没公布」，不是「不支持」，也不是 0。不要用同类件填补，也不要假设额定 = 峰值 / 2。</p></div>
+    <div><b>4</b><span>最后才比<em>派生量</em></span><p>扭矩密度、峰值/额定比、反射惯量占比 —— 这三个是结果，不是原因；它们帮你发现异常，不帮你选型。</p></div>
+  </section>
 
-{section_redlines}
+  <section>
+    <h2>判定只有三种结论</h2>
+    <div class="sem-tri">
+      <span class="tri yes">{TRINARY['values'][0]}</span>
+      <span class="tri no">{TRINARY['values'][1]}</span>
+      <span class="tri unknown">{TRINARY['values'][2]}</span>
+    </div>
+    <p class="sem-note">{TRINARY.get('unknown_means', '证据不足，既不算兼容也不算不兼容。')}</p>
+  </section>
 
-## 单位换算
+  <section>
+    <h2>六条物理红线</h2>
+    <div class="rl-grid">{redline_cards()}</div>
+  </section>
 
-{section_conv}
+  <section>
+    <h2>字段字典</h2>
+    {"".join(field_groups)}
+  </section>
 
-## 可比性分级
+  <section>
+    <h2>单位换算</h2>
+    {section_conv}
+    <p class="sem-note">转速的两种写法量纲互逆（<code>sec/60°</code> 与 <code>rpm</code>），
+    按数值直接比会得到相反结论。</p>
+  </section>
 
-{section_comp}
+  <section>
+    <h2>可比性分级</h2>
+    {section_comp}
+  </section>
 
-## 字段语义
+  <section>
+    <h2>向供应商问询清单</h2>
+    <p class="sem-note">可直接粘进技术协议或询价邮件。写不进合同的参数，验收时不具备约束力。</p>
+    {section_ask}
+  </section>
+</div>
 
-{section_field}
+<style>
+.sem {{ max-width: 1080px; margin: 0 auto; padding: 1.8rem 1.5rem 4rem; }}
+.sem-kicker {{
+  font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--vp-c-brand-1); font-weight: 700; margin-bottom: 0.5rem;
+}}
+.sem-hero h1 {{
+  font-size: clamp(1.4rem, 2.6vw, 1.9rem); line-height: 1.3; font-weight: 800;
+  letter-spacing: -0.02em; margin: 0 0 0.7rem; border: none; padding: 0;
+  color: var(--vp-c-text-1);
+}}
+.sem-hero p {{ margin: 0; font-size: 0.86rem; line-height: 1.85;
+  color: var(--vp-c-text-2); max-width: 70ch; }}
+.sem h2 {{
+  font-size: 1.02rem; font-weight: 700; margin: 2rem 0 0.75rem;
+  border: none; padding: 0; color: var(--vp-c-text-1);
+}}
+.sem h3 {{ font-size: 0.86rem; font-weight: 600; margin: 1.1rem 0 0.5rem;
+  color: var(--vp-c-text-2); }}
 
-## 向供应商问询清单
+.sem-steps {{
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.7rem; margin: 1.6rem 0 0;
+}}
+.sem-steps > div {{
+  border: 1px solid var(--vp-c-divider); border-radius: 10px;
+  padding: 0.7rem 0.8rem; background: var(--vp-c-bg);
+}}
+.sem-steps b {{
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border-radius: 999px; font-size: 0.68rem;
+  background: var(--vp-c-brand-soft); color: var(--vp-c-brand-1); margin-bottom: 0.35rem;
+}}
+.sem-steps span {{ display: block; font-size: 0.82rem; font-weight: 600;
+  color: var(--vp-c-text-1); }}
+.sem-steps em {{ font-style: normal; color: var(--vp-c-brand-1); }}
+.sem-steps p {{ margin: 0.3rem 0 0; font-size: 0.76rem; line-height: 1.75;
+  color: var(--vp-c-text-3); }}
 
-{section_ask}
-""", encoding="utf-8")
+.sem-tri {{ display: flex; gap: 0.4rem; }}
+.tri {{
+  font-size: 0.78rem; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 999px;
+  font-family: var(--font-mono, monospace);
+}}
+.tri.yes {{ background: var(--vp-c-brand-soft); color: var(--vp-c-brand-1); }}
+.tri.no {{ background: rgba(192, 43, 43, 0.1); color: #c02b2b; }}
+html.dark .tri.no {{ background: rgba(244, 135, 113, 0.14); color: #f48771; }}
+.tri.unknown {{ background: var(--vp-c-default-soft); color: var(--vp-c-text-3); }}
+.sem-note {{ font-size: 0.76rem; line-height: 1.8; color: var(--vp-c-text-3);
+  margin: 0.5rem 0 0; }}
+
+.rl-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 0.6rem; }}
+.rl {{ border: 1px solid var(--vp-c-divider); border-radius: 10px;
+  padding: 0.65rem 0.8rem; background: var(--vp-c-bg); }}
+.rl-head {{ display: flex; align-items: baseline; gap: 0.45rem; flex-wrap: wrap; }}
+.rl-id {{ font-size: 0.66rem; font-weight: 700; color: var(--vp-c-text-3);
+  font-family: var(--font-mono, monospace); }}
+.rl-head b {{ font-size: 0.84rem; color: var(--vp-c-text-1); }}
+.rl-head code {{ font-size: 0.7rem; }}
+.rl-th {{ display: block; font-size: 0.72rem; color: #a06a00; margin-top: 0.25rem; }}
+html.dark .rl-th {{ color: #e0b159; }}
+.rl-th b {{ font-variant-numeric: tabular-nums; }}
+.rl-why {{ font-size: 0.76rem; line-height: 1.75; color: var(--vp-c-text-2); margin: 0.35rem 0 0; }}
+.rl-how {{ font-size: 0.72rem; line-height: 1.7; color: var(--vp-c-text-3); margin: 0.3rem 0 0; }}
+.rl-how span {{ display: inline-block; font-weight: 600; color: var(--vp-c-brand-1);
+  margin-right: 0.35rem; }}
+
+.fd-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.55rem; }}
+.fd {{ border-left: 2px solid var(--vp-c-brand-soft); padding: 0.1rem 0 0.1rem 0.7rem; }}
+.fd-head {{ display: flex; align-items: baseline; gap: 0.4rem; }}
+.fd-head code {{ font-size: 0.72rem; }}
+.fd-head b {{ font-size: 0.8rem; color: var(--vp-c-text-1); }}
+.fd p {{ margin: 0.25rem 0 0; font-size: 0.75rem; line-height: 1.7; color: var(--vp-c-text-2); }}
+.fd-miss {{ color: var(--vp-c-text-3) !important; }}
+.fd-miss span {{ font-weight: 600; margin-right: 0.35rem; }}
+
+.sem table {{ font-size: 0.78rem; }}
+.sem table td, .sem table th {{ white-space: normal; }}
+.sem ol {{ font-size: 0.8rem; line-height: 1.9; color: var(--vp-c-text-2); }}
+</style>
+''', encoding="utf-8")
 
     # ── 数据来源 ────────────────────────────────────────────────────────
     srcs = [

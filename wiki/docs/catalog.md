@@ -11,7 +11,7 @@ import PartExplorer from './.vitepress/components/PartExplorer.vue'
 
 <div class="cat-page">
   <header class="cat-hero">
-    <h1>部件库</h1>
+    <h1>机器人部件库</h1>
     <p>
       每个部件一页：左边是<strong>官方参数</strong>（带来源等级与口径），
       右边是<strong>真实使用者的评分与评价</strong>。有优惠条件、有资料链接、能按任意列排序。
