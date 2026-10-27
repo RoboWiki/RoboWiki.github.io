@@ -94,7 +94,9 @@ const SORTS = [
 
 onMounted(async () => {
   try {
-    const r = await fetch(withBase('/catalog.json'))
+    // no-cache = 每次用 ETag 重新验证，不是禁用缓存。
+    // 静态站的 catalog.json 会随部署变化，纯强缓存会让读者看到上一版的价格/图片。
+    const r = await fetch(withBase('/catalog.json'), { cache: 'no-cache' })
     if (!r.ok) throw new Error(String(r.status))
     all.value = (await r.json()).parts
   } catch (e: any) {
