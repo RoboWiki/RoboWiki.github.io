@@ -1,0 +1,32 @@
+[
+ {
+  "category": "module",
+  "subtype": "servo",
+  "id": "mscape-mscape-n1100-brain",
+  "vendor": "MSCAPE",
+  "model": "MSCAPE N1100 Brain",
+  "title": "MSCAPE N1100 Brain",
+  "url": "https://aifitlab.com/products/mscape-n1100-brain",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 37600.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "speed_noload_rpm": null,
+   "mass_kg": 1.16,
+   "armature_kgm2": null,
+   "voltage_V": null,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/MSCAPE-N1100-main-2.jpg?v=1790601527",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "temp_range": "-20~60℃ (industrial grade) relative humidity 95% @40℃ (non-condensing)",
+   "dims": "118mm × 126mm × 61mm (L×W×H)",
+   "tau_basis": null
+  }
+ }
+]

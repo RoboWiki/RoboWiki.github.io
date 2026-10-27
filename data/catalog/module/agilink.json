@@ -1,0 +1,32 @@
+[
+ {
+  "category": "module",
+  "subtype": "servo",
+  "id": "agilink-agilink-omnihand-3-ultra-m-robotic-hand",
+  "vendor": "AGILINK",
+  "model": "AGILINK OmniHand 3 Ultra-M Dexterous Hand",
+  "title": "AGILINK OmniHand 3 Ultra-M Dexterous Hand",
+  "url": "https://aifitlab.com/products/agilink-omnihand-3-ultra-m-robotic-hand",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 32700.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "speed_noload_rpm": null,
+   "mass_kg": 0.63,
+   "armature_kgm2": null,
+   "voltage_V": null,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/AGILINK_maiin_1.jpg?v=1784220454",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "dims": "189.5 × 88.5 × 40mm",
+   "comm": "CANFD / RS485 / EtherCAT",
+   "tau_basis": null
+  }
+ }
+]

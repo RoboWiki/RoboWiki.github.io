@@ -1,0 +1,31 @@
+[
+ {
+  "category": "module",
+  "subtype": "servo",
+  "id": "secure-secure-electric-omnidirectional-wheels",
+  "vendor": "SECURE",
+  "model": "SECURE Electric Omnidirectional Wheels",
+  "title": "SECURE Electric Omnidirectional Wheels",
+  "url": "https://aifitlab.com/products/secure-electric-omnidirectional-wheels",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 435.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": 10.0,
+   "gear": null,
+   "speed_noload_rpm": null,
+   "mass_kg": null,
+   "armature_kgm2": null,
+   "voltage_V": 24.0,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/SECURE-Electric_Omnidirectional_Wheels-main-2.jpg?v=1783668501",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "i_rated_A": 15.0,
+   "tau_basis": null
+  }
+ }
+]

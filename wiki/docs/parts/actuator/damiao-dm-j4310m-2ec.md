@@ -91,13 +91,13 @@ title: 达妙 DAMIAO DM-J4310M-2EC
 
 | 型号 | 峰值 τ N·m | 质量 kg | 减速比 |
 |---|---|---|---|
+| [DM-J4340-2EC](/parts/actuator/damiao-dm-j4340-2ec) | 27 | 0.362 | 40 |
+| [DM-J4340-2EC V1.1](/parts/actuator/damiao-dm-j4340-2ec-v1-1) | 40 | 0.362 | 40 |
+| [DM-J4310P-2EC](/parts/actuator/damiao-dm-j4310p-2ec) | 12.5 | 0.33 | 10 |
+| [DM-J4310-2EC V1.2](/parts/actuator/damiao-dm-j4310-2ec-v1-2) | 12.5 | 0.306 | 10 |
 | [DM-D5730 -1EC](/parts/actuator/damiao-dm-d5730-1ec) | 1.9 | 0.628 | 1 |
 | [DM-D5730 -1EE](/parts/actuator/damiao-dm-d5730-1ee) | 1.9 | 0.628 | 1 |
 | [DM-J4310-2EC V1.1](/parts/actuator/damiao-dm-j4310-2ec-v1-1) | 7 | 0.306 | 10 |
-| [DM-J4310-2EC V1.2](/parts/actuator/damiao-dm-j4310-2ec-v1-2) | 12.5 | 0.306 | 10 |
-| [DM-J4310P-2EC](/parts/actuator/damiao-dm-j4310p-2ec) | 12.5 | 0.33 | 10 |
-| [DM-J4340-2EC](/parts/actuator/damiao-dm-j4340-2ec) | 27 | 0.362 | 40 |
-| [DM-J4340-2EC V1.1](/parts/actuator/damiao-dm-j4340-2ec-v1-1) | 40 | 0.362 | 40 |
 | [DM-J4340P-2EC](/parts/actuator/damiao-dm-j4340p-2ec) | 27 | 0.381 | 40 |
 | [DM-J4340P-2EC V1.1](/parts/actuator/damiao-dm-j4340p-2ec-v1-1) | 40 | 0.381 | 40 |
 

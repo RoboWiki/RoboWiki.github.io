@@ -1,0 +1,32 @@
+[
+ {
+  "category": "camera",
+  "subtype": "servo",
+  "id": "chingmu-chingmu-smart-camera",
+  "vendor": "CHINGMU",
+  "model": "CHINGMU Smart Camera",
+  "title": "CHINGMU Smart Camera",
+  "url": "https://aifitlab.com/products/chingmu-smart-camera",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 6660.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "speed_noload_rpm": null,
+   "mass_kg": "/",
+   "armature_kgm2": null,
+   "voltage_V": null,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/CHINGMU-Smart-main-1.jpg?v=1763720080",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "resolution": "1280×1080",
+   "power_w": 3.0,
+   "tau_basis": null
+  }
+ }
+]

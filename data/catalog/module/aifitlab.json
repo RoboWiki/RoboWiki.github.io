@@ -1,0 +1,36 @@
+[
+ {
+  "category": "module",
+  "subtype": "planetary",
+  "id": "aifitlab-openarm-kit",
+  "vendor": "AIFITLAB",
+  "model": "OpenArm Kit",
+  "title": "OpenArm Kit",
+  "url": "https://aifitlab.com/products/openarm-kit",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 3240.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": 7.0,
+   "tau_rated_Nm": 3.0,
+   "gear": 10.0,
+   "speed_noload_rpm": null,
+   "mass_kg": 0.3,
+   "armature_kgm2": null,
+   "voltage_V": 24.0,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/OpenArm-main-1-1.jpg?v=1761053237",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "i_rated_A": 2.5,
+   "i_peak_A": 7.5,
+   "speed_rated_rpm": 120.0,
+   "l_phase_uh": 340.0,
+   "r_phase_ohm": 0.65,
+   "encoder": "Single-Turn Magnetic Encoder",
+   "tau_basis": "peak"
+  }
+ }
+]

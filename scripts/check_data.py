@@ -44,6 +44,23 @@ KNOWN_SPEC_KEYS = {
     "gyro_range_dps", "accel_range_g", "odr_hz", "iface", "noise", "resolution",
     "depth_range_m", "fps", "fov", "range_m", "points_per_s", "channel", "bits",
     "absolute", "temp_range_C",
+    # 归档导入用到的字段（见 scripts/normalize_archive.py 的 FIELD_MAP）
+    "tau_stall_Nm", "tau_hold_Nm", "i_stall_A", "dims", "temp_range",
+    "storage_temp_range", "meas_range", "accuracy", "response_time", "power_w",
+    "motor_type", "gear_material", "housing_material", "bearing", "mounting",
+    "connector", "backlash_arcmin",
+}
+
+#: UI 真正会读的键。B 级行字段参差，只要求这些键存在（值可为 null），
+#: 少了会渲染出空白而不是「—」，所以单独提示。
+UI_KEYS = {
+    "actuator": {"tau_peak_Nm", "tau_rated_Nm", "gear", "mass_kg", "voltage_V",
+                 "speed_noload_rpm", "image_url"},
+    "lidar": {"range_m", "image_url"},
+    "camera": {"depth_range_m", "image_url"},
+    "imu": {"odr_hz", "image_url"},
+    "module": {"image_url"},
+    "controller_low": {"image_url"},
 }
 
 # 阈值（来自 RoboParts《关节参数虚标怎么辨别》的物理红线）
@@ -144,17 +161,26 @@ def main() -> int:
                 errors.append(f"{where}: specs 不是对象")
                 continue
 
-            # 键集同构：同 subtype 的键必须一致
+            # 键集同构：只对**人工逐项核对的 A 级**行要求完全一致
+            # （A 级的承诺就是「这一行字段齐、缺的也是确认过的 null」）。
+            # 归档导入的 B 级行字段天然参差，只要求 UI 会读的那些键存在，
+            # 否则一导入就成了 1000 多条「键集不一致」，把真问题淹掉。
             key = f'{r.get("category")}/{r.get("subtype")}'
             ks = set(specs)
-            if key in rows_by_subtype:
-                if ks != rows_by_subtype[key]:
-                    only_here = sorted(ks - rows_by_subtype[key])
-                    missing = sorted(rows_by_subtype[key] - ks)
-                    errors.append(
-                        f"{where}: 键集与同类不一致（多 {only_here}，缺 {missing}）")
+            if r.get("source_tier") == "A":
+                if key in rows_by_subtype:
+                    if ks != rows_by_subtype[key]:
+                        only_here = sorted(ks - rows_by_subtype[key])
+                        missing = sorted(rows_by_subtype[key] - ks)
+                        errors.append(
+                            f"{where}: A 级行键集与同类不一致（多 {only_here}，缺 {missing}）")
+                else:
+                    rows_by_subtype[key] = ks
             else:
-                rows_by_subtype[key] = ks
+                need = UI_KEYS.get(r.get("category"), set())
+                missing_ui = sorted(need - ks)
+                if missing_ui:
+                    warns.append(f"{where}: 缺 UI 读取的键 {missing_ui}（值可为 null）")
 
             unknown = sorted(ks - KNOWN_SPEC_KEYS)
             if unknown:
@@ -179,16 +205,26 @@ def main() -> int:
                 arm = specs.get("armature_kgm2")
                 gear = specs.get("gear")
 
-                # 执行器至少要有一个可比的扭矩值：峰值或额定。
+                # 执行器至少要有一个可比的扭矩值：峰值、额定，或**堵转**。
                 # 只要求峰值，会把「厂商只公布额定」的件拒之门外（GM6020、M2006 就是）；
                 # 而为了过闸门去编一个峰值，才是真正的错。
-                if tau_p is None and tau_r is None:
-                    errors.append(f"{where}: 执行器 tau_peak_Nm 与 tau_rated_Nm 都没有")
+                # 堵转单列（tau_stall_Nm）：它是「锁住转子测的极限」，与峰值同量级
+                # 但不是同一个量，所以既不允许它冒充峰值，也不因为它存在就拒收。
+                stall = specs.get("tau_stall_Nm")
+                if tau_p is None and tau_r is None and stall is None:
+                    errors.append(
+                        f"{where}: 执行器 tau_peak / tau_rated / tau_stall 都没有")
+                elif tau_p is None and tau_r is None:
+                    warns.append(f"{where}: 只公布堵转扭矩 {stall} N·m，峰值与额定都缺"
+                                 f"（选型时按堵转当上限，别看均分）")
                 elif tau_p is None:
                     warns.append(f"{where}: 只公布额定扭矩 {tau_r} N·m，峰值缺失"
                                     f"（跨件按峰值排序时会排最后，这是真话不是惩罚）")
-                if basis not in TAU_BASIS:
-                    errors.append(f"{where}: tau_basis={basis!r} 不在 {sorted(TAU_BASIS)}")
+                # tau_basis 只在有峰值时才需要；只有额定/堵转时留 null 是正确状态
+                if tau_p is not None and basis not in TAU_BASIS:
+                    errors.append(f"{where}: 有峰值但 tau_basis={basis!r} 不在 {sorted(TAU_BASIS)}")
+                elif tau_p is None and basis is not None:
+                    warns.append(f"{where}: 没有峰值却写了 tau_basis={basis!r}，容易误读")
                 if ib is not None and ib not in INERTIA_BASIS:
                     errors.append(f"{where}: inertia_basis={ib!r} 不在 {sorted(INERTIA_BASIS)}")
                 if (j is None) != (ib is None):

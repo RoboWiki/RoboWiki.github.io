@@ -1,0 +1,31 @@
+[
+ {
+  "category": "module",
+  "subtype": "servo",
+  "id": "deep-robotics-deep-robotics-dr02-robot",
+  "vendor": "DEEP Robotics",
+  "model": "DEEP Robotics DR02 Robot",
+  "title": "DEEP Robotics DR02 Robot",
+  "url": "https://aifitlab.com/products/deep-robotics-dr02-robot",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 180000.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "speed_noload_rpm": null,
+   "mass_kg": 75.0,
+   "armature_kgm2": null,
+   "voltage_V": null,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DEEP_Robotics-DR02-main-4-1.jpg?v=1767179441",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "temp_range": "-20℃~55℃",
+   "tau_basis": null
+  }
+ }
+]

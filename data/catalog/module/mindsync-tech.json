@@ -1,0 +1,62 @@
+[
+ {
+  "category": "module",
+  "subtype": "servo",
+  "id": "mindsync-tech-mindsync-tech-sq-1503-robotic-hand",
+  "vendor": "MINDSYNC TECH",
+  "model": "MINDSYNC TECH SQ-1503 Robotic Hand",
+  "title": "MINDSYNC TECH SQ-1503 Robotic Hand",
+  "url": "https://aifitlab.com/products/mindsync-tech-sq-1503-robotic-hand",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 16500.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "speed_noload_rpm": null,
+   "mass_kg": 3.0,
+   "armature_kgm2": null,
+   "voltage_V": 24.0,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/MINDSYNC_TECH-SQ-1503-main-n-5_5.jpg?v=1780501072",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "dims": "462mm × 140mm × 90mm",
+   "comm": "CAN",
+   "tau_basis": null
+  }
+ },
+ {
+  "category": "module",
+  "subtype": "servo",
+  "id": "mindsync-tech-mindsync-tech-lg-601-robotic-hand",
+  "vendor": "MINDSYNC TECH",
+  "model": "MINDSYNC TECH LG-601 Robotic Hand",
+  "title": "MINDSYNC TECH LG-601 Robotic Hand",
+  "url": "https://aifitlab.com/products/mindsync-tech-lg-601-robotic-hand",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 6000.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "speed_noload_rpm": null,
+   "mass_kg": 0.54,
+   "armature_kgm2": null,
+   "voltage_V": 12.0,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/MINDSYNC_TECH-LG-601-main-00.webp?v=1780500030",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "dims": "215×93×45mm",
+   "comm": "CAN",
+   "tau_basis": null
+  }
+ }
+]

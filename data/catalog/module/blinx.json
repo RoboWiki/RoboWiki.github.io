@@ -1,0 +1,59 @@
+[
+ {
+  "category": "module",
+  "subtype": "servo",
+  "id": "blinx-blinx-openc3-robotic-arm",
+  "vendor": "BLINX",
+  "model": "BLINX OpenC3 Robotic Arm",
+  "title": "BLINX OpenC3 Robotic Arm",
+  "url": "https://aifitlab.com/products/blinx-openc3-robotic-arm",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 13000.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "speed_noload_rpm": null,
+   "mass_kg": 9.5,
+   "armature_kgm2": null,
+   "voltage_V": null,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/BLINX-OpenC3-main-0111.jpg?v=1784991713",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "temp_range": "-10°C ~ 70°C",
+   "tau_basis": null
+  }
+ },
+ {
+  "category": "module",
+  "subtype": "servo",
+  "id": "blinx-blinx-openr6-robotic-arm",
+  "vendor": "BLINX",
+  "model": "BLINX OpenR6 Robotic Arm",
+  "title": "BLINX OpenR6 Robotic Arm",
+  "url": "https://aifitlab.com/products/blinx-openr6-robotic-arm",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 4500.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "speed_noload_rpm": null,
+   "mass_kg": 4.8,
+   "armature_kgm2": null,
+   "voltage_V": 12.0,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/BLINX-OpenR6-main-011.jpg?v=1784991713",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "tau_basis": null
+  }
+ }
+]

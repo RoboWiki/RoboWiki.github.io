@@ -1,14 +1,19 @@
 {
- "note": "当前只做关节电机，且只保留四家 —— 先把一类做精，而不是十四家各一半",
+ "note": "关节电机仍以人工核对的 A 级数据为主；其余品类来自 AI2FitLab/OpenELab 商城归档（B 级，未逐项核对）",
  "categories": [
-  "actuator"
+  "actuator",
+  "controller_low",
+  "lidar",
+  "camera",
+  "imu",
+  "module"
  ],
- "vendors": [
-  "达妙 DM",
-  "DJI RoboMaster",
-  "灵足 RobStride",
-  "Unitree"
- ],
+ "vendors": [],
  "as_of": "2026-10-27",
- "backup": "data/_backup/2026-10-27"
+ "backup": "data/_backup/2026-10-27",
+ "archive_import": {
+  "source": "site_archive_openelab_aifitlab",
+  "date": "2026-10-28",
+  "imported": 878
+ }
 }

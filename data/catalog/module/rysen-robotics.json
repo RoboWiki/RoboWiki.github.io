@@ -1,0 +1,33 @@
+[
+ {
+  "category": "module",
+  "subtype": "servo",
+  "id": "rysen-robotics-rysen-apex-hand",
+  "vendor": "Rysen Robotics",
+  "model": "RYSEN Apex Hand",
+  "title": "RYSEN Apex Hand",
+  "url": "https://aifitlab.com/products/rysen-apex-hand",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 20000.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "speed_noload_rpm": null,
+   "mass_kg": null,
+   "armature_kgm2": null,
+   "voltage_V": null,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/Rysen_Robotics-Apex_Hand1-main-1new-2.jpg?v=1791819898",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "dims": "≤ 235 × 98 × 58 mm",
+   "power_w": 240.0,
+   "comm": "Ethernet",
+   "tau_basis": null
+  }
+ }
+]

@@ -1,0 +1,32 @@
+[
+ {
+  "category": "camera",
+  "subtype": "servo",
+  "id": "cyperstereo-cyperstereo-m-series-camera",
+  "vendor": "CyperStereo",
+  "model": "CyperStereo M Series Camera",
+  "title": "CyperStereo M Series Camera",
+  "url": "https://aifitlab.com/products/cyperstereo-m-series-camera",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 270.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "speed_noload_rpm": null,
+   "mass_kg": null,
+   "armature_kgm2": null,
+   "voltage_V": null,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/CyperStereo-M-main-2.jpg?v=1782816603",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "dims": "L 7.88cm W 2.80cm",
+   "resolution": "752*480",
+   "tau_basis": null
+  }
+ }
+]

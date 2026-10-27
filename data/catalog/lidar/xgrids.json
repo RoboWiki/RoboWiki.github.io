@@ -1,0 +1,63 @@
+[
+ {
+  "category": "lidar",
+  "subtype": "servo",
+  "id": "xgrids-xgrids-lixel-l2-pro-lidar",
+  "vendor": "XGRIDS",
+  "model": "XGRIDS Lixel L2 Pro LiDAR",
+  "title": "XGRIDS Lixel L2 Pro LiDAR",
+  "url": "https://aifitlab.com/products/xgrids-lixel-l2-pro-lidar",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 35000.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "speed_noload_rpm": null,
+   "mass_kg": null,
+   "armature_kgm2": null,
+   "voltage_V": null,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/XGRIDS-Lixel_L2_Pro_1_-main-2.jpg?v=1775910881",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "dims": "180mm × 130mm × 400mm",
+   "power_w": 30.0,
+   "temp_range": "-20℃ ~ 50℃",
+   "ip": "IP54",
+   "tau_basis": null
+  }
+ },
+ {
+  "category": "lidar",
+  "subtype": "servo",
+  "id": "xgrids-xgrids-lixel-k1-lidar",
+  "vendor": "XGRIDS",
+  "model": "XGRIDS Lixel K1 LiDAR",
+  "title": "XGRIDS Lixel K1 LiDAR",
+  "url": "https://aifitlab.com/products/xgrids-lixel-k1-lidar",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 13700.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "speed_noload_rpm": null,
+   "mass_kg": 1.0,
+   "armature_kgm2": null,
+   "voltage_V": null,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/XGRIDS-Lixel_K1-main-1.jpg?v=1775791663",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "power_w": 20.0,
+   "tau_basis": null
+  }
+ }
+]

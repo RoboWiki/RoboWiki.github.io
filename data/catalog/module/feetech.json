@@ -1,0 +1,60 @@
+[
+ {
+  "category": "module",
+  "subtype": "servo",
+  "id": "feetech-feetech-fe-scpc-3-module",
+  "vendor": "Feetech",
+  "model": "FEETECH FE-SCPC-3 Module",
+  "title": "FEETECH FE-SCPC-3 Module",
+  "url": "https://aifitlab.com/products/feetech-fe-scpc-3-module",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 25.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "speed_noload_rpm": null,
+   "mass_kg": 0.0076,
+   "armature_kgm2": null,
+   "voltage_V": 5.0,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/FEETECH-SCPC-C003-main-2.jpg?v=1776315209",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "dims": "55.2 × 22.2 × 9.6 mm",
+   "tau_basis": null
+  }
+ },
+ {
+  "category": "module",
+  "subtype": "servo",
+  "id": "feetech-feetech-fe-urt-2-module",
+  "vendor": "Feetech",
+  "model": "FEETECH FE-URT-2 Module",
+  "title": "FEETECH FE-URT-2 Module",
+  "url": "https://aifitlab.com/products/feetech-fe-urt-2-module",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 15.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "speed_noload_rpm": null,
+   "mass_kg": 0.0125,
+   "armature_kgm2": null,
+   "voltage_V": null,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/FEETECH-FE-URT2-C001-main-2.jpg?v=1776312605",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "dims": "55.8*36.6*11.5mm",
+   "tau_basis": null
+  }
+ }
+]

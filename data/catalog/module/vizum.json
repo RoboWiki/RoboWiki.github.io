@@ -1,0 +1,31 @@
+[
+ {
+  "category": "module",
+  "subtype": "servo",
+  "id": "vizum-vizum-lntelligent-dexterous-hand",
+  "vendor": "Vizum",
+  "model": "Vizum lntelligent Dexterous Hand",
+  "title": "Vizum lntelligent Dexterous Hand",
+  "url": "https://aifitlab.com/products/vizum-lntelligent-dexterous-hand",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 5280.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "speed_noload_rpm": null,
+   "mass_kg": 0.78,
+   "armature_kgm2": null,
+   "voltage_V": null,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/INTELLIGENT_DEXTEROUS_HAND-main-1-2-3.jpg?v=1760195266",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "comm": "CAN FD",
+   "tau_basis": null
+  }
+ }
+]

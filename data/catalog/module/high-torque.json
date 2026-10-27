@@ -1,0 +1,59 @@
+[
+ {
+  "category": "module",
+  "subtype": "servo",
+  "id": "high-torque-high-torque-mini-pi-series-robot",
+  "vendor": "HIGH TORQUE",
+  "model": "HIGH TORQUE Mini Pi Series Robot",
+  "title": "HIGH TORQUE Mini Pi Series Robot",
+  "url": "https://aifitlab.com/products/high-torque-mini-pi-series-robot",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 8145.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "speed_noload_rpm": null,
+   "mass_kg": 7.0,
+   "armature_kgm2": null,
+   "voltage_V": 24.0,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/HIGH_TORQUE_Humanoid_Robot_Mini_Pi_-main-1-1.jpg?v=1765284168",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "comm": "Bluetooth、WI-FI",
+   "tau_basis": null
+  }
+ },
+ {
+  "category": "module",
+  "subtype": "servo",
+  "id": "high-torque-high-torque-panthera-ht-6-axis-robotic-arm",
+  "vendor": "HIGH TORQUE",
+  "model": "HIGH TORQUE Panthera-HT 6-Axis Robotic Arm",
+  "title": "HIGH TORQUE Panthera-HT 6-Axis Robotic Arm",
+  "url": "https://aifitlab.com/products/high-torque-panthera-ht-6-axis-robotic-arm",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 2099.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": 36.0,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "speed_noload_rpm": null,
+   "mass_kg": 3.75,
+   "armature_kgm2": null,
+   "voltage_V": 24.0,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/Panthera-HT_6-axis_robotic_arm-main-1.jpg?v=1765187175",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "tau_basis": "peak"
+  }
+ }
+]

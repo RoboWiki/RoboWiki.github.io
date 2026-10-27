@@ -1,0 +1,34 @@
+[
+ {
+  "category": "module",
+  "subtype": "servo",
+  "id": "toffuture-technology-toffuture-xt-s1-sensor",
+  "vendor": "ToFFuture Technology",
+  "model": "ToFFuture XT-S1 Sensor",
+  "title": "ToFFuture XT-S1 Sensor",
+  "url": "https://aifitlab.com/products/toffuture-xt-s1-sensor",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 75.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "speed_noload_rpm": null,
+   "mass_kg": 0.01,
+   "armature_kgm2": null,
+   "voltage_V": null,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/ToFFuture-XT-S1-main-1.jpg?v=1784908185",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "accuracy": "±5cm@30cm~250cm / ±2%@250cm~3000cm",
+   "resolution": "1cm",
+   "temp_range": "-10 ℃ ~ 60 ℃ (non-condensation)",
+   "power_w": 100.0,
+   "tau_basis": null
+  }
+ }
+]

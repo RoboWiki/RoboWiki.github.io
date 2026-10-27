@@ -30,6 +30,8 @@ CATEGORY_LABELS = {
 }
 
 #: 还没有数据的品类：前端要显示「待补充」，不能当成 500 或空列表了事
+#: 目前确实没有可信来源的品类。归档导入后 lidar/camera/imu/module 已经有数据，
+#: 只剩这三类还是空的 —— 它们需要机械图纸/电芯规格书/线束表，商品页给不了。
 EMPTY_CATEGORIES = {"structure", "battery", "wiring"}
 SUBTYPE_LABELS = {
     "qdd": "准直驱 QDD", "planetary": "行星减速", "harmonic": "谐波减速",

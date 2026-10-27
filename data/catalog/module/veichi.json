@@ -1,0 +1,31 @@
+[
+ {
+  "category": "module",
+  "subtype": "servo",
+  "id": "veichi-veichi-yz-t6-series-dexterous-hand",
+  "vendor": "VEICHI",
+  "model": "VEICHI YZ-T6 Series Dexterous Hand",
+  "title": "VEICHI YZ-T6 Series Dexterous Hand",
+  "url": "https://aifitlab.com/products/veichi-yz-t6-series-dexterous-hand",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": 2500.0,
+  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
+  "notes": "",
+  "specs": {
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "speed_noload_rpm": null,
+   "mass_kg": 0.59,
+   "armature_kgm2": null,
+   "voltage_V": null,
+   "kt_Nm_per_A": null,
+   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/YZ-T6_MAIN_0.jpg?v=1778914100",
+   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
+   "dims": "220mm x 93mm x 56mm",
+   "tau_basis": null
+  }
+ }
+]
