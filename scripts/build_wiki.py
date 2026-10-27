@@ -148,6 +148,21 @@ def main() -> None:
         encoding="utf-8")
     print(f"  静态目录 {len(digest)} 条 / {(pub / 'catalog.json').stat().st_size // 1024} KB")
 
+    # 产品图：从 frontend/public/parts 复制到文档站的 public。
+    # 两站要能各自独立部署，所以不能靠相对路径引用另一棵树。
+    src_img = ROOT / "frontend" / "public" / "parts"
+    dst_img = pub / "parts"
+    copied = 0
+    if src_img.exists():
+        dst_img.mkdir(parents=True, exist_ok=True)
+        for f in src_img.iterdir():
+            if f.is_file() and f.suffix.lower() in (".jpg", ".jpeg", ".png", ".webp"):
+                target = dst_img / f.name
+                if not target.exists() or target.stat().st_mtime < f.stat().st_mtime:
+                    target.write_bytes(f.read_bytes())
+                    copied += 1
+    print(f"  产品图同步 {copied} 张（共 {len(list(dst_img.glob('*'))) if dst_img.exists() else 0} 张）")
+
     sidebar: dict[str, list] = {}
     n_act = sum(1 for r in rows if r["category"] == "actuator")
     n_img = sum(1 for r in rows if (r.get("specs") or {}).get("image_url"))

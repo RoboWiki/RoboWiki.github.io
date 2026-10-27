@@ -4,10 +4,6 @@
    "text": "部件手册",
    "items": [
     {
-     "text": "交互式检索",
-     "link": "/explore"
-    },
-    {
      "text": "索引",
      "link": "/parts/"
     },

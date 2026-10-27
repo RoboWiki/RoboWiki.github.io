@@ -18,3 +18,7 @@ frontend/public/parts/*.pdf
 wiki/node_modules/
 wiki/docs/.vitepress/dist/
 wiki/docs/.vitepress/cache/
+
+# 文档站的产品图由 scripts/build_wiki.py 从 frontend/public/parts 同步
+wiki/docs/public/parts/
+wiki/docs/public/catalog.json
