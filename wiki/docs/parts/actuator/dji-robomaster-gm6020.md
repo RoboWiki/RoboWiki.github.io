@@ -7,14 +7,15 @@ title: DJI RoboMaster GM6020
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/dji-robomaster-gm6020.jpg" alt="GM6020" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">关节电机</span>
       <span class="part-tag sub">direct</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
-      <span class="part-tag muted">无公开报价</span>
+      <span class="part-tag">¥899</span>
     </div>
 
 <div class="part-split">
@@ -113,15 +114,15 @@ title: DJI RoboMaster GM6020
 
 ## 优惠与获取条件
 
-暂无优惠信息。本站不代理销售，也不收佣金 —— 有合作或团购价请提 issue，写清**价格 + 覆盖范围 + 有效期**，缺一项都不上卡片。
+暂无优惠信息。本站不代理销售，也不收佣金 —— 有合作或团购价请提 issue，写清**价格 + 覆盖范围 + 资格条件 + 有效期**，缺一项都不上卡片。
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://github.com/ZJU-HelloWorld/Wiki" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>ZJU-HelloWorld/Wiki · 电机设备组件.assets</td></tr><tr><td><a href="https://www.google.com/search?q=DJI+RoboMaster+GM6020+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=GM6020&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=DJI+RoboMaster+GM6020+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://github.com/ZJU-HelloWorld/Wiki" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商资料抓取（dji-robomaster-gm6020.jpg）</td></tr><tr><td class="rs-plain">收录说明</td><td>ZJU-HelloWorld/Wiki · 电机设备组件.assets</td></tr><tr><td><a href="https://www.google.com/search?q=DJI+RoboMaster+GM6020+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=GM6020&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=DJI+RoboMaster+GM6020+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr></tbody></table>
 
 ## 备注
 
-手册 p12「特征参数」表（额定电压 24V）：额定扭矩（最大连续扭矩）1.2 N·m、额定电流 1.62 A、转矩常数 741 mN·m/A、相电阻 1.8 Ω、相电感 5.78 mH、极对数 10、定位精度 13 bit、电机重量 约468 g、外径 66.7 mm、总高度 45 mm；空载调速 0–320 rpm、额定转矩下 0–132 rpm。**峰值扭矩手册未公布**：表里 0.86 N·m 是「堵转扭矩（持续堵转）」，属于热限额而非电磁峰值（比额定还小），故 tau_peak_Nm 留空。直驱无减速器。
+手册 p12「特征参数」表（额定电压 24V）：额定扭矩（最大连续扭矩）1.2 N·m、额定电流 1.62 A、转矩常数 741 mN·m/A、相电阻 1.8 Ω、相电感 5.78 mH、极对数 10、定位精度 13 bit、电机重量 约468 g、外径 66.7 mm、总高度 45 mm；空载调速 0–320 rpm、额定转矩下 0–132 rpm。**峰值扭矩手册未公布**：表里 0.86 N·m 是「堵转扭矩（持续堵转）」，属于热限额而非电磁峰值（比额定还小），故 tau_peak_Nm 留空。直驱无减速器。 价格来源：DJI RoboMaster 官方商城（2026-10-28，含税零售价）。
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

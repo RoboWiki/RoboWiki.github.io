@@ -228,20 +228,18 @@ def main() -> None:
 
         priced = [(eff(o), o) for o in cand]
         priced = [(p, o) for p, o in priced if p is not None]
-        if not priced:
-            # 没有可算的价：仍返回一条，让部件页能写清「有这个活动，怎么拿」
-            o = cand[0] if cand else None
-            if o is None:
-                return None
-            return {"title": o.get("title"), "kind": o.get("kind"), "price": None,
+
+        def pack(o, p):
+            return {"title": o.get("title"), "kind": o.get("kind"), "price": p,
                     "discount": o.get("discount"), "condition": o.get("detail"),
                     "url": o.get("url"), "expires": o.get("expires_on"),
                     "source": o.get("source"), "demo": bool(o.get("demo"))}
-        p, o = min(priced, key=lambda x: x[0])
-        return {"title": o.get("title"), "kind": o.get("kind"), "price": p,
-                "discount": o.get("discount"), "condition": o.get("detail"),
-                "url": o.get("url"), "expires": o.get("expires_on"),
-                "source": o.get("source"), "demo": bool(o.get("demo"))}
+
+        if not priced:
+            o = cand[0] if cand else None
+            return [pack(o, None)] if o else []
+        # 全部列出：同一型号可能并行多条（首购特价 + RC 买二赠一），按价格升序
+        return [pack(o, p) for p, o in sorted(priced, key=lambda x: x[0])]
 
     digest = []
     for r in rows:
@@ -257,7 +255,9 @@ def main() -> None:
             "price": r.get("price_cny"),
             "image": s.get("image_url") or None,
             "rating": {"avg": rt.get("avg"), "count": rt.get("count") or 0},
-            "offer": of,
+            # 全部优惠按价格升序；卡片取第一条显示优惠价，其余在部件页列出
+            "offers": of,
+            "offer": (of[0] if of else None),
             "tauPeak": s.get("tau_peak_Nm"), "tauRated": s.get("tau_rated_Nm"),
             "gear": s.get("gear"), "mass": s.get("mass_kg"),
             "armature": s.get("armature_kgm2"),
@@ -558,28 +558,34 @@ def main() -> None:
 
         advice_md = "\n".join(f"- **{t}** —— {b}" for t, b in advice(r))
 
-        # 优惠：卡片上只显示价格，**条件写在这里** —— 只给一个数字不给条件，
-        # 比不给更糟（读者会拿它当到手价）。
-        of = offer_of(r)
-        if of and of.get("price") is not None:
-            offer_md = f"""**优惠价 {num(of['price'], 0)} 元**（原价 {num(r.get('price_cny'), 0)} 元）
-
-- 活动：{of.get('title') or '—'}
-- 获取条件：{of.get('condition') or '—'}
-- 有效期：至 {of.get('expires') or '—'}
-- 链接：{of.get('url') or '—'}
-{"- ⚠️ 这条是示例条目（`demo: true`），发布前必须替换成真实合作信息。" + chr(10) if of.get("demo") else ""}"""
-        elif of:
-            offer_md = f"""有一条相关信息：**{of.get('title') or '—'}**
-
-- 说明：{of.get('condition') or '—'}
-- 有效期：至 {of.get('expires') or '—'}
-- 链接：{of.get('url') or '—'}
-
-这条**没有具体优惠价**，所以卡片上不显示折扣 —— 只有价格没有条件的那种「优惠」本站不放。"""
+        # 优惠：卡片上只显示「原价 + 优惠价」两个数，**条件全部写在这里**。
+        # 关键：优惠不是人人都能用（学生证、参赛证明、限购台数），
+        # 所以原价不划掉，两者并列；这里把每条的资格写清。
+        ofs = offer_of(r)
+        list_price = r.get("price_cny")
+        if ofs:
+            blocks = []
+            for i, o in enumerate(ofs, 1):
+                head = (f"**{num(o['price'], 0)} 元**（原价 {num(list_price, 0)} 元）"
+                        if o.get("price") is not None
+                        else f"**无固定优惠价**（原价 {num(list_price, 0)} 元）")
+                blocks.append(
+                    f"{i}. {head}\n"
+                    f"   - 活动：{o.get('title') or '—'}\n"
+                    f"   - 资格与条件：{o.get('condition') or '—'}\n"
+                    f"   - 有效期：至 {o.get('expires') or '—'}\n"
+                    f"   - 链接：{o.get('url') or '—'}\n"
+                    f"   - 来源：{o.get('source') or '—'}"
+                    + (chr(10) + "   - ⚠️ 示例条目（`demo: true`），发布前必须替换成真实合作信息。"
+                       if o.get("demo") else ""))
+            offer_md = (
+                "::: warning 优惠需要资格，不是人人都能拿到\n"
+                "下面每条的资格都写明。原价与优惠价并列展示，**不划掉原价** —— "
+                "资格不满足时按原价算预算。\n\n"
+                + "\n".join(blocks) + "\n:::")
         else:
             offer_md = ("暂无优惠信息。本站不代理销售，也不收佣金 —— "
-                        "有合作或团购价请提 issue，写清**价格 + 覆盖范围 + 有效期**，"
+                        "有合作或团购价请提 issue，写清**价格 + 覆盖范围 + 资格条件 + 有效期**，"
                         "缺一项都不上卡片。")
 
         # 关节电机的深度指标

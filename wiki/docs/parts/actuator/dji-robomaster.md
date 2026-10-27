@@ -9,9 +9,9 @@ title: DJI RoboMaster
 
 | 型号 | 峰值 τ N·m | 额定 τ N·m | 减速比 | 空载 rpm | 质量 kg | 转子惯量 kg·m² | 价格 ¥ | 来源 |
 |---|---|---|---|---|---|---|---|---|
-| [**M3508 P19**](/parts/actuator/dji-robomaster-m3508-p19) | 4.5 | 3 | 19.203 | 482 | 0.365 | — | — | `A✓` |
-| [**GM6020**](/parts/actuator/dji-robomaster-gm6020) | — | 1.2 | 1 | 320 | 0.468 | — | — | `A✓` |
-| [**M2006 P36**](/parts/actuator/dji-robomaster-m2006-p36) | — | 1 | 36 | 500 | — | — | — | `A✓` |
+| [**M3508 P19**](/parts/actuator/dji-robomaster-m3508-p19) | 4.5 | 3 | 19.203 | 482 | 0.365 | — | 499 | `A✓` |
+| [**GM6020**](/parts/actuator/dji-robomaster-gm6020) | — | 1.2 | 1 | 320 | 0.468 | — | 899 | `A✓` |
+| [**M2006 P36**](/parts/actuator/dji-robomaster-m2006-p36) | — | 1 | 36 | 500 | — | — | 549 | `A✓` |
 
 ## 这一页的讨论
 

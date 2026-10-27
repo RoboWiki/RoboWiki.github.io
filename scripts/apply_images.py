@@ -19,6 +19,13 @@ PHOTO_DIR = ROOT / "frontend" / "public" / "parts"
 
 
 def main() -> None:
+    # 剔除表是唯一真相：抓错的图（整机宣传图）不许再被装回来。
+    # 之前 apply_images 和 reject_wrong_images 各管一半，重跑一次就把错图带回来了。
+    try:
+        from reject_wrong_images import WRONG as REJECTED
+    except Exception:
+        REJECTED = {}
+
     mapping: dict[str, str] = {}
     for fn in ("part_images.json", "part_images_fetched.json"):
         p = DATA / fn
@@ -28,6 +35,7 @@ def main() -> None:
     # 只保留文件确实存在的映射（映射里有幽灵条目会让页面 404）
     mapping = {k: v for k, v in mapping.items()
                if (PHOTO_DIR / pathlib.Path(v).name).exists()}
+    mapping = {k: v for k, v in mapping.items() if k not in REJECTED}
 
     filled = 0
     for f in sorted((DATA / "catalog").glob("*/*.json")):

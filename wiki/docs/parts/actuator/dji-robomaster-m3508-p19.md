@@ -7,14 +7,15 @@ title: DJI RoboMaster M3508 P19
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/dji-robomaster-m3508-p19.jpg" alt="M3508 P19" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">关节电机</span>
       <span class="part-tag sub">planetary</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
-      <span class="part-tag muted">无公开报价</span>
+      <span class="part-tag">¥499</span>
     </div>
 
 <div class="part-split">
@@ -114,15 +115,15 @@ title: DJI RoboMaster M3508 P19
 
 ## 优惠与获取条件
 
-暂无优惠信息。本站不代理销售，也不收佣金 —— 有合作或团购价请提 issue，写清**价格 + 覆盖范围 + 有效期**，缺一项都不上卡片。
+暂无优惠信息。本站不代理销售，也不收佣金 —— 有合作或团购价请提 issue，写清**价格 + 覆盖范围 + 资格条件 + 有效期**，缺一项都不上卡片。
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://github.com/ZJU-HelloWorld/Wiki" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>ZJU-HelloWorld/Wiki · 电机设备组件.assets</td></tr><tr><td><a href="https://www.google.com/search?q=DJI+RoboMaster+M3508+P19+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=M3508+P19&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=DJI+RoboMaster+M3508+P19+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://github.com/ZJU-HelloWorld/Wiki" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商资料抓取（dji-robomaster-m3508-p19.jpg）</td></tr><tr><td class="rs-plain">收录说明</td><td>ZJU-HelloWorld/Wiki · 电机设备组件.assets</td></tr><tr><td><a href="https://www.google.com/search?q=DJI+RoboMaster+M3508+P19+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=M3508+P19&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=DJI+RoboMaster+M3508+P19+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr></tbody></table>
 
 ## 备注
 
-手册 p12「搭配 C620 电调在额定电压下的电机参数」表：空载转速 482 rpm、额定转速 469 rpm、额定转矩（最大连续转矩）3 N·m、额定电流 10 A、最大效率 70%、**堵转扭矩 4.5 N·m**、堵转电流 2.5 A；p13 表：减速比 19:1、减速电机重量 365 g、极对数 7、相电阻 0.194 Ω。额定值与堵转值取自同一张 C620 表，口径一致，故峰值/额定比 1.5 可用。同页还有配 Z650 电调的一组（额定 4.6 N·m），口径不同未混用。｜减速比记为 3591/187 = 19.2032（C620 协议换算值），手册名义写 19:1；按 19.0 算转子量会有 1.06% 系统偏差。｜配 Z650 电调时额定 4.6 N·m、空载 589 rpm（不同电调口径，未混用）。
+手册 p12「搭配 C620 电调在额定电压下的电机参数」表：空载转速 482 rpm、额定转速 469 rpm、额定转矩（最大连续转矩）3 N·m、额定电流 10 A、最大效率 70%、**堵转扭矩 4.5 N·m**、堵转电流 2.5 A；p13 表：减速比 19:1、减速电机重量 365 g、极对数 7、相电阻 0.194 Ω。额定值与堵转值取自同一张 C620 表，口径一致，故峰值/额定比 1.5 可用。同页还有配 Z650 电调的一组（额定 4.6 N·m），口径不同未混用。｜减速比记为 3591/187 = 19.2032（C620 协议换算值），手册名义写 19:1；按 19.0 算转子量会有 1.06% 系统偏差。｜配 Z650 电调时额定 4.6 N·m、空载 589 rpm（不同电调口径，未混用）。 价格来源：DJI RoboMaster 官方商城（2026-10-28，含税零售价）。
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

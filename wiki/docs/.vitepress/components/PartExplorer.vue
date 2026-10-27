@@ -279,12 +279,11 @@ function glyphBox(p: Part) {
 
             <div class="card-foot">
               <div class="card-price">
+                <!-- 原价与优惠价并列，不划掉原价：优惠要资格，不是人人都能用 -->
+                <span class="list">{{ money(p.price) ?? '询价' }}</span>
                 <template v-if="p.offer?.price != null">
                   <span class="promo">{{ money(p.offer.price) }}</span>
-                  <s v-if="p.price" class="orig">{{ money(p.price) }}</s>
                 </template>
-                <template v-else-if="p.price">{{ money(p.price) }}</template>
-                <span v-else class="ask">询价</span>
               </div>
               <div class="card-rate">
                 <template v-if="p.rating.avg != null">
@@ -362,17 +361,16 @@ function glyphBox(p: Part) {
 .pd-sep { width: 1px; height: 18px; background: var(--vp-c-divider); margin: 0 0.25rem; }
 .pd-count { margin-left: auto; font-size: 0.78rem; color: var(--vp-c-text-3); }
 
-/* 卡片网格：固定 5 列。auto-fill 在宽屏上会排到 6 列，卡片被压得太窄 ——
-   参数两列排不下，型号名也会折行。所以按断点写死列数。 */
+/* 卡片网格：固定 4 列。auto-fill 在宽屏会排到 6 列，卡片被压得太窄 ——
+   参数两列排不下、型号名折行、价格和「优惠需资格」挤成两行。 */
 .pd-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.85rem;
 }
-@media (max-width: 1380px) { .pd-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-@media (max-width: 1080px) { .pd-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (max-width: 800px)  { .pd-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 520px)  { .pd-grid { grid-template-columns: 1fr; } }
+@media (max-width: 1180px) { .pd-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 860px)  { .pd-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 540px)  { .pd-grid { grid-template-columns: 1fr; } }
 .card {
   display: flex; flex-direction: column; overflow: hidden;
   border: 1px solid var(--vp-c-divider); border-radius: 10px;
@@ -424,12 +422,18 @@ html.dark .card-img img { mix-blend-mode: normal; background: #fff; border-radiu
   display: flex; align-items: baseline; justify-content: space-between;
   margin-top: 0.4rem; padding-top: 0.4rem; border-top: 1px solid var(--vp-c-divider);
 }
-.card-price { display: flex; align-items: baseline; gap: 0.3rem; font-variant-numeric: tabular-nums; }
-.card-price .promo { font-size: 0.88rem; font-weight: 700; color: #a06a00; }
+.card-price { display: flex; align-items: baseline; gap: 0.35rem; flex-wrap: wrap;
+  font-variant-numeric: tabular-nums; }
+/* 原价：中性灰，尺寸略小。不做删除线 —— 优惠要资格，原价仍是真实价格 */
+.card-price .list { font-size: 0.8rem; color: var(--vp-c-text-2); }
+/* 优惠价：琥珀色，最醒目 */
+.card-price .promo { font-size: 0.9rem; font-weight: 700; color: #a06a00; }
 html.dark .card-price .promo { color: #e0b159; }
-.card-price .orig { font-size: 0.7rem; color: var(--vp-c-text-3); }
-.card-price { font-size: 0.82rem; color: var(--vp-c-text-1); }
-.card-price .ask { color: var(--vp-c-text-3); font-size: 0.74rem; }
+.card-price .hint {
+  font-size: 0.62rem; color: #a06a00; border: 1px solid currentColor;
+  border-radius: 999px; padding: 0 4px; opacity: 0.85;
+}
+html.dark .card-price .hint { color: #e0b159; }
 .card-rate { font-size: 0.76rem; color: var(--vp-c-text-1); font-variant-numeric: tabular-nums; }
 .card-rate .stars { color: #d97706; margin-right: 2px; }
 html.dark .card-rate .stars { color: #e0b159; }
