@@ -2,15 +2,19 @@
 
 **四足机器人选型 + 真实使用社区。**
 
+> **线上**：<https://zeitvex.github.io/roboselect.github.io/> —— 文档站（VitePress，纯静态）。
+> 选型台与社区需要 Python 托管环境，本地 `uvicorn` 起来即完整。原因见 §4.1。
+
 选型台是底座，社区是主体。零件参数带口径、可校验、能导出到仿真；评价来自真装机，
 挂在零件上，同一套内容既出现在社区信息流，也出现在零件详情页。
 
 ```
 backend/   FastAPI + SQLModel（Python 3.12）
-frontend/  React 19 + antd 6 + **Tailwind 4** + TanStack Query（Vite）
-data/      种子数据（188 个零件 / 25 条评价，全部带来源与口径）
+frontend/  React 19 + antd 6 + Tailwind 4 + TanStack Query（Vite）
+wiki/      VitePress 文档站（内容由 data/ 生成，每页一条讨论串）
+data/      191 个零件，全部带来源等级与口径
 docs/      参考项目评估 + 截图
-scripts/   数据生成与闸门
+scripts/   数据生成、闸门、文档生成
 ```
 
 > 参考的上游项目（InvenTree / Directus / NodeBB / Answer / antd-pro / fastapi-template /
@@ -190,6 +194,27 @@ cd wiki && npm install && npm run build
 | `ROBOSELECT_DB_PATH` | `roboselect.db` | SQLite 位置 |
 | `ROBOSELECT_SECRET_KEY` | `dev-only-change-me` | **生产必须覆盖**（≥32 字节） |
 | `ROBOSELECT_CORS_ORIGINS` | 本地 5173/8000 | JSON 数组 |
+
+### 4.1 GitHub Pages 部署了什么、没部署什么
+
+仓库：<https://github.com/zeitvex/roboselect.github.io>
+线上：<https://zeitvex.github.io/roboselect.github.io/>
+
+注意这个仓库名**不是** `<user>.github.io`，所以它是 **project site**，
+地址会带一层路径 `/roboselect.github.io/`，不是根域名。
+`wiki/docs/.vitepress/config.mts` 用 `WIKI_BASE` 环境变量切换 base，
+工作流里设成 `/roboselect.github.io/`，本地默认仍是 `/wiki/`。
+
+| | Pages 上 | 为什么 |
+|---|---|---|
+| 文档站 `/wiki` | ✅ 已部署 | VitePress 是纯静态产物 |
+| 选型台 `/` | ❌ | 需要 FastAPI + SQLite（排序、检索、登录都走 API） |
+| 社区 / 后台 / MCP | ❌ | 全部要写库 |
+
+文档站在无后端时会显示一句提示（「静态预览：讨论需要后端」），
+而不是抛红错——见 `PageComments.vue` 的 `offline` 分支。
+想线上也能发言，两条路：填 `wiki/docs/.vitepress/giscus.ts` 用 GitHub Discussions，
+或把 FastAPI 部署到能带磁盘的地方（Fly.io / Railway / 一台 VPS）。
 
 ## 5. API
 
