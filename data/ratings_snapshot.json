@@ -1,31 +1,6 @@
 {
- "total_ratings": 1,
- "parts": {
-  "达妙-dm-dm-j4340-2ec-v1-1": {
-   "count": 1,
-   "avg": 4.0,
-   "histogram": {
-    "1": 0,
-    "2": 0,
-    "3": 0,
-    "4": 1,
-    "5": 0
-   },
-   "own_hardware_count": 1,
-   "mine": null,
-   "votes": [
-    {
-     "issue": 1,
-     "author": "zeitvex",
-     "part_id": "达妙-dm-dm-j4340-2ec-v1-1",
-     "score": 4,
-     "own_hardware": true,
-     "note": "【流程测试，稍后删除】髋关节，整机 20 kg，连续 25 N·m 跑了 60 小时外壳 48℃。",
-     "at": "2026-10-27T16:31:09Z"
-    }
-   ]
-  }
- },
+ "total_ratings": 0,
+ "parts": {},
  "snapshot": true,
  "source": "github-issues"
 }
