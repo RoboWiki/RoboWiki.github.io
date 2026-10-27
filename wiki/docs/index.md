@@ -1,8 +1,8 @@
 ---
-title: RoboSelect
 layout: page
 sidebar: false
 outline: false
+titleTemplate: false
 ---
 
 

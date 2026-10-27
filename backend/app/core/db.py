@@ -54,16 +54,33 @@ def _search_blob(r: dict) -> str:
     ) if x).lower()
 
 
+def iter_seed_files():
+    """按优先级产出数据文件。
+
+    1. data/catalog/<品类>/<厂商>.json —— 人工维护的源，一家一文件（PR 友好）
+    2. 旧的扁平文件（motors.json / controllers_* / sensors.json）—— 兼容老部署
+
+    这和 scripts/load_catalog.py 是同一套优先级；两边都改会漂移，
+    所以这里只做「哪个目录存在」的判断，解析逻辑保持一致。
+    """
+    cat_dir = settings.data_dir / "catalog"
+    files = sorted(cat_dir.glob("*/*.json")) if cat_dir.exists() else []
+    if files:
+        return files
+    return [settings.data_dir / fn for fn in SEED_FILES]
+
+
 def seed_catalog(db: Session) -> dict[str, int]:
     """灌零件与优惠。幂等；种子里没有的行会被删掉（评论随之级联）。"""
     stats: dict[str, int] = {}
     keep: list[str] = []
-    for fn in SEED_FILES:
-        p = settings.data_dir / fn
+    for p in iter_seed_files():
+        fn = p.name
         if not p.exists():
             stats[fn] = 0
             continue
         rows = json.loads(p.read_text(encoding="utf-8"))
+        stats[fn] = len(rows)
         for r in rows:
             keep.append(r["id"])
             obj = db.get(Part, r["id"])
@@ -85,7 +102,6 @@ def seed_catalog(db: Session) -> dict[str, int]:
             obj.notes = r.get("notes") or ""
             obj.origin = r.get("origin")
             obj.search = _search_blob(r)
-        stats[fn] = len(rows)
 
     # 清扫旧 id
     stale = [p for p in db.exec(select(Part)).all() if p.id not in set(keep)]

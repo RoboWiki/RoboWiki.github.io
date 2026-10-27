@@ -316,8 +316,24 @@ def main():
         # id 前缀固定用 sens，不随品类改 —— 否则已有的引用（后台留痕、外链）全断
         sens += build([it], SENSOR_KEYS, cat, st, id_prefix="sens")
 
+    # 焦点过滤：data/focus.json 只保留指定品类/厂商时，不写被移出的品类文件。
+    # 为什么：这些是**采集产物**，重跑一次就把 focus_data.py 移走的东西带回来，
+    # 白名单式的「当前只做关节电机」会被悄悄破坏。
+    focus_path = DATA / "focus.json"
+    keep_cat = None
+    if focus_path.exists():
+        keep_cat = set(json.loads(focus_path.read_text(encoding="utf-8"))
+                       .get("categories") or []) or None
+
     for name, rows in (("controllers_high", highs), ("controllers_low", lows),
                        ("sensors", sens)):
+        if keep_cat and name not in {"actuator"} and not (
+                {r["category"] for r in rows} & keep_cat):
+            p = DATA / f"{name}.json"
+            if p.exists():
+                p.unlink()
+            print(f"跳过 {name}.json（不在 focus.json 范围内，已清理旧产物）")
+            continue
         p = DATA / f"{name}.json"
         p.write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
         print(f"wrote {p.name}: {len(rows)} 行")

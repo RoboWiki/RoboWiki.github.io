@@ -83,39 +83,39 @@ def load(name: str) -> list[dict]:
     return json.loads(p.read_text(encoding="utf-8"))
 
 
+def load_path(p: pathlib.Path) -> list[dict]:
+    """按路径读 —— catalog/ 下是按厂商分文件的，不能只按文件名找。"""
+    if not p.exists():
+        return []
+    return json.loads(p.read_text(encoding="utf-8"))
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--strict", action="store_true", help="warning 也算失败")
     args = ap.parse_args()
 
-    files = ["motors.json", "controllers_high.json", "controllers_low.json",
-             "sensors.json", "offers.json"]
+    # 数据源分两套：catalog/<品类>/<厂商>.json（人工维护）与旧扁平文件（兼容）。
+    # 优先校验 catalog/；没有才退回扁平文件。
+    cat_dir = DATA / "catalog"
+    catalog_files = sorted(cat_dir.glob("*/*.json")) if cat_dir.exists() else []
+    files = ([p for p in catalog_files]
+             or [DATA / f for f in ("motors.json", "controllers_high.json",
+                                    "controllers_low.json", "sensors.json")
+                 if (DATA / f).exists()])
+    offer_dir = DATA / "offers"
+    offer_files = (sorted(offer_dir.glob("*.json")) if offer_dir.exists()
+                   else ([DATA / "offers.json"] if (DATA / "offers.json").exists() else []))
     errors: list[str] = []
     warns: list[str] = []
     seen_ids: dict[str, str] = {}
     rows_by_subtype: dict[str, set[str]] = {}
 
-    for fn in files:
-        rows = load(fn)
+    for p in files:
+        fn = p.name
+        rows = load_path(p)
         if not rows:
             warns.append(f"{fn}: 空或不存在")
-            continue
-
-        # offers 是另一套结构，单独校验
-        if fn == "offers.json":
-            for r in rows:
-                oid = r.get("id")
-                if not oid:
-                    errors.append("offers.json: 有一条没有 id")
-                for k in ("kind", "title"):
-                    if not r.get(k):
-                        errors.append(f"offers:{oid}: 缺 {k}")
-                if r.get("kind") not in {"sponsor", "coupon", "discount", "giveaway"}:
-                    errors.append(f"offers:{oid}: kind={r.get('kind')!r} 未知")
-                if "demo" not in r:
-                    errors.append(f"offers:{oid}: 必须显式标 demo: true/false")
-                if r.get("demo") is True and r.get("url"):
-                    pass    # 示例条目带链接是允许的
             continue
 
         for r in rows:
@@ -222,17 +222,52 @@ def main() -> int:
                 if specs.get("frictionloss_Nm") is None and tau_p:
                     pass  # 允许为空；不吵
 
+    # 优惠：另一套结构，单独校验（data/offers/*.json 或旧的 data/offers.json）
+    KINDS = {"sponsor", "coupon", "discount", "giveaway", "event", "edu", "retail"}
+    n_offer = 0
+    for p in offer_files:
+        for r in load_path(p):
+            n_offer += 1
+            oid = r.get("id")
+            where = f"{p.name}:{oid or '?'}"
+            if not oid:
+                errors.append(f"{p.name}: 有一条没有 id")
+            for k in ("kind", "title", "detail"):
+                if not r.get(k):
+                    errors.append(f"{where}: 缺 {k}")
+            if r.get("kind") not in KINDS:
+                errors.append(f"{where}: kind={r.get('kind')!r} 未知")
+            if "demo" not in r:
+                errors.append(f"{where}: 必须显式标 demo: true/false")
+            # 只给价格/折扣不给条件 —— 读者会拿它当到手价
+            if (r.get("price_cny") is not None or r.get("discount") is not None) \
+                    and not r.get("detail"):
+                errors.append(f"{where}: 有价格/折扣但没有 detail（获取条件）")
+            if r.get("part_id") and r["part_id"] not in seen_ids:
+                errors.append(f"{where}: part_id 不在目录里（{r['part_id']}）")
+            if r.get("discount") is not None and not (0 < float(r["discount"]) < 1):
+                errors.append(f"{where}: discount 应为 0–1 之间的小数")
+    if n_offer:
+        print(f"优惠 {n_offer} 条（{len(offer_files)} 个文件）")
+    else:
+        warns.append("offers: 没有优惠数据")
+
     # 覆盖率报表
-    motors = load("motors.json")
-    if motors:
-        n = len(motors)
-        with_arm = sum(1 for r in motors if r["specs"].get("armature_kgm2") is not None)
-        with_rated = sum(1 for r in motors if r["specs"].get("tau_rated_Nm") is not None)
-        with_kt = sum(1 for r in motors if r["specs"].get("kt_Nm_per_A") is not None)
+    motors = [r for r in (load_path(f) for f in files) if True]
+    act = [r for rows in motors for r in rows if r.get("category") == "actuator"]
+    if act:
+        n = len(act)
+        with_arm = sum(1 for r in act if r["specs"].get("armature_kgm2") is not None)
+        with_rated = sum(1 for r in act if r["specs"].get("tau_rated_Nm") is not None)
+        with_kt = sum(1 for r in act if r["specs"].get("kt_Nm_per_A") is not None)
+        with_price = sum(1 for r in act if r.get("price_cny") is not None)
+        with_img = sum(1 for r in act if r["specs"].get("image_url"))
         print(f"覆盖率  执行器 {n} 行："
               f"armature {with_arm} ({with_arm/n:.0%}) · "
               f"额定扭矩 {with_rated} ({with_rated/n:.0%}) · "
-              f"Kt {with_kt} ({with_kt/n:.0%})")
+              f"Kt {with_kt} ({with_kt/n:.0%}) · "
+              f"价格 {with_price} ({with_price/n:.0%}) · "
+              f"产品图 {with_img} ({with_img/n:.0%})")
         if with_arm / n < 0.5:
             warns.append(f"armature 覆盖率只有 {with_arm/n:.0%}（仿真可用性偏低）")
 

@@ -5,6 +5,8 @@ import sidebar from './sidebar.json' with { type: 'json' }
 // 一页两件事：左边官方参数（带来源与口径），右边真实使用者的评分与评价。
 export default defineConfig({
   title: 'RoboSelect',
+  // 标签页统一成「页面 · RoboSelect」；首页只有 RoboSelect，不重复
+  titleTemplate: ':title · RoboSelect',
   description: '机器人部件选择社区：官方参数 + 真实使用者的评分与评价',
   // 两站合一后站点在根目录；GitHub Pages 是 project site，挂在 /RoboSelect/ 下。
   base: process.env.WIKI_BASE || '/',

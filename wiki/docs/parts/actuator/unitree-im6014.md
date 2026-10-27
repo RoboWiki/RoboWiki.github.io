@@ -14,7 +14,7 @@ title: Unitree IM6014
       <span class="part-tag">关节电机</span>
       <span class="part-tag sub">planetary</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
-      <span class="part-tag muted">无公开报价</span>
+      <span class="part-tag">¥1,800</span>
     </div>
 
 <div class="part-split">
@@ -114,7 +114,13 @@ title: Unitree IM6014
 
 ## 优惠与获取条件
 
-暂无优惠信息。本站不代理销售，也不收佣金 —— 有合作或团购价请提 issue，写清**价格 + 覆盖范围 + 有效期**，缺一项都不上卡片。
+有一条相关信息：**宇树 RM / RC 参赛队首次购买 买二赠一**
+
+- 说明：RM、RC 参赛队凭参赛证明，首次购买可得「买二赠一」；固定结构图纸可向客服索取下载。各型号是否参加以客服确认为准。
+- 有效期：至 2027-12-31
+- 链接：天猫 Unitree 宇树旗舰店
+
+这条**没有具体优惠价**，所以卡片上不显示折扣 —— 只有价格没有条件的那种「优惠」本站不放。
 
 ## 资料与链接
 
@@ -122,7 +128,7 @@ title: Unitree IM6014
 
 ## 备注
 
-G1 arm motor, model N6014B-12.6. Unitree publishes max torque 34.4 N.m (opposing the rotation; 31.7 N.m with it), 535 g, phi65 x 60, gear 3:38 = 12.667:1 and max no-load speed 54.2 rad/s at 60 V. That
+G1 arm motor, model N6014B-12.6. Unitree publishes max torque 34.4 N.m (opposing the rotation; 31.7 N.m with it), 535 g, phi65 x 60, gear 3:38 = 12.667:1 and max no-load speed 54.2 rad/s at 60 V. That 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是宇树四足整机宣传图，不是 IM6014 电机，需厂商型号页原图
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

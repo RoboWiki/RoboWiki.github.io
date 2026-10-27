@@ -75,18 +75,15 @@ def num(v, digits: int = 3) -> str:
 
 
 def load() -> list[dict]:
-    """读 data/ 下的目录文件。
+    """读目录数据。
 
-    其它品类的 json 可能被 scripts/focus_data.py 移进备份区
-    （当前只做关节电机），所以缺文件是正常状态，不是错误。
+    统一走 scripts/load_catalog.py：优先 data/catalog/<品类>/<厂商>.json（人工维护），
+    没有才退回 data/motors.json（采集产物）。这样贡献者只改自己的那个文件，
+    采集脚本重跑也不会覆盖人工修订。
     """
-    rows: list[dict] = []
-    for fn in ("motors.json", "controllers_high.json", "controllers_low.json",
-               "sensors.json"):
-        p = DATA / fn
-        if p.exists():
-            rows += json.loads(p.read_text(encoding="utf-8"))
-    return rows
+    from load_catalog import load_parts
+
+    return load_parts()
 
 
 def tier_badge(t: str, verified) -> str:
@@ -203,31 +200,48 @@ def main() -> None:
         except Exception:
             ratings = {}
 
-    offers: list[dict] = []
-    _op = ROOT / "data" / "offers.json"
-    if _op.exists():
-        try:
-            offers = json.loads(_op.read_text(encoding="utf-8"))
-        except Exception:
-            offers = []
+    from load_catalog import load_offers
+
+    offers: list[dict] = load_offers()
 
     def offer_of(r: dict) -> dict | None:
-        """给一个零件找优惠：先按 part_id 精确匹配，再按厂商匹配。
-        只取未过期的、且带优惠价的（页面会把条件一起显示）。"""
+        """给一个零件找**当前最便宜且条件齐全**的优惠。
+
+        优先级：具体 part_id 的 > 厂商级的；有明确优惠价的 > 只有折扣比例的。
+        折扣比例（如教育优惠 9 折）用原价折算成有效价，卡片才能显示一个数。
+        没有条件（detail）的一律不上卡片 —— 只给价不给条件比不给更糟。
+        """
         today = date.today().isoformat()
         cand = [o for o in offers
-                if (o.get("part_id") == r["id"]) or (not o.get("part_id") and o.get("vendor") == r["vendor"])]
+                if (o.get("part_id") == r["id"])
+                or (not o.get("part_id") and o.get("vendor") == r["vendor"])]
         cand = [o for o in cand
-                if (o.get("expires_on") or "9999") >= today]
-        # 有具体优惠价的优先
-        cand.sort(key=lambda o: (o.get("price_cny") is None,))
-        if not cand:
+                if (o.get("expires_on") or "9999") >= today and o.get("detail")]
+
+        def eff(o):
+            if o.get("price_cny") is not None:
+                return float(o["price_cny"])
+            d = o.get("discount")
+            if d and r.get("price_cny"):
+                return round(float(r["price_cny"]) * float(d), 2)
             return None
-        o = cand[0]
-        return {"title": o.get("title"), "kind": o.get("kind"),
-                "price": o.get("price_cny"), "condition": o.get("detail"),
+
+        priced = [(eff(o), o) for o in cand]
+        priced = [(p, o) for p, o in priced if p is not None]
+        if not priced:
+            # 没有可算的价：仍返回一条，让部件页能写清「有这个活动，怎么拿」
+            o = cand[0] if cand else None
+            if o is None:
+                return None
+            return {"title": o.get("title"), "kind": o.get("kind"), "price": None,
+                    "discount": o.get("discount"), "condition": o.get("detail"),
+                    "url": o.get("url"), "expires": o.get("expires_on"),
+                    "source": o.get("source"), "demo": bool(o.get("demo"))}
+        p, o = min(priced, key=lambda x: x[0])
+        return {"title": o.get("title"), "kind": o.get("kind"), "price": p,
+                "discount": o.get("discount"), "condition": o.get("detail"),
                 "url": o.get("url"), "expires": o.get("expires_on"),
-                "demo": bool(o.get("demo"))}
+                "source": o.get("source"), "demo": bool(o.get("demo"))}
 
     digest = []
     for r in rows:
@@ -701,7 +715,7 @@ def main() -> None:
         f'<em>{desc}</em></a>'
         for c, name, desc in CATS)
     (OUT / "index.md").write_text(
-        '---\ntitle: RoboSelect\nlayout: page\nsidebar: false\noutline: false\n---\n\n'
+        '---\nlayout: page\nsidebar: false\noutline: false\ntitleTemplate: false\n---\n\n'
         + f'''
 <div class="home">
   <section class="home-hero">
@@ -843,8 +857,8 @@ def main() -> None:
     # ── 部件总表 ────────────────────────────────────────────────────────
     cat_links = "\n".join(f"- **[{name}](/parts/{c}/)** —— {desc}（{sum(1 for r in rows if r['category'] == c)} 件）"
                           for c, name, desc in CATS)
-    (OUT / "parts" / "index.md").write_text(FRONT.format(title="部件手册") + f"""
-# 部件手册
+    (OUT / "parts" / "index.md").write_text(FRONT.format(title="部件详情") + f"""
+# 部件详情
 
 按品类进入，再按厂商分页。
 

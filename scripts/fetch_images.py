@@ -49,7 +49,25 @@ def safe_name(part_id: str) -> str:
 
 
 def get(url: str, timeout: int = 25, retries: int = 1) -> tuple[bytes, str] | None:
-    """取内容。大 PDF 偶尔会 IncompleteRead，重试一次，仍失败就当没有。"""
+    """取内容。大 PDF 偶尔会 IncompleteRead，重试一次，仍失败就当没有。
+
+    注意：urllib 只接受 ASCII 的 request line。厂商站点常把中文放进路径
+    （/产品/dm-j4340.jpg），直接传会抛 UnicodeEncodeError 把整个脚本打死 ——
+    所以先按 URL 规则百分号编码，已编码的部分不会二次编码。
+    """
+    try:
+        from urllib.parse import quote, urlsplit, urlunsplit
+
+        parts = urlsplit(url)
+        url = urlunsplit((
+            parts.scheme,
+            parts.netloc.encode("idna").decode("ascii") if parts.netloc else "",
+            quote(parts.path, safe="/%:@&=+$,~"),
+            quote(parts.query, safe="=&%:@+,$/?~"),
+            parts.fragment,
+        ))
+    except Exception:
+        pass
     for attempt in range(retries + 1):
         req = urllib.request.Request(url, headers={
             "User-Agent": UA,
