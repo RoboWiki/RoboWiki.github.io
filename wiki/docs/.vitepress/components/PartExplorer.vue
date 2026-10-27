@@ -199,11 +199,6 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
   { t: '价格', f: p => money(p.offer?.price ?? p.price) ?? '询价' },
   { t: '评分', f: p => (p.rating.avg == null ? '暂无' : `${p.rating.avg} (${p.rating.count})`) },
 ]
-
-function glyphBox(p: Part) {
-  const w = p.od && p.len ? Math.min(2.6, Math.max(0.5, p.len / p.od)) : 1
-  return { h: Math.max(16, Math.min(44, 24 * w)), w: Math.max(26, Math.min(72, 58 / Math.max(0.8, w * 0.9))) }
-}
 </script>
 
 <template>
@@ -258,13 +253,16 @@ function glyphBox(p: Part) {
         <article v-for="p in rows" :key="p.id" class="card">
           <a class="card-img" :href="withBase('/parts/' + p.category + '/' + p.slug)">
             <img v-if="p.image" :src="withBase(p.image)" :alt="p.model" loading="lazy" />
-            <svg v-else viewBox="0 0 120 74" aria-hidden="true">
-              <rect x="6" y="6" width="108" height="62" rx="7"
-                    fill="var(--vp-c-bg-soft)" stroke="var(--vp-c-divider)" />
-              <rect :x="60 - glyphBox(p).w / 2" :y="37 - glyphBox(p).h / 2"
-                    :width="glyphBox(p).w" :height="glyphBox(p).h" rx="5"
-                    fill="var(--vp-c-brand-soft)" stroke="var(--vp-c-brand-1)" />
-            </svg>
+            <!-- 没图就如实说没图。错图（整机宣传图）比没图更糟，所以不做抽象方块充数 -->
+            <span v-else class="ph" aria-label="暂无产品图">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path fill="none" stroke="currentColor" stroke-width="1.6"
+                      d="M3 7h4l2-3h6l2 3h4v12H3z" />
+                <circle cx="12" cy="13" r="3.4" fill="none" stroke="currentColor"
+                        stroke-width="1.6" />
+              </svg>
+              <em>暂无产品图</em>
+            </span>
             <span :class="['card-tier', p.tier === 'A' ? 'a' : '']">{{ p.tier }}{{ p.verified ? ' ✓' : '' }}</span>
             <span v-if="p.offer?.price != null" class="card-promo">优惠</span>
           </a>
@@ -385,12 +383,24 @@ function glyphBox(p: Part) {
   position: relative; display: flex; align-items: center; justify-content: center;
   height: 112px; background: var(--vp-c-bg-alt);
   border-bottom: 1px solid var(--vp-c-divider);
+  /* 托板高度固定，图片/SVG 都不能撑出边界 —— 否则会压到下面的型号名上 */
+  overflow: hidden;
 }
 .card-img img {
   max-height: 96px; max-width: 86%; object-fit: contain; mix-blend-mode: multiply;
 }
 html.dark .card-img img { mix-blend-mode: normal; background: #fff; border-radius: 4px; padding: 2px; }
-.card-img svg { width: 74%; height: auto; }
+/* 占位图按**高度**约束（不是宽度）：SVG 有 viewBox，给定高度后宽度按比例走，
+   在 112px 高的托板里永远不会顶出来。按宽度给百分比会算出 136px 高再溢出。 */
+.card-img svg { height: 78px; width: auto; max-width: 88%; display: block; }
+
+/* 缺图的占位：图标 + 一句说明，克制到不抢注意力，但比抽象方块能读懂 */
+.ph {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  color: var(--vp-c-text-3);
+}
+.ph svg { height: 18px; width: auto; max-width: none; opacity: 0.7; }
+.ph em { font-size: 0.66rem; font-style: normal; letter-spacing: 0.02em; }
 .card-tier {
   position: absolute; top: 6px; right: 6px; font-size: 0.62rem; font-weight: 700;
   padding: 1px 5px; border-radius: 999px;
