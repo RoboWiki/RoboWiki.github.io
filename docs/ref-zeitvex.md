@@ -49,25 +49,54 @@ YG 的要求是「ui 和风格类似这份」。这份的视觉底子是 **VS Co
 **重定义 Tailwind 的 `slate` / `blue` 色阶**：
 
 ```css
-@theme {
-  --color-slate-50: #f8f8f8;
-  --color-slate-200: #d0d0d0;   /* 变成 VS Code 的 border-light */
-  --color-slate-500: #616161;   /* text-muted */
-  --color-slate-900: #1f1f1f;   /* text-main，不是纯黑 */
-  --color-blue-50: #e6f3ff;     /* 标签底 */
-  --color-blue-600: #0078d4;    /* VS Code 蓝 */
-  --color-blue-700: #005a9e;
+@theme { /* 只放字体等非颜色 token */ }
+
+:root, [data-theme="light"] {
+  --color-slate-200: #d0d0d0;   /* VS Code 的 border-light */
+  --color-slate-500: #616161;
+  --color-slate-900: #1f1f1f;
+  --color-blue-50:  #e6f3ff;
+  --color-blue-600: #0078d4;
+}
+
+[data-theme="dark"] {
+  --color-slate-200: #3c3c3c;
+  --color-slate-500: #9d9d9d;
+  --color-slate-900: #cccccc;
+  --color-blue-50:  #04395e;
+  --color-blue-600: #3794ff;
 }
 ```
 
-一处定义，全站生效。再加三个工具类（`.terminal-pill` / `.title-gradient` / `.tabular`）
-和一轮圆角收窄（`rounded-2xl` → `rounded-lg`，即 16px → 8px）。
+Tailwind v4 的工具类输出的是 `color: var(--color-slate-500)` 这种**引用**，
+所以在 `[data-theme="dark"]` 里换掉变量，200 多处既有类名一起变，组件一处都不用改。
+这就是明暗切换的全部成本 —— 前提是**没有写死的颜色**。
 
-antd 那边同步换 token：`colorPrimary: #0078d4`、`colorBorder: #d0d0d0`、
-`colorText: #1f1f1f`、`Table.headerBg: #f8f8f8`、`Segmented.itemSelectedBg: #0078d4`。
+紧接着就踩到两个「写死」的坑：
 
-VitePress 文档站同理，`custom.css` 里把 `--vp-c-*` 全换成这一套，
-并给 `h1` 加上同一支渐变、给表格加斑马纹（191 行里找一行，纯白会串行）。
+1. `bg-white` 不走调色板（它是 literal white）。深色下卡片保持纯白、正文直接看不见。
+   改成 `bg-[var(--surface)]`（浅 `#ffffff` / 深 `#252526`），19 处。
+2. 示意图的 `hsl()` 是内联字符串，CSS 变量换不到。改成
+   `fill="var(--g-body)"` 这类引用，SVG 跟着主题自动变，连重渲染都不需要。
+
+antd 不吃 CSS 变量，所以 `theme.tsx` 存了 mode，`ConfigProvider` 按 mode 给
+`darkAlgorithm` / `defaultAlgorithm` 和两套 token。
+
+## 4. 深色配色（VS Code dark）
+
+| 用途 | 值 |
+|---|---|
+| 页面底 | `#1e1e1e` |
+| chrome（顶栏/面板） | `#181818` |
+| 卡片 / 抬升面 | `#252526` |
+| 边框 | `#3c3c3c` |
+| 正文 / 次级 / 弱 | `#cccccc` / `#9d9d9d` / `#6f6f6f` |
+| 强调 | `#3794ff` |
+| 选中底 | `#04395e` |
+
+切换按钮在顶栏右侧（圆形，☾ / ☀），状态存 `localStorage`，
+没存过时跟随 `prefers-color-scheme`，系统变化也会跟（除非手动选过）。
+
 
 ## 4. 明确没照搬的
 

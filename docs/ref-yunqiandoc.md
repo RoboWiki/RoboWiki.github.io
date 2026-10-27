@@ -59,26 +59,40 @@ giscusTalk({
 
 ## 3. 我没照搬的，以及为什么
 
-### giscus 已接好，等你填四个字段
+### giscus 已启用
 
-**「注册一个 `roboselect.github.io` 仓库是不是就可以了」——基本可以，但仓库名不重要。**
-必须同时做到四件事：
+```ts
+// wiki/docs/.vitepress/giscus.ts
+export const giscus = {
+  repo: 'zeitvex/roboselect',
+  repoId: 'R_kgDOVZTWEQ',
+  category: 'Announcements',
+  categoryId: 'DIC_kwDOVZTWEc4DJv7l',
+  mapping: 'pathname',
+  lang: 'zh-CN',
+}
+```
 
-| # | 要求 | 在哪做 |
+四个参数是这么来的（`gh` 能查前三个，App 安装必须人手点）：
+
+```bash
+gh api -X PATCH repos/zeitvex/roboselect -F has_discussions=true   # 开 Discussions
+gh api graphql -F query=@gql.txt                                    # repoId + categoryId
+# App 安装无法用 CLI：打开 github.com/apps/giscus → Install → 只勾这一个仓库
+```
+
+**门槛效果正是要的**：读不需要登录，**写必须 GitHub 账号**。
+顺带白拿 GitHub 的反垃圾、编辑历史、邮件通知、@提醒。
+
+### 两种后端的分工（不是二选一）
+
+| 位置 | 用什么 | 为什么 |
 |---|---|---|
-| 1 | 仓库是 **public** | 私有仓库 giscus 读不到 Discussions |
-| 2 | 开启 **Discussions** | Settings → General → Features |
-| 3 | 装 [giscus App](https://github.com/apps/giscus)，只授权这一个仓库 | Install → Only select repositories |
-| 4 | 在 [giscus.app](https://giscus.app/zh-CN) 填仓库名，抄回 `repoId` / `category` / `categoryId` | 分类选 **Announcements**（只有维护者能开新帖，其他人只能评论） |
+| 文档站 `/wiki` | **giscus**（GitHub Discussions） | 门槛 = GitHub 账号；零维护、有反垃圾 |
+| 选型台零件页、社区信息流 | **自托管** `Post` / `WikiComment` | 要能聚合、排序、算贡献、进站内搜索 |
 
-`roboselect.github.io` 这个名字完全可行，而且顺便还能直接当 GitHub Pages 站点用。
-
-**门槛效果正是你要的**：读不需要登录，**写必须 GitHub 账号**。
-顺带白拿 GitHub 的反垃圾、编辑历史、邮件通知、@提醒、以及「按 Discussion 搜索」。
-
-实现已经写好在 `wiki/docs/.vitepress/giscus.ts` —— 把 `giscus` 常量从 `null` 换成
-你那四个 id，重新 `npm run build` 就切换过去；不填则自动回落到自托管讨论串。主题跟随
-深浅色切换（通过 `postMessage` 通知 iframe）。
+`PageComments.vue` 里 `giscusCfg` 有值就走 giscus，否则回落自托管
+（方便别人 fork 后不带 GitHub 也能用）。
 
 ### 但有一个代价必须先说清
 
@@ -88,12 +102,7 @@ giscus 的评论**存在 GitHub，不在本站数据库**。所以它：
 - 站内搜索搜不到
 - 数据主权在 GitHub（导出要自己写脚本拉 GraphQL）
 
-所以现在的取舍是**分工**：
-
-| | 用什么 | 为什么 |
-|---|---|---|
-| 文档站 `/wiki` | **giscus**（要 GitHub 账号） | 门槛 + 零维护 + 反垃圾 |
-| 选型台零件页、社区信息流 | **自托管** `Post` / `WikiComment` | 要能聚合、排序、算贡献、进搜索 |
+这也是为什么零件页/社区**继续自托管** —— 那边的价值就是「能聚合」。
 
 ### 内容 → 从数据生成，不手写
 

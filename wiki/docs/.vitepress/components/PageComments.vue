@@ -1,13 +1,13 @@
 <script setup lang="ts">
 /**
- * 页面讨论串 —— 形态对齐 giscus（每篇文档底下直接说话），但走本站 API。
+ * 页面讨论串。
  *
- * 为什么不用 giscus：giscus 需要一个公开的 GitHub 仓库并开启 Discussions。
- * 本站数据在本地、用户体系已经存在（PBKDF2 + JWT），自己存更实在，
- * 也不需要读者有 GitHub 账号。
+ * 两种后端，运行时探测，谁在就用谁：
+ *   · 有 FastAPI（本地 / 带 Python 的部署）→ 自托管：能聚合进社区、能算贡献、能进搜索
+ *   · 纯静态（GitHub Pages）→ giscus：写评论要 GitHub 账号，反垃圾与编辑历史由 GitHub 兜住
  *
- * 页面标识：与 giscus 的 `mapping: pathname` 等价 —— 用路径而非标题，
- * 所以改标题不会掉讨论，改路径才会。
+ * 不做成配置开关，是因为**同一个构建要同时服务两种部署形态**。
+ * 页面标识两边都用路径（等价 giscus 的 `mapping: pathname`）：改标题不掉讨论，改路径才会。
  */
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useData, useRoute } from 'vitepress'
@@ -16,10 +16,8 @@ import { giscus as giscusCfg } from '../giscus'
 const { isDark } = useData()
 const route = useRoute()
 
-// ── giscus 模式（可选）──────────────────────────────────────────────────
-// 配了就用 GitHub Discussions：写评论要有 GitHub 账号（那道门槛），
-// 代价是评论不进本站数据库。见 .vitepress/giscus.ts 的说明。
 const giscusHost = ref<HTMLElement | null>(null)
+const mode = ref<'probe' | 'self' | 'giscus'>('probe')
 
 function mountGiscus() {
   if (!giscusCfg || !giscusHost.value) return
@@ -162,17 +160,22 @@ function fmt(s: string) {
   return s.slice(0, 16).replace('T', ' ')
 }
 
-onMounted(async () => {
+/** 决定这一页用哪种后端：配了 giscus 就走 giscus（门槛 = GitHub 账号），否则回落自托管 */
+async function decide() {
   if (giscusCfg) {
+    mode.value = 'giscus'
     await nextTick()
     mountGiscus()
     return
   }
+  mode.value = 'self'
   await load()
-})
+}
+
+onMounted(decide)
 watch(() => route.path, () => {
-  if (giscusCfg) return nextTick().then(mountGiscus)
-  load()
+  mode.value = 'probe'
+  decide()
 })
 watch(isDark, syncGiscusTheme)
 </script>
@@ -181,27 +184,27 @@ watch(isDark, syncGiscusTheme)
   <section class="rsw">
     <h2 class="rsw-title">
       这一页的讨论
-      <span v-if="!giscusCfg" class="rsw-count">{{ items.length }}</span>
+      <span v-if="mode === 'self'" class="rsw-count">{{ items.length }}</span>
     </h2>
 
-    <!-- giscus：写评论需要 GitHub 账号；读不需要 -->
-    <template v-if="giscusCfg">
+    <!-- 静态站：giscus（GitHub Discussions）。写评论要 GitHub 账号，读不用。 -->
+    <template v-if="mode === 'giscus'">
       <p class="rsw-hint">
-        讨论托管在 GitHub Discussions，<strong>发言需要 GitHub 账号</strong>。
-        带具体工况（负载、占空比、环境温度）比「好用/不好用」有用得多。
+        讨论托管在 <strong>GitHub Discussions</strong>，
+        <strong>发言需要一个 GitHub 账号</strong>（读不用登录）。
+        带上具体工况（负载、占空比、环境温度）比「好用 / 不好用」有用得多。
       </p>
       <div ref="giscusHost" class="giscus-host" />
     </template>
 
-    <template v-else>
+    <template v-else-if="mode === 'self'">
       <p class="rsw-hint">
         用过的坑、量到的数、和厂商确认过的事，写在<strong>对应这一页</strong>下面才有用。
         带上具体工况（负载、占空比、环境温度）——只写「好用/不好用」对下一个人没有价值。
       </p>
 
       <p v-if="offline" class="rsw-muted">
-        静态预览：讨论需要后端。本地运行 <code>uvicorn app.main:app --port 8000</code>
-        后即可在此发言；也可在 <code>wiki/.vitepress/giscus.ts</code> 里填 giscus 的四个 id 换成 GitHub Discussions。
+        讨论加载失败。本地可运行 <code>uvicorn app.main:app --port 8000</code> 后重试。
       </p>
       <p v-else-if="loading" class="rsw-muted">加载中…</p>
       <p v-else-if="!items.length" class="rsw-muted">还没有讨论。第一条就由你来写。</p>

@@ -20,11 +20,25 @@ scripts/   数据生成、闸门、文档生成
 > 参考的上游项目（InvenTree / Directus / NodeBB / Answer / antd-pro / fastapi-template /
 > sqlmodel / refine / giscus）浅克隆在仓库外的 `../_refs/`，不参与运行。
 
-| 选型台（真产品图） | 数据后台 |
+| 选型台（浅色） | 选型台（深色） |
 |---|---|
-| ![选型台](docs/screenshot-catalog.png) | ![后台](docs/screenshot-admin.png) |
-| **社区** | **帖子详情** |
-| ![社区](docs/screenshot-community.png) | ![帖子](docs/screenshot-post.png) |
+| ![选型台](docs/screenshot-catalog.png) | ![深色](docs/screenshot-dark.png) |
+| **文档站** | **数据后台** |
+| ![文档站](docs/screenshot-pages.png) | ![后台](docs/screenshot-admin.png) |
+
+### 明暗切换
+
+顶栏右侧圆形按钮（☾ / ☀）。状态存 `localStorage`，没存过就跟随
+`prefers-color-scheme`，系统变化也会跟（除非手动选过）。
+
+实现方式决定了成本：Tailwind v4 的工具类输出的是
+`color: var(--color-slate-500)` 这种**引用**，所以在 `[data-theme="dark"]` 里
+换掉变量，200 多处既有类名一起变，组件一处都不用改。
+代价是**不能有写死的颜色** —— 踩过两次：`bg-white`（literal white）和
+示意图里的内联 `hsl()`，都改成变量了。详见 [ref-zeitvex.md](docs/ref-zeitvex.md)。
+
+文档站的明暗由 VitePress 自带（`appearance: true`），深色版对齐 VS Code dark，
+giscus iframe 通过 `postMessage` 跟着切。
 
 ### 一件必须先说清的事：社区里没有假评价
 

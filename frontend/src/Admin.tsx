@@ -172,11 +172,11 @@ function EditModal({ partId, onClose }: { partId: string; onClose: () => void })
             </div>
             <textarea value={note} onChange={e => setNote(e.target.value)} rows={2}
               placeholder="例：据 CubeMars AK80-9 V3 官方 datasheet 第 2 页扭矩曲线，额定 8 N·m @ 25℃"
-              className="w-full resize-none rounded-md border border-slate-200 bg-white p-2
+              className="w-full resize-none rounded-md border border-slate-200 bg-[var(--surface)] p-2
                          text-[12.5px] text-slate-900 outline-none focus:border-amber-300" />
             <input value={srcUrl} onChange={e => setSrcUrl(e.target.value)}
               placeholder="来源链接（建议填官方页面或 PDF 地址）"
-              className="mt-1.5 w-full rounded-md border border-slate-200 bg-white px-2 py-1.5
+              className="mt-1.5 w-full rounded-md border border-slate-200 bg-[var(--surface)] px-2 py-1.5
                          text-[12.5px] text-slate-900 outline-none focus:border-amber-300" />
             <div className="mt-2 flex items-center gap-2">
               <button onClick={() => { if (note.trim().length < 2) return message.warning('至少写清依据'); save.mutate() }}

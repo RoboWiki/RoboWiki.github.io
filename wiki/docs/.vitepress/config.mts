@@ -11,8 +11,8 @@ export default defineConfig({
   // 用环境变量切换，避免为部署改源文件。
   base: process.env.WIKI_BASE || '/wiki/',
   lang: 'zh-CN',
-  // 与选型台同一套白 + 蓝浅色观感；读者仍可切深色
-  appearance: 'light',
+  // 明暗切换：'true' = 跟随系统 + 右上角手动切换（浅色 / 深色两套都做了）
+  appearance: true,
   // 不用 cleanUrls：产物直接由 FastAPI StaticFiles(html=True) 托管，
   // 保持 .html 后缀最省事，也避免 SPA 兜底路由抢路径。
   cleanUrls: false,

@@ -42,19 +42,14 @@ const f = (v: any, d = 0) => (typeof v === 'number' ? v : d)
 
 export default function PartGlyph({ part, size = 180 }:
   { part: any; size?: number }) {
-  // 单强调色：所有示意图都走 VS Code 蓝（207°），不再按厂商换色相。
-  // 之前按厂商 hash 出色相，遇到绿色厂商整块读起来就是「灰绿」；
-  // 厂商区分靠标签文字，不靠颜色 —— 这也是 VS Code 的做法：chrome 单色。
+  // 配色走 CSS 变量：明暗切换时 SVG 自动跟着变，
+  // 不需要重渲染，也不用往这里传 theme prop（见 index.css 的 --g-*）。
+  const accent = 'var(--g-accent)'
+  const accentDim = 'var(--g-accent-dim)'
+  const body = 'var(--g-body)'
+  const bodyLo = 'var(--g-body-lo)'
   const s = part.specs || {}
   const st = part.subtype
-  // 示意图配色：单强调色（VS Code 蓝 207°）+ 中性灰机身，像一张工程图。
-  // 明度按厂商做一点点区分（±7），但不出蓝色区间 —— 区分厂商靠标签文字，
-  // 不靠色相，这样整页才不会花。
-  const tone = 205 + (hashHue(part.vendor || '') % 15)
-  const accent = `hsl(${tone} 72% 42%)`
-  const accentDim = `hsl(${tone} 32% 72%)`
-  const body = `hsl(${tone} 22% 97%)`
-  const bodyLo = `hsl(${tone} 22% 90%)`
   const gid = `g-${part.id}`.replace(/[^a-zA-Z0-9-]/g, '')
   const uid = `u-${gid}`
 
@@ -197,7 +192,7 @@ export default function PartGlyph({ part, size = 180 }:
             <g key={i}>
               <circle cx={cx} cy="60" r="19" fill={bodyLo} stroke={accent} strokeWidth="1.2" />
               <circle cx={cx} cy="60" r="12" fill={`url(#${uid}-acc)`} />
-              <circle cx={cx} cy="60" r="5" fill="#0f172a" />
+              <circle cx={cx} cy="60" r="5" fill="var(--g-lens)" />
               <circle cx={cx - 4} cy="56" r="2.4" fill="#fff" opacity="0.5" />
             </g>
           ))}

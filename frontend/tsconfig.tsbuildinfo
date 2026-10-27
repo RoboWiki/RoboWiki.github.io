@@ -1,1 +1,1 @@
-{"root":["./src/admin.tsx","./src/app.tsx","./src/catalog.tsx","./src/api.ts","./src/fields.ts","./src/main.tsx","./src/pages.tsx","./src/ui.tsx","./src/components/partcard.tsx","./src/components/partglyph.tsx"],"version":"5.9.3"}
+{"root":["./src/admin.tsx","./src/app.tsx","./src/catalog.tsx","./src/api.ts","./src/fields.ts","./src/main.tsx","./src/pages.tsx","./src/theme.tsx","./src/ui.tsx","./src/components/partcard.tsx","./src/components/partglyph.tsx"],"version":"5.9.3"}

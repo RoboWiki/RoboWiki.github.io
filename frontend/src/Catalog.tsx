@@ -167,7 +167,7 @@ export default function Catalog({ onOpenPost, onCompose, openAuth }: {
               className={`rounded-full border px-3.5 py-[7px] text-[13px] transition
                 ${on
                   ? 'border-blue-600 bg-blue-600 font-semibold text-white'
-                  : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900'}`}>
+                  : 'border-slate-200 bg-[var(--surface)] text-slate-600 hover:border-slate-300 hover:text-slate-900'}`}>
               {c.label}
               <span className={`ml-1.5 text-[11px] ${on ? 'text-blue-100' : 'text-slate-400'}`}>
                 {c.hint}
@@ -184,7 +184,7 @@ export default function Catalog({ onOpenPost, onCompose, openAuth }: {
           <input
             value={q} onChange={e => setQ(e.target.value)}
             placeholder="搜型号 / 厂商 / 通信方式"
-            className="w-[240px] rounded-full border border-slate-200 bg-white py-2 pl-9 pr-3
+            className="w-[240px] rounded-full border border-slate-200 bg-[var(--surface)] py-2 pl-9 pr-3
                        text-[13px] text-slate-900 placeholder:text-slate-400
                        outline-none transition focus:border-blue-600"
           />
@@ -194,17 +194,17 @@ export default function Catalog({ onOpenPost, onCompose, openAuth }: {
           className={`rounded-full border px-3.5 py-2 text-[12.5px] transition
             ${vendor || subtype || filtersOpen
               ? 'border-blue-600 bg-blue-50 font-medium text-blue-600'
-              : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}`}>
+              : 'border-slate-200 bg-[var(--surface)] text-slate-600 hover:border-slate-300'}`}>
           筛选{(vendor ? ' · 1' : '')}{(subtype ? ' · 1' : '')}
         </button>
 
         <select value={sort} onChange={e => setSort(e.target.value)}
-          className="rounded-full border border-slate-200 bg-white px-3 py-2 text-[12.5px]
+          className="rounded-full border border-slate-200 bg-[var(--surface)] px-3 py-2 text-[12.5px]
                      text-slate-700 outline-none focus:border-blue-300">
-          {SORTS.map(s => <option key={s.value} value={s.value} className="bg-white">按{s.label}</option>)}
+          {SORTS.map(s => <option key={s.value} value={s.value} className="bg-[var(--surface)]">按{s.label}</option>)}
         </select>
         <button onClick={() => setOrder(o => o === 'asc' ? 'desc' : 'asc')}
-          className="rounded-full border border-slate-200 bg-white px-3 py-2 text-[12.5px]
+          className="rounded-full border border-slate-200 bg-[var(--surface)] px-3 py-2 text-[12.5px]
                      text-slate-600 transition hover:border-slate-300">
           {order === 'asc' ? '↑ 升序' : '↓ 降序'}
         </button>
@@ -214,7 +214,7 @@ export default function Catalog({ onOpenPost, onCompose, openAuth }: {
             {total} 项{total > pageSize && ` · 第 ${page}/${pages} 页`}
           </span>
           <button onClick={() => setView(v => v === 'grid' ? 'table' : 'grid')}
-            className="rounded-full border border-slate-200 bg-white p-2 text-slate-500
+            className="rounded-full border border-slate-200 bg-[var(--surface)] p-2 text-slate-500
                        transition hover:border-slate-300 hover:text-slate-800"
             title={view === 'grid' ? '切到表格' : '切到卡片'}>
             {view === 'grid' ? <TableOutlined /> : <AppstoreOutlined />}
@@ -226,7 +226,7 @@ export default function Catalog({ onOpenPost, onCompose, openAuth }: {
             a.href = URL.createObjectURL(blob); a.download = 'roboselect-export.yaml'; a.click()
             URL.revokeObjectURL(a.href)
           }}
-            className="rounded-full border border-slate-200 bg-white px-3 py-2 text-[12.5px]
+            className="rounded-full border border-slate-200 bg-[var(--surface)] px-3 py-2 text-[12.5px]
                        text-slate-600 transition hover:border-slate-300 hover:text-slate-800">
             <DownloadOutlined /> 导出
           </button>
@@ -295,13 +295,13 @@ export default function Catalog({ onOpenPost, onCompose, openAuth }: {
       {pages > 1 && (
         <div className="mt-5 flex items-center justify-center gap-2">
           <button disabled={page === 1} onClick={() => setPage(p => p - 1)}
-            className="rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-[12.5px]
+            className="rounded-full border border-slate-200 bg-[var(--surface)] px-3.5 py-1.5 text-[12.5px]
                        text-slate-600 transition disabled:opacity-30 hover:border-slate-300">
             上一页
           </button>
           <span className="px-2 text-[12.5px] tabular-nums text-slate-500">{page} / {pages}</span>
           <button disabled={page >= pages} onClick={() => setPage(p => p + 1)}
-            className="rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-[12.5px]
+            className="rounded-full border border-slate-200 bg-[var(--surface)] px-3.5 py-1.5 text-[12.5px]
                        text-slate-600 transition disabled:opacity-30 hover:border-slate-300">
             下一页
           </button>

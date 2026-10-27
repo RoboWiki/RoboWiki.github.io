@@ -83,7 +83,7 @@ export default function PartCard({ part, onOpen }: { part: Part; onOpen: (id: st
       type="button"
       onClick={() => onOpen(part.id)}
       className="group relative flex w-full flex-col overflow-hidden rounded-lg border border-slate-200
-                 bg-white text-left outline-none transition-all duration-200
+                 bg-[var(--surface)] text-left outline-none transition-all duration-200
                  hover:-translate-y-[2px] hover:border-slate-300 hover:shadow-[0_14px_30px_rgba(0,0,0,0.12)]
                  focus-visible:border-slate-300"
     >
@@ -91,15 +91,15 @@ export default function PartCard({ part, onOpen }: { part: Part; onOpen: (id: st
       <div
         className="relative flex h-[150px] items-center justify-center overflow-hidden"
         style={{
-          background: 'radial-gradient(120% 100% at 50% 0%, #fafbfc 0%, #ffffff 72%)',
+          background: 'radial-gradient(120% 100% at 50% 0%, var(--plate-bg) 0%, var(--page-bg) 72%)',
         }}
       >
         <div
           className="pointer-events-none absolute inset-0 opacity-70"
           style={{
             backgroundImage:
-              'linear-gradient(to right, rgba(15,23,42,.055) 1px, transparent 1px),'
-              + 'linear-gradient(to bottom, rgba(15,23,42,.055) 1px, transparent 1px)',
+              'linear-gradient(to right, var(--grid-line) 1px, transparent 1px),'
+              + 'linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px)',
             backgroundSize: '22px 22px',
             maskImage: 'radial-gradient(75% 75% at 50% 45%, #000 30%, transparent 100%)',
           }}
@@ -109,11 +109,11 @@ export default function PartCard({ part, onOpen }: { part: Part; onOpen: (id: st
              厂商图基本是白底 —— 纯白板上 white→white 无缝；换成灰板反而会露出照片
              自己的白边（那圈白边就是照片的底色，不是设计）。暗底照片（如 RS04）保持原样。 */
           <div className="relative mx-3 mb-1 mt-8 flex h-[122px] w-[calc(100%-24px)] items-center
-                          justify-center rounded-lg border border-slate-200/80 bg-white p-2.5
+                          justify-center rounded-lg border border-slate-200/80 bg-[var(--photo-plate)] p-2.5
                           shadow-[0_1px_2px_rgba(0,0,0,0.06)]">
             <img src={part.image_url} alt={part.model}
               className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-[1.04]"
-              style={{ mixBlendMode: 'multiply' }}
+              style={{ mixBlendMode: 'var(--photo-blend)' as any }}
               loading="lazy" />
           </div>
         ) : (
@@ -125,21 +125,21 @@ export default function PartCard({ part, onOpen }: { part: Part; onOpen: (id: st
         {/* 角标放最上层，避免被产品图挡住 */}
         <div className="absolute right-2.5 top-2.5 z-10 flex items-center gap-1.5">
           {part.rating_avg != null && (
-            <span className="rounded-full bg-white/85 px-2 py-[3px] text-[10px] font-semibold text-amber-600 backdrop-blur">
+            <span className="rounded-full bg-[var(--surface)]/85 px-2 py-[3px] text-[10px] font-semibold text-amber-600 backdrop-blur">
               ★ {part.rating_avg}
             </span>
           )}
-          <span className="rounded-full bg-white/85 px-1 py-[3px] backdrop-blur">
+          <span className="rounded-full bg-[var(--surface)]/85 px-1 py-[3px] backdrop-blur">
             <Tier tier={part.source_tier} verified={part.verified} />
           </span>
         </div>
 
-        <span className="absolute left-2.5 top-2.5 z-10 rounded-full bg-white/85 px-2 py-[3px]
+        <span className="absolute left-2.5 top-2.5 z-10 rounded-full bg-[var(--surface)]/85 px-2 py-[3px]
                          text-[10px] text-slate-600 backdrop-blur">
           {part.subtype_label}
         </span>
         {!part.image_url && (
-          <span className="absolute bottom-2 right-2.5 z-10 rounded-full bg-white/80 px-1.5 py-[2px]
+          <span className="absolute bottom-2 right-2.5 z-10 rounded-full bg-[var(--surface)]/80 px-1.5 py-[2px]
                            text-[9.5px] text-slate-400 backdrop-blur"
             title="暂无厂商产品图，此处为按真实 OD/L 尺寸生成的示意图">
             示意图
