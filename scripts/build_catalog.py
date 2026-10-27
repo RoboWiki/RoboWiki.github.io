@@ -261,7 +261,8 @@ SENSORS = [
 ]
 
 
-def build(items, keys, category, subtype_default=None, extra_note_key="note"):
+def build(items, keys, category, subtype_default=None, extra_note_key="note",
+          id_prefix=None):
     out = []
     for it in items:
         it = dict(it)
@@ -276,7 +277,7 @@ def build(items, keys, category, subtype_default=None, extra_note_key="note"):
                 continue
             specs[k] = it.pop(k, None)
         out.append({
-            "id": f"{category[:4]}-{slug(it['vendor'])}-{slug(it['model'])}",
+            "id": f"{(id_prefix or category[:4])}-{slug(it['vendor'])}-{slug(it['model'])}",
             "category": category,
             "subtype": subtype,
             "vendor": it["vendor"],
@@ -300,18 +301,31 @@ def main():
     # 下位机里 MCU/驱动是 subtype=mcu；桥接件单独标
     for r, src in zip(lows, LOW):
         r["subtype"] = "bridge" if "桥" in (src.get("encoder") or "") else "mcu"
+
+    # 传感器按子类拆成独立品类（IMU / 激光雷达 / 深度相机），其余并入「其余模块」。
+    # 为什么拆：这三类是四足里各自独立决策的部件，混在「传感器」一个大类里，
+    # 选型时既看不到各家横向对比，也没法给单类做专属字段。
+    SENSOR_CATEGORY = {
+        "imu": "imu", "lidar": "lidar", "camera": "camera",
+        "force": "module", "encoder": "module",
+    }
     sens = []
     for it in SENSORS:
         st = it["subtype"]
-        one = build([it], SENSOR_KEYS, "sensor", st)
-        sens += one
+        cat = SENSOR_CATEGORY.get(st, "module")
+        # id 前缀固定用 sens，不随品类改 —— 否则已有的引用（后台留痕、外链）全断
+        sens += build([it], SENSOR_KEYS, cat, st, id_prefix="sens")
 
     for name, rows in (("controllers_high", highs), ("controllers_low", lows),
                        ("sensors", sens)):
         p = DATA / f"{name}.json"
         p.write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
         print(f"wrote {p.name}: {len(rows)} 行")
-    print(f"  上位机 {len(highs)} / 下位机 {len(lows)} / 传感器 {len(sens)}")
+
+    import collections
+    by = collections.Counter(r["category"] for r in highs + lows + sens)
+    print(f"  上位机 {len(highs)} / 下位机 {len(lows)}")
+    print("  按品类：" + "、".join(f"{k} {v}" for k, v in sorted(by.items())))
 
 
 if __name__ == "__main__":

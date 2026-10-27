@@ -13,12 +13,24 @@ from ..deps import Db, MaybeUser
 
 router = APIRouter(tags=["catalog"])
 
+#: 品类。顺序即展示顺序：关节电机是重点，放最前。
+#: 机械结构 / 电池 / 线束 目前**没有收录** —— 不是漏了，是没有可信来源，
+#: 宁可空着也不编（见 README 的口径纪律）。
 CATEGORY_LABELS = {
     "actuator": "关节电机",
-    "controller_high": "主控 · 上位机",
-    "controller_low": "主控 · 下位机",
-    "sensor": "传感器",
+    "controller_high": "上位机",
+    "controller_low": "下位机",
+    "structure": "机械结构",
+    "imu": "IMU",
+    "lidar": "激光雷达",
+    "camera": "深度相机",
+    "battery": "电池",
+    "wiring": "线束",
+    "module": "其余模块",
 }
+
+#: 还没有数据的品类：前端要显示「待补充」，不能当成 500 或空列表了事
+EMPTY_CATEGORIES = {"structure", "battery", "wiring"}
 SUBTYPE_LABELS = {
     "qdd": "准直驱 QDD", "planetary": "行星减速", "harmonic": "谐波减速",
     "direct": "直驱", "sbc": "单板计算机", "mcu": "MCU / 驱动器",
@@ -141,6 +153,7 @@ def catalog(db: Db, category: str | None = None):
         total = db.exec(select(func.count(Part.id))).one()
     return {"total": int(total), "category": category,
             "categories": CATEGORY_LABELS, "subtypes": SUBTYPE_LABELS,
+            "empty_categories": sorted(EMPTY_CATEGORIES),
             "facets": rows,
             "vendors": [{"vendor": v, "n": int(n)} for v, n in vendors],
             "sortable": list(SORTABLE)}

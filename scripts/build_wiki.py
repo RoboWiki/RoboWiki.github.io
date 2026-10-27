@@ -14,19 +14,29 @@ import hashlib
 import json
 import pathlib
 import re
+import shutil
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 OUT = ROOT / "wiki" / "docs"
 
+#: 品类。顺序即展示顺序 —— 关节电机是重点，放最前。
+#: 机械结构 / 电池 / 线束 没有收录：不是漏了，是没有可信来源，宁缺不编。
 CATS = [
-    ("actuator", "关节电机", "四足 12 个关节的选型主战场"),
-    ("controller_high", "上位机", "策略推理与感知"),
-    ("controller_low", "下位机", "力矩闭环与总线"),
-    ("sensor", "传感器", "IMU / 视觉 / 力触觉"),
+    ("actuator", "关节电机", "选型主战场"),
+    ("controller_high", "上位机", "推理与感知"),
+    ("controller_low", "下位机", "力矩闭环"),
+    ("structure", "机械结构", "待收录"),
+    ("imu", "IMU", "姿态与振动"),
+    ("lidar", "激光雷达", "地形与建图"),
+    ("camera", "深度相机", "视觉感知"),
+    ("battery", "电池", "待收录"),
+    ("wiring", "线束", "待收录"),
+    ("module", "其余模块", "力触觉 / 编码器"),
 ]
 
 CAT_CN = {c: n for c, n, _ in CATS}
+CAT_LABEL = CAT_CN
 
 
 def slug(s: str) -> str:
@@ -64,9 +74,17 @@ def num(v, digits: int = 3) -> str:
 
 
 def load() -> list[dict]:
-    rows = json.loads((DATA / "motors.json").read_text(encoding="utf-8"))
-    for fn in ("controllers_high.json", "controllers_low.json", "sensors.json"):
-        rows += json.loads((DATA / fn).read_text(encoding="utf-8"))
+    """读 data/ 下的目录文件。
+
+    其它品类的 json 可能被 scripts/focus_data.py 移进备份区
+    （当前只做关节电机），所以缺文件是正常状态，不是错误。
+    """
+    rows: list[dict] = []
+    for fn in ("motors.json", "controllers_high.json", "controllers_low.json",
+               "sensors.json"):
+        p = DATA / fn
+        if p.exists():
+            rows += json.loads(p.read_text(encoding="utf-8"))
     return rows
 
 
@@ -142,8 +160,21 @@ title: {title}
 def main() -> None:
     rows = load()
     OUT.mkdir(parents=True, exist_ok=True)
-    for d in ("parts/actuator", "parts/controller_high", "parts/controller_low", "parts/sensor"):
-        (OUT / d).mkdir(parents=True, exist_ok=True)
+    # 目录按 CATS 建（含空品类：它们的 index.md 要写「未收录」说明）
+    #
+    # 先清掉上一轮的产物：品类会变（sensor 拆成 imu/lidar/camera）、厂商会变
+    # （外部 focus 收敛时移出 10 家），不清就会留下「已经不存在的型号页」，
+    # 那些页面还能被访问到，等于把废弃数据留在线上。
+    # 手写页面（explore.md）不在清理范围内。
+    GENERATED = ["index.md", "semantics.md", "protocols.md", "sources.md"]
+    for name in GENERATED:
+        p = OUT / name
+        if p.exists():
+            p.unlink()
+    if (OUT / "parts").exists():
+        shutil.rmtree(OUT / "parts")
+    for c, _, _ in CATS:
+        (OUT / "parts" / c).mkdir(parents=True, exist_ok=True)
 
     # ── 每个型号独立一页 ─────────────────────────────────────────────
     # 为什么要铺开成 191 页：这样「AK80-9 V3 到底怎么样」才有能分享、能被搜到、
@@ -234,6 +265,189 @@ def main() -> None:
             out.append(f"| {label} | {val} |")
         return "\n".join(out)
 
+    # ── 每页要用的派生量（只对关节电机算，其它品类没有这些语义）─────────
+    def metrics(r: dict) -> list[tuple[str, str, str, str]]:
+        """返回 (指标, 值, 判据, 级别) —— 级别 good/warn/bad/na"""
+        s = r.get("specs") or {}
+        tau, rated, mass = s.get("tau_peak_Nm"), s.get("tau_rated_Nm"), s.get("mass_kg")
+        arm, rpm = s.get("armature_kgm2"), s.get("speed_noload_rpm")
+        out: list[tuple[str, str, str, str]] = []
+
+        if tau and mass:
+            d = tau / mass
+            lvl = "bad" if d > 200 else ("warn" if d > 120 else "good")
+            out.append(("扭矩密度", f"{d:.0f} N·m/kg",
+                        ">120 需复核，>200 不可信（受磁钢与散热限制）", lvl))
+        else:
+            out.append(("扭矩密度", "—", "缺峰值扭矩或质量，不推算", "na"))
+
+        if tau and rated:
+            pr = tau / rated
+            lvl = "bad" if pr > 5 else ("warn" if pr > 3 else "good")
+            out.append(("峰值/额定比", f"{pr:.1f}",
+                        ">3 须给持续时间与初始温度，>5 基本等同堵转", lvl))
+        else:
+            out.append(("峰值/额定比", "—", "缺额定扭矩；不要假设它等于峰值的一半", "na"))
+
+        if rpm:
+            out.append(("空载角速度 ω", f"{rpm * 2 * 3.141592653589793 / 60:.1f} rad/s",
+                        "× 腿长 = 腿尖速度上限", "good"))
+        else:
+            out.append(("空载角速度 ω", "—", "缺空载转速", "na"))
+
+        if arm:
+            # 反射惯量占比：需要一个腿的参考值。这里把假设写在判据里，不留暗箱。
+            m_leg, l_leg = 2.0, 0.5
+            app = arm + m_leg * (l_leg / 2) ** 2
+            share = arm / app * 100
+            lvl = "bad" if share > 70 else ("warn" if share > 45 else "good")
+            out.append(("反射惯量占比", f"{share:.0f}%",
+                        f"假设单腿 {m_leg} kg、腿长 {l_leg} m 绕髋摆；占比越高腿越「黏」", lvl))
+        else:
+            out.append(("反射惯量占比", "—", "缺 armature", "na"))
+        return out
+
+    from urllib.parse import quote_plus
+
+    def resources(r: dict) -> str:
+        """资料与链接。真有的放前面并标「官方」，其余标「检索入口」。"""
+        s = r.get("specs") or {}
+        q = quote_plus(f"{r['vendor']} {r['model']}")
+        qz = quote_plus(f"{r['model']}")
+        rows: list[tuple[str, str, str]] = []
+
+        if r.get("url"):
+            rows.append(("官方页面 / 数据出处", r["url"], "本页数字的出处"))
+        if s.get("image_source"):
+            rows.append(("产品图出处", "", str(s["image_source"])))
+        if r.get("origin"):
+            rows.append(("收录说明", "", str(r["origin"])[:160]))
+
+        # 以下都是**检索入口**，不是官方链接 —— 页面上会标明
+        rows.append(("datasheet 检索", f"https://www.google.com/search?q={q}+datasheet",
+                     "厂商常把 PDF 放在产品页附件里"))
+        rows.append(("SDK / 驱动检索", f"https://github.com/search?q={qz}&type=repositories",
+                     "找现成的 CAN 驱动与示例"))
+        rows.append(("价格与货期检索", f"https://www.google.com/search?q={q}+%E4%BB%B7%E6%A0%BC",
+                     "本站不卖货，报价请向厂商确认"))
+        rows.append(("本站口径说明", "/semantics", "这些字段什么意思、缺了代表什么"))
+
+        body = []
+        for name, url, note in rows:
+            if url:
+                body.append(f'<tr><td><a href="{url}" target="_blank" rel="noopener">{name}</a></td>'
+                            f'<td>{note}</td></tr>')
+            else:
+                body.append(f'<tr><td class="rs-plain">{name}</td><td>{note}</td></tr>')
+        return ('<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead>'
+                '<tbody>' + "".join(body) + "</tbody></table>")
+
+    def advice(r: dict) -> list[tuple[str, str]]:
+        """使用建议：全部由参数推算，页面上会标「按参数推断，非实测」。"""
+        s = r.get("specs") or {}
+        cat = r["category"]
+        out: list[tuple[str, str]] = []
+        tau = s.get("tau_peak_Nm")
+        rated = s.get("tau_rated_Nm")
+        rpm = s.get("speed_noload_rpm")
+        gear = s.get("gear")
+        arm = s.get("armature_kgm2")
+        mass = s.get("mass_kg")
+
+        if cat == "actuator":
+            if arm:
+                out.append(("仿真里填哪个字段",
+                            f"MJCF/URDF 的 armature 填 **{num(arm, 4)}**（这是输出端值）。"
+                            f"不要当转子惯量再乘 N² —— "
+                            f"{'会差 ' + num((gear or 1) ** 2, 3) + ' 倍' if gear else '会差一个 N² 量级'}。"))
+            if rpm:
+                out.append(("腿尖速度上限",
+                            f"空载 {num(rpm)} rpm ≈ {rpm * 0.10472:.1f} rad/s。"
+                            f"腿长 0.4 m 时理论腿尖上限 ≈ {rpm * 0.10472 * 0.4:.1f} m/s；"
+                            f"实际打 6 折再定目标速度。"))
+            if tau and rated:
+                pr = tau / rated
+                if pr > 3:
+                    out.append(("峰值只能用秒级",
+                                f"峰值/额定 = {pr:.1f}。连续负载应当按额定 {num(rated)} N·m 设计，"
+                                f"峰值只在加速/触地瞬间用。超 3 倍时必须向厂商要「持续时间 + 初始温度」。"))
+                else:
+                    out.append(("峰值与额定的用法",
+                                f"峰值/额定 = {pr:.1f}，这个比值正常。"
+                                f"连续按 {num(rated)} N·m、瞬时按 {num(tau)} N·m 设计即可。"))
+            elif tau and not rated:
+                out.append(("额定扭矩未知怎么办",
+                            "只有峰值。按厂商惯例不要假设「额定 = 峰值/2」——"
+                            "有的件是 3:1，有的只有 1.2:1。先向厂商要额定值再做热设计。"))
+            if gear and gear >= 30:
+                out.append(("高减速比的代价",
+                            f"减速比 {num(gear)}，反射惯量会被放大。膝关节这类要快速摆动的关节，"
+                            f"PD 里 kp 别照抄直驱参数，先用低 kp 高 kd 起步。"))
+            elif gear and gear <= 10:
+                out.append(("准直驱要配好电流环",
+                            f"减速比只有 {num(gear)}，力矩靠电流直接给。"
+                            f"电流环带宽低于 8 kHz 时，触地冲击会明显传到腿上。"))
+            if mass and tau:
+                out.append(("算你需要多大扭矩",
+                            "静态站立（两腿支撑）单关节需求 ≈ 整机质量 × 9.81 × 腿长 / 4。"
+                            "例：20 kg、腿长 0.4 m → 约 20 N·m 保持扭矩，"
+                            "再乘 1.5–2 的安全系数才是你该选的额定值。"))
+            if not s.get("price_cny"):
+                out.append(("报价要自己问", "本站没有这个型号的公开价格。"
+                            "同机座不同绕组的价差可能很小，但扭矩差很多 —— 问价时把型号后缀写全。"))
+
+        elif cat == "controller_high":
+            if s.get("npu_tops"):
+                out.append(("算力口径", f"{num(s['npu_tops'])} TOPS 通常是 INT8。"
+                            f"跑 FP16 的视觉模型按 1/2 估，跑 Transformer 策略还要再打折。"))
+            if s.get("ram_gb"):
+                out.append(("内存是硬门槛", f"{num(s['ram_gb'])} GB 要同时装相机流、点云和策略。"
+                            f"做视觉重的方案直接看 16 GB 档。"))
+            if s.get("power_max_w"):
+                out.append(("功耗与散热", f"峰值 {num(s['power_max_w'])} W。"
+                            f"整机电池与线束要按这个数留余量，别按典型功耗选。"))
+        elif cat == "controller_low":
+            if s.get("current_loop_khz"):
+                out.append(("力矩带宽", f"电流环 {num(s['current_loop_khz'])} kHz。"
+                            f"做高动态力矩控制时，这个数比 MCU 主频更决定手感。"))
+            if s.get("can"):
+                out.append(("总线够不够", f"{s.get('can')} 路 CAN"
+                            f"{'（支持 FD）' if s.get('canfd') else ''}。"
+                            f"12 个关节 × 1 kHz 反馈，单路 CAN 2.0 会吃紧，优先 FD 或多路分载。"))
+        elif cat == "imu":
+            if s.get("odr_hz"):
+                out.append(("ODR 与带宽", f"ODR {num(s['odr_hz'])} Hz。"
+                            f"四足触地冲击的主要能量在 100–300 Hz，采样要够但别忘低通。"))
+            out.append(("装在哪里", "尽量远离电机与减速器，或做温补 —— 四足跑久了 IMU 附近升温会有零偏漂移。"))
+        elif cat in ("camera", "lidar"):
+            out.append(("先算视场与量程", "近距离抓地形看深度量程下限，别只看最大值；"
+                        "楼梯这类弱纹理场景，结构光/ToF 与双目表现差别很大。"))
+        elif cat == "module":
+            out.append(("按子类看", "这一类是「其余模块」，字段不统一。"
+                        "用之前先确认接口与供电，再谈精度。"))
+
+        if not out:
+            out.append(("暂无建议", "这个型号的关键参数还缺得多，先补齐再谈用法。"))
+        return out
+
+    METRIC_CLASS = {"good": "pm-good", "warn": "pm-warn", "bad": "pm-bad", "na": "pm-na"}
+
+    def variants(r: dict) -> list[dict]:
+        """同机座变体：同厂商 + 同外径的其他型号。
+
+        这是最该看的一栏 —— 达妙 J4340 的 V1.0（27 N·m）和 V1.1（40 N·m）
+        质量都是 0.362 kg，也就是说多出来的扭矩是绕组和电流换的，不是尺寸换的。
+        按扭矩估质量的拟合式会在这里多收 30–47%。
+        """
+        s = r.get("specs") or {}
+        od = s.get("od_mm")
+        if not od:
+            return []
+        return [x for x in rows
+                if x["id"] != r["id"] and x["category"] == "actuator"
+                and x["vendor"] == r["vendor"]
+                and (x.get("specs") or {}).get("od_mm") == od]
+
     n_part = 0
     for r in rows:
         cat, pid = r["category"], r["id"]
@@ -241,32 +455,158 @@ def main() -> None:
         fname = OUT / "parts" / cat / f"{slugs[pid]}.md"
         fname.parent.mkdir(parents=True, exist_ok=True)
         img = s.get("image_url")
-        img_md = (f'\n<img src="{img}" alt="{r["model"]}" '
-                  f'style="max-height:220px;border-radius:8px;'
-                  f'border:1px solid var(--vp-c-divider);padding:6px;background:#fff" />\n'
+        img_md = (f'<img src="{img}" alt="{r["model"]}" class="part-photo" />\n'
                   if img else "")
         conflicts = "【来源冲突】" in (r.get("notes") or "")
+
+        # 官方参数一侧：只放关键字段，全部参数放到下面单独一节
+        KEY = ["tau_peak_Nm", "tau_rated_Nm", "gear", "speed_noload_rpm", "mass_kg",
+               "armature_kgm2", "od_mm", "l_mm", "voltage_V", "kt_Nm_per_A",
+               "soc", "npu_tops", "ram_gb", "mcu", "can", "iface", "bits"]
+        keyrows = "\n".join(
+            f"| {SPEC_LABEL.get(k, k)} | "
+            f"{'—' if s.get(k) is None else (s[k] if isinstance(s[k], str) else num(s[k], 4))} |"
+            for k in KEY if k in s)
+        if not keyrows:
+            keyrows = "| — | 这一类暂无核心字段 |"
+
+        # 社区一侧：没有数据就明说，不用示例充数
+        comm = f"""
+<div class="part-comm">
+<div class="part-comm-head">
+  <span class="part-comm-title">实际使用</span>
+  <span class="part-score-none">暂无评分</span>
+</div>
+
+<div class="part-score-empty">
+  <div class="part-score-big">—</div>
+  <div class="part-score-sub">0 人打分</div>
+</div>
+
+<p class="part-comm-hint">
+还没有人提交过使用反馈。<strong>有实测就来写</strong> —— 写在页尾的讨论里，
+第一行用 <code>评分: 4/5</code> 的格式，后面的内容请带上具体工况
+（负载、占空比、环境温度、跑了多久）。只写「好用 / 不好用」对下一个人没有价值。
+</p>
+
+<p class="part-comm-hint">
+为什么这里空着：这个站<strong>不灌示例评价</strong>。
+早先灌过 21 条「实测」，技术观察是真的，但温度、时长、作者都是编的 ——
+在一个立意是「真实使用信息」的站里，那比空着坏得多。
+</p>
+
+<a class="part-comm-jump" href="#这一页的讨论">跳到讨论 ↓</a>
+</div>
+"""
+
+        advice_md = "\n".join(f"- **{t}** —— {b}" for t, b in advice(r))
+
+        # 关节电机的深度指标
+        metric_md = ""
+        if cat == "actuator":
+            mr = metrics(r)
+            body = "\n".join(
+                f'<div class="pm-row">'
+                f'<span class="pm-k">{k}</span>'
+                f'<span class="pm-v">{v}</span>'
+                f'<span class="pm-note">{n}</span></div>'
+                for k, v, n, lvl in mr)
+            metric_md = f"""
+## 选型指标
+
+<div class="pm-table">
+{body}
+</div>
+
+::: tip 怎么用这三行
+**扭矩密度**决定「同样扭矩下多重」；**峰值/额定比**决定「这个数能信多久」；
+**反射惯量占比**决定「这条腿能不能快速摆动」。
+三者一起看，比单看峰值扭矩有用得多 —— 高减速比件通常前两项好看、第三项很糟。
+:::
+"""
+
+        # 同机座变体
+        var_md = ""
+        vs = variants(r)
+        if vs:
+            vrows = "\n".join(
+                f"| [{x['model']}](/{'parts'}/{x['category']}/{slugs[x['id']]}) "
+                f"| {num((x.get('specs') or {{}}).get('tau_peak_Nm'))} "
+                f"| {num((x.get('specs') or {{}}).get('mass_kg'))} "
+                f"| {num((x.get('specs') or {{}}).get('gear'))} |"
+                for x in vs)
+            var_md = f"""
+## 同机座变体（外径 {num(s.get('od_mm'))} mm）
+
+同一个机座上换绕组 / 换减速比出来的型号。**质量往往一样，扭矩可以差 50% 以上** ——
+多出来的扭矩是电流换的，不是尺寸换的，所以别按扭矩去估质量。
+
+| 型号 | 峰值 τ N·m | 质量 kg | 减速比 |
+|---|---|---|---|
+{vrows}
+"""
+
         fname.write_text(FRONT.format(title=f'{r["vendor"]} {r["model"]}') + f"""
 # {r["vendor"]} {r["model"]}
 
-{img_md}
-`{r.get("subtype_label") or r["subtype"]}` · 来源等级
-**{r["source_tier"]}{" ✓ 已核对" if r["verified"] else ""}**
-{f'· 核对日期 {r["last_checked"]}' if r.get("last_checked") else ""}
-{f'· 参考价 ¥{int(r["price_cny"]):,}' if r.get("price_cny") else "· 无公开报价"}
+<div class="part-hero">
+  <div class="part-hero-left">
+    {img_md}
+  </div>
+  <div class="part-hero-right">
+    <div class="part-tags">
+      <span class="part-tag">{CAT_LABEL.get(cat, cat)}</span>
+      <span class="part-tag sub">{r.get("subtype_label") or r["subtype"]}</span>
+      <span class="part-tag tier{r["source_tier"]}">来源 {r["source_tier"]}{" ✓ 已核对" if r["verified"] else ""}</span>
+      {f'<span class="part-tag">¥{int(r["price_cny"]):,}</span>' if r.get("price_cny") else '<span class="part-tag muted">无公开报价</span>'}
+    </div>
 
-{"::: warning 来源冲突" + chr(10) + "这份数据的两处来源给出了不同的值，下方 notes 里写明了分歧，未做覆盖。" + chr(10) + ":::" + chr(10) if conflicts else ""}
-## 参数
+<div class="part-split">
+<div class="part-official">
+
+#### 官方参数
+
+| 字段 | 值 |
+|---|---|
+{keyrows}
+
+<div class="part-src">
+来源：<a href="{r.get("url") or "#"}">{r.get("url") or "—"}</a><br/>
+收录：{r.get("origin") or "—"}<br/>
+核对：{r.get("last_checked") or "—"}
+</div>
+
+</div>
+{comm}
+</div>
+  </div>
+</div>
+
+{"::: warning 来源冲突" + chr(10) + "这份数据的来源之间有分歧，未经覆盖，写在下方「备注」里。" + chr(10) + ":::" + chr(10) if conflicts else ""}
+## 使用建议
+
+::: warning 按参数推断，不是实测
+下面每条都是由这个型号的字段算出来的（公式写在句子里）。
+真正的使用经验只能来自用过的人 —— 请写在页尾的讨论里。
+:::
+
+{advice_md}
+
+{metric_md}
+{var_md}
+## 全部参数
 
 | 字段 | 值 |
 |---|---|
 {spec_rows(s)}
 
-## 来源与口径
+## 资料与链接
 
-- 来源：{r.get("url") or "—"}
-- 收录说明：{r.get("origin") or "—"}
-- 备注：{r.get("notes") or "—"}
+{resources(r)}
+
+## 备注
+
+{r.get("notes") or "—"}
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。
@@ -516,11 +856,15 @@ def main() -> None:
         {"text": "部件手册", "items": [
             {"text": "索引", "link": "/parts/"},
             {"text": "关节电机", "collapsed": False, "items": act_items},
-            {"text": "上位机", "link": "/parts/controller_high/"},
-            {"text": "下位机", "link": "/parts/controller_low/"},
-            {"text": "传感器", "link": "/parts/sensor/"},
         ]},
     ]
+    # 其余品类按 CATS 生成（含暂无数据的：点进去是「未收录」说明页，
+    # 这样读者知道这一类存在但还没收，而不是以为漏了）
+    for c, name, _ in CATS:
+        if c == "actuator":
+            continue
+        sidebar["/parts/"][0]["items"].append(
+            {"text": name, "link": f"/parts/{c}/"})
 
     sem = json.loads((DATA / ".." / "backend" / "app" / "api" / "routes" /
                       "_semantics_cache.json").read_text(encoding="utf-8")) \

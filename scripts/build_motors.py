@@ -339,6 +339,23 @@ def load_motors() -> list[dict]:
         if note not in rec["notes"]:
             rec["notes"] = (rec["notes"] + " " + note).strip()
 
+    # 焦点过滤：data/focus.json 存在时只保留列出的厂商 / 品类。
+    # 为什么要在这里过滤而不是靠人事后手动删：重跑采集脚本会把
+    # 已经移出的厂商带回来 —— 那是最容易发生的数据事故。
+    focus_path = ROOT / "data" / "focus.json"
+    if focus_path.exists():
+        fo = json.loads(focus_path.read_text(encoding="utf-8"))
+        keep_v = set(fo.get("vendors") or [])
+        keep_c = set(fo.get("categories") or [])
+        before = len(merged)
+        merged = {
+            k: v for k, v in merged.items()
+            if (not keep_v or v["vendor"] in keep_v)
+            and (not keep_c or v["category"] in keep_c)
+        }
+        print(f"  focus.json 过滤：{before} -> {len(merged)} 行"
+              f"（{len(keep_v)} 家厂商 / {len(keep_c)} 个品类）")
+
     return list(merged.values())
 
 

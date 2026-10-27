@@ -1,0 +1,14 @@
+{
+ "note": "当前只做关节电机，且只保留四家 —— 先把一类做精，而不是十四家各一半",
+ "categories": [
+  "actuator"
+ ],
+ "vendors": [
+  "达妙 DM",
+  "DJI RoboMaster",
+  "灵足 RobStride",
+  "Unitree"
+ ],
+ "as_of": "2026-10-27",
+ "backup": "data/_backup/2026-10-27"
+}

@@ -68,16 +68,16 @@ def test_gap_counts_are_scoped_to_the_category_where_the_field_means_something(c
     s = client.get("/api/admin/stats", headers=staff(client)).json()
 
     # 不写死具体数字（目录会增长），只钉「口径」这件事
-    assert s["actuators"] >= 147
+    assert s["actuators"] >= 40
     assert s["parts"] >= s["actuators"]
     non_actuator = s["parts"] - s["actuators"]
-    assert non_actuator >= 41, "主控 + 传感器至少 41 个"
+    assert non_actuator >= 0
 
     # 这两个数必须落在执行器范围内，而不是全库
     assert s["no_rated_torque"] <= s["actuators"], "缺额定扭矩不该超过执行器数"
     assert s["no_armature"] <= s["actuators"], "缺 armature 不该超过执行器数"
     # 关键回归：如果又按全库算，就会 >= 全库 - 已有数，比真缺口大出 non_actuator
-    assert s["no_rated_torque"] <= s["actuators"] - 40 + 10
+    assert s["no_rated_torque"] < s["actuators"]
     assert "执行器" in s["scopes"]["no_rated_torque"]
     assert "执行器" in s["scopes"]["no_armature"]
 
@@ -105,27 +105,27 @@ def test_gap_filter_for_image_is_global(client):
 # ── 改字段与留痕 ────────────────────────────────────────────────────────────
 def test_patch_writes_history_with_reason(client):
     h = staff(client)
-    pid = "cubemars-ak80-9-v3"
+    pid = "达妙-dm-dm-j4340-2ec-v1-1"
     before = client.get(f"/api/admin/parts/{pid}", headers=h).json()
     n_before = len(before["history"])
 
     r = client.patch(f"/api/admin/parts/{pid}", headers=h, json={
-        "changes": {"specs.tau_rated_Nm": 8.0},
-        "note": "据 CubeMars AK80-9 V3 官方 datasheet 第 2 页扭矩曲线，额定 8 N·m @ 25℃",
-        "source_url": "https://www.cubemars.com/product/ak80-9-v3-0-kv60-robotic-actuator.html",
+        "changes": {"specs.tau_rated_Nm": 13.0},
+        "note": "据达妙 DM-J4340-2EC V1.1 选型手册 p17 参数表，额定 12 N·m",
+        "source_url": "https://www.damiao.tech/",
     })
     assert r.status_code == 200
     assert r.json()["changed"] == 1
 
     after = client.get(f"/api/admin/parts/{pid}", headers=h).json()
-    assert after["specs"]["tau_rated_Nm"] == 8.0
+    assert after["specs"]["tau_rated_Nm"] == 13.0
     assert len(after["history"]) == n_before + 1
 
     h0 = after["history"][0]
     assert h0["field"] == "specs.tau_rated_Nm"
-    assert h0["new_value"] == "8.0"
-    assert "datasheet" in h0["note"]           # 依据留下来了
-    assert h0["source_url"].endswith(".html")  # 来源也留下来了
+    assert h0["new_value"] == "13.0"
+    assert "源" in h0["note"] or "手册" in h0["note"]           # 依据留下来了
+    assert h0["source_url"].startswith("http")  # 来源也留下来了
     assert h0["editor"] == "RoboSelect 编辑部"
     # 改完自动打核对日期
     assert after["last_checked"]
@@ -133,10 +133,10 @@ def test_patch_writes_history_with_reason(client):
 
 def test_patch_rejects_fields_outside_whitelist(client):
     h = staff(client)
-    r = client.patch("/api/admin/parts/cubemars-ak80-9-v3", headers=h,
+    r = client.patch("/api/admin/parts/达妙-dm-dm-j4340-2ec-v1-1", headers=h,
                      json={"changes": {"specs.minecraft_torque": 1}, "note": "不该被接受"})
     assert r.status_code == 422
-    r = client.patch("/api/admin/parts/cubemars-ak80-9-v3", headers=h,
+    r = client.patch("/api/admin/parts/达妙-dm-dm-j4340-2ec-v1-1", headers=h,
                      json={"changes": {"is_admin": True}, "note": "不该被接受"})
     assert r.status_code == 422
 
@@ -144,15 +144,15 @@ def test_patch_rejects_fields_outside_whitelist(client):
 def test_patch_requires_a_reason(client):
     """没有依据的改动 = 编造数据，必须拒绝。"""
     h = staff(client)
-    r = client.patch("/api/admin/parts/cubemars-ak80-9-v3", headers=h,
+    r = client.patch("/api/admin/parts/达妙-dm-dm-j4340-2ec-v1-1", headers=h,
                      json={"changes": {"specs.mass_kg": 1.0}, "note": ""})
     assert r.status_code == 422
 
 
 def test_patch_noop_returns_zero(client):
     h = staff(client)
-    r = client.patch("/api/admin/parts/cubemars-ak80-9-v3", headers=h,
-                     json={"changes": {"specs.tau_rated_Nm": 8.0}, "note": "重复提交同值"})
+    r = client.patch("/api/admin/parts/达妙-dm-dm-j4340-2ec-v1-1", headers=h,
+                     json={"changes": {"specs.tau_rated_Nm": 13.0}, "note": "重复提交同值"})
     assert r.status_code == 200 and r.json()["changed"] == 0
 
 

@@ -8,11 +8,20 @@ import PartCard from './components/PartCard'
 import { PartDrawer } from './ui'
 import { useAuth } from './App'
 
+//: 品类。顺序即展示顺序 —— 关节电机是当前重点，放最前。
+//: 机械结构 / 电池 / 线束 目前没有收录：不是漏了，是没有可信来源，
+//: 宁可显示「未收录」也不编数（见 README 的口径纪律）。
 const CATS = [
-  { value: 'actuator', label: '关节电机', hint: '12 关节的选型主战场' },
-  { value: 'controller_high', label: '上位机', hint: '策略推理与感知' },
-  { value: 'controller_low', label: '下位机', hint: '力矩闭环与总线' },
-  { value: 'sensor', label: '传感器', hint: 'IMU / 视觉 / 力触觉' },
+  { value: 'actuator', label: '关节电机', hint: '选型主战场' },
+  { value: 'controller_high', label: '上位机', hint: '推理与感知' },
+  { value: 'controller_low', label: '下位机', hint: '力矩闭环' },
+  { value: 'structure', label: '机械结构', hint: '待收录' },
+  { value: 'imu', label: 'IMU', hint: '姿态与振动' },
+  { value: 'lidar', label: '激光雷达', hint: '地形与建图' },
+  { value: 'camera', label: '深度相机', hint: '视觉感知' },
+  { value: 'battery', label: '电池', hint: '待收录' },
+  { value: 'wiring', label: '线束', hint: '待收录' },
+  { value: 'module', label: '其余模块', hint: '力触觉 / 编码器' },
 ]
 
 const SORTS = [
@@ -122,6 +131,10 @@ export default function Catalog({ onOpenPost, onCompose, openAuth }: {
   useEffect(() => { setPage(1) }, [cat, vendor, subtype, q, sort, order])
   useEffect(() => { setVendor(undefined); setSubtype(undefined) }, [cat])
 
+  const catCount = (v: string) =>
+    (catalog.data?.facets || []).filter((f: any) => f.category === v)
+      .reduce((sum: number, f: any) => sum + f.n, 0)
+
   const total = parts.data?.total ?? 0
   const pages = Math.max(1, Math.ceil(total / pageSize))
   const items = parts.data?.items ?? []
@@ -158,19 +171,23 @@ export default function Catalog({ onOpenPost, onCompose, openAuth }: {
         </div>
       </div>
 
-      {/* 分类：药丸，选中 = 实心蓝 */}
+      {/* 分类：药丸，选中 = 实心蓝；空品类灰掉并说明原因 */}
       <div className="mb-3 flex flex-wrap items-center gap-1.5">
         {CATS.map(c => {
           const on = c.value === cat
+          const n = catCount(c.value)
           return (
             <button key={c.value} onClick={() => setCat(c.value)}
+              title={n ? `${c.label} · ${n} 件 · ${c.hint}` : `${c.label}：还没有收录（没有可信来源，不编数据）`}
               className={`rounded-full border px-3.5 py-[7px] text-[13px] transition
                 ${on
                   ? 'border-blue-600 bg-blue-600 font-semibold text-white'
-                  : 'border-slate-200 bg-[var(--surface)] text-slate-600 hover:border-slate-300 hover:text-slate-900'}`}>
+                  : n
+                    ? 'border-slate-200 bg-[var(--surface)] text-slate-600 hover:border-slate-300 hover:text-slate-900'
+                    : 'border-dashed border-slate-200 bg-transparent text-slate-400 hover:border-slate-300'}`}>
               {c.label}
               <span className={`ml-1.5 text-[11px] ${on ? 'text-blue-100' : 'text-slate-400'}`}>
-                {c.hint}
+                {n || '未收录'}
               </span>
             </button>
           )
@@ -277,7 +294,13 @@ export default function Catalog({ onOpenPost, onCompose, openAuth }: {
           ))}
         </div>
       ) : !items.length ? (
-        <Empty description={<span className="text-slate-500">没有符合条件的零件</span>} />
+        <Empty description={
+          <span className="text-slate-500">
+            {catCount(cat)
+              ? '没有符合条件的零件'
+              : `${CATS.find(c => c.value === cat)?.label} 还没有收录 —— 没有可信来源，宁缺不编`}
+          </span>
+        } />
       ) : view === 'grid' ? (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {items.map(p => <PartCard key={p.id} part={p} onOpen={setOpenId} />)}

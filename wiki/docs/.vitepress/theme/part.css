@@ -1,0 +1,160 @@
+/* 型号页：官方参数 / 社区评价 双栏 + 关节电机指标条。
+   样式单独放，避免和 VitePress 默认主题的正文样式打架。 */
+
+/* ── 顶部条 ───────────────────────────────────────────────────────── */
+.part-hero { margin: 0.5rem 0 1.2rem; }
+.part-hero-left:empty { display: none; }
+.part-photo {
+  display: block;
+  max-height: 200px;
+  border-radius: 8px;
+  border: 1px solid var(--vp-c-divider);
+  padding: 6px;
+  background: #fff;
+  margin-bottom: 0.7rem;
+}
+html.dark .part-photo { background: #f4f4f4; }
+
+.part-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.8rem; }
+.part-tag {
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--vp-c-divider);
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-2);
+  font-variant-numeric: tabular-nums;
+}
+.part-tag.sub { color: var(--vp-c-text-3); }
+.part-tag.muted { color: var(--vp-c-text-3); border-style: dashed; }
+.part-tag.tierA {
+  border-color: var(--vp-c-brand-1);
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+  font-weight: 600;
+}
+
+/* ── 双栏：左官方参数 / 右社区 ─────────────────────────────────────── */
+.part-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .part-split { grid-template-columns: 1fr; }
+}
+
+.part-official h4,
+.part-comm-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--vp-c-text-2);
+  margin: 0 0 0.45rem;
+  text-transform: none;
+}
+.part-official h4 { margin-top: 0; }
+.part-official table { width: 100%; font-size: 0.8rem; }
+.part-official td:first-child { color: var(--vp-c-text-3); width: 45%; }
+
+.part-src {
+  margin-top: 0.5rem;
+  font-size: 0.72rem;
+  line-height: 1.7;
+  color: var(--vp-c-text-3);
+  word-break: break-all;
+}
+.part-src a { color: var(--vp-c-brand-1); }
+
+/* ── 社区一侧 ─────────────────────────────────────────────────────── */
+.part-comm {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 10px;
+  padding: 0.75rem 0.85rem;
+  background: var(--vp-c-bg-alt);
+}
+.part-comm-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.part-comm-title { margin: 0; }
+.part-score-none {
+  font-size: 0.7rem;
+  color: var(--vp-c-text-3);
+  border: 1px dashed var(--vp-c-divider);
+  border-radius: 999px;
+  padding: 1px 7px;
+}
+.part-score-empty {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.2rem 0 0.6rem;
+  border-bottom: 1px solid var(--vp-c-divider);
+  margin-bottom: 0.6rem;
+}
+.part-score-big {
+  font-size: 1.9rem;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--vp-c-text-3);
+  font-variant-numeric: tabular-nums;
+}
+.part-score-sub { font-size: 0.75rem; color: var(--vp-c-text-3); }
+.part-comm-hint {
+  font-size: 0.75rem;
+  line-height: 1.7;
+  color: var(--vp-c-text-2);
+  margin: 0 0 0.55rem;
+}
+.part-comm-hint code {
+  font-size: 0.72rem;
+  background: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-divider);
+}
+.part-comm-jump {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--vp-c-brand-1);
+}
+
+/* ── 关节电机指标条 ───────────────────────────────────────────────── */
+.pm-table {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 0.6rem 0 1rem;
+}
+.pm-row {
+  display: grid;
+  grid-template-columns: 9.5rem 7rem minmax(0, 1fr);
+  gap: 0.6rem;
+  align-items: baseline;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.79rem;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+.pm-row:last-child { border-bottom: none; }
+.pm-row:nth-child(odd) { background: var(--vp-c-bg-alt); }
+.pm-k { color: var(--vp-c-text-3); }
+.pm-v {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--vp-c-text-1);
+}
+.pm-note { color: var(--vp-c-text-3); font-size: 0.72rem; line-height: 1.6; }
+
+/* 判据着色：warn 琥珀、bad 红。颜色只用来标「该停下来看」，不做装饰。 */
+.pm-warn .pm-v { color: #a06a00; }
+.pm-bad .pm-v { color: #c02b2b; }
+.pm-na .pm-v { color: var(--vp-c-text-3); font-weight: 400; }
+html.dark .pm-warn .pm-v { color: #e0b159; }
+html.dark .pm-bad .pm-v { color: #f48771; }
+
+@media (max-width: 720px) {
+  .pm-row { grid-template-columns: 1fr; gap: 0.15rem; }
+}

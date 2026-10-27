@@ -135,7 +135,11 @@ def _tool_detail(db, args: dict) -> str:
     out = part_out(p)
     posts = db.exec(select(Post).where(Post.part_id == pid)
                     .order_by(Post.score.desc()).limit(5)).all()
-    out["top_posts"] = [x.model_dump() for x in posts_out(db, list(posts))]
+    # mode="json" 让 datetime 变成 ISO 字符串 —— 否则只要该零件有评价，
+    # json.dumps 就会抛 "Object of type datetime is not JSON serializable"，
+    # 整个 tools/call 变成 isError。这个 bug 只有「有评价的零件」才触发，
+    # 所以是测试跑全量时才暴露出来的。
+    out["top_posts"] = [x.model_dump(mode="json") for x in posts_out(db, list(posts))]
     out["evidence_note"] = (
         "source_tier=A 表示逐项核对过官方 datasheet；"
         "null 字段表示未公布；armature_ok=false 说明该行不变量校验未通过")

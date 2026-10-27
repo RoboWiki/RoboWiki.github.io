@@ -106,15 +106,15 @@ def test_mcp_unknown_method_and_tool(client):
 
 
 def test_mcp_search(client):
-    d = _tool(client, "search_components", {"q": "AK80", "limit": 5})
+    d = _tool(client, "search_components", {"q": "J4340", "limit": 5})
     assert d["total"] >= 1
     assert all("id" in i for i in d["items"])
     assert "null 表示未公布" in d["hint"]
 
 
 def test_mcp_detail_and_missing(client):
-    d = _tool(client, "get_component_detail", {"id": "cubemars-ak10-9-v2"})
-    assert d["id"] == "cubemars-ak10-9-v2"
+    d = _tool(client, "get_component_detail", {"id": "达妙-dm-dm-j4340-2ec-v1-1"})
+    assert d["id"] == "达妙-dm-dm-j4340-2ec-v1-1"
     assert d["derived"]["torque_density_Nm_per_kg"] > 0
     assert "armature_ok" in d["derived"]
 
@@ -124,12 +124,12 @@ def test_mcp_detail_and_missing(client):
 
 def test_mcp_compare(client):
     d = _tool(client, "compare_components",
-              {"ids": ["cubemars-ak10-9-v2", "灵足-robstride-rs04"]})
-    assert set(d["table"]) == {"cubemars-ak10-9-v2", "灵足-robstride-rs04"}
+              {"ids": ["达妙-dm-dm-j4340-2ec-v1-1", "灵足-robstride-rs04"]})
+    assert set(d["table"]) == {"达妙-dm-dm-j4340-2ec-v1-1", "灵足-robstride-rs04"}
     assert "missing_means" in d
     # 一个不存在的 id 会单独标错，不拖垮其它
     d = _tool(client, "compare_components",
-              {"ids": ["cubemars-ak10-9-v2", "no-such"]})
+              {"ids": ["达妙-dm-dm-j4340-2ec-v1-1", "no-such"]})
     assert d["table"]["no-such"]["error"] == "not_found"
 
 

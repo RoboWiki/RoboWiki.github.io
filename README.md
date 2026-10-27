@@ -12,10 +12,15 @@
 backend/   FastAPI + SQLModel（Python 3.12）
 frontend/  React 19 + antd 6 + Tailwind 4 + TanStack Query（Vite）
 wiki/      VitePress 文档站（内容由 data/ 生成，每页一条讨论串）
-data/      191 个零件，全部带来源等级与口径
+data/      46 个关节电机（达妙 / DJI / 灵足 / 宇树），带来源等级与口径
 docs/      参考项目评估 + 截图
-scripts/   数据生成、闸门、文档生成
+scripts/   数据生成、闸门、文档生成、备份/回滚
 ```
+
+> **当前范围**：先做精关节电机，只留 4 家厂商（达妙 DM、DJI RoboMaster、
+> 灵足 RobStride、Unitree）。其余 10 家厂商与 3 个品类已备份到
+> `data/_backup/2026-10-27/`，`scripts/restore_backup.ps1` 可一键回滚。
+> `data/focus.json` 写明了保留范围 —— 重跑采集脚本不会把移出的厂商带回来。
 
 > 参考的上游项目（InvenTree / Directus / NodeBB / Answer / antd-pro / fastapi-template /
 > sqlmodel / refine / giscus）浅克隆在仓库外的 `../_refs/`，不参与运行。

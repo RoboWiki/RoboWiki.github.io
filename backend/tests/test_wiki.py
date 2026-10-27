@@ -45,7 +45,7 @@ def login(client, handle="demo1") -> dict:
     return {"Authorization": f"Bearer {r.json()['access_token']}"}
 
 
-PAGE = "parts/actuator/cubemars"
+PAGE = "parts/actuator/dm"
 
 
 def test_empty_thread(client):
@@ -61,7 +61,7 @@ def test_post_requires_login(client):
 def test_post_and_reply_thread(client):
     h = login(client)
     r = client.post("/api/wiki/comments", headers=h,
-                    json={"page": PAGE, "body": "AK80-9 V3 的 armature 9.06e-3，配 9:1 之后腿的动态很轻。"})
+                    json={"page": PAGE, "body": "J4340-V1.1 的 armature 3.2e-2，配 40:1 之后腿的动态偏黏。"})
     assert r.status_code == 201
     root_id = r.json()["id"]
 
@@ -81,11 +81,11 @@ def test_thread_is_scoped_by_page(client):
     """页面标识就是路径 —— 别的页面的讨论不会串进来。"""
     h = login(client)
     client.post("/api/wiki/comments", headers=h,
-                json={"page": "parts/actuator/hebi", "body": "HEBI 这条线的讨论"})
+                json={"page": "parts/actuator/unitree", "body": "HEBI 这条线的讨论"})
     a = client.get("/api/wiki/comments", params={"page": PAGE}).json()
-    b = client.get("/api/wiki/comments", params={"page": "parts/actuator/hebi"}).json()
+    b = client.get("/api/wiki/comments", params={"page": "parts/actuator/unitree"}).json()
     assert a["count"] == 2 and b["count"] == 1
-    assert all(c["page"] == "parts/actuator/hebi" for c in b["comments"])
+    assert all(c["page"] == "parts/actuator/unitree" for c in b["comments"])
 
 
 def test_reply_cannot_cross_page(client):
@@ -93,7 +93,7 @@ def test_reply_cannot_cross_page(client):
     root = client.post("/api/wiki/comments", headers=h,
                        json={"page": PAGE, "body": "父帖"}).json()
     r = client.post("/api/wiki/comments", headers=h,
-                    json={"page": "parts/actuator/maxon", "body": "跨页回复",
+                    json={"page": "parts/actuator/dji-robomaster", "body": "跨页回复",
                           "parent_id": root["id"]})
     assert r.status_code == 422
 
@@ -108,14 +108,14 @@ def test_reply_to_missing_parent(client):
 def test_only_author_or_staff_can_delete(client):
     h1 = login(client, "demo1")
     c = client.post("/api/wiki/comments", headers=h1,
-                    json={"page": "parts/sensor", "body": "演示用户的讨论"}).json()
+                    json={"page": "parts/actuator/dji-robomaster", "body": "演示用户的讨论"}).json()
 
     # 别人删不掉
     assert client.delete(f"/api/wiki/comments/{c['id']}").status_code == 401
     # 站务可以
     hs = login(client, "roboselect")
     assert client.delete(f"/api/wiki/comments/{c['id']}", headers=hs).status_code == 204
-    assert client.get("/api/wiki/comments", params={"page": "parts/sensor"}).json()["count"] == 0
+    assert client.get("/api/wiki/comments", params={"page": "parts/actuator/dji-robomaster"}).json()["count"] == 0
 
 
 def test_delete_parent_removes_children(client):

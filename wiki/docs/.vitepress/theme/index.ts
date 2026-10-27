@@ -7,6 +7,7 @@ import DefaultTheme from 'vitepress/theme'
 import PageComments from '../components/PageComments.vue'
 import PartExplorer from '../components/PartExplorer.vue'
 import './custom.css'
+import './part.css'
 
 export default {
   extends: DefaultTheme,

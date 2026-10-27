@@ -16,52 +16,12 @@
        "link": "/parts/actuator/"
       },
       {
-       "text": "CubeMars",
-       "link": "/parts/actuator/cubemars"
-      },
-      {
        "text": "DJI RoboMaster",
        "link": "/parts/actuator/dji-robomaster"
       },
       {
-       "text": "FAULHABER",
-       "link": "/parts/actuator/faulhaber"
-      },
-      {
-       "text": "HEBI",
-       "link": "/parts/actuator/hebi"
-      },
-      {
-       "text": "MIT Humanoid",
-       "link": "/parts/actuator/mit-humanoid"
-      },
-      {
-       "text": "MyActuator",
-       "link": "/parts/actuator/myactuator"
-      },
-      {
-       "text": "SteadyWin",
-       "link": "/parts/actuator/steadywin"
-      },
-      {
-       "text": "Techsoft",
-       "link": "/parts/actuator/techsoft"
-      },
-      {
        "text": "Unitree",
        "link": "/parts/actuator/unitree"
-      },
-      {
-       "text": "Xiaomi",
-       "link": "/parts/actuator/xiaomi"
-      },
-      {
-       "text": "ZeroErr",
-       "link": "/parts/actuator/zeroerr"
-      },
-      {
-       "text": "maxon",
-       "link": "/parts/actuator/maxon"
       },
       {
        "text": "灵足 RobStride",
@@ -82,8 +42,32 @@
      "link": "/parts/controller_low/"
     },
     {
-     "text": "传感器",
-     "link": "/parts/sensor/"
+     "text": "机械结构",
+     "link": "/parts/structure/"
+    },
+    {
+     "text": "IMU",
+     "link": "/parts/imu/"
+    },
+    {
+     "text": "激光雷达",
+     "link": "/parts/lidar/"
+    },
+    {
+     "text": "深度相机",
+     "link": "/parts/camera/"
+    },
+    {
+     "text": "电池",
+     "link": "/parts/battery/"
+    },
+    {
+     "text": "线束",
+     "link": "/parts/wiring/"
+    },
+    {
+     "text": "其余模块",
+     "link": "/parts/module/"
     }
    ]
   }
