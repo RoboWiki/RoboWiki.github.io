@@ -1,0 +1,76 @@
+name: Deploy wiki to GitHub Pages
+
+# 为什么只部署 wiki：
+#   本项目的后端是 FastAPI + SQLite（登录、发帖、评论、后台都要写库），
+#   GitHub Pages 只能托管静态文件，跑不了它。
+#   而 VitePress 文档站是**纯静态**的，可以完整部署。
+#   选型台（React SPA）要等有 Python 托管环境时再单独部署。
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'wiki/**'
+      - 'data/**'
+      - 'scripts/build_wiki.py'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: wiki/package-lock.json
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # 文档内容由 data/*.json 生成，所以先跑生成器。
+      # build_wiki.py 会 import 后端的 semantics 常量（杜绝两份口径漂移），
+      # 因此要装上后端依赖 —— 只装依赖，不启动服务。
+      - name: generate wiki pages from data
+        run: |
+          python -m pip install --quiet -r backend/requirements.txt
+          python scripts/build_wiki.py
+
+      - name: install & build
+        working-directory: wiki
+        env:
+          # 仓库叫 roboselect.github.io，属于 project site，
+          # 所以站点挂在 /roboselect.github.io/ 下（不是根域名）
+          WIKI_BASE: /roboselect.github.io/
+        run: |
+          npm ci
+          npm run build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: wiki/docs/.vitepress/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,191 @@
+@import "tailwindcss";
+
+/* ── RoboSelect 设计系统：VS Code 2026 风（参考 zeitvex.github.io）────────
+   做法：**重定义 slate / blue 两个色阶**，而不是逐个类名去改。
+   组件里已经写的是 `text-slate-500`、`bg-blue-600`，把色阶换成 VS Code 的
+   中性灰与 #0078d4，全站自动跟着走 —— 一处定义，229 个用法同时生效。 */
+@theme {
+  /* 中性灰：VS Code light 的那一套（bg-body #f3f3f3，border #d0d0d0） */
+  --color-slate-50: #f8f8f8;
+  --color-slate-100: #f3f3f3;
+  --color-slate-200: #d0d0d0;
+  --color-slate-300: #b8b8b8;
+  --color-slate-400: #8a8a8a;
+  --color-slate-500: #616161;
+  --color-slate-600: #4d4d4d;
+  --color-slate-700: #3a3a3a;
+  --color-slate-800: #2a2a2a;
+  --color-slate-900: #1f1f1f;
+
+  /* 强调色：#0078d4（VS Code 蓝）+ #e6f3ff（选中底） */
+  --color-blue-50: #e6f3ff;
+  --color-blue-100: #d3ebff;
+  --color-blue-200: #add6ff;
+  --color-blue-300: #7cc0f0;
+  --color-blue-400: #3399e6;
+  --color-blue-500: #1a8ae0;
+  --color-blue-600: #0078d4;
+  --color-blue-700: #005a9e;
+  --color-blue-800: #004578;
+
+  /* 语义色也压成 VS Code 的调子 */
+  --color-amber-50: #fff8e6;
+  --color-amber-100: #ffefc7;
+  --color-amber-200: #f5d99a;
+  --color-amber-300: #e0b159;
+  --color-amber-600: #a06a00;
+  --color-amber-700: #7d5300;
+  --color-sky-50: #eaf6fd;
+  --color-sky-200: #a8d8ef;
+  --color-sky-700: #0b6a8f;
+  --color-red-600: #c02b2b;
+
+  --radius-md: 8px;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Microsoft YaHei", "Noto Sans SC", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "Cascadia Code", Consolas,
+    "Liberation Mono", monospace;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+  /* VS Code 浅色：编辑器是**纯白**，#f3f3f3 只留给顶栏/侧栏这些 chrome。
+     上一版把 #f3f3f3 铺满整页，加上残留的绿色标签，整体就读成了「灰绿」。 */
+  background: #ffffff;
+  color: #1f1f1f;
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 不再铺全屏渐变：纯白就是纯白，任何色偏都会被读成「有底色」 */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: #f0f0f0;
+  border: 1px solid #d0d0d0;
+  padding: 0 4px;
+  border-radius: 4px;
+  color: #1f1f1f;
+}
+
+/* 数字统一等宽 + 表格数字对齐：一列参数扫下来不用对眼 */
+.tabular,
+.ant-table,
+.mono-num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 标题用 VS Code 那套渐变（#1f1f1f → #0078d4） */
+.title-gradient {
+  background: linear-gradient(135deg, #1f1f1f 0%, #0078d4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 终端药丸：品牌标 / 状态点缀 */
+.terminal-pill {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1;
+  color: #0078d4;
+  background: #f8f8f8;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  padding: 5px 8px;
+  white-space: nowrap;
+}
+.terminal-pill::after {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 12px;
+  margin-left: 4px;
+  vertical-align: -2px;
+  background: #0078d4;
+  animation: blink 1.1s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* antd：对齐 VS Code 的边框与表头 */
+.ant-table-tbody > tr > td {
+  padding: 7px 10px !important;
+}
+.ant-table-thead > tr > th {
+  border-bottom: 1px solid #d0d0d0 !important;
+}
+.ant-card {
+  border-color: #d0d0d0 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+}
+.ant-btn-primary {
+  box-shadow: none !important;
+}
+
+/* markdown 正文 */
+.prose-body p:first-child {
+  margin-top: 0;
+}
+.prose-body h1,
+.prose-body h2,
+.prose-body h3 {
+  font-size: 15px;
+  margin: 18px 0 8px;
+  color: #1f1f1f;
+}
+.prose-body ul,
+.prose-body ol {
+  padding-left: 22px;
+}
+.prose-body li {
+  margin-bottom: 4px;
+}
+.prose-body blockquote {
+  border-left: 3px solid #d0d0d0;
+  margin: 10px 0;
+  padding: 2px 12px;
+  color: #616161;
+}
+.prose-body table {
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.prose-body th,
+.prose-body td {
+  border: 1px solid #d0d0d0;
+  padding: 5px 10px;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-thumb {
+  background: #c8c8c8;
+  border-radius: 6px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+  background-clip: content-box;
+}

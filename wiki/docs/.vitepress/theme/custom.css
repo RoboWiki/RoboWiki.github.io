@@ -1,0 +1,108 @@
+/* RoboSelect 文档站：与选型台同一套 VS Code 2026 浅色（中性灰 + #0078d4）。
+   参考 zeitvex.github.io / Lain-Ego0 的配色与密度。 */
+
+:root {
+  --vp-c-brand-1: #0078d4;
+  --vp-c-brand-2: #005a9e;
+  --vp-c-brand-3: #004578;
+  --vp-c-brand-soft: rgba(0, 120, 212, 0.1);
+
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-alt: #f8f8f8;
+  --vp-c-bg-soft: #f8f8f8;
+  --vp-c-bg-elv: #ffffff;
+  --vp-c-divider: #d0d0d0;
+  --vp-c-gutter: #e6e6e6;
+
+  --vp-c-text-1: #1f1f1f;
+  --vp-c-text-2: #616161;
+  --vp-c-text-3: #8a8a8a;
+
+  --vp-c-default-soft: #f3f3f3;
+  --vp-sidebar-bg-color: #ffffff;
+  --vp-nav-bg-color: rgba(255, 255, 255, 0.92);
+
+  --vp-code-bg: #f0f0f0;
+  --vp-code-color: #1f1f1f;
+  --vp-code-block-bg: #f8f8f8;
+}
+
+/* 页面底用 #f3f3f3，内容区仍白 —— 和参考站一致的分层 */
+body {
+  background: #f3f3f3;
+}
+
+.VPContent,
+.VPNav,
+.VPSidebar,
+.VPLocalNav {
+  background: #ffffff;
+}
+
+.VPNav {
+  border-bottom: 1px solid #d0d0d0;
+}
+
+.VPSidebar {
+  border-right: 1px solid #e6e6e6;
+}
+
+/* 表格：型号/参数列都很短，禁止换行；超出让容器横向滚动。
+   VitePress 默认 display:block + overflow-x:auto，正好配合 nowrap。 */
+.vp-doc table {
+  font-size: 0.82rem;
+}
+
+.vp-doc th,
+.vp-doc td {
+  white-space: nowrap;
+  padding: 6px 10px;
+}
+
+/* 数字列等宽 —— 一列参数扫下来不用对眼 */
+.vp-doc td {
+  font-variant-numeric: tabular-nums;
+}
+
+.vp-doc th {
+  font-weight: 600;
+  color: #616161;
+  background: #f8f8f8;
+}
+
+/* 表格斑马纹：191 行里找一行，纯白会串行 */
+.vp-doc tr:nth-child(2n) td {
+  background: #fcfcfc;
+}
+
+/* 首列（型号）加重，长表里好定位 */
+.vp-doc td strong {
+  color: #1f1f1f;
+  font-weight: 600;
+}
+
+/* 侧边栏厂商很多，收紧行高 */
+.VPSidebarItem.level-2 .text {
+  font-size: 0.83rem;
+}
+
+/* 行内 code 用 VS Code 编辑器那种浅灰块 */
+.vp-doc code {
+  font-size: 0.85em;
+  background: #f0f0f0;
+  border: 1px solid #e0e0e0;
+  color: #1f1f1f;
+}
+
+.vp-doc div[class*='language-'] {
+  background: #f8f8f8;
+  border: 1px solid #e6e6e6;
+}
+
+/* 标题用渐变（与选型台同一支） */
+.vp-doc h1 {
+  background: linear-gradient(135deg, #1f1f1f 0%, #0078d4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

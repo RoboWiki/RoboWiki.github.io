@@ -1,0 +1,384 @@
+"""从 data/*.json 生成 VitePress 文档站内容。
+
+为什么生成而不是手写：目录每天在变（现在 191 个零件、14 家厂商），
+手写的表格第二天就过期。这一层只做「把已核过的数据换个形态呈现」，
+不引入任何新数字 —— 每个数在 SPA 里能查到的，这里也一样。
+
+产物：
+  wiki/docs/**/*.md              页面
+  wiki/docs/.vitepress/sidebar.json  侧边栏（配置直接 import）
+"""
+from __future__ import annotations
+
+import hashlib
+import json
+import pathlib
+import re
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+DATA = ROOT / "data"
+OUT = ROOT / "wiki" / "docs"
+
+CATS = [
+    ("actuator", "关节电机", "四足 12 个关节的选型主战场"),
+    ("controller_high", "上位机", "策略推理与感知"),
+    ("controller_low", "下位机", "力矩闭环与总线"),
+    ("sensor", "传感器", "IMU / 视觉 / 力触觉"),
+]
+
+CAT_CN = {c: n for c, n, _ in CATS}
+
+
+def slug(s: str) -> str:
+    a = re.sub(r"[^A-Za-z0-9]+", "-", s).strip("-").lower()
+    if len(a) < 2:
+        a = "v" + hashlib.sha1(s.encode()).hexdigest()[:6]
+    return a
+
+
+def num(v, digits: int = 3) -> str:
+    if v is None or v == "":
+        return "—"
+    if isinstance(v, str):
+        return v
+    a = abs(float(v))
+    if a and (a < 0.01 or a >= 100000):
+        return f"{v:.2e}"
+    return f"{round(float(v), digits):g}"
+
+
+def load() -> list[dict]:
+    rows = json.loads((DATA / "motors.json").read_text(encoding="utf-8"))
+    for fn in ("controllers_high.json", "controllers_low.json", "sensors.json"):
+        rows += json.loads((DATA / fn).read_text(encoding="utf-8"))
+    return rows
+
+
+def tier_badge(t: str, verified) -> str:
+    mark = "✓" if verified else ""
+    return f"`{t}{mark}`"
+
+
+def actuator_table(items: list[dict]) -> str:
+    head = ("| 型号 | 峰值 τ N·m | 额定 τ N·m | 减速比 | 空载 rpm | 质量 kg "
+            "| armature kg·m² | 价格 ¥ | 来源 |\n"
+            "|---|---|---|---|---|---|---|---|---|")
+    lines = [head]
+    for p in sorted(items, key=lambda r: -(r["specs"].get("tau_peak_Nm") or 0)):
+        s = p["specs"]
+        lines.append(
+            f"| **{p['model']}** | {num(s.get('tau_peak_Nm'))} | {num(s.get('tau_rated_Nm'))} "
+            f"| {num(s.get('gear'))} | {num(s.get('speed_noload_rpm'))} | {num(s.get('mass_kg'))} "
+            f"| {num(s.get('armature_kgm2'))} | "
+            f"{'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
+            f"| {tier_badge(p['source_tier'], p['verified'])} |")
+    return "\n".join(lines)
+
+
+def generic_table(items: list[dict], cat: str) -> str:
+    if cat == "controller_high":
+        head = "| 型号 | SoC | CUDA | NPU TOPS | 内存 GB | 峰值 W | 价格 ¥ | 来源 |\n|---|---|---|---|---|---|---|---|"
+        def row(p):
+            s = p["specs"]
+            return (f"| **{p['model']}** | {s.get('soc') or '—'} | {s.get('cuda_cores') or '—'} "
+                    f"| {num(s.get('npu_tops'))} | {num(s.get('ram_gb'))} | {num(s.get('power_max_w'))} "
+                    f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
+                    f"| {tier_badge(p['source_tier'], p['verified'])} |")
+    elif cat == "controller_low":
+        head = "| 型号 | MCU | FOC 轴数 | CAN | 电流环 kHz | 最高 V | 价格 ¥ | 来源 |\n|---|---|---|---|---|---|---|---|"
+        def row(p):
+            s = p["specs"]
+            return (f"| **{p['model']}** | {s.get('mcu') or '—'} | {s.get('foc_axes') or '—'} "
+                    f"| {(str(s.get('can') or '—')) + (' FD' if s.get('canfd') else '')} "
+                    f"| {num(s.get('current_loop_khz'))} | {num(s.get('voltage_max_V'))} "
+                    f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
+                    f"| {tier_badge(p['source_tier'], p['verified'])} |")
+    else:
+        head = "| 型号 | 子类 | 接口 | 关键参数 | 价格 ¥ | 来源 |\n|---|---|---|---|---|---|"
+        def row(p):
+            s = p["specs"]
+            keys = ("bits", "depth_range_m", "range_m", "fps", "odr_hz", "iface")
+            kv = "、".join(f"{k}={num(s[k])}" for k in keys if s.get(k))
+            return (f"| **{p['model']}** | {p.get('subtype_label') or p['subtype']} "
+                    f"| {s.get('iface') or '—'} | {kv or '—'} "
+                    f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
+                    f"| {tier_badge(p['source_tier'], p['verified'])} |")
+    return "\n".join([head] + [row(p) for p in sorted(items, key=lambda r: r["vendor"])])
+
+
+FRONT = """---
+title: {title}
+---
+
+"""
+
+
+def main() -> None:
+    rows = load()
+    OUT.mkdir(parents=True, exist_ok=True)
+    for d in ("parts/actuator", "parts/controller_high", "parts/controller_low", "parts/sensor"):
+        (OUT / d).mkdir(parents=True, exist_ok=True)
+
+    sidebar: dict[str, list] = {}
+    n_act = sum(1 for r in rows if r["category"] == "actuator")
+    n_img = sum(1 for r in rows if (r.get("specs") or {}).get("image_url"))
+    n_arm = sum(1 for r in rows if (r.get("specs") or {}).get("armature_kgm2"))
+    n_rated = sum(1 for r in rows if (r.get("specs") or {}).get("tau_rated_Nm"))
+    vendors = sorted({r["vendor"] for r in rows if r["category"] == "actuator"})
+
+    # ── 总览 ────────────────────────────────────────────────────────────
+    (OUT / "index.md").write_text(FRONT.format(title="总览") + f"""
+# RoboSelect 选型文档
+
+这里是把**同一份已核过的数据**换一种形态呈现：按厂商成页、可逐条讨论。
+交互式的排序、筛选、对比在 [选型台](/)；这里的价值是**每页底下的讨论串**。
+
+| | 数量 |
+|---|---|
+| 零件总数 | {len(rows)} |
+| 关节电机 | {n_act} |
+| 电机厂商 | {len(vendors)} |
+| 有 armature（可直接进仿真） | {n_arm} |
+| 有原厂产品图 | {n_img} |
+| 有额定扭矩（仅执行器有意义） | {n_rated} |
+
+## 怎么读
+
+- **[部件手册](/parts/)** —— 按品类和厂商分页，一张表看完一家所有型号
+- **[参数口径](/semantics)** —— 每个字段是什么意思、缺了意味着什么、6 条物理红线
+- **[总线与协议](/protocols)** —— 同一个「电流」在四个驱动里是四个量
+- **[数据来源](/sources)** —— 每条数据凭什么，以及我们拒绝做什么
+
+## 这条规矩放在最前面
+
+本站不收佣金、不卖零件。**参数缺失一律写 `—`，不猜、不用同类填补、不用额定代替峰值。**
+看到 `—` 就去问厂商要手册，而不是让工具替你编一个数。
+""", encoding="utf-8")
+
+    # ── 部件总表 ────────────────────────────────────────────────────────
+    cat_links = "\n".join(f"- **[{name}](/parts/{c}/)** —— {desc}（{sum(1 for r in rows if r['category'] == c)} 件）"
+                          for c, name, desc in CATS)
+    (OUT / "parts" / "index.md").write_text(FRONT.format(title="部件手册") + f"""
+# 部件手册
+
+按品类进入，再按厂商分页。
+
+{cat_links}
+
+每一页底下都有一条讨论串 —— 用过的坑、量到的数、和厂商确认过的事，写在对应那页下面才有用。
+""", encoding="utf-8")
+
+    for c, name, desc in CATS:
+        items = [r for r in rows if r["category"] == c]
+        if c == "actuator":
+            vs = sorted({r["vendor"] for r in items})
+            (OUT / "parts" / c / "index.md").write_text(
+                FRONT.format(title=name) + f"""
+# {name}
+
+{desc}，共 **{len(items)}** 件、**{len(vs)}** 家厂商。
+
+## 厂商
+
+""" + "\n".join(
+                    f"- [{'/'.join(['', 'parts', c, slug(v)])}]({('/parts/' + c + '/' + slug(v))}) —— "
+                    f"{v}（{sum(1 for r in items if r['vendor'] == v)} 型）" for v in vs)
+                + f"""
+
+## 跨厂商速览（按峰值扭矩降序，前 40）
+
+{actuator_table(sorted(items, key=lambda r: -(r['specs'].get('tau_peak_Nm') or 0))[:40])}
+
+> 完整 147 行在[选型台](/)按任意列排序。这里只放前 40，因为一张表读不完等于没读。
+""", encoding="utf-8")
+
+            # 每家一页
+            for v in vs:
+                sub = [r for r in items if r["vendor"] == v]
+                note = ""
+                notes = [r["notes"] for r in sub if "来源冲突" in (r.get("notes") or "")]
+                if notes:
+                    note = "\n::: warning 来源冲突\n" + "\n\n".join(
+                        n.split("【来源冲突】")[-1][:400] for n in notes[:3]) + "\n:::\n"
+                (OUT / "parts" / c / f"{slug(v)}.md").write_text(
+                    FRONT.format(title=v) + f"""
+# {v}
+
+共 **{len(sub)}** 型。数据等级 `A` 表示来自厂商手册/规格书且已逐项核对过。
+{note}
+{actuator_table(sub)}
+
+## 这一页的讨论
+
+用过的、量到的、和厂商确认过的，写在下面。**带上具体工况**（负载、占空比、环境温度），
+只写「好用/不好用」对下一个人没有价值。
+""", encoding="utf-8")
+        else:
+            (OUT / "parts" / c / "index.md").write_text(
+                FRONT.format(title=name) + f"""
+# {name}
+
+{desc}，共 **{len(items)}** 件。
+
+{generic_table(items, c)}
+
+> 这些行是 `B` 级（来自公开文档/官网，未逐项核对），采购前请回原厂页面确认。
+""", encoding="utf-8")
+
+    # ── 协议口径（读 data/protocols.json，不复制）──────────────────────
+    protos = json.loads((DATA / "protocols.json").read_text(encoding="utf-8"))
+    prow = ["| 驱动 | 厂商 | 适用电机 | 电流编码 | 满量程 A | 减速比（协议 / 名义） | 控制模式 |",
+            "|---|---|---|---|---|---|---|"]
+    for p in protos["protocols"]:
+        g = "—" if p.get("gear_protocol") is None else f"{p['gear_protocol']:.4f}"
+        prow.append(f"| **{p['driver']}** | {p['vendor']} | {'、'.join(p['motors'])} "
+                    f"| {p['current_encoding']} | {p['current_full_scale_A']} "
+                    f"| {g} / {p['gear_nominal']} | {' / '.join(p['control_modes'])} |")
+    details = "\n\n".join(
+        f"### {p['driver']}（{p['vendor']}）\n\n"
+        f"- 电流编码：{p['current_encoding']}\n"
+        f"- 满量程：{p['current_full_scale_A']} A\n"
+        f"- 总线：{p['bus']}，控制频率 {p['ctrl_freq_hz']} Hz\n"
+        f"- 减速比：协议 `{p.get('gear_protocol')}` / 名义 {p['gear_nominal']}\n\n"
+        f"::: tip 口径提醒\n{p['notes']}\n\n证据：`{p['evidence']}`\n:::"
+        for p in protos["protocols"])
+    (OUT / "protocols.md").write_text(FRONT.format(title="总线与协议") + f"""
+# 总线与协议口径
+
+同一个「电流」在四个驱动里是四个不同的量。不写清编码满量程，跨厂商比电流/力矩就是错的。
+
+{prow[0]}
+{prow[1]}
+{chr(10).join(prow[2:])}
+
+{details}
+
+## 自检清单
+
+""" + "\n".join(f"{i}. {q}" for i, q in enumerate(protos["checklist"], 1)) + """
+
+> 来源：[yssickjgd/robowalker_train](https://github.com/yssickjgd/robowalker_train) 的驱动定标常量
+> + 各厂商手册。完整调研见仓库 `docs/ref-ustc-robowalker.md`。
+""", encoding="utf-8")
+
+    # ── 参数口径（直接 import 后端的常量，杜绝漂移）──────────────────
+    import sys
+    sys.path.insert(0, str(ROOT / "backend"))
+    from app.api.routes.semantics import (  # noqa: E402
+        COMPARABILITY, CONVERSIONS, FIELD_SEMANTICS, RED_LINES,
+        SUPPLIER_QUESTIONS, TRINARY,
+    )
+
+    def rows3(items, cols):
+        head = "| " + " | ".join(cols) + " |\n|" + "---|" * len(cols)
+        body = []
+        for it in items:
+            body.append("| " + " | ".join(
+                str(it.get(c, "") if not isinstance(it.get(c), list)
+                    else "、".join(map(str, it[c]))) for c in cols) + " |")
+        return head + "\n" + "\n".join(body)
+
+    field_rows = [{"field": k, **v} for k, v in FIELD_SEMANTICS.items()]
+    section_redlines = rows3(RED_LINES, ["id", "name", "why"])
+    section_conv = rows3(CONVERSIONS, ["from", "to", "formula"])
+    section_comp = rows3(COMPARABILITY, ["grade", "name", "condition"])
+    section_field = rows3(field_rows, ["field", "label", "meaning"])
+    section_ask = "\n".join(f"{i}. {q}" for i, q in enumerate(SUPPLIER_QUESTIONS, 1))
+
+    (OUT / "semantics.md").write_text(FRONT.format(title="参数口径") + f"""
+# 参数口径
+
+这一页是 GET /api/semantics 的展示层，也被 MCP 工具
+`get_parameter_semantics` 直接复用。本站所有判定只有三种结论 ——
+`{TRINARY['values'][0]}` / `{TRINARY['values'][1]}` / `{TRINARY['values'][2]}`：
+
+::: warning unknown 的意思
+{TRINARY.get('unknown_means', '证据不足，既不算兼容也不算不兼容。')}
+:::
+
+## 物理红线
+
+{section_redlines}
+
+## 单位换算
+
+{section_conv}
+
+## 可比性分级
+
+{section_comp}
+
+## 字段语义
+
+{section_field}
+
+## 向供应商问询清单
+
+{section_ask}
+""", encoding="utf-8")
+
+    # ── 数据来源 ────────────────────────────────────────────────────────
+    srcs = [
+        ("达妙科技 2026 产品选型手册", "31 型 J/JH/D 系列，逐页解析", "本地 PDF"),
+        ("灵足时代 RS / EL 系列规格介绍", "9 型，含 2026-10 修订的重量", "本地 PDF"),
+        ("Draft（davidhnguyen2000/draft）", "114 行目录 + 拟合趋势 + MuJoCo 模型", "GitHub，MIT"),
+        ("CubeMars / MyActuator 官网", "按产品页 og:image 抓参数与图", "在线抓取"),
+        ("ZJU-HelloWorld/Wiki", "DJI RM 三型的额定/堵转扭矩，宇树手册", "GitHub，附厂商 PDF"),
+        ("yssickjgd/robowalker_train", "协议定标常量、M3508 精确减速比", "GitHub"),
+        ("roboparts.cc", "接口形态（MCP、三态判定、证据分级）", "参考设计，未取数据"),
+        ("LeRobotDepot / Humanoid Atlas", "价格三件套、受控枚举", "参考设计，未取数据"),
+    ]
+    srow = "\n".join(f"| {a} | {b} | {c} |" for a, b, c in srcs)
+    (OUT / "sources.md").write_text(FRONT.format(title="数据来源") + f"""
+# 数据来源
+
+| 来源 | 取走了什么 | 形态 |
+|---|---|---|
+{srow}
+
+## 我们拒绝做的事
+
+1. **不灌示例评价。** 曾经灌过 21 条「实测」，技术观察是真的，但温度、时长、作者都是编的。
+   在一个立意是「真实使用信息」的站里，这比空着坏得多。已全部删除。
+2. **不改数值来掩盖冲突。** 宇树 A1 的减速比，官网写 6:1、手册写 1:9，
+   两个都留着，标成「来源冲突」。
+3. **不为了过校验编一个峰值。** GM6020 手册只给额定扭矩，峰值就写 `—`，
+   并为这种情况放宽了数据闸门的规则。
+4. **不混用电调口径。** M2006 的堵转 7 N·m 只在 Z650 那张表里，
+   与 C610 的额定 1 N·m 不同源，不拼成一个「峰值/额定比」。
+
+## 每个数字的追溯链
+
+零件的每次字段改动都写进 `part_edits` 表（旧值、新值、依据、来源链接、谁改的、何时）。
+于是任何一个数都能回答：**它什么时候、被谁、凭什么被改成了现在这样。**
+""", encoding="utf-8")
+
+    # ── 侧边栏 ──────────────────────────────────────────────────────────
+    act_items = [{"text": "总览", "link": "/parts/actuator/"}]
+    for v in sorted({r["vendor"] for r in rows if r["category"] == "actuator"}):
+        act_items.append({"text": v, "link": f"/parts/actuator/{slug(v)}"})
+    sidebar["/parts/"] = [
+        {"text": "部件手册", "items": [
+            {"text": "索引", "link": "/parts/"},
+            {"text": "关节电机", "collapsed": False, "items": act_items},
+            {"text": "上位机", "link": "/parts/controller_high/"},
+            {"text": "下位机", "link": "/parts/controller_low/"},
+            {"text": "传感器", "link": "/parts/sensor/"},
+        ]},
+    ]
+
+    sem = json.loads((DATA / ".." / "backend" / "app" / "api" / "routes" /
+                      "_semantics_cache.json").read_text(encoding="utf-8")) \
+        if (ROOT / "backend" / "app" / "api" / "routes" / "_semantics_cache.json").exists() else None
+
+    (OUT / ".vitepress").mkdir(parents=True, exist_ok=True)
+    (OUT / ".vitepress" / "sidebar.json").write_text(
+        json.dumps(sidebar, ensure_ascii=False, indent=1), encoding="utf-8")
+
+    print(f"生成 {len(list(OUT.rglob('*.md')))} 个页面")
+    print(f"  侧边栏 {sum(len(g[0]['items']) for g in sidebar.values())} 组")
+    print(f"  执行器 {n_act} 件 / {len(vendors)} 家")
+
+
+if __name__ == "__main__":
+    main()

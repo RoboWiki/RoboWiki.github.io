@@ -1,0 +1,98 @@
+{
+ "_meta": {
+  "title": "总线与协议口径",
+  "why": "同一个「电流」在四个驱动里是四个不同的量。不写清编码满量程，跨厂商的电流/力矩就没法比。",
+  "source": "yssickjgd/robowalker_train（中科大电控教程）+ 各厂商手册",
+  "source_url": "https://github.com/yssickjgd/robowalker_train",
+  "checked": "2026-10-27"
+ },
+ "protocols": [
+  {
+   "id": "dji-c620",
+   "vendor": "DJI RoboMaster",
+   "driver": "C620",
+   "motors": ["M3508 P19"],
+   "bus": "CAN 2.0B, 1 Mbps",
+   "ctrl_freq_hz": 1000,
+   "current_encoding": "int16 线性，满量程 ±16384 ↔ ±20 A",
+   "current_scale_a_per_lsb": 0.001220703125,
+   "current_full_scale_A": 20.0,
+   "gear_protocol": 19.20320855614973,
+   "gear_nominal": "19:1",
+   "control_modes": ["电流(力矩)", "转速"],
+   "notes": "减速比在协议里按 3591/187 = 19.2032 换算，而手册写「19:1」。做转速↔转子换算时用 19.2032，用 19.0 会有 1.06% 系统性偏差。",
+   "evidence": "dvc_motor_dji.h: Class_Motor_DJI_C620::Init 默认 __Gearbox_Rate = 3591.0f/187.0f；Current_To_Out = 16384.0f/20.0f"
+  },
+  {
+   "id": "dji-c610",
+   "vendor": "DJI RoboMaster",
+   "driver": "C610",
+   "motors": ["M2006 P36"],
+   "bus": "CAN 2.0B, 1 Mbps",
+   "ctrl_freq_hz": 1000,
+   "current_encoding": "int16 线性，满量程 ±10000 ↔ ±10 A",
+   "current_scale_a_per_lsb": 0.001,
+   "current_full_scale_A": 10.0,
+   "gear_protocol": 36.0,
+   "gear_nominal": "36:1",
+   "control_modes": ["电流(力矩)", "转速"],
+   "notes": "C610 与 C620 的电流编码满量程不同（10000 vs 16384）。把 C610 的原始值按 C620 的比例换算会偏大 64%。",
+   "evidence": "dvc_motor_dji.h: Class_Motor_DJI_C610::Init 默认 __Gearbox_Rate = 36.0f；Current_To_Out = 10000.0f/10.0f"
+  },
+  {
+   "id": "dji-gm6020",
+   "vendor": "DJI RoboMaster",
+   "driver": "GM6020 内置",
+   "motors": ["GM6020"],
+   "bus": "CAN 2.0B, 1 Mbps",
+   "ctrl_freq_hz": 1000,
+   "current_encoding": "int16 线性，满量程 ±16384 ↔ ±3 A",
+   "current_scale_a_per_lsb": 0.00018310546875,
+   "current_full_scale_A": 3.0,
+   "gear_protocol": 1.0,
+   "gear_nominal": "直驱",
+   "control_modes": ["电压", "电流(力矩)", "转速", "角度"],
+   "notes": "直驱无减速器，编码器 13 bit 绝对值。手册额定电流 1.62 A，只占满量程 3 A 的 54%——按满量程设计线束会过度。",
+   "evidence": "dvc_motor_dji.h: Class_Motor_DJI_GM6020 Current_To_Out = 16384.0f/3.0f；Theoretical_Output_Voltage_Max = 24.0f"
+  },
+  {
+   "id": "dm-mit",
+   "vendor": "达妙 DM",
+   "driver": "内置（MIT 模式）",
+   "motors": ["DM-J4310", "DM-J4340", "DM-J8009", "DM-J10010"],
+   "bus": "CAN 2.0B, 1 Mbps",
+   "ctrl_freq_hz": 1000,
+   "current_encoding": "12 bit 定标：扭矩 ±10 N·m、速度 ±25 rad/s、角度 ±12.5 rad，各自映射到 12 bit",
+   "current_scale_a_per_lsb": null,
+   "current_full_scale_A": 10.261194,
+   "gear_protocol": null,
+   "gear_nominal": "随型号",
+   "control_modes": ["MIT(位置+速度+Kp+Kd+力矩)", "位置速度", "速度"],
+   "notes": "MIT 模式的物理量程是写死在帧格式里的：角度 ±12.5 rad、速度 ±25 rad/s、扭矩 ±10 N·m。电流满量程 10.261194 A 是驱动侧定标值，不是厂商给电机的额定电流——别把它当额定。",
+   "evidence": "dvc_motor_dm.h: Class_Motor_DM_Normal::Init 默认 __Angle_Max=12.5f, __Omega_Max=25.0f, __Torque_Max=10.0f, __Current_Max=10.261194f；一拖四 Current_To_Out = 16384.0f/10.261194f"
+  },
+  {
+   "id": "dm-1to4",
+   "vendor": "达妙 DM",
+   "driver": "一拖四固件",
+   "motors": ["DM-J4310-2EC 一拖四"],
+   "bus": "CAN 2.0B, 一帧驱动 4 个电机",
+   "ctrl_freq_hz": 1000,
+   "current_encoding": "int16 线性，满量程 ±16384 ↔ ±10.261194 A",
+   "current_scale_a_per_lsb": 0.000626144,
+   "current_full_scale_A": 10.261194,
+   "gear_protocol": null,
+   "gear_nominal": "随型号",
+   "control_modes": ["角度", "速度"],
+   "notes": "教程使用的固件版本为 5051_01。2024-11-19 起达妙更新了一批一拖四固件；**3519 的一拖四版本改用与大疆 C620-3508 相同的协议**，其余型号仍按本文口径。混用两种固件会让同一份代码在 3519 上完全不响应。",
+   "evidence": "20250120 关于新固件的补充告知.md；dvc_motor_dm.h Class_Motor_DM_1_To_4"
+  }
+ ],
+ "checklist": [
+  "电机端还是输出端？——减速比换算写清用的是名义值还是协议值（M3508：19 vs 19.2032）",
+  "电流满量程多少？——C610 的 10000 与 C620 的 16384 不是一套比例",
+  "MIT 模式的 ±10 N·m 是帧格式定标，不是电机能力上限",
+  "固件版本会改协议——达妙 3519 与大疆 C620 兼容，其余不兼容",
+  "控制频率写清：1 kHz 是这些驱动的共同上限，再高要看总线负载"
+ ]
+}
