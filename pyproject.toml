@@ -1,0 +1,46 @@
+[project]
+name = "roboselect"
+version = "0.1.0"
+description = "机器人部件选择社区：官方参数 + 真实使用者的评分与评价"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "zeitvex" }]
+keywords = ["robotics", "actuator", "quadruped", "catalog", "open-data"]
+
+# 构建链只需要很少的东西：读 JSON、校验、生成 Markdown。
+# 后端依赖（fastapi / sqlmodel）单独在 backend/requirements.txt，
+# 因为它们只对「有服务端的部署」有意义 —— 纯静态 fork 不需要装。
+dependencies = [
+    "pydantic>=2.9",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "jsonschema>=4.21",      # schema/ 的机器校验，CI 里开
+]
+# 采集/图片工具才需要，普通贡献者不用装
+tools = [
+    "pillow>=10",
+    "pymupdf>=1.24",
+]
+
+[project.urls]
+Homepage = "https://zeitvex.github.io/RoboSelect/"
+Repository = "https://github.com/zeitvex/RoboSelect"
+Issues = "https://github.com/zeitvex/RoboSelect/issues"
+
+[project.scripts]
+roboselect = "pipeline.__main__:main"
+
+[tool.pytest.ini_options]
+# 两条测试线：pipeline（构建链）与 backend（API）。
+# 合在一个 rootdir 下，CI 一条命令跑完。
+testpaths = ["tests", "backend/tests"]
+addopts = "-q"
+pythonpath = [".", "backend"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

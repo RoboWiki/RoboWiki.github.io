@@ -1,0 +1,107 @@
+name: 实测评价
+description: 报告一个部件的真实使用情况（跑了多久、坏在哪、温升多少）。需要 GitHub 账号。
+title: "[实测] "
+labels: ["review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **为什么这张表要问这么多**：只写「好用 / 不好用」对下一个人没有价值。
+        同样的件，髋关节 30 N·m 连续跑，和膝关节瞬时 80 N·m 尖峰，
+        结论可以完全相反。**工况比结论重要。**
+
+        打分请用「部件评分」那张表；这张表是给愿意写清条件的人用的。
+
+  - type: input
+    id: part
+    attributes:
+      label: 部件 id
+      description: 从部件页点「写实测」会自动填在标题里。格式形如 `damiao-dm-j4340-2ec-v1-1`。
+      placeholder: damiao-dm-j4340-2ec-v1-1
+    validations:
+      required: true
+
+  - type: input
+    id: used_on
+    attributes:
+      label: 装在什么上
+      placeholder: 四足 20 kg / 协作臂 6 轴 / 云台 / 轮式底盘
+    validations:
+      required: true
+
+  - type: dropdown
+    id: joint
+    attributes:
+      label: 用在哪个关节
+      options:
+        - 髋（外展 / 前后）
+        - 膝
+        - 踝
+        - 机械臂肩 / 肘 / 腕
+        - 其他 / 不适用
+    validations:
+      required: true
+
+  - type: input
+    id: load
+    attributes:
+      label: 典型负载（N·m）
+      description: 你让它长期输出多大扭矩。填额定附近的数，别填峰值。
+      placeholder: 28
+    validations:
+      required: true
+
+  - type: input
+    id: duty
+    attributes:
+      label: 占空比 / 运行方式
+      placeholder: 连续跑 30 分钟歇 5 分钟 / 间歇点动 / 全天候
+    validations:
+      required: true
+
+  - type: input
+    id: hours
+    attributes:
+      label: 累计运行时长
+      description: 大概就行，写清是「小时」还是「月」。
+      placeholder: 约 120 小时
+    validations:
+      required: true
+
+  - type: input
+    id: temp_rise
+    attributes:
+      label: 外壳温升（℃）
+      description: 跑完之后摸外壳或贴温度计的数，写清环境温度。
+      placeholder: 环境 26℃，连续 30 分钟后外壳 58℃
+    validations:
+      required: false
+
+  - type: dropdown
+    id: failure
+    attributes:
+      label: 有没有坏过
+      options:
+        - 没坏，一直在用
+        - 坏过，已修 / 已换
+        - 有异常但还能用（异响 / 背隙变大 / 丢步 / 过热降额）
+        - 全新还没上机
+    validations:
+      required: true
+
+  - type: textarea
+    id: detail
+    attributes:
+      label: 具体情况
+      description: 坏在哪、什么现象、厂商怎么处理、你怎么解决的。这部分最值钱。
+      placeholder: 跑到第 80 小时左右膝关节出现轻微异响，拆开发现行星级润滑脂变黑…
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: 有没有可公开的证据（可选）
+      description: 视频 / 日志 / 拆解图链接。有证据的实测会被标「有据」。
+    validations:
+      required: false

@@ -1,0 +1,83 @@
+name: 数据纠错 / 补充
+description: 发现参数错了、缺了、或者你有官方 PDF。不需要懂 git。
+title: "[纠错] "
+labels: ["data-fix"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **不需要会写代码**。填清楚「哪个件、哪个字段、现在是什么、应该是什么、凭什么」，
+        维护者会在后台改，`part_edits` 会记下这次改动是谁、什么时候、依据是什么。
+
+        改完之后部件页上的数字会变，历史可查。
+
+  - type: input
+    id: part
+    attributes:
+      label: 部件（型号或页面链接）
+      placeholder: 达妙 DM-J4340-2EC V1.1 / https://…/parts/actuator/damiao-dm-j4340-2ec-v1-1.html
+    validations:
+      required: true
+
+  - type: dropdown
+    id: field
+    attributes:
+      label: 哪个字段
+      description: 拿不准就选「其他」，在下面写清楚。
+      options:
+        - 峰值扭矩 tau_peak_Nm
+        - 额定扭矩 tau_rated_Nm
+        - 减速比 gear
+        - 空载转速 speed_noload_rpm
+        - 质量 mass_kg
+        - 转子惯量 armature_kgm2
+        - 电压 voltage_V
+        - 转矩常数 kt_Nm_per_A
+        - 价格 price_cny
+        - 优惠信息
+        - 图片
+        - 其他 / 不确定
+    validations:
+      required: true
+
+  - type: input
+    id: current
+    attributes:
+      label: 现在是
+      placeholder: 额定扭矩 12 N·m
+    validations:
+      required: false
+
+  - type: input
+    id: should_be
+    attributes:
+      label: 应该是
+      placeholder: 额定扭矩 14 N·m（手册 p17）
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: 依据（链接或文件名 + 页码）
+      description: 这条最重要。没有依据的改动不会上站点。
+      placeholder: 达妙 2026 产品选型手册 p17 / https://…/datasheet.pdf
+    validations:
+      required: true
+
+  - type: textarea
+    id: detail
+    attributes:
+      label: 补充说明（可选）
+      description: 比如「这里写的可能是 V1.0 的数，V1.1 改过了」这类上下文。
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: attach
+    attributes:
+      label: 你能提供什么
+      options:
+        - label: 我可以上传官方 PDF
+        - label: 我可以提供官方页面截图
+        - label: 我有实物，可以实测复核

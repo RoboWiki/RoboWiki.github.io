@@ -108,7 +108,7 @@ giscus 的评论**存在 GitHub，不在本站数据库**。所以它：
 
 它那 40 多篇是**人写的理论课**（PID、卡尔曼、LQR），适合教学。
 我这边的知识库是**数据视图**：191 个零件、14 家厂商，手写的表格第二天就过期。
-所以 `scripts/build_wiki.py` 从 `data/*.json` 生成 23 个页面，
+所以 `pipeline/build_site.py` 从 `data/*.json` 生成 23 个页面，
 口径页直接 `import` 后端的常量（`RED_LINES`、`FIELD_SEMANTICS`…），杜绝两份文档漂移。
 
 ### 其他
@@ -160,7 +160,7 @@ npm install
 npm run build          # → wiki/docs/.vitepress/dist
 
 # 内容由数据生成，数据变了要重新生成
-python scripts/build_wiki.py
+python pipeline/build_site.py
 ```
 
 后端启动时若发现 `wiki/docs/.vitepress/dist` 存在，会把它 mount 到 `/wiki`

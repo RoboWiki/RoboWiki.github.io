@@ -10,15 +10,18 @@ shot-*.png
 .venv/
 .env
 
+# 测试用的一次性沙箱
+.tmp-validate/
+
 # 厂商原始 PDF / 抓取缓存（40 MB）：可由 docs/ref-zju-wiki.md §5 复现，不入库
 data/raw/
 frontend/public/parts/*.pdf
 
-# VitePress 文档站：内容由 scripts/build_wiki.py 生成，产物不入库
+# VitePress 文档站：内容由 pipeline/build_site.py 生成，产物不入库
 wiki/node_modules/
 wiki/docs/.vitepress/dist/
 wiki/docs/.vitepress/cache/
 
-# 文档站的产品图由 scripts/build_wiki.py 从 frontend/public/parts 同步
+# 文档站的产品图由 pipeline/build_site.py 从 frontend/public/parts 同步
 wiki/docs/public/parts/
 wiki/docs/public/catalog.json

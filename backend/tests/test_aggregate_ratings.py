@@ -46,7 +46,7 @@ def run(issues) -> dict:
     with tempfile.TemporaryDirectory() as td:
         p = pathlib.Path(td) / "issues.json"
         p.write_text(json.dumps(issues, ensure_ascii=False), encoding="utf-8")
-        r = subprocess.run([sys.executable, str(ROOT / "scripts" / "aggregate_ratings.py"), str(p)],
+        r = subprocess.run([sys.executable, str(ROOT / "pipeline" / "ingest_ratings.py"), str(p)],
                            capture_output=True, text=True, encoding="utf-8")
         assert r.returncode == 0, r.stdout + r.stderr
         return json.loads((ROOT / "data" / "ratings_snapshot.json").read_text(encoding="utf-8"))

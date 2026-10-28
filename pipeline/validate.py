@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """数据闸门：在把 data/*.json 灌进库之前，先拦住口径不一致。
 
-    python scripts/check_data.py          # 退出码 0 = 全部通过
-    python scripts/check_data.py --strict # 把 warning 也当失败
+    python pipeline/validate.py          # 退出码 0 = 全部通过
+    python pipeline/validate.py --strict # 把 warning 也当失败
 
 这套检查是这几份参考项目踩过的坑的直接产物：
   * RoboParts 的库里 torque 有 19 种表述口径、speed 有 37 种 → 这里强制 tau_basis
@@ -44,7 +44,7 @@ KNOWN_SPEC_KEYS = {
     "gyro_range_dps", "accel_range_g", "odr_hz", "iface", "noise", "resolution",
     "depth_range_m", "fps", "fov", "range_m", "points_per_s", "channel", "bits",
     "absolute", "temp_range_C",
-    # 归档导入用到的字段（见 scripts/normalize_archive.py 的 FIELD_MAP）
+    # 归档导入用到的字段（见 tools/normalize_archive.py 的 FIELD_MAP）
     "tau_stall_Nm", "tau_hold_Nm", "i_stall_A", "dims", "temp_range",
     "storage_temp_range", "meas_range", "accuracy", "response_time", "power_w",
     "motor_type", "gear_material", "housing_material", "bearing", "mounting",

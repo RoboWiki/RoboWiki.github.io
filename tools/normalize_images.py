@@ -17,8 +17,8 @@
     · 原图先备份到 data/_backup/<date>/parts_originals/
 
 用法：
-    python scripts/normalize_images.py --dry-run     # 只报告，不改文件
-    python scripts/normalize_images.py               # 执行
+    python tools/normalize_images.py --dry-run     # 只报告，不改文件
+    python tools/normalize_images.py               # 执行
 """
 from __future__ import annotations
 

@@ -1,0 +1,92 @@
+name: PR 门禁
+
+# 数据一旦能被外部 PR 改，就必须有人替维护者挡「看起来对、其实错」的改动。
+# 单位写错（g 当 kg）、口径写错（额定当峰值）、图片传错（整机图当电机图）——
+# 这些肉眼 review 极容易漏，机器一跑就红。
+#
+# 三道关，按代价从低到高：
+#   1. pipeline validate —— 必填、不变量、物理量程、键集
+#   2. pytest           —— 构建链 + API 行为
+#   3. 站点构建          —— 死链、生成脚本崩溃
+#
+# 注意：validate 不加 --strict。库里有 20+ 个「真话式警告」
+# （只公布额定扭矩、峰值/额定 >3 等），那是数据现状不是错误。
+# strict 会让所有 PR 一律变红，等于把门禁废掉。
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-check
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: 数据闸门
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install "pydantic>=2.9"
+      - name: 校验目录数据
+        run: python -m pipeline validate
+      - name: 对照 schema 校验
+        run: |
+          pip install "jsonschema>=4.21"
+          python - <<'PY'
+          import json, pathlib, sys
+          from jsonschema import Draft7Validator
+          sch = json.loads(pathlib.Path('schema/part.schema.json').read_text(encoding='utf-8'))
+          v = Draft7Validator(sch)
+          bad = 0
+          for f in sorted(pathlib.Path('data/catalog').glob('*/*.json')):
+              for r in json.loads(f.read_text(encoding='utf-8')):
+                  errs = list(v.iter_errors(r))
+                  if errs:
+                      bad += 1
+                      print(f"{f.name}:{r.get('id')} -> {errs[0].message}")
+          print('schema 不符:', bad)
+          sys.exit(1 if bad else 0)
+          PY
+
+  test:
+    name: 测试
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          pip install "pydantic>=2.9" pytest httpx
+          pip install -r backend/requirements.txt
+      - name: pipeline + backend
+        run: python -m pytest
+
+  build:
+    name: 站点构建
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          pip install "pydantic>=2.9"
+          cd wiki && (npm ci || npm install)
+      - name: 生成内容并构建（死链会让这里红）
+        env:
+          WIKI_BASE: /RoboSelect/
+        run: |
+          python -m pipeline build
+          cd wiki && npx vitepress build docs

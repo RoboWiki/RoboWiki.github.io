@@ -80,7 +80,7 @@ InvenTree 有 `Part` / `PartParameter`（带单位）/ `BomItem` / `SupplierPart
 | 时间 | dayjs + relativeTime + zh-cn | — |
 | 表格/表单模式 | antd 的受控列定义 + Form 校验 | ant-design-pro |
 
-**手写的只有领域部分**：口径字典（`frontend/src/fields.ts`）、数据闸门（`scripts/check_data.py`）、
+**手写的只有领域部分**：口径字典（`frontend/src/fields.ts`）、数据闸门（`pipeline/validate.py`）、
 「评价即帖子」的模型与校验、派生量计算。这些没有现成轮子，也不该有。
 
 ---

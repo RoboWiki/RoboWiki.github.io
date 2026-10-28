@@ -6,7 +6,7 @@
     比留空或放示意图都更接近真实。裁完再跑 normalize_images 统一白底与留边。
 
 用法：
-    python scripts/crop_from_screenshot.py <截图路径>
+    python tools/crop_from_screenshot.py <截图路径>
 """
 from __future__ import annotations
 
@@ -44,7 +44,7 @@ def main() -> None:
         print(f"  {name}  {crop.width}x{crop.height}  <- {box}")
 
     print(f"\n写入 {len(BOXES)} 张到 {OUT.relative_to(ROOT)}")
-    print("下一步：python scripts/normalize_images.py  （统一白底并裁掉多余留白）")
+    print("下一步：python tools/normalize_images.py  （统一白底并裁掉多余留白）")
 
 
 if __name__ == "__main__":

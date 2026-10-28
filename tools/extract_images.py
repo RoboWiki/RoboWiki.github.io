@@ -31,7 +31,7 @@ DAMIAO = pathlib.Path(r"C:\Users\31560\Downloads\damiao-master\2026-达妙科技
 RS_SPEC = pathlib.Path(r"C:\Users\31560\Downloads\Product_Information-main\灵足时代RS系列产品规格介绍(2026.010.09).pdf")
 EL_SPEC = pathlib.Path(r"C:\Users\31560\Downloads\Product_Information-main\灵足时代EL系列产品规格介绍(2026.09.22）.pdf")
 
-# 与 scripts/build_motors.py 的 slug() 保持一致，否则 id 对不上
+# 与 tools/build_motors.py 的 slug() 保持一致，否则 id 对不上
 VENDOR_ALIAS = {"CubeMars/T-Motor": "CubeMars", "T-Motor": "CubeMars",
                 "HEBI Robotics": "HEBI"}
 

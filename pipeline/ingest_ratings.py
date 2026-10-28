@@ -17,7 +17,7 @@
 用法：
     gh issue list --label rating --state open --limit 1000 \
         --json number,title,author,body,createdAt > /tmp/issues.json
-    python scripts/aggregate_ratings.py /tmp/issues.json
+    python pipeline/ingest_ratings.py /tmp/issues.json
 """
 from __future__ import annotations
 

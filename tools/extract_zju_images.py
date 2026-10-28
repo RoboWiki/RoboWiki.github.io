@@ -2,7 +2,7 @@
 
 复用 extract_images.py 的版面判据：排除整页背景、logo、太扁的尺寸图，
 剩下面积最大且长宽比接近 1 的即为产品照。
-文件名用 safe_name(part_id)，这样 scripts/reconcile_images.py 能自动反查回零件。
+文件名用 safe_name(part_id)，这样 tools/reconcile_images.py 能自动反查回零件。
 """
 from __future__ import annotations
 

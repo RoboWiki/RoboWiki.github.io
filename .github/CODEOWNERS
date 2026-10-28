@@ -1,0 +1,18 @@
+﻿# 谁能改什么
+#
+# 目的不是限制贡献，而是让「数据」这一层有明确的负责人：
+# 数据错了要有人能被 @ 到，站点坏了要有人能被 @ 到。
+
+# 目录数据：口径与来源的第一责任人
+/data/catalog/          @zeitvex
+/data/offers/           @zeitvex
+/schema/                @zeitvex
+
+# 口径定义：改这里会影响全站判定与 MCP 工具，必须人工过
+/backend/app/api/routes/semantics.py   @zeitvex
+/pipeline/validate.py                  @zeitvex
+/pipeline/load.py                      @zeitvex
+
+# 构建与部署
+/.github/workflows/     @zeitvex
+/pipeline/build_site.py @zeitvex

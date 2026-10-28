@@ -12,7 +12,7 @@
        所以以后重新跑采集脚本也不会把移出的厂商带回来
     3. 其它品类的 json 移到备份区，data/ 里不再存在
 
-回滚：pwsh scripts/restore_backup.ps1
+回滚：pwsh tools/restore_backup.ps1
 """
 from __future__ import annotations
 
@@ -83,7 +83,7 @@ def main() -> None:
     print(f"被移出的执行器 {len(moved)} 行 -> 备份区 moved_out_actuators.json")
 
     print("\n结果：data/ 现只含 " + "、".join(KEEP_VENDORS))
-    print("回滚：pwsh scripts/restore_backup.ps1")
+    print("回滚：pwsh tools/restore_backup.ps1")
 
 
 if __name__ == "__main__":

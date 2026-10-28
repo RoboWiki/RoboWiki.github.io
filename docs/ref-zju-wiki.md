@@ -117,8 +117,8 @@ cd _refs/zju-wiki && git config core.quotepath false
 cmd /c "git show \"HEAD:docs/组件说明/机器人通用组件/设备应用/电机设备组件.assets/xxx.pdf\" > out.pdf"
 
 python scripts/build_zju_parts.py     # 钉死的常量 + 页码引用 → data/motors_zju.json
-python scripts/build_motors.py        # 合并进 data/motors.json
-python scripts/check_data.py          # 闸门
+python tools/build_motors.py        # 合并进 data/motors.json
+python pipeline/validate.py          # 闸门
 ```
 
 `scripts/dump_zju_text.py` 与 `scripts/dump_zju_tables.py` 是核对用的：

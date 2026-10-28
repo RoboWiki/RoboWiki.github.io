@@ -128,6 +128,15 @@ title: 灵足 RobStride RS00
    - 来源：灵足官方（用户确认）
 :::
 
+## 使用者实测
+
+还没有人报过这个件的实测。有的是「参数好看」，缺的是「跑了多久、坏没坏」。
+
+<a class="rt-btn" href="https://github.com/zeitvex/RoboSelect/issues/new?template=review-part.yml&title=%5B%E5%AE%9E%E6%B5%8B%5D+%E7%81%B5%E8%B6%B3-robstride-rs00&labels=review" target="_blank" rel="noopener">提交实测</a>
+
+需要 GitHub 账号，30 秒填完：装了多大负载、跑了多久、温升多少、坏没坏。
+**坏过的经验最值钱** —— 那正是下一个人最想知道的。
+
 ## 资料与链接
 
 <table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://github.com/RobStride/Product_Information" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商资料</td></tr><tr><td class="rs-plain">收录说明</td><td>Draft actuator_catalog.json（114 行总体） + 灵足时代RS/EL系列产品规格介绍 2026-10-09</td></tr><tr><td><a href="https://www.google.com/search?q=%E7%81%B5%E8%B6%B3+RobStride+RS00+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=RS00&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E7%81%B5%E8%B6%B3+RobStride+RS00+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr></tbody></table>

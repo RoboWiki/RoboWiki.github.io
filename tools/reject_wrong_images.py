@@ -15,11 +15,11 @@ import pathlib
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 #: 抓错了的零件 id（人工复核过：图片内容是整机/无关图）
-WRONG = {
-    # unitree-im6014 曾因抓到四足整机图被剔除；2026-10-28 用户提供了官方正视图，
-    # 已登记到 data/part_images.json —— 所以它不在剔除表里了。
-    "unitree-go-m8010-6": "抓到的是宇树四足整机宣传图，不是 GO-M8010-6",
-    "unitree-unitree-a1": "抓到的是 A1 整机而非电机本体，选型页需要电机图",
+#:
+#: 宇树三型（IM6014 / GO-M8010-6 / A1）原先抓到的都是四足整机宣传图，
+#: 2026-10-28 已由用户提供官方电机图，登记在 data/part_images.json ——
+#: 所以它们已经从这张表里摘掉了。下表是仍然有效的剔除项。
+WRONG: dict[str, str] = {
     # 达妙官网 og:image 给的是人形整机图，不是 JH 系列关节模组本体
     "达妙-dm-dm-jh11-51-2ec": "抓到的是达妙人形整机宣传图，不是 JH11 关节模组",
     "达妙-dm-dm-jh11-101-2ec": "抓到的是达妙人形整机宣传图，不是 JH11 关节模组",

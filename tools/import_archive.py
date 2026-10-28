@@ -14,8 +14,8 @@
     · tau_basis 只在有 peak 时写 "peak"；只有 stall/rated 时为 null
 
 用法：
-    python scripts/import_archive.py            # 生成
-    python scripts/import_archive.py --dry-run  # 只统计不写文件
+    python tools/import_archive.py            # 生成
+    python tools/import_archive.py --dry-run  # 只统计不写文件
 """
 from __future__ import annotations
 

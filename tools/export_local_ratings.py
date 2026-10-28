@@ -1,14 +1,14 @@
 """把**本地库**里的评分导成 JSON，供有后端的部署做静态预览。
 
 注意数据源分工：
-    公开站点的评分来自 **GitHub issue**（scripts/aggregate_ratings.py →
+    公开站点的评分来自 **GitHub issue**（pipeline/ingest_ratings.py →
     data/ratings_snapshot.json，由 Actions 提交）。本脚本导的是自托管部署
     的本地库，写到 ratings_local.json —— 故意不同名，避免本地跑一次就把
     issue 聚合结果覆盖掉。
 
 用法：
-    python scripts/export_ratings.py            # 读 roboselect.db → ratings_local.json
-    python scripts/export_ratings.py --empty     # 没有库时写空表
+    python tools/export_local_ratings.py            # 读 roboselect.db → ratings_local.json
+    python tools/export_local_ratings.py --empty     # 没有库时写空表
 """
 from __future__ import annotations
 

@@ -1,12 +1,12 @@
 // 回滚数据收敛：把备份区里的全量 json 拷回 data/，并删掉 focus.json。
 //
-//   pwsh scripts/restore_backup.ps1                     用最新一份备份
-//   pwsh scripts/restore_backup.ps1 -Date 2026-10-27    指定日期
+//   pwsh tools/restore_backup.ps1                     用最新一份备份
+//   pwsh tools/restore_backup.ps1 -Date 2026-10-27    指定日期
 //
 // 回滚之后要重跑数据与文档生成：
-//   python scripts/build_motors.py
+//   python tools/build_motors.py
 //   python scripts/build_catalog.py
-//   python scripts/build_wiki.py
+//   python pipeline/build_site.py
 
 param([string]$Date = '')
 
@@ -34,4 +34,4 @@ $focus = Join-Path $root 'data\focus.json'
 if (Test-Path $focus) { Remove-Item $focus -Force; Write-Host "  删除 data/focus.json" }
 
 Write-Host ''
-Write-Host '下一步：python scripts/build_motors.py; python scripts/build_catalog.py; python scripts/build_wiki.py'
+Write-Host '下一步：python tools/build_motors.py; python scripts/build_catalog.py; python pipeline/build_site.py'

@@ -27,7 +27,7 @@ router = APIRouter(prefix="/admin", tags=["admin"])
 COLUMNS = {"price_cny", "url", "source_tier", "verified", "last_checked",
            "notes", "origin", "category", "subtype", "vendor", "model", "title"}
 
-#: specs 里允许改的字段（与 scripts/check_data.py 的白名单一致）
+#: specs 里允许改的字段（与 pipeline/validate.py 的白名单一致）
 SPEC_KEYS = {
     "tau_peak_Nm", "tau_rated_Nm", "tau_basis", "speed_noload_rpm", "speed_rated_rpm",
     "gear", "mass_kg", "od_mm", "l_mm", "rotor_inertia_kgm2", "inertia_basis",

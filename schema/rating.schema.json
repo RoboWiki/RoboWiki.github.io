@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/zeitvex/RoboSelect/schema/rating.schema.json",
+  "title": "评分（一对一票）",
+  "description": "由 [评分] issue 聚合而来，也用于 POST /api/ratings 的入参。",
+  "type": "object",
+  "required": ["score"],
+  "additionalProperties": false,
+  "properties": {
+    "score": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "5=会再买/会推荐；3=能用但有明显问题；1=不会再用"
+    },
+    "own_hardware": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否装过机。单独统计 —— 装过机的人打的分和看参数打的分不是一回事。"
+    },
+    "note": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "一句话理由。带上工况才有价值。"
+    }
+  }
+}

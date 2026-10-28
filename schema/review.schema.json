@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/zeitvex/RoboSelect/schema/review.schema.json",
+  "title": "实测（一条使用经验）",
+  "description": "由 [实测] issue 聚合而来。工况比结论重要：同样的件，髋 30 N·m 连续跑和膝 80 N·m 尖峰，结论可以完全相反。",
+  "type": "object",
+  "required": ["part_id", "used_on", "joint", "load", "duty", "hours", "failure"],
+  "additionalProperties": false,
+  "properties": {
+    "part_id": { "type": "string", "minLength": 2 },
+    "used_on": {
+      "type": "string",
+      "minLength": 2,
+      "description": "装在什么上：四足 20 kg / 协作臂 6 轴 / 云台…"
+    },
+    "joint": {
+      "enum": ["hip", "knee", "ankle", "shoulder", "elbow", "wrist", "other", "na"]
+    },
+    "load": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "典型负载 N·m。填额定附近的数，不是峰值。"
+    },
+    "duty": {
+      "type": "string",
+      "minLength": 2,
+      "description": "占空比 / 运行方式：连续 30 分钟歇 5 分钟、间歇点动、全天候…"
+    },
+    "hours": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "累计运行时长（小时）。按「月/天」填的会在聚合时粗估并保留原文。"
+    },
+    "temp": {
+      "type": "string",
+      "description": "外壳温升，带环境温度：「环境 26℃，连续 30 分钟后外壳 58℃」"
+    },
+    "failure": {
+      "enum": ["ok", "broken", "degraded", "unused", "unknown"],
+      "description": "坏过的条目单独计数、不删 —— 那是最值钱的信息。"
+    },
+    "detail": {
+      "type": "string",
+      "description": "坏在哪、什么现象、厂商怎么处理。"
+    },
+    "source": {
+      "type": "string",
+      "description": "可公开的证据：视频 / 日志 / 拆解图链接。有证据的实测会被标「有据」。"
+    }
+  }
+}

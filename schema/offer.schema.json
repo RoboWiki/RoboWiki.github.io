@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/zeitvex/RoboSelect/schema/offer.schema.json",
+  "title": "优惠（data/offers/<厂商>.json 中的一条）",
+  "description": "上卡片的硬条件：价格或折扣 + 获取条件 + 有效期，缺一项都不上。只给价不给条件比不给更糟。",
+  "type": "object",
+  "required": ["id", "kind", "title", "detail", "demo"],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "string", "minLength": 2 },
+    "vendor": { "type": ["string", "null"] },
+    "part_id": {
+      "type": ["string", "null"],
+      "description": "为 null 表示厂商级优惠，作用于该厂商全部型号。"
+    },
+    "kind": {
+      "enum": ["event", "edu", "retail", "coupon", "discount", "giveaway", "sponsor"],
+      "description": "event=赛事 / edu=教育 / retail=零售活动 / sponsor=展示位"
+    },
+    "title": { "type": "string", "minLength": 2 },
+    "price_cny": { "type": ["number", "null"], "minimum": 0 },
+    "discount": {
+      "type": ["number", "null"],
+      "exclusiveMinimum": 0,
+      "exclusiveMaximum": 1,
+      "description": "折扣比例，0.9 = 九折。与 price_cny 二选一。"
+    },
+    "detail": {
+      "type": "string",
+      "minLength": 4,
+      "description": "获取条件：谁有资格、限购多少、怎么拿。没有这条就不上卡片。"
+    },
+    "url": { "type": ["string", "null"] },
+    "starts_on": { "type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "expires_on": { "type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "source": { "type": ["string", "null"] },
+    "demo": {
+      "type": "boolean",
+      "description": "示例条目必须显式标 true，页面上会注明「发布前必须替换」。"
+    }
+  },
+  "anyOf": [
+    { "required": ["price_cny"] },
+    { "required": ["discount"] },
+    { "required": ["detail"] }
+  ]
+}

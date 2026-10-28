@@ -15,6 +15,7 @@ import json
 import pathlib
 import re
 import shutil
+from urllib.parse import quote_plus
 from datetime import date
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -81,7 +82,7 @@ def load() -> list[dict]:
     没有才退回 data/motors.json（采集产物）。这样贡献者只改自己的那个文件，
     采集脚本重跑也不会覆盖人工修订。
     """
-    from load_catalog import load_parts
+    from .load import load_parts
 
     return load_parts()
 
@@ -200,7 +201,17 @@ def main() -> None:
         except Exception:
             ratings = {}
 
-    from load_catalog import load_offers
+    # 实测汇总（来自 [实测] issue，由 Actions 聚合）。和评分是两套东西：
+    # 评分回答「值不值得买」，实测回答「在什么条件下跑了多久、坏没坏」。
+    reviews: dict = {}
+    _vw = ROOT / "data" / "reviews_snapshot.json"
+    if _vw.exists():
+        try:
+            reviews = json.loads(_vw.read_text(encoding="utf-8")).get("parts") or {}
+        except Exception:
+            reviews = {}
+
+    from .load import load_offers
 
     offers: list[dict] = load_offers()
 
@@ -382,8 +393,6 @@ def main() -> None:
         else:
             out.append(("反射惯量占比", "—", "缺转子惯量", "na"))
         return out
-
-    from urllib.parse import quote_plus
 
     def resources(r: dict) -> str:
         """资料与链接。真有的放前面并标「官方」，其余标「检索入口」。"""
@@ -588,6 +597,45 @@ def main() -> None:
                         "有合作或团购价请提 issue，写清**价格 + 覆盖范围 + 资格条件 + 有效期**，"
                         "缺一项都不上卡片。")
 
+        # 使用者实测：来自 [实测] issue。没有就说明「怎么提交、为什么空着」，
+        # 不用示例充数 —— 这和评分卡是同一套纪律。
+        rv = reviews.get(r["id"])
+        if rv and rv.get("count"):
+            joint_cn = {"hip": "髋", "knee": "膝", "ankle": "踝", "shoulder": "肩",
+                        "elbow": "肘", "wrist": "腕", "na": "不适用", "other": "其他"}
+            fail_cn = {"ok": "没坏", "broken": "坏过 / 已换", "degraded": "有异常但能用",
+                       "unused": "还没上机", "unknown": "未说明"}
+            rows_md = "\n".join(
+                f"| {e['author'] or '匿名'} | {joint_cn.get(e['joint'], e['joint'])} "
+                f"| {e['load']:g} | {e['hours']:g} | {e['temp'] or '—'} "
+                f"| {fail_cn.get(e['failure'], e['failure'])} "
+                f"| {(e['detail'] or '')[:80]} |"
+                for e in rv["entries"][:12])
+            review_md = f"""## 使用者实测
+
+**{rv['count']} 人报过实测**，平均负载 {rv['load_avg']:g} N·m，最高 {rv['load_max']:g} N·m，
+最长运行 {rv['hours_max']:g} 小时。其中
+{('坏过 / 有异常 ' + str(rv['failures'].get('broken', 0) + rv['failures'].get('degraded', 0)) + ' 人') if (rv['failures'].get('broken', 0) + rv['failures'].get('degraded', 0)) else '没人报故障'}。
+
+| 提交者 | 关节 | 负载 N·m | 时长 h | 温升 | 结果 | 说明 |
+|---|---|---|---|---|---|---|
+{rows_md}
+
+::: tip 这些数字该怎么看
+工况不同不能直接比 —— 髋关节 30 N·m 连续跑，和膝关节瞬时 80 N·m 尖峰，
+对同一个件的考验完全不同。所以表里把**关节、负载、时长**都留着。
+:::
+"""
+        else:
+            review_md = f"""## 使用者实测
+
+还没有人报过这个件的实测。有的是「参数好看」，缺的是「跑了多久、坏没坏」。
+
+<a class="rt-btn" href="https://github.com/zeitvex/RoboSelect/issues/new?template=review-part.yml&title=%5B%E5%AE%9E%E6%B5%8B%5D+{quote_plus(r['id'])}&labels=review" target="_blank" rel="noopener">提交实测</a>
+
+需要 GitHub 账号，30 秒填完：装了多大负载、跑了多久、温升多少、坏没坏。
+**坏过的经验最值钱** —— 那正是下一个人最想知道的。"""
+
         # 关节电机的深度指标
         metric_md = ""
         if cat == "actuator":
@@ -690,6 +738,8 @@ def main() -> None:
 ## 优惠与获取条件
 
 {offer_md}
+
+{review_md}
 
 ## 资料与链接
 

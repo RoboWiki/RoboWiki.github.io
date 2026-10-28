@@ -12,7 +12,7 @@ on:
     paths:
       - 'wiki/**'
       - 'data/**'
-      - 'scripts/build_wiki.py'
+      - 'pipeline/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -47,7 +47,7 @@ jobs:
       - name: generate wiki pages from data
         run: |
           python -m pip install --quiet -r backend/requirements.txt
-          python scripts/build_wiki.py
+          python -m pipeline build
 
       - name: install & build
         working-directory: wiki

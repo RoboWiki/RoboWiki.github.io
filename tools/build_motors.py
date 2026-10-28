@@ -100,7 +100,7 @@ def blank_specs() -> dict:
         "driver_integrated": None,
         "ip": None,
         # 产品图与来源。没有图的件也必须留这两个键，否则同 subtype 键集不同构，
-        # scripts/check_data.py 会直接判错。
+        # pipeline/validate.py 会直接判错。
         "image_url": None,
         "image_source": None,
     }
@@ -299,8 +299,8 @@ def load_motors() -> list[dict]:
         r["id"] = slug(r["vendor"], r["model"])
 
     # 挂产品图：两份映射合并
-    #   part_images.json          从本地厂商 PDF 抽出（scripts/extract_images.py）
-    #   part_images_fetched.json  从厂商产品页 / 在线 PDF 抓的（scripts/fetch_images.py）
+    #   part_images.json          从本地厂商 PDF 抽出（tools/extract_images.py）
+    #   part_images_fetched.json  从厂商产品页 / 在线 PDF 抓的（tools/fetch_images.py）
     # 没有产品图的件由前端画「按真实尺寸生成的技术示意图」，不留空。
     images: dict[str, str] = {}
     for fn in ("part_images.json", "part_images_fetched.json"):

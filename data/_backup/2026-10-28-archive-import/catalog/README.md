@@ -18,8 +18,8 @@ catalog/
 在对应厂商文件末尾加一条，然后跑：
 
 ```bash
-python scripts/check_data.py     # 数据闸门
-python scripts/build_wiki.py     # 重新生成站点
+python pipeline/validate.py     # 数据闸门
+python pipeline/build_site.py     # 重新生成站点
 ```
 
 字段说明与硬规则见仓库根的 [CONTRIBUTING.md](../../CONTRIBUTING.md)。
@@ -33,7 +33,7 @@ PR diff 很大、评审困难；按厂商分文件则是往数组里加 10 条�
 
 | 文件 | 谁生成 |
 |---|---|
-| `data/motors.json` | `scripts/build_motors.py`（采集产物，兼容用） |
+| `data/motors.json` | `tools/build_motors.py`（采集产物，兼容用） |
 | `data/part_images.json` / `part_images_fetched.json` | 抓图脚本 |
 | `data/ratings_snapshot.json` | GitHub Actions（从 issue 聚合） |
 | `data/focus.json` | `scripts/focus_data.py`（当前收录范围） |
@@ -42,4 +42,4 @@ PR diff 很大、评审困难；按厂商分文件则是往数组里加 10 条�
 
 - **价格**写在零件的 `price_cny`，并在 `notes` 里注明来源与抓取日期
 - **优惠**写在 `data/offers/<厂商slug>.json`，必须带 `detail`（获取条件）
-- 只改价格用 `scripts/apply_pricing.py` 的表，改动可复查
+- 只改价格用 `tools/apply_pricing.py` 的表，改动可复查

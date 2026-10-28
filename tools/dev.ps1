@@ -1,8 +1,8 @@
 // 本地迭代：站点（VitePress）+ 控制台（React）+ API，端口固定，互不抢。
 //
-//   pwsh scripts/dev.ps1          起站点与控制台
-//   pwsh scripts/dev.ps1 wiki     只起站点
-//   pwsh scripts/dev.ps1 web      只起控制台
+//   pwsh tools/dev.ps1          起站点与控制台
+//   pwsh tools/dev.ps1 wiki     只起站点
+//   pwsh tools/dev.ps1 web      只起控制台
 //
 // 端口约定（端口和 host 都写死在配置里，脚本只负责拉起）：
 //   5174  站点   VitePress dev，base=/ ，/api 代理到 8000，改 md / 组件即时生效
