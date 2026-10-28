@@ -22,8 +22,10 @@ const q = ref('')
 const sub = ref('')
 
 const SUB: Record<string, string> = {
-  quadruped: '四足', humanoid: '人形', wheeled: '轮式',
-  biped: '双足', arm: '机械臂', other: '其他',
+  quadruped: '四足', humanoid: '人形', biped: '双足',
+  wheeled: '轮式', wheeled_quadruped: '轮足',
+  wheeled_quadruped_inward_knee: '轮足（内膝）',
+  arm: '机械臂', other: '其他',
 }
 
 onMounted(async () => {
@@ -54,6 +56,12 @@ const rows = computed(() => {
 })
 
 const num = (v: any) => (v === null || v === undefined || v === '') ? '—' : String(v)
+/** 值里已含单位（如「0.5 h（6S LiPo）」）就不再追加，避免出现「0.5 h h」 */
+function withUnit(v: any, unit: string): string {
+  if (v === null || v === undefined || v === '') return '—'
+  const t = String(v)
+  return /[a-zA-Z\u4e00-\u9fa5]/.test(t) ? t : `${t} ${unit}`
+}
 const urdf = (x: Robot) => (x.specs?.urdf_urls as string[] | undefined)?.length || 0
 const repo = (x: Robot) => (x.specs?.repo_urls as string[] | undefined)?.length || 0
 </script>
@@ -81,9 +89,9 @@ const repo = (x: Robot) => (x.specs?.repo_urls as string[] | undefined)?.length 
           <p class="rc-vendor">{{ x.vendor_cn || x.vendor }}</p>
           <dl class="rc-kv">
             <div><dt>自由度</dt><dd>{{ num(x.specs?.dof) }}</dd></div>
-            <div><dt>质量</dt><dd>{{ num(x.specs?.mass_kg) }} kg</dd></div>
-            <div><dt>负载</dt><dd>{{ num(x.specs?.payload_kg) }} kg</dd></div>
-            <div><dt>续航</dt><dd>{{ num(x.specs?.endurance_h) }} h</dd></div>
+            <div><dt>质量</dt><dd>{{ withUnit(x.specs?.mass_kg, 'kg') }}</dd></div>
+            <div><dt>负载</dt><dd>{{ withUnit(x.specs?.payload_kg, 'kg') }}</dd></div>
+            <div><dt>续航</dt><dd>{{ withUnit(x.specs?.endurance_h, 'h') }}</dd></div>
           </dl>
           <div class="rc-links">
             <span class="rc-sim" title="进仿真接口已留（URDF 链接见详情页），暂未接入">进仿真</span>
@@ -124,8 +132,8 @@ const repo = (x: Robot) => (x.specs?.repo_urls as string[] | undefined)?.length 
 .rc-top em { font-style: normal; font-size: .64rem; padding: 0 6px; border-radius: 999px;
   background: var(--vp-c-brand-soft); color: var(--vp-c-brand-1); }
 .rc-vendor { margin: 0; font-size: .72rem; color: var(--vp-c-text-3); }
-.rc-kv { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: .18rem .5rem; font-size: .74rem; }
-.rc-kv div { display: flex; justify-content: space-between; gap: .3rem; }
+.rc-kv { margin: 0; display: flex; flex-direction: column; gap: .12rem; font-size: .74rem; }
+.rc-kv div { display: flex; justify-content: space-between; gap: .6rem; }
 .rc-kv dt { color: var(--vp-c-text-3); }
 .rc-kv dd { margin: 0; color: var(--vp-c-text-2); }
 .rc-links { display: flex; gap: .35rem; flex-wrap: wrap; margin-top: .25rem; }
