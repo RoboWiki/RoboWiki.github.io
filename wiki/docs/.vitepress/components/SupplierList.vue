@@ -15,7 +15,6 @@ interface Sup {
   id: string
   name: string
   brand: string
-  kind: 'platform' | 'shop'
   url: string | null
   process: string | null
   category: string | null
@@ -36,7 +35,7 @@ const all = ref<Sup[]>([])
 const q = ref('')
 const tag = ref('')
 const cat = ref('')
-const kind = ref<'' | 'platform' | 'shop'>('')
+const kind = ref<'' | 'shop'>('')
 const only = ref(false)      // 只看有点评的
 const open = ref<string | null>(null)
 
@@ -77,7 +76,6 @@ const hasNote = (s: Sup) => !!s.notes && !s.notes.includes('未附点评')
 const rows = computed(() => {
   const kw = q.value.trim().toLowerCase()
   return all.value.filter((s) => {
-    if (kind.value && s.kind !== kind.value) return false
     if (only.value && !hasNote(s)) return false
     if (cat.value && (s.category || '未分类') !== cat.value) return false
     if (tag.value && (s.fine || s.process_tag || '其他/未记') !== tag.value) return false
@@ -98,8 +96,7 @@ function priceRank(s: Sup) {
 
 const sorted = computed(() =>
   [...rows.value].sort((a, b) => {
-    // 平台在前（资料更全），其余按价格档次从低到高
-    if (a.kind !== b.kind) return a.kind === 'platform' ? -1 : 1
+    // 只按价格档次从低到高；没有实证的「知名平台」不享受置顶
     return priceRank(a) - priceRank(b)
   }),
 )
@@ -111,8 +108,6 @@ const QUALITY_GOOD = ['稳定，精度高', '精度高', '稳定，精度好', '
   <div class="sup">
     <div class="sup-bar">
       <input v-model="q" class="sup-q" type="search" placeholder="搜店名 / 工艺 / 点评关键词" />
-      <button class="sup-btn" :class="{ on: kind === 'platform' }" @click="kind = kind === 'platform' ? '' : 'platform'">自营平台</button>
-      <button class="sup-btn" :class="{ on: kind === 'shop' }" @click="kind = kind === 'shop' ? '' : 'shop'">淘宝店铺</button>
       <button class="sup-btn" :class="{ on: only }" @click="only = !only">只看有点评</button>
       <span class="sup-count">{{ sorted.length }} 家</span>
     </div>
@@ -130,12 +125,12 @@ const QUALITY_GOOD = ['稳定，精度高', '精度高', '稳定，精度好', '
     </div>
 
     <div class="sup-grid">
-      <article v-for="s in sorted" :key="s.id" class="sc" :class="{ plat: s.kind === 'platform' }">
+      <article v-for="s in sorted" :key="s.id" class="sc">
         <div class="sc-head">
           <a v-if="s.url" :href="s.url" target="_blank" rel="noopener nofollow" class="sc-name">{{ s.name }}</a>
           <span v-else class="sc-name">{{ s.name }}</span>
           <span class="sc-kind">{{ s.category || '未分类' }}</span>
-          <span class="sc-kind">{{ s.fine || s.kind === 'platform' ? s.fine || '自营平台' : '店铺' }}</span>
+          <span v-if="s.fine && s.fine !== s.category" class="sc-kind">{{ s.fine }}</span>
         </div>
         <p class="sc-proc">{{ s.process || '工艺未记' }}</p>
         <dl class="sc-kv">
@@ -173,7 +168,6 @@ const QUALITY_GOOD = ['稳定，精度高', '精度高', '稳定，精度好', '
 .sup-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0.7rem; }
 .sc { border: 1px solid var(--vp-c-divider); border-radius: 12px; padding: 0.8rem 0.9rem;
   background: var(--vp-c-bg); display: flex; flex-direction: column; gap: 0.4rem; }
-.sc.plat { border-color: var(--vp-c-brand-1); background: var(--vp-c-brand-soft); }
 .sc-head { display: flex; align-items: baseline; gap: 0.45rem; flex-wrap: wrap; }
 .sc-name { font-size: 0.9rem; font-weight: 700; color: var(--vp-c-text-1); }
 a.sc-name:hover { color: var(--vp-c-brand-1); }
