@@ -55,5 +55,8 @@
  "intel-d457": "/parts/intel-d457.png",
  "orbbec-gemini-305": "/parts/orbbec-gemini-305.jpg",
  "intel-d435i": "/parts/intel-d435i.png",
- "intel-d455": "/parts/intel-d455.png"
+ "intel-d455": "/parts/intel-d455.png",
+ "dji-c620": "/parts/dji-c620.jpg",
+ "dji-c610": "/parts/dji-c610.jpg",
+ "dji-c615": "/parts/dji-c615.jpg"
 }
