@@ -11,6 +11,7 @@ import sidebar from './sidebar.json' with { type: 'json' }
 const zhTheme = {
   nav: [
     { text: '首页', link: '/' },
+    { text: '学习路线', link: '/learn/' },
     { text: '机器人整机', link: '/robots' },
     { text: '机器人部件', link: '/catalog' },
     { text: '加工与采购', link: '/suppliers' },
@@ -43,6 +44,7 @@ const zhTheme = {
 const enTheme = {
   nav: [
     { text: 'Home', link: '/en/' },
+    { text: 'Learning path', link: '/en/learn/' },
     { text: 'Robots', link: '/en/robots' },
     { text: 'Parts', link: '/en/catalog' },
     { text: 'Suppliers', link: '/en/suppliers' },

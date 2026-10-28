@@ -1,0 +1,83 @@
+{
+ "note": "学习路线：路线图、教程与文章。文章正文是 wiki/docs/learn/*.md，这里只放索引元数据（标题、摘要、标签、难度、顺序）。新增文章 = 加 md + 在这里登记一行。",
+ "updated_at": "2026-10-29",
+ "routes": [
+  {
+   "id": "r-select",
+   "title": "会选型",
+   "goal": "拿到一个任务，能把需求拆成自由度、关节扭矩、算力与传感器，并说清每个数字的来源。",
+   "steps": [
+    {"n": 1, "text": "读懂关节电机的六个参数：峰值/额定扭矩、转速、减速比、Kt、惯量、电压", "link": "/learn/motor-specs"},
+    {"n": 2, "text": "把「输出端」口径钉死：厂商给的是电机端还是减速箱端，差一个减速比", "link": "/learn/motor-specs#输出端还是电机端"},
+    {"n": 3, "text": "按扭矩反推需求：负载、臂长、加速度 → 关节峰值扭矩，再留 1.5–2 倍余量", "link": "/learn/selection-order"},
+    {"n": 4, "text": "算力与传感器分档：要跑什么模型、要多高频率的闭环，决定上什么板子", "link": "/learn/selection-order#算力与传感器怎么定档"},
+    {"n": 5, "text": "回到部件库按列排序，把候选压到 3 个，再逐个进详情页看来源等级", "link": "/catalog"}
+   ]
+  },
+  {
+   "id": "r-build",
+   "title": "搭得起来",
+   "goal": "把电机、驱动器、主控、传感器接成一条能跑的链路，而不是一堆散件。",
+   "steps": [
+    {"n": 1, "text": "总线怎么选：CAN / CAN-FD / EtherCAT / RS-485，各自由谁来终结", "link": "/learn/control-chain"},
+    {"n": 2, "text": "驱动器与电机的配对表：极对数、编码器类型、电流环频率对不上会抖", "link": "/learn/control-chain#驱动器与电机怎么配"},
+    {"n": 3, "text": "时间同步与频率预算：控制周期、CAN 带宽、传感器 ODR 三者要一起算", "link": "/learn/control-chain#频率预算"},
+    {"n": 4, "text": "线束与端子的选择（这块最容易被忽略，也最容易在现场出事）", "link": "/catalog?cat=wiring"}
+   ]
+  },
+  {
+   "id": "r-sim",
+   "title": "进得了仿真",
+   "goal": "把整机模型拖进 MuJoCo / Isaac，先仿真再上真机，少摔几次。",
+   "steps": [
+    {"n": 1, "text": "URDF 是什么、为什么它比官网参数表更硬（关节数、连杆长度、质心都是真的）", "link": "/learn/open-source-reading"},
+    {"n": 2, "text": "在整机页找 URDF / 仓库链接，直接下载", "link": "/robots"},
+    {"n": 3, "text": "读一个开源项目的顺序：URDF → SDK → 训练配置 → 标定脚本", "link": "/learn/open-source-reading#读项目的顺序"}
+   ]
+  }
+ ],
+ "articles": [
+  {
+   "slug": "motor-specs",
+   "title": "关节电机参数怎么读：六个数字背后的坑",
+   "summary": "峰值扭矩和额定扭矩差 3 倍是正常的；但「峰值」没写持续时间就是耍流氓。附 M3508 的输出端换算实例。",
+   "tags": ["选型", "关节电机"],
+   "level": "入门",
+   "minutes": 12
+  },
+  {
+   "slug": "selection-order",
+   "title": "第一次做整机选型：先算什么，后算什么",
+   "summary": "顺序错了会白买一轮。从任务倒推自由度 → 关节扭矩 → 算力 → 传感器，每步给可核对的算法。",
+   "tags": ["选型", "流程"],
+   "level": "入门",
+   "minutes": 15
+  },
+  {
+   "slug": "control-chain",
+   "title": "电控链路怎么搭：总线、驱动器与频率预算",
+   "summary": "CAN 挂 12 个关节还够不够？控制环 1 kHz 意味着什么？把带宽、周期、ODR 放在一张表里算。",
+   "tags": ["电控", "总线"],
+   "level": "进阶",
+   "minutes": 18
+  },
+  {
+   "slug": "open-source-reading",
+   "title": "开源机器人项目怎么读：从 URDF 到训练配置",
+   "summary": "一个项目能不能复现，看四样东西就够了。附判断「这个仓库能不能用」的清单。",
+   "tags": ["开源", "仿真"],
+   "level": "进阶",
+   "minutes": 14
+  }
+ ],
+ "reprint": {
+  "title": "分享与转载",
+  "summary": "本站文章默认采用「署名 + 非商用 + 相同方式共享」，转载不用逐篇问，但有三条底线。",
+  "rules": [
+   "署名到人：写清 RoboWiki 与原作者，附原文链接。",
+   "不改数据：可以改排版、加批注，但不能改参数、价格与来源等级。",
+   "商用先问：用于课程、产品手册、招投标材料等场景，请先联系编辑部。"
+  ],
+  "link": "/learn/reprint"
+ }
+}

@@ -1331,6 +1331,16 @@ html.dark .rl-th {{ color: #e0b159; }}
 
     # ── 贡献者 ──────────────────────────────────────────────────────────
     # 交给 pipeline/contrib_page.py：GitHub 快照 + 手工名单，生成中英两版。
+    # 学习路线：data/learn.json -> public/learn.json（路线、文章索引、转载规范）
+    try:
+        learn = json.loads((ROOT / "data" / "learn.json").read_text(encoding="utf-8"))
+    except Exception:
+        learn = {"routes": [], "articles": []}
+    (pub / "learn.json").write_text(
+        json.dumps(learn, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    print(f"  学习路线 {len(learn.get('routes', []))} 条 / "
+          f"{len(learn.get('articles', []))} 篇 -> public/learn.json")
+
     build_robots(ROOT, OUT, pub)
     build_contributors(ROOT, OUT, pub)
 
