@@ -46,10 +46,14 @@ def run(issues) -> dict:
     with tempfile.TemporaryDirectory() as td:
         p = pathlib.Path(td) / "issues.json"
         p.write_text(json.dumps(issues, ensure_ascii=False), encoding="utf-8")
-        r = subprocess.run([sys.executable, str(ROOT / "pipeline" / "ingest_ratings.py"), str(p)],
+        out = pathlib.Path(td) / "out"
+        r = subprocess.run([sys.executable, str(ROOT / "pipeline" / "ingest_ratings.py"),
+                            str(p), "--out", str(out)],
                            capture_output=True, text=True, encoding="utf-8")
         assert r.returncode == 0, r.stdout + r.stderr
-        return json.loads((ROOT / "data" / "ratings_snapshot.json").read_text(encoding="utf-8"))
+        snap = json.loads((out / "ratings_snapshot.json").read_text(encoding="utf-8"))
+        errs = json.loads((out / "ratings_errors.json").read_text(encoding="utf-8"))
+        return snap, errs
 
 
 PART = "达妙-dm-dm-j4340-2ec-v1-1"
@@ -57,14 +61,14 @@ PART2 = "灵足-robstride-rs04"
 
 
 def test_parses_form_body():
-    d = run([_issue(1, "alice", PART, 4)])
+    d, _ = run([_issue(1, "alice", PART, 4)])
     p = d["parts"][PART]
     assert p["count"] == 1 and p["avg"] == 4.0
     assert p["histogram"]["4"] == 1
 
 
 def test_own_hardware_detected():
-    d = run([
+    d, _ = run([
         _issue(1, "alice", PART, 5, own="- [X] 我装过 / 用过这个件"),
         _issue(2, "bob", PART, 3),
     ])
@@ -74,7 +78,7 @@ def test_own_hardware_detected():
 
 
 def test_one_vote_per_user_latest_wins():
-    d = run([
+    d, _ = run([
         _issue(1, "alice", PART, 1),
         _issue(5, "alice", PART, 5),      # 同一人改主意，取最新
     ])
@@ -84,7 +88,7 @@ def test_one_vote_per_user_latest_wins():
 
 
 def test_closed_and_unlabeled_ignored():
-    d = run([
+    d, _ = run([
         _issue(1, "alice", PART, 4),
         _issue(2, "bob", PART, 1, state="closed"),
         _issue(3, "carol", PART2, 1, labels=()),
@@ -94,13 +98,12 @@ def test_closed_and_unlabeled_ignored():
 
 
 def test_unknown_part_and_bad_score_are_dropped():
-    d = run([
+    d, errs = run([
         _issue(1, "alice", PART, 4),
         _issue(2, "bob", "no-such-part", 5),
         _issue(3, "carol", PART2, 9),
     ])
     assert d["total_ratings"] == 1
-    errs = json.loads((ROOT / "data" / "ratings_errors.json").read_text(encoding="utf-8"))
     assert len(errs) == 2, errs
 
 
@@ -108,5 +111,5 @@ def test_title_fallback_when_field_missing():
     it = _issue(1, "alice", PART, 4)
     # 把「部件 id」字段的值挖空，靠标题里的 [评分] <id> 兜底
     it["body"] = it["body"].replace(f"### 部件 id\n\n{PART}", "### 部件 id\n\n")
-    d = run([it])
+    d, _ = run([it])
     assert d["parts"][PART]["count"] == 1

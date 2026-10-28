@@ -66,14 +66,18 @@ def run(issues) -> dict:
     with tempfile.TemporaryDirectory() as td:
         p = pathlib.Path(td) / "issues.json"
         p.write_text(json.dumps(issues, ensure_ascii=False), encoding="utf-8")
+        out = pathlib.Path(td) / "out"
         r = subprocess.run([sys.executable, str(ROOT / "pipeline" / "ingest_reviews.py"),
-                            str(p)], capture_output=True, text=True, encoding="utf-8")
+                            str(p), "--out", str(out)],
+                           capture_output=True, text=True, encoding="utf-8")
         assert r.returncode == 0, r.stdout + r.stderr
-        return json.loads((ROOT / "data" / "reviews_snapshot.json").read_text(encoding="utf-8"))
+        snap = json.loads((out / "reviews_snapshot.json").read_text(encoding="utf-8"))
+        errs = json.loads((out / "reviews_errors.json").read_text(encoding="utf-8"))
+        return snap, errs
 
 
 def test_basic_aggregate():
-    d = run([_issue(1)])
+    d, _ = run([_issue(1)])
     p = d["parts"][PART]
     assert p["count"] == 1
     assert p["load_avg"] == 28.0 and p["load_max"] == 28.0
@@ -84,7 +88,7 @@ def test_basic_aggregate():
 
 def test_failure_kept_not_dropped():
     """坏过是最值钱的信息，不能因为「不好看」就丢掉"""
-    d = run([_issue(1), _issue(2, failure="坏过，已修 / 已换", author="bob")])
+    d, _ = run([_issue(1), _issue(2, failure="坏过，已修 / 已换", author="bob")])
     p = d["parts"][PART]
     assert p["count"] == 2
     assert p["failures"]["broken"] == 1 and p["failures"]["ok"] == 1
@@ -92,28 +96,26 @@ def test_failure_kept_not_dropped():
 
 
 def test_missing_load_or_hours_excluded():
-    d = run([_issue(1), _issue(2, load="不清楚", author="bob"),
-             _issue(3, hours="还没跑", author="carol")])
+    d, errs = run([_issue(1), _issue(2, load="不清楚", author="bob"),
+                   _issue(3, hours="还没跑", author="carol")])
     p = d["parts"][PART]
     assert p["count"] == 1, "缺工况的条目不能进可比统计"
-    errs = json.loads((ROOT / "data" / "reviews_errors.json").read_text(encoding="utf-8"))
     assert len(errs) == 2
 
 
 def test_months_converted_and_flagged():
-    d = run([_issue(1, hours="3 个月")])
+    d, _ = run([_issue(1, hours="3 个月")])
     # 3 个月 ≈ 3×30×4 = 360 小时（粗估，条目里保留原始文本）
     assert d["parts"][PART]["hours_max"] == 360.0
 
 
 def test_unlabeled_and_closed_ignored():
-    d = run([_issue(1), _issue(2, labels=()),
-             {**_issue(3), "state": "closed"}])
+    d, _ = run([_issue(1), _issue(2, labels=()),
+                {**_issue(3), "state": "closed"}])
     assert d["parts"][PART]["count"] == 1
 
 
 def test_unknown_part_rejected():
-    d = run([_issue(1, part="no-such-part")])
+    d, errs = run([_issue(1, part="no-such-part")])
     assert d["parts"] == {}
-    errs = json.loads((ROOT / "data" / "reviews_errors.json").read_text(encoding="utf-8"))
     assert "不在目录里" in errs[0]

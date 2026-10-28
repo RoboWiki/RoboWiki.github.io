@@ -116,11 +116,11 @@ cd _refs/zju-wiki && git config core.quotepath false
 # 导出 11 份手册（必须用 cmd 的字节级重定向，PowerShell 的 > 会转成文本把 PDF 弄坏）
 cmd /c "git show \"HEAD:docs/组件说明/机器人通用组件/设备应用/电机设备组件.assets/xxx.pdf\" > out.pdf"
 
-python scripts/build_zju_parts.py     # 钉死的常量 + 页码引用 → data/motors_zju.json
-python tools/build_motors.py        # 合并进 data/motors.json
-python pipeline/validate.py          # 闸门
+python tools/build_zju_parts.py       # 钉死的常量 + 页码引用 → data/motors_zju.json（已归档）
+python tools/build_motors.py        # 合并进 data/motors.json（已归档，现统一进 data/catalog/）
+python -m pipeline validate          # 闸门
 ```
 
-`scripts/dump_zju_text.py` 与 `scripts/dump_zju_tables.py` 是核对用的：
+`tools/dump_zju_text.py` 与 `tools/dump_zju_tables.py` 是核对用的：
 它们只负责把原文摆出来，**定值由人做**。用正则自动定值试过，错得离谱
 （把「1:1 接口」当减速比、把整机重量当电机重量）。

@@ -1,4 +1,11 @@
-# RoboSelect
+# RoboSelect（历史快照）
+
+> **本文是 2026-10 中旬的旧版 README，仅作历史留档。** 目录结构、数据文件、
+> 收录范围都已变化（scripts/ 现为 tools/ 与 pipeline/；旧扁平数据文件已出库；
+> 收录范围已扩展到 8 个品类 19 家厂商）。**当前事实以根目录 [../README.md](../README.md) 与
+> [ARCHITECTURE.md](ARCHITECTURE.md) 为准。**
+
+---
 
 **四足机器人选型 + 真实使用社区。**
 
@@ -17,10 +24,9 @@ docs/      参考项目评估 + 截图
 scripts/   数据生成、闸门、文档生成、备份/回滚
 ```
 
-> **当前范围**：先做精关节电机，只留 4 家厂商（达妙 DM、DJI RoboMaster、
-> 灵足 RobStride、Unitree）。其余 10 家厂商与 3 个品类已备份到
-> `data/_backup/2026-10-27/`，`tools/restore_backup.ps1` 可一键回滚。
-> `data/focus.json` 写明了保留范围 —— 重跑采集脚本不会把移出的厂商带回来。
+> **历史范围（已过期）**：当时只保留 4 家电机厂商，其余备份在
+> `data/_backup/`（该目录已于 2026-10-28 出库归档，不再入库）。
+> 收录范围后来已重新扩展，此段不再适用。
 
 > 参考的上游项目（InvenTree / Directus / NodeBB / Answer / antd-pro / fastapi-template /
 > sqlmodel / refine / giscus）浅克隆在仓库外的 `../_refs/`，不参与运行。

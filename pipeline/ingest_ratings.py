@@ -39,10 +39,18 @@ def field(body: str, name: str) -> str | None:
 
 
 def main() -> None:
-    if len(sys.argv) < 2:
-        print("用法: aggregate_ratings.py <issues.json>")
+    # --out 让测试把产物写到临时目录，而不是覆盖 data/ 里的真实快照。
+    # 默认仍写 data/（生产行为不变）。
+    argv = [a for a in sys.argv[1:]]
+    out_dir = ROOT / "data"
+    if "--out" in argv:
+        i = argv.index("--out")
+        out_dir = pathlib.Path(argv[i + 1])
+        del argv[i:i + 2]
+    if not argv:
+        print("用法: ingest_ratings.py <issues.json> [--out DIR]")
         raise SystemExit(2)
-    issues = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
+    issues = json.loads(pathlib.Path(argv[0]).read_text(encoding="utf-8"))
 
     known = {r["id"] for f in CATALOG.glob("*/*.json")
               for r in json.loads(f.read_text(encoding="utf-8"))}
@@ -112,8 +120,10 @@ def main() -> None:
         "snapshot": True,
         "source": "github-issues",
     }
-    OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=1), encoding="utf-8")
-    (ROOT / "data" / "ratings_errors.json").write_text(
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "ratings_snapshot.json").write_text(
+        json.dumps(payload, ensure_ascii=False, indent=1), encoding="utf-8")
+    (out_dir / "ratings_errors.json").write_text(
         json.dumps(errors, ensure_ascii=False, indent=1), encoding="utf-8")
 
     print(f"issue {len(issues)} 条 → 有效评分 {len(best)} 条 / {len(parts)} 个零件")
