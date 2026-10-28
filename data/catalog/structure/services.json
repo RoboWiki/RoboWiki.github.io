@@ -1,7 +1,7 @@
 [
  {
   "category": "structure",
-  "subtype": "service",
+  "subtype": "platform",
   "id": "machining-jlc-cnc",
   "vendor": "嘉立创 JLC",
   "vendor_cn": "嘉立创 CNC",
@@ -26,12 +26,16 @@
    "gear": null,
    "mass_kg": null,
    "armature_kgm2": null,
-   "kt_Nm_per_A": null
+   "kt_Nm_per_A": null,
+   "quality": null,
+   "punctual": null,
+   "price_level": null,
+   "invoice": null
   }
  },
  {
   "category": "structure",
-  "subtype": "service",
+  "subtype": "platform",
   "id": "machining-jlc-3dp",
   "vendor": "嘉立创 JLC",
   "vendor_cn": "嘉立创 3D 打印",
@@ -56,12 +60,16 @@
    "gear": null,
    "mass_kg": null,
    "armature_kgm2": null,
-   "kt_Nm_per_A": null
+   "kt_Nm_per_A": null,
+   "quality": null,
+   "punctual": null,
+   "price_level": null,
+   "invoice": null
   }
  },
  {
   "category": "structure",
-  "subtype": "service",
+  "subtype": "platform",
   "id": "machining-wenext",
   "vendor": "未来工场",
   "vendor_cn": "未来工场",
@@ -86,12 +94,16 @@
    "gear": null,
    "mass_kg": null,
    "armature_kgm2": null,
-   "kt_Nm_per_A": null
+   "kt_Nm_per_A": null,
+   "quality": null,
+   "punctual": null,
+   "price_level": null,
+   "invoice": null
   }
  },
  {
   "category": "structure",
-  "subtype": "service",
+  "subtype": "platform",
   "id": "machining-sujia",
   "vendor": "速加网",
   "vendor_cn": "速加网",
@@ -116,12 +128,16 @@
    "gear": null,
    "mass_kg": null,
    "armature_kgm2": null,
-   "kt_Nm_per_A": null
+   "kt_Nm_per_A": null,
+   "quality": null,
+   "punctual": null,
+   "price_level": null,
+   "invoice": null
   }
  },
  {
   "category": "structure",
-  "subtype": "service",
+  "subtype": "platform",
   "id": "machining-blt",
   "vendor": "铂力特 BLT",
   "vendor_cn": "铂力特 BLT",
@@ -146,12 +162,16 @@
    "gear": null,
    "mass_kg": null,
    "armature_kgm2": null,
-   "kt_Nm_per_A": null
+   "kt_Nm_per_A": null,
+   "quality": null,
+   "punctual": null,
+   "price_level": null,
+   "invoice": null
   }
  },
  {
   "category": "structure",
-  "subtype": "service",
+  "subtype": "platform",
   "id": "machining-uniontech",
   "vendor": "联泰科技",
   "vendor_cn": "联泰科技",
@@ -176,12 +196,16 @@
    "gear": null,
    "mass_kg": null,
    "armature_kgm2": null,
-   "kt_Nm_per_A": null
+   "kt_Nm_per_A": null,
+   "quality": null,
+   "punctual": null,
+   "price_level": null,
+   "invoice": null
   }
  },
  {
   "category": "structure",
-  "subtype": "service",
+  "subtype": "platform",
   "id": "machining-protolabs",
   "vendor": "Protolabs",
   "vendor_cn": "Protolabs",
@@ -206,12 +230,16 @@
    "gear": null,
    "mass_kg": null,
    "armature_kgm2": null,
-   "kt_Nm_per_A": null
+   "kt_Nm_per_A": null,
+   "quality": null,
+   "punctual": null,
+   "price_level": null,
+   "invoice": null
   }
  },
  {
   "category": "structure",
-  "subtype": "service",
+  "subtype": "platform",
   "id": "machining-xometry",
   "vendor": "Xometry",
   "vendor_cn": "Xometry",
@@ -236,7 +264,11 @@
    "gear": null,
    "mass_kg": null,
    "armature_kgm2": null,
-   "kt_Nm_per_A": null
+   "kt_Nm_per_A": null,
+   "quality": null,
+   "punctual": null,
+   "price_level": null,
+   "invoice": null
   }
  }
 ]

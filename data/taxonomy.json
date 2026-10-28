@@ -251,8 +251,11 @@
   {
    "id": "structure",
    "name": "机械加工",
-   "hint": "CNC / 3D 打印 / 钣金",
-   "subtypes": {},
+   "hint": "CNC / 钣金 / 3D 打印",
+   "subtypes": {
+    "platform": "自营平台",
+    "shop": "淘宝店铺"
+   },
    "keys": [
     {
      "k": "process",
@@ -260,18 +263,18 @@
      "unit": ""
     },
     {
-     "k": "materials",
-     "label": "材料",
+     "k": "quality",
+     "label": "质量",
      "unit": ""
     },
     {
-     "k": "lead",
+     "k": "punctual",
      "label": "交期",
      "unit": ""
     },
     {
-     "k": "moq",
-     "label": "起订",
+     "k": "price_level",
+     "label": "价格",
      "unit": ""
     }
    ],
@@ -717,6 +720,10 @@
   "Xometry": {
    "slug": "xometry",
    "cn": "Xometry"
+  },
+  "淘宝加工店铺": {
+   "slug": "taobao-shop",
+   "cn": "淘宝加工店铺"
   }
  }
 }

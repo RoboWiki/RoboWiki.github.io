@@ -12,7 +12,7 @@ title: 嘉立创 JLC 嘉立创 CNC
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">机械加工</span>
-      <span class="part-tag sub">service</span>
+      <span class="part-tag sub">platform</span>
       <span class="part-tag tierC">来源 C</span>
       <span class="part-tag muted">无公开报价</span>
     </div>
@@ -73,6 +73,10 @@ title: 嘉立创 JLC 嘉立创 CNC
 | 质量 (kg) | — |
 | 转子惯量 (kg·m²) | — |
 | 转矩常数 (N·m/A) | — |
+| quality | — |
+| punctual | — |
+| price_level | — |
+| invoice | — |
 
 ## 优惠与获取条件
 
