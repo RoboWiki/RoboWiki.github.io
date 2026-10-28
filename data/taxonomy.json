@@ -249,47 +249,6 @@
    ]
   },
   {
-   "id": "structure",
-   "name": "机械加工",
-   "hint": "CNC / 钣金 / 3D 打印",
-   "subtypes": {
-    "platform": "自营平台",
-    "shop": "淘宝店铺"
-   },
-   "keys": [
-    {
-     "k": "process",
-     "label": "工艺",
-     "unit": ""
-    },
-    {
-     "k": "quality",
-     "label": "质量",
-     "unit": ""
-    },
-    {
-     "k": "punctual",
-     "label": "交期",
-     "unit": ""
-    },
-    {
-     "k": "price_level",
-     "label": "价格",
-     "unit": ""
-    }
-   ],
-   "sorts": [
-    {
-     "k": "price",
-     "label": "价格"
-    },
-    {
-     "k": "rating",
-     "label": "评分"
-    }
-   ]
-  },
-  {
    "id": "imu",
    "name": "IMU",
    "hint": "姿态与振动",
@@ -692,38 +651,6 @@
   "RoboSense": {
    "slug": "robosense",
    "cn": "速腾聚创"
-  },
-  "嘉立创 JLC": {
-   "slug": "jlc",
-   "cn": "嘉立创 JLC"
-  },
-  "未来工场": {
-   "slug": "wenext",
-   "cn": "未来工场"
-  },
-  "速加网": {
-   "slug": "sujia",
-   "cn": "速加网"
-  },
-  "铂力特 BLT": {
-   "slug": "blt",
-   "cn": "铂力特 BLT"
-  },
-  "联泰科技": {
-   "slug": "uniontech",
-   "cn": "联泰科技"
-  },
-  "Protolabs": {
-   "slug": "protolabs",
-   "cn": "Protolabs"
-  },
-  "Xometry": {
-   "slug": "xometry",
-   "cn": "Xometry"
-  },
-  "淘宝加工店铺": {
-   "slug": "taobao-shop",
-   "cn": "淘宝加工店铺"
   }
  }
 }

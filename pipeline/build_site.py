@@ -160,7 +160,7 @@ def main() -> None:
     # 那些页面还能被访问到，等于把废弃数据留在线上。
     # 手写页面（explore.md）不在清理范围内。
     GENERATED = ["index.md", "semantics.md", "protocols.md", "sources.md",
-                 "contributors.md", "ai.md", "machining.md"]
+                 "contributors.md", "ai.md", "suppliers.md"]
     for name in GENERATED:
         p = OUT / name
         if p.exists():
@@ -1392,80 +1392,48 @@ html.dark .rl-th {{ color: #e0b159; }}
 </style>
 ''', encoding="utf-8")
 
-    # ── 机械加工商 ──────────────────────────────────────────────────────
-    # 这一页不是广告位：只写「什么活适合它、交期量级、坑在哪」，不写价格
-    # （加工价随材料、公差、批量浮动，写下来就是过期信息）。
+    # ── 供应商（与部件库分开）────────────────────────────────────────────
+    # 部件库回答「这台电机怎么样」，供应商回答「这活找谁做」——
+    # 字段、排序、评价方式都不同；混在一个库里会污染部件数量与品牌筛选。
     try:
-        shops = json.loads((ROOT / "data" / "machining.json").read_text(encoding="utf-8"))
+        sups = json.loads((ROOT / "data" / "suppliers.json").read_text(encoding="utf-8"))
     except Exception:
-        shops = []
-    shop_cards = "\n".join(
-        f'''<div class="mc">
-  <div class="mc-head"><a href="{m.get('url') or '#'}" target="_blank" rel="noopener">{m.get('name')}</a>
-    <span class="mc-kind">{m.get('kind') or ''}</span></div>
-  <p class="mc-mat">{m.get('materials') or '—'}</p>
-  <p class="mc-note">{m.get('note') or ''}</p>
-  <div class="mc-meta"><span>交期 {m.get('lead') or '—'}</span><span>起订 {m.get('moq') or '—'}</span></div>
-</div>''' for m in shops)
-    (OUT / "machining.md").write_text(
-        '---\ntitle: 机械加工\nlayout: page\nsidebar: false\noutline: false\n---\n\n'
-        + f'''
-<div class="mc-page">
-  <header class="mc-hero">
-    <div class="mc-kicker">机械加工</div>
-    <h1>把图纸变成件，找谁做。</h1>
+        sups = []
+    (pub / "suppliers.json").write_text(
+        json.dumps({"count": len(sups), "suppliers": sups},
+                   ensure_ascii=False, separators=(",", ":")),
+        encoding="utf-8")
+    (OUT / "suppliers.md").write_text(
+        '''---
+title: 供应商
+layout: page
+sidebar: false
+outline: false
+---
+
+<div class="sup-page">
+  <header class="sup-hero">
+    <div class="sup-kicker">供应商</div>
+    <h1>活找谁做。</h1>
     <p>
-      四足的腿管、关节座、罩壳、减重结构件，基本落在这几类工艺里：CNC、钣金、3D 打印、金属打印。
-      这一页只写<strong>什么活适合谁、交期量级、坑在哪</strong> —— 不写价格，因为加工价随材料、
-      公差、批量浮动，写下来就是过期信息。
+      这一页不是部件库的一部分。部件库比的是<strong>参数</strong>，
+      这里比的是<strong>谁靠谱</strong>：加工质量、交货准不准、价格档次、能不能开票。
+      两者混在一起，既会污染部件数量，也会让「品牌筛选」变成 145 个按钮。
     </p>
+    <div class="sup-src">
+      <b>数据来源</b>
+      名录来自社区整理的《供应商名录》机械加工表（145 家店铺 + 8 家自营平台）。
+      质量 / 交期 / 价格 / 发票是<strong>他人实战反馈的转述</strong>，不是厂商自述，
+      统一标 <code>B</code> 级。点评里的署名（北理 / 哈工大 / 深技大 …）原样保留 ——
+      谁说的，看得出来。
+    </div>
   </header>
 
-  <div class="mc-grid">{shop_cards}</div>
-
-  <section class="mc-how">
-    <h2>下单前先想清四件事</h2>
-    <ol>
-      <li><b>公差写在该写的地方</b>。轴承位、销孔给 H7；外形轮廓别标 ±0.02 —— 每加严一档都是钱。</li>
-      <li><b>能 3D 打印就别 CNC</b>。结构验证件用打印，省下的时间够改两轮设计。</li>
-      <li><b>受力件别用 SLA 树脂</b>。它短期够硬，长期蠕变；受力的最终件用铝或尼龙 PA12。</li>
-      <li><b>先要一件样品再谈批量</b>。同一张图不同厂的装夹与刀具策略差别很大，首件必须实测。</li>
-    </ol>
-  </section>
-
-  <p class="mc-warn">
-    交期与起订是<strong>经验估计</strong>（部件库里标了 ≈），不是厂商承诺；工艺与材料来自各家官网公开内容，其余以询价为准。本站与上述加工商<strong>没有合作关系</strong>，也不收推荐费。列出来是因为「去哪儿做件」
-    是选型之后必然撞上的问题，而不是因为谁给了钱。
-  </p>
+  <SupplierList />
 </div>
-
-<style>
-.mc-page {{ max-width: 1040px; margin: 0 auto; padding: 1.8rem 1.5rem 4rem; }}
-.mc-kicker {{ font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--vp-c-brand-1); font-weight: 700; margin-bottom: 0.5rem; }}
-.mc-hero h1 {{ font-size: clamp(1.4rem, 2.6vw, 1.9rem); line-height: 1.3; font-weight: 800;
-  letter-spacing: -0.02em; margin: 0 0 0.7rem; border: none; padding: 0; color: var(--vp-c-text-1); }}
-.mc-hero p {{ margin: 0; font-size: 0.86rem; line-height: 1.85; color: var(--vp-c-text-2); max-width: 70ch; }}
-.mc-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 0.7rem; margin: 1.6rem 0; }}
-.mc {{ border: 1px solid var(--vp-c-divider); border-radius: 12px; padding: 0.8rem 0.95rem;
-  background: var(--vp-c-bg); display: flex; flex-direction: column; gap: 0.35rem; }}
-.mc-head {{ display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }}
-.mc-head a {{ font-size: 0.92rem; font-weight: 700; color: var(--vp-c-text-1); }}
-.mc-head a:hover {{ color: var(--vp-c-brand-1); }}
-.mc-kind {{ font-size: 0.66rem; padding: 0 6px; border-radius: 999px;
-  background: var(--vp-c-brand-soft); color: var(--vp-c-brand-1); }}
-.mc-mat {{ margin: 0; font-size: 0.74rem; color: var(--vp-c-text-3); line-height: 1.7; }}
-.mc-note {{ margin: 0; font-size: 0.78rem; color: var(--vp-c-text-2); line-height: 1.75; flex: 1; }}
-.mc-meta {{ display: flex; gap: 0.8rem; font-size: 0.7rem; color: var(--vp-c-text-3);
-  padding-top: 0.35rem; border-top: 1px solid var(--vp-c-divider); }}
-.mc-how h2 {{ font-size: 1rem; font-weight: 700; margin: 1.6rem 0 0.6rem;
-  border: none; padding: 0; color: var(--vp-c-text-1); }}
-.mc-how ol {{ font-size: 0.82rem; line-height: 1.9; color: var(--vp-c-text-2); padding-left: 1.2rem; margin: 0; }}
-.mc-warn {{ font-size: 0.78rem; color: var(--vp-c-text-3); margin-top: 1.6rem; line-height: 1.8;
-  border-left: 3px solid var(--vp-c-divider); padding-left: 0.8rem; }}
-</style>
 ''', encoding="utf-8")
+    print(f"  供应商 {len(sups)} 条 -> public/suppliers.json + suppliers.md")
+
 
     (OUT / "sources.md").write_text(FRONT.format(title="数据来源") + f"""
 # 数据来源

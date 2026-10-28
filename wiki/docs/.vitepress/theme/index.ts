@@ -6,6 +6,7 @@ import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import PageComments from '../components/PageComments.vue'
 import PartExplorer from '../components/PartExplorer.vue'
+import SupplierList from '../components/SupplierList.vue'
 import PartRating from '../components/PartRating.vue'
 import './custom.css'
 import './part.css'
@@ -20,6 +21,7 @@ export default {
   enhanceApp({ app }) {
     app.component('PageComments', PageComments)
     app.component('PartExplorer', PartExplorer)
+    app.component('SupplierList', SupplierList)
     app.component('PartRating', PartRating)
   },
 } satisfies Theme

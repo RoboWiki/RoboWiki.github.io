@@ -37,7 +37,7 @@ export default defineConfig({
         items: [
           { text: '投稿', link: '/submit' },
           { text: '贡献者', link: '/contributors' },
-          { text: '机械加工', link: '/machining' },
+          { text: '供应商', link: '/suppliers' },
           { text: 'AI 中转站', link: '/ai' },
           { text: '数据来源', link: '/sources' },
         ],
