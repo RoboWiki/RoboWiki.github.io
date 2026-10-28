@@ -13,7 +13,7 @@ title: 大疆 DJI RoboMaster 开发板 C 型
     <div class="part-tags">
       <span class="part-tag">下位机</span>
       <span class="part-tag sub">mcu</span>
-      <span class="part-tag tierB">来源 B</span>
+      <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag muted">无公开报价</span>
     </div>
 
@@ -27,16 +27,16 @@ title: 大疆 DJI RoboMaster 开发板 C 型
 | 峰值扭矩 (N·m) | — |
 | 额定扭矩 (N·m) | — |
 | 减速比 | — |
-| 质量 (kg) | — |
+| 质量 (kg) | 0.038 |
 | 转子惯量 (kg·m²) | — |
 | 转矩常数 (N·m/A) | — |
-| MCU | STM32F407IGH6 |
+| MCU | STM32（手册未注明具体型号，常见资料为 STM32F407IGH6） |
 | CAN 路数 | 2 |
-| 接口 | CAN / UART / SPI / I2C / PWM / ADC |
+| 接口 | CAN1×2 + CAN2×2 / UART×2 / PWM×7 / DBUS×1 / USB×1 / 摄像头 FPC×1 |
 
 <div class="part-src">
-来源：<a href="https://bbs.robomaster.com/wiki/20204847/804051">https://bbs.robomaster.com/wiki/20204847/804051</a><br/>
-收录：厂商公开资料（待逐项核对）<br/>
+来源：<a href="https://www.robomaster.com/zh-CN/products/components/general/development-board-type-c">https://www.robomaster.com/zh-CN/products/components/general/development-board-type-c</a><br/>
+收录：《RoboMaster 开发板 C 型用户手册》(2020) 特征参数页 + 官方产品页技术参数<br/>
 核对：2026-10-28
 </div>
 
@@ -66,17 +66,25 @@ title: 大疆 DJI RoboMaster 开发板 C 型
 
 | 字段 | 值 |
 |---|---|
+| MCU | STM32（手册未注明具体型号，常见资料为 STM32F407IGH6） |
+| clock_mhz | — |
+| flash_kb | — |
+| ram_kb | — |
+| CAN 路数 | 2 |
+| CAN-FD | 0 |
+| can_speed_mbps | — |
+| 电流环 (kHz) | — |
+| 接口 | CAN1×2 + CAN2×2 / UART×2 / PWM×7 / DBUS×1 / USB×1 / 摄像头 FPC×1 |
+| voltage_in_V | 24 |
+| 电压范围 (V) | 8–28 V |
+| 质量 (kg) | 0.038 |
+| dims | 60×41×16.3 mm |
+| temp_range | 0–55 ℃ |
 | 峰值扭矩 (N·m) | — |
 | 额定扭矩 (N·m) | — |
 | 减速比 | — |
-| 质量 (kg) | — |
 | 转子惯量 (kg·m²) | — |
 | 转矩常数 (N·m/A) | — |
-| MCU | STM32F407IGH6 |
-| CAN 路数 | 2 |
-| CAN-FD | 0 |
-| 电流环 (kHz) | — |
-| 接口 | CAN / UART / SPI / I2C / PWM / ADC |
 
 ## 优惠与获取条件
 
@@ -93,11 +101,11 @@ title: 大疆 DJI RoboMaster 开发板 C 型
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://bbs.robomaster.com/wiki/20204847/804051" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商公开资料（待逐项核对）</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+RoboMaster+%E5%BC%80%E5%8F%91%E6%9D%BF+C+%E5%9E%8B+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=RoboMaster+%E5%BC%80%E5%8F%91%E6%9D%BF+C+%E5%9E%8B&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+RoboMaster+%E5%BC%80%E5%8F%91%E6%9D%BF+C+%E5%9E%8B+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/controller_low/dji.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_low/dji.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.robomaster.com/zh-CN/products/components/general/development-board-type-c" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>《RoboMaster 开发板 C 型用户手册》(2020) 特征参数页 + 官方产品页技术参数</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+RoboMaster+%E5%BC%80%E5%8F%91%E6%9D%BF+C+%E5%9E%8B+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=RoboMaster+%E5%BC%80%E5%8F%91%E6%9D%BF+C+%E5%9E%8B&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+RoboMaster+%E5%BC%80%E5%8F%91%E6%9D%BF+C+%E5%9E%8B+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/controller_low/dji.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_low/dji.json</td></tr></tbody></table>
 
 ## 备注
 
-比 A 型更小更便宜的一档，常用来带云台/拨弹。CAN 路数比 A 型少。 产品图待补（抓到的不是产品本体）。
+RM 生态的小板：比 A 型便宜、更小，常用来带云台/拨弹。**CAN 是 2 条总线、4 个接口**（CAN1 两个 2-pin、CAN2 两个 4-pin），不是 2 个口 —— 布线时按接口数算。
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

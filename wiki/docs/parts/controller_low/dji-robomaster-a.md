@@ -67,17 +67,25 @@ title: 大疆 DJI RoboMaster 开发板 A 型
 
 | 字段 | 值 |
 |---|---|
+| MCU | STM32F427IIH6 |
+| clock_mhz | — |
+| flash_kb | — |
+| ram_kb | — |
+| CAN 路数 | 4 |
+| CAN-FD | 0 |
+| can_speed_mbps | — |
+| 电流环 (kHz) | — |
+| 接口 | CAN / UART / SPI / I2C / PWM / ADC |
+| voltage_in_V | — |
+| 电压范围 (V) | — |
+| 质量 (kg) | — |
+| dims | — |
+| temp_range | — |
 | 峰值扭矩 (N·m) | — |
 | 额定扭矩 (N·m) | — |
 | 减速比 | — |
-| 质量 (kg) | — |
 | 转子惯量 (kg·m²) | — |
 | 转矩常数 (N·m/A) | — |
-| MCU | STM32F427IIH6 |
-| CAN 路数 | 4 |
-| CAN-FD | 0 |
-| 电流环 (kHz) | — |
-| 接口 | CAN / UART / SPI / I2C / PWM / ADC |
 
 ## 优惠与获取条件
 
