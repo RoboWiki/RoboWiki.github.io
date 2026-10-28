@@ -67,4 +67,4 @@ https://robowiki.github.io/learn/motor-specs, 2026-10-29.
 
 ---
 
-**回到**：[学习路线首页](/learn)
+**回到**：[学习路线首页](/learn/)

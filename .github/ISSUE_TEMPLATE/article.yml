@@ -1,0 +1,79 @@
+name: 文章 / 教程投稿
+description: 投稿一篇选型方法、踩坑记录或开源项目拆解。会经编辑评审后进「学习路线」。
+title: "[文章] "
+labels: ["article"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **什么样的文章能进站**：有可核对的数字、写清适用条件、能指出不适用的场景。
+
+        不写「十分钟入门」；不写只给结论不给条件的经验。
+        如果涉及具体型号，请用部件库里已有的型号名，方便读者点进去核对参数。
+
+  - type: input
+    id: title
+    attributes:
+      label: 文章标题
+      placeholder: 关节电机参数怎么读：六个数字背后的坑
+    validations:
+      required: true
+
+  - type: dropdown
+    id: topic
+    attributes:
+      label: 主题
+      options:
+        - 选型方法
+        - 电控与驱动
+        - 感知与定位
+        - 仿真与 URDF
+        - 加工与装配
+        - 开源项目拆解
+        - 踩坑记录
+        - 其它
+    validations:
+      required: true
+
+  - type: dropdown
+    id: level
+    attributes:
+      label: 难度
+      options: ["入门", "进阶", "深度"]
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: 一句话摘要
+      description: 读者看这一句就该知道「这篇能解决我什么问题」。
+      placeholder: 峰值扭矩和额定扭矩差 3 倍是正常的；但「峰值」没写持续时间就是耍流氓。
+    validations:
+      required: true
+
+  - type: textarea
+    id: body
+    attributes:
+      label: 正文
+      description: 直接贴 Markdown。涉及数字请给出处（手册名 / 官网页面 / 你自己实测的条件）。
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: 适用范围与不适用场景
+      description: 这一节最容易被跳过，但它是本站收文章的主要门槛。
+      placeholder: 适用于 12–24 自由度、单腿扭矩 40–120 N·m 的四足；不适用于液压驱动与大型工业臂。
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: rights
+    attributes:
+      label: 授权
+      options:
+        - label: 我同意按「署名 — 非商用 — 相同方式共享」发布，并确认内容为原创或已获授权
+          required: true
