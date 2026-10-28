@@ -28,13 +28,9 @@ title: 宇树 Unitree Unitree A1
 | 峰值扭矩 (N·m) | 33.5 |
 | 额定扭矩 (N·m) | — |
 | 减速比 | 6 |
-| 空载转速 (rpm) | 200.5 |
 | 质量 (kg) | 0.605 |
 | 转子惯量 (kg·m²) | — |
-| 外径 (mm) | 78 |
-| 长度 (mm) | 62 |
 | 额定电压 (V) | — |
-| 转矩常数 (N·m/A) | — |
 
 <div class="part-src">
 来源：<a href="https://www.unitree.com/a1/motor/">https://www.unitree.com/a1/motor/</a><br/>
@@ -92,30 +88,14 @@ title: 宇树 Unitree Unitree A1
 |---|---|
 | 峰值扭矩 (N·m) | 33.5 |
 | 额定扭矩 (N·m) | — |
-| 扭矩口径 | peak |
-| 空载转速 (rpm) | 200.5 |
-| 额定转速 (rpm) | — |
 | 减速比 | 6 |
 | 质量 (kg) | 0.605 |
-| 外径 (mm) | 78 |
-| 长度 (mm) | 62 |
-| 转子惯量 (kg·m²) | — |
-| 惯量口径 | — |
 | 转子惯量 (kg·m²) | — |
 | 额定电压 (V) | — |
-| 电压范围 (V) | — |
-| 转矩常数 (N·m/A) | — |
-| 相电阻 (Ω) | — |
-| 相电感 (µH) | — |
-| 极对数 | — |
-| 峰值电流 (A) | — |
-| 额定电流 (A) | — |
-| 摩擦 (N·m) | — |
-| 阻尼 (N·m·s/rad) | — |
-| 编码器 | — |
-| 通信 | — |
-| 内置驱动 | — |
-| 防护等级 | — |
+| 扭矩口径 | peak |
+| 空载转速 (rpm) | 200.5 |
+| 外径 (mm) | 78 |
+| 长度 (mm) | 62 |
 
 ## 优惠与获取条件
 
@@ -146,6 +126,8 @@ title: 宇树 Unitree Unitree A1
 ## 备注
 
 ~6:1, A1 quadruped, 78x62mm. Unitree's own motor page publishes max instantaneous torque 33.5 N.m, max joint speed 21 rad/s and 605 g - the three fields this row is fitted on. It does NOT publish the  【来源冲突】宇树 A1 数据手册（ZJU-HelloWorld/Wiki 收录）p1 表：减速比写 1:9、重量 605 g、最大扭矩 33.5 N·m、最大转速 21.0 rad/s@24V、转矩常数 0.8732 N·m/A；而本目录原记录（Unitree 官网）为减速比 6:1。两者不一致，未做覆盖，待人工核对实物铭牌或最新版手册。 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是 A1 整机而非电机本体，选型页需要电机图，需厂商型号页原图
+
+
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

@@ -25,14 +25,12 @@ title: Intel RealSense D457
 
 | 字段 | 值 |
 |---|---|
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | — |
-| 转子惯量 (kg·m²) | — |
-| 额定电压 (V) | — |
-| 转矩常数 (N·m/A) | — |
+| 深度量程 (m) | 0.6–6 |
+| 视场 | 87°×58° |
+| 帧率 (fps) | 30 |
 | 接口 | GMSL2 / FAKRA |
+| 质量 (kg) | — |
+| 额定电压 (V) | — |
 
 <div class="part-src">
 来源：<a href="https://www.realsenseai.com/cn/stereo-depth-cameras/">https://www.realsenseai.com/cn/stereo-depth-cameras/</a><br/>
@@ -66,17 +64,12 @@ title: Intel RealSense D457
 
 | 字段 | 值 |
 |---|---|
+| 深度量程 (m) | 0.6–6 |
+| 视场 | 87°×58° |
+| 帧率 (fps) | 30 |
+| 接口 | GMSL2 / FAKRA |
 | 质量 (kg) | — |
 | 额定电压 (V) | — |
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
-| 接口 | GMSL2 / FAKRA |
-| 深度量程 (m) | 0.6–6 |
-| 帧率 (fps) | 30 |
-| fov | 87°×58° |
 | 防护等级 | IP65 |
 
 ## 优惠与获取条件
@@ -99,6 +92,8 @@ title: Intel RealSense D457
 ## 备注
 
 给**移动机器人**用的版本：GMSL2 + FAKRA 车规线束，能跑十几米长线，IP65 防护。代价是需要 GMSL 采集卡，Jetson 平台友好，PC 上要另配。
+
+
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

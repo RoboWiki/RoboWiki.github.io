@@ -25,13 +25,10 @@ title: STMicroelectronics STM32F405RGT6
 
 | 字段 | 值 |
 |---|---|
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | — |
-| 转子惯量 (kg·m²) | — |
+| 主频 (MHz) | 168 |
+| 封装 | LQFP64 |
 | 额定电压 (V) | 3.3 |
-| 转矩常数 (N·m/A) | — |
+| Flash (KB) | 1024 |
 | CAN 路数 | 2 |
 
 <div class="part-src">
@@ -66,20 +63,15 @@ title: STMicroelectronics STM32F405RGT6
 
 | 字段 | 值 |
 |---|---|
-| cores | 1 |
-| clock_mhz | 168 |
-| flash_kb | 1024 |
-| ram_kb | 192 |
-| CAN 路数 | 2 |
-| CAN-FD | 0 |
+| 主频 (MHz) | 168 |
+| 封装 | LQFP64 |
+| 接口 | — |
 | 额定电压 (V) | 3.3 |
-| package | LQFP64 |
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | — |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
+| Flash (KB) | 1024 |
+| CAN 路数 | 2 |
+| cores | 1 |
+| RAM (KB) | 192 |
+| CAN-FD | 0 |
 
 ## 优惠与获取条件
 
@@ -101,6 +93,8 @@ title: STMicroelectronics STM32F405RGT6
 ## 备注
 
 关节驱动器里最常被拿来跑 FOC 的一颗：有 FPU、双 CAN、定时器够多。踩坑点：F405 的 CAN 是 bxCAN（不是 FDCAN），要 CAN FD 得看 G4/H7。
+
+
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

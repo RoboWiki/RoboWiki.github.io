@@ -25,14 +25,9 @@ title: Analog Devices (Trinamic) TMC4671
 
 | 字段 | 值 |
 |---|---|
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | — |
-| 转子惯量 (kg·m²) | — |
-| 额定电压 (V) | 5 |
-| 转矩常数 (N·m/A) | — |
+| 封装 | QFN-32 |
 | 接口 | SPI |
+| 额定电压 (V) | 5 |
 
 <div class="part-src">
 来源：<a href="https://www.analog.com/en/products/tmc4671.html">https://www.analog.com/en/products/tmc4671.html</a><br/>
@@ -66,16 +61,13 @@ title: Analog Devices (Trinamic) TMC4671
 
 | 字段 | 值 |
 |---|---|
-| 额定电压 (V) | 5 |
-| 电压范围 (V) | 3.3–5 V 逻辑 |
+| 主频 (MHz) | — |
+| 封装 | QFN-32 |
 | 接口 | SPI |
-| package | QFN-32 |
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | — |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
+| 额定电压 (V) | 5 |
+| Flash (KB) | — |
+| CAN 路数 | — |
+| 电压范围 | 3.3–5 V 逻辑 |
 
 ## 优惠与获取条件
 
@@ -97,6 +89,8 @@ title: Analog Devices (Trinamic) TMC4671
 ## 备注
 
 把 FOC 做进硬件：电流环在片内跑，MCU 只发目标值。省 MCU 算力，但也意味着控制带宽和环路形态被芯片定死 —— 做科研级力矩控制会受限。
+
+
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

@@ -24,14 +24,9 @@ title: TDK InvenSense ICM-42688-P
 
 | 字段 | 值 |
 |---|---|
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | — |
-| 转子惯量 (kg·m²) | — |
-| 额定电压 (V) | 1.8 |
-| 转矩常数 (N·m/A) | — |
+| 封装 | LGA-14 |
 | 接口 | SPI / I2C |
+| 额定电压 (V) | 1.8 |
 
 <div class="part-src">
 来源：<a href="https://invensense.tdk.com/products/motion-tracking/6-axis/icm-42688-p/">https://invensense.tdk.com/products/motion-tracking/6-axis/icm-42688-p/</a><br/>
@@ -65,18 +60,15 @@ title: TDK InvenSense ICM-42688-P
 
 | 字段 | 值 |
 |---|---|
+| 主频 (MHz) | — |
+| 封装 | LGA-14 |
 | 接口 | SPI / I2C |
-| ODR (Hz) | 32000 |
-| gyro_range_dps | 2000 |
-| accel_range_g | 16 |
 | 额定电压 (V) | 1.8 |
-| package | LGA-14 |
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | — |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
+| Flash (KB) | — |
+| CAN 路数 | — |
+| ODR (Hz) | 32000 |
+| 陀螺量程 (°/s) | 2000 |
+| 加计量程 (g) | 16 |
 
 ## 优惠与获取条件
 
@@ -98,6 +90,8 @@ title: TDK InvenSense ICM-42688-P
 ## 备注
 
 噪声密度比 BMI088 好，价格更低，但没有 BMI088 的抗振结构。跑跳多的四足建议先看振动谱再选。 产品图待补：厂商产品页为 JS 渲染，HTML 里没有图片地址，需人工提供截图
+
+
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

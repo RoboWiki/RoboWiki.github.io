@@ -25,14 +25,10 @@ title: 大疆 DJI RoboMaster 开发板 C 型
 
 | 字段 | 值 |
 |---|---|
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | 0.038 |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
 | MCU | STM32（手册未注明具体型号，常见资料为 STM32F407IGH6） |
 | CAN 路数 | 2 |
+| CAN-FD | 0 |
+| 电流环 (kHz) | — |
 | 接口 | CAN1×2 + CAN2×2｜UART×2｜PWM×7｜DBUS×1｜USB(micro, DFU)×1｜SWD×1｜BOOT×1｜5V 激光口×1｜24V 输出×1｜可配置 IO(I²C/SPI)｜数字摄像头 FPC 18-pin×1 |
 
 <div class="part-src">
@@ -68,28 +64,19 @@ title: 大疆 DJI RoboMaster 开发板 C 型
 | 字段 | 值 |
 |---|---|
 | MCU | STM32（手册未注明具体型号，常见资料为 STM32F407IGH6） |
-| clock_mhz | — |
-| flash_kb | — |
-| ram_kb | — |
 | CAN 路数 | 2 |
 | CAN-FD | 0 |
-| can_speed_mbps | — |
 | 电流环 (kHz) | — |
 | 接口 | CAN1×2 + CAN2×2｜UART×2｜PWM×7｜DBUS×1｜USB(micro, DFU)×1｜SWD×1｜BOOT×1｜5V 激光口×1｜24V 输出×1｜可配置 IO(I²C/SPI)｜数字摄像头 FPC 18-pin×1 |
-| voltage_in_V | 24 |
-| 电压范围 (V) | 8–28 V |
+| 额定电压 (V) | 24 |
+| 电压范围 | 8–28 V |
 | 质量 (kg) | 0.038 |
-| dims | 60×41×16.3 mm |
-| temp_range | 0–55 ℃ |
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
-| pwm | 7 |
-| uart | 2 |
-| imu | 六轴 IMU + 磁力计 |
-| protection | 防反接 / 防过压 / 硅胶外壳 |
+| 尺寸 | 60×41×16.3 mm |
+| 工作温度 | 0–55 ℃ |
+| PWM 路数 | 7 |
+| UART 路数 | 2 |
+| 板载 IMU | 六轴 IMU + 磁力计 |
+| 保护 | 防反接 / 防过压 / 硅胶外壳 |
 
 ## 优惠与获取条件
 
@@ -111,6 +98,8 @@ title: 大疆 DJI RoboMaster 开发板 C 型
 ## 备注
 
 RM 生态的小板：比 A 型便宜更小，常用来带云台/拨弹。**CAN 是 2 条总线、4 个接口**（CAN1 两个 2-pin、CAN2 两个 4-pin），布线按接口数算。24V 输入带防反接与过压保护，5V 口专门给激光。手册未注明 MCU 具体型号，只写「高性能 STM32」——常见资料为 STM32F407IGH6，本站不替厂商补型号。
+
+
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

@@ -25,14 +25,10 @@ title: 大疆 DJI RoboMaster 开发板 A 型
 
 | 字段 | 值 |
 |---|---|
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | — |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
 | MCU | STM32F427IIH6 |
 | CAN 路数 | 4 |
+| CAN-FD | 0 |
+| 电流环 (kHz) | — |
 | 接口 | CAN / UART / SPI / I2C / PWM / ADC |
 
 <div class="part-src">
@@ -68,24 +64,10 @@ title: 大疆 DJI RoboMaster 开发板 A 型
 | 字段 | 值 |
 |---|---|
 | MCU | STM32F427IIH6 |
-| clock_mhz | — |
-| flash_kb | — |
-| ram_kb | — |
 | CAN 路数 | 4 |
 | CAN-FD | 0 |
-| can_speed_mbps | — |
 | 电流环 (kHz) | — |
 | 接口 | CAN / UART / SPI / I2C / PWM / ADC |
-| voltage_in_V | — |
-| 电压范围 (V) | — |
-| 质量 (kg) | — |
-| dims | — |
-| temp_range | — |
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
 
 ## 优惠与获取条件
 
@@ -107,6 +89,8 @@ title: 大疆 DJI RoboMaster 开发板 A 型
 ## 备注
 
 RM 生态的通用主控：F427 + 板载 IMU，CAN/PWM/ADC/DBUS 齐全。注意它面向 RM 赛制，供电与接口定义跟通用驱动板不一样。 产品图待补（抓到的不是产品本体）。
+
+
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

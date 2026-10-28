@@ -25,12 +25,12 @@ title: 大疆 DJI C615
 
 | 字段 | 值 |
 |---|---|
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
+| 持续电流 (A) | 15 |
+| 峰值电流 (A) | 20 |
+| 额定电压 (V) | 24 |
+| 通信 | PWM 400–2200 µs（≤500 Hz） |
+| 控制频率 (kHz) | 16 |
 | 质量 (kg) | 9.70e-03 |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
 
 <div class="part-src">
 来源：<a href="https://www.robomaster.com/zh-CN/products/components/general/">https://www.robomaster.com/zh-CN/products/components/general/</a><br/>
@@ -64,21 +64,15 @@ title: 大疆 DJI C615
 
 | 字段 | 值 |
 |---|---|
-| current_cont_A | 15 |
-| current_peak_A | 20 |
-| voltage_in_V | 24 |
-| 最高电压 (V) | 26 |
+| 持续电流 (A) | 15 |
+| 峰值电流 (A) | 20 |
+| 额定电压 (V) | 24 |
 | 通信 | PWM 400–2200 µs（≤500 Hz） |
-| ctrl_khz | 16 |
+| 控制频率 (kHz) | 16 |
 | 质量 (kg) | 9.70e-03 |
-| dims | — |
-| temp_range | -10–40 ℃ |
-| battery | 3S–6S LiPo |
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
+| 最高电压 (V) | 26 |
+| 工作温度 | -10–40 ℃ |
+| 支持电池 | 3S–6S LiPo |
 
 ## 优惠与获取条件
 
@@ -100,6 +94,8 @@ title: 大疆 DJI C615
 ## 备注
 
 面向航模/小型动力套件（Snail 2305 等）的 PWM 电调：持续 15 A、峰值 20 A(3 s)、默认输出 16 kHz（可调到 48 kHz）。支持 3S–6S LiPo，工作温度只有 -10~40 ℃，别塞进密闭高温舱。
+
+
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

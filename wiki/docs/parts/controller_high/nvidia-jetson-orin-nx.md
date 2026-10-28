@@ -24,15 +24,11 @@ title: NVIDIA Jetson Orin NX
 
 | 字段 | 值 |
 |---|---|
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | — |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
 | SoC | Orin |
 | NPU (TOPS) | 100 |
 | 内存 (GB) | 16 |
+| 带宽 (GB/s) | 102.4 |
+| 峰值功耗 (W) | 25 |
 
 <div class="part-src">
 来源：<a href="https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/">https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/</a><br/>
@@ -68,22 +64,16 @@ title: NVIDIA Jetson Orin NX
 
 | 字段 | 值 |
 |---|---|
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | — |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
 | SoC | Orin |
-| cpu | 6×Cortex-A78AE |
-| gpu | 1024-core Ampere |
 | NPU (TOPS) | 100 |
 | 内存 (GB) | 16 |
-| ram_bw_gbs | 102.4 |
+| 带宽 (GB/s) | 102.4 |
 | 峰值功耗 (W) | 25 |
+| 接口 | — |
+| cpu | 6×Cortex-A78AE |
+| GPU | 1024-core Ampere |
 | os | JetPack 6 |
 | cuda | 1 |
-| ram_gb_note | — |
 
 ## 优惠与获取条件
 
@@ -105,6 +95,8 @@ title: NVIDIA Jetson Orin NX
 ## 备注
 
 算力是 Orin Nano 的两倍多、内存带宽更大；功耗与散热要求也高一档，小机身四足要提前算散热。 产品图待补（抓到的不是产品本体）。 本站这一条对应 **16 GB** 版本（内存是参数，不写进型号名）；同型号还有其它容量版本，选型时先确认容量再比价格。
+
+
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

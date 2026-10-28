@@ -348,15 +348,59 @@ def main() -> None:
         "iface": "接口", "bits": "分辨率 (bit)", "fps": "帧率 (fps)",
         "odr_hz": "ODR (Hz)", "range_m": "量程 (m)", "depth_range_m": "深度量程 (m)",
         "image_url": "产品图", "image_source": "图片来源",
+        # 非电机品类用到的字段（IMU / 相机 / 雷达 / 电调 / 板卡 / 芯片）
+        "gyro_range_dps": "陀螺量程 (°/s)", "gyro_range_opts": "陀螺量程档位",
+        "gyro_bw_hz": "陀螺带宽 (Hz)", "accel_range_g": "加计量程 (g)",
+        "accel_range_opts": "加计量程档位", "accel_bw": "加计带宽",
+        "sampling_hz": "内部采样率 (Hz)", "attitude": "姿态输出",
+        "temp_control": "温控", "temp_range": "工作温度", "dims": "尺寸",
+        "mount_orientations": "安装方向数", "hw_versions": "硬件版本",
+        "firmware": "适用固件", "odr_note": "输出周期说明",
+        "depth_range_m": "深度量程 (m)", "fov": "视场", "resolution": "分辨率",
+        "points_per_s": "点频 (点/s)", "range_m": "量程 (m)",
+        "current_cont_A": "持续电流 (A)", "current_peak_A": "峰值电流 (A)",
+        "ctrl_khz": "控制频率 (kHz)", "battery": "支持电池",
+        "voltage_in_V": "额定电压 (V)", "voltage_range_V": "电压范围",
+        "clock_mhz": "主频 (MHz)", "flash_kb": "Flash (KB)", "ram_kb": "RAM (KB)",
+        "can_speed_mbps": "CAN 速率 (Mbps)", "ram_bw_gbs": "带宽 (GB/s)",
+        "gpu": "GPU", "package": "封装", "protection": "保护",
+        "pwm": "PWM 路数", "uart": "UART 路数", "imu": "板载 IMU",
+        "process": "工艺", "quality": "加工质量", "punctual": "交货准时性",
+        "price_level": "价格档次", "invoice": "发票", "materials": "材料",
+        "lead": "交期", "moq": "起订", "process_tag": "工艺分类",
     }
 
-    def spec_rows(specs: dict) -> str:
+    _TAX_BY_CAT = {c["id"]: [k["k"] for k in (c.get("keys") or [])]
+                   for c in (load_taxonomy().get("categories") or [])}
+
+    def cat_keys(r: dict) -> list[str]:
+        return _TAX_BY_CAT.get(r.get("category") or "", [])
+
+    def spec_rows(specs: dict, cat_key_list: list[str] | None = None) -> str:
+        """按品类出参数行。
+
+        品类 keys 永远出现（缺 = —，这是本站的诚实口径）；
+        其它字段只在有值时出现 —— 否则 IMU 页面会显示一排「峰值扭矩 —」，
+        让人以为数据缺失，其实是字段根本不属于这个品类。
+        """
+        keys = [k for k in (cat_key_list or []) if k in specs or True]
+        seen: set[str] = set()
         out = []
-        for k, v in specs.items():
+        for k in keys:
+            v = specs.get(k)
             if k in ("image_url", "image_source"):
                 continue
+            seen.add(k)
             label = SPEC_LABEL.get(k, k)
             val = "—" if v is None else (str(v) if isinstance(v, str) else num(v, 4))
+            out.append(f"| {label} | {val} |")
+        for k, v in specs.items():
+            if k in seen or k in ("image_url", "image_source"):
+                continue
+            if v is None:
+                continue
+            label = SPEC_LABEL.get(k, k)
+            val = str(v) if isinstance(v, str) else num(v, 4)
             out.append(f"| {label} | {val} |")
         return "\n".join(out)
 
@@ -401,6 +445,21 @@ def main() -> None:
         else:
             out.append(("反射惯量占比", "—", "缺转子惯量", "na"))
         return out
+
+    def en_todo(r: dict) -> str:
+        """英文说明的状态徽标。
+
+        写 TODO 就显示 TODO，不显示机器翻译 —— 厂商口吻的英文说明
+        机器译出来会走味，宁缺勿造。空字符串表示还没登记英文状态。
+        """
+        v = (r.get("notes_en") or "").strip()
+        if not v:
+            return ""
+        if v.upper() == "TODO":
+            return ('::: tip English\n'
+                    '本站**英文说明待补（TODO）** —— 这条的中文说明是人工根据厂商手册写的，\n'
+                    '机器翻译会把口径译歪，所以留空等人写。\n:::')
+        return f"::: tip English\n{v}\n:::"
 
     def resources(r: dict) -> str:
         """资料与链接。真有的放前面并标「官方」，其余标「检索入口」。"""
@@ -559,10 +618,10 @@ def main() -> None:
                   if img else "")
         conflicts = "【来源冲突】" in (r.get("notes") or "")
 
-        # 官方参数一侧：只放关键字段，全部参数放到下面单独一节
-        KEY = ["tau_peak_Nm", "tau_rated_Nm", "gear", "speed_noload_rpm", "mass_kg",
-               "armature_kgm2", "od_mm", "l_mm", "voltage_V", "kt_Nm_per_A",
-               "soc", "npu_tops", "ram_gb", "mcu", "can", "iface", "bits"]
+        # 官方参数一侧：只放这一品类自己的关键字段（taxonomy 声明的 keys）。
+        # 以前这里写死了一份电机字段表，结果 IMU / 相机详情页也显示「峰值扭矩 —」，
+        # 看着像数据缺失，其实是字段不属于这个品类。
+        KEY = cat_keys(r) or ["iface"]
         keyrows = "\n".join(
             f"| {SPEC_LABEL.get(k, k)} | "
             f"{'—' if s.get(k) is None else (s[k] if isinstance(s[k], str) else num(s[k], 4))} |"
@@ -747,7 +806,7 @@ def main() -> None:
 
 | 字段 | 值 |
 |---|---|
-{spec_rows(s)}
+{spec_rows(s, cat_keys(r))}
 
 ## 优惠与获取条件
 
@@ -762,6 +821,8 @@ def main() -> None:
 ## 备注
 
 {r.get("notes") or "—"}
+
+{en_todo(r)}
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

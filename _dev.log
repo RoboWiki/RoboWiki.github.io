@@ -3,7 +3,147 @@
 
   ➜  Local:   http://127.0.0.1:5174/
   ➜  press h to show help
-18:00:22 [vitepress] warning: <tr> cannot be child of <table>, according to HTML specifications. This can cause hydration errors or potentially disrupt future functionality.
+18:03:36 [vitepress] warning: <tr> cannot be child of <table>, according to HTML specifications. This can cause hydration errors or potentially disrupt future functionality.
+260|          </div>
+261|          <table>
+262|            <tr><th></th><th v-for="p in picked" :key="p.id">{{ p.model }}</th></tr>
+   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+263|            <tr v-for="f in COMPARE_FIELDS" :key="f.t">
+264|              <td class="pd-k">{{ f.t }}</td>
+  Plugin: vite:vue
+  File: C:/Users/31560/Documents/00_open/roboselect/wiki/docs/.vitepress/components/PartExplorer.vue
+18:04:18 [vitepress] docs\.vitepress\sidebar.json changed, restarting server...
+
+
+  vitepress v1.6.4
+
+  ➜  Local:   http://127.0.0.1:5174/
+  ➜  press h to show help
+18:04:21 [vitepress] warning: <tr> cannot be child of <table>, according to HTML specifications. This can cause hydration errors or potentially disrupt future functionality.
+260|          </div>
+261|          <table>
+262|            <tr><th></th><th v-for="p in picked" :key="p.id">{{ p.model }}</th></tr>
+   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+263|            <tr v-for="f in COMPARE_FIELDS" :key="f.t">
+264|              <td class="pd-k">{{ f.t }}</td>
+  Plugin: vite:vue
+  File: C:/Users/31560/Documents/00_open/roboselect/wiki/docs/.vitepress/components/PartExplorer.vue
+18:04:24 [vitepress] docs\.vitepress\sidebar.json changed, restarting server...
+
+
+  vitepress v1.6.4
+
+  ➜  Local:   http://127.0.0.1:5174/
+  ➜  press h to show help
+18:04:26 [vitepress] warning: <tr> cannot be child of <table>, according to HTML specifications. This can cause hydration errors or potentially disrupt future functionality.
+260|          </div>
+261|          <table>
+262|            <tr><th></th><th v-for="p in picked" :key="p.id">{{ p.model }}</th></tr>
+   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+263|            <tr v-for="f in COMPARE_FIELDS" :key="f.t">
+264|              <td class="pd-k">{{ f.t }}</td>
+  Plugin: vite:vue
+  File: C:/Users/31560/Documents/00_open/roboselect/wiki/docs/.vitepress/components/PartExplorer.vue
+18:05:20 [vitepress] hmr update /parts/imu/damiao-dm-imu-l1.md
+18:05:21 [vitepress] hmr update /parts/imu/damiao-dm-imu-l1.md
+18:05:22 [vitepress] docs\.vitepress\sidebar.json changed, restarting server...
+
+
+  vitepress v1.6.4
+
+  ➜  Local:   http://127.0.0.1:5174/
+  ➜  press h to show help
+18:05:24 [vitepress] warning: <tr> cannot be child of <table>, according to HTML specifications. This can cause hydration errors or potentially disrupt future functionality.
+260|          </div>
+261|          <table>
+262|            <tr><th></th><th v-for="p in picked" :key="p.id">{{ p.model }}</th></tr>
+   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+263|            <tr v-for="f in COMPARE_FIELDS" :key="f.t">
+264|              <td class="pd-k">{{ f.t }}</td>
+  Plugin: vite:vue
+  File: C:/Users/31560/Documents/00_open/roboselect/wiki/docs/.vitepress/components/PartExplorer.vue
+18:05:25 [vitepress] hmr update /parts/imu/damiao-dm-imu-l1.md
+18:05:26 [vitepress] hmr update /parts/imu/damiao-dm-imu-l1.md
+18:05:26 [vitepress] docs\.vitepress\sidebar.json changed, restarting server...
+
+
+  vitepress v1.6.4
+
+  ➜  Local:   http://127.0.0.1:5174/
+  ➜  press h to show help
+18:05:29 [vitepress] warning: <tr> cannot be child of <table>, according to HTML specifications. This can cause hydration errors or potentially disrupt future functionality.
+260|          </div>
+261|          <table>
+262|            <tr><th></th><th v-for="p in picked" :key="p.id">{{ p.model }}</th></tr>
+   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+263|            <tr v-for="f in COMPARE_FIELDS" :key="f.t">
+264|              <td class="pd-k">{{ f.t }}</td>
+  Plugin: vite:vue
+  File: C:/Users/31560/Documents/00_open/roboselect/wiki/docs/.vitepress/components/PartExplorer.vue
+18:06:01 [vitepress] hmr update /parts/imu/damiao-dm-imu-l1.md
+18:06:02 [vitepress] hmr update /parts/imu/damiao-dm-imu-l1.md
+18:06:03 [vitepress] docs\.vitepress\sidebar.json changed, restarting server...
+
+
+  vitepress v1.6.4
+
+  ➜  Local:   http://127.0.0.1:5174/
+  ➜  press h to show help
+18:06:05 [vitepress] warning: <tr> cannot be child of <table>, according to HTML specifications. This can cause hydration errors or potentially disrupt future functionality.
+260|          </div>
+261|          <table>
+262|            <tr><th></th><th v-for="p in picked" :key="p.id">{{ p.model }}</th></tr>
+   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+263|            <tr v-for="f in COMPARE_FIELDS" :key="f.t">
+264|              <td class="pd-k">{{ f.t }}</td>
+  Plugin: vite:vue
+  File: C:/Users/31560/Documents/00_open/roboselect/wiki/docs/.vitepress/components/PartExplorer.vue
+18:06:06 [vitepress] hmr update /parts/imu/damiao-dm-imu-l1.md
+18:06:07 [vitepress] hmr update /parts/imu/damiao-dm-imu-l1.md
+18:06:08 [vitepress] docs\.vitepress\sidebar.json changed, restarting server...
+
+
+  vitepress v1.6.4
+
+  ➜  Local:   http://127.0.0.1:5174/
+  ➜  press h to show help
+18:06:10 [vitepress] warning: <tr> cannot be child of <table>, according to HTML specifications. This can cause hydration errors or potentially disrupt future functionality.
+260|          </div>
+261|          <table>
+262|            <tr><th></th><th v-for="p in picked" :key="p.id">{{ p.model }}</th></tr>
+   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+263|            <tr v-for="f in COMPARE_FIELDS" :key="f.t">
+264|              <td class="pd-k">{{ f.t }}</td>
+  Plugin: vite:vue
+  File: C:/Users/31560/Documents/00_open/roboselect/wiki/docs/.vitepress/components/PartExplorer.vue
+18:06:43 [vitepress] hmr update /parts/imu/damiao-dm-imu-l1.md
+18:06:44 [vitepress] hmr update /parts/imu/damiao-dm-imu-l1.md
+18:06:44 [vitepress] docs\.vitepress\sidebar.json changed, restarting server...
+
+
+  vitepress v1.6.4
+
+  ➜  Local:   http://127.0.0.1:5174/
+  ➜  press h to show help
+18:06:47 [vitepress] warning: <tr> cannot be child of <table>, according to HTML specifications. This can cause hydration errors or potentially disrupt future functionality.
+260|          </div>
+261|          <table>
+262|            <tr><th></th><th v-for="p in picked" :key="p.id">{{ p.model }}</th></tr>
+   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+263|            <tr v-for="f in COMPARE_FIELDS" :key="f.t">
+264|              <td class="pd-k">{{ f.t }}</td>
+  Plugin: vite:vue
+  File: C:/Users/31560/Documents/00_open/roboselect/wiki/docs/.vitepress/components/PartExplorer.vue
+18:06:49 [vitepress] hmr update /parts/imu/damiao-dm-imu-l1.md
+18:06:49 [vitepress] hmr update /parts/imu/damiao-dm-imu-l1.md
+18:06:50 [vitepress] docs\.vitepress\sidebar.json changed, restarting server...
+
+
+  vitepress v1.6.4
+
+  ➜  Local:   http://127.0.0.1:5174/
+  ➜  press h to show help
+18:06:52 [vitepress] warning: <tr> cannot be child of <table>, according to HTML specifications. This can cause hydration errors or potentially disrupt future functionality.
 260|          </div>
 261|          <table>
 262|            <tr><th></th><th v-for="p in picked" :key="p.id">{{ p.model }}</th></tr>

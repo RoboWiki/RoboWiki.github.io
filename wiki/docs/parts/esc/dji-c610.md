@@ -25,12 +25,12 @@ title: 大疆 DJI C610
 
 | 字段 | 值 |
 |---|---|
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
+| 持续电流 (A) | 10 |
+| 峰值电流 (A) | — |
+| 额定电压 (V) | 24 |
+| 通信 | CAN 1 Mbps |
+| 控制频率 (kHz) | — |
 | 质量 (kg) | 0.021 |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
 
 <div class="part-src">
 来源：<a href="https://www.robomaster.com/zh-CN/products/components/general/">https://www.robomaster.com/zh-CN/products/components/general/</a><br/>
@@ -64,21 +64,14 @@ title: 大疆 DJI C610
 
 | 字段 | 值 |
 |---|---|
-| current_cont_A | 10 |
-| current_peak_A | — |
-| voltage_in_V | 24 |
-| 最高电压 (V) | — |
+| 持续电流 (A) | 10 |
+| 峰值电流 (A) | — |
+| 额定电压 (V) | 24 |
 | 通信 | CAN 1 Mbps |
-| ctrl_khz | — |
+| 控制频率 (kHz) | — |
 | 质量 (kg) | 0.021 |
-| dims | 48.8×22.0×8.3 mm |
-| temp_range | 0–55 ℃ |
-| battery | — |
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
+| 尺寸 | 48.8×22.0×8.3 mm |
+| 工作温度 | 0–55 ℃ |
 
 ## 优惠与获取条件
 
@@ -100,6 +93,8 @@ title: 大疆 DJI C610
 ## 备注
 
 M2006 的官方配套电调：CAN 1 Mbps、持续 10 A、21 g。比 C620 更小更轻，配 M2006 带云台/小关节刚好，带 M3508 会先于电机过热。
+
+
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

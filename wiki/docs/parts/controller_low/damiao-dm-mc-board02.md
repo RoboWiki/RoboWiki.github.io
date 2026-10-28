@@ -25,14 +25,10 @@ title: 达妙 DAMIAO DM-MC-Board02
 
 | 字段 | 值 |
 |---|---|
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | 0.0195 |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
 | MCU | STM32H723VGT6 |
 | CAN 路数 | 3 |
+| CAN-FD | 1 |
+| 电流环 (kHz) | — |
 | 接口 | CANFD×3 / RS485×2 / USB×1 / SBUS×1 / PWM×4 / UART×3 / SWD |
 
 <div class="part-src">
@@ -68,28 +64,22 @@ title: 达妙 DAMIAO DM-MC-Board02
 | 字段 | 值 |
 |---|---|
 | MCU | STM32H723VGT6 |
-| clock_mhz | 550 |
-| flash_kb | 1024 |
-| ram_kb | 564 |
 | CAN 路数 | 3 |
 | CAN-FD | 1 |
-| can_speed_mbps | 5 |
 | 电流环 (kHz) | — |
 | 接口 | CANFD×3 / RS485×2 / USB×1 / SBUS×1 / PWM×4 / UART×3 / SWD |
-| voltage_in_V | 24 |
-| 电压范围 (V) | 12–24 V（支持 6S） |
+| 主频 (MHz) | 550 |
+| Flash (KB) | 1024 |
+| RAM (KB) | 564 |
+| CAN 速率 (Mbps) | 5 |
+| 额定电压 (V) | 24 |
+| 电压范围 | 12–24 V（支持 6S） |
 | 质量 (kg) | 0.0195 |
-| dims | 56×40 mm |
-| temp_range | — |
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
-| pwm | 4 |
-| uart | 3 |
-| imu | BMI088 |
-| protection | 防反接 / 缓启动 / 两路可控电源(5A) |
+| 尺寸 | 56×40 mm |
+| PWM 路数 | 4 |
+| UART 路数 | 3 |
+| 板载 IMU | BMI088 |
+| 保护 | 防反接 / 缓启动 / 两路可控电源(5A) |
 
 ## 优惠与获取条件
 
@@ -111,6 +101,8 @@ title: 达妙 DAMIAO DM-MC-Board02
 ## 备注
 
 达妙自家主控板，和 DM 系列驱动配套。特点是 **3 路 CANFD + 2 路 RS485**，以及两路可控电源（每路 5A）可以直接给传感器/激光供电。56×40 mm、19.5 g，小机身四足塞得进。
+
+
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

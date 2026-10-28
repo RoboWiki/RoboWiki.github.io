@@ -24,12 +24,6 @@ title: 地平线 D-Robotics RDK X5
 
 | 字段 | 值 |
 |---|---|
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | — |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
 | SoC | Sunrise 5 |
 | NPU (TOPS) | 10 |
 | 内存 (GB) | 8 |
@@ -68,18 +62,14 @@ title: 地平线 D-Robotics RDK X5
 
 | 字段 | 值 |
 |---|---|
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | — |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
 | SoC | Sunrise 5 |
-| cpu | 8×Cortex-A55 |
 | NPU (TOPS) | 10 |
 | 内存 (GB) | 8 |
-| os | Ubuntu 22.04 |
+| 带宽 (GB/s) | — |
+| 峰值功耗 (W) | — |
 | 接口 | USB 3.0 / GbE / MIPI CSI |
+| cpu | 8×Cortex-A55 |
+| os | Ubuntu 22.04 |
 
 ## 优惠与获取条件
 
@@ -101,6 +91,8 @@ title: 地平线 D-Robotics RDK X5
 ## 备注
 
 国产替代 Jetson 的一档：8 核 A55 + 10 TOPS BPU。生态与 CUDA 不通用，已有 TensorRT 工程迁移成本要算进去。 产品图待补：RDK 文档站对应图片 404，需人工提供截图
+
+
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

@@ -24,15 +24,12 @@ title: Espressif ESP32-S3-WROOM-1
 
 | 字段 | 值 |
 |---|---|
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | — |
-| 转子惯量 (kg·m²) | — |
-| 额定电压 (V) | 3.3 |
-| 转矩常数 (N·m/A) | — |
-| CAN 路数 | 0 |
+| 主频 (MHz) | 240 |
+| 封装 | 模组 25.5×18 mm |
 | 接口 | WiFi / BLE 5 / SPI / I2C / UART |
+| 额定电压 (V) | 3.3 |
+| Flash (KB) | — |
+| CAN 路数 | 0 |
 
 <div class="part-src">
 来源：<a href="https://www.espressif.com/en/products/modules/esp32-s3">https://www.espressif.com/en/products/modules/esp32-s3</a><br/>
@@ -66,21 +63,15 @@ title: Espressif ESP32-S3-WROOM-1
 
 | 字段 | 值 |
 |---|---|
-| cores | 2 |
-| clock_mhz | 240 |
-| flash_kb | — |
-| ram_kb | 512 |
-| CAN 路数 | 0 |
-| CAN-FD | 0 |
-| 额定电压 (V) | 3.3 |
-| package | 模组 25.5×18 mm |
+| 主频 (MHz) | 240 |
+| 封装 | 模组 25.5×18 mm |
 | 接口 | WiFi / BLE 5 / SPI / I2C / UART |
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | — |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
+| 额定电压 (V) | 3.3 |
+| Flash (KB) | — |
+| CAN 路数 | 0 |
+| cores | 2 |
+| RAM (KB) | 512 |
+| CAN-FD | 0 |
 
 ## 优惠与获取条件
 
@@ -102,6 +93,8 @@ title: Espressif ESP32-S3-WROOM-1
 ## 备注
 
 适合做「调试桥 / 遥测 / 上位机」而不是实时力矩环：WiFi 栈会打断硬实时。要做关节控制，让它当下位机的通信协处理器。 产品图待补：厂商产品页为 JS 渲染，HTML 里没有图片地址，需人工提供截图
+
+
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

@@ -25,13 +25,10 @@ title: STMicroelectronics STM32G431CBU6
 
 | 字段 | 值 |
 |---|---|
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | — |
-| 转子惯量 (kg·m²) | — |
+| 主频 (MHz) | 170 |
+| 封装 | UFQFPN48 |
 | 额定电压 (V) | 3.3 |
-| 转矩常数 (N·m/A) | — |
+| Flash (KB) | 128 |
 | CAN 路数 | 1 |
 
 <div class="part-src">
@@ -66,20 +63,15 @@ title: STMicroelectronics STM32G431CBU6
 
 | 字段 | 值 |
 |---|---|
-| cores | 1 |
-| clock_mhz | 170 |
-| flash_kb | 128 |
-| ram_kb | 32 |
-| CAN 路数 | 1 |
-| CAN-FD | 1 |
+| 主频 (MHz) | 170 |
+| 封装 | UFQFPN48 |
+| 接口 | — |
 | 额定电压 (V) | 3.3 |
-| package | UFQFPN48 |
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | — |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
+| Flash (KB) | 128 |
+| CAN 路数 | 1 |
+| cores | 1 |
+| RAM (KB) | 32 |
+| CAN-FD | 1 |
 
 ## 优惠与获取条件
 
@@ -101,6 +93,8 @@ title: STMicroelectronics STM32G431CBU6
 ## 备注
 
 做 CAN FD 关节驱动的主流选择：片上 FDCAN + 数学加速器，170 MHz。RAM 只有 32 KB —— 想在里面塞完整力矩环 + 上位机协议要算清楚。
+
+
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

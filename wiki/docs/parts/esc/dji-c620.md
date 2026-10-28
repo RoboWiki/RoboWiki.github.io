@@ -25,12 +25,12 @@ title: 大疆 DJI C620
 
 | 字段 | 值 |
 |---|---|
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
+| 持续电流 (A) | 20 |
+| 峰值电流 (A) | — |
+| 额定电压 (V) | 24 |
+| 通信 | CAN 1 Mbps / PWM |
+| 控制频率 (kHz) | — |
 | 质量 (kg) | 0.035 |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
 
 <div class="part-src">
 来源：<a href="https://www.robomaster.com/zh-CN/products/components/general/">https://www.robomaster.com/zh-CN/products/components/general/</a><br/>
@@ -64,21 +64,14 @@ title: 大疆 DJI C620
 
 | 字段 | 值 |
 |---|---|
-| current_cont_A | 20 |
-| current_peak_A | — |
-| voltage_in_V | 24 |
-| 最高电压 (V) | — |
+| 持续电流 (A) | 20 |
+| 峰值电流 (A) | — |
+| 额定电压 (V) | 24 |
 | 通信 | CAN 1 Mbps / PWM |
-| ctrl_khz | — |
+| 控制频率 (kHz) | — |
 | 质量 (kg) | 0.035 |
-| dims | 49.4×25.8×11.5 mm |
-| temp_range | 0–50 ℃ |
-| battery | — |
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
+| 尺寸 | 49.4×25.8×11.5 mm |
+| 工作温度 | 0–50 ℃ |
 
 ## 优惠与获取条件
 
@@ -100,6 +93,8 @@ title: 大疆 DJI C620
 ## 备注
 
 M3508 的官方配套电调：CAN 1 Mbps、持续 20 A。**它没有反电动势吸收能力** —— 刹车瞬间母线电压会抬升，需要在输入端加吸收模块，否则可能烧电调。
+
+
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

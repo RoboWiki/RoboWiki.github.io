@@ -25,13 +25,11 @@ title: 奥比中光 Orbbec Gemini 335
 
 | 字段 | 值 |
 |---|---|
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | — |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
+| 深度量程 (m) | — |
+| 视场 | — |
+| 帧率 (fps) | — |
 | 接口 | USB 3.0 Type-C |
+| 质量 (kg) | — |
 
 <div class="part-src">
 来源：<a href="https://orbbec.com.cn/product_detail/6.html">https://orbbec.com.cn/product_detail/6.html</a><br/>
@@ -65,16 +63,12 @@ title: 奥比中光 Orbbec Gemini 335
 
 | 字段 | 值 |
 |---|---|
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | — |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
-| 接口 | USB 3.0 Type-C |
 | 深度量程 (m) | — |
+| 视场 | — |
 | 帧率 (fps) | — |
-| fov | — |
+| 接口 | USB 3.0 Type-C |
+| 质量 (kg) | — |
+| 额定电压 (V) | — |
 
 ## 优惠与获取条件
 
@@ -96,6 +90,8 @@ title: 奥比中光 Orbbec Gemini 335
 ## 备注
 
 入门级主动双目（结构光辅助），ROS/Orbbec SDK 生态完整。规格待补：需按厂商规格书逐项核对，本站不估。
+
+
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

@@ -25,14 +25,9 @@ title: Bosch Sensortec BMI088
 
 | 字段 | 值 |
 |---|---|
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | — |
-| 转子惯量 (kg·m²) | — |
-| 额定电压 (V) | 3.3 |
-| 转矩常数 (N·m/A) | — |
+| 封装 | LGA-16 |
 | 接口 | SPI / I2C |
+| 额定电压 (V) | 3.3 |
 
 <div class="part-src">
 来源：<a href="https://www.bosch-sensortec.com/products/motion-sensors/imus/bmi088/">https://www.bosch-sensortec.com/products/motion-sensors/imus/bmi088/</a><br/>
@@ -66,18 +61,15 @@ title: Bosch Sensortec BMI088
 
 | 字段 | 值 |
 |---|---|
+| 主频 (MHz) | — |
+| 封装 | LGA-16 |
 | 接口 | SPI / I2C |
-| ODR (Hz) | 1600 |
-| gyro_range_dps | 2000 |
-| accel_range_g | 24 |
 | 额定电压 (V) | 3.3 |
-| package | LGA-16 |
-| 峰值扭矩 (N·m) | — |
-| 额定扭矩 (N·m) | — |
-| 减速比 | — |
-| 质量 (kg) | — |
-| 转子惯量 (kg·m²) | — |
-| 转矩常数 (N·m/A) | — |
+| Flash (KB) | — |
+| CAN 路数 | — |
+| ODR (Hz) | 1600 |
+| 陀螺量程 (°/s) | 2000 |
+| 加计量程 (g) | 24 |
 
 ## 优惠与获取条件
 
@@ -99,6 +91,8 @@ title: Bosch Sensortec BMI088
 ## 备注
 
 四足上很常见：抗振比消费级 IMU 好，因为它是两颗独立 die。注意它的加速度计量程与带宽要在初始化里显式配，默认值往往不适合高频触地。
+
+
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。
