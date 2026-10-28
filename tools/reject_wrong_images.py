@@ -20,6 +20,9 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 #: 2026-10-28 已由用户提供官方电机图，登记在 data/part_images.json ——
 #: 所以它们已经从这张表里摘掉了。下表是仍然有效的剔除项。
 WRONG: dict[str, str] = {
+    "灵足-robstride-rs10": "抓到的是 GitHub 仓库社交卡片，不是 RS10 产品照",
+    "damiao-h7": "抓到的是 5974×702 的空白横幅，不是主控板",
+    "chip-espressif-esp32-s3-wroom-1": "抓到的是 1 KB 占位像素",
     "dji-rm-board-a": "抓到的是二维码，不是开发板",
     "dji-rm-board-c": "抓到的是二维码，不是开发板",
     "unitree-l1": "抓到的是 UNITREE 商标，不是雷达",

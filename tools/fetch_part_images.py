@@ -23,6 +23,7 @@ import re
 import sys
 from urllib.parse import quote, urljoin, urlsplit, urlunsplit
 
+import ssl
 import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -44,12 +45,20 @@ def ascii_url(u: str) -> str:
                        quote(p.query, safe="=&%:@+,$/?~"), ""))
 
 
+_CTX = ssl.create_default_context()
+_LAX = ssl._create_unverified_context()   # 只用于抓公开产品图：证书链不全时退一步
+
+
 def get(url: str, timeout: int = 20) -> tuple[bytes, str]:
     req = urllib.request.Request(ascii_url(url), headers={
         "User-Agent": UA, "Accept": "text/html,image/*,*/*",
         "Accept-Encoding": "identity", "Connection": "close"})
-    with urllib.request.urlopen(req, timeout=timeout) as r:
-        return r.read(), r.headers.get("Content-Type", "")
+    try:
+        with urllib.request.urlopen(req, timeout=timeout, context=_CTX) as r:
+            return r.read(), r.headers.get("Content-Type", "")
+    except ssl.SSLError:
+        with urllib.request.urlopen(req, timeout=timeout, context=_LAX) as r:
+            return r.read(), r.headers.get("Content-Type", "")
 
 
 def pick_image(html: str, base: str) -> str | None:
@@ -102,7 +111,7 @@ def main() -> None:
                 fail += 1
                 continue
             blob, itype = get(img)
-            if not itype.startswith("image") or len(blob) < 4000:
+            if not itype.startswith("image") or len(blob) < 8000:
                 print(f"  ✗ {r['id']}: 图不可用（{itype}, {len(blob)} B）")
                 fail += 1
                 continue

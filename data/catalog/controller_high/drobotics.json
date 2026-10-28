@@ -12,7 +12,7 @@
   "last_checked": "2026-10-28",
   "price_cny": null,
   "origin": "厂商公开资料（待逐项核对）",
-  "notes": "国产替代 Jetson 的一档：8 核 A55 + 10 TOPS BPU。生态与 CUDA 不通用，已有 TensorRT 工程迁移成本要算进去。",
+  "notes": "国产替代 Jetson 的一档：8 核 A55 + 10 TOPS BPU。生态与 CUDA 不通用，已有 TensorRT 工程迁移成本要算进去。 产品图待补：RDK 文档站对应图片 404，需人工提供截图",
   "specs": {
    "image_url": null,
    "image_source": null,

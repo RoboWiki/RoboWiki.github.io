@@ -49,5 +49,7 @@
  "dji-rm-board-c": "/parts/dji-rm-board-c.png",
  "livox-mid-360": "/parts/livox-mid-360.jpg",
  "unitree-l1": "/parts/unitree-l1.jpg",
- "unitree-l2": "/parts/unitree-l2.jpg"
+ "unitree-l2": "/parts/unitree-l2.jpg",
+ "damiao-h7": "/parts/damiao-h7.png",
+ "灵足-robstride-rs10": "/parts/robstride-rs10.png"
 }
