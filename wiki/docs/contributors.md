@@ -26,6 +26,11 @@ outline: false
   <div class="ct-head"><b>RoboSelect 编辑部</b><span class="ct-role">编辑</span></div>
   <p>采购合同与口径的编者按；优惠与来源规则的整理</p>
   
+</div>
+<div class="ct">
+  <div class="ct-head"><b>Dichen33</b><span class="ct-role">贡献者</span></div>
+  <p>整机数据 15 台（含 URDF / 仓库链接）、上位机与下位机大批扩充、IMU 与相机雷达补充、部件资料采集指南（docs/data-collection-guide.md）</p>
+  <a href="https://github.com/Dichen33" target="_blank" rel="noopener">GitHub</a>
 </div></div>
   </section>
 

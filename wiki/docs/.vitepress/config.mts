@@ -12,6 +12,7 @@ const zhTheme = {
   nav: [
     { text: '首页', link: '/' },
     { text: '机器人部件库', link: '/catalog' },
+    { text: '机器人整机', link: '/robots' },
     { text: '供应商', link: '/suppliers' },
     { text: '部件详情', link: '/parts/' },
     { text: '参数口径', link: '/semantics' },

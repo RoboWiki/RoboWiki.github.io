@@ -1,0 +1,183 @@
+"""整机板块的页面生成（与部件库同级，但独立）。
+
+为什么单开而不塞进 catalog：
+    部件的选型逻辑是「比参数」（扭矩/惯量/接口），整机是「看方案」（几自由度、
+    带不带算力、有没有 URDF）。字段、排序、入口都不同，混在一起会重演
+    上次「机械加工塞进部件库」的错误。
+
+URDF：ccc 分支带来的最实用字段。按你的要求**先留接口不接功能** ——
+    卡片上有个按钮，点了提示「接口已留」，链接表列在页面里。
+"""
+from __future__ import annotations
+
+import json
+import pathlib
+
+LABEL = {
+    "dof": "自由度", "mass_kg": "整机质量 (kg)", "payload_kg": "负载 (kg)",
+    "speed_max_mps": "最高速度 (m/s)", "size_mm": "尺寸 (mm)",
+    "climb_height_mm": "越障高度 (mm)", "climb_angle_deg": "爬坡角 (°)",
+    "battery": "电池", "endurance_h": "续航 (h)", "voltage_V": "电压 (V)",
+    "voltage_range_V": "电压范围", "iface": "对外接口", "compute": "算力平台",
+    "sensors": "传感器", "doc_url": "官方文档", "doc_pdf": "官方 PDF",
+}
+
+SUBTYPE = {"quadruped": "四足", "humanoid": "人形", "wheeled": "轮式",
+           "biped": "双足", "arm": "机械臂", "other": "其他"}
+
+
+def _fmt(v) -> str:
+    if v is None or v == "":
+        return "—"
+    if isinstance(v, float):
+        return f"{v:g}"
+    if isinstance(v, list):
+        return "、".join(str(x) for x in v) if v else "—"
+    return str(v)
+
+
+def _cards(rows: list[dict]) -> str:
+    out = []
+    for r in rows:
+        s = r.get("specs") or {}
+        img = s.get("image_url")
+        sub = SUBTYPE.get(r.get("subtype") or "", r.get("subtype") or "")
+        urdf = s.get("urdf_urls") or []
+        repo = s.get("repo_urls") or []
+        out.append(f"""<div class="rb-card">
+  <div class="rb-plate">{'<img src="' + img + '" alt="' + r['model'] + '" loading="lazy">' if img else '<span class="rb-ph">暂无图</span>'}</div>
+  <div class="rb-body">
+    <div class="rb-top"><a class="rb-go" href="./{r['_slug']}.html"><b>{r['model']}</b></a><em>{sub}</em></div>
+    <p class="rb-vendor">{r.get('vendor_cn') or r.get('vendor')}</p>
+    <dl class="rb-kv">
+      <div><dt>自由度</dt><dd>{_fmt(s.get('dof'))}</dd></div>
+      <div><dt>质量</dt><dd>{_fmt(s.get('mass_kg'))} kg</dd></div>
+      <div><dt>负载</dt><dd>{_fmt(s.get('payload_kg'))} kg</dd></div>
+      <div><dt>续航</dt><dd>{_fmt(s.get('endurance_h'))} h</dd></div>
+    </dl>
+    <div class="rb-links">
+      <span class="rb-sim" title="进仿真接口已留（URDF 链接见详情页），暂未接入">进仿真</span>
+      {'<span class="rb-tag">URDF ×' + str(len(urdf)) + '</span>' if urdf else ''}
+      {'<span class="rb-tag">仓库 ×' + str(len(repo)) + '</span>' if repo else ''}
+    </div>
+  </div>
+</div>""")
+    return "\n".join(out)
+
+
+def build(root: pathlib.Path, out: pathlib.Path, pub: pathlib.Path) -> None:
+    src = root / "data" / "robots"
+    rows: list[dict] = []
+    if src.exists():
+        for f in sorted(src.glob("*.json")):
+            try:
+                rows.extend(json.loads(f.read_text(encoding="utf-8")))
+            except Exception:
+                continue
+    if not rows:
+        print("  整机：data/robots/ 为空，跳过")
+        return
+
+    # slug：vendor-model，稳定可读
+    def slug(r: dict) -> str:
+        base = f"{r.get('vendor','x')}-{r['model']}"
+        keep = "".join(ch if ch.isalnum() else "-" for ch in base.lower())
+        while "--" in keep:
+            keep = keep.replace("--", "-")
+        return keep.strip("-")
+
+    for r in rows:
+        r["_slug"] = slug(r)
+
+    pub.mkdir(parents=True, exist_ok=True)
+    (pub / "robots.json").write_text(
+        json.dumps({"count": len(rows), "robots": rows}, ensure_ascii=False,
+                   separators=(",", ":")), encoding="utf-8")
+
+    # 索引页：页头 + 组件（卡片、筛选都在组件里）
+    (out / "robots.md").write_text(f"""---
+title: 机器人整机
+layout: page
+sidebar: false
+outline: false
+---
+
+<div class="rb-page">
+  <header class="rb-hero">
+    <div class="rb-kicker">机器人整机</div>
+    <h1>部件选完之后，看整机方案。</h1>
+    <p>
+      这一页与「机器人部件库」平行，不是它的子集。部件比<strong>参数</strong>，
+      整机看<strong>方案</strong>：几自由度、带不带算力、电池续航、有没有开源 URDF。
+    </p>
+    <div class="rb-note">
+      <b>进仿真</b> 按钮已留接口但<strong>暂未接入</strong>；每台的 URDF / 仓库链接列在详情页，
+      可以自己下载。共 <b>{len(rows)}</b> 台。
+    </div>
+  </header>
+
+  <RobotGrid />
+</div>
+
+<style>
+.rb-page {{ max-width: 1120px; margin: 0 auto; padding: 1.6rem 1.5rem 0; }}
+.rb-kicker {{ font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--vp-c-brand-1); font-weight: 700; margin-bottom: .45rem; }}
+.rb-hero h1 {{ font-size: clamp(1.4rem,2.6vw,1.9rem); font-weight: 800; letter-spacing: -.02em;
+  margin: 0 0 .6rem; border: none; padding: 0; color: var(--vp-c-text-1); }}
+.rb-hero p {{ margin: 0; font-size: .86rem; line-height: 1.85; color: var(--vp-c-text-2); max-width: 74ch; }}
+.rb-note {{ margin: 1rem 0 .4rem; padding: .65rem .9rem; border-radius: 8px;
+  border-left: 3px solid var(--vp-c-brand-1); background: var(--vp-c-brand-soft);
+  font-size: .79rem; line-height: 1.8; color: var(--vp-c-text-2); max-width: 74ch; }}
+</style>
+""", encoding="utf-8")
+
+    # 详情页
+    ddir = out / "robots"
+    ddir.mkdir(parents=True, exist_ok=True)
+    for r in rows:
+        s = r.get("specs") or {}
+        kvs = "\n".join(
+            f"| {LABEL.get(k, k)} | {_fmt(v)} |"
+            for k, v in s.items()
+            if k in LABEL and v not in (None, "", []))
+        urdf = s.get("urdf_urls") or []
+        repo = s.get("repo_urls") or []
+        links = []
+        if s.get("doc_url"):
+            links.append(f"- 官方文档：<{s['doc_url']}>")
+        if s.get("doc_pdf"):
+            links.append(f"- 官方 PDF：<{s['doc_pdf']}>")
+        for u in urdf:
+            links.append(f"- URDF：<{u}>")
+        for u in repo:
+            links.append(f"- 仓库：<{u}>")
+        (ddir / f"{r['_slug']}.md").write_text(f"""---
+title: {r['model']}
+---
+
+# {r.get('vendor_cn') or r.get('vendor')} {r['model']}
+
+{('![%s](%s)' % (r['model'], s['image_url'])) if s.get('image_url') else ''}
+
+{r.get('notes') or '—'}
+
+## 关键参数
+
+| 字段 | 值 |
+|---|---|
+{kvs or '| — | 暂无参数 |'}
+
+## 链接
+
+{chr(10).join(links) or '—'}
+
+::: tip 进仿真（接口已留）
+「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，
+拖进 MuJoCo / Isaac 里用。
+:::
+
+> 来源：{r.get('origin') or '—'} · 等级 {r.get('source_tier') or '—'} · 核对 {r.get('last_checked') or '—'}
+""", encoding="utf-8")
+
+    print(f"  整机 {len(rows)} 台 -> robots.md + robots/*.md（{len(rows)} 页）")

@@ -26,6 +26,11 @@ outline: false
   <div class="ct-head"><b>RoboSelect 编辑部</b><span class="ct-role">Editor</span></div>
   <p>采购合同与口径的编者按；优惠与来源规则的整理</p>
   
+</div>
+<div class="ct">
+  <div class="ct-head"><b>Dichen33</b><span class="ct-role">Contributor</span></div>
+  <p>15 whole-robot entries with URDF/repo links, a large expansion of high- and low-level controllers, extra IMU / camera / LiDAR models, and the part-data collection guide</p>
+  <a href="https://github.com/Dichen33" target="_blank" rel="noopener">GitHub</a>
 </div></div>
   </section>
 

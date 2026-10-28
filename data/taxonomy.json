@@ -777,6 +777,62 @@
   "北醒 Benewake": {
    "slug": "benewake",
    "cn": "北醒 Benewake"
+  },
+  "Arduino": {
+   "slug": "arduino",
+   "cn": "Arduino"
+  },
+  "Luxonis": {
+   "slug": "luxonis",
+   "cn": "Luxonis"
+  },
+  "Manifold Tech": {
+   "slug": "manifold",
+   "cn": "Manifold Tech"
+  },
+  "Movella Xsens": {
+   "slug": "xsens",
+   "cn": "Movella Xsens"
+  },
+  "ODrive Robotics": {
+   "slug": "odrive",
+   "cn": "ODrive Robotics"
+  },
+  "ROBOTIS": {
+   "slug": "robotis",
+   "cn": "ROBOTIS"
+  },
+  "Slamtec": {
+   "slug": "slamtec",
+   "cn": "Slamtec"
+  },
+  "Stereolabs": {
+   "slug": "stereolabs",
+   "cn": "Stereolabs"
+  },
+  "mjbots": {
+   "slug": "mjbots",
+   "cn": "mjbots"
+  },
+  "WitMotion 维特智能": {
+   "slug": "witmotion",
+   "cn": "WitMotion 维特智能"
+  },
+  "超核电子 HiPNUC": {
+   "slug": "hipnuc",
+   "cn": "超核电子 HiPNUC"
+  },
+  "树莓派": {
+   "slug": "raspberrypi",
+   "cn": "树莓派"
+  },
+  "瑞莎 Radxa": {
+   "slug": "radxa",
+   "cn": "瑞莎 Radxa"
+  },
+  "D-Robotics": {
+   "slug": "d-robotics",
+   "cn": "地瓜机器人"
   }
  }
 }

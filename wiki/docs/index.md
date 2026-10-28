@@ -22,9 +22,9 @@ titleTemplate: false
   </section>
 
   <section class="home-stats">
-    <div><b>92</b><span>在库部件</span></div>
+    <div><b>130</b><span>在库部件</span></div>
     <div><b>11</b><span>有数据的品类 · 共 13 类</span></div>
-    <div><b>62</b><span>逐项核对过厂商手册（A 级）</span></div>
+    <div><b>100</b><span>逐项核对过厂商手册（A 级）</span></div>
     <div><b>149</b><span>加工与标准件供应商</span></div>
   </section>
 
@@ -32,13 +32,13 @@ titleTemplate: false
     <h2>按品类</h2>
     <div class="home-cat-grid"><a class="hc" href="/parts/actuator/"><b>关节电机</b><span>46</span><em>选型主战场</em></a>
 <a class="hc" href="/parts/servo/"><b>舵机</b><span>5</span><em>串行总线 / PWM</em></a>
-<a class="hc" href="/parts/controller_high/"><b>上位机</b><span>3</span><em>推理与感知</em></a>
-<a class="hc" href="/parts/controller_low/"><b>下位机</b><span>3</span><em>力矩闭环</em></a>
+<a class="hc" href="/parts/controller_high/"><b>上位机</b><span>12</span><em>推理与感知</em></a>
+<a class="hc" href="/parts/controller_low/"><b>下位机</b><span>14</span><em>力矩闭环</em></a>
 <a class="hc" href="/parts/esc/"><b>电调</b><span>3</span><em>驱动器 / 调速器</em></a>
-<a class="hc" href="/parts/imu/"><b>IMU</b><span>1</span><em>姿态与振动</em></a>
+<a class="hc" href="/parts/imu/"><b>IMU</b><span>7</span><em>姿态与振动</em></a>
 <a class="hc" href="/parts/sensor/"><b>传感器</b><span>3</span><em>ToF / 电流 / 霍尔</em></a>
-<a class="hc" href="/parts/lidar/"><b>激光雷达</b><span>5</span><em>地形与建图</em></a>
-<a class="hc" href="/parts/camera/"><b>深度相机</b><span>7</span><em>视觉感知</em></a>
+<a class="hc" href="/parts/lidar/"><b>激光雷达</b><span>10</span><em>地形与建图</em></a>
+<a class="hc" href="/parts/camera/"><b>深度相机</b><span>14</span><em>视觉感知</em></a>
 <a class="hc" href="/parts/battery/"><b>电池</b><span>待收录</span><em>待收录</em></a>
 <a class="hc" href="/parts/wiring/"><b>线束</b><span>2</span><em>待收录</em></a>
 <a class="hc" href="/parts/module/"><b>其余模块</b><span>待收录</span><em>力触觉 / 编码器</em></a>

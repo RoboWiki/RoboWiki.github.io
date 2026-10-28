@@ -25,6 +25,7 @@ OUT = ROOT / "wiki" / "docs"
 #: 品类。顺序即展示顺序 —— 关节电机是重点，放最前。
 #: 机械结构 / 电池 / 线束 没有收录：不是漏了，是没有可信来源，宁缺不编。
 from .load import cat_labels as _cat_labels
+from .build_robots import build as build_robots
 from .contrib_page import build as build_contributors
 from .load import load_taxonomy
 
@@ -160,7 +161,7 @@ def main() -> None:
     # 那些页面还能被访问到，等于把废弃数据留在线上。
     # 手写页面（explore.md）不在清理范围内。
     GENERATED = ["index.md", "semantics.md", "protocols.md", "sources.md",
-                 "contributors.md", "suppliers.md"]
+                 "contributors.md", "suppliers.md", "robots.md"]
     for name in GENERATED:
         p = OUT / name
         if p.exists():
@@ -384,6 +385,22 @@ def main() -> None:
     def cat_keys(r: dict) -> list[str]:
         return _TAX_BY_CAT.get(r.get("category") or "", [])
 
+    def _val(v) -> str:
+        """把任意 specs 值渲染成单元格文本。
+
+        ccc 带来的数据里有列表（repo_urls / urdf_urls / sensors），
+        直接丢给 num() 会 TypeError。列表按顿号连，空列表给 —。
+        """
+        if v is None or v == "" or v == []:
+            return "—"
+        if isinstance(v, list):
+            return "、".join(str(x) for x in v) if v else "—"
+        if isinstance(v, dict):
+            return "；".join(f"{k}={x}" for k, x in v.items()) or "—"
+        if isinstance(v, str):
+            return v
+        return num(v, 4)
+
     def spec_rows(specs: dict, cat_key_list: list[str] | None = None) -> str:
         """按品类出参数行。
 
@@ -400,16 +417,14 @@ def main() -> None:
                 continue
             seen.add(k)
             label = SPEC_LABEL.get(k, k)
-            val = "—" if v is None else (str(v) if isinstance(v, str) else num(v, 4))
-            out.append(f"| {label} | {val} |")
+            out.append(f"| {label} | {_val(v)} |")
         for k, v in specs.items():
             if k in seen or k in ("image_url", "image_source"):
                 continue
             if v is None:
                 continue
             label = SPEC_LABEL.get(k, k)
-            val = str(v) if isinstance(v, str) else num(v, 4)
-            out.append(f"| {label} | {val} |")
+            out.append(f"| {label} | {_val(v)} |")
         return "\n".join(out)
 
     # ── 每页要用的派生量（只对关节电机算，其它品类没有这些语义）─────────
@@ -631,8 +646,7 @@ def main() -> None:
         # 看着像数据缺失，其实是字段不属于这个品类。
         KEY = cat_keys(r) or ["iface"]
         keyrows = "\n".join(
-            f"| {SPEC_LABEL.get(k, k)} | "
-            f"{'—' if s.get(k) is None else (s[k] if isinstance(s[k], str) else num(s[k], 4))} |"
+            f"| {SPEC_LABEL.get(k, k)} | {_val(s.get(k))} |"
             for k in KEY if k in s)
         if not keyrows:
             keyrows = "| — | 这一类暂无核心字段 |"
@@ -1325,6 +1339,7 @@ html.dark .rl-th {{ color: #e0b159; }}
 
     # ── 贡献者 ──────────────────────────────────────────────────────────
     # 交给 pipeline/contrib_page.py：GitHub 快照 + 手工名单，生成中英两版。
+    build_robots(ROOT, OUT, pub)
     build_contributors(ROOT, OUT, pub)
 
 

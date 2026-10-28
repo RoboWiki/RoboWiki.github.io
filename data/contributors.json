@@ -4,7 +4,12 @@
   "name": "zeitvex",
   "role": "维护者",
   "did": "站点与构建链；达妙 / 灵足 / 大疆 / 宇树四家的参数核对与口径定义",
-  "links": [{"label": "GitHub", "url": "https://github.com/zeitvex"}]
+  "links": [
+   {
+    "label": "GitHub",
+    "url": "https://github.com/zeitvex"
+   }
+  ]
  },
  {
   "handle": "roboselect",
@@ -12,5 +17,18 @@
   "role": "编辑",
   "did": "采购合同与口径的编者按；优惠与来源规则的整理",
   "links": []
+ },
+ {
+  "name": "Dichen33",
+  "handle": "Dichen33",
+  "role": "贡献者",
+  "did": "整机数据 15 台（含 URDF / 仓库链接）、上位机与下位机大批扩充、IMU 与相机雷达补充、部件资料采集指南（docs/data-collection-guide.md）",
+  "did_en": "15 whole-robot entries with URDF/repo links, a large expansion of high- and low-level controllers, extra IMU / camera / LiDAR models, and the part-data collection guide",
+  "links": [
+   {
+    "label": "GitHub",
+    "url": "https://github.com/Dichen33"
+   }
+  ]
  }
 ]

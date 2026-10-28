@@ -8,6 +8,7 @@ import PageComments from '../components/PageComments.vue'
 import PartExplorer from '../components/PartExplorer.vue'
 import SupplierList from '../components/SupplierList.vue'
 import ContributorGrid from '../components/ContributorGrid.vue'
+import RobotGrid from '../components/RobotGrid.vue'
 import PartRating from '../components/PartRating.vue'
 import './custom.css'
 import './part.css'
@@ -24,6 +25,7 @@ export default {
     app.component('PartExplorer', PartExplorer)
     app.component('SupplierList', SupplierList)
     app.component('ContributorGrid', ContributorGrid)
+    app.component('RobotGrid', RobotGrid)
     app.component('PartRating', PartRating)
   },
 } satisfies Theme
