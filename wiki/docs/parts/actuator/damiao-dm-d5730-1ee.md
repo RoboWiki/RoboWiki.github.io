@@ -131,6 +131,9 @@ title: 达妙 DAMIAO DM-D5730 -1EE
 | 通信 | CAN、CANFD EtherCAT |
 | 内置驱动 | 1 |
 | 防护等级 | — |
+| temp_range | — |
+| dims | — |
+| i_stall_A | — |
 
 ## 优惠与获取条件
 

@@ -190,6 +190,65 @@
    ]
   },
   {
+   "id": "esc",
+   "name": "电调",
+   "hint": "驱动器 / 调速器",
+   "subtypes": {
+    "can": "CAN 控制",
+    "pwm": "PWM 控制"
+   },
+   "keys": [
+    {
+     "k": "current_cont_A",
+     "label": "持续电流",
+     "unit": " A"
+    },
+    {
+     "k": "current_peak_A",
+     "label": "峰值电流",
+     "unit": " A"
+    },
+    {
+     "k": "voltage_in_V",
+     "label": "额定电压",
+     "unit": " V"
+    },
+    {
+     "k": "comm",
+     "label": "控制方式",
+     "unit": ""
+    },
+    {
+     "k": "ctrl_khz",
+     "label": "控制频率",
+     "unit": " kHz"
+    },
+    {
+     "k": "mass_kg",
+     "label": "重量",
+     "unit": " kg"
+    }
+   ],
+   "sorts": [
+    {
+     "k": "current_cont_A",
+     "label": "持续电流"
+    },
+    {
+     "k": "mass_kg",
+     "label": "重量"
+    },
+    {
+     "k": "price",
+     "label": "价格"
+    },
+    {
+     "k": "rating",
+     "label": "评分"
+    }
+   ]
+  },
+  {
    "id": "structure",
    "name": "机械加工",
    "hint": "CNC / 3D 打印 / 钣金",

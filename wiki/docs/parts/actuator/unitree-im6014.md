@@ -112,6 +112,9 @@ title: 宇树 Unitree IM6014
 | 通信 | — |
 | 内置驱动 | — |
 | 防护等级 | — |
+| temp_range | — |
+| dims | — |
+| i_stall_A | — |
 
 ## 优惠与获取条件
 

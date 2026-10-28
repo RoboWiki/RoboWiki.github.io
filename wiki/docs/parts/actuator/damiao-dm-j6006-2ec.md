@@ -123,6 +123,9 @@ title: 达妙 DAMIAO DM-J6006-2EC
 | 通信 | CAN、CANFD |
 | 内置驱动 | 1 |
 | 防护等级 | — |
+| temp_range | — |
+| dims | — |
+| i_stall_A | — |
 
 ## 优惠与获取条件
 

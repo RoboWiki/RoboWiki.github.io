@@ -21,7 +21,7 @@ titleTemplate: false
   </section>
 
   <section class="home-stats">
-    <div><b>76</b><span>在库部件</span></div>
+    <div><b>79</b><span>在库部件</span></div>
     <div><b>46</b><span>关节电机 · 4 家</span></div>
     <div><b>87%</b><span>有转子惯量（可直接进仿真）</span></div>
     <div><b>93%</b><span>有额定扭矩</span></div>
@@ -32,6 +32,7 @@ titleTemplate: false
     <div class="home-cat-grid"><a class="hc" href="/parts/actuator/"><b>关节电机</b><span>46</span><em>选型主战场</em></a>
 <a class="hc" href="/parts/controller_high/"><b>上位机</b><span>3</span><em>推理与感知</em></a>
 <a class="hc" href="/parts/controller_low/"><b>下位机</b><span>3</span><em>力矩闭环</em></a>
+<a class="hc" href="/parts/esc/"><b>电调</b><span>3</span><em>驱动器 / 调速器</em></a>
 <a class="hc" href="/parts/structure/"><b>机械加工</b><span>待收录</span><em>CNC / 3D 打印 / 钣金</em></a>
 <a class="hc" href="/parts/imu/"><b>IMU</b><span>待收录</span><em>姿态与振动</em></a>
 <a class="hc" href="/parts/lidar/"><b>激光雷达</b><span>3</span><em>地形与建图</em></a>

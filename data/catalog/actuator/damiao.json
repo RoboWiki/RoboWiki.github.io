@@ -40,7 +40,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-d5730-1ec.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；直驱电机；额定 0.65 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -87,7 +90,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-d5730-1ee.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；直驱电机；额定 0.65 N·m；源文勘误：无",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -134,7 +140,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j10010-2ec.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；关节电机；额定 40.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -181,7 +190,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j10010l-2ec.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；关节电机；额定 40.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -228,7 +240,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j10422p-2ec.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；关节电机；额定 100.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -275,7 +290,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j3507-2ec.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；关节电机；额定 0.8 N·m；源文勘误：无 | 低压版 24 V：460.0 rpm 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -322,7 +340,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j4310-2ec-v1-1.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；关节电机；额定 3.0 N·m；源文勘误：无 | 低压版 24 V：200.0 rpm",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -369,7 +390,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j4310-2ec-v1-2.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；关节电机；额定 3.5 N·m；源文勘误：无 | 低压版 24 V：200.0 rpm 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -416,7 +440,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j4310m-2ec.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "24.0 V 版本；关节电机；额定 5.2 N·m；源文勘误：无",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -463,7 +490,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j4310p-2ec.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；关节电机；额定 3.5 N·m；源文勘误：无 | 低压版 24 V：200.0 rpm 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -510,7 +540,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j4340-2ec.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；关节电机；额定 9.0 N·m；源文勘误：无 | 低压版 24 V：52.5 rpm 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -557,7 +590,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j4340-2ec-v1-1.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；关节电机；额定 12.0 N·m；源文勘误：无 | 低压版 24 V：56.0 rpm 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -604,7 +640,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j4340p-2ec.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；关节电机；额定 9.0 N·m；源文勘误：无 | 低压版 24 V：52.5 rpm",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -651,7 +690,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j4340p-2ec-v1-1.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；关节电机；额定 12.0 N·m；源文勘误：无 | 低压版 24 V：56.0 rpm",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -698,7 +740,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j6006-2ec.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；关节电机；额定 4.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -745,7 +790,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j6216l-2ec.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；关节电机；额定 10.0 N·m；源文勘误：无",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -792,7 +840,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j6216p-2ec.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；关节电机；额定 10.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -839,7 +890,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j6248p-2ec.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；关节电机；额定 30.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -886,7 +940,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j8006-2ec-v1-1.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；关节电机；额定 8.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -933,7 +990,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j8009-2ec.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；关节电机；额定 20.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -980,7 +1040,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j8009p-2ec.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；关节电机；额定 20.0 N·m；源文勘误：无",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -1027,7 +1090,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j8009p-2ec-v1-1.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；关节电机；额定 20.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -1074,7 +1140,10 @@
    "driver_integrated": true,
    "ip": null,
    "image_url": "/parts/dm-dm-j8520p-2ec.jpeg",
-   "image_source": "厂商资料"
+   "image_source": "厂商资料",
+   "temp_range": null,
+   "dims": null,
+   "i_stall_A": null
   },
   "notes": "48.0 V 版本；关节电机；额定 50.0 N·m；源文勘误：无",
   "origin": "达妙 2026 产品选型表 2026-10-23",
