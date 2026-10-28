@@ -15,8 +15,20 @@
 }
 html.dark .part-photo { background: #f4f4f4; }
 
-.part-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.8rem; }
+.part-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;   /* 不让徽章被 flex 拉成巨型药丸 */
+  gap: 0.35rem;
+  margin-bottom: 0.8rem;
+}
 .part-tag {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  height: auto;
+  line-height: 1.6;
+  white-space: nowrap;
   font-size: 0.72rem;
   padding: 2px 8px;
   border-radius: 999px;
