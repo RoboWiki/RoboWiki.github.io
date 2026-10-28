@@ -19,7 +19,7 @@
 from __future__ import annotations
 
 import sys as _sys
-from _deprecated import require_legacy_ok
+from legacy_guard import require_legacy_ok
 require_legacy_ok(__file__)
 
 import json

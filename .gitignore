@@ -14,6 +14,8 @@ shot-*.*
 _dev.log
 _*.py
 _*.js
+_*.txt
+audit-*.png
 
 # 测试用的一次性沙箱
 .tmp-validate/
