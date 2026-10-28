@@ -8,14 +8,16 @@ title: 部件详情
 按品类进入，再按厂商分页。
 
 - **[关节电机](/parts/actuator/)** —— 选型主战场（46 件）
+- **[舵机](/parts/servo/)** —— 串行总线 / PWM（5 件）
 - **[上位机](/parts/controller_high/)** —— 推理与感知（3 件）
 - **[下位机](/parts/controller_low/)** —— 力矩闭环（3 件）
 - **[电调](/parts/esc/)** —— 驱动器 / 调速器（3 件）
 - **[IMU](/parts/imu/)** —— 姿态与振动（1 件）
-- **[激光雷达](/parts/lidar/)** —— 地形与建图（3 件）
+- **[传感器](/parts/sensor/)** —— ToF / 电流 / 霍尔（3 件）
+- **[激光雷达](/parts/lidar/)** —— 地形与建图（5 件）
 - **[深度相机](/parts/camera/)** —— 视觉感知（7 件）
 - **[电池](/parts/battery/)** —— 待收录（0 件）
-- **[线束](/parts/wiring/)** —— 待收录（0 件）
+- **[线束](/parts/wiring/)** —— 待收录（2 件）
 - **[其余模块](/parts/module/)** —— 力触觉 / 编码器（0 件）
 - **[硬件芯片](/parts/chip/)** —— MCU / 驱动 / 收发器（14 件）
 

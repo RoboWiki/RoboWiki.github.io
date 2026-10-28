@@ -34,6 +34,10 @@
      ]
     },
     {
+     "text": "舵机",
+     "link": "/parts/servo/"
+    },
+    {
      "text": "上位机",
      "link": "/parts/controller_high/"
     },
@@ -48,6 +52,10 @@
     {
      "text": "IMU",
      "link": "/parts/imu/"
+    },
+    {
+     "text": "传感器",
+     "link": "/parts/sensor/"
     },
     {
      "text": "激光雷达",

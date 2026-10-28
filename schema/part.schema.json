@@ -14,7 +14,7 @@
       "description": "稳定标识。一经发布不要改：评分、讨论、外链都挂在它上面。"
     },
     "category": {
-      "enum": ["actuator", "controller_high", "controller_low", "esc",
+      "enum": ["actuator", "servo", "sensor", "controller_high", "controller_low", "esc",
                "imu", "lidar", "camera", "battery", "wiring", "module",
                "chip"]
     },

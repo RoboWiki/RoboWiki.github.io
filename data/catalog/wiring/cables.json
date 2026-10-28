@@ -1,0 +1,48 @@
+[
+ {
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": null,
+  "notes": "飞特舵机的标准 3P 端子线，做串行总线串联时的基础件。国内淘宝同规格 2–5 元一根，商城 3 USD 只能当量级参考。",
+  "origin": "aifitlab 商城 SKU（海外平台，价格仅参考）",
+  "specs": {
+   "iface": "5264 3P",
+   "length_m": null,
+   "awg": null,
+   "image_url": null,
+   "image_source": null
+  },
+  "category": "wiring",
+  "subtype": "cable",
+  "id": "feetech-5264-cable",
+  "vendor": "Feetech 飞特",
+  "vendor_cn": "飞特",
+  "model": "5264 端子线",
+  "title": "飞特 5264 端子线（舵机延长线）",
+  "url": "https://www.feetech.cn/"
+ },
+ {
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": null,
+  "notes": "达妙 DM 系列电机配套线（CAN + 电源），DIY 时容易买错端子型号，建议按电机侧接口型号买原厂线。",
+  "origin": "aifitlab 商城 SKU（海外平台，价格仅参考）",
+  "specs": {
+   "iface": "CAN / 电源",
+   "length_m": null,
+   "awg": null,
+   "image_url": null,
+   "image_source": null
+  },
+  "category": "wiring",
+  "subtype": "cable",
+  "id": "damiao-motor-cable",
+  "vendor": "达妙 DAMIAO",
+  "vendor_cn": "达妙",
+  "model": "电机连接线",
+  "title": "达妙电机连接线（CAN/电源）",
+  "url": "https://www.damiaokeji.com/"
+ }
+]

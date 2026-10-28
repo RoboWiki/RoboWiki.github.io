@@ -72,6 +72,68 @@
    ]
   },
   {
+   "id": "servo",
+   "name": "舵机",
+   "hint": "串行总线 / PWM",
+   "subtypes": {
+    "sts": "STS 系列",
+    "st": "ST 系列",
+    "hl": "HL 系列",
+    "sm": "SM 系列",
+    "other": "其他"
+   },
+   "keys": [
+    {
+     "k": "stall_torque_Nm",
+     "label": "堵转扭矩",
+     "unit": " N·m"
+    },
+    {
+     "k": "rated_torque_Nm",
+     "label": "额定扭矩",
+     "unit": " N·m"
+    },
+    {
+     "k": "voltage_V",
+     "label": "额定电压",
+     "unit": " V"
+    },
+    {
+     "k": "speed_rpm",
+     "label": "空载速度",
+     "unit": " rpm"
+    },
+    {
+     "k": "protocol",
+     "label": "协议",
+     "unit": ""
+    },
+    {
+     "k": "mass_kg",
+     "label": "质量",
+     "unit": " kg"
+    }
+   ],
+   "sorts": [
+    {
+     "k": "stall_torque_Nm",
+     "label": "堵转扭矩"
+    },
+    {
+     "k": "voltage_V",
+     "label": "电压"
+    },
+    {
+     "k": "price",
+     "label": "价格"
+    },
+    {
+     "k": "rating",
+     "label": "评分"
+    }
+   ]
+  },
+  {
    "id": "controller_high",
    "name": "上位机",
    "hint": "推理与感知",
@@ -296,6 +358,62 @@
    ]
   },
   {
+   "id": "sensor",
+   "name": "传感器",
+   "hint": "ToF / 电流 / 霍尔",
+   "subtypes": {
+    "tof": "ToF 测距",
+    "current": "电流检测",
+    "hall": "霍尔/磁"
+   },
+   "keys": [
+    {
+     "k": "range_m",
+     "label": "量程",
+     "unit": " m"
+    },
+    {
+     "k": "fov",
+     "label": "视场",
+     "unit": ""
+    },
+    {
+     "k": "fps",
+     "label": "帧率",
+     "unit": " Hz"
+    },
+    {
+     "k": "iface",
+     "label": "接口",
+     "unit": ""
+    },
+    {
+     "k": "voltage_range",
+     "label": "供电",
+     "unit": ""
+    },
+    {
+     "k": "mass_kg",
+     "label": "质量",
+     "unit": " kg"
+    }
+   ],
+   "sorts": [
+    {
+     "k": "range_m",
+     "label": "量程"
+    },
+    {
+     "k": "price",
+     "label": "价格"
+    },
+    {
+     "k": "rating",
+     "label": "评分"
+    }
+   ]
+  },
+  {
    "id": "lidar",
    "name": "激光雷达",
    "hint": "地形与建图",
@@ -507,11 +625,11 @@
    "name": "硬件芯片",
    "hint": "MCU / 驱动 / 收发器",
    "subtypes": {
-    "mcu": "MCU",
-    "driver": "栅极驱动",
-    "transceiver": "收发器",
-    "imu": "IMU 芯片",
-    "encoder": "编码芯片",
+    "mcu": "MCU / 主控",
+    "driver": "电机驱动",
+    "transceiver": "总线收发器",
+    "imu": "惯性传感芯片",
+    "encoder": "磁编码器",
     "power": "电源",
     "memory": "存储"
    },
@@ -651,6 +769,14 @@
   "RoboSense": {
    "slug": "robosense",
    "cn": "速腾聚创"
+  },
+  "Feetech 飞特": {
+   "slug": "feetech",
+   "cn": "飞特"
+  },
+  "北醒 Benewake": {
+   "slug": "benewake",
+   "cn": "北醒 Benewake"
   }
  }
 }

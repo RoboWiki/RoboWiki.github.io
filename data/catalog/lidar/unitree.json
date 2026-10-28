@@ -41,7 +41,8 @@
    "data_4d": "3D 位置 + 1D 灰度",
    "power_note": null,
    "voltage_in_V": null,
-   "angular_resolution": null
+   "angular_resolution": null,
+   "voltage_range": null
   }
  },
  {
@@ -86,7 +87,8 @@
    "scan": "无接触无刷转镜",
    "data_4d": "3D 位置 + 1D 灰度（支持 2D 模式）",
    "voltage_in_V": 12,
-   "power_note": "12 V / 1 A"
+   "power_note": "12 V / 1 A",
+   "voltage_range": null
   }
  }
 ]
