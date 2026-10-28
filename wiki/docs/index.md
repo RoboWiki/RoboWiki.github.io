@@ -32,7 +32,7 @@ titleTemplate: false
     <div class="home-cat-grid"><a class="hc" href="/parts/actuator/"><b>关节电机</b><span>46</span><em>选型主战场</em></a>
 <a class="hc" href="/parts/controller_high/"><b>上位机</b><span>3</span><em>推理与感知</em></a>
 <a class="hc" href="/parts/controller_low/"><b>下位机</b><span>3</span><em>力矩闭环</em></a>
-<a class="hc" href="/parts/structure/"><b>机械结构</b><span>待收录</span><em>待收录</em></a>
+<a class="hc" href="/parts/structure/"><b>机械加工</b><span>待收录</span><em>CNC / 3D 打印 / 钣金</em></a>
 <a class="hc" href="/parts/imu/"><b>IMU</b><span>待收录</span><em>姿态与振动</em></a>
 <a class="hc" href="/parts/lidar/"><b>激光雷达</b><span>3</span><em>地形与建图</em></a>
 <a class="hc" href="/parts/camera/"><b>深度相机</b><span>4</span><em>视觉感知</em></a>

@@ -10,7 +10,7 @@ title: 部件详情
 - **[关节电机](/parts/actuator/)** —— 选型主战场（46 件）
 - **[上位机](/parts/controller_high/)** —— 推理与感知（3 件）
 - **[下位机](/parts/controller_low/)** —— 力矩闭环（3 件）
-- **[机械结构](/parts/structure/)** —— 待收录（0 件）
+- **[机械加工](/parts/structure/)** —— CNC / 3D 打印 / 钣金（0 件）
 - **[IMU](/parts/imu/)** —— 姿态与振动（0 件）
 - **[激光雷达](/parts/lidar/)** —— 地形与建图（3 件）
 - **[深度相机](/parts/camera/)** —— 视觉感知（4 件）

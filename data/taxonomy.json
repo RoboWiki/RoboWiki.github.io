@@ -1,46 +1,608 @@
 {
-  "_comment": "品类与品牌的唯一注册表。站点导航、部件库筛选、后端标签、schema 校验、URL slug 都从这里读 —— 改名字只改这一个文件。",
-  "categories": [
-    {"id": "actuator", "name": "关节电机", "hint": "选型主战场",
-     "subtypes": {"qdd": "准直驱 QDD", "planetary": "行星减速", "harmonic": "谐波减速",
-                  "direct": "直驱", "servo": "舵机"}},
-    {"id": "controller_high", "name": "上位机", "hint": "推理与感知",
-     "subtypes": {"sbc": "单板计算机", "module": "计算模组"}},
-    {"id": "controller_low", "name": "下位机", "hint": "力矩闭环",
-     "subtypes": {"mcu": "主控板", "bridge": "调试桥", "driver": "驱动板"}},
-    {"id": "structure", "name": "机械结构", "hint": "待收录", "subtypes": {}},
-    {"id": "imu", "name": "IMU", "hint": "姿态与振动", "subtypes": {}},
-    {"id": "lidar", "name": "激光雷达", "hint": "地形与建图",
-     "subtypes": {"solid": "固态", "mechanical": "机械式"}},
-    {"id": "camera", "name": "深度相机", "hint": "视觉感知",
-     "subtypes": {"stereo": "双目", "structured": "结构光", "tof": "ToF"}},
-    {"id": "battery", "name": "电池", "hint": "待收录", "subtypes": {}},
-    {"id": "wiring", "name": "线束", "hint": "待收录", "subtypes": {}},
-    {"id": "module", "name": "其余模块", "hint": "力触觉 / 编码器", "subtypes": {}},
-    {"id": "chip", "name": "硬件芯片", "hint": "MCU / 驱动 / 收发器",
-     "subtypes": {"mcu": "MCU", "driver": "栅极驱动", "transceiver": "收发器",
-                  "imu": "IMU 芯片", "encoder": "编码芯片", "power": "电源",
-                  "memory": "存储"}}
-  ],
-  "vendors": {
-    "达妙 DAMIAO": {"slug": "damiao", "cn": "达妙科技"},
-    "大疆 DJI": {"slug": "dji-robomaster", "cn": "大疆"},
-    "灵足 RobStride": {"slug": "lingzu-robstride", "cn": "灵足时代"},
-    "宇树 Unitree": {"slug": "unitree", "cn": "宇树科技"},
-    "奥比中光 Orbbec": {"slug": "orbbec", "cn": "奥比中光"},
-    "Intel RealSense": {"slug": "intel-realsense", "cn": "英特尔"},
-    "Livox": {"slug": "livox", "cn": "览沃（大疆生态）"},
-    "地平线 D-Robotics": {"slug": "drobotics", "cn": "地平线"},
-    "NVIDIA": {"slug": "nvidia", "cn": "英伟达"},
-    "STMicroelectronics": {"slug": "st", "cn": "意法半导体"},
-    "Texas Instruments": {"slug": "ti", "cn": "德州仪器"},
-    "Espressif": {"slug": "espressif", "cn": "乐鑫"},
-    "NXP": {"slug": "nxp", "cn": "恩智浦"},
-    "Bosch Sensortec": {"slug": "bosch", "cn": "博世"},
-    "TDK InvenSense": {"slug": "tdk", "cn": "TDK 应美盛"},
-    "Analog Devices (Trinamic)": {"slug": "adi-trinamic", "cn": "Trinamic"},
-    "ams OSRAM": {"slug": "ams", "cn": "艾迈斯欧司朗"},
-    "MagnTek": {"slug": "magnTek", "cn": "麦歌恩"},
-    "Winbond": {"slug": "winbond", "cn": "华邦"}
+ "_comment": "品类与品牌的唯一注册表。站点导航、部件库筛选、后端标签、schema 校验、URL slug 都从这里读 —— 改名字只改这一个文件。",
+ "categories": [
+  {
+   "id": "actuator",
+   "name": "关节电机",
+   "hint": "选型主战场",
+   "subtypes": {
+    "qdd": "准直驱 QDD",
+    "planetary": "行星减速",
+    "harmonic": "谐波减速",
+    "direct": "直驱",
+    "servo": "舵机"
+   },
+   "keys": [
+    {
+     "k": "tau_peak_Nm",
+     "label": "峰值扭矩",
+     "unit": " N·m"
+    },
+    {
+     "k": "tau_rated_Nm",
+     "label": "额定扭矩",
+     "unit": " N·m"
+    },
+    {
+     "k": "gear",
+     "label": "减速比",
+     "unit": ":1"
+    },
+    {
+     "k": "mass_kg",
+     "label": "质量",
+     "unit": " kg"
+    },
+    {
+     "k": "armature_kgm2",
+     "label": "转子惯量",
+     "unit": ""
+    },
+    {
+     "k": "voltage_V",
+     "label": "电压",
+     "unit": " V"
+    }
+   ],
+   "sorts": [
+    {
+     "k": "tau_peak_Nm",
+     "label": "峰值扭矩"
+    },
+    {
+     "k": "tau_rated_Nm",
+     "label": "额定扭矩"
+    },
+    {
+     "k": "gear",
+     "label": "减速比"
+    },
+    {
+     "k": "mass_kg",
+     "label": "质量"
+    },
+    {
+     "k": "price",
+     "label": "价格"
+    },
+    {
+     "k": "rating",
+     "label": "评分"
+    }
+   ]
+  },
+  {
+   "id": "controller_high",
+   "name": "上位机",
+   "hint": "推理与感知",
+   "subtypes": {
+    "sbc": "单板计算机",
+    "module": "计算模组"
+   },
+   "keys": [
+    {
+     "k": "soc",
+     "label": "SoC",
+     "unit": ""
+    },
+    {
+     "k": "npu_tops",
+     "label": "算力",
+     "unit": " TOPS"
+    },
+    {
+     "k": "ram_gb",
+     "label": "内存",
+     "unit": " GB"
+    },
+    {
+     "k": "ram_bw_gbs",
+     "label": "带宽",
+     "unit": " GB/s"
+    },
+    {
+     "k": "power_max_w",
+     "label": "功耗",
+     "unit": " W"
+    },
+    {
+     "k": "iface",
+     "label": "接口",
+     "unit": ""
+    }
+   ],
+   "sorts": [
+    {
+     "k": "npu_tops",
+     "label": "算力"
+    },
+    {
+     "k": "ram_gb",
+     "label": "内存"
+    },
+    {
+     "k": "power_max_w",
+     "label": "功耗"
+    },
+    {
+     "k": "price",
+     "label": "价格"
+    },
+    {
+     "k": "rating",
+     "label": "评分"
+    }
+   ]
+  },
+  {
+   "id": "controller_low",
+   "name": "下位机",
+   "hint": "力矩闭环",
+   "subtypes": {
+    "mcu": "主控板",
+    "bridge": "调试桥",
+    "driver": "驱动板"
+   },
+   "keys": [
+    {
+     "k": "mcu",
+     "label": "MCU",
+     "unit": ""
+    },
+    {
+     "k": "can",
+     "label": "CAN",
+     "unit": " 路"
+    },
+    {
+     "k": "canfd",
+     "label": "CAN FD",
+     "unit": ""
+    },
+    {
+     "k": "current_loop_khz",
+     "label": "电流环",
+     "unit": " kHz"
+    },
+    {
+     "k": "iface",
+     "label": "外设",
+     "unit": ""
+    }
+   ],
+   "sorts": [
+    {
+     "k": "can",
+     "label": "CAN 路数"
+    },
+    {
+     "k": "current_loop_khz",
+     "label": "电流环"
+    },
+    {
+     "k": "price",
+     "label": "价格"
+    },
+    {
+     "k": "rating",
+     "label": "评分"
+    }
+   ]
+  },
+  {
+   "id": "structure",
+   "name": "机械加工",
+   "hint": "CNC / 3D 打印 / 钣金",
+   "subtypes": {},
+   "keys": [
+    {
+     "k": "iface",
+     "label": "接口",
+     "unit": ""
+    }
+   ],
+   "sorts": [
+    {
+     "k": "price",
+     "label": "价格"
+    },
+    {
+     "k": "rating",
+     "label": "评分"
+    }
+   ]
+  },
+  {
+   "id": "imu",
+   "name": "IMU",
+   "hint": "姿态与振动",
+   "subtypes": {},
+   "keys": [
+    {
+     "k": "odr_hz",
+     "label": "ODR",
+     "unit": " Hz"
+    },
+    {
+     "k": "gyro_range_dps",
+     "label": "陀螺量程",
+     "unit": " °/s"
+    },
+    {
+     "k": "accel_range_g",
+     "label": "加计量程",
+     "unit": " g"
+    },
+    {
+     "k": "iface",
+     "label": "接口",
+     "unit": ""
+    },
+    {
+     "k": "voltage_V",
+     "label": "供电",
+     "unit": " V"
+    }
+   ],
+   "sorts": [
+    {
+     "k": "odr_hz",
+     "label": "ODR"
+    },
+    {
+     "k": "price",
+     "label": "价格"
+    },
+    {
+     "k": "rating",
+     "label": "评分"
+    }
+   ]
+  },
+  {
+   "id": "lidar",
+   "name": "激光雷达",
+   "hint": "地形与建图",
+   "subtypes": {
+    "solid": "固态",
+    "mechanical": "机械式"
+   },
+   "keys": [
+    {
+     "k": "range_m",
+     "label": "量程",
+     "unit": " m"
+    },
+    {
+     "k": "fov",
+     "label": "视场",
+     "unit": ""
+    },
+    {
+     "k": "points_per_s",
+     "label": "点频",
+     "unit": " 点/s"
+    },
+    {
+     "k": "fps",
+     "label": "帧率",
+     "unit": " Hz"
+    },
+    {
+     "k": "iface",
+     "label": "接口",
+     "unit": ""
+    },
+    {
+     "k": "mass_kg",
+     "label": "质量",
+     "unit": " kg"
+    }
+   ],
+   "sorts": [
+    {
+     "k": "range_m",
+     "label": "量程"
+    },
+    {
+     "k": "points_per_s",
+     "label": "点频"
+    },
+    {
+     "k": "fps",
+     "label": "帧率"
+    },
+    {
+     "k": "price",
+     "label": "价格"
+    },
+    {
+     "k": "rating",
+     "label": "评分"
+    }
+   ]
+  },
+  {
+   "id": "camera",
+   "name": "深度相机",
+   "hint": "视觉感知",
+   "subtypes": {
+    "stereo": "双目",
+    "structured": "结构光",
+    "tof": "ToF"
+   },
+   "keys": [
+    {
+     "k": "depth_range_m",
+     "label": "深度量程",
+     "unit": " m"
+    },
+    {
+     "k": "fov",
+     "label": "视场",
+     "unit": ""
+    },
+    {
+     "k": "fps",
+     "label": "帧率",
+     "unit": " fps"
+    },
+    {
+     "k": "iface",
+     "label": "接口",
+     "unit": ""
+    },
+    {
+     "k": "mass_kg",
+     "label": "质量",
+     "unit": " kg"
+    },
+    {
+     "k": "voltage_V",
+     "label": "供电",
+     "unit": " V"
+    }
+   ],
+   "sorts": [
+    {
+     "k": "depth_range_m",
+     "label": "深度量程"
+    },
+    {
+     "k": "fps",
+     "label": "帧率"
+    },
+    {
+     "k": "price",
+     "label": "价格"
+    },
+    {
+     "k": "rating",
+     "label": "评分"
+    }
+   ]
+  },
+  {
+   "id": "battery",
+   "name": "电池",
+   "hint": "待收录",
+   "subtypes": {},
+   "keys": [
+    {
+     "k": "iface",
+     "label": "接口",
+     "unit": ""
+    }
+   ],
+   "sorts": [
+    {
+     "k": "price",
+     "label": "价格"
+    },
+    {
+     "k": "rating",
+     "label": "评分"
+    }
+   ]
+  },
+  {
+   "id": "wiring",
+   "name": "线束",
+   "hint": "待收录",
+   "subtypes": {},
+   "keys": [
+    {
+     "k": "iface",
+     "label": "接口",
+     "unit": ""
+    }
+   ],
+   "sorts": [
+    {
+     "k": "price",
+     "label": "价格"
+    },
+    {
+     "k": "rating",
+     "label": "评分"
+    }
+   ]
+  },
+  {
+   "id": "module",
+   "name": "其余模块",
+   "hint": "力触觉 / 编码器",
+   "subtypes": {},
+   "keys": [
+    {
+     "k": "iface",
+     "label": "接口",
+     "unit": ""
+    },
+    {
+     "k": "resolution",
+     "label": "分辨率",
+     "unit": ""
+    },
+    {
+     "k": "bits",
+     "label": "位宽",
+     "unit": " bit"
+    },
+    {
+     "k": "voltage_V",
+     "label": "供电",
+     "unit": " V"
+    }
+   ],
+   "sorts": [
+    {
+     "k": "price",
+     "label": "价格"
+    },
+    {
+     "k": "rating",
+     "label": "评分"
+    }
+   ]
+  },
+  {
+   "id": "chip",
+   "name": "硬件芯片",
+   "hint": "MCU / 驱动 / 收发器",
+   "subtypes": {
+    "mcu": "MCU",
+    "driver": "栅极驱动",
+    "transceiver": "收发器",
+    "imu": "IMU 芯片",
+    "encoder": "编码芯片",
+    "power": "电源",
+    "memory": "存储"
+   },
+   "keys": [
+    {
+     "k": "clock_mhz",
+     "label": "主频",
+     "unit": " MHz"
+    },
+    {
+     "k": "package",
+     "label": "封装",
+     "unit": ""
+    },
+    {
+     "k": "iface",
+     "label": "接口",
+     "unit": ""
+    },
+    {
+     "k": "voltage_V",
+     "label": "电压",
+     "unit": " V"
+    },
+    {
+     "k": "flash_kb",
+     "label": "闪存",
+     "unit": " KB"
+    },
+    {
+     "k": "can",
+     "label": "CAN",
+     "unit": " 路"
+    }
+   ],
+   "sorts": [
+    {
+     "k": "clock_mhz",
+     "label": "主频"
+    },
+    {
+     "k": "price",
+     "label": "价格"
+    },
+    {
+     "k": "rating",
+     "label": "评分"
+    }
+   ]
   }
+ ],
+ "vendors": {
+  "达妙 DAMIAO": {
+   "slug": "damiao",
+   "cn": "达妙科技"
+  },
+  "大疆 DJI": {
+   "slug": "dji-robomaster",
+   "cn": "大疆"
+  },
+  "灵足 RobStride": {
+   "slug": "lingzu-robstride",
+   "cn": "灵足时代"
+  },
+  "宇树 Unitree": {
+   "slug": "unitree",
+   "cn": "宇树科技"
+  },
+  "奥比中光 Orbbec": {
+   "slug": "orbbec",
+   "cn": "奥比中光"
+  },
+  "Intel RealSense": {
+   "slug": "intel-realsense",
+   "cn": "英特尔"
+  },
+  "Livox": {
+   "slug": "livox",
+   "cn": "览沃（大疆生态）"
+  },
+  "地平线 D-Robotics": {
+   "slug": "drobotics",
+   "cn": "地平线"
+  },
+  "NVIDIA": {
+   "slug": "nvidia",
+   "cn": "英伟达"
+  },
+  "STMicroelectronics": {
+   "slug": "st",
+   "cn": "意法半导体"
+  },
+  "Texas Instruments": {
+   "slug": "ti",
+   "cn": "德州仪器"
+  },
+  "Espressif": {
+   "slug": "espressif",
+   "cn": "乐鑫"
+  },
+  "NXP": {
+   "slug": "nxp",
+   "cn": "恩智浦"
+  },
+  "Bosch Sensortec": {
+   "slug": "bosch",
+   "cn": "博世"
+  },
+  "TDK InvenSense": {
+   "slug": "tdk",
+   "cn": "TDK 应美盛"
+  },
+  "Analog Devices (Trinamic)": {
+   "slug": "adi-trinamic",
+   "cn": "Trinamic"
+  },
+  "ams OSRAM": {
+   "slug": "ams",
+   "cn": "艾迈斯欧司朗"
+  },
+  "MagnTek": {
+   "slug": "magnTek",
+   "cn": "麦歌恩"
+  },
+  "Winbond": {
+   "slug": "winbond",
+   "cn": "华邦"
+  }
+ }
 }

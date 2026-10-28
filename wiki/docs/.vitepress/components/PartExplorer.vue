@@ -65,13 +65,20 @@ const fail = ref('')
 const q = ref('')
 const cat = ref('actuator')
 const vendor = ref('')
-const sort = ref<'rating' | 'peak' | 'armature' | 'mass' | 'price' | 'vendor'>('peak')
+const sort = ref<string>('tau_peak_Nm')
 const order = ref<'desc' | 'asc'>('desc')
 const picked = ref<Part[]>([])
 const detail = ref<Part | null>(null)
 
 //: 品类表来自 catalog.json（构建时由 data/taxonomy.json 生成）——
 //: 这里只留一份「加载失败时的兜底」，不再硬编码全量。
+interface Cat {
+  v: string
+  t: string
+  keys: { k: string; label: string; unit?: string }[]
+  sorts: { k: string; label: string }[]
+}
+
 const FALLBACK_CATS = [
   { v: 'actuator', t: '关节电机' },
   { v: 'controller_high', t: '上位机' },
@@ -79,16 +86,11 @@ const FALLBACK_CATS = [
   { v: 'module', t: '其余模块' },
   { v: 'chip', t: '硬件芯片' },
 ]
-const CATS = ref<{ v: string; t: string }[]>(FALLBACK_CATS.slice())
+const CATS = ref<Cat[]>(FALLBACK_CATS.map(c => ({ ...c, keys: [], sorts: [] })))
 
-const SORTS = [
-  { v: 'peak', t: '峰值扭矩' },
-  { v: 'rating', t: '评分' },
-  { v: 'armature', t: '转子惯量' },
-  { v: 'mass', t: '质量' },
-  { v: 'price', t: '价格' },
-  { v: 'vendor', t: '品牌' },
-] as const
+//: 排序项按品类来（data/taxonomy.json 的 sorts）。
+//: 「按峰值扭矩」对芯片毫无意义 —— 每类该有自己的默认排序。
+const FALLBACK_SORTS = [{ k: 'price', label: '价格' }, { k: 'rating', label: '评分' }]
 
 onMounted(async () => {
   try {
@@ -99,7 +101,9 @@ onMounted(async () => {
     const d = await r.json()
     all.value = d.parts
     if (Array.isArray(d.categories) && d.categories.length) {
-      CATS.value = d.categories.map((c: any) => ({ v: c.id, t: c.name }))
+      CATS.value = d.categories.map((c: any) => ({
+        v: c.id, t: c.name, keys: c.keys || [], sorts: c.sorts || [],
+      }))
       if (!CATS.value.some(c => c.v === cat.value)) cat.value = CATS.value[0].v
     }
   } catch (e: any) {
@@ -115,24 +119,31 @@ function setCat(v: string) {
   cat.value = v
   vendor.value = ''
   q.value = ''
-  sort.value = v === 'actuator' ? 'peak' : 'vendor'
+  const m = CATS.value.find(c => c.v === v)
+  sort.value = m?.sorts?.[0]?.k || 'price'
 }
 
 const catCount = (v: string) => all.value.filter(p => p.category === v).length
+
+/** 当前品类的元数据：卡片显示哪些参数、能按什么排序，都来自这里。 */
+const meta = computed(() => CATS.value.find(c => c.v === cat.value))
+const catName = computed(() => meta.value?.t || '部件')
+const sortOpts = computed(() =>
+  (meta.value?.sorts?.length ? meta.value.sorts : FALLBACK_SORTS))
 const vendors = computed(() =>
   [...new Set(all.value.filter(p => p.category === cat.value).map(p => p.vendor))].sort())
 
-const SORT_KEY: Record<string, (p: Part) => any> = {
-  peak: p => p.tauPeak,
-  rating: p => p.rating.avg,
-  armature: p => p.armature,
-  mass: p => p.mass,
-  price: p => p.offer?.price ?? p.price,
-  vendor: p => p.vendor,
+/** 排序取值器：specs 里的键、或内置的 price / rating。
+ *  空值统一返回 null，排序时沉底（缺失就是缺失，不该混进比较）。 */
+function sortValue(p: Part, k: string): any {
+  if (k === 'price') return p.offer?.price ?? p.price ?? null
+  if (k === 'rating') return p.rating?.avg ?? null
+  const v = (p as any).specs?.[k]
+  return v === undefined || v === '' ? null : v
 }
 
 const rows = computed(() => {
-  const key = SORT_KEY[sort.value]
+  const key = (p: Part) => sortValue(p, sort.value)
   let out = all.value.filter(
     p => p.category === cat.value
       && (!vendor.value || p.vendor === vendor.value)
@@ -163,42 +174,22 @@ function num(v: any, d = 3): string {
 const money = (v: number | null) => (v == null ? null : `¥${Math.round(v).toLocaleString('en-US')}`)
 
 /** 卡片上的 4 个关键参数 —— 按品类取，不是写死关节电机那四个 */
+/** 卡片上的关键参数：完全按品类定义渲染（4–6 个），不再写 if-else 分支。
+ *  加品类只需要在 data/taxonomy.json 里写 keys。 */
 function chips(p: Part): { k: string; v: string }[] {
   const out: { k: string; v: string }[] = []
-  const push = (k: string, v: any, unit = '') => {
-    if (v != null && v !== '') out.push({ k, v: `${v}${unit}` })
+  for (const key of meta.value?.keys || []) {
+    const raw = sortValue(p, key.k)
+    if (raw === null || raw === 0 || raw === '') continue
+    if (typeof raw === 'boolean') {
+      if (raw) out.push({ k: key.label, v: '支持' })
+      continue
+    }
+    const val = typeof raw === 'number' ? num(raw) : String(raw)
+    out.push({ k: key.label, v: `${val}${key.unit || ''}` })
+    if (out.length >= 6) break
   }
-  if (p.category === 'actuator') {
-    push('峰值', num(p.tauPeak), ' N·m')
-    push('减速比', num(p.gear), ':1')
-    push('质量', num(p.mass), ' kg')
-    if (p.armature != null) push('转子惯量', num(p.armature))
-  } else if (p.category === 'controller_high') {
-    push('SoC', p.soc)
-    push('NPU', num(p.npuTops), ' TOPS')
-    push('内存', num(p.ramGb), ' GB')
-  } else if (p.category === 'controller_low') {
-    push('MCU', p.mcu)
-    push('CAN', p.can, ' 路')
-    if (p.specs?.current_loop_khz) push('电流环', num(p.specs.current_loop_khz), ' kHz')
-  } else if (p.category === 'imu') {
-    push('ODR', num(p.odrHz), ' Hz')
-    push('接口', p.iface)
-  } else if (p.category === 'chip') {
-    // 芯片按子类取参数：选 MCU 看主频/封装，选收发器看电压/封装
-    const sp: any = p.specs || {}
-    if (sp.clock_mhz) push('主频', num(sp.clock_mhz), ' MHz')
-    push('封装', sp.package)
-    push('接口', sp.iface || p.iface)
-    push('电压', num(sp.voltage_V), ' V')
-  } else if (p.category === 'lidar' || p.category === 'camera') {
-    push('量程', p.rangeM ?? p.depthRange, p.rangeM ? ' m' : '')
-    push('帧率', num(p.fps), ' fps')
-  } else {
-    push('接口', p.iface)
-    push('分辨率', p.bits, ' bit')
-  }
-  return out.slice(0, 4)
+  return out
 }
 
 function toggleCompare(p: Part) {
@@ -240,7 +231,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
       <div class="pd-row">
         <input v-model="q" class="pd-input" placeholder="搜型号 / 品牌 / 类型" />
         <select v-model="sort" class="pd-sel">
-          <option v-for="s in SORTS" :key="s.v" :value="s.v">按{{ s.t }}</option>
+          <option v-for="s in sortOpts" :key="s.k" :value="s.k">按{{ s.label }}</option>
         </select>
         <button class="pd-btn" @click="order = order === 'desc' ? 'asc' : 'desc'">
           {{ order === 'desc' ? '↓ 降序' : '↑ 升序' }}
@@ -273,12 +264,32 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
           <a class="card-img" :href="withBase('/parts/' + p.category + '/' + p.slug)">
             <img v-if="p.image" :src="withBase(p.image)" :alt="p.model" loading="lazy" />
             <!-- 没图就如实说没图。错图（整机宣传图）比没图更糟，所以不做抽象方块充数 -->
-            <span v-else class="ph" aria-label="暂无产品图">
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                <path fill="none" stroke="currentColor" stroke-width="1.6"
-                      d="M3 7h4l2-3h6l2 3h4v12H3z" />
-                <circle cx="12" cy="13" r="3.4" fill="none" stroke="currentColor"
-                        stroke-width="1.6" />
+            <span v-else class="ph" :aria-label="`暂无${catName}产品图`">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"
+                   fill="none" stroke="currentColor" stroke-width="1.6"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <template v-if="p.category === 'camera'">
+                  <path d="M3 7h4l2-3h6l2 3h4v12H3z" /><circle cx="12" cy="13" r="3.4" />
+                </template>
+                <template v-else-if="p.category === 'lidar'">
+                  <circle cx="12" cy="12" r="2" />
+                  <path d="M12 4a8 8 0 0 1 8 8M12 20a8 8 0 0 1-8-8" />
+                  <path d="M12 7.5a4.5 4.5 0 0 1 4.5 4.5" />
+                </template>
+                <template v-else-if="p.category === 'controller_high' || p.category === 'controller_low'">
+                  <rect x="3" y="5" width="18" height="14" rx="2" />
+                  <path d="M7 9h4M7 13h6M16 9v6" />
+                </template>
+                <template v-else-if="p.category === 'chip'">
+                  <rect x="7" y="7" width="10" height="10" rx="1.5" />
+                  <path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4" />
+                </template>
+                <template v-else-if="p.category === 'actuator'">
+                  <circle cx="12" cy="12" r="6.5" /><circle cx="12" cy="12" r="2" />
+                </template>
+                <template v-else>
+                  <path d="M3 7h4l2-3h6l2 3h4v12H3z" /><circle cx="12" cy="13" r="3.4" />
+                </template>
               </svg>
               <em>暂无产品图</em>
             </span>
