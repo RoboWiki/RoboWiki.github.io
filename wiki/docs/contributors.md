@@ -18,13 +18,13 @@ outline: false
     <h2>谁做了什么</h2>
     <p class="cd-sub">不从 git log 生成：机器只会数 commit，说不出谁核过哪本手册。</p>
     <div class="ct-grid"><div class="ct">
-  <div class="ct-head"><b>zeitvex</b><span class="ct-role">维护者</span></div>
+  <div class="ct-head"><b>zeitvex</b><span class="ct-role">创始维护者</span></div>
   <p>站点与构建链；达妙 / 灵足 / 大疆 / 宇树四家的参数核对与口径定义</p>
   <a href="https://github.com/zeitvex" target="_blank" rel="noopener">GitHub</a>
 </div>
 <div class="ct">
   <div class="ct-head"><b>Dichen33</b><span class="ct-role">创始贡献者</span></div>
-  <p>整机数据 15 台（含 URDF / 仓库链接）、上位机与下位机批量扩充、IMU 与相机雷达补充，合计 50 条进入目录；另写了一份《部件资料收集指南》，把「从开源项目找到型号 → 进官网 → 落地」的流程固定成规范。</p>
+  <p>整机数据 15 台（含 URDF / 仓库链接）、上位机与下位机批量扩充、IMU 与相机雷达补充 —— 共 50 条数据进入目录；另写了一份《部件资料收集指南》，把「从开源项目找到型号 → 进官网 → 落地」的流程固定成规范。</p>
   <a href="https://github.com/Dichen33" target="_blank" rel="noopener">GitHub</a>
 </div></div>
   </section>

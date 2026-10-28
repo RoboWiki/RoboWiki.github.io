@@ -123,6 +123,13 @@ def build(root: pathlib.Path, out_dir: pathlib.Path, pub_dir: pathlib.Path) -> N
         role = role_by_login.get((c.get("login") or "").lower())
         if role:
             c["role"] = role
+        # 总数 = 初始贡献 + GitHub 叠加（历史快照可能没有这两个字段，兜底算一次）
+        base = int(c.get("baseline") or 0)
+        gh = int(c.get("contributions") or 0)
+        c["contribution_total"] = int(c.get("contribution_total") or (base + gh))
+    snap["total_contributions"] = sum(
+        int(c.get("contribution_total") or 0) for c in snap.get("contributors", []))
+    snap["total"] = len(snap.get("contributors", []))
 
     (pub_dir / "contributors.json").write_text(
         json.dumps(snap, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")

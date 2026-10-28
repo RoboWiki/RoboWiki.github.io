@@ -61,7 +61,31 @@ def main() -> None:
         })
     people.sort(key=lambda p: p["contributions"], reverse=True)
 
-    total_c = sum(p["contributions"] for p in people)
+    # 保留已有的 baseline（初始贡献）与角色，刷新时不覆盖
+    old = {}
+    if OUT.exists():
+        try:
+            prev = json.loads(OUT.read_text(encoding="utf-8"))
+            old = {(c.get("login") or "").lower(): c for c in prev.get("contributors", [])}
+        except Exception:
+            old = {}
+    for p_ in people:
+        prev = old.get(p_["login"].lower(), {})
+        p_["baseline"] = prev.get("baseline", 0)
+        p_["contribution_total"] = p_["baseline"] + p_["contributions"]
+        if prev.get("role"):
+            p_["role"] = prev["role"]
+
+    # 手工登记过、但 API 里没有的人（例如只在非默认分支提交的）也要保留
+    logins = {p_["login"].lower() for p_ in people}
+    for low, prev in old.items():
+        if low not in logins:
+            keep = dict(prev)
+            keep["contributions"] = int(keep.get("contributions") or 0)
+            keep["contribution_total"] = int(keep.get("baseline") or 0) + keep["contributions"]
+            people.append(keep)
+
+    total_c = sum(p.get("contribution_total") or p["contributions"] for p in people)
     data = {
         "repo": f"{OWNER}/{REPO}",
         "source": src,

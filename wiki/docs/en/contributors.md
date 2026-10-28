@@ -18,13 +18,13 @@ outline: false
     <h2>Who did what</h2>
     <p class="cd-sub">Not generated from git log: machines can count commits, but they cannot say who verified which datasheet.</p>
     <div class="ct-grid"><div class="ct">
-  <div class="ct-head"><b>zeitvex</b><span class="ct-role">Maintainer</span></div>
+  <div class="ct-head"><b>zeitvex</b><span class="ct-role">创始维护者</span></div>
   <p>站点与构建链；达妙 / 灵足 / 大疆 / 宇树四家的参数核对与口径定义</p>
   <a href="https://github.com/zeitvex" target="_blank" rel="noopener">GitHub</a>
 </div>
 <div class="ct">
   <div class="ct-head"><b>Dichen33</b><span class="ct-role">Founding contributor</span></div>
-  <p>15 whole-robot entries with URDF/repo links, a bulk expansion of high- and low-level controllers plus IMU/camera/LiDAR (50 entries in total), and the part-data collection guide that turns the workflow into a spec.</p>
+  <p>15 whole-robot entries with URDF/repo links, a bulk expansion of high- and low-level controllers plus IMU/camera/LiDAR — 50 data rows in total — and the part-data collection guide.</p>
   <a href="https://github.com/Dichen33" target="_blank" rel="noopener">GitHub</a>
 </div></div>
   </section>

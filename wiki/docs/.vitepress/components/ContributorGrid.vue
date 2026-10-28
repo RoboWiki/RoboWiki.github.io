@@ -12,7 +12,7 @@
  */
 import { computed, onMounted, ref } from 'vue'
 
-interface Person { login: string; avatar: string | null; url: string | null; contributions: number; bot: boolean; role?: string }
+interface Person { login: string; avatar: string | null; url: string | null; contributions: number; contribution_total?: number; baseline?: number; bot: boolean; role?: string }
 interface Snap {
   repo: string; source: string; updated_at: string
   total: number; total_contributions: number; contributors: Person[]
