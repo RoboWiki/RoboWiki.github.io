@@ -1,0 +1,327 @@
+/* ────────────────────────────────────────────────────────────────────────
+   Explorer —— 三类列表（整机 / 部件 / 加工采购）共用的一套视觉语言
+   ────────────────────────────────────────────────────────────────────────
+   为什么单开一层：
+       整机、部件、加工采购本质是同一件事 —— 「一堆东西，按维度筛，看卡片，进详情」。
+       之前三套组件各写各的：页头样式不同、chip 大小不同、卡片高度不同、
+       连「共 N 件」的位置都不一样。用户在这三页之间跳会以为换了个站。
+
+   这一层的规则（改这里，三页一起变）：
+       · 页头：kicker 一行 + h1 + 一句 lead，最大宽度 74ch
+       · 工具条：一行搜索 + 一行分面 chips + 右侧计数
+       · 卡片：托板 118px、标题行、副行、参数 2–4 行、底部链接行
+       · 空态：一句话，不画插画
+   ──────────────────────────────────────────────────────────────────────── */
+
+.ex {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 1.6rem 1.5rem 4rem;
+}
+
+/* 页头 --------------------------------------------------------------- */
+.ex-head { margin-bottom: 1.1rem; }
+.ex-kicker {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--vp-c-brand-1);
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+.ex-head h1 {
+  font-size: clamp(1.45rem, 2.6vw, 2rem);
+  line-height: 1.28;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.55rem;
+  border: none;
+  padding: 0;
+  color: var(--vp-c-text-1);
+}
+.ex-lead {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.85;
+  color: var(--vp-c-text-2);
+  max-width: 74ch;
+}
+.ex-note {
+  margin: 0.9rem 0 0;
+  padding: 0.6rem 0.85rem;
+  border-radius: 8px;
+  border-left: 3px solid var(--vp-c-brand-1);
+  background: var(--vp-c-brand-soft);
+  font-size: 0.79rem;
+  line-height: 1.8;
+  color: var(--vp-c-text-2);
+  max-width: 74ch;
+}
+
+/* 工具条 ------------------------------------------------------------- */
+.ex-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 1.15rem 0 0.5rem;
+}
+.ex-search {
+  flex: 1 1 240px;
+  min-width: 170px;
+  font-size: 0.82rem;
+  padding: 0.42rem 0.7rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-1);
+}
+.ex-search:focus { border-color: var(--vp-c-brand-1); outline: none; }
+.ex-sel {
+  font-size: 0.78rem;
+  padding: 0.4rem 0.55rem;
+  border-radius: 8px;
+  border: 1px solid var(--vp-c-divider);
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-2);
+}
+.ex-count {
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: var(--vp-c-text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 分面 chips --------------------------------------------------------- */
+.ex-facets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.45rem;
+}
+.ex-chip {
+  font-size: 0.74rem;
+  line-height: 1.5;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--vp-c-divider);
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-2);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.ex-chip:hover { border-color: var(--vp-c-brand-1); color: var(--vp-c-brand-1); }
+.ex-chip.on {
+  background: var(--vp-c-brand-1);
+  border-color: var(--vp-c-brand-1);
+  color: #fff;
+}
+.ex-chip.empty { opacity: 0.55; }
+.ex-chip.pin {
+  border-color: var(--vp-c-brand-1);
+  color: var(--vp-c-brand-1);
+  font-weight: 700;
+}
+.ex-chip.pin.on { background: var(--vp-c-brand-1); color: #fff; }
+.ex-chip:disabled { opacity: 0.5; cursor: not-allowed; }
+.ex-chip .n {
+  font-variant-numeric: tabular-nums;
+  margin-left: 0.25rem;
+  opacity: 0.75;
+}
+
+/* 卡片网格 ----------------------------------------------------------- */
+.ex-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(258px, 1fr));
+  gap: 0.7rem;
+  margin-top: 0.75rem;
+}
+
+.ex-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--vp-c-bg);
+  transition: border-color 0.15s;
+}
+.ex-card:hover { border-color: var(--vp-c-brand-1); }
+
+/* 托板：高度固定，图片永远不撑破卡片 */
+.ex-plate {
+  position: relative;
+  height: 118px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--vp-c-bg-alt);
+  border-bottom: 1px solid var(--vp-c-divider);
+  overflow: hidden;
+}
+.ex-plate img {
+  max-height: 96px;
+  max-width: 84%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+html.dark .ex-plate img {
+  mix-blend-mode: normal;
+  background: #fff;
+  border-radius: 4px;
+  padding: 2px;
+}
+.ex-ph {
+  font-size: 0.72rem;
+  color: var(--vp-c-text-3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.ex-body {
+  padding: 0.62rem 0.75rem 0.72rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.34rem;
+  flex: 1;
+}
+.ex-title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.ex-title a,
+.ex-title b {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--vp-c-text-1);
+  text-decoration: none;
+}
+.ex-title a:hover { color: var(--vp-c-brand-1); }
+.ex-tag {
+  font-style: normal;
+  font-size: 0.64rem;
+  line-height: 1.6;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+}
+.ex-sub {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--vp-c-text-3);
+}
+.ex-kv {
+  margin: 0.1rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-size: 0.74rem;
+}
+.ex-kv > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+.ex-kv dt { color: var(--vp-c-text-3); }
+.ex-kv dd {
+  margin: 0;
+  color: var(--vp-c-text-2);
+  font-variant-numeric: tabular-nums;
+}
+.ex-foot {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: 0.3rem;
+  border-top: 1px solid var(--vp-c-divider);
+  font-size: 0.74rem;
+}
+.ex-price { font-weight: 700; color: var(--vp-c-text-1); }
+.ex-price del { font-weight: 400; color: var(--vp-c-text-3); }
+.ex-link { color: var(--vp-c-brand-1); text-decoration: none; }
+.ex-link:hover { text-decoration: underline; }
+.ex-muted { color: var(--vp-c-text-3); }
+.ex-pill {
+  font-size: 0.68rem;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-2);
+  border: 1px dashed transparent;
+}
+.ex-pill.off { border-color: var(--vp-c-divider); cursor: not-allowed; }
+.ex-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  font-size: 0.62rem;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-divider);
+  color: var(--vp-c-text-3);
+  font-variant-numeric: tabular-nums;
+}
+.ex-badge.a { border-color: var(--vp-c-brand-1); color: var(--vp-c-brand-1); }
+.ex-badge.deal {
+  left: 6px;
+  right: auto;
+  border-style: none;
+  background: var(--vp-c-brand-1);
+  color: #fff;
+  font-weight: 700;
+}
+
+.ex-empty {
+  font-size: 0.82rem;
+  color: var(--vp-c-text-3);
+  margin-top: 1.4rem;
+}
+
+/* 小屏：卡片单列，工具条堆叠 */
+@media (max-width: 640px) {
+  .ex { padding: 1.2rem 1rem 3rem; }
+  .ex-grid { grid-template-columns: 1fr; }
+  .ex-count { margin-left: 0; }
+}
+
+/* ── 部件库（PartExplorer）的旧 class 对齐同一套视觉 ──────────────────
+   它的交互最复杂（对比、精选、优惠并列），这轮不重写逻辑，
+   只把配色/尺寸/圆角映射到 .ex-* 的同一组值，保证三页看起来是一个站。 */
+.pd { max-width: 1120px; margin: 0 auto; padding: 0 1.5rem 3rem; }
+/* 部件库网格比另两页密一些：它一屏要放更多型号 */
+.pd .pd-grid, .pd .grid { gap: 0.7rem; }
+.pd-row { display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: center; margin-bottom: 0.5rem; }
+.pd-input, .pd-sel {
+  font-size: 0.82rem;
+  padding: 0.42rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid var(--vp-c-divider);
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-1);
+}
+.pd-input:focus, .pd-sel:focus { border-color: var(--vp-c-brand-1); outline: none; }
+.pd-chip {
+  font-size: 0.74rem;
+  line-height: 1.5;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--vp-c-divider);
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-2);
+  white-space: nowrap;
+}
+.pd-chip.on { background: var(--vp-c-brand-1); border-color: var(--vp-c-brand-1); color: #fff; }
+.pd-chip.empty { opacity: 0.55; }
+.pd-count { margin-left: auto; font-size: 0.75rem; color: var(--vp-c-text-3); }
+
+/* 精选按钮已并入搜索行，与 .ex-chip 同一档尺寸 */
+.pd .pd-featured { margin-left: 0.1rem; }

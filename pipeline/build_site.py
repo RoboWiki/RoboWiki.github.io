@@ -161,7 +161,7 @@ def main() -> None:
     # 那些页面还能被访问到，等于把废弃数据留在线上。
     # 手写页面（explore.md）不在清理范围内。
     GENERATED = ["index.md", "semantics.md", "protocols.md", "sources.md",
-                 "contributors.md", "suppliers.md", "robots.md"]
+                 "contributors.md", "suppliers.md", "robots.md", "method.md"]
     for name in GENERATED:
         p = OUT / name
         if p.exists():
@@ -1017,15 +1017,7 @@ def main() -> None:
     # ── 部件总表 ────────────────────────────────────────────────────────
     cat_links = "\n".join(f"- **[{name}](/parts/{c}/)** —— {desc}（{sum(1 for r in rows if r['category'] == c)} 件）"
                           for c, name, desc in CATS)
-    (OUT / "parts" / "index.md").write_text(FRONT.format(title="部件详情") + f"""
-# 部件详情
-
-按品类进入，再按厂商分页。
-
-{cat_links}
-
-每一页底下都有一条讨论串 —— 用过的坑、量到的数、和厂商确认过的事，写在对应那页下面才有用。
-""", encoding="utf-8")
+    # 顶层 /parts/ 目录页取消：部件库（/catalog）就是入口
 
     for c, name, desc in CATS:
         items = [r for r in rows if r["category"] == c]
@@ -1354,38 +1346,24 @@ html.dark .rl-th {{ color: #e0b159; }}
         json.dumps({"count": len(sups), "suppliers": sups},
                    ensure_ascii=False, separators=(",", ":")),
         encoding="utf-8")
-    (OUT / "suppliers.md").write_text(
-        '''---
-title: 供应商
+    # 加工与采购（原「供应商」）：页头由 ExplorerShell 提供
+    try:
+        sups = json.loads((ROOT / "data" / "suppliers.json").read_text(encoding="utf-8"))
+    except Exception:
+        sups = []
+    (pub / "suppliers.json").write_text(
+        json.dumps({"count": len(sups), "suppliers": sups},
+                   ensure_ascii=False, separators=(",", ":")),
+        encoding="utf-8")
+    (OUT / "suppliers.md").write_text("""---
+title: 加工与采购
 layout: page
 sidebar: false
 outline: false
 ---
 
-<div class="sup-page">
-  <header class="sup-hero">
-    <div class="sup-kicker">供应商</div>
-    <h1>活找谁做。</h1>
-    <p>
-      这一页不是部件库的一部分。部件库比的是<strong>参数</strong>，
-      这里比的是<strong>谁靠谱</strong>：加工质量、交货准不准、价格档次、能不能开票。
-      两者混在一起，既会污染部件数量，也会让「品牌筛选」变成 145 个按钮。
-    </p>
-    <div class="sup-src">
-      <b>数据来源</b>
-      名录来自社区整理的《供应商名录》，按原表的分类铺开：标准件 / 杂项 / 机械加工 /
-      螺钉紧固 / 避雷防护 / 电子 / 传感器 / 轴承，共 149 家 —— <strong>都是被社区实际用过、
-      留下了反馈的店铺</strong>。这里没有「知名大厂」通道：没有实证的一律不收。
-      质量 / 交期 / 价格 / 发票是<strong>他人实战反馈的转述</strong>，不是厂商自述，
-      统一标 <code>B</code> 级。
-      原表里带学校与姓名的署名已<strong>全部去标识</strong>：只留反馈内容，
-      不留「谁说的」。
-    </div>
-  </header>
-
-  <SupplierList />
-</div>
-''', encoding="utf-8")
+<SupplierList />
+""", encoding="utf-8")
     print(f"  供应商 {len(sups)} 条 -> public/suppliers.json + suppliers.md")
 
 
@@ -1429,6 +1407,24 @@ outline: false
 零件的每次字段改动都写进 `part_edits` 表（旧值、新值、依据、来源链接、谁改的、何时）。
 于是任何一个数都能回答：**它什么时候、被谁、凭什么被改成了现在这样。**
 """, encoding="utf-8")
+
+    # ── 方法与来源：合并原来的「参数口径」与「数据来源」──────────────
+    # 拆两页会让读者以为「口径」和「来源」是两件事，其实是一件事的两面。
+    def _body(md: str) -> str:
+        m = re.match(r"^---\n.*?\n---\n", md, re.S)
+        return md[m.end():] if m else md
+    try:
+        _sem = (OUT / "semantics.md").read_text(encoding="utf-8")
+    except Exception:
+        _sem = ""
+    try:
+        _src = (OUT / "sources.md").read_text(encoding="utf-8")
+    except Exception:
+        _src = ""
+    (OUT / "method.md").write_text(
+        "---\ntitle: 方法与来源\n---\n\n" + _body(_sem) + "\n\n---\n\n" + _body(_src),
+        encoding="utf-8")
+    print("  方法与来源 -> method.md")
 
     # ── 侧边栏 ──────────────────────────────────────────────────────────
     act_items = [{"text": "总览", "link": "/parts/actuator/"}]

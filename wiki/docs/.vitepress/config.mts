@@ -11,14 +11,11 @@ import sidebar from './sidebar.json' with { type: 'json' }
 const zhTheme = {
   nav: [
     { text: '首页', link: '/' },
-    { text: '机器人部件库', link: '/catalog' },
     { text: '机器人整机', link: '/robots' },
-    { text: '供应商', link: '/suppliers' },
-    { text: '部件详情', link: '/parts/' },
-    { text: '参数口径', link: '/semantics' },
+    { text: '机器人部件', link: '/catalog' },
+    { text: '加工与采购', link: '/suppliers' },
     { text: '贡献者', link: '/contributors' },
     { text: '投稿', link: '/submit' },
-    { text: '数据来源', link: '/sources' },
   ],
   sidebar,
   outline: { label: '本页', level: [2, 3] },
@@ -46,11 +43,10 @@ const zhTheme = {
 const enTheme = {
   nav: [
     { text: 'Home', link: '/en/' },
+    { text: 'Robots', link: '/en/robots' },
     { text: 'Parts', link: '/en/catalog' },
     { text: 'Suppliers', link: '/en/suppliers' },
-    { text: 'Semantics', link: '/en/semantics' },
     { text: 'Contributors', link: '/en/contributors' },
-    { text: 'Sources', link: '/en/sources' },
   ],
   outline: { label: 'On this page', level: [2, 3] },
   docFooter: { prev: 'Previous', next: 'Next' },

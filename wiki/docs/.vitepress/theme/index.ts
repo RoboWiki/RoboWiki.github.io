@@ -9,9 +9,11 @@ import PartExplorer from '../components/PartExplorer.vue'
 import SupplierList from '../components/SupplierList.vue'
 import ContributorGrid from '../components/ContributorGrid.vue'
 import RobotGrid from '../components/RobotGrid.vue'
+import ExplorerShell from '../components/ExplorerShell.vue'
 import PartRating from '../components/PartRating.vue'
 import './custom.css'
 import './part.css'
+import './explorer.css'
 
 export default {
   extends: DefaultTheme,
@@ -26,6 +28,7 @@ export default {
     app.component('SupplierList', SupplierList)
     app.component('ContributorGrid', ContributorGrid)
     app.component('RobotGrid', RobotGrid)
+    app.component('ExplorerShell', ExplorerShell)
     app.component('PartRating', PartRating)
   },
 } satisfies Theme

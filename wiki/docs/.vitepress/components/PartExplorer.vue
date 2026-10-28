@@ -243,35 +243,36 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
 
 <template>
   <div class="pd">
+    <header class="ex-head">
+      <div class="ex-kicker">机器人部件</div>
+      <h1>选部件，先看参数，再看用过的人怎么说。</h1>
+      <p class="ex-lead">
+        每个部件一页：左边是<strong>官方参数</strong>（带来来源等级与口径），右边是<strong>真实使用者的评分与评价</strong>。
+        有优惠条件、有资料链接、能按任意列排序。
+      </p>
+      <div class="ex-note">
+        <b>★ 精选</b> 是人工筛过的子集，默认只显示它；关掉就看全部。
+        <b>每一行参数都标了来源等级</b>：A 级逐项对过厂商手册，缺的值写 —，不猜。
+      </div>
+    </header>
+
     <p v-if="loading" class="pd-muted">加载部件库…</p>
     <p v-else-if="fail" class="pd-muted">{{ fail }}</p>
 
     <template v-else>
-      <!-- 精选：白名单来自 data/featured.json，默认开启 -->
-      <div class="pd-row pd-featrow">
-        <button class="pd-chip pd-featured"
-                :class="{ on: featuredOnly && hasCuration, off: !hasCuration }"
-                :disabled="!hasCuration"
-                :title="hasCuration ? '只看精选（data/featured.json）' : '精选清单还没填：data/featured.json'"
-                @click="toggleFeatured()">
-          <span class="pd-star">★</span>{{ L.featured }}
-          <span class="pd-n">{{ hasCuration ? featuredIds.size : '未筛选' }}</span>
-        </button>
-      </div>
-
-      <!-- 分类 -->
-      <div class="pd-row">
-        <button v-for="c in CATS" :key="c.v"
-                :class="['pd-chip', cat === c.v ? 'on' : '', catCount(c.v) ? '' : 'empty']"
-                :title="catCount(c.v) ? `${catCount(c.v)} 件` : '还没有收录（没有可信来源，不编数据）'"
-                @click="setCat(c.v)">
-          {{ c.t }}<span class="pd-n">{{ catCount(c.v) || '—' }}</span>
-        </button>
-      </div>
 
       <!-- 工具条 -->
       <div class="pd-row">
         <input v-model="q" class="pd-input" :placeholder="L.search" />
+      <button class="pd-chip pd-featured"
+              :class="{ on: featuredOnly && hasCuration, off: !hasCuration }"
+              :disabled="!hasCuration"
+              :title="hasCuration ? '只看精选（data/featured.json）' : '精选清单还没填：data/featured.json'"
+              @click="toggleFeatured()">
+        <span class="pd-star">★</span>{{ L.featured }}
+        <span class="pd-n">{{ hasCuration ? featuredIds.size : '未筛选' }}</span>
+      </button>
+
         <select v-model="sort" class="pd-sel">
           <option v-for="s in sortOpts" :key="s.k" :value="s.k">按{{ s.label }}</option>
         </select>
@@ -283,6 +284,16 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
                 :class="['pd-chip', 'sm', vendor === v ? 'on' : '']"
                 @click="vendor = vendor === v ? '' : v">{{ v }}</button>
         <span class="pd-count">{{ rows.length }} {{ L.count }}</span>
+      </div>
+
+      <!-- 分类 -->
+      <div class="pd-row">
+        <button v-for="c in CATS" :key="c.v"
+                :class="['pd-chip', cat === c.v ? 'on' : '', catCount(c.v) ? '' : 'empty']"
+                :title="catCount(c.v) ? `${catCount(c.v)} 件` : '还没有收录（没有可信来源，不编数据）'"
+                @click="setCat(c.v)">
+          {{ c.t }}<span class="pd-n">{{ catCount(c.v) || '—' }}</span>
+        </button>
       </div>
 
       <!-- 对比 -->
