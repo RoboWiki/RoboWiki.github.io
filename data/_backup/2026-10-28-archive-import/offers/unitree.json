@@ -1,0 +1,58 @@
+[
+ {
+  "id": "unitree-event-buy2get1",
+  "vendor": "宇树 Unitree",
+  "part_id": null,
+  "kind": "event",
+  "title": "宇树 RM / RC 参赛队首次购买 买二赠一",
+  "price_cny": null,
+  "detail": "RM、RC 参赛队凭参赛证明，首次购买可得「买二赠一」；固定结构图纸可向客服索取下载。各型号是否参加以客服确认为准。",
+  "url": "天猫 Unitree 宇树旗舰店",
+  "starts_on": "2026-01-01",
+  "expires_on": "2027-12-31",
+  "source": "宇树天猫旗舰店商品页（2026-10-28）",
+  "demo": false
+ },
+ {
+  "kind": "retail",
+  "vendor": "宇树 Unitree",
+  "demo": false,
+  "source": "天猫 Unitree 宇树旗舰店商品页（2026-10-28）",
+  "starts_on": "2026-01-01",
+  "id": "unitree-im6014-firstbuy",
+  "part_id": "unitree-im6014",
+  "title": "IM6014 首次购买特价",
+  "price_cny": 490,
+  "detail": "首次购买可享 490 元/个（限购 2 个，原价 1800 元/个）。需在商品页选择对应规格或咨询客服；是否与其它活动叠加以客服确认为准。",
+  "url": "天猫 Unitree 宇树旗舰店",
+  "expires_on": "2027-12-31"
+ },
+ {
+  "kind": "retail",
+  "vendor": "宇树 Unitree",
+  "demo": false,
+  "source": "天猫 Unitree 宇树旗舰店商品页（2026-10-28）",
+  "starts_on": "2026-01-01",
+  "id": "unitree-im6014-rc-b2g1",
+  "part_id": "unitree-im6014",
+  "title": "IM6014 RC 参赛队买二赠一（折合约 327 元/个）",
+  "price_cny": 327,
+  "detail": "RC 参赛队凭参赛证明首次购买可得买二赠一：以 490 元/个的首购价计，买 2 赠 1 折合约 327 元/个。需参赛资格，且限首次购买，具体以客服确认为准 —— 这条不适用于普通用户。",
+  "url": "天猫 Unitree 宇树旗舰店",
+  "expires_on": "2027-12-31"
+ },
+ {
+  "kind": "retail",
+  "vendor": "宇树 Unitree",
+  "demo": false,
+  "source": "天猫 Unitree 宇树旗舰店商品页（2026-10-28）",
+  "starts_on": "2026-01-01",
+  "id": "unitree-go-m8010-6-firstbuy",
+  "part_id": "unitree-go-m8010-6",
+  "title": "GO-M8010-6 首次购买特价",
+  "price_cny": 490,
+  "detail": "首次购买可享 490 元/个（限购 2 个，原价 1500 元/个）。需在商品页选择对应规格或咨询客服。",
+  "url": "天猫 Unitree 宇树旗舰店",
+  "expires_on": "2027-12-31"
+ }
+]

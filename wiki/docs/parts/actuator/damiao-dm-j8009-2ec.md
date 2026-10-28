@@ -91,8 +91,8 @@ title: 达妙 DAMIAO DM-J8009-2EC
 
 | 型号 | 峰值 τ N·m | 质量 kg | 减速比 |
 |---|---|---|---|
-| [DM-J8009P-2EC V1.1](/parts/actuator/damiao-dm-j8009p-2ec-v1-1) | 40 | 0.95 | 9 |
 | [DM-J8009P-2EC](/parts/actuator/damiao-dm-j8009p-2ec) | 40 | 0.963 | 9 |
+| [DM-J8009P-2EC V1.1](/parts/actuator/damiao-dm-j8009p-2ec-v1-1) | 40 | 0.95 | 9 |
 
 ## 全部参数
 
