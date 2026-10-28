@@ -28,6 +28,11 @@
 站点和 API 都只消费后者。这样静态站与 API 对内容的理解不可能漂移，
 而且迁移服务器时产物一个字都不用改。
 
+> **catalog/ 是唯一事实源**（2026-10-28 起）。旧的扁平采集文件
+> （`motors.json` / `controllers_*.json` / `sensors.json`）与历史归档
+> `data/_backup/` 已全部出库；loader / validate / 后端种子不再保留对它们的
+> 兼容分支。贡献者只改 `catalog/<品类>/<厂商>.json` 一个文件即可生效。
+
 ### 2. 只有 `pipeline/` 能产生产物
 
 ```
