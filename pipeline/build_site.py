@@ -35,6 +35,7 @@ CATS = [
     ("battery", "电池", "待收录"),
     ("wiring", "线束", "待收录"),
     ("module", "其余模块", "力触觉 / 编码器"),
+    ("chip", "硬件芯片", "MCU / 驱动 / 收发器"),
 ]
 
 CAT_CN = {c: n for c, n, _ in CATS}
@@ -165,7 +166,8 @@ def main() -> None:
     # （外部 focus 收敛时移出 10 家），不清就会留下「已经不存在的型号页」，
     # 那些页面还能被访问到，等于把废弃数据留在线上。
     # 手写页面（explore.md）不在清理范围内。
-    GENERATED = ["index.md", "semantics.md", "protocols.md", "sources.md"]
+    GENERATED = ["index.md", "semantics.md", "protocols.md", "sources.md",
+                 "contributors.md", "ai.md"]
     for name in GENERATED:
         p = OUT / name
         if p.exists():
@@ -1219,6 +1221,153 @@ html.dark .rl-th {{ color: #e0b159; }}
         ("LeRobotDepot / Humanoid Atlas", "价格三件套、受控枚举", "参考设计，未取数据"),
     ]
     srow = "\n".join(f"| {a} | {b} | {c} |" for a, b, c in srcs)
+
+    # ── 贡献者 ──────────────────────────────────────────────────────────
+    # 名单手工维护（data/contributors.json），不从 git log 生成：
+    # CI 是浅克隆，git log 只有一次提交；而且「谁贡献了什么」本来就该人写，
+    # 机器只能数 commit 数，那既不准也不好看。
+    try:
+        contribs = json.loads((ROOT / "data" / "contributors.json").read_text(encoding="utf-8"))
+    except Exception:
+        contribs = []
+    role_cn = {"维护者": "维护者", "编辑": "编辑", "贡献者": "贡献者"}
+    crowd = "\n".join(
+        f"""<div class="ct">
+  <div class="ct-head"><b>{c.get('name') or c.get('handle')}</b>
+    <span class="ct-role">{role_cn.get(c.get('role'), c.get('role') or '贡献者')}</span></div>
+  <p>{c.get('did') or '—'}</p>
+  {"".join(f'<a href="{l["url"]}" target="_blank" rel="noopener">{l["label"]}</a>' for l in (c.get('links') or []))}
+</div>""" for c in contribs)
+    (OUT / "contributors.md").write_text(
+        '---\ntitle: 贡献者\nlayout: page\nsidebar: false\noutline: false\n---\n\n'
+        + f'''
+<div class="cd">
+  <header class="cd-hero">
+    <div class="cd-kicker">贡献者</div>
+    <h1>这些数不是天上掉下来的。</h1>
+    <p>
+      每一条参数背后都有人对着厂商手册逐页核过，每一个「—」都是有人确认过「确实没公布」。
+      名字留在这里，是因为<strong>数据出错时得有人能被找到</strong>。
+    </p>
+  </header>
+
+  <div class="ct-grid">{crowd}</div>
+
+  <section class="cd-how">
+    <h2>怎么上榜</h2>
+    <ul>
+      <li>补一条参数、修一个单位、加一张正确产品图 —— 名字进名单</li>
+      <li>写一条带工况的实测 —— 名字进名单，且会出现在那个部件页上</li>
+      <li>纠一次错并给出依据 —— 同样计入</li>
+    </ul>
+    <p class="cd-note">
+      没有「贡献值排行榜」。这个站不做积分游戏 ——
+      排序永远只看参数与实测，不看谁贡献得多。
+    </p>
+  </section>
+
+  <p class="cd-foot">
+    <a href="/submit">去投稿 →</a>
+  </p>
+</div>
+
+<style>
+.cd {{ max-width: 980px; margin: 0 auto; padding: 1.8rem 1.5rem 4rem; }}
+.cd-kicker {{ font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--vp-c-brand-1); font-weight: 700; margin-bottom: 0.5rem; }}
+.cd-hero h1 {{ font-size: clamp(1.4rem, 2.6vw, 1.9rem); line-height: 1.3; font-weight: 800;
+  letter-spacing: -0.02em; margin: 0 0 0.7rem; border: none; padding: 0; color: var(--vp-c-text-1); }}
+.cd-hero p {{ margin: 0; font-size: 0.86rem; line-height: 1.85; color: var(--vp-c-text-2); max-width: 66ch; }}
+.ct-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 0.7rem; margin: 1.6rem 0; }}
+.ct {{ border: 1px solid var(--vp-c-divider); border-radius: 12px; padding: 0.8rem 0.95rem;
+  background: var(--vp-c-bg); }}
+.ct-head {{ display: flex; align-items: baseline; gap: 0.5rem; }}
+.ct-head b {{ font-size: 0.92rem; color: var(--vp-c-text-1); }}
+.ct-role {{ font-size: 0.66rem; padding: 0 6px; border-radius: 999px;
+  background: var(--vp-c-brand-soft); color: var(--vp-c-brand-1); font-weight: 600; }}
+.ct p {{ margin: 0.4rem 0 0; font-size: 0.78rem; line-height: 1.75; color: var(--vp-c-text-2); }}
+.ct a {{ font-size: 0.72rem; color: var(--vp-c-brand-1); margin-right: 0.7rem; }}
+.cd-how h2 {{ font-size: 1rem; font-weight: 700; margin: 1.6rem 0 0.6rem;
+  border: none; padding: 0; color: var(--vp-c-text-1); }}
+.cd-how ul {{ font-size: 0.82rem; line-height: 1.9; color: var(--vp-c-text-2); padding-left: 1.2rem; margin: 0; }}
+.cd-note {{ font-size: 0.78rem; color: var(--vp-c-text-3); margin-top: 0.8rem; }}
+.cd-foot {{ margin-top: 2rem; font-size: 0.84rem; }}
+</style>
+''', encoding="utf-8")
+
+    # ── AI 中转站 ───────────────────────────────────────────────────────
+    try:
+        ais = json.loads((ROOT / "data" / "ai_services.json").read_text(encoding="utf-8"))
+    except Exception:
+        ais = []
+    ai_rows = "\n".join(
+        f"""<tr>
+  <td><a href="{a.get('url') or '#'}" target="_blank" rel="noopener">{a.get('name')}</a></td>
+  <td>{a.get('kind') or '—'}</td>
+  <td>{a.get('models') or '—'}</td>
+  <td>{a.get('protocol') or '—'}</td>
+  <td>{a.get('billing') or '—'}</td>
+  <td class="ai-note">{a.get('note') or '—'}</td>
+</tr>""" for a in ais)
+    (OUT / "ai.md").write_text(
+        '---\ntitle: AI 中转站\nlayout: page\nsidebar: false\noutline: false\n---\n\n'
+        + f'''
+<div class="ai">
+  <header class="ai-hero">
+    <div class="ai-kicker">AI 中转站</div>
+    <h1>机器人要用的模型 API，从哪儿接。</h1>
+    <p>
+      这一页不是「哪个模型最强」，而是<strong>接入渠道怎么选</strong>：能不能国内直连、
+      是不是 OpenAI 兼容、按量计费还是预充值。选型决定你写多少胶水代码。
+    </p>
+  </header>
+
+  <table class="ai-table">
+    <thead><tr><th>服务</th><th>类型</th><th>可用模型</th><th>协议</th><th>计费</th><th>备注</th></tr></thead>
+    <tbody>
+{ai_rows}
+    </tbody>
+  </table>
+
+  <section class="ai-how">
+    <h2>三条实用判断</h2>
+    <ol>
+      <li><b>先确认是不是 OpenAI 兼容</b>。兼容的话换服务商只改 base_url 与 key，否则要重写一层适配。</li>
+      <li><b>机器人上的在线推理只用于「高层决策」</b> —— 语音指令、场景描述、任务拆解。
+          关节力矩环绝不能过网络，最差也是本地小模型。</li>
+      <li><b>延迟比单价更影响体验</b>。一句话指令多 800 ms，人会觉得机器人「傻」。</li>
+    </ol>
+  </section>
+
+  <p class="ai-warn">
+    价格与可用模型随时会变，<strong>本站不记录具体单价</strong>，也不做返佣推荐 ——
+    以各家官网当期公示为准。这一页只列接入形态。
+  </p>
+</div>
+
+<style>
+.ai {{ max-width: 1040px; margin: 0 auto; padding: 1.8rem 1.5rem 4rem; }}
+.ai-kicker {{ font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--vp-c-brand-1); font-weight: 700; margin-bottom: 0.5rem; }}
+.ai-hero h1 {{ font-size: clamp(1.4rem, 2.6vw, 1.9rem); line-height: 1.3; font-weight: 800;
+  letter-spacing: -0.02em; margin: 0 0 0.7rem; border: none; padding: 0; color: var(--vp-c-text-1); }}
+.ai-hero p {{ margin: 0; font-size: 0.86rem; line-height: 1.85; color: var(--vp-c-text-2); max-width: 68ch; }}
+.ai-table {{ width: 100%; border-collapse: collapse; font-size: 0.78rem; margin: 1.6rem 0; }}
+.ai-table th {{ text-align: left; font-weight: 600; color: var(--vp-c-text-3);
+  border-bottom: 2px solid var(--vp-c-divider); padding: 0.45rem 0.6rem; white-space: nowrap; }}
+.ai-table td {{ border-bottom: 1px solid var(--vp-c-divider); padding: 0.5rem 0.6rem;
+  vertical-align: top; color: var(--vp-c-text-2); }}
+.ai-table td a {{ color: var(--vp-c-brand-1); font-weight: 600; }}
+.ai-note {{ min-width: 220px; color: var(--vp-c-text-3) !important; line-height: 1.7; }}
+.ai-how h2 {{ font-size: 1rem; font-weight: 700; margin: 1.6rem 0 0.6rem;
+  border: none; padding: 0; color: var(--vp-c-text-1); }}
+.ai-how ol {{ font-size: 0.82rem; line-height: 1.9; color: var(--vp-c-text-2); padding-left: 1.2rem; margin: 0; }}
+.ai-warn {{ font-size: 0.78rem; color: var(--vp-c-text-3); margin-top: 1.6rem; line-height: 1.8;
+  border-left: 3px solid var(--vp-c-divider); padding-left: 0.8rem; }}
+</style>
+''', encoding="utf-8")
+
     (OUT / "sources.md").write_text(FRONT.format(title="数据来源") + f"""
 # 数据来源
 

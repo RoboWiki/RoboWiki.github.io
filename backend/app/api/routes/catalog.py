@@ -27,6 +27,7 @@ CATEGORY_LABELS = {
     "battery": "电池",
     "wiring": "线束",
     "module": "其余模块",
+    "chip": "硬件芯片",
 }
 
 #: 还没有数据的品类：前端要显示「待补充」，不能当成 500 或空列表了事
@@ -37,7 +38,9 @@ SUBTYPE_LABELS = {
     "qdd": "准直驱 QDD", "planetary": "行星减速", "harmonic": "谐波减速",
     "direct": "直驱", "sbc": "单板计算机", "mcu": "MCU / 驱动器",
     "bridge": "调试桥", "imu": "IMU", "camera": "深度相机",
-    "lidar": "激光雷达", "force": "力 / 触觉", "encoder": "编码器",
+    "lidar": "激光雷达", "force": "力 / 触觉", "encoder": "编码器", "driver": "栅极驱动",
+    "transceiver": "收发器", "memory": "存储", "power": "电源",
+    "servo": "舵机",
 }
 
 #: 允许排序的字段 → JSON 路径。白名单，用户输入不进 SQL。

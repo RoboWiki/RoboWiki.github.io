@@ -21,7 +21,7 @@ titleTemplate: false
   </section>
 
   <section class="home-stats">
-    <div><b>46</b><span>在库部件</span></div>
+    <div><b>60</b><span>在库部件</span></div>
     <div><b>46</b><span>关节电机 · 4 家</span></div>
     <div><b>87%</b><span>有转子惯量（可直接进仿真）</span></div>
     <div><b>93%</b><span>有额定扭矩</span></div>
@@ -38,7 +38,8 @@ titleTemplate: false
 <a class="hc" href="/parts/camera/"><b>深度相机</b><span>待收录</span><em>视觉感知</em></a>
 <a class="hc" href="/parts/battery/"><b>电池</b><span>待收录</span><em>待收录</em></a>
 <a class="hc" href="/parts/wiring/"><b>线束</b><span>待收录</span><em>待收录</em></a>
-<a class="hc" href="/parts/module/"><b>其余模块</b><span>待收录</span><em>力触觉 / 编码器</em></a></div>
+<a class="hc" href="/parts/module/"><b>其余模块</b><span>待收录</span><em>力触觉 / 编码器</em></a>
+<a class="hc" href="/parts/chip/"><b>硬件芯片</b><span>14</span><em>MCU / 驱动 / 收发器</em></a></div>
     <p class="home-note">
       「待收录」不是漏了 —— 是没有可信来源。宁可空着，也不拿论文里的典型值充数。
     </p>

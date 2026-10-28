@@ -81,9 +81,15 @@ def test_loader_prefers_catalog_dir():
     from pipeline.load import load_parts
     rows = load_parts()
     assert rows, "loader 读不到任何零件"
+    # 品类白名单从 schema 读，而不是在测试里抄一份 —— 抄一份的后果就是
+    # 新增品类时这里先红，而真正该拦的是 schema 与闸门。
+    allowed = set(json.loads(
+        (ROOT / "schema" / "part.schema.json").read_text(encoding="utf-8")
+    )["properties"]["category"]["enum"])
     cats = {r["category"] for r in rows}
-    assert cats <= {"actuator", "controller_high", "controller_low", "structure",
-                    "imu", "lidar", "camera", "battery", "wiring", "module"}
+    assert cats <= allowed, f"出现 schema 未定义的品类：{cats - allowed}"
+    # 每行都要带 _file，否则部件页给不出「编辑这条数据」的链接
+    assert all(r.get("_file") for r in rows)
 
 
 def test_loader_ids_unique():

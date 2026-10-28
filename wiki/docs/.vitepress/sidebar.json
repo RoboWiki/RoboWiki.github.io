@@ -68,6 +68,10 @@
     {
      "text": "其余模块",
      "link": "/parts/module/"
+    },
+    {
+     "text": "硬件芯片",
+     "link": "/parts/chip/"
     }
    ]
   }

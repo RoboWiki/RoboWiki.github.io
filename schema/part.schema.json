@@ -15,7 +15,8 @@
     },
     "category": {
       "enum": ["actuator", "controller_high", "controller_low", "structure",
-               "imu", "lidar", "camera", "battery", "wiring", "module"]
+               "imu", "lidar", "camera", "battery", "wiring", "module",
+               "chip"]
     },
     "subtype": { "type": "string" },
     "vendor": { "type": "string", "minLength": 1 },

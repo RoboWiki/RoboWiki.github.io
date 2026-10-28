@@ -1,0 +1,16 @@
+[
+ {
+  "handle": "zeitvex",
+  "name": "zeitvex",
+  "role": "维护者",
+  "did": "站点与构建链；达妙 / 灵足 / 大疆 / 宇树四家的参数核对与口径定义",
+  "links": [{"label": "GitHub", "url": "https://github.com/zeitvex"}]
+ },
+ {
+  "handle": "roboselect",
+  "name": "RoboSelect 编辑部",
+  "role": "编辑",
+  "did": "采购合同与口径的编者按；优惠与来源规则的整理",
+  "links": []
+ }
+]

@@ -49,6 +49,8 @@ KNOWN_SPEC_KEYS = {
     "storage_temp_range", "meas_range", "accuracy", "response_time", "power_w",
     "motor_type", "gear_material", "housing_material", "bearing", "mounting",
     "connector", "backlash_arcmin",
+    # 芯片
+    "package", "cores", "clock_mhz", "flash_kb", "ram_kb", "canfd",
 }
 
 #: UI 真正会读的键。B 级行字段参差，只要求这些键存在（值可为 null），
@@ -61,6 +63,7 @@ UI_KEYS = {
     "imu": {"odr_hz", "image_url"},
     "module": {"image_url"},
     "controller_low": {"image_url"},
+    "chip": {"package", "image_url"},
 }
 
 # 阈值（来自 RoboParts《关节参数虚标怎么辨别》的物理红线）

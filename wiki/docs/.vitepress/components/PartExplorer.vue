@@ -81,6 +81,7 @@ const CATS = [
   { v: 'battery', t: '电池' },
   { v: 'wiring', t: '线束' },
   { v: 'module', t: '其余模块' },
+  { v: 'chip', t: '硬件芯片' },
 ]
 
 const SORTS = [
@@ -105,6 +106,15 @@ onMounted(async () => {
     loading.value = false
   }
 })
+
+/** 换品类时重置筛选与排序。
+ *  「按峰值扭矩」对芯片/雷达毫无意义 —— 默认排序应该跟着品类走。 */
+function setCat(v: string) {
+  cat.value = v
+  vendor.value = ''
+  q.value = ''
+  sort.value = v === 'actuator' ? 'peak' : 'vendor'
+}
 
 const catCount = (v: string) => all.value.filter(p => p.category === v).length
 const vendors = computed(() =>
@@ -172,6 +182,13 @@ function chips(p: Part): { k: string; v: string }[] {
   } else if (p.category === 'imu') {
     push('ODR', num(p.odrHz), ' Hz')
     push('接口', p.iface)
+  } else if (p.category === 'chip') {
+    // 芯片按子类取参数：选 MCU 看主频/封装，选收发器看电压/封装
+    const sp: any = p.specs || {}
+    if (sp.clock_mhz) push('主频', num(sp.clock_mhz), ' MHz')
+    push('封装', sp.package)
+    push('接口', sp.iface || p.iface)
+    push('电压', num(sp.voltage_V), ' V')
   } else if (p.category === 'lidar' || p.category === 'camera') {
     push('量程', p.rangeM ?? p.depthRange, p.rangeM ? ' m' : '')
     push('帧率', num(p.fps), ' fps')
@@ -212,7 +229,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
         <button v-for="c in CATS" :key="c.v"
                 :class="['pd-chip', cat === c.v ? 'on' : '', catCount(c.v) ? '' : 'empty']"
                 :title="catCount(c.v) ? `${catCount(c.v)} 件` : '还没有收录（没有可信来源，不编数据）'"
-                @click="cat = c.v; vendor = ''; q = ''">
+                @click="setCat(c.v)">
           {{ c.t }}<span class="pd-n">{{ catCount(c.v) || '—' }}</span>
         </button>
       </div>

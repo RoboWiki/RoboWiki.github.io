@@ -32,7 +32,15 @@ export default defineConfig({
       { text: '机器人部件库', link: '/catalog' },
       { text: '部件详情', link: '/parts/' },
       { text: '参数口径', link: '/semantics' },
-      { text: '数据来源', link: '/sources' },
+      {
+        text: '社区',
+        items: [
+          { text: '投稿', link: '/submit' },
+          { text: '贡献者', link: '/contributors' },
+          { text: 'AI 中转站', link: '/ai' },
+          { text: '数据来源', link: '/sources' },
+        ],
+      },
     ],
     sidebar,
     outline: { label: '本页', level: [2, 3] },
