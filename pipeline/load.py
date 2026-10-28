@@ -1,12 +1,11 @@
 """统一的目录加载器 —— 所有消费者（后端种子、文档生成、静态目录）都走这里。
 
-优先级：
-    1. data/catalog/<category>/*.json   人工维护的源（一家一文件）
-    2. data/motors.json                 采集脚本产物（兼容旧路径）
-    3. 其它品类旧文件 controllers_*.json / sensors.json（若还在）
+唯一事实源：data/catalog/<category>/<vendor>.json（人工维护，一家一文件）。
 
-这样做的理由：贡献者只改 catalog/ 下的文件，构建与后端自动看到；
-采集脚本重跑也不会覆盖人工修订（它会写 motors.json，而 loader 优先读 catalog/）。
+不再兼容旧的扁平文件（motors.json / controllers_*.json / sensors.json）——
+它们已在 2026-10-28 出库归档（保留在本地备份）。单一事实源意味着：
+贡献者只改 catalog/ 下自己那个厂商的文件，构建与后端看到的永远一致，
+不存在「改了一个文件却没生效」的困惑。
 """
 from __future__ import annotations
 
@@ -73,17 +72,6 @@ def load_parts() -> list[dict]:
                 r["_file"] = rel
             rows.extend(items)
 
-    if rows:
-        return rows
-
-    for fn in ("motors.json", "controllers_high.json", "controllers_low.json",
-               "sensors.json"):
-        p = DATA / fn
-        if p.exists():
-            items = _read(p)
-            for r in items:
-                r["_file"] = fn
-            rows.extend(items)
     return rows
 
 

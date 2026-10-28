@@ -37,3 +37,9 @@ data/_inventory/*.jsonl
 # inbox 是丢图的暂存区：图片认领后进 frontend/public/parts，暂存区只留说明
 inbox/*
 !inbox/README.md
+
+# 历史归档与旧采集产物（备份保留在本地 %TEMP%/roboselect-archive，可随时恢复）
+data/_backup/
+data/motors.json
+data/motors_zju.json
+data/focus.json

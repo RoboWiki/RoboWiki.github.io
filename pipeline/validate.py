@@ -115,14 +115,10 @@ def main() -> int:
     ap.add_argument("--strict", action="store_true", help="warning 也算失败")
     args = ap.parse_args()
 
-    # 数据源分两套：catalog/<品类>/<厂商>.json（人工维护）与旧扁平文件（兼容）。
-    # 优先校验 catalog/；没有才退回扁平文件。
+    # 唯一事实源：catalog/<品类>/<厂商>.json（人工维护，一家一文件）。
+    # 旧扁平文件已出库归档，不再作为校验输入。
     cat_dir = DATA / "catalog"
-    catalog_files = sorted(cat_dir.glob("*/*.json")) if cat_dir.exists() else []
-    files = ([p for p in catalog_files]
-             or [DATA / f for f in ("motors.json", "controllers_high.json",
-                                    "controllers_low.json", "sensors.json")
-                 if (DATA / f).exists()])
+    files = sorted(cat_dir.glob("*/*.json")) if cat_dir.exists() else []
     offer_dir = DATA / "offers"
     offer_files = (sorted(offer_dir.glob("*.json")) if offer_dir.exists()
                    else ([DATA / "offers.json"] if (DATA / "offers.json").exists() else []))

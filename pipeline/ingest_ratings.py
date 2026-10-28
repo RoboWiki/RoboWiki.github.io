@@ -28,7 +28,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "ratings_snapshot.json"
-PARTS = ROOT / "data" / "motors.json"
+CATALOG = ROOT / "data" / "catalog"
 
 TITLE_RE = re.compile(r"^\s*\[评分\]\s*(\S+)")
 #: Issue Forms 渲染出来的结构是 `### 字段名\n\n值`，所以按标题切块取值
@@ -44,7 +44,8 @@ def main() -> None:
         raise SystemExit(2)
     issues = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
 
-    known = {r["id"] for r in json.loads(PARTS.read_text(encoding="utf-8"))}
+    known = {r["id"] for f in CATALOG.glob("*/*.json")
+              for r in json.loads(f.read_text(encoding="utf-8"))}
 
     # (author, part) -> 最新一条
     best: dict[tuple[str, str], dict] = {}
