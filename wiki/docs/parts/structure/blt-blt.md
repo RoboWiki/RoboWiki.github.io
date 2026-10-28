@@ -13,7 +13,7 @@ title: 铂力特 BLT 铂力特 BLT
     <div class="part-tags">
       <span class="part-tag">机械加工</span>
       <span class="part-tag sub">service</span>
-      <span class="part-tag tierB">来源 B</span>
+      <span class="part-tag tierC">来源 C</span>
       <span class="part-tag muted">无公开报价</span>
     </div>
 
@@ -33,7 +33,7 @@ title: 铂力特 BLT 铂力特 BLT
 
 <div class="part-src">
 来源：<a href="https://www.xa-blt.com/">https://www.xa-blt.com/</a><br/>
-收录：厂商官网公开资料（工艺与交期以实际询价为准）<br/>
+收录：工艺与材料来自厂商官网公开内容（官网列出：80 余种金属粉末，PBF-LB/M、DED-LB/M、WAAM 工艺）；交期与起订为本站经验估计，未经厂商页面确认<br/>
 核对：2026-10-28
 </div>
 
@@ -65,8 +65,8 @@ title: 铂力特 BLT 铂力特 BLT
 |---|---|
 | process | 金属 3D 打印（SLM） |
 | materials | 钛合金 TC4、铝合金 AlSi10Mg、不锈钢 |
-| lead | 1–2 周 |
-| moq | 视件而定 |
+| lead | ≈1–2 周 |
+| moq | ≈视件而定 |
 | 峰值扭矩 (N·m) | — |
 | 额定扭矩 (N·m) | — |
 | 减速比 | — |
@@ -89,11 +89,11 @@ title: 铂力特 BLT 铂力特 BLT
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.xa-blt.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商官网公开资料（工艺与交期以实际询价为准）</td></tr><tr><td><a href="https://www.google.com/search?q=%E9%93%82%E5%8A%9B%E7%89%B9+BLT+%E9%93%82%E5%8A%9B%E7%89%B9+BLT+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=%E9%93%82%E5%8A%9B%E7%89%B9+BLT&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E9%93%82%E5%8A%9B%E7%89%B9+BLT+%E9%93%82%E5%8A%9B%E7%89%B9+BLT+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/structure/services.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/structure/services.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.xa-blt.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>工艺与材料来自厂商官网公开内容（官网列出：80 余种金属粉末，PBF-LB/M、DED-LB/M、WAAM 工艺）；交期与起订为本站经验估计，未经厂商页面确认</td></tr><tr><td><a href="https://www.google.com/search?q=%E9%93%82%E5%8A%9B%E7%89%B9+BLT+%E9%93%82%E5%8A%9B%E7%89%B9+BLT+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=%E9%93%82%E5%8A%9B%E7%89%B9+BLT&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E9%93%82%E5%8A%9B%E7%89%B9+BLT+%E9%93%82%E5%8A%9B%E7%89%B9+BLT+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/structure/services.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/structure/services.json</td></tr></tbody></table>
 
 ## 备注
 
-拓扑优化后的轻量化结构件用它。单价高，但能把「减重」做到 CNC 做不到的形状。
+拓扑优化后的轻量化结构件用它。单价高，但能把「减重」做到 CNC 做不到的形状。 交期与起订为经验值（≈），下单前请以厂商报价为准。
 
 > 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。
