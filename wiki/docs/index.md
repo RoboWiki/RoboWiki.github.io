@@ -16,15 +16,16 @@ titleTemplate: false
     </p>
     <div class="home-cta">
       <a class="home-btn" href="/catalog">进部件库 →</a>
+      <a class="home-btn ghost" href="/suppliers">找加工与供应商</a>
       <a class="home-btn ghost" href="/semantics">参数口径怎么读</a>
     </div>
   </section>
 
   <section class="home-stats">
     <div><b>80</b><span>在库部件</span></div>
-    <div><b>46</b><span>关节电机 · 4 家</span></div>
-    <div><b>87%</b><span>有转子惯量（可直接进仿真）</span></div>
-    <div><b>93%</b><span>有额定扭矩</span></div>
+    <div><b>8</b><span>有数据的品类 · 共 11 类</span></div>
+    <div><b>54</b><span>逐项核对过厂商手册（A 级）</span></div>
+    <div><b>149</b><span>加工与标准件供应商</span></div>
   </section>
 
   <section class="home-cats">

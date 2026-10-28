@@ -845,6 +845,12 @@ def main() -> None:
         f'<span>{sum(1 for r in rows if r["category"] == c) or "待收录"}</span>'
         f'<em>{desc}</em></a>'
         for c, name, desc in CATS)
+    try:
+        n_sup = len(json.loads((ROOT / "data" / "suppliers.json").read_text(encoding="utf-8")))
+    except Exception:
+        n_sup = 0
+    n_tier_a = sum(1 for r in rows if r.get("source_tier") == "A")
+
     (OUT / "index.md").write_text(
         '---\nlayout: page\nsidebar: false\noutline: false\ntitleTemplate: false\n---\n\n'
         + f'''
@@ -858,15 +864,16 @@ def main() -> None:
     </p>
     <div class="home-cta">
       <a class="home-btn" href="/catalog">进部件库 →</a>
+      <a class="home-btn ghost" href="/suppliers">找加工与供应商</a>
       <a class="home-btn ghost" href="/semantics">参数口径怎么读</a>
     </div>
   </section>
 
   <section class="home-stats">
     <div><b>{len(rows)}</b><span>在库部件</span></div>
-    <div><b>{n_act}</b><span>关节电机 · {len(vendors)} 家</span></div>
-    <div><b>{n_arm_pct}%</b><span>有转子惯量（可直接进仿真）</span></div>
-    <div><b>{n_rated_pct}%</b><span>有额定扭矩</span></div>
+    <div><b>{len([c for c, _, _ in CATS if any(r["category"] == c for r in rows)])}</b><span>有数据的品类 · 共 {len(CATS)} 类</span></div>
+    <div><b>{n_tier_a}</b><span>逐项核对过厂商手册（A 级）</span></div>
+    <div><b>{n_sup}</b><span>加工与标准件供应商</span></div>
   </section>
 
   <section class="home-cats">

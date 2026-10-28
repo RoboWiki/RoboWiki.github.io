@@ -10,6 +10,7 @@ import sidebar from './sidebar.json' with { type: 'json' }
 // 表现就是「页面是英文，导航还是中文」。
 const zhTheme = {
   nav: [
+    { text: '首页', link: '/' },
     { text: '机器人部件库', link: '/catalog' },
     { text: '供应商', link: '/suppliers' },
     { text: '部件详情', link: '/parts/' },
@@ -43,6 +44,7 @@ const zhTheme = {
 
 const enTheme = {
   nav: [
+    { text: 'Home', link: '/en/' },
     { text: 'Parts', link: '/en/catalog' },
     { text: 'Suppliers', link: '/en/suppliers' },
     { text: 'Semantics', link: '/en/semantics' },

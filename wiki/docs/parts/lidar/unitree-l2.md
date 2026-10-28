@@ -7,13 +7,14 @@ title: 宇树 Unitree L2
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/unitree-l2.jpg" alt="L2" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">激光雷达</span>
       <span class="part-tag sub">solid</span>
-      <span class="part-tag tierB">来源 B</span>
+      <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag muted">无公开报价</span>
     </div>
 
@@ -24,15 +25,16 @@ title: 宇树 Unitree L2
 
 | 字段 | 值 |
 |---|---|
-| 量程 (m) | — |
-| 视场 | — |
-| 帧率 (fps) | — |
-| 接口 | — |
+| 量程 (m) | 30 |
+| 视场 | 360° × 90°（负角度模式 96°） |
+| 点频 (点/s) | 1.28e+05 |
+| 帧率 (fps) | 5.55 |
+| 接口 | ENET UDP + TTL UART 4 Mbps |
 | 质量 (kg) | — |
 
 <div class="part-src">
 来源：<a href="https://www.unitree.com/">https://www.unitree.com/</a><br/>
-收录：Seeed wiki 集成指南（非规格书）<br/>
+收录：《Unitree 4D LiDAR L2 用户手册》参数规格页<br/>
 核对：2026-10-28
 </div>
 
@@ -62,12 +64,27 @@ title: 宇树 Unitree L2
 
 | 字段 | 值 |
 |---|---|
-| 量程 (m) | — |
-| 视场 | — |
-| 点频 (点/s) | — |
-| 帧率 (fps) | — |
-| 接口 | — |
+| 量程 (m) | 30 |
+| 视场 | 360° × 90°（负角度模式 96°） |
+| 点频 (点/s) | 1.28e+05 |
+| 帧率 (fps) | 5.55 |
+| 接口 | ENET UDP + TTL UART 4 Mbps |
 | 质量 (kg) | — |
+| range_note | 30 m@90%、15 m@10% |
+| effective_points_per_s | 64000 |
+| blind_m | 0.05 |
+| accuracy | ≤2.0 cm |
+| angular_resolution | 0.64° |
+| range_resolution | 4.5 mm |
+| wavelength_nm | 905 |
+| imu_rate_hz | 500 |
+| eye_safety | Class 1（IEC 60825-1:2014） |
+| 工作温度 | -10–50 ℃ |
+| ambient_light_lux | 1.00e+05 |
+| scan | 无接触无刷转镜 |
+| data_4d | 3D 位置 + 1D 灰度（支持 2D 模式） |
+| 额定电压 (V) | 12 |
+| power_note | 12 V / 1 A |
 
 ## 优惠与获取条件
 
@@ -93,11 +110,11 @@ title: 宇树 Unitree L2
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.unitree.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>Seeed wiki 集成指南（非规格书）</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%AE%87%E6%A0%91+Unitree+L2+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=L2&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%AE%87%E6%A0%91+Unitree+L2+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/lidar/unitree.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/unitree.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.unitree.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>《Unitree 4D LiDAR L2 用户手册》参数规格页（内嵌线稿）</td></tr><tr><td class="rs-plain">收录说明</td><td>《Unitree 4D LiDAR L2 用户手册》参数规格页</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%AE%87%E6%A0%91+Unitree+L2+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=L2&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%AE%87%E6%A0%91+Unitree+L2+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/lidar/unitree.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/unitree.json</td></tr></tbody></table>
 
 ## 备注
 
-L2 是 L1 的后续型号，参数差异以官网为准。规格待补：需按厂商规格书逐项核对，本站不估。 产品图待补（抓到的不是产品本体）。
+L2 是 L1 的升级：点频 128000 点/秒（L1 的 3 倍）、最大量程 30 m，并且**多了以太网**（ENET UDP + TTL UART 4 Mbps），组网不必再拖串口线。负角度模式可把竖直视场从 90° 扩到 96°。供电要 12 V / 1 A，别直接接 24 V。
 
 
 

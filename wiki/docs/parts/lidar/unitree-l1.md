@@ -7,13 +7,14 @@ title: 宇树 Unitree L1
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/unitree-l1.jpg" alt="L1" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">激光雷达</span>
       <span class="part-tag sub">solid</span>
-      <span class="part-tag tierB">来源 B</span>
+      <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag muted">无公开报价</span>
     </div>
 
@@ -24,15 +25,16 @@ title: 宇树 Unitree L1
 
 | 字段 | 值 |
 |---|---|
-| 量程 (m) | — |
-| 视场 | — |
-| 帧率 (fps) | — |
-| 接口 | — |
+| 量程 (m) | 20 |
+| 视场 | 360° × 90° |
+| 点频 (点/s) | 43200 |
+| 帧率 (fps) | 11 |
+| 接口 | TTL UART 2 Mbps |
 | 质量 (kg) | — |
 
 <div class="part-src">
 来源：<a href="https://www.unitree.com/">https://www.unitree.com/</a><br/>
-收录：Seeed wiki 集成指南（非规格书）<br/>
+收录：《宇树 L1 雷达 用户手册 v1.0》参数规格页<br/>
 核对：2026-10-28
 </div>
 
@@ -62,12 +64,24 @@ title: 宇树 Unitree L1
 
 | 字段 | 值 |
 |---|---|
-| 量程 (m) | — |
-| 视场 | — |
-| 点频 (点/s) | — |
-| 帧率 (fps) | — |
-| 接口 | — |
+| 量程 (m) | 20 |
+| 视场 | 360° × 90° |
+| 点频 (点/s) | 43200 |
+| 帧率 (fps) | 11 |
+| 接口 | TTL UART 2 Mbps |
 | 质量 (kg) | — |
+| range_note | PM：20 m@90%、10 m@10%；RM：30 m@90%、15 m@10% |
+| effective_points_per_s | 21600 |
+| blind_m | 0.05 |
+| accuracy | ±2.0 cm |
+| range_resolution | 8 mm |
+| wavelength_nm | 905 |
+| imu_rate_hz | 250 |
+| eye_safety | Class 1（IEC 60825-1:2014） |
+| 工作温度 | -10–60 ℃ |
+| ambient_light_lux | 1.00e+05 |
+| scan | 无接触无刷转镜 |
+| data_4d | 3D 位置 + 1D 灰度 |
 
 ## 优惠与获取条件
 
@@ -93,11 +107,11 @@ title: 宇树 Unitree L1
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.unitree.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>Seeed wiki 集成指南（非规格书）</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%AE%87%E6%A0%91+Unitree+L1+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=L1&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%AE%87%E6%A0%91+Unitree+L1+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/lidar/unitree.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/unitree.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.unitree.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>《宇树 L1 雷达 用户手册 v1.0》参数规格页（内嵌线稿）</td></tr><tr><td class="rs-plain">收录说明</td><td>《宇树 L1 雷达 用户手册 v1.0》参数规格页</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%AE%87%E6%A0%91+Unitree+L1+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=L1&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%AE%87%E6%A0%91+Unitree+L1+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/lidar/unitree.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/unitree.json</td></tr></tbody></table>
 
 ## 备注
 
-宇树自研 4D 雷达，主打与自家四足/人形的整机配套。规格待补：需按厂商规格书逐项核对，本站不估。 产品图待补（抓到的不是产品本体）。
+宇树自研的 4D 雷达（3D 位置 + 1D 灰度），无接触无刷转镜扫描。**分 PM / RM 两个型号**：PM 精度优、量程近（20 m@90%、10 m@10%）；RM 量程远（30 m@90%、15 m@10%）。买之前先确认是哪个。接口是 **TTL UART（2 Mbps）**，不是网口 —— 与 L2 的主要差异就在这里。
 
 
 
