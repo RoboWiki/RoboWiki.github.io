@@ -13,7 +13,7 @@ title: 达妙 DAMIAO DM-IMU-L1
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">IMU</span>
-      <span class="part-tag sub">six-axis</span>
+      <span class="part-tag soft">six-axis</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag muted">无公开报价</span>
     </div>

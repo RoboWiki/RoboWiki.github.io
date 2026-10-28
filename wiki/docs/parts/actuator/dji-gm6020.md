@@ -13,7 +13,7 @@ title: 大疆 DJI GM6020
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">关节电机</span>
-      <span class="part-tag sub">direct</span>
+      <span class="part-tag soft">direct</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥899</span>
     </div>

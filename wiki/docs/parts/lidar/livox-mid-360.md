@@ -13,7 +13,7 @@ title: Livox Mid-360
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">激光雷达</span>
-      <span class="part-tag sub">solid</span>
+      <span class="part-tag soft">solid</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
     </div>

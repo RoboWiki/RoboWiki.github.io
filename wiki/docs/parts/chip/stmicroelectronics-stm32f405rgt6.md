@@ -13,7 +13,7 @@ title: STMicroelectronics STM32F405RGT6
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">硬件芯片</span>
-      <span class="part-tag sub">mcu</span>
+      <span class="part-tag soft">mcu</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
     </div>

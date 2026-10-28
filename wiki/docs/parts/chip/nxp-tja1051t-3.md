@@ -12,7 +12,7 @@ title: NXP TJA1051T/3
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">硬件芯片</span>
-      <span class="part-tag sub">transceiver</span>
+      <span class="part-tag soft">transceiver</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
     </div>

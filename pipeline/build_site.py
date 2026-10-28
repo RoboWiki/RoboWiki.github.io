@@ -764,7 +764,7 @@ def main() -> None:
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">{CAT_LABEL.get(cat, cat)}</span>
-      <span class="part-tag sub">{r.get("subtype_label") or r["subtype"]}</span>
+      <span class="part-tag soft">{r.get("subtype_label") or r["subtype"]}</span>
       <span class="part-tag tier{r["source_tier"]}">来源 {r["source_tier"]}{" ✓ 已核对" if r["verified"] else ""}</span>
       {f'<span class="part-tag">¥{int(r["price_cny"]):,}</span>' if r.get("price_cny") else '<span class="part-tag muted">无公开报价</span>'}
     </div>

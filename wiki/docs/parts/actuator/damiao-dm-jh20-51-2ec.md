@@ -12,7 +12,7 @@ title: 达妙 DAMIAO DM-JH20-51-2EC
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">关节电机</span>
-      <span class="part-tag sub">harmonic</span>
+      <span class="part-tag soft">harmonic</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag muted">无公开报价</span>
     </div>

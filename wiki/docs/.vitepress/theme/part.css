@@ -37,7 +37,7 @@ html.dark .part-photo { background: #f4f4f4; }
   color: var(--vp-c-text-2);
   font-variant-numeric: tabular-nums;
 }
-.part-tag.sub { color: var(--vp-c-text-3); }
+.part-tag.soft { color: var(--vp-c-text-3); }
 .part-tag.muted { color: var(--vp-c-text-3); border-style: dashed; }
 .part-tag.tierA {
   border-color: var(--vp-c-brand-1);

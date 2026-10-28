@@ -13,7 +13,7 @@ title: 达妙 DAMIAO DM-J4310P-2EC
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">关节电机</span>
-      <span class="part-tag sub">planetary</span>
+      <span class="part-tag soft">planetary</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥699</span>
     </div>

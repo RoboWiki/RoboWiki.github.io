@@ -12,7 +12,7 @@ title: Texas Instruments DRV8323S
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">硬件芯片</span>
-      <span class="part-tag sub">driver</span>
+      <span class="part-tag soft">driver</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
     </div>
