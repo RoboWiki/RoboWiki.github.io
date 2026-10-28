@@ -1,13 +1,14 @@
 ---
-title: D-Robotics RDK X3 4GB
+title: 地平线 D-Robotics RDK X3
 ---
 
 
-# D-Robotics RDK X3 4GB
+# 地平线 D-Robotics RDK X3
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/rdk-x3-4gb.jpg" alt="RDK X3" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
@@ -81,6 +82,7 @@ title: D-Robotics RDK X3 4GB
 | size_mm | 85×56 |
 | doc_url | https://developer.d-robotics.cc/rdkx3 |
 | repo_urls | https://github.com/D-Robotics/rdk_model_zoo、https://github.com/D-Robotics/hobot_dnn |
+| ram_options | 4 |
 
 ## 优惠与获取条件
 
@@ -97,11 +99,11 @@ title: D-Robotics RDK X3 4GB
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://developer.d-robotics.cc/rdkx3" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>D-Robotics 官网 RDK X3 规格 + 微雪 4GB 商品页价格核对（2026-10-28）</td></tr><tr><td><a href="https://www.google.com/search?q=D-Robotics+RDK+X3+4GB+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=RDK+X3+4GB&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=D-Robotics+RDK+X3+4GB+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/controller_high/drobotics.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_high/drobotics.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://developer.d-robotics.cc/rdkx3" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>D-Robotics 官网 RDK X3 规格 + 微雪 4GB 商品页价格核对（2026-10-28）</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%9C%B0%E5%B9%B3%E7%BA%BF+D-Robotics+RDK+X3+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=RDK+X3&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%9C%B0%E5%B9%B3%E7%BA%BF+D-Robotics+RDK+X3+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/controller_high/drobotics.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_high/drobotics.json</td></tr></tbody></table>
 
 ## 备注
 
-4GB 版；板载无 eMMC，系统跑 microSD；5V/3A Type-C 供电；2× MIPI CSI 2-lane、千兆网口、Wi-Fi 2.4/5GHz + BT4.2；无原生 CAN。价格：微雪 4GB 基础套件 ¥449（含配件包，2026-10）；教育/竞赛渠道曾见 ¥379。5 TOPS 为 BPU INT8 标称，与 Jetson 稀疏 INT8 不可直接横比。
+4GB 版；板载无 eMMC，系统跑 microSD；5V/3A Type-C 供电；2× MIPI CSI 2-lane、千兆网口、Wi-Fi 2.4/5GHz + BT4.2；无原生 CAN。价格：微雪 4GB 基础套件 ¥449（含配件包，2026-10）；教育/竞赛渠道曾见 ¥379。5 TOPS 为 BPU INT8 标称，与 Jetson 稀疏 INT8 不可直接横比。 本站目前只核到 4 GB 这一档；同型号其它内存版本参数待补，价格也不同。
 
 
 

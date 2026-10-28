@@ -1,13 +1,14 @@
 ---
-title: NVIDIA Jetson AGX Orin 64GB Developer Kit
+title: NVIDIA Jetson AGX Orin Developer Kit
 ---
 
 
-# NVIDIA Jetson AGX Orin 64GB Developer Kit
+# NVIDIA Jetson AGX Orin Developer Kit
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/jetson-agx-orin-64gb.jpg" alt="Jetson AGX Orin Developer Kit" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
@@ -87,6 +88,7 @@ title: NVIDIA Jetson AGX Orin 64GB Developer Kit
 | size_mm | 110×110×71.65 (dev kit) |
 | doc_url | https://docs.nvidia.com/jetson/agx-orin-devkit/user-guide/latest/index.html |
 | repo_urls | https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_common、https://github.com/dusty-nv/jetson-containers |
+| ram_options | 64 |
 
 ## 优惠与获取条件
 
@@ -103,11 +105,11 @@ title: NVIDIA Jetson AGX Orin 64GB Developer Kit
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-agx-orin/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>NVIDIA 官网 Jetson AGX Orin 规格表 + Jetson AGX Orin Developer Kit User Guide 核对（2026-10-28）</td></tr><tr><td><a href="https://www.google.com/search?q=NVIDIA+Jetson+AGX+Orin+64GB+Developer+Kit+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Jetson+AGX+Orin+64GB+Developer+Kit&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=NVIDIA+Jetson+AGX+Orin+64GB+Developer+Kit+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/controller_high/nvidia.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_high/nvidia.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-agx-orin/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>NVIDIA 官网 Jetson AGX Orin 规格表 + Jetson AGX Orin Developer Kit User Guide 核对（2026-10-28）</td></tr><tr><td><a href="https://www.google.com/search?q=NVIDIA+Jetson+AGX+Orin+Developer+Kit+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Jetson+AGX+Orin+Developer+Kit&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=NVIDIA+Jetson+AGX+Orin+Developer+Kit+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/controller_high/nvidia.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_high/nvidia.json</td></tr></tbody></table>
 
 ## 备注
 
-官方开发者套件 = AGX Orin 64GB 模组 + 载板 + 散热；275 TOPS（INT8 稀疏）、2048 CUDA + 64 Tensor Cores、12×A78AE@2.2GHz、64GB 256-bit LPDDR5 204.8GB/s、64GB eMMC 5.1、15–60W 可调；10GbE + GbE、16-lane MIPI CSI（最多 6 路）、40-pin 排针含 1× CAN、PCIe x16 插槽（x8 通道）。110×110×71.65mm。官方定价 $3499（2026-07 由 $1999 上调）；国内渠道含税报价差异大，暂不取人民币公开价。TOPS 口径与 Orin Nano/NX 的稀疏标称不同，跨平台不要直接按 TOPS 比值估性能。
+官方开发者套件 = AGX Orin 64GB 模组 + 载板 + 散热；275 TOPS（INT8 稀疏）、2048 CUDA + 64 Tensor Cores、12×A78AE@2.2GHz、64GB 256-bit LPDDR5 204.8GB/s、64GB eMMC 5.1、15–60W 可调；10GbE + GbE、16-lane MIPI CSI（最多 6 路）、40-pin 排针含 1× CAN、PCIe x16 插槽（x8 通道）。110×110×71.65mm。官方定价 $3499（2026-07 由 $1999 上调）；国内渠道含税报价差异大，暂不取人民币公开价。TOPS 口径与 Orin Nano/NX 的稀疏标称不同，跨平台不要直接按 TOPS 比值估性能。 本站目前只核到 64 GB 这一档；同型号其它内存版本参数待补，价格也不同。
 
 
 

@@ -27,8 +27,8 @@
    "comm_upper": "USB (ST-LINK VCP) / UART / SPI / I2C / CAN",
    "size_mm": null,
    "weight_g": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/st-nucleo-f103rb.jpg",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://www.st.com/en/evaluation-tools/nucleo-f103rb.html",
    "doc_pdf": "https://www.st.com/resource/en/data_brief/nucleo-f103rb.pdf",
    "repo_urls": [
@@ -82,8 +82,8 @@
    "comm_upper": "USB (ST-LINK VCP) / UART / SPI / I2C",
    "size_mm": null,
    "weight_g": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/st-nucleo-f401re.jpg",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://www.st.com/en/evaluation-tools/nucleo-f401re.html",
    "doc_pdf": "https://www.st.com/resource/en/data_brief/nucleo-f401re.pdf",
    "repo_urls": [
@@ -137,8 +137,8 @@
    "comm_upper": "USB (ST-LINK V3E VCP) / UART / SPI / I2C / CAN FD / Ethernet",
    "size_mm": null,
    "weight_g": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/st-nucleo-h723zg.jpg",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://www.st.com/en/evaluation-tools/nucleo-h723zg.html",
    "doc_pdf": "https://www.st.com/resource/en/data_brief/nucleo-h723zg.pdf",
    "repo_urls": [

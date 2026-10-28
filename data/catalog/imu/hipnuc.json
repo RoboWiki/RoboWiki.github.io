@@ -26,8 +26,8 @@
    "size_mm": "22×22×10（Molex 接口）",
    "weight_g": null,
    "resolution": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/hipnuc-hi12.png",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://www.hipnuc.com/hi12.html",
    "doc_pdf": null,
    "repo_urls": [

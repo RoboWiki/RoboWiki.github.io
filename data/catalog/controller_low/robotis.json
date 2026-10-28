@@ -27,8 +27,8 @@
    "comm_upper": "USB / UART / CAN / RS485 / SPI / I2C",
    "size_mm": "105×75",
    "weight_g": 60,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/robotis-opencr-1-0.png",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://emanual.robotis.com/docs/en/parts/controller/opencr10/",
    "doc_pdf": null,
    "repo_urls": [

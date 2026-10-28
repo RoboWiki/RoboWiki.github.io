@@ -4,9 +4,9 @@ title: Solo 12
 
 # Open Dynamic Robot Initiative Solo 12
 
+![Solo 12](/parts/odri-solo12.jpg)
 
-
-开源力矩控制四足，12 自由度、整机 2.5 kg（官方硬件 README 标注）。v1 没有板载电池与无线通信，需要外接电源和以太网；v1.1 才加板载电池与无线。官方仓库只提供 xacro 模板（solo12.urdf.xacro + leg.xacro），由 robot_properties_solo 生成 URDF，没有预生成文件。官方未公布最高速度、负载、整机尺寸与续航，均留空；PAL Robotics 曾代理整机套件，官网已标注销售停止。 产品图待补：ccc 分支引用了图片但文件未随数据搬入。
+开源力矩控制四足，12 自由度、整机 2.5 kg（官方硬件 README 标注）。v1 没有板载电池与无线通信，需要外接电源和以太网；v1.1 才加板载电池与无线。官方仓库只提供 xacro 模板（solo12.urdf.xacro + leg.xacro），由 robot_properties_solo 生成 URDF，没有预生成文件。官方未公布最高速度、负载、整机尺寸与续航，均留空；PAL Robotics 曾代理整机套件，官网已标注销售停止。
 
 ## 关键参数
 

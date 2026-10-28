@@ -1,13 +1,14 @@
 ---
-title: 瑞莎 Radxa ROCK 5B 8GB
+title: 瑞莎 Radxa ROCK 5B
 ---
 
 
-# 瑞莎 Radxa ROCK 5B 8GB
+# 瑞莎 Radxa ROCK 5B
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/radxa-rock-5b-8gb.webp" alt="ROCK 5B" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
@@ -84,6 +85,7 @@ title: 瑞莎 Radxa ROCK 5B 8GB
 | size_mm | 100×72 |
 | doc_url | https://docs.radxa.com/en/rock5/rock5b |
 | repo_urls | https://github.com/radxa-build/rock-5b |
+| ram_options | 8 |
 
 ## 优惠与获取条件
 
@@ -100,11 +102,11 @@ title: 瑞莎 Radxa ROCK 5B 8GB
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://radxa.com/products/rock5/5b" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>Radxa 官网产品页 + docs.radxa.com 核对（2026-10-28）</td></tr><tr><td><a href="https://www.google.com/search?q=%E7%91%9E%E8%8E%8E+Radxa+ROCK+5B+8GB+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=ROCK+5B+8GB&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E7%91%9E%E8%8E%8E+Radxa+ROCK+5B+8GB+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/controller_high/radxa.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_high/radxa.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://radxa.com/products/rock5/5b" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>Radxa 官网产品页 + docs.radxa.com 核对（2026-10-28）</td></tr><tr><td><a href="https://www.google.com/search?q=%E7%91%9E%E8%8E%8E+Radxa+ROCK+5B+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=ROCK+5B&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E7%91%9E%E8%8E%8E+Radxa+ROCK+5B+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/controller_high/misc.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_high/misc.json</td></tr></tbody></table>
 
 ## 备注
 
-8GB LPDDR4x 版。RK3588（4×A76@2.4 + 4×A55@1.8）、Mali-G610 MP4、NPU 6 TOPS、2.5GbE、M.2 M-key（PCIe 3.0 x4，支持 NVMe）、USB-C PD、40-pin 扩展口。存储需 eMMC 模块或 microSD，裸板不带。无原生 CAN，需要 CAN 请走 M.2/SPI 扩展。价格：8GB+8GB 存储渠道价约 ¥884（2025-12）；裸板随内存/存储配置浮动。
+8GB LPDDR4x 版。RK3588（4×A76@2.4 + 4×A55@1.8）、Mali-G610 MP4、NPU 6 TOPS、2.5GbE、M.2 M-key（PCIe 3.0 x4，支持 NVMe）、USB-C PD、40-pin 扩展口。存储需 eMMC 模块或 microSD，裸板不带。无原生 CAN，需要 CAN 请走 M.2/SPI 扩展。价格：8GB+8GB 存储渠道价约 ¥884（2025-12）；裸板随内存/存储配置浮动。 本站目前只核到 8 GB 这一档；同型号其它内存版本参数待补，价格也不同。
 
 
 

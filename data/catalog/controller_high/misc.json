@@ -5,8 +5,8 @@
   "subtype": "sbc",
   "vendor": "瑞莎 Radxa",
   "vendor_cn": "瑞莎科技",
-  "model": "ROCK 5B 8GB",
-  "title": "瑞莎 Radxa ROCK 5B 8GB",
+  "model": "ROCK 5B",
+  "title": "瑞莎 Radxa ROCK 5B",
   "url": "https://radxa.com/products/rock5/5b",
   "source_tier": "A",
   "verified": 1,
@@ -35,15 +35,18 @@
    "pcie": "1× M.2 M-key (PCIe 3.0 x4)",
    "size_mm": "100×72",
    "weight_g": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/radxa-rock-5b-8gb.webp",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://docs.radxa.com/en/rock5/rock5b",
    "doc_pdf": null,
    "repo_urls": [
     "https://github.com/radxa-build/rock-5b"
+   ],
+   "ram_options": [
+    8
    ]
   },
-  "notes": "8GB LPDDR4x 版。RK3588（4×A76@2.4 + 4×A55@1.8）、Mali-G610 MP4、NPU 6 TOPS、2.5GbE、M.2 M-key（PCIe 3.0 x4，支持 NVMe）、USB-C PD、40-pin 扩展口。存储需 eMMC 模块或 microSD，裸板不带。无原生 CAN，需要 CAN 请走 M.2/SPI 扩展。价格：8GB+8GB 存储渠道价约 ¥884（2025-12）；裸板随内存/存储配置浮动。",
+  "notes": "8GB LPDDR4x 版。RK3588（4×A76@2.4 + 4×A55@1.8）、Mali-G610 MP4、NPU 6 TOPS、2.5GbE、M.2 M-key（PCIe 3.0 x4，支持 NVMe）、USB-C PD、40-pin 扩展口。存储需 eMMC 模块或 microSD，裸板不带。无原生 CAN，需要 CAN 请走 M.2/SPI 扩展。价格：8GB+8GB 存储渠道价约 ¥884（2025-12）；裸板随内存/存储配置浮动。 本站目前只核到 8 GB 这一档；同型号其它内存版本参数待补，价格也不同。",
   "origin": "Radxa 官网产品页 + docs.radxa.com 核对（2026-10-28）"
  }
 ]

@@ -34,8 +34,8 @@
    "power_w": 11,
    "voltage_V": 24,
    "ip": "IP66",
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/manifold-odin1.webp",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://www.manifoldtech.cn/download/?product=odin1",
    "doc_pdf": null,
    "repo_urls": []

@@ -1,13 +1,14 @@
 ---
-title: 树莓派 Raspberry Pi 5 8GB
+title: 树莓派 Raspberry Pi 5
 ---
 
 
-# 树莓派 Raspberry Pi 5 8GB
+# 树莓派 Raspberry Pi 5
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/raspberry-pi-5-8gb.png" alt="Raspberry Pi 5" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
@@ -83,6 +84,7 @@ title: 树莓派 Raspberry Pi 5 8GB
 | doc_url | https://www.raspberrypi.com/products/raspberry-pi-5/ |
 | doc_pdf | https://datasheets.raspberrypi.com/rpi5/raspberry-pi-5-product-brief.pdf |
 | repo_urls | https://github.com/raspberrypi/linux、https://github.com/raspberrypi/documentation |
+| ram_options | 8 |
 
 ## 优惠与获取条件
 
@@ -99,11 +101,11 @@ title: 树莓派 Raspberry Pi 5 8GB
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.raspberrypi.com/products/raspberry-pi-5/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>Raspberry Pi 官网产品页 + Raspberry Pi 5 Product Brief PDF 核对（2026-10-28）</td></tr><tr><td><a href="https://www.google.com/search?q=%E6%A0%91%E8%8E%93%E6%B4%BE+Raspberry+Pi+5+8GB+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Raspberry+Pi+5+8GB&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E6%A0%91%E8%8E%93%E6%B4%BE+Raspberry+Pi+5+8GB+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/controller_high/raspberrypi.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_high/raspberrypi.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.raspberrypi.com/products/raspberry-pi-5/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>Raspberry Pi 官网产品页 + Raspberry Pi 5 Product Brief PDF 核对（2026-10-28）</td></tr><tr><td><a href="https://www.google.com/search?q=%E6%A0%91%E8%8E%93%E6%B4%BE+Raspberry+Pi+5+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Raspberry+Pi+5&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E6%A0%91%E8%8E%93%E6%B4%BE+Raspberry+Pi+5+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/controller_high/raspberrypi.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_high/raspberrypi.json</td></tr></tbody></table>
 
 ## 备注
 
-8GB 版；板载无 eMMC，系统跑 microSD；5V/5A USB-C 供电（官方 27W PSU 另购）；2× 4-lane MIPI（CSI/DSI 可互换）、PCIe 2.0 x1；无原生 CAN，需 SPI/CAN 扩展。价格：官方 8GB $190（2026-10 核实），国内渠道约 ¥1600；官网当前同时主推 16GB $305。
+8GB 版；板载无 eMMC，系统跑 microSD；5V/5A USB-C 供电（官方 27W PSU 另购）；2× 4-lane MIPI（CSI/DSI 可互换）、PCIe 2.0 x1；无原生 CAN，需 SPI/CAN 扩展。价格：官方 8GB $190（2026-10 核实），国内渠道约 ¥1600；官网当前同时主推 16GB $305。 本站目前只核到 8 GB 这一档；同型号其它内存版本参数待补，价格也不同。
 
 
 

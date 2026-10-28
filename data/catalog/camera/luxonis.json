@@ -34,8 +34,8 @@
    "power_w": 3.5,
    "voltage_V": 5,
    "ip": "IP66",
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/luxonis-oak-d-pro.jpg",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://docs.luxonis.com/",
    "doc_pdf": null,
    "repo_urls": [

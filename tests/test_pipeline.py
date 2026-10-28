@@ -164,6 +164,9 @@ def test_no_dead_internal_links(built):
     for p in built.rglob("*.md"):
         for m in re.finditer(r"\]\((/[^)#\s]+)", p.read_text(encoding="utf-8")):
             link = m.group(1).rstrip("/")
+            # 图片等静态资源不算站内页面链接（整机详情页会嵌 /parts/xxx.jpg）
+            if link.lower().endswith((".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg", ".pdf")):
+                continue
             if link.startswith(("/api", "/console", "/parts/")) and link not in exists:
                 # /parts/<品类>/<slug> 与页面对应；允许带 .html
                 if link + ".md" not in exists and link + "/index.md" not in exists:

@@ -79,8 +79,8 @@
    "comm_upper": "USB / CAN FD / RS485 / UART",
    "size_mm": "56×40",
    "weight_g": 19.5,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/damiao-dm-mc02.jpg",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://gitee.com/kit-miao/dm-mc02",
    "doc_pdf": "https://gitee.com/kit-miao/dm-mc02/raw/master/说明书/达妙科技DM-MC-Board02电机开发板使用说明书V1.1.pdf",
    "repo_urls": [

@@ -9,7 +9,7 @@ title: 部件详情
 
 - **[关节电机](/parts/actuator/)** —— 选型主战场（46 件）
 - **[舵机](/parts/servo/)** —— 串行总线 / PWM（5 件）
-- **[上位机](/parts/controller_high/)** —— 推理与感知（12 件）
+- **[上位机](/parts/controller_high/)** —— 推理与感知（9 件）
 - **[下位机](/parts/controller_low/)** —— 力矩闭环（14 件）
 - **[电调](/parts/esc/)** —— 驱动器 / 调速器（3 件）
 - **[IMU](/parts/imu/)** —— 姿态与振动（7 件）

@@ -1,13 +1,14 @@
 ---
-title: 树莓派 Raspberry Pi 4 Model B 8GB
+title: 树莓派 Raspberry Pi 4 Model B
 ---
 
 
-# 树莓派 Raspberry Pi 4 Model B 8GB
+# 树莓派 Raspberry Pi 4 Model B
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/raspberry-pi-4-8gb.jpg" alt="Raspberry Pi 4 Model B" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
@@ -83,6 +84,7 @@ title: 树莓派 Raspberry Pi 4 Model B 8GB
 | doc_url | https://www.raspberrypi.com/products/raspberry-pi-4-model-b/ |
 | doc_pdf | https://datasheets.raspberrypi.com/rpi4/raspberry-pi-4-product-brief.pdf |
 | repo_urls | https://github.com/raspberrypi/linux、https://github.com/raspberrypi/documentation |
+| ram_options | 8 |
 
 ## 优惠与获取条件
 
@@ -99,11 +101,11 @@ title: 树莓派 Raspberry Pi 4 Model B 8GB
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.raspberrypi.com/products/raspberry-pi-4-model-b/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>Raspberry Pi 4 Model B Product Brief（2026-10）+ 官网产品页核对（2026-10-28）</td></tr><tr><td><a href="https://www.google.com/search?q=%E6%A0%91%E8%8E%93%E6%B4%BE+Raspberry+Pi+4+Model+B+8GB+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Raspberry+Pi+4+Model+B+8GB&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E6%A0%91%E8%8E%93%E6%B4%BE+Raspberry+Pi+4+Model+B+8GB+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/controller_high/raspberrypi.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_high/raspberrypi.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.raspberrypi.com/products/raspberry-pi-4-model-b/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>Raspberry Pi 4 Model B Product Brief（2026-10）+ 官网产品页核对（2026-10-28）</td></tr><tr><td><a href="https://www.google.com/search?q=%E6%A0%91%E8%8E%93%E6%B4%BE+Raspberry+Pi+4+Model+B+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Raspberry+Pi+4+Model+B&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E6%A0%91%E8%8E%93%E6%B4%BE+Raspberry+Pi+4+Model+B+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/controller_high/raspberrypi.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_high/raspberrypi.json</td></tr></tbody></table>
 
 ## 备注
 
-8GB 版；BCM2711 4×Cortex-A72@1.8GHz、VideoCore VI、LPDDR4-3200（on-die ECC）；2× micro-HDMI（4Kp60）、2× USB3 + 2× USB2、GbE、PoE+（需 HAT）、2-lane MIPI CSI + 2-lane MIPI DSI、40-pin GPIO；无原生 CAN、无外露 PCIe；5V/3A USB-C 或 GPIO 供电；85×56mm、46g。价格：官方 8GB 定价 $165（2026-10 Product Brief，受内存涨价影响已较首发上调）；国内渠道约 ¥641–682（2026-10）。
+8GB 版；BCM2711 4×Cortex-A72@1.8GHz、VideoCore VI、LPDDR4-3200（on-die ECC）；2× micro-HDMI（4Kp60）、2× USB3 + 2× USB2、GbE、PoE+（需 HAT）、2-lane MIPI CSI + 2-lane MIPI DSI、40-pin GPIO；无原生 CAN、无外露 PCIe；5V/3A USB-C 或 GPIO 供电；85×56mm、46g。价格：官方 8GB 定价 $165（2026-10 Product Brief，受内存涨价影响已较首发上调）；国内渠道约 ¥641–682（2026-10）。 本站目前只核到 8 GB 这一档；同型号其它内存版本参数待补，价格也不同。
 
 
 

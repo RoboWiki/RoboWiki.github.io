@@ -26,8 +26,8 @@
    "size_mm": null,
    "weight_g": null,
    "resolution": "0.061 °/s/LSB；0.0005 g/LSB",
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/witmotion-wt901.png",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://www.wit-motion.com/Module/84.html",
    "doc_pdf": null,
    "repo_urls": [

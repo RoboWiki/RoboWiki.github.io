@@ -27,8 +27,8 @@
    "comm_upper": "USB-B (ATmega16U2) / UART / SPI / I2C",
    "size_mm": "68.6×53.4",
    "weight_g": 25,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/arduino-uno-r3.jpg",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://docs.arduino.cc/hardware/uno-rev3/",
    "doc_pdf": "https://docs.arduino.cc/resources/datasheets/A000066-datasheet.pdf",
    "repo_urls": [

@@ -27,8 +27,8 @@
    "comm_upper": "USB-C (UART/JTAG) / UART / SPI / I2C / TWAI",
    "size_mm": null,
    "weight_g": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/esp32-s3-devkitc-1.jpg",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://docs.espressif.com/projects/esp-dev-kits/zh_CN/latest/esp32s3/esp32-s3-devkitc-1/user_guide_v1.1.html",
    "doc_pdf": null,
    "repo_urls": [

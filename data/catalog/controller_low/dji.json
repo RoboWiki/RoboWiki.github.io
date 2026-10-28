@@ -116,8 +116,8 @@
    "comm_upper": "USB / CAN / UART / DBUS",
    "size_mm": "85×58",
    "weight_g": 48,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/dji-dev-board-a.jpg",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://www.robomaster.com/zh-CN/products/components/general/development-board",
    "doc_pdf": null,
    "repo_urls": [
@@ -170,8 +170,8 @@
    "comm_upper": "USB / CAN / UART / DBUS",
    "size_mm": "60×41×16",
    "weight_g": 38,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/dji-dev-board-c.jpg",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://www.robomaster.com/zh-CN/products/components/general/development-board-type-c",
    "doc_pdf": null,
    "repo_urls": [

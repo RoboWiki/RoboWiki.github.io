@@ -27,8 +27,8 @@
    "comm_upper": "CAN-FD",
    "size_mm": "46×53",
    "weight_g": 14.2,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/mjbots-moteus-r4-11.jpg",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://mjbots.github.io/moteus/",
    "doc_pdf": null,
    "repo_urls": [

@@ -27,8 +27,8 @@
    "comm_upper": "USB / CAN / UART / PWM / STEP-DIR",
    "size_mm": "66×50",
    "weight_g": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/odrive-s1.jpg",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://docs.odriverobotics.com/",
    "doc_pdf": null,
    "repo_urls": [

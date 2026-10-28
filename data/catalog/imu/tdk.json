@@ -26,8 +26,8 @@
    "size_mm": "2.5×3×0.91",
    "weight_g": null,
    "resolution": "16-bit",
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/tdk-icm-42688-p.png",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://invensense.tdk.com/products/motion-tracking/6-axis/icm-42688-p/",
    "doc_pdf": null,
    "repo_urls": []

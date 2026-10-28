@@ -34,8 +34,8 @@
    "power_w": null,
    "voltage_V": 5,
    "ip": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/realsense-d435i.png",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://www.realsenseai.com/cn/products/d435i/",
    "doc_pdf": "https://www.realsenseai.com/wp-content/uploads/dlm_uploads/2025/08/Intel-RealSense-D400-Series-Datasheet-August-2025.pdf",
    "repo_urls": [
@@ -80,8 +80,8 @@
    "power_w": null,
    "voltage_V": 5,
    "ip": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/realsense-d455.png",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://www.realsenseai.com/cn/products/d455/",
    "doc_pdf": "https://www.realsenseai.com/wp-content/uploads/dlm_uploads/2025/08/Intel-RealSense-D400-Series-Datasheet-August-2025.pdf",
    "repo_urls": [
@@ -126,8 +126,8 @@
    "power_w": 1.55,
    "voltage_V": 5,
    "ip": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/realsense-d405.png",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://www.realsenseai.com/cn/products/d405/",
    "doc_pdf": "https://www.realsenseai.com/wp-content/uploads/dlm_uploads/2025/08/Intel-RealSense-D400-Series-Datasheet-August-2025.pdf",
    "repo_urls": [

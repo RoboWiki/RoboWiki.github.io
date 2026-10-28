@@ -64,8 +64,8 @@
    "power_w": 6.5,
    "voltage_V": 12,
    "ip": "IP67",
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/livox-mid-360.png",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://www.livoxtech.com/cn/mid-360/specs",
    "doc_pdf": "https://terra-1-g.djicdn.com/851d20f7b9f64838a34cd02351370894/Livox/Livox_Mid-360_User_Manual_CHS.pdf",
    "repo_urls": [
@@ -110,8 +110,8 @@
    "power_w": 12,
    "voltage_V": 12,
    "ip": "IP67",
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/livox-hap.png",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://www.livoxtech.com/cn/hap/downloads",
    "doc_pdf": "https://dl.djicdn.com/downloads/Livox/HAP/HAP%28T1%29_User_Manual_V1.2_CHS.pdf",
    "repo_urls": [

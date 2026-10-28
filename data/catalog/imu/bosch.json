@@ -26,8 +26,8 @@
    "size_mm": "3×4.5×0.95",
    "weight_g": null,
    "resolution": "16-bit",
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/bosch-bmi088.jpg",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://www.bosch-sensortec.com/products/motion-sensors/imus/bmi088/",
    "doc_pdf": "https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi088-ds001.pdf",
    "repo_urls": []

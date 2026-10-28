@@ -34,8 +34,8 @@
    "power_w": 1.9,
    "voltage_V": 5,
    "ip": "IP66",
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/stereolabs-zed-2i.png",
+   "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://www.stereolabs.com/docs/",
    "doc_pdf": null,
    "repo_urls": [
