@@ -21,15 +21,15 @@ titleTemplate: false
   </section>
 
   <section class="home-stats">
-    <div><b>64</b><span>在库部件</span></div>
-    <div><b>64</b><span>关节电机 · 4 家</span></div>
-    <div><b>62%</b><span>有转子惯量（可直接进仿真）</span></div>
-    <div><b>94%</b><span>有额定扭矩</span></div>
+    <div><b>46</b><span>在库部件</span></div>
+    <div><b>46</b><span>关节电机 · 4 家</span></div>
+    <div><b>87%</b><span>有转子惯量（可直接进仿真）</span></div>
+    <div><b>93%</b><span>有额定扭矩</span></div>
   </section>
 
   <section class="home-cats">
     <h2>按品类</h2>
-    <div class="home-cat-grid"><a class="hc" href="/parts/actuator/"><b>关节电机</b><span>64</span><em>选型主战场</em></a>
+    <div class="home-cat-grid"><a class="hc" href="/parts/actuator/"><b>关节电机</b><span>46</span><em>选型主战场</em></a>
 <a class="hc" href="/parts/controller_high/"><b>上位机</b><span>待收录</span><em>推理与感知</em></a>
 <a class="hc" href="/parts/controller_low/"><b>下位机</b><span>待收录</span><em>力矩闭环</em></a>
 <a class="hc" href="/parts/structure/"><b>机械结构</b><span>待收录</span><em>待收录</em></a>

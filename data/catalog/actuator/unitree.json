@@ -86,8 +86,8 @@
    "comm": null,
    "driver_integrated": null,
    "ip": null,
-   "image_url": null,
-   "image_source": null
+   "image_url": "/parts/unitree-im6014.jpg",
+   "image_source": "厂商资料抓取（unitree-im6014.jpg）"
   },
   "notes": "G1 arm motor, model N6014B-12.6. Unitree publishes max torque 34.4 N.m (opposing the rotation; 31.7 N.m with it), 535 g, phi65 x 60, gear 3:38 = 12.667:1 and max no-load speed 54.2 rad/s at 60 V. That 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是宇树四足整机宣传图，不是 IM6014 电机，需厂商型号页原图",
   "origin": "Draft actuator_catalog.json（114 行总体）",

@@ -136,40 +136,5 @@
   },
   "notes": "手册 p12「搭配 C620 电调在额定电压下的电机参数」表：空载转速 482 rpm、额定转速 469 rpm、额定转矩（最大连续转矩）3 N·m、额定电流 10 A、最大效率 70%、**堵转扭矩 4.5 N·m**、堵转电流 2.5 A；p13 表：减速比 19:1、减速电机重量 365 g、极对数 7、相电阻 0.194 Ω。额定值与堵转值取自同一张 C620 表，口径一致，故峰值/额定比 1.5 可用。同页还有配 Z650 电调的一组（额定 4.6 N·m），口径不同未混用。｜减速比记为 3591/187 = 19.2032（C620 协议换算值），手册名义写 19:1；按 19.0 算转子量会有 1.06% 系统偏差。｜配 Z650 电调时额定 4.6 N·m、空载 589 rpm（不同电调口径，未混用）。 价格来源：DJI RoboMaster 官方商城（2026-10-28，含税零售价）。",
   "origin": "ZJU-HelloWorld/Wiki · 电机设备组件.assets"
- },
- {
-  "category": "actuator",
-  "subtype": "planetary",
-  "id": "dji-dji-robomaster-m2006-p36-brushless-dc-gear-motor",
-  "vendor": "大疆 DJI",
-  "model": "DJI RoboMaster M2006 P36 Brushless DC Gear Motor",
-  "title": "DJI RoboMaster M2006 P36 Brushless DC Gear Motor",
-  "url": "https://aifitlab.com/products/dji-robomaster-m2006-p36-brushless-dc-gear-motor",
-  "source_tier": "B",
-  "verified": false,
-  "last_checked": "2026-10-28",
-  "price_cny": 95.0,
-  "origin": "AI2FitLab / OpenELab 商城商品页归档（2026-10-28 抓取）",
-  "notes": "仅公布堵转扭矩，未公布峰值（堵转 ≠ 峰值，不互相顶替）",
-  "specs": {
-   "tau_peak_Nm": null,
-   "tau_rated_Nm": null,
-   "gear": 36.0,
-   "speed_noload_rpm": 500.0,
-   "mass_kg": 0.09,
-   "armature_kgm2": null,
-   "voltage_V": 24.0,
-   "kt_Nm_per_A": 0.18,
-   "image_url": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/M2006-1.jpg?v=1753109987",
-   "image_source": "AI2FitLab / OpenELab 商城商品页归档 商品图",
-   "i_rated_A": 3.0,
-   "tau_stall_Nm": 7.0,
-   "i_stall_A": 27.3,
-   "r_phase_ohm": 0.461,
-   "l_phase_uh": 64.22,
-   "temp_range": "0-55° C",
-   "pole_pairs": 7.0,
-   "tau_basis": null
-  }
  }
 ]

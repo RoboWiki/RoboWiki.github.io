@@ -7,7 +7,7 @@ title: 部件详情
 
 按品类进入，再按厂商分页。
 
-- **[关节电机](/parts/actuator/)** —— 选型主战场（64 件）
+- **[关节电机](/parts/actuator/)** —— 选型主战场（46 件）
 - **[上位机](/parts/controller_high/)** —— 推理与感知（0 件）
 - **[下位机](/parts/controller_low/)** —— 力矩闭环（0 件）
 - **[机械结构](/parts/structure/)** —— 待收录（0 件）

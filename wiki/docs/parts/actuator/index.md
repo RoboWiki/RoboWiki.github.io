@@ -5,14 +5,14 @@ title: 关节电机
 
 # 关节电机
 
-选型主战场，共 **64** 件、**4** 家厂商。
+选型主战场，共 **46** 件、**4** 家厂商。
 
 ## 厂商
 
-- [/parts/actuator/dji](/parts/actuator/dji) —— 大疆 DJI（4 型）
+- [/parts/actuator/dji](/parts/actuator/dji) —— 大疆 DJI（3 型）
 - [/parts/actuator/unitree](/parts/actuator/unitree) —— 宇树 Unitree（3 型）
 - [/parts/actuator/robstride](/parts/actuator/robstride) —— 灵足 RobStride（9 型）
-- [/parts/actuator/damiao](/parts/actuator/damiao) —— 达妙 DAMIAO（48 型）
+- [/parts/actuator/damiao](/parts/actuator/damiao) —— 达妙 DAMIAO（31 型）
 
 ## 跨厂商速览（按峰值扭矩降序，前 40）
 
@@ -43,20 +43,20 @@ title: 关节电机
 | [**DM-J4340-2EC**](/parts/actuator/damiao-dm-j4340-2ec) | 27 | 9 | 40 | 100 | 0.362 | 0.032 | 899 | `A✓` |
 | [**DM-J4340P-2EC**](/parts/actuator/damiao-dm-j4340p-2ec) | 27 | 9 | 40 | 100 | 0.381 | 0.032 | — | `A✓` |
 | [**DM-JH17-51-2EC**](/parts/actuator/damiao-dm-jh17-51-2ec) | 24 | 16 | 51 | 60 | 0.985 | 0.244 | 1,689 | `A✓` |
-| [**DAMIAO DM-JH17-2EC Motor**](/parts/actuator/damiao-damiao-dm-jh17-2ec-motor) | 24 | 16 | 51 | — | 0.985 | — | 460 | `B` |
 | [**GO-M8010-6**](/parts/actuator/unitree-go-m8010-6) | 23.7 | — | 6.33 | 270 | 0.42 | — | 1,500 | `A✓` |
 | [**DM-J8006-2EC V1.1**](/parts/actuator/damiao-dm-j8006-2ec-v1-1) | 20 | 8 | 6 | 392.8 | 0.559 | 4.14e-03 | 999 | `A✓` |
 | [**DM-J4310M-2EC**](/parts/actuator/damiao-dm-j4310m-2ec) | 18 | 5.2 | 10 | 232 | 0.37 | 2.16e-03 | — | `A✓` |
 | [**DM-JH14-51-2EC**](/parts/actuator/damiao-dm-jh14-51-2ec) | 18 | 5.4 | 51 | 60 | 0.775 | 0.156 | 1,499 | `A✓` |
-| [**DAMIAO DM-JH14-2EC Motor**](/parts/actuator/damiao-damiao-dm-jh14-2ec-motor) | 18 | 5.4 | 51 | — | 0.775 | — | 410 | `B` |
 | [**RS01**](/parts/actuator/robstride-rs01) | 17 | 7 | 7.75 | 275 | 0.38 | 4.20e-03 | 599 | `A✓` |
 | [**RS02**](/parts/actuator/robstride-rs02) | 17 | 7 | 7.75 | 360 | 0.405 | 4.20e-03 | 699 | `A✓` |
 | [**RS00**](/parts/actuator/robstride-rs00) | 14 | 5 | 10 | 315 | 0.31 | 1.00e-03 | 598 | `A✓` |
 | [**DM-J4310-2EC V1.2**](/parts/actuator/damiao-dm-j4310-2ec-v1-2) | 12.5 | 3.5 | 10 | 450 | 0.306 | 2.00e-03 | 599 | `A✓` |
 | [**DM-J4310P-2EC**](/parts/actuator/damiao-dm-j4310p-2ec) | 12.5 | 3.5 | 10 | 450 | 0.33 | 1.90e-03 | 699 | `A✓` |
-| [**DAMIAO DM-J4310-2EC Motor**](/parts/actuator/damiao-damiao-dm-j4310-2ec-motor) | 12.5 | 3.5 | 10 | — | 0.325 | — | 125 | `B` |
 | [**DM-J6006-2EC**](/parts/actuator/damiao-dm-j6006-2ec) | 11 | 4 | 6 | 408 | 0.335 | 2.09e-03 | 799 | `A✓` |
 | [**DM-JH11-101-2EC**](/parts/actuator/damiao-dm-jh11-101-2ec) | 10.5 | 4.8 | 101 | 30 | 0.345 | 0.064 | 1,299 | `A✓` |
-| [**DAMIAO DM-JH11-2EC Motor**](/parts/actuator/damiao-damiao-dm-jh11-2ec-motor) | 10.5 | 4.8 | 101 | 30 | — | — | 325 | `B` |
+| [**DM-JH11-51-2EC**](/parts/actuator/damiao-dm-jh11-51-2ec) | 7.8 | 3.2 | 51 | 60 | 0.345 | 0.016 | 1,299 | `A✓` |
+| [**DM-J4310-2EC V1.1**](/parts/actuator/damiao-dm-j4310-2ec-v1-1) | 7 | 3 | 10 | 400 | 0.306 | 1.80e-03 | — | `A✓` |
+| [**EL05**](/parts/actuator/robstride-el05) | 6 | 1.8 | 9 | 430 | 0.242 | 9.40e-04 | 299 | `A✓` |
+| [**RS05**](/parts/actuator/robstride-rs05) | 5.5 | 1.8 | 7.75 | 480 | 0.191 | 7.00e-04 | 499 | `A✓` |
 
 > 完整 147 行在[选型台](/)按任意列排序。这里只放前 40，因为一张表读不完等于没读。
