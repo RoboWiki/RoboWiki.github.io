@@ -255,8 +255,23 @@
    "subtypes": {},
    "keys": [
     {
-     "k": "iface",
-     "label": "接口",
+     "k": "process",
+     "label": "工艺",
+     "unit": ""
+    },
+    {
+     "k": "materials",
+     "label": "材料",
+     "unit": ""
+    },
+    {
+     "k": "lead",
+     "label": "交期",
+     "unit": ""
+    },
+    {
+     "k": "moq",
+     "label": "起订",
      "unit": ""
     }
    ],
@@ -674,6 +689,34 @@
   "RoboSense": {
    "slug": "robosense",
    "cn": "速腾聚创"
+  },
+  "嘉立创 JLC": {
+   "slug": "jlc",
+   "cn": "嘉立创 JLC"
+  },
+  "未来工场": {
+   "slug": "wenext",
+   "cn": "未来工场"
+  },
+  "速加网": {
+   "slug": "sujia",
+   "cn": "速加网"
+  },
+  "铂力特 BLT": {
+   "slug": "blt",
+   "cn": "铂力特 BLT"
+  },
+  "联泰科技": {
+   "slug": "uniontech",
+   "cn": "联泰科技"
+  },
+  "Protolabs": {
+   "slug": "protolabs",
+   "cn": "Protolabs"
+  },
+  "Xometry": {
+   "slug": "xometry",
+   "cn": "Xometry"
   }
  }
 }

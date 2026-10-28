@@ -41,10 +41,10 @@
   "last_checked": "2026-10-28",
   "price_cny": null,
   "origin": "Seeed wiki 集成指南（非规格书）",
-  "notes": "与 335 同代，差异在深度/RGB 分辨率与部分工作模式。产品图待补：官网 336 独立产品图未拿到，需人工提供截图",
+  "notes": "与 335 同代，差异在深度/RGB 分辨率与部分工作模式。规格待补：需按厂商规格书逐项核对，本站不估。",
   "specs": {
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/orbbec-gemini-336.jpg",
+   "image_source": "奥比中光官网产品图",
    "tau_peak_Nm": null,
    "tau_rated_Nm": null,
    "gear": null,
