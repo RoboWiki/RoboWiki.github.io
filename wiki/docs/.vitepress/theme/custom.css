@@ -175,3 +175,18 @@ html.dark .vp-doc div[class*='language-'] {
   background: #252526;
   border-color: #3c3c3c;
 }
+
+
+/* 口径页 hero 里的「硬规则」段落：和普通说明拉开层次 */
+.sem-hero .sem-side {
+  margin-top: 0.9rem;
+  padding: 0.7rem 0.9rem;
+  border-left: 3px solid var(--vp-c-brand-1);
+  background: var(--vp-c-brand-soft);
+  border-radius: 0 8px 8px 0;
+  font-size: 0.84rem;
+  line-height: 1.85;
+  color: var(--vp-c-text-1);
+  max-width: 74ch;
+}
+.sem-hero .sem-side b { color: var(--vp-c-brand-1); }

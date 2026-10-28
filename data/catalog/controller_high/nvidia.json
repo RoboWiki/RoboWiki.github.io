@@ -4,15 +4,15 @@
   "subtype": "module",
   "id": "nvidia-orin-nano-8gb",
   "vendor": "NVIDIA",
-  "model": "Jetson Orin Nano 8GB",
-  "title": "NVIDIA Jetson Orin Nano 8GB 计算模组",
+  "model": "Jetson Orin Nano",
+  "title": "NVIDIA Jetson Orin Nano 计算模组",
   "url": "https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/",
   "source_tier": "B",
   "verified": false,
   "last_checked": "2026-10-28",
   "price_cny": null,
   "origin": "厂商公开资料（待逐项核对）",
-  "notes": "四足/人形做感知与策略推理的常见下限：8 GB 内存同时跑相机流 + 策略会很紧。「Super 模式」需 JetPack 6.2 以上，算力标称才到 40 TOPS。 产品图待补（抓到的不是产品本体）。",
+  "notes": "四足/人形做感知与策略推理的常见下限：8 GB 内存同时跑相机流 + 策略会很紧。「Super 模式」需 JetPack 6.2 以上，算力标称才到 40 TOPS。 产品图待补（抓到的不是产品本体）。 本站这一条对应 **8 GB** 版本（内存是参数，不写进型号名）；同型号还有其它容量版本，选型时先确认容量再比价格。",
   "specs": {
    "image_url": null,
    "image_source": null,
@@ -30,7 +30,8 @@
    "ram_bw_gbs": 68,
    "power_max_w": 25,
    "os": "JetPack 6",
-   "cuda": true
+   "cuda": true,
+   "ram_gb_note": null
   }
  },
  {
@@ -38,15 +39,15 @@
   "subtype": "module",
   "id": "nvidia-orin-nx-16gb",
   "vendor": "NVIDIA",
-  "model": "Jetson Orin NX 16GB",
-  "title": "NVIDIA Jetson Orin NX 16GB 计算模组",
+  "model": "Jetson Orin NX",
+  "title": "NVIDIA Jetson Orin NX 计算模组",
   "url": "https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/",
   "source_tier": "B",
   "verified": false,
   "last_checked": "2026-10-28",
   "price_cny": null,
   "origin": "厂商公开资料（待逐项核对）",
-  "notes": "算力是 Orin Nano 的两倍多、内存带宽更大；功耗与散热要求也高一档，小机身四足要提前算散热。 产品图待补（抓到的不是产品本体）。",
+  "notes": "算力是 Orin Nano 的两倍多、内存带宽更大；功耗与散热要求也高一档，小机身四足要提前算散热。 产品图待补（抓到的不是产品本体）。 本站这一条对应 **16 GB** 版本（内存是参数，不写进型号名）；同型号还有其它容量版本，选型时先确认容量再比价格。",
   "specs": {
    "image_url": null,
    "image_source": null,
@@ -64,7 +65,8 @@
    "ram_bw_gbs": 102.4,
    "power_max_w": 25,
    "os": "JetPack 6",
-   "cuda": true
+   "cuda": true,
+   "ram_gb_note": null
   }
  }
 ]
