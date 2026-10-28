@@ -14,7 +14,6 @@
 | actuator | `达妙-dm-dm-jh17-51-2ec` | DM-JH17-51-2EC | — |
 | actuator | `达妙-dm-dm-jh20-101-2ec` | DM-JH20-101-2EC | — |
 | actuator | `达妙-dm-dm-jh20-51-2ec` | DM-JH20-51-2EC | — |
-| actuator | `灵足-robstride-rs10` | RS10 | 官网是 SPA、资料库只有 PDF，需截图 |
 | camera | `intel-d435i` | D435i | Intel 站点对本站 TLS 握手拦截 |
 | camera | `intel-d455` | D455 | 同上 |
 | chip | `chip-espressif-esp32-s3-wroom-1` | ESP32-S3-WROOM-1 | 厂商产品页为 JS 渲染，HTML 里没有图片地址 |
