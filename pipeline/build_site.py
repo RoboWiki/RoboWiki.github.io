@@ -25,6 +25,7 @@ OUT = ROOT / "wiki" / "docs"
 #: 品类。顺序即展示顺序 —— 关节电机是重点，放最前。
 #: 机械结构 / 电池 / 线束 没有收录：不是漏了，是没有可信来源，宁缺不编。
 from .load import cat_labels as _cat_labels
+from .contrib_page import build as build_contributors
 from .load import load_taxonomy
 
 #: 品类表来自 data/taxonomy.json —— 不再在这里硬编码。
@@ -1247,78 +1248,8 @@ html.dark .rl-th {{ color: #e0b159; }}
 
 
     # ── 贡献者 ──────────────────────────────────────────────────────────
-    # 名单手工维护（data/contributors.json），不从 git log 生成：
-    # CI 是浅克隆，git log 只有一次提交；而且「谁贡献了什么」本来就该人写，
-    # 机器只能数 commit 数，那既不准也不好看。
-    try:
-        contribs = json.loads((ROOT / "data" / "contributors.json").read_text(encoding="utf-8"))
-    except Exception:
-        contribs = []
-    role_cn = {"维护者": "维护者", "编辑": "编辑", "贡献者": "贡献者"}
-    crowd = "\n".join(
-        f"""<div class="ct">
-  <div class="ct-head"><b>{c.get('name') or c.get('handle')}</b>
-    <span class="ct-role">{role_cn.get(c.get('role'), c.get('role') or '贡献者')}</span></div>
-  <p>{c.get('did') or '—'}</p>
-  {"".join(f'<a href="{l["url"]}" target="_blank" rel="noopener">{l["label"]}</a>' for l in (c.get('links') or []))}
-</div>""" for c in contribs)
-    (OUT / "contributors.md").write_text(
-        '---\ntitle: 贡献者\nlayout: page\nsidebar: false\noutline: false\n---\n\n'
-        + f'''
-<div class="cd">
-  <header class="cd-hero">
-    <div class="cd-kicker">贡献者</div>
-    <h1>这些数不是天上掉下来的。</h1>
-    <p>
-      每一条参数背后都有人对着厂商手册逐页核过，每一个「—」都是有人确认过「确实没公布」。
-      名字留在这里，是因为<strong>数据出错时得有人能被找到</strong>。
-    </p>
-  </header>
-
-  <div class="ct-grid">{crowd}</div>
-
-  <section class="cd-how">
-    <h2>怎么上榜</h2>
-    <ul>
-      <li>补一条参数、修一个单位、加一张正确产品图 —— 名字进名单</li>
-      <li>写一条带工况的实测 —— 名字进名单，且会出现在那个部件页上</li>
-      <li>纠一次错并给出依据 —— 同样计入</li>
-    </ul>
-    <p class="cd-note">
-      没有「贡献值排行榜」。这个站不做积分游戏 ——
-      排序永远只看参数与实测，不看谁贡献得多。
-    </p>
-  </section>
-
-  <p class="cd-foot">
-    <a href="/submit">去投稿 →</a>
-  </p>
-</div>
-
-<style>
-.cd {{ max-width: 980px; margin: 0 auto; padding: 1.8rem 1.5rem 4rem; }}
-.cd-kicker {{ font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--vp-c-brand-1); font-weight: 700; margin-bottom: 0.5rem; }}
-.cd-hero h1 {{ font-size: clamp(1.4rem, 2.6vw, 1.9rem); line-height: 1.3; font-weight: 800;
-  letter-spacing: -0.02em; margin: 0 0 0.7rem; border: none; padding: 0; color: var(--vp-c-text-1); }}
-.cd-hero p {{ margin: 0; font-size: 0.86rem; line-height: 1.85; color: var(--vp-c-text-2); max-width: 66ch; }}
-.ct-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 0.7rem; margin: 1.6rem 0; }}
-.ct {{ border: 1px solid var(--vp-c-divider); border-radius: 12px; padding: 0.8rem 0.95rem;
-  background: var(--vp-c-bg); }}
-.ct-head {{ display: flex; align-items: baseline; gap: 0.5rem; }}
-.ct-head b {{ font-size: 0.92rem; color: var(--vp-c-text-1); }}
-.ct-role {{ font-size: 0.66rem; padding: 0 6px; border-radius: 999px;
-  background: var(--vp-c-brand-soft); color: var(--vp-c-brand-1); font-weight: 600; }}
-.ct p {{ margin: 0.4rem 0 0; font-size: 0.78rem; line-height: 1.75; color: var(--vp-c-text-2); }}
-.ct a {{ font-size: 0.72rem; color: var(--vp-c-brand-1); margin-right: 0.7rem; }}
-.cd-how h2 {{ font-size: 1rem; font-weight: 700; margin: 1.6rem 0 0.6rem;
-  border: none; padding: 0; color: var(--vp-c-text-1); }}
-.cd-how ul {{ font-size: 0.82rem; line-height: 1.9; color: var(--vp-c-text-2); padding-left: 1.2rem; margin: 0; }}
-.cd-note {{ font-size: 0.78rem; color: var(--vp-c-text-3); margin-top: 0.8rem; }}
-.cd-foot {{ margin-top: 2rem; font-size: 0.84rem; }}
-</style>
-''', encoding="utf-8")
+    # 交给 pipeline/contrib_page.py：GitHub 快照 + 手工名单，生成中英两版。
+    build_contributors(ROOT, OUT, pub)
 
 
     # ── 供应商（与部件库分开）────────────────────────────────────────────

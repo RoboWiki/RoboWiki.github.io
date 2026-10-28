@@ -1,0 +1,101 @@
+- generic [ref=f1e3]:
+  - link "跳到内容" [ref=f1e4] [cursor=pointer]:
+    - /url: "#VPContent"
+  - banner:
+    - generic:
+      - generic:
+        - generic:
+          - link "RoboSelect" [ref=f1e6] [cursor=pointer]:
+            - /url: /
+          - generic [ref=f1e8]:
+            - navigation "Main Navigation" [ref=f1e9]:
+              - link "机器人部件库" [ref=f1e11] [cursor=pointer]:
+                - /url: /catalog.html
+              - link "供应商" [ref=f1e13] [cursor=pointer]:
+                - /url: /suppliers.html
+              - link "部件详情" [ref=f1e15] [cursor=pointer]:
+                - /url: /parts/
+              - link "参数口径" [ref=f1e17] [cursor=pointer]:
+                - /url: /semantics.html
+              - link "贡献者" [ref=f1e19] [cursor=pointer]:
+                - /url: /contributors.html
+              - link "投稿" [ref=f1e21] [cursor=pointer]:
+                - /url: /submit.html
+              - link "数据来源" [ref=f1e23] [cursor=pointer]:
+                - /url: /sources.html
+            - button "Change language" [ref=f1e26] [cursor=pointer]
+            - switch "切换到深色模式" [ref=f1e31] [cursor=pointer]
+  - generic [ref=f1e40]:
+    - banner [ref=f1e41]:
+      - generic [ref=f1e42]: 贡献者
+      - heading "这些数不是天上掉下来的。" [level=1] [ref=f1e43]
+      - paragraph [ref=f1e44]:
+        - text: 每一条参数背后都有人对着厂商手册逐页核过，每一个「—」都是有人确认过「确实没公布」。名字留在这里，是因为
+        - strong [ref=f1e45]: 数据出错时得有人能被找到
+        - text: 。
+    - generic [ref=f1e46]:
+      - generic [ref=f1e47]:
+        - generic [ref=f1e48]:
+          - generic [ref=f1e49]: 贡献者总数
+          - generic [ref=f1e50]: "2"
+        - generic [ref=f1e51]:
+          - generic [ref=f1e52]: 累计贡献次数
+          - generic [ref=f1e53]: "51"
+        - generic [ref=f1e54]:
+          - generic [ref=f1e55]: 数据来源
+          - link "GitHub Contributors" [ref=f1e56] [cursor=pointer]:
+            - /url: https://github.com/zeitvex/RoboSelect/graphs/contributors
+        - generic [ref=f1e57]:
+          - generic [ref=f1e58]: 快照更新时间
+          - generic [ref=f1e59]: 2026-10-28 17:50
+      - generic [ref=f1e60]:
+        - generic [ref=f1e61]:
+          - heading "贡献者" [level=2] [ref=f1e62]
+          - paragraph [ref=f1e63]: 按贡献次数排序展示
+        - generic [ref=f1e64]:
+          - link "zeitvex zeitvex 49 次贡献 维护者" [ref=f1e65] [cursor=pointer]:
+            - /url: https://github.com/zeitvex
+            - img "zeitvex" [ref=f1e66]
+            - generic [ref=f1e67]:
+              - generic [ref=f1e68]: zeitvex
+              - generic [ref=f1e69]:
+                - generic [ref=f1e70]: 49 次贡献
+                - emphasis [ref=f1e71]: 维护者
+          - link "github-actions[bot] github-actions[bot] 2 次贡献 Bot" [ref=f1e72] [cursor=pointer]:
+            - /url: https://github.com/apps/github-actions
+            - img "github-actions[bot]" [ref=f1e73]
+            - generic [ref=f1e74]:
+              - generic [ref=f1e75]: github-actions[bot]
+              - generic [ref=f1e76]:
+                - generic [ref=f1e77]: 2 次贡献
+                - emphasis [ref=f1e78]: Bot
+    - generic [ref=f1e79]:
+      - heading "谁做了什么" [level=2] [ref=f1e80]
+      - paragraph [ref=f1e81]: 不从 git log 生成：机器只会数 commit，说不出谁核过哪本手册。
+      - generic [ref=f1e82]:
+        - generic [ref=f1e83]:
+          - generic [ref=f1e84]:
+            - generic [ref=f1e85]: zeitvex
+            - generic [ref=f1e86]: 维护者
+          - paragraph [ref=f1e87]: 站点与构建链；达妙 / 灵足 / 大疆 / 宇树四家的参数核对与口径定义
+          - link "GitHub" [ref=f1e88] [cursor=pointer]:
+            - /url: https://github.com/zeitvex
+        - generic [ref=f1e89]:
+          - generic [ref=f1e90]:
+            - generic [ref=f1e91]: RoboSelect 编辑部
+            - generic [ref=f1e92]: 编辑
+          - paragraph [ref=f1e93]: 采购合同与口径的编者按；优惠与来源规则的整理
+    - generic [ref=f1e94]:
+      - heading "怎么上榜" [level=2] [ref=f1e95]
+      - list [ref=f1e96]:
+        - listitem [ref=f1e97]: 补一条参数、修一个单位、加一张正确产品图 —— 名字进名单
+        - listitem [ref=f1e98]: 写一条带工况的实测 —— 名字进名单，且会出现在那个部件页上
+        - listitem [ref=f1e99]: 纠一次错并给出依据 —— 同样计入
+      - paragraph [ref=f1e100]: 没有「贡献值排行榜」。这个站不做积分游戏 —— 排序永远只看参数与实测，不看谁贡献得多。
+    - paragraph [ref=f1e101]:
+      - link "去投稿 →" [ref=f1e102] [cursor=pointer]:
+        - /url: /submit
+  - contentinfo [ref=f1e103]:
+    - generic [ref=f1e104]:
+      - paragraph [ref=f1e105]: 数据带来源 · 口径可追溯 · 不卖零件不收佣金
+      - paragraph [ref=f1e106]: RoboSelect · 机器人部件选择社区

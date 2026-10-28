@@ -31,6 +31,18 @@ interface Sup {
   tier: string | null
 }
 
+const props = withDefaults(defineProps<{ lang?: 'zh' | 'en' }>(), { lang: 'zh' })
+const en = computed(() => props.lang === 'en')
+const L = computed(() => en.value
+  ? { search: 'Search shop / process / review', allcat: 'All categories',
+      allfine: 'All types', notesOnly: 'With reviews', count: 'suppliers',
+      noNotes: 'No review in the directory', empty: 'No supplier matched. Try another keyword.',
+      q: 'Quality', lead: 'Lead time', price: 'Price', inv: 'Invoice', mat: 'Materials' }
+  : { search: '搜店名 / 工艺 / 点评关键词', allcat: '全部品类',
+      allfine: '全部细分', notesOnly: '只看有点评', count: '家',
+      noNotes: '名录未附点评', empty: '没有匹配的供应商，换个关键词或点掉筛选。',
+      q: '质量', lead: '交期', price: '价格', inv: '发票', mat: '材料' })
+
 const all = ref<Sup[]>([])
 const q = ref('')
 const tag = ref('')
@@ -107,19 +119,19 @@ const QUALITY_GOOD = ['稳定，精度高', '精度高', '稳定，精度好', '
 <template>
   <div class="sup">
     <div class="sup-bar">
-      <input v-model="q" class="sup-q" type="search" placeholder="搜店名 / 工艺 / 点评关键词" />
-      <button class="sup-btn" :class="{ on: only }" @click="only = !only">只看有点评</button>
-      <span class="sup-count">{{ sorted.length }} 家</span>
+      <input v-model="q" class="sup-q" type="search" :placeholder="L.search" />
+      <button class="sup-btn" :class="{ on: only }" @click="only = !only">{{ L.notesOnly }}</button>
+      <span class="sup-count">{{ sorted.length }} {{ L.count }}</span>
     </div>
 
     <div class="sup-cats">
-      <button class="sup-tag" :class="{ on: cat === '' }" @click="setCat('')">全部品类</button>
+      <button class="sup-tag" :class="{ on: cat === '' }" @click="setCat('')">{{ L.allcat }}</button>
       <button v-for="[c, n] in cats" :key="c" class="sup-tag" :class="{ on: cat === c, main: true }"
               @click="setCat(c)">{{ c }} {{ n }}</button>
     </div>
 
     <div class="sup-tags">
-      <button class="sup-tag" :class="{ on: tag === '' }" @click="tag = ''">全部细分</button>
+      <button class="sup-tag" :class="{ on: tag === '' }" @click="tag = ''">{{ L.allfine }}</button>
       <button v-for="[t, n] in tags" :key="t" class="sup-tag" :class="{ on: tag === t }"
               @click="tag = tag === t ? '' : t">{{ t }} {{ n }}</button>
     </div>
@@ -134,21 +146,21 @@ const QUALITY_GOOD = ['稳定，精度高', '精度高', '稳定，精度好', '
         </div>
         <p class="sc-proc">{{ s.process || '工艺未记' }}</p>
         <dl class="sc-kv">
-          <div v-if="s.quality"><dt>质量</dt><dd>{{ s.quality }}</dd></div>
-          <div v-if="s.punctual"><dt>交期</dt><dd>{{ s.punctual }}</dd></div>
-          <div v-if="s.price_level"><dt>价格</dt><dd>{{ s.price_level }}</dd></div>
-          <div v-if="s.invoice"><dt>发票</dt><dd>{{ s.invoice }}</dd></div>
-          <div v-if="s.materials"><dt>材料</dt><dd>{{ s.materials }}</dd></div>
+          <div v-if="s.quality"><dt>{{ L.q }}</dt><dd>{{ s.quality }}</dd></div>
+          <div v-if="s.punctual"><dt>{{ L.lead }}</dt><dd>{{ s.punctual }}</dd></div>
+          <div v-if="s.price_level"><dt>{{ L.price }}</dt><dd>{{ s.price_level }}</dd></div>
+          <div v-if="s.invoice"><dt>{{ L.inv }}</dt><dd>{{ s.invoice }}</dd></div>
+          <div v-if="s.materials"><dt>{{ L.mat }}</dt><dd>{{ s.materials }}</dd></div>
           <div v-if="s.lead"><dt>工期</dt><dd>{{ s.lead }}</dd></div>
         </dl>
         <p v-if="hasNote(s)" class="sc-note" :class="{ open: open === s.id }" @click="open = open === s.id ? null : s.id">
           {{ s.notes }}
         </p>
-        <p v-else class="sc-none">名录未附点评</p>
+        <p v-else class="sc-none">{{ L.noNotes }}</p>
       </article>
     </div>
 
-    <p v-if="!sorted.length" class="sup-empty">没有匹配的供应商，换个关键词或点掉筛选。</p>
+    <p v-if="!sorted.length" class="sup-empty">{{ L.empty }}</p>
   </div>
 </template>
 

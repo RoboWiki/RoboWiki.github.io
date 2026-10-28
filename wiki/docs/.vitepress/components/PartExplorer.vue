@@ -58,6 +58,15 @@ interface Part {
   specs: Record<string, any>
 }
 
+const props = withDefaults(defineProps<{ lang?: 'zh' | 'en' }>(), { lang: 'zh' })
+const en = computed(() => props.lang === 'en')
+/** 只翻界面壳；型号与参数值保持原文。 */
+const L = computed(() => en.value
+  ? { search: 'Search model / brand / type', compare: 'Compare', all: 'All params',
+      none: 'No photo yet', count: 'items', sort: 'Sort by' }
+  : { search: '搜型号 / 品牌 / 类型', compare: '对比', all: '全部参数',
+      none: '暂无产品图', count: '件', sort: '按' })
+
 const all = ref<Part[]>([])
 const loading = ref(true)
 const fail = ref('')
@@ -229,7 +238,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
 
       <!-- 工具条 -->
       <div class="pd-row">
-        <input v-model="q" class="pd-input" placeholder="搜型号 / 品牌 / 类型" />
+        <input v-model="q" class="pd-input" :placeholder="L.search" />
         <select v-model="sort" class="pd-sel">
           <option v-for="s in sortOpts" :key="s.k" :value="s.k">按{{ s.label }}</option>
         </select>
@@ -240,7 +249,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
         <button v-for="v in vendors" :key="v"
                 :class="['pd-chip', 'sm', vendor === v ? 'on' : '']"
                 @click="vendor = vendor === v ? '' : v">{{ v }}</button>
-        <span class="pd-count">{{ rows.length }} 件</span>
+        <span class="pd-count">{{ rows.length }} {{ L.count }}</span>
       </div>
 
       <!-- 对比 -->
@@ -291,7 +300,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
                   <path d="M3 7h4l2-3h6l2 3h4v12H3z" /><circle cx="12" cy="13" r="3.4" />
                 </template>
               </svg>
-              <em>暂无产品图</em>
+              <em>{{ L.none }}</em>
             </span>
             <span :class="['card-tier', p.tier === 'A' ? 'a' : '']">{{ p.tier }}{{ p.verified ? ' ✓' : '' }}</span>
             <span v-if="p.offer?.price != null" class="card-promo">优惠</span>
@@ -324,7 +333,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
 
             <div class="card-acts">
               <button class="pd-link" @click="toggleCompare(p)">{{ isPicked(p) ? '取消对比' : '对比' }}</button>
-              <button class="pd-link" @click="detail = p">全部参数</button>
+              <button class="pd-link" @click="detail = p">{{ L.all }}</button>
             </div>
           </div>
         </article>
