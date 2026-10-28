@@ -75,21 +75,48 @@ def main() -> None:
             errors.append(f"#{it['number']}: 部件 id 不在目录里（{part!r}）")
             continue
 
-        raw = (field(body, "评分（1–5）") or field(body, "评分") or "").strip()
+        raw = (field(body, "总分（1–5）") or field(body, "评分（1–5）")
+               or field(body, "评分") or "").strip()
         dm = re.search(r"[1-5]", raw)
         if not dm:
             errors.append(f"#{it['number']}: 评分解析不出 1–5（{raw!r}）")
             continue
         score = int(dm.group(0))
 
-        own = "我装过 / 用过这个件" in (field(body, "使用情况") or "")
+        # 勾选框必须看 [x]：v1 用子串匹配，「- [ ] 我装过 / 用过这个件」也会被算成 True，
+        # 结果每条评价都被标成「装过机」，那个单独统计就失去意义了。
+        usage_block = field(body, "使用情况") or ""
+        own = bool(re.search(r"-\s*\[[xX]\][^\n]*装过", usage_block))
         note = (field(body, "一句话理由") or "").strip()[:200]
+
+        # 四维：表单选项形如「4 - 基本对得上」，取开头那个数字。
+        # 缺就是缺（None），绝不补 0 —— 0 分是差评，没填是不知情。
+        DIMS = (("spec_trust", "参数可信度"), ("build", "做工"),
+                ("docs", "文档与支持"), ("value", "性价比"))
+        dims: dict[str, int] = {}
+        for key, label in DIMS:
+            raw_d = field(body, label) or ""
+            m_d = re.match(r"\s*([1-5])", raw_d)
+            if m_d:
+                dims[key] = int(m_d.group(1))
+
+        # 使用工况：三个下拉，白名单之外的取值直接丢（防止有人手改 body）
+        usage: dict[str, str] = {}
+        for key, label, allowed in (
+            ("duration", "用了多久", ("<1个月", "1-3个月", "3-12个月", ">1年")),
+            ("load", "负载情况", ("轻载测试", "常规", "满载连续")),
+            ("batch", "使用批量", ("单件样机", "小批量", "量产")),
+        ):
+            v = (field(body, label) or "").strip()
+            if v in allowed:
+                usage[key] = v
         author = (it.get("author") or {}).get("login") or "ghost"
         at = it.get("createdAt") or ""
 
         key = (author, part)
         row = {"issue": it["number"], "author": author, "part_id": part,
-               "score": score, "own_hardware": own, "note": note, "at": at}
+               "score": score, "own_hardware": own, "note": note, "at": at,
+               "dims": dims or None, "usage": usage or None}
         prev = best.get(key)
         if prev is None or at >= prev["at"]:
             best[key] = row
@@ -104,11 +131,41 @@ def main() -> None:
         hist = {str(i): 0 for i in range(1, 6)}
         for r in rs:
             hist[str(r["score"])] += 1
+        # 四维均值：只对填了的样本求，并给出各自的 n
+        dims_avg: dict[str, float] = {}
+        dims_n: dict[str, int] = {}
+        for key in ("spec_trust", "build", "docs", "value"):
+            vals = [r["dims"][key] for r in rs
+                    if (r.get("dims") or {}).get(key) is not None]
+            if vals:
+                dims_avg[key] = round(sum(vals) / len(vals), 2)
+                dims_n[key] = len(vals)
+
+        # 工况分布：让读者知道这些评价是在什么条件下得出的
+        usage_count: dict[str, dict[str, int]] = {}
+        for key in ("duration", "load", "batch"):
+            bucket: dict[str, int] = {}
+            for r in rs:
+                v = (r.get("usage") or {}).get(key)
+                if v:
+                    bucket[v] = bucket.get(v, 0) + 1
+            if bucket:
+                usage_count[key] = bucket
+
+        own_scores = [r["score"] for r in rs if r["own_hardware"]]
         parts[pid] = {
             "count": len(rs),
             "avg": round(sum(r["score"] for r in rs) / len(rs), 2),
             "histogram": hist,
-            "own_hardware_count": sum(1 for r in rs if r["own_hardware"]),
+            "own_hardware_count": len(own_scores),
+            # 装过机的人单独给一个均分：这是最有参考价值的那个数
+            "own_hardware_avg": (round(sum(own_scores) / len(own_scores), 2)
+                                 if own_scores else None),
+            "dims_avg": dims_avg or None,
+            "dims_n": dims_n or None,
+            "usage_count": usage_count or None,
+            # 样本量太少时，页面要显示「样本不足」而不是一个看起来很确定的均分
+            "low_sample": len(rs) < 3,
             "mine": None,
             # 明细留着：后台能查「谁打的、依据是什么」，公开页不展示昵称
             "votes": sorted(rs, key=lambda x: -x["score"]),

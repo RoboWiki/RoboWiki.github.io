@@ -46,3 +46,4 @@ data/motors.json
 data/motors_zju.json
 data/focus.json
 ui-*.png
+.pytest-tmp/

@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/RoboWiki/RoboWiki.github.io/schema/rating.schema.json",
-  "title": "评分（一对一票）",
-  "description": "由 [评分] issue 聚合而来，也用于 POST /api/ratings 的入参。",
+  "title": "评分（一对一的票）",
+  "description": "由 [评分] issue 聚合而来，也用于 POST /api/ratings 的入参。v2 增加四维分数与使用工况。",
   "type": "object",
   "required": ["score"],
   "additionalProperties": false,
@@ -11,17 +11,38 @@
       "type": "integer",
       "minimum": 1,
       "maximum": 5,
-      "description": "5=会再买/会推荐；3=能用但有明显问题；1=不会再用"
+      "description": "总分。5=会再买/会推荐；3=能用但有明显问题；1=不会再用"
+    },
+    "dims": {
+      "type": "object",
+      "description": "四维分数，可选。缺的维度留空，不补 0，也不参与均值",
+      "additionalProperties": false,
+      "properties": {
+        "spec_trust": { "type": "integer", "minimum": 1, "maximum": 5, "description": "参数可信度：手册数字与实际是否对得上" },
+        "build": { "type": "integer", "minimum": 1, "maximum": 5, "description": "做工：外壳、端子、背隙、装配一致性" },
+        "docs": { "type": "integer", "minimum": 1, "maximum": 5, "description": "文档与支持：手册、SDK、固件、厂家回复" },
+        "value": { "type": "integer", "minimum": 1, "maximum": 5, "description": "性价比：同等能力下贵不贵" }
+      }
     },
     "own_hardware": {
       "type": "boolean",
       "default": false,
-      "description": "是否装过机。单独统计 —— 装过机的人打的分和看参数打的分不是一回事。"
+      "description": "是否装过机。单独统计 —— 装过机的人打的分和看参数打的分不是一回事"
+    },
+    "usage": {
+      "type": "object",
+      "description": "使用工况。决定这条评价对别人有没有参考价值",
+      "additionalProperties": false,
+      "properties": {
+        "duration": { "type": "string", "enum": ["<1个月", "1-3个月", "3-12个月", ">1年"] },
+        "load": { "type": "string", "enum": ["轻载测试", "常规", "满载连续"] },
+        "batch": { "type": "string", "enum": ["单件样机", "小批量", "量产"] }
+      }
     },
     "note": {
       "type": "string",
       "maxLength": 200,
-      "description": "一句话理由。带上工况才有价值。"
+      "description": "一句话理由。带上工况才有价值"
     }
   }
 }

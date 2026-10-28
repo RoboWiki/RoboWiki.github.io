@@ -1,38 +1,80 @@
 name: 部件评分
-description: 给一个部件打分（1–5）。需要 GitHub 账号 —— 一人一件一票，改主意就编辑这条 issue。
+description: 给一个部件打分。四维分数 + 使用工况，比一个总分有用得多。需要 GitHub 账号 —— 一人一件一票。
 title: "[评分] "
 labels: ["rating"]
 body:
   - type: markdown
     attributes:
       value: |
-        **怎么算一票**：这条 issue 的作者 + 标题里的部件 id 就是唯一键。
+        **怎么算一票**：这条 issue 的作者 + 部件 id 就是唯一键。
         想改分直接**编辑这条 issue**，不要开新的 —— 重复开只会被聚合脚本按最新一条覆盖。
 
-        打分前请先看部件页上的官方参数与来源等级。没有实测也可以打分，但请勾选「我装过机」以示区别。
+        **总分必填，四维选填**。但四维填了才有参考价值：同样打 4 分，
+        「参数靠谱、文档稀烂」和「文档齐全、做工一般」是完全不同的两件事。
 
   - type: input
     id: part
     attributes:
       label: 部件 id
-      description: 从部件页点「去 GitHub 打分」会自动填在标题里，通常不用改。格式形如 `达妙-dm-dm-j4340-2ec-v1-1`。
-      placeholder: 达妙-dm-dm-j4340-2ec-v1-1
+      description: 从部件页点「写评价」会自动填在标题里，通常不用改。
+      placeholder: damiao-dm-j4340-2ec
     validations:
       required: true
 
   - type: dropdown
     id: score
     attributes:
-      label: 评分（1–5）
+      label: 总分（1–5）
       description: 5 = 会再买 / 会推荐；3 = 能用但有明显问题；1 = 不会再用
-      options:
-        - "5"
-        - "4"
-        - "3"
-        - "2"
-        - "1"
+      options: ["5", "4", "3", "2", "1"]
     validations:
       required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ### 四维分数（选填，但强烈建议填）
+
+  - type: dropdown
+    id: spec_trust
+    attributes:
+      label: 参数可信度
+      description: 手册/官网写的数字，和你实测或使用感受是否对得上
+      options: ["5 - 完全对得上", "4 - 基本对得上", "3 - 有小偏差", "2 - 偏差明显", "1 - 与宣称不符"]
+    validations:
+      required: false
+
+  - type: dropdown
+    id: build
+    attributes:
+      label: 做工
+      description: 外壳、端子、背隙、装配一致性
+      options: ["5 - 扎实", "4 - 良好", "3 - 一般", "2 - 有瑕疵", "1 - 明显缺陷"]
+    validations:
+      required: false
+
+  - type: dropdown
+    id: docs
+    attributes:
+      label: 文档与支持
+      description: 手册、SDK、固件、厂家回复速度
+      options: ["5 - 齐全好用", "4 - 够用", "3 - 勉强", "2 - 缺关键信息", "1 - 基本没有"]
+    validations:
+      required: false
+
+  - type: dropdown
+    id: value
+    attributes:
+      label: 性价比
+      description: 同等能力下，这个价格值不值
+      options: ["5 - 很值", "4 - 合理", "3 - 一般", "2 - 偏贵", "1 - 不值"]
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ### 使用工况（决定这条评价对别人有没有用）
 
   - type: checkboxes
     id: own_hardware
@@ -43,11 +85,35 @@ body:
         - label: 我装过 / 用过这个件
           required: false
 
+  - type: dropdown
+    id: duration
+    attributes:
+      label: 用了多久
+      options: ["<1个月", "1-3个月", "3-12个月", ">1年"]
+    validations:
+      required: false
+
+  - type: dropdown
+    id: load
+    attributes:
+      label: 负载情况
+      options: ["轻载测试", "常规", "满载连续"]
+    validations:
+      required: false
+
+  - type: dropdown
+    id: batch
+    attributes:
+      label: 使用批量
+      options: ["单件样机", "小批量", "量产"]
+    validations:
+      required: false
+
   - type: textarea
     id: note
     attributes:
       label: 一句话理由
-      description: 写「好用 / 不好用」对下一个人没有价值。带上工况：负载、占空比、环境温度、跑了多久、坏在哪。
+      description: 写「好用 / 不好用」对下一个人没有价值。带上数字：负载、占空比、温度、跑了多久、坏在哪。
       placeholder: 髋关节，整机 20 kg，连续 30 N·m 跑了三个月，外壳 55℃；背隙比标称大。
     validations:
       required: true
