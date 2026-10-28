@@ -35,7 +35,11 @@
    "tau_rated_Nm": null,
    "gear": null,
    "armature_kgm2": null,
-   "kt_Nm_per_A": null
+   "kt_Nm_per_A": null,
+   "pwm": 4,
+   "uart": 3,
+   "imu": "BMI088",
+   "protection": "防反接 / 缓启动 / 两路可控电源(5A)"
   }
  }
 ]

@@ -50,7 +50,7 @@
   "last_checked": "2026-10-28",
   "price_cny": null,
   "origin": "《RoboMaster 开发板 C 型用户手册》(2020) 特征参数页 + 官方产品页技术参数",
-  "notes": "RM 生态的小板：比 A 型便宜、更小，常用来带云台/拨弹。**CAN 是 2 条总线、4 个接口**（CAN1 两个 2-pin、CAN2 两个 4-pin），不是 2 个口 —— 布线时按接口数算。",
+  "notes": "RM 生态的小板：比 A 型便宜更小，常用来带云台/拨弹。**CAN 是 2 条总线、4 个接口**（CAN1 两个 2-pin、CAN2 两个 4-pin），布线按接口数算。24V 输入带防反接与过压保护，5V 口专门给激光。手册未注明 MCU 具体型号，只写「高性能 STM32」——常见资料为 STM32F407IGH6，本站不替厂商补型号。",
   "specs": {
    "mcu": "STM32（手册未注明具体型号，常见资料为 STM32F407IGH6）",
    "clock_mhz": null,
@@ -60,19 +60,23 @@
    "canfd": false,
    "can_speed_mbps": null,
    "current_loop_khz": null,
-   "iface": "CAN1×2 + CAN2×2 / UART×2 / PWM×7 / DBUS×1 / USB×1 / 摄像头 FPC×1",
+   "iface": "CAN1×2 + CAN2×2｜UART×2｜PWM×7｜DBUS×1｜USB(micro, DFU)×1｜SWD×1｜BOOT×1｜5V 激光口×1｜24V 输出×1｜可配置 IO(I²C/SPI)｜数字摄像头 FPC 18-pin×1",
    "voltage_in_V": 24,
    "voltage_range_V": "8–28 V",
    "mass_kg": 0.038,
    "dims": "60×41×16.3 mm",
    "temp_range": "0–55 ℃",
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/dji-rm-board-c.jpg",
+   "image_source": "RoboMaster 开发板 C 型用户手册 第 3 页接口线稿",
    "tau_peak_Nm": null,
    "tau_rated_Nm": null,
    "gear": null,
    "armature_kgm2": null,
-   "kt_Nm_per_A": null
+   "kt_Nm_per_A": null,
+   "pwm": 7,
+   "uart": 2,
+   "imu": "六轴 IMU + 磁力计",
+   "protection": "防反接 / 防过压 / 硅胶外壳"
   }
  }
 ]

@@ -86,6 +86,10 @@ title: 达妙 DAMIAO DM-MC-Board02
 | 减速比 | — |
 | 转子惯量 (kg·m²) | — |
 | 转矩常数 (N·m/A) | — |
+| pwm | 4 |
+| uart | 3 |
+| imu | BMI088 |
+| protection | 防反接 / 缓启动 / 两路可控电源(5A) |
 
 ## 优惠与获取条件
 
