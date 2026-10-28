@@ -55,6 +55,13 @@ const rows = computed(() => {
   })
 })
 
+/** 图片走 BASE_URL 前缀：Pages 部署在 /RoboSelect/ 下，写死 /parts 会 404 */
+function imgUrl(p?: string | null): string {
+  if (!p) return ''
+  const base = String(import.meta.env.BASE_URL || '/')
+  return base.replace(/\/$/, '') + '/' + p.replace(/^\//, '')
+}
+
 const num = (v: any) => (v === null || v === undefined || v === '') ? '—' : String(v)
 /** 值里已含单位（如「0.5 h（6S LiPo）」）就不再追加，避免出现「0.5 h h」 */
 function withUnit(v: any, unit: string): string {
@@ -78,7 +85,7 @@ const repo = (x: Robot) => (x.specs?.repo_urls as string[] | undefined)?.length 
     <div class="rg-grid">
       <div v-for="x in rows" :key="x.id" class="rc">
         <div class="rc-plate">
-          <img v-if="x.specs?.image_url" :src="x.specs.image_url" :alt="x.model" loading="lazy" />
+          <img v-if="x.specs?.image_url" :src="imgUrl(x.specs.image_url)" :alt="x.model" loading="lazy" />
           <span v-else class="rc-ph">暂无产品图</span>
         </div>
         <div class="rc-body">
