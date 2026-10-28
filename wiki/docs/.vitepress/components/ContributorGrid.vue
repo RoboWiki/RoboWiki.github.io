@@ -67,7 +67,9 @@ const people = computed(() => snap.value?.contributors ?? [])
             <div class="cw-txt">
               <div class="cw-login">{{ p.login }}</div>
               <div class="cw-meta">
-                <span>{{ p.contributions }} {{ L.times_n }}</span>
+                <span :title="`初始 ${p.baseline ?? 0} + GitHub ${p.contributions}`">
+                  {{ p.contribution_total ?? p.contributions }} {{ L.times_n }}
+                </span>
                 <em v-if="p.role">{{ p.role }}</em>
                 <em v-else-if="i === 0 && !p.bot">{{ L.maintainer }}</em>
                 <em v-if="p.bot" class="bot">{{ L.bot }}</em>

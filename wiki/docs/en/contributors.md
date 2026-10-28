@@ -19,7 +19,7 @@ outline: false
     <p class="cd-sub">Not generated from git log: machines can count commits, but they cannot say who verified which datasheet.</p>
     <div class="ct-grid"><div class="ct">
   <div class="ct-head"><b>zeitvex</b><span class="ct-role">创始维护者</span></div>
-  <p>站点与构建链；达妙 / 灵足 / 大疆 / 宇树四家的参数核对与口径定义</p>
+  <p>Builds and maintains the whole engineering side: the data gate and validation, per-category page generation, the parts explorer and comparison, the semantics page, suppliers and contributors; verified every A-tier spec for DAMIAO, RobStride, DJI and Unitree (torque normalised to the output side, missing values written as null) and turned traceability into machine-checked rules.</p>
   <a href="https://github.com/zeitvex" target="_blank" rel="noopener">GitHub</a>
 </div>
 <div class="ct">

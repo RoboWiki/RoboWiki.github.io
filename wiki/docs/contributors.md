@@ -19,7 +19,7 @@ outline: false
     <p class="cd-sub">不从 git log 生成：机器只会数 commit，说不出谁核过哪本手册。</p>
     <div class="ct-grid"><div class="ct">
   <div class="ct-head"><b>zeitvex</b><span class="ct-role">创始维护者</span></div>
-  <p>站点与构建链；达妙 / 灵足 / 大疆 / 宇树四家的参数核对与口径定义</p>
+  <p>建站与全部工程实现：数据闸门与校验、按品类生成页面、部件库检索与对比、参数口径页、供应商页、贡献者页；达妙 / 灵足 / 大疆 / 宇树四家的 A 级参数逐条核对（扭矩统一到输出端、缺字段一律写 null）；把「来源可追溯」做成机器可查的规则，而不是写在文档里的一句话。</p>
   <a href="https://github.com/zeitvex" target="_blank" rel="noopener">GitHub</a>
 </div>
 <div class="ct">

@@ -3,13 +3,14 @@
   "handle": "zeitvex",
   "name": "zeitvex",
   "role": "创始维护者",
-  "did": "站点与构建链；达妙 / 灵足 / 大疆 / 宇树四家的参数核对与口径定义",
+  "did": "建站与全部工程实现：数据闸门与校验、按品类生成页面、部件库检索与对比、参数口径页、供应商页、贡献者页；达妙 / 灵足 / 大疆 / 宇树四家的 A 级参数逐条核对（扭矩统一到输出端、缺字段一律写 null）；把「来源可追溯」做成机器可查的规则，而不是写在文档里的一句话。",
   "links": [
    {
     "label": "GitHub",
     "url": "https://github.com/zeitvex"
    }
-  ]
+  ],
+  "did_en": "Builds and maintains the whole engineering side: the data gate and validation, per-category page generation, the parts explorer and comparison, the semantics page, suppliers and contributors; verified every A-tier spec for DAMIAO, RobStride, DJI and Unitree (torque normalised to the output side, missing values written as null) and turned traceability into machine-checked rules."
  },
  {
   "name": "Dichen33",
