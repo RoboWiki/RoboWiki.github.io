@@ -416,6 +416,12 @@ def main() -> None:
         rows.append(("价格与货期检索", f"https://www.google.com/search?q={q}+%E4%BB%B7%E6%A0%BC",
                      "本站不卖货，报价请向厂商确认"))
         rows.append(("本站口径说明", "/semantics", "这些字段什么意思、缺了代表什么"))
+        # 直达这条数据所在的文件 —— 新人最容易卡在「知道要改 JSON、不知道改哪个」。
+        src = r.get("_file")
+        if src:
+            rows.append(("在 GitHub 上编辑这条数据",
+                         f"https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/{src}",
+                         f"文件 data/catalog/{src}"))
 
         body = []
         for name, url, note in rows:

@@ -25,3 +25,6 @@ wiki/docs/.vitepress/cache/
 # 文档站的产品图由 pipeline/build_site.py 从 frontend/public/parts 同步
 wiki/docs/public/parts/
 wiki/docs/public/catalog.json
+# 派生的归档 JSONL（10.4 MB）：可由 tools/inventory_archive.py + normalize_archive.py
+# 从本地归档重建，不入库。词表与报告留着小，方便直接读。
+data/_inventory/*.jsonl

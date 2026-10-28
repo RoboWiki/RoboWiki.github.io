@@ -23,16 +23,25 @@ def _read(p: pathlib.Path) -> Any:
 
 
 def load_parts() -> list[dict]:
-    """返回全部零件（已按品类 + 厂商排序）。"""
+    """返回全部零件，每行带一个 `_file`（相对 data/catalog 的路径）。
+
+    `_file` 只有一个用途：让部件页能给出「在 GitHub 上编辑这条数据」的直达链接。
+    没有它，贡献者要在 30 个 JSON 里找自己那个型号 —— 这是最容易流失新人的一步。
+    """
     rows: list[dict] = []
 
     cat_dir = DATA / "catalog"
     if cat_dir.exists():
         for f in sorted(cat_dir.glob("*/*.json")):
             try:
-                rows.extend(_read(f))
+                items = _read(f)
             except Exception as e:  # 一个文件坏了不该让整站起不来
                 print(f"[catalog] 跳过 {f.relative_to(ROOT)}: {e}")
+                continue
+            rel = f.relative_to(cat_dir).as_posix()
+            for r in items:
+                r["_file"] = rel
+            rows.extend(items)
 
     if rows:
         return rows
@@ -41,7 +50,10 @@ def load_parts() -> list[dict]:
                "sensors.json"):
         p = DATA / fn
         if p.exists():
-            rows.extend(_read(p))
+            items = _read(p)
+            for r in items:
+                r["_file"] = fn
+            rows.extend(items)
     return rows
 
 
