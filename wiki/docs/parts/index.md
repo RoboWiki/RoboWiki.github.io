@@ -13,7 +13,7 @@ title: 部件详情
 - **[机械加工](/parts/structure/)** —— CNC / 3D 打印 / 钣金（0 件）
 - **[IMU](/parts/imu/)** —— 姿态与振动（0 件）
 - **[激光雷达](/parts/lidar/)** —— 地形与建图（3 件）
-- **[深度相机](/parts/camera/)** —— 视觉感知（6 件）
+- **[深度相机](/parts/camera/)** —— 视觉感知（7 件）
 - **[电池](/parts/battery/)** —— 待收录（0 件）
 - **[线束](/parts/wiring/)** —— 待收录（0 件）
 - **[其余模块](/parts/module/)** —— 力触觉 / 编码器（0 件）

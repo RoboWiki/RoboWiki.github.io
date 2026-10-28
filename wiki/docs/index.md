@@ -21,7 +21,7 @@ titleTemplate: false
   </section>
 
   <section class="home-stats">
-    <div><b>75</b><span>在库部件</span></div>
+    <div><b>76</b><span>在库部件</span></div>
     <div><b>46</b><span>关节电机 · 4 家</span></div>
     <div><b>87%</b><span>有转子惯量（可直接进仿真）</span></div>
     <div><b>93%</b><span>有额定扭矩</span></div>
@@ -35,7 +35,7 @@ titleTemplate: false
 <a class="hc" href="/parts/structure/"><b>机械加工</b><span>待收录</span><em>CNC / 3D 打印 / 钣金</em></a>
 <a class="hc" href="/parts/imu/"><b>IMU</b><span>待收录</span><em>姿态与振动</em></a>
 <a class="hc" href="/parts/lidar/"><b>激光雷达</b><span>3</span><em>地形与建图</em></a>
-<a class="hc" href="/parts/camera/"><b>深度相机</b><span>6</span><em>视觉感知</em></a>
+<a class="hc" href="/parts/camera/"><b>深度相机</b><span>7</span><em>视觉感知</em></a>
 <a class="hc" href="/parts/battery/"><b>电池</b><span>待收录</span><em>待收录</em></a>
 <a class="hc" href="/parts/wiring/"><b>线束</b><span>待收录</span><em>待收录</em></a>
 <a class="hc" href="/parts/module/"><b>其余模块</b><span>待收录</span><em>力触觉 / 编码器</em></a>

@@ -36,8 +36,7 @@
  "unitree-im6014": "/parts/unitree-im6014.jpg",
  "unitree-go-m8010-6": "/parts/unitree-go-m8010-6.jpg",
  "unitree-unitree-a1": "/parts/unitree-unitree-a1.jpg",
- "orbbec-gemini-335": "/parts/orbbec-gemini-335.png",
- "orbbec-gemini-336": "/parts/orbbec-gemini-336.png",
+ "orbbec-gemini-335": "/parts/orbbec-gemini-335.jpg",
  "chip-st-stm32f405rgt6": "/parts/chip-st-stm32f405rgt6.png",
  "chip-st-stm32g431cbu6": "/parts/chip-st-stm32g431cbu6.png",
  "chip-ti-tmc4671": "/parts/chip-ti-tmc4671.jpg",
@@ -53,5 +52,8 @@
  "damiao-h7": "/parts/damiao-h7.png",
  "灵足-robstride-rs10": "/parts/robstride-rs10.jpg",
  "intel-d405": "/parts/intel-d405.png",
- "intel-d457": "/parts/intel-d457.png"
+ "intel-d457": "/parts/intel-d457.png",
+ "orbbec-gemini-305": "/parts/orbbec-gemini-305.jpg",
+ "intel-d435i": "/parts/intel-d435i.png",
+ "intel-d455": "/parts/intel-d455.png"
 }

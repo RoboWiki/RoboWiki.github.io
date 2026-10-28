@@ -14,8 +14,8 @@
   "origin": "厂商产品页（公开资料）",
   "notes": "双目 + 红外投影，全局快门；内置 IMU 是它相对 D435 的主要差别。深度与 RGB 是不同传感器，做 SLAM 要显式做时间同步。 产品图待补：Intel 站点对本站 TLS 握手拦截，需人工提供截图",
   "specs": {
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/intel-d435i.png",
+   "image_source": "RealSense 国内代理官网产品图",
    "tau_peak_Nm": null,
    "tau_rated_Nm": null,
    "gear": null,
@@ -44,8 +44,8 @@
   "origin": "厂商产品页（公开资料）",
   "notes": "基线比 D435i 长，远处精度更好、近处盲区更大；同样内置 IMU。 产品图待补：同上，需人工提供截图",
   "specs": {
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/intel-d455.png",
+   "image_source": "RealSense 国内代理官网产品图",
    "tau_peak_Nm": null,
    "tau_rated_Nm": null,
    "gear": null,

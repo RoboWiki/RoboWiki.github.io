@@ -12,10 +12,10 @@
   "last_checked": "2026-10-28",
   "price_cny": null,
   "origin": "Seeed wiki 集成指南（非规格书）",
-  "notes": "入门级主动双目（结构光辅助），ROS/Orbbec SDK 生态完整。规格待补：需按厂商规格书逐项核对，本站不估。 产品图待补：Orbbec 产品页为 JS 渲染，HTML 里没有图片地址，需人工提供截图",
+  "notes": "入门级主动双目（结构光辅助），ROS/Orbbec SDK 生态完整。规格待补：需按厂商规格书逐项核对，本站不估。",
   "specs": {
-   "image_url": "/parts/orbbec-gemini-335.png",
-   "image_source": "厂商官方产品图（用户提供链接）",
+   "image_url": "/parts/orbbec-gemini-335.jpg",
+   "image_source": "奥比中光官网产品图",
    "tau_peak_Nm": null,
    "tau_rated_Nm": null,
    "gear": null,
@@ -41,10 +41,10 @@
   "last_checked": "2026-10-28",
   "price_cny": null,
   "origin": "Seeed wiki 集成指南（非规格书）",
-  "notes": "与 335 同代，差异在深度/RGB 分辨率与部分工作模式。规格待补：需按厂商规格书逐项核对，本站不估。 产品图待补：同上，需人工提供截图",
+  "notes": "与 335 同代，差异在深度/RGB 分辨率与部分工作模式。产品图待补：官网 336 独立产品图未拿到，需人工提供截图",
   "specs": {
-   "image_url": "/parts/orbbec-gemini-336.png",
-   "image_source": "厂商官方产品图（用户提供链接）",
+   "image_url": null,
+   "image_source": null,
    "tau_peak_Nm": null,
    "tau_rated_Nm": null,
    "gear": null,
@@ -55,6 +55,37 @@
    "depth_range_m": null,
    "fps": null,
    "fov": null
+  }
+ },
+ {
+  "category": "camera",
+  "subtype": "stereo",
+  "id": "orbbec-gemini-305",
+  "vendor": "奥比中光 Orbbec",
+  "model": "Gemini 305",
+  "title": "奥比中光 Gemini 305 轻量近距双目 3D 相机",
+  "url": "https://www.orbbec.com.cn/xin/products/gemini-305/",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": null,
+  "origin": "奥比中光官网 Gemini 305 产品页",
+  "notes": "官方定位「轻量近距」：全局曝光双目 + 深度/彩色解耦设计，适合桌面级抓取与近距避障。远距场景别选它 —— 这是近距件。",
+  "specs": {
+   "image_url": "/parts/orbbec-gemini-305.jpg",
+   "image_source": "奥比中光官网产品图",
+   "iface": "USB 3.0 Type-C",
+   "depth_range_m": null,
+   "fps": 60,
+   "fov": "H 88° × V 65° × D 98°",
+   "resolution": "1280×800",
+   "mass_kg": null,
+   "voltage_V": null,
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "armature_kgm2": null,
+   "kt_Nm_per_A": null
   }
  }
 ]
