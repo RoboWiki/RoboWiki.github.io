@@ -18,6 +18,8 @@ interface Sup {
   kind: 'platform' | 'shop'
   url: string | null
   process: string | null
+  category: string | null
+  fine: string | null
   process_tag: string | null
   quality: string | null
   punctual: string | null
@@ -33,6 +35,7 @@ interface Sup {
 const all = ref<Sup[]>([])
 const q = ref('')
 const tag = ref('')
+const cat = ref('')
 const kind = ref<'' | 'platform' | 'shop'>('')
 const only = ref(false)      // 只看有点评的
 const open = ref<string | null>(null)
@@ -47,11 +50,27 @@ onMounted(async () => {
 const tags = computed(() => {
   const m = new Map<string, number>()
   for (const s of all.value) {
-    const t = s.process_tag || '未记工艺'
+    if (cat.value && (s.category || '未分类') !== cat.value) continue
+    const t = s.fine || s.process_tag || '其他/未记'
     m.set(t, (m.get(t) || 0) + 1)
   }
   return [...m.entries()].sort((a, b) => b[1] - a[1])
 })
+
+//: 大类来自名录表里的分类列（机械加工 / 螺钉 / 标准件 / 轴承 / 电子 / 传感器 …）
+const cats = computed(() => {
+  const m = new Map<string, number>()
+  for (const s of all.value) {
+    const c = s.category || '未分类'
+    m.set(c, (m.get(c) || 0) + 1)
+  }
+  return [...m.entries()].sort((a, b) => b[1] - a[1])
+})
+
+function setCat(c: string) {
+  cat.value = cat.value === c ? '' : c
+  tag.value = ''      // 切大类时清掉细分，避免出现 0 结果
+}
 
 const hasNote = (s: Sup) => !!s.notes && !s.notes.includes('未附点评')
 
@@ -60,7 +79,8 @@ const rows = computed(() => {
   return all.value.filter((s) => {
     if (kind.value && s.kind !== kind.value) return false
     if (only.value && !hasNote(s)) return false
-    if (tag.value && (s.process_tag || '未记工艺') !== tag.value) return false
+    if (cat.value && (s.category || '未分类') !== cat.value) return false
+    if (tag.value && (s.fine || s.process_tag || '其他/未记') !== tag.value) return false
     if (!kw) return true
     const hay = [s.name, s.process, s.quality, s.punctual, s.price_level,
                  s.notes, s.materials].filter(Boolean).join(' ').toLowerCase()
@@ -97,8 +117,14 @@ const QUALITY_GOOD = ['稳定，精度高', '精度高', '稳定，精度好', '
       <span class="sup-count">{{ sorted.length }} 家</span>
     </div>
 
+    <div class="sup-cats">
+      <button class="sup-tag" :class="{ on: cat === '' }" @click="setCat('')">全部品类</button>
+      <button v-for="[c, n] in cats" :key="c" class="sup-tag" :class="{ on: cat === c, main: true }"
+              @click="setCat(c)">{{ c }} {{ n }}</button>
+    </div>
+
     <div class="sup-tags">
-      <button class="sup-tag" :class="{ on: tag === '' }" @click="tag = ''">全部工艺</button>
+      <button class="sup-tag" :class="{ on: tag === '' }" @click="tag = ''">全部细分</button>
       <button v-for="[t, n] in tags" :key="t" class="sup-tag" :class="{ on: tag === t }"
               @click="tag = tag === t ? '' : t">{{ t }} {{ n }}</button>
     </div>
@@ -108,7 +134,8 @@ const QUALITY_GOOD = ['稳定，精度高', '精度高', '稳定，精度好', '
         <div class="sc-head">
           <a v-if="s.url" :href="s.url" target="_blank" rel="noopener nofollow" class="sc-name">{{ s.name }}</a>
           <span v-else class="sc-name">{{ s.name }}</span>
-          <span class="sc-kind">{{ s.kind === 'platform' ? '自营平台' : '店铺' }}</span>
+          <span class="sc-kind">{{ s.category || '未分类' }}</span>
+          <span class="sc-kind">{{ s.fine || s.kind === 'platform' ? s.fine || '自营平台' : '店铺' }}</span>
         </div>
         <p class="sc-proc">{{ s.process || '工艺未记' }}</p>
         <dl class="sc-kv">
@@ -140,7 +167,9 @@ const QUALITY_GOOD = ['稳定，精度高', '精度高', '稳定，精度好', '
 .sup-btn:hover, .sup-tag:hover { border-color: var(--vp-c-brand-1); color: var(--vp-c-brand-1); }
 .sup-btn.on, .sup-tag.on { background: var(--vp-c-brand-1); border-color: var(--vp-c-brand-1); color: #fff; }
 .sup-count { font-size: 0.74rem; color: var(--vp-c-text-3); margin-left: auto; }
+.sup-cats { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.45rem; }
 .sup-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+.sup-tag.main { font-weight: 600; }
 .sup-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 0.7rem; }
 .sc { border: 1px solid var(--vp-c-divider); border-radius: 12px; padding: 0.8rem 0.9rem;
   background: var(--vp-c-bg); display: flex; flex-direction: column; gap: 0.4rem; }

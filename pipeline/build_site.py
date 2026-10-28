@@ -160,7 +160,7 @@ def main() -> None:
     # 那些页面还能被访问到，等于把废弃数据留在线上。
     # 手写页面（explore.md）不在清理范围内。
     GENERATED = ["index.md", "semantics.md", "protocols.md", "sources.md",
-                 "contributors.md", "ai.md", "suppliers.md"]
+                 "contributors.md", "suppliers.md"]
     for name in GENERATED:
         p = OUT / name
         if p.exists():
@@ -1320,77 +1320,6 @@ html.dark .rl-th {{ color: #e0b159; }}
 </style>
 ''', encoding="utf-8")
 
-    # ── AI 中转站 ───────────────────────────────────────────────────────
-    try:
-        ais = json.loads((ROOT / "data" / "ai_services.json").read_text(encoding="utf-8"))
-    except Exception:
-        ais = []
-    ai_rows = "\n".join(
-        f"""<tr>
-  <td><a href="{a.get('url') or '#'}" target="_blank" rel="noopener">{a.get('name')}</a></td>
-  <td>{a.get('kind') or '—'}</td>
-  <td>{a.get('models') or '—'}</td>
-  <td>{a.get('protocol') or '—'}</td>
-  <td>{a.get('billing') or '—'}</td>
-  <td class="ai-note">{a.get('note') or '—'}</td>
-</tr>""" for a in ais)
-    (OUT / "ai.md").write_text(
-        '---\ntitle: AI 中转站\nlayout: page\nsidebar: false\noutline: false\n---\n\n'
-        + f'''
-<div class="ai">
-  <header class="ai-hero">
-    <div class="ai-kicker">AI 中转站</div>
-    <h1>机器人要用的模型 API，从哪儿接。</h1>
-    <p>
-      这一页不是「哪个模型最强」，而是<strong>接入渠道怎么选</strong>：能不能国内直连、
-      是不是 OpenAI 兼容、按量计费还是预充值。选型决定你写多少胶水代码。
-    </p>
-  </header>
-
-  <table class="ai-table">
-    <thead><tr><th>服务</th><th>类型</th><th>可用模型</th><th>协议</th><th>计费</th><th>备注</th></tr></thead>
-    <tbody>
-{ai_rows}
-    </tbody>
-  </table>
-
-  <section class="ai-how">
-    <h2>三条实用判断</h2>
-    <ol>
-      <li><b>先确认是不是 OpenAI 兼容</b>。兼容的话换服务商只改 base_url 与 key，否则要重写一层适配。</li>
-      <li><b>机器人上的在线推理只用于「高层决策」</b> —— 语音指令、场景描述、任务拆解。
-          关节力矩环绝不能过网络，最差也是本地小模型。</li>
-      <li><b>延迟比单价更影响体验</b>。一句话指令多 800 ms，人会觉得机器人「傻」。</li>
-    </ol>
-  </section>
-
-  <p class="ai-warn">
-    价格与可用模型随时会变，<strong>本站不记录具体单价</strong>，也不做返佣推荐 ——
-    以各家官网当期公示为准。这一页只列接入形态。
-  </p>
-</div>
-
-<style>
-.ai {{ max-width: 1040px; margin: 0 auto; padding: 1.8rem 1.5rem 4rem; }}
-.ai-kicker {{ font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--vp-c-brand-1); font-weight: 700; margin-bottom: 0.5rem; }}
-.ai-hero h1 {{ font-size: clamp(1.4rem, 2.6vw, 1.9rem); line-height: 1.3; font-weight: 800;
-  letter-spacing: -0.02em; margin: 0 0 0.7rem; border: none; padding: 0; color: var(--vp-c-text-1); }}
-.ai-hero p {{ margin: 0; font-size: 0.86rem; line-height: 1.85; color: var(--vp-c-text-2); max-width: 68ch; }}
-.ai-table {{ width: 100%; border-collapse: collapse; font-size: 0.78rem; margin: 1.6rem 0; }}
-.ai-table th {{ text-align: left; font-weight: 600; color: var(--vp-c-text-3);
-  border-bottom: 2px solid var(--vp-c-divider); padding: 0.45rem 0.6rem; white-space: nowrap; }}
-.ai-table td {{ border-bottom: 1px solid var(--vp-c-divider); padding: 0.5rem 0.6rem;
-  vertical-align: top; color: var(--vp-c-text-2); }}
-.ai-table td a {{ color: var(--vp-c-brand-1); font-weight: 600; }}
-.ai-note {{ min-width: 220px; color: var(--vp-c-text-3) !important; line-height: 1.7; }}
-.ai-how h2 {{ font-size: 1rem; font-weight: 700; margin: 1.6rem 0 0.6rem;
-  border: none; padding: 0; color: var(--vp-c-text-1); }}
-.ai-how ol {{ font-size: 0.82rem; line-height: 1.9; color: var(--vp-c-text-2); padding-left: 1.2rem; margin: 0; }}
-.ai-warn {{ font-size: 0.78rem; color: var(--vp-c-text-3); margin-top: 1.6rem; line-height: 1.8;
-  border-left: 3px solid var(--vp-c-divider); padding-left: 0.8rem; }}
-</style>
-''', encoding="utf-8")
 
     # ── 供应商（与部件库分开）────────────────────────────────────────────
     # 部件库回答「这台电机怎么样」，供应商回答「这活找谁做」——
@@ -1422,10 +1351,12 @@ outline: false
     </p>
     <div class="sup-src">
       <b>数据来源</b>
-      名录来自社区整理的《供应商名录》机械加工表（145 家店铺 + 8 家自营平台）。
+      名录来自社区整理的《供应商名录》，按原表的分类铺开：机械加工 / 标准件 /
+      螺钉紧固 / 轴承 / 电子 / 传感器 / 避雷防护 / 杂项，共 157 家（含 8 家自营平台）。
       质量 / 交期 / 价格 / 发票是<strong>他人实战反馈的转述</strong>，不是厂商自述，
-      统一标 <code>B</code> 级。点评里的署名（北理 / 哈工大 / 深技大 …）原样保留 ——
-      谁说的，看得出来。
+      统一标 <code>B</code> 级。
+      原表里带学校与姓名的署名已<strong>全部去标识</strong>：只留反馈内容，
+      不留「谁说的」。
     </div>
   </header>
 
