@@ -170,3 +170,45 @@ html.dark .pm-bad .pm-v { color: #f48771; }
 @media (max-width: 720px) {
   .pm-row { grid-template-columns: 1fr; gap: 0.15rem; }
 }
+/* ── 排布优化（2026-10-28）───────────────────────────────────────── */
+
+/* 官方参数表：字段列允许在窄屏换行（否则中文长字段名会被压扁），
+   值列保持等宽数字 + 不换行，扫读时仍是一列对齐的数。 */
+.part-official td:first-child {
+  white-space: normal;          /* 覆盖全局 nowrap：字段名窄屏可换行 */
+  line-height: 1.45;
+  min-width: 7.5em;
+}
+.part-official td:last-child {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  color: var(--vp-c-text-1);
+}
+
+/* 双栏在「够宽但不算宽」的中间档（861–1100px）也被右侧 outline 挤，
+   这时把左右比例调平缓一点，别让参数表太窄。 */
+@media (min-width: 861px) and (max-width: 1180px) {
+  .part-split { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
+}
+
+/* 社区评分卡：内容滚长时保持可见（sticky），不用滚回去才能打分。
+   只在双栏（桌面）生效；移动端单栏不 sticky，避免挡内容。 */
+@media (min-width: 861px) {
+  .part-comm {
+    position: sticky;
+    top: calc(var(--vp-nav-height, 64px) + 12px);
+  }
+}
+
+/* 表格横向可滚时，右侧给一条随滚动消失的渐隐提示（纯 CSS，无需 JS）。
+   原理：两层背景，scroll 层跟随内容、local 层固定在右缘。 */
+.vp-doc table {
+  background:
+    linear-gradient(to right, var(--vp-c-bg) 30%, transparent) local,
+    linear-gradient(to right, transparent, var(--vp-c-bg) 70%) local,
+    linear-gradient(to right, rgba(0,0,0,0.10), transparent 18px) scroll,
+    linear-gradient(to left, rgba(0,0,0,0.10), transparent 18px) scroll;
+  background-repeat: no-repeat;
+  background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
+  background-position: 0 0, 100% 0, 0 0, 100% 0;
+}
