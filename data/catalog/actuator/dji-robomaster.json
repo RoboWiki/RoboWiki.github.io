@@ -40,7 +40,7 @@
    "driver_integrated": false,
    "ip": null,
    "image_url": "/parts/dji-robomaster-gm6020.jpg",
-   "image_source": "厂商官方 PDF（RoboMaster_GM6020直流无刷电机使用说明20231013.pdf 首页产品图）",
+   "image_source": "厂商官方产品图（RoboMaster 商城产品照）",
    "i_stall_A": null,
    "temp_range": "0–55 ℃",
    "dims": null
@@ -89,7 +89,7 @@
    "driver_integrated": false,
    "ip": null,
    "image_url": "/parts/dji-robomaster-m2006-p36.jpg",
-   "image_source": "厂商官方 PDF（RM_M2006_P36直流无刷减速电机使用说明.pdf 首页产品图）",
+   "image_source": "厂商官方产品图（RoboMaster 商城产品照）",
    "i_stall_A": 27.3,
    "temp_range": "0–55 ℃",
    "dims": null
@@ -138,7 +138,7 @@
    "driver_integrated": false,
    "ip": null,
    "image_url": "/parts/dji-robomaster-m3508-p19.jpg",
-   "image_source": "厂商官方 PDF（RoboMaster_M3508_直流无刷电机_使用说明（中英）.pdf 首页产品图）",
+   "image_source": "厂商官方产品图（RoboMaster 商城产品照）",
    "i_stall_A": null,
    "temp_range": "0–50 ℃",
    "dims": null
