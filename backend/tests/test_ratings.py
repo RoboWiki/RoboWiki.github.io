@@ -15,8 +15,8 @@ import sys
 import tempfile
 
 _TMP = tempfile.mkdtemp(prefix="roboselect-rate-")
-os.environ["ROBOSELECT_DB_PATH"] = str(pathlib.Path(_TMP) / "test.db")
-os.environ["ROBOSELECT_SECRET_KEY"] = "test-secret-key-at-least-32-bytes-long-0000"
+os.environ["ROBOWIKI_DB_PATH"] = str(pathlib.Path(_TMP) / "test.db")
+os.environ["ROBOWIKI_SECRET_KEY"] = "test-secret-key-at-least-32-bytes-long-0000"
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
 import pytest  # noqa: E402
@@ -42,7 +42,7 @@ def client():
 
 
 def login(c, handle="demo1") -> dict:
-    r = c.post("/api/auth/login", json={"handle": handle, "password": "roboselect"})
+    r = c.post("/api/auth/login", json={"handle": handle, "password": "robowiki"})
     assert r.status_code == 200, r.text
     return {"Authorization": f"Bearer {r.json()['access_token']}"}
 
@@ -88,7 +88,7 @@ def test_rate_then_change_is_same_vote(client):
 
 def test_histogram_and_avg_across_users(client):
     h1 = login(client, "demo1")
-    h2 = login(client, "roboselect")
+    h2 = login(client, "robowiki")
     client.post(f"/api/ratings/{PART2}", headers=h1, json={"score": 5, "own_hardware": True})
     client.post(f"/api/ratings/{PART2}", headers=h2, json={"score": 2, "own_hardware": False})
 

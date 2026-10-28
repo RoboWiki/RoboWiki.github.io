@@ -41,7 +41,7 @@ function mountGiscus() {
     'data-lang': giscusCfg.lang ?? 'zh-CN',
   }
   // specific 模式用稳定的 term（不含 base、不含 .html）：
-  // 否则仓库改名（/roboselect/ → /RoboSelect/）会让所有讨论改键、集体消失。
+  // 否则仓库改名（域名从 zeitvex.github.io/RoboWiki/ 换成 robowiki.github.io/）会让所有讨论改键、集体消失。
   if (mapping === 'specific') attrs['data-term'] = pageId.value
   for (const [k, v] of Object.entries(attrs)) s.setAttribute(k, v)
   giscusHost.value.appendChild(s)

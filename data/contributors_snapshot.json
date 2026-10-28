@@ -1,5 +1,5 @@
 {
- "repo": "zeitvex/RoboSelect",
+ "repo": "RoboWiki/RoboWiki.github.io",
  "source": "GitHub Contributors（gh api）",
  "updated_at": "2026-10-28 17:50",
  "total": 3,
@@ -27,5 +27,5 @@
    "bot": false
   }
  ],
- "note": "Dichen33 的贡献在 ccc 分支上，GitHub Contributors API 只统计默认分支，所以这条是手工登记的（contributions 记 0，不虚报）。"
+ "note": "贡献者快照。迁移到 RoboWiki/RoboWiki.github.io 之后，旧仓库的提交数仍保留（历史贡献不因搬家消失）；Dichen33 的贡献在 ccc 分支上，API 统计不到，人工登记。"
 }

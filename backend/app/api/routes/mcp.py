@@ -26,7 +26,7 @@ from .semantics import (COMPARABILITY, CONVERSIONS, FIELD_SEMANTICS, RED_LINES,
 
 router = APIRouter(tags=["mcp"])
 
-SERVER_INFO = {"name": "roboselect", "version": "0.2.0"}
+SERVER_INFO = {"name": "robowiki", "version": "0.2.0"}
 PROTOCOL_VERSIONS = ["2025-06-18", "2025-03-26", "2024-11-05"]
 
 TOOLS: list[dict[str, Any]] = [
@@ -77,7 +77,7 @@ TOOLS: list[dict[str, Any]] = [
 
 def manifest() -> dict:
     return {
-        "name": "roboselect",
+        "name": "robowiki",
         "version": SERVER_INFO["version"],
         "transport": "streamable-http",
         "endpoint": "/mcp",

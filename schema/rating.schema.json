@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/zeitvex/RoboSelect/schema/rating.schema.json",
+  "$id": "https://github.com/RoboWiki/RoboWiki.github.io/schema/rating.schema.json",
   "title": "评分（一对一票）",
   "description": "由 [评分] issue 聚合而来，也用于 POST /api/ratings 的入参。",
   "type": "object",

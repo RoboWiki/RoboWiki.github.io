@@ -85,14 +85,14 @@ title: Espressif ESP32-S3-DevKitC-1-N8R8
 
 还没有人报过这个件的实测。有的是「参数好看」，缺的是「跑了多久、坏没坏」。
 
-<a class="rt-btn" href="https://github.com/zeitvex/RoboSelect/issues/new?template=review-part.yml&title=%5B%E5%AE%9E%E6%B5%8B%5D+cont-espressif-esp32-s3-devkitc-1-n8r8&labels=review" target="_blank" rel="noopener">提交实测</a>
+<a class="rt-btn" href="https://github.com/RoboWiki/RoboWiki.github.io/issues/new?template=review-part.yml&title=%5B%E5%AE%9E%E6%B5%8B%5D+cont-espressif-esp32-s3-devkitc-1-n8r8&labels=review" target="_blank" rel="noopener">提交实测</a>
 
 需要 GitHub 账号，30 秒填完：装了多大负载、跑了多久、温升多少、坏没坏。
 **坏过的经验最值钱** —— 那正是下一个人最想知道的。
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://docs.espressif.com/projects/esp-dev-kits/zh_CN/latest/esp32s3/esp32-s3-devkitc-1/user_guide_v1.1.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>乐鑫官方 DevKits 页面 + ESP32-S3-DevKitC-1 用户指南 v1.1 + 模组数据手册核对（2026-10-28）</td></tr><tr><td><a href="https://www.google.com/search?q=Espressif+ESP32-S3-DevKitC-1-N8R8+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=ESP32-S3-DevKitC-1-N8R8&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Espressif+ESP32-S3-DevKitC-1-N8R8+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/controller_low/espressif.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_low/espressif.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://docs.espressif.com/projects/esp-dev-kits/zh_CN/latest/esp32s3/esp32-s3-devkitc-1/user_guide_v1.1.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>乐鑫官方 DevKits 页面 + ESP32-S3-DevKitC-1 用户指南 v1.1 + 模组数据手册核对（2026-10-28）</td></tr><tr><td><a href="https://www.google.com/search?q=Espressif+ESP32-S3-DevKitC-1-N8R8+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=ESP32-S3-DevKitC-1-N8R8&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Espressif+ESP32-S3-DevKitC-1-N8R8+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/controller_low/espressif.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_low/espressif.json</td></tr></tbody></table>
 
 ## 备注
 

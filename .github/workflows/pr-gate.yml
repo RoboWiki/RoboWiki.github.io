@@ -86,7 +86,7 @@ jobs:
           cd wiki && (npm ci || npm install)
       - name: 生成内容并构建（死链会让这里红）
         env:
-          WIKI_BASE: /RoboSelect/
+          WIKI_BASE: /
         run: |
           python -m pipeline build
           cd wiki && npx vitepress build docs

@@ -10,18 +10,18 @@ ROOT = pathlib.Path(__file__).resolve().parents[3]
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="ROBOSELECT_", env_file=".env",
+    model_config = SettingsConfigDict(env_prefix="ROBOWIKI_", env_file=".env",
                                       extra="ignore")
 
-    project_name: str = "RoboSelect"
+    project_name: str = "RoboWiki"
     api_v1: str = "/api"
 
     #: 种子 JSON 目录（仓库根的 data/）
     data_dir: pathlib.Path = ROOT / "data"
-    db_path: pathlib.Path = ROOT / "roboselect.db"
+    db_path: pathlib.Path = ROOT / "robowiki.db"
 
-    #: 生产必须覆盖：ROBOSELECT_SECRET_KEY=...（≥32 字节，否则 PyJWT 会告警）
-    secret_key: str = "dev-only-change-me-please-set-ROBOSELECT_SECRET_KEY"
+    #: 生产必须覆盖：ROBOWIKI_SECRET_KEY=...（≥32 字节，否则 PyJWT 会告警）
+    secret_key: str = "dev-only-change-me-please-set-ROBOWIKI_SECRET_KEY"
     token_hours: int = 24 * 7
 
     #: 前端 dev server

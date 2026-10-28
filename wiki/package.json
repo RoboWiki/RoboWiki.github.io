@@ -2,7 +2,7 @@
   "name": "roboselect-wiki",
   "private": true,
   "type": "module",
-  "description": "RoboSelect 选型文档（VitePress）",
+  "description": "RoboWiki 选型文档（VitePress）",
   "scripts": {
     "dev": "vitepress dev docs",
     "build": "vitepress build docs",

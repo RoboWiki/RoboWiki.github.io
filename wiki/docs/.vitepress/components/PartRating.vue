@@ -36,10 +36,10 @@ const source = ref<'live' | 'snapshot' | 'none'>('none')
 /** 打分入口：把部件 id 塞进标题，用户不用手填；表单里也有输入框兜底 */
 const ghUrl = computed(() => {
   const title = encodeURIComponent(`[评分] ${props.partId}`)
-  return 'https://github.com/zeitvex/RoboSelect/issues/new'
+  return 'https://github.com/RoboWiki/RoboWiki.github.io/issues/new'
     + `?template=rate-part.yml&title=${title}&labels=rating`
 })
-const ghIssues = 'https://github.com/zeitvex/RoboSelect/issues?q=label%3Arating'
+const ghIssues = 'https://github.com/RoboWiki/RoboWiki.github.io/issues?q=label%3Arating'
 
 const bars = computed(() => {
   const total = s.value.count || 1

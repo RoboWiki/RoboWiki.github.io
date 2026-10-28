@@ -1,11 +1,11 @@
-# RoboSelect
+# RoboWiki
 
 机器人部件选择社区：**官方参数 + 真实使用者的评分与评价**。
 
 每个部件一页：左边是带来源等级与口径的官方参数，右边是用过的人的评分、
 实测工况与讨论。不收佣金、不卖零件，所以判定不必讨好谁。
 
-**站点**：<https://zeitvex.github.io/RoboSelect/>
+**站点**：<https://robowiki.github.io/>
 
 ```
 80 个部件 · 8 个品类 · 19 家厂商
@@ -16,7 +16,7 @@ A 级数据 = 逐项核对过厂商手册；缺失一律写 null，不猜、不�
 ## 三分钟上手
 
 ```bash
-git clone https://github.com/zeitvex/RoboSelect && cd RoboSelect
+git clone https://github.com/RoboWiki/RoboWiki.github.io && cd RoboWiki
 
 python -m pipeline all            # 1. 校验数据 + 生成站点内容（约 15 秒）
 python -m pytest                  # 2. 构建链 + API 测试
@@ -62,7 +62,7 @@ GitHub（PR / issue / Actions）  →  构建产物  →  静态站 + API
 |---|---|
 | 给某个件打分 | 部件页「去 GitHub 打分」（issue 表单） |
 | 写实测（跑多久、坏没坏） | 部件页「提交实测」（issue 表单） |
-| 纠参数 / 补数据 | [纠错表单](https://github.com/zeitvex/RoboSelect/issues/new?template=data-fix.yml)，不需要会 git |
+| 纠参数 / 补数据 | [纠错表单](https://github.com/RoboWiki/RoboWiki.github.io/issues/new?template=data-fix.yml)，不需要会 git |
 | 批量加型号 / 改结构 | PR，见 [CONTRIBUTING.md](CONTRIBUTING.md) |
 
 四条通道的分工与门槛，写在 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#贡献分层)。

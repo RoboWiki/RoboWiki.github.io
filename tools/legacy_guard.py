@@ -11,7 +11,7 @@
     from _deprecated import require_legacy_ok
     require_legacy_ok(__file__)
 
-判定：默认直接退出；设置 ROBOSELECT_ALLOW_LEGACY=1 才放行（考古时用）。
+判定：默认直接退出；设置 ROBOWIKI_ALLOW_LEGACY=1 才放行（考古时用）。
 """
 from __future__ import annotations
 
@@ -30,13 +30,13 @@ focus.json）写文件，而这些文件已经在 2026-10-28 出库归档 ——
     python -m pipeline validate
 
 确实要考古运行旧脚本（例如重建历史归档），设置环境变量放行：
-    set ROBOSELECT_ALLOW_LEGACY=1
+    set ROBOWIKI_ALLOW_LEGACY=1
 """
 
 
 def require_legacy_ok(script_file: str) -> None:
-    if os.environ.get("ROBOSELECT_ALLOW_LEGACY") == "1":
-        print(f"[legacy] ROBOSELECT_ALLOW_LEGACY=1，放行 {pathlib.Path(script_file).name}",
+    if os.environ.get("ROBOWIKI_ALLOW_LEGACY") == "1":
+        print(f"[legacy] ROBOWIKI_ALLOW_LEGACY=1，放行 {pathlib.Path(script_file).name}",
               file=sys.stderr)
         return
     name = pathlib.Path(script_file).name

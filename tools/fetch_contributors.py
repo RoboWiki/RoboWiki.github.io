@@ -16,7 +16,7 @@ import urllib.request
 from datetime import datetime, timezone, timedelta
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-OWNER, REPO = "zeitvex", "RoboSelect"
+OWNER, REPO = "RoboWiki", "RoboWiki.github.io"
 OUT = ROOT / "data" / "contributors_snapshot.json"
 CST = timezone(timedelta(hours=8))
 
@@ -33,7 +33,7 @@ def via_gh() -> list[dict]:
 def via_rest() -> list[dict]:
     req = urllib.request.Request(
         f"https://api.github.com/repos/{OWNER}/{REPO}/contributors?per_page=100",
-        headers={"User-Agent": "RoboSelect-build",
+        headers={"User-Agent": "RoboWiki-build",
                  "Accept": "application/vnd.github+json"})
     with urllib.request.urlopen(req, timeout=25) as resp:
         return json.loads(resp.read().decode())

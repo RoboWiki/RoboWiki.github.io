@@ -1,4 +1,4 @@
-"""浙大 HelloWorld 战队 Wiki 的资料 → RoboSelect 补充数据。
+"""浙大 HelloWorld 战队 Wiki 的资料 → RoboWiki 补充数据。
 
 来源：github.com/ZJU-HelloWorld/Wiki
       docs/组件说明/机器人通用组件/设备应用/电机设备组件.assets/

@@ -55,7 +55,7 @@ const rows = computed(() => {
   })
 })
 
-/** 图片走 BASE_URL 前缀：Pages 部署在 /RoboSelect/ 下，写死 /parts 会 404 */
+/** 图片走 BASE_URL 前缀：站点部署在子路径或域名根时都能用，写死 /parts 会 404 */
 function imgUrl(p?: string | null): string {
   if (!p) return ''
   const base = String(import.meta.env.BASE_URL || '/')

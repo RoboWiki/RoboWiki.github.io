@@ -1,9 +1,9 @@
 __pycache__/
 *.pyc
 .pytest_cache/
-roboselect.db
-roboselect.db-wal
-roboselect.db-shm
+robowiki.db
+robowiki.db-wal
+robowiki.db-shm
 node_modules/
 frontend/dist/
 .venv/

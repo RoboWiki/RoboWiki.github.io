@@ -10,7 +10,7 @@ import os
 import pathlib
 import sys
 
-os.environ.setdefault("ROBOSELECT_SECRET_KEY",
+os.environ.setdefault("ROBOWIKI_SECRET_KEY",
                       "test-secret-key-at-least-32-bytes-long-0000")
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 

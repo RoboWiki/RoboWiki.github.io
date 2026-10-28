@@ -1,9 +1,9 @@
-"""RoboSelect API 测试。
+"""RoboWiki API 测试。
 
     cd backend && python -m pytest -q
     # 或 python -m unittest discover -s tests -v
 
-每个测试类用独立的临时库（ROBOSELECT_DB_PATH），不碰仓库里的 roboselect.db。
+每个测试类用独立的临时库（ROBOWIKI_DB_PATH），不碰仓库里的 robowiki.db。
 """
 from __future__ import annotations
 
@@ -14,8 +14,8 @@ import tempfile
 
 # 必须在 import app 之前设置，settings 在 import 时实例化
 _TMP = tempfile.mkdtemp(prefix="roboselect-test-")
-os.environ["ROBOSELECT_DB_PATH"] = str(pathlib.Path(_TMP) / "test.db")
-os.environ["ROBOSELECT_SECRET_KEY"] = "test-secret-key-at-least-32-bytes-long-0000"
+os.environ["ROBOWIKI_DB_PATH"] = str(pathlib.Path(_TMP) / "test.db")
+os.environ["ROBOWIKI_SECRET_KEY"] = "test-secret-key-at-least-32-bytes-long-0000"
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
@@ -40,7 +40,7 @@ def client():
     shutil.rmtree(_TMP, ignore_errors=True)
 
 
-def auth_header(c: TestClient, handle="roboselect", password="roboselect") -> dict:
+def auth_header(c: TestClient, handle="robowiki", password="robowiki") -> dict:
     r = c.post("/api/auth/login", json={"handle": handle, "password": password})
     assert r.status_code == 200, r.text
     return {"Authorization": f"Bearer {r.json()['access_token']}"}
@@ -132,7 +132,7 @@ def test_feed_has_seeded_posts(client):
     assert "discussion" in kinds
     assert d["total"] >= 2
 
-    seeded = client.get("/api/posts", params={"author": "roboselect", "limit": 50}).json()
+    seeded = client.get("/api/posts", params={"author": "robowiki", "limit": 50}).json()
     for p in seeded["items"]:
         assert not p["own_hardware"], "站方不能声称「实测」"
         assert p["rating"] is None, "站方不打用户评分"
@@ -172,7 +172,7 @@ def test_register_login_me(client):
 
 
 def test_login_rejects_bad_password(client):
-    r = client.post("/api/auth/login", json={"handle": "roboselect", "password": "wrong"})
+    r = client.post("/api/auth/login", json={"handle": "robowiki", "password": "wrong"})
     assert r.status_code == 401
 
 
@@ -291,7 +291,7 @@ def test_site_root_is_the_wiki(client):
     r = client.get("/")
     assert r.status_code in (200, 307)
     if r.status_code == 200:
-        assert "RoboSelect" in r.text
+        assert "RoboWiki" in r.text
 
 
 def test_api_unknown_path_404(client):

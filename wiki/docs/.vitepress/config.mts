@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitepress'
 import sidebar from './sidebar.json' with { type: 'json' }
 
-// RoboSelect —— 机器人部件选择社区。
+// RoboWiki —— 机器人部件选择社区。
 // 一页两件事：左边官方参数（带来源与口径），右边真实使用者的评分与评价。
 //
 // 中英双语：root = 中文，/en/ = English。
@@ -39,7 +39,7 @@ const zhTheme = {
   docPageLink: { text: '在部件库里按任意列排序' },
   footer: {
     message: '数据带来源 · 口径可追溯 · 不卖零件不收佣金',
-    copyright: 'RoboSelect · 机器人部件选择社区',
+    copyright: 'RoboWiki · 机器人部件选择社区',
   },
 }
 
@@ -70,16 +70,16 @@ const enTheme = {
   docPageLink: { text: 'Sort by any column in the parts library' },
   footer: {
     message: 'Every number sourced · semantics traceable · we do not sell parts',
-    copyright: 'RoboSelect · a robot parts selection community',
+    copyright: 'RoboWiki · a robot parts selection community',
   },
 }
 
 export default defineConfig({
-  title: 'RoboSelect',
-  // 标签页统一成「页面 · RoboSelect」；首页只有 RoboSelect，不重复
-  titleTemplate: ':title · RoboSelect',
+  title: 'RoboWiki',
+  // 标签页统一成「页面 · RoboWiki」；首页只有 RoboWiki，不重复
+  titleTemplate: ':title · RoboWiki',
   description: '机器人部件选择社区：官方参数 + 真实使用者的评分与评价',
-  // 两站合一后站点在根目录；GitHub Pages 是 project site，挂在 /RoboSelect/ 下。
+  // 仓库是 organization pages（RoboWiki.github.io）→ 站点在域名根，base 用 /。
   base: process.env.WIKI_BASE || '/',
   appearance: true,
   // 中英双语：VitePress 会自动在页头放语言切换
@@ -102,6 +102,6 @@ export default defineConfig({
 
   themeConfig: {
     // 品牌标：不再叫「文档」—— 这是个社区，不是一个说明书
-    siteTitle: 'RoboSelect',
+    siteTitle: 'RoboWiki',
   },
 })

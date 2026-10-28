@@ -12,8 +12,8 @@ import sys
 import tempfile
 
 _TMP = tempfile.mkdtemp(prefix="roboselect-mcp-")
-os.environ["ROBOSELECT_DB_PATH"] = str(pathlib.Path(_TMP) / "test.db")
-os.environ["ROBOSELECT_SECRET_KEY"] = "test-secret-key-at-least-32-bytes-long-0000"
+os.environ["ROBOWIKI_DB_PATH"] = str(pathlib.Path(_TMP) / "test.db")
+os.environ["ROBOWIKI_SECRET_KEY"] = "test-secret-key-at-least-32-bytes-long-0000"
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
@@ -76,7 +76,7 @@ def test_semantics_field_directions(client):
 # ── MCP ─────────────────────────────────────────────────────────────────────
 def test_mcp_manifest(client):
     m = client.get("/mcp").json()
-    assert m["name"] == "roboselect"
+    assert m["name"] == "robowiki"
     assert m["transport"] == "streamable-http"
     names = {t["name"] for t in m["tools"]}
     assert {"search_components", "get_component_detail",
@@ -88,7 +88,7 @@ def test_mcp_manifest(client):
 
 def test_mcp_initialize_and_list(client):
     r = _rpc(client, "initialize", {"protocolVersion": "2025-06-18"})
-    assert r["result"]["serverInfo"]["name"] == "roboselect"
+    assert r["result"]["serverInfo"]["name"] == "robowiki"
     assert "tools" in r["result"]["capabilities"]
     assert r["result"]["protocolVersion"]
 
@@ -149,7 +149,7 @@ def test_mcp_rejects_bad_json(client):
 # ── 整机报价口径 ────────────────────────────────────────────────────────────
 def test_build_price_requires_scope(client):
     tok = client.post("/api/auth/login",
-                      json={"handle": "demo1", "password": "roboselect"}).json()
+                      json={"handle": "demo1", "password": "robowiki"}).json()
     h = {"Authorization": f"Bearer {tok['access_token']}"}
 
     r = client.post("/api/posts", headers=h, json={

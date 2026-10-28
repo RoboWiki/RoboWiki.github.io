@@ -13,8 +13,8 @@ import sys
 import tempfile
 
 _TMP = tempfile.mkdtemp(prefix="roboselect-admin-")
-os.environ["ROBOSELECT_DB_PATH"] = str(pathlib.Path(_TMP) / "test.db")
-os.environ["ROBOSELECT_SECRET_KEY"] = "test-secret-key-at-least-32-bytes-long-0000"
+os.environ["ROBOWIKI_DB_PATH"] = str(pathlib.Path(_TMP) / "test.db")
+os.environ["ROBOWIKI_SECRET_KEY"] = "test-secret-key-at-least-32-bytes-long-0000"
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
@@ -40,13 +40,13 @@ def client():
 def staff(client) -> dict:
     """roboselect 是站务账号"""
     r = client.post("/api/auth/login",
-                    json={"handle": "roboselect", "password": "roboselect"})
+                    json={"handle": "robowiki", "password": "robowiki"})
     assert r.status_code == 200, r.text
     return {"Authorization": f"Bearer {r.json()['access_token']}"}
 
 
 def plain(client) -> dict:
-    r = client.post("/api/auth/login", json={"handle": "demo1", "password": "roboselect"})
+    r = client.post("/api/auth/login", json={"handle": "demo1", "password": "robowiki"})
     return {"Authorization": f"Bearer {r.json()['access_token']}"}
 
 
@@ -126,7 +126,7 @@ def test_patch_writes_history_with_reason(client):
     assert h0["new_value"] == "13.0"
     assert "源" in h0["note"] or "手册" in h0["note"]           # 依据留下来了
     assert h0["source_url"].startswith("http")  # 来源也留下来了
-    assert h0["editor"] == "RoboSelect 编辑部"
+    assert h0["editor"] == "RoboWiki 编辑部"
     # 改完自动打核对日期
     assert after["last_checked"]
 

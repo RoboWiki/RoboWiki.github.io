@@ -23,7 +23,7 @@ outline: false
   <a href="https://github.com/zeitvex" target="_blank" rel="noopener">GitHub</a>
 </div>
 <div class="ct">
-  <div class="ct-head"><b>RoboSelect 编辑部</b><span class="ct-role">Editor</span></div>
+  <div class="ct-head"><b>RoboWiki 编辑部</b><span class="ct-role">Editor</span></div>
   <p>采购合同与口径的编者按；优惠与来源规则的整理</p>
   
 </div>

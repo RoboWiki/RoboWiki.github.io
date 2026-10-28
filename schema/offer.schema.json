@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/zeitvex/RoboSelect/schema/offer.schema.json",
+  "$id": "https://github.com/RoboWiki/RoboWiki.github.io/schema/offer.schema.json",
   "title": "优惠（data/offers/<厂商>.json 中的一条）",
   "description": "上卡片的硬条件：价格或折扣 + 获取条件 + 有效期，缺一项都不上。只给价不给条件比不给更糟。",
   "type": "object",

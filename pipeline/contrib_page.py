@@ -107,7 +107,7 @@ outline: false
 def build(root: pathlib.Path, out_dir: pathlib.Path, pub_dir: pathlib.Path) -> None:
     snap_path = root / "data" / "contributors_snapshot.json"
     snap = json.loads(snap_path.read_text(encoding="utf-8")) if snap_path.exists() else {
-        "repo": "zeitvex/RoboSelect", "source": "—", "updated_at": "—",
+        "repo": "RoboWiki/RoboWiki.github.io", "source": "—", "updated_at": "—",
         "total": 0, "total_contributions": 0, "contributors": []}
     pub_dir.mkdir(parents=True, exist_ok=True)
     (pub_dir / "contributors.json").write_text(

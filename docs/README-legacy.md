@@ -1,4 +1,4 @@
-# RoboSelect（历史快照）
+# RoboWiki（历史快照）
 
 > **本文是 2026-10 中旬的旧版 README，仅作历史留档。** 目录结构、数据文件、
 > 收录范围都已变化（scripts/ 现为 tools/ 与 pipeline/；旧扁平数据文件已出库；
@@ -9,7 +9,7 @@
 
 **四足机器人选型 + 真实使用社区。**
 
-> **线上**：<https://zeitvex.github.io/RoboSelect/> —— 文档站（VitePress，纯静态）。
+> **线上**：<https://robowiki.github.io/> —— 文档站（VitePress，纯静态）。
 > 选型台与社区需要 Python 托管环境，本地 `uvicorn` 起来即完整。原因见 §4.1。
 
 选型台是底座，社区是主体。零件参数带口径、可校验、能导出到仿真；评价来自真装机，
@@ -57,7 +57,7 @@ giscus iframe 通过 `postMessage` 跟着切。
 但「跑了三个月」「外壳 62℃」「背隙 ±0.05°」这些数字是编的，作者也是虚构的。
 在一个立意是「真实使用信息」的站里，这比空着坏得多，已全部删除。
 
-现在社区里只有 **2 条站方署名的编者按**（`RoboSelect 编辑部`），且强制满足：
+现在社区里只有 **2 条站方署名的编者按**（`RoboWiki 编辑部`），且强制满足：
 不带 `rating`、不声称 `own_hardware`、标题以「编者按：」开头、每句话都能指回目录数据。
 `tests/test_api.py::test_feed_has_seeded_posts` 会把这条规则钉死。
 
@@ -231,7 +231,7 @@ Vite 默认只监听 `localhost`（`::1`），IPv4 的 curl / playwright 会连�
 
 **什么时候仍然必须跑完整构建**：验证「部署形态」时 ——
 
-- `WIKI_BASE` 换了（`/wiki/` ↔ `/RoboSelect/`），静态资源路径对不对
+- `WIKI_BASE` 换了（`/wiki/` ↔ `/RoboWiki/`），静态资源路径对不对
 - giscus 的 `data-term` 是否稳定（改名不掉讨论）
 - 产品图是否从 `frontend/public/parts` 同步过去
 
@@ -241,18 +241,18 @@ Vite 默认只监听 `localhost`（`::1`），IPv4 的 curl / playwright 会连�
 > 用 `Get-Content -Raw` / `Set-Content` 读写中文 md 会按 ANSI 解码把文件写坏
 > （中文文件走编辑器，或 `.NET WriteAllText` + UTF-8 无 BOM）。
 
-环境变量（`ROBOSELECT_` 前缀）：
+环境变量（`ROBOWIKI_` 前缀）：
 
 | 变量 | 默认 | 说明 |
 |---|---|---|
-| `ROBOSELECT_DB_PATH` | `roboselect.db` | SQLite 位置 |
-| `ROBOSELECT_SECRET_KEY` | `dev-only-change-me` | **生产必须覆盖**（≥32 字节） |
-| `ROBOSELECT_CORS_ORIGINS` | 本地 5173/8000 | JSON 数组 |
+| `ROBOWIKI_DB_PATH` | `robowiki.db` | SQLite 位置 |
+| `ROBOWIKI_SECRET_KEY` | `dev-only-change-me` | **生产必须覆盖**（≥32 字节） |
+| `ROBOWIKI_CORS_ORIGINS` | 本地 5173/8000 | JSON 数组 |
 
 ### 4.1 GitHub Pages 部署了什么、没部署什么
 
-仓库：<https://github.com/zeitvex/RoboSelect>（`roboselect.github.io` → `roboselect` → 现名 `RoboSelect`）
-线上：<https://zeitvex.github.io/RoboSelect/>
+仓库：<https://github.com/RoboWiki/RoboWiki.github.io>（`roboselect.github.io` → `roboselect` → 现名 `RoboWiki`）
+线上：<https://robowiki.github.io/>
 
 仓库名不是 `<user>.github.io`，所以是 **project site**，站点挂在 `/roboselect/` 下，
 不是根域名。`wiki/docs/.vitepress/config.mts` 用 `WIKI_BASE` 环境变量切换 base，

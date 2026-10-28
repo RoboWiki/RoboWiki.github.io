@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/zeitvex/RoboSelect/schema/review.schema.json",
+  "$id": "https://github.com/RoboWiki/RoboWiki.github.io/schema/review.schema.json",
   "title": "实测（一条使用经验）",
   "description": "由 [实测] issue 聚合而来。工况比结论重要：同样的件，髋 30 N·m 连续跑和膝 80 N·m 尖峰，结论可以完全相反。",
   "type": "object",

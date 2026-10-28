@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* ── RoboSelect 设计系统：VS Code 2026（参考 zeitvex.github.io）─────────
+/* ── RoboWiki 设计系统：VS Code 2026（参考 zeitvex.github.io）─────────
    浅色与深色都只换 CSS 变量：
    Tailwind v4 的工具类输出 `var(--color-slate-500)` 这种引用，
    所以把变量换掉就等于全站换肤，组件里一处都不用改。

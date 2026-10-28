@@ -5,7 +5,7 @@ outline: false
 ---
 
 <div class="en-home">
-  <h1>RoboSelect</h1>
+  <h1>RoboWiki</h1>
   <p>
     A community for choosing robot parts: official specs on one side, real user ratings and
     reviews on the other. Joint motors first, then controllers, ESCs, depth cameras, LiDAR and chips.

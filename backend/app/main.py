@@ -22,13 +22,13 @@ async def lifespan(_app: FastAPI):
     try:
         stats = seed_catalog(db)
         people = seed_community(db)
-        print(f"[roboselect] 目录 {stats} · 社区 {people}")
+        print(f"[robowiki] 目录 {stats} · 社区 {people}")
     finally:
         db.close()
     yield
 
 
-app = FastAPI(title="RoboSelect API", version="0.2.0",
+app = FastAPI(title="RoboWiki API", version="0.2.0",
               description="四足机器人选型 + 社区。选型是底座，互动是主体。",
               docs_url="/api/docs", openapi_url="/api/openapi.json",
               lifespan=lifespan)

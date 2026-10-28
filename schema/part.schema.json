@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/zeitvex/RoboSelect/schema/part.schema.json",
+  "$id": "https://github.com/RoboWiki/RoboWiki.github.io/schema/part.schema.json",
   "title": "部件（data/catalog/<品类>/<厂商>.json 中的一条）",
   "description": "PR、issue 表单、API 入参共用这一份定义。改字段先改这里。",
   "type": "object",

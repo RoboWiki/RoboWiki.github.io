@@ -42,12 +42,16 @@ export interface GiscusConfig {
 
 /** 填成对象即启用。填之前先看文件头的四条前提。 */
 export const giscus: GiscusConfig | null = {
-  repo: 'zeitvex/RoboSelect',
-  repoId: 'R_kgDOVZTWEQ',
+  repo: 'RoboWiki/RoboWiki.github.io',
+  repoId: 'TODO_REREGISTER',
   category: 'Announcements',
-  categoryId: 'DIC_kwDOVZTWEc4DJv7l',
+  categoryId: 'TODO_REREGISTER',
   mapping: 'specific',
   lang: 'zh-CN',
 }
 
 export const isGiscusEnabled = (): boolean => giscus !== null
+
+// TODO(giscus)：换仓库后 repoId / categoryId 失效。
+// 去 https://giscus.app 用新仓库 RoboWiki/RoboWiki.github.io 重新生成，
+// 把两个 id 填回来即可；在此之前评论区不会加载（不报错，静默不显示）。

@@ -1,5 +1,5 @@
 [project]
-name = "roboselect"
+name = "robowiki"
 version = "0.1.0"
 description = "机器人部件选择社区：官方参数 + 真实使用者的评分与评价"
 readme = "README.md"
@@ -27,9 +27,9 @@ tools = [
 ]
 
 [project.urls]
-Homepage = "https://zeitvex.github.io/RoboSelect/"
-Repository = "https://github.com/zeitvex/RoboSelect"
-Issues = "https://github.com/zeitvex/RoboSelect/issues"
+Homepage = "https://robowiki.github.io/"
+Repository = "https://github.com/RoboWiki/RoboWiki.github.io"
+Issues = "https://github.com/RoboWiki/RoboWiki.github.io/issues"
 
 [project.scripts]
 roboselect = "pipeline.__main__:main"

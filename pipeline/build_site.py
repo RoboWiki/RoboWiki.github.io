@@ -510,7 +510,7 @@ def main() -> None:
         src = r.get("_file")
         if src:
             rows.append(("在 GitHub 上编辑这条数据",
-                         f"https://github.com/zeitvex/RoboSelect/edit/main/data/catalog/{src}",
+                         f"https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/{src}",
                          f"文件 data/catalog/{src}"))
 
         body = []
@@ -726,7 +726,7 @@ def main() -> None:
 
 还没有人报过这个件的实测。有的是「参数好看」，缺的是「跑了多久、坏没坏」。
 
-<a class="rt-btn" href="https://github.com/zeitvex/RoboSelect/issues/new?template=review-part.yml&title=%5B%E5%AE%9E%E6%B5%8B%5D+{quote_plus(r['id'])}&labels=review" target="_blank" rel="noopener">提交实测</a>
+<a class="rt-btn" href="https://github.com/RoboWiki/RoboWiki.github.io/issues/new?template=review-part.yml&title=%5B%E5%AE%9E%E6%B5%8B%5D+{quote_plus(r['id'])}&labels=review" target="_blank" rel="noopener">提交实测</a>
 
 需要 GitHub 账号，30 秒填完：装了多大负载、跑了多久、温升多少、坏没坏。
 **坏过的经验最值钱** —— 那正是下一个人最想知道的。"""

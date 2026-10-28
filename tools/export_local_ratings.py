@@ -7,7 +7,7 @@
     issue 聚合结果覆盖掉。
 
 用法：
-    python tools/export_local_ratings.py            # 读 roboselect.db → ratings_local.json
+    python tools/export_local_ratings.py            # 读 robowiki.db → ratings_local.json
     python tools/export_local_ratings.py --empty     # 没有库时写空表
 """
 from __future__ import annotations

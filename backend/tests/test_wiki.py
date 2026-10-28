@@ -15,8 +15,8 @@ import sys
 import tempfile
 
 _TMP = tempfile.mkdtemp(prefix="roboselect-wiki-")
-os.environ["ROBOSELECT_DB_PATH"] = str(pathlib.Path(_TMP) / "test.db")
-os.environ["ROBOSELECT_SECRET_KEY"] = "test-secret-key-at-least-32-bytes-long-0000"
+os.environ["ROBOWIKI_DB_PATH"] = str(pathlib.Path(_TMP) / "test.db")
+os.environ["ROBOWIKI_SECRET_KEY"] = "test-secret-key-at-least-32-bytes-long-0000"
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
@@ -40,7 +40,7 @@ def client():
 
 
 def login(client, handle="demo1") -> dict:
-    r = client.post("/api/auth/login", json={"handle": handle, "password": "roboselect"})
+    r = client.post("/api/auth/login", json={"handle": handle, "password": "robowiki"})
     assert r.status_code == 200, r.text
     return {"Authorization": f"Bearer {r.json()['access_token']}"}
 
@@ -113,7 +113,7 @@ def test_only_author_or_staff_can_delete(client):
     # 别人删不掉
     assert client.delete(f"/api/wiki/comments/{c['id']}").status_code == 401
     # 站务可以
-    hs = login(client, "roboselect")
+    hs = login(client, "robowiki")
     assert client.delete(f"/api/wiki/comments/{c['id']}", headers=hs).status_code == 204
     assert client.get("/api/wiki/comments", params={"page": "parts/actuator/dji-robomaster"}).json()["count"] == 0
 
@@ -140,4 +140,4 @@ def test_wiki_site_is_served(client):
     r = client.get("/wiki/")
     assert r.status_code in (200, 404)
     if r.status_code == 200:
-        assert "RoboSelect" in r.text
+        assert "RoboWiki" in r.text

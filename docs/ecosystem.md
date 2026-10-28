@@ -49,7 +49,7 @@ authentication: none — 只读、免鉴权、不设 cookie、不存储调用方
 | `explain_compose_frontier` | 三轴（mechanical/electrical/**signal 角色**）现算 | 解释「为什么 composed 通常为 0」，区分**数据缺口**与**关系类型错误** |
 
 **核心结论：RoboParts 把「口径」和「证据强度」变成了一等公民，并且用三态（能/不能/不知道）兜底。**
-这和我们 RoboSelect 的 `tau_basis` / `inertia_basis` / `source_tier` 是同一套思路，
+这和我们 RoboWiki 的 `tau_basis` / `inertia_basis` / `source_tier` 是同一套思路，
 但它的**工具化程度**更高——我们目前写在 README 和 `check_data.py` 里，它写成了 MCP 工具。
 
 ### 我们该抄的三件
@@ -204,7 +204,7 @@ country: US, CN, JP, DE, CH, KR, TW, NL, IL, NO, AU, CA, GLOBAL
 
 ---
 
-## 9. 借鉴清单 → RoboSelect 落点（按优先级）
+## 9. 借鉴清单 → RoboWiki 落点（按优先级）
 
 | # | 来源 | 借什么 | 落点 | 成本 |
 |---|---|---|---|---|

@@ -141,7 +141,7 @@ def seed_catalog(db: Session) -> dict[str, int]:
 
 DEMO_USERS = [
     # 站方账号：编者按的署名主体。本站是一个真实存在的实体，不冒充任何用户。
-    ("roboselect", "RoboSelect 编辑部", "本站编辑。只写编者按，不改用户评价。", 0, True),
+    ("robowiki", "RoboWiki 编辑部", "本站编辑。只写编者按，不改用户评价。", 0, True),
     # 演示账号：仅供试功能，不产生任何「使用经历」类内容
     ("demo1", "演示用户 A", "用于功能演示，不代表真实使用经历。", 0, False),
 ]
@@ -150,7 +150,7 @@ DEMO_USERS = [
 #: 刻意不写「我跑了三个月」「外壳 62℃」这类无法核实的个人经历 ——
 #: 本站的立意是真实使用信息，编造的体验比空着更糟。
 DEMO_POSTS = [
-    dict(kind="discussion", author="roboselect", part_id=None,
+    dict(kind="discussion", author="robowiki", part_id=None,
          title="编者按：选关节时，先把 ω_NL × 腿长 算出来，再看扭矩",
          tags="方法论,选型",
          body="""这是站方按目录数据整理的判断顺序，不是个人使用经验。
@@ -162,7 +162,7 @@ DEMO_POSTS = [
 3. **最后才看扭矩密度**。它是结果不是原因，由定子尺寸与减速比共同决定。
 
 想看具体数字：在部件库按 `转子惯量` 排序，或调 `GET /api/semantics` 拿口径定义。"""),
-    dict(kind="discussion", author="roboselect", part_id=None,
+    dict(kind="discussion", author="robowiki", part_id=None,
          title="编者按：「峰值扭矩」在采购合同里要写清四件事",
          tags="采购,口径",
          body="""本站目录里 `tau_peak_Nm` 存在多种口径。评审规格书或谈合同时要求写清：
@@ -182,7 +182,7 @@ def seed_community(db: Session) -> dict[str, int]:
         u = db.exec(select(User).where(User.handle == handle)).first()
         if u is None:
             u = User(handle=handle, display_name=name, bio=bio,
-                     password_hash=hash_password("roboselect"),
+                     password_hash=hash_password("robowiki"),
                      avatar_hue=(abs(hash(handle)) % 360), is_staff=staff,
                      reputation=rep)
             db.add(u)

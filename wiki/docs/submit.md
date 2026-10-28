@@ -6,7 +6,7 @@ outline: false
 ---
 
 <script setup>
-const gh = 'https://github.com/zeitvex/RoboSelect'
+const gh = 'https://github.com/RoboWiki/RoboWiki.github.io'
 const forms = [
   {
     t: '给部件打分',

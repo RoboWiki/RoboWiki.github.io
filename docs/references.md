@@ -98,7 +98,7 @@ react-router-dom 7.18.4 · vite 6.4.5 · typescript 5.7
 
 如果社区规模起来、需要独立部署与横向扩展，优先级是：
 
-1. **SQLite → Postgres**（改 `ROBOSELECT_DB_PATH` 为 URL，SQLModel 层几乎不用动）；
+1. **SQLite → Postgres**（改 `ROBOWIKI_DB_PATH` 为 URL，SQLModel 层几乎不用动）；
 2. **进程内限流 → Redis**（`api/deps.py:rate_limit` 已隔离成一个函数）；
 3. **加 Alembic**（`create_all` 只适合早期）；
 4. **前端拆包**（当前 1.35 MB / gzip 435 KB，`manualChunks` 拆 antd）；
