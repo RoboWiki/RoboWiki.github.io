@@ -70,19 +70,16 @@ const order = ref<'desc' | 'asc'>('desc')
 const picked = ref<Part[]>([])
 const detail = ref<Part | null>(null)
 
-const CATS = [
+//: 品类表来自 catalog.json（构建时由 data/taxonomy.json 生成）——
+//: 这里只留一份「加载失败时的兜底」，不再硬编码全量。
+const FALLBACK_CATS = [
   { v: 'actuator', t: '关节电机' },
   { v: 'controller_high', t: '上位机' },
   { v: 'controller_low', t: '下位机' },
-  { v: 'structure', t: '机械结构' },
-  { v: 'imu', t: 'IMU' },
-  { v: 'lidar', t: '激光雷达' },
-  { v: 'camera', t: '深度相机' },
-  { v: 'battery', t: '电池' },
-  { v: 'wiring', t: '线束' },
   { v: 'module', t: '其余模块' },
   { v: 'chip', t: '硬件芯片' },
 ]
+const CATS = ref<{ v: string; t: string }[]>(FALLBACK_CATS.slice())
 
 const SORTS = [
   { v: 'peak', t: '峰值扭矩' },
@@ -99,7 +96,12 @@ onMounted(async () => {
     // 静态站的 catalog.json 会随部署变化，纯强缓存会让读者看到上一版的价格/图片。
     const r = await fetch(withBase('/catalog.json'), { cache: 'no-cache' })
     if (!r.ok) throw new Error(String(r.status))
-    all.value = (await r.json()).parts
+    const d = await r.json()
+    all.value = d.parts
+    if (Array.isArray(d.categories) && d.categories.length) {
+      CATS.value = d.categories.map((c: any) => ({ v: c.id, t: c.name }))
+      if (!CATS.value.some(c => c.v === cat.value)) cat.value = CATS.value[0].v
+    }
   } catch (e: any) {
     fail.value = `部件库加载失败（${e.message}）`
   } finally {

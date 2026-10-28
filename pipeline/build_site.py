@@ -24,19 +24,11 @@ OUT = ROOT / "wiki" / "docs"
 
 #: 品类。顺序即展示顺序 —— 关节电机是重点，放最前。
 #: 机械结构 / 电池 / 线束 没有收录：不是漏了，是没有可信来源，宁缺不编。
-CATS = [
-    ("actuator", "关节电机", "选型主战场"),
-    ("controller_high", "上位机", "推理与感知"),
-    ("controller_low", "下位机", "力矩闭环"),
-    ("structure", "机械结构", "待收录"),
-    ("imu", "IMU", "姿态与振动"),
-    ("lidar", "激光雷达", "地形与建图"),
-    ("camera", "深度相机", "视觉感知"),
-    ("battery", "电池", "待收录"),
-    ("wiring", "线束", "待收录"),
-    ("module", "其余模块", "力触觉 / 编码器"),
-    ("chip", "硬件芯片", "MCU / 驱动 / 收发器"),
-]
+from .load import cat_labels as _cat_labels
+
+#: 品类表来自 data/taxonomy.json —— 不再在这里硬编码。
+#: 改品类名只改注册表，站点导航、筛选、后端标签、schema 会一起跟上。
+CATS = _cat_labels()
 
 CAT_CN = {c: n for c, n, _ in CATS}
 CAT_LABEL = CAT_CN
@@ -285,7 +277,11 @@ def main() -> None:
     pub = OUT / "public"
     pub.mkdir(parents=True, exist_ok=True)
     (pub / "catalog.json").write_text(
-        json.dumps({"count": len(digest), "parts": digest},
+        json.dumps({"count": len(digest), "parts": digest,
+                    # 品类表随产物一起发：前端不再硬编码品类名，
+                    # 加品类 / 改名只动 data/taxonomy.json
+                    "categories": [{"id": c, "name": n, "hint": h}
+                                   for c, n, h in CATS]},
                    ensure_ascii=False, separators=(",", ":")),
         encoding="utf-8")
     print(f"  静态目录 {len(digest)} 条 / {(pub / 'catalog.json').stat().st_size // 1024} KB")

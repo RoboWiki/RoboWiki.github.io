@@ -22,6 +22,36 @@ def _read(p: pathlib.Path) -> Any:
     return json.loads(p.read_text(encoding="utf-8"))
 
 
+def load_taxonomy() -> dict:
+    """品类与品牌的唯一注册表（data/taxonomy.json）。
+
+    站点导航、筛选、后端标签、schema 校验、URL slug 全从这里读 ——
+    改一个品类名只该动这一个文件，而不是四个地方各改一遍。
+    """
+    p = DATA / "taxonomy.json"
+    if not p.exists():
+        return {"categories": [], "vendors": {}}
+    return _read(p)
+
+
+def cat_labels() -> list[tuple[str, str, str]]:
+    """(id, 中文名, 提示) —— build_site 与组件都用它，顺序即展示顺序。"""
+    t = load_taxonomy()
+    return [(c["id"], c.get("name", c["id"]), c.get("hint", ""))
+            for c in t.get("categories") or []]
+
+
+def vendor_slug(vendor: str) -> str:
+    """厂商 -> 文件名 slug。注册表里有就用注册表的，没有就退化成小写连字符。"""
+    t = load_taxonomy()
+    v = (t.get("vendors") or {}).get(vendor)
+    if v and v.get("slug"):
+        return v["slug"]
+    import re as _re
+    s = _re.sub(r"[^a-z0-9]+", "-", (vendor or "unknown").lower()).strip("-")
+    return s or "unknown"
+
+
 def load_parts() -> list[dict]:
     """返回全部零件，每行带一个 `_file`（相对 data/catalog 的路径）。
 

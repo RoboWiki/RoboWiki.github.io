@@ -1,0 +1,32 @@
+[
+ {
+  "category": "controller_low",
+  "subtype": "mcu",
+  "id": "damiao-h7",
+  "vendor": "达妙 DAMIAO",
+  "model": "DM-H7 主控板",
+  "title": "达妙 H7 关节主控板",
+  "url": "https://www.damiao.tech/",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": null,
+  "origin": "厂商公开资料（待逐项核对）",
+  "notes": "达妙自家的 H7 主控，和 DM 系列驱动配套使用。外设路数与环路频率待核。",
+  "specs": {
+   "image_url": null,
+   "image_source": null,
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "mass_kg": null,
+   "armature_kgm2": null,
+   "kt_Nm_per_A": null,
+   "mcu": "STM32H7",
+   "can": null,
+   "canfd": null,
+   "current_loop_khz": null,
+   "iface": null
+  }
+ }
+]

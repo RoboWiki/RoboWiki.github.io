@@ -1,0 +1,62 @@
+[
+ {
+  "category": "controller_low",
+  "subtype": "mcu",
+  "id": "dji-rm-board-a",
+  "vendor": "大疆 DJI",
+  "model": "RoboMaster 开发板 A 型",
+  "title": "RoboMaster 开发板 A 型（STM32F427）",
+  "url": "https://www.robomaster.com/",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": null,
+  "origin": "厂商公开资料（待逐项核对）",
+  "notes": "RM 生态的通用主控：F427 + 板载 IMU，CAN/PWM/ADC/DBUS 齐全。注意它面向 RM 赛制，供电与接口定义跟通用驱动板不一样。",
+  "specs": {
+   "image_url": null,
+   "image_source": null,
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "mass_kg": null,
+   "armature_kgm2": null,
+   "kt_Nm_per_A": null,
+   "mcu": "STM32F427IIH6",
+   "can": 4,
+   "canfd": false,
+   "current_loop_khz": null,
+   "iface": "CAN / UART / SPI / I2C / PWM / ADC"
+  }
+ },
+ {
+  "category": "controller_low",
+  "subtype": "mcu",
+  "id": "dji-rm-board-c",
+  "vendor": "大疆 DJI",
+  "model": "RoboMaster 开发板 C 型",
+  "title": "RoboMaster 开发板 C 型（STM32F407）",
+  "url": "https://www.robomaster.com/",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": null,
+  "origin": "厂商公开资料（待逐项核对）",
+  "notes": "比 A 型更小更便宜的一档，常用来带云台/拨弹。CAN 路数比 A 型少。",
+  "specs": {
+   "image_url": null,
+   "image_source": null,
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "mass_kg": null,
+   "armature_kgm2": null,
+   "kt_Nm_per_A": null,
+   "mcu": "STM32F407IGH6",
+   "can": 2,
+   "canfd": false,
+   "current_loop_khz": null,
+   "iface": "CAN / UART / SPI / I2C / PWM / ADC"
+  }
+ }
+]

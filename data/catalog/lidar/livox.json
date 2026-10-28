@@ -1,0 +1,32 @@
+[
+ {
+  "category": "lidar",
+  "subtype": "solid",
+  "id": "livox-mid-360",
+  "vendor": "Livox",
+  "model": "Mid-360",
+  "title": "Livox Mid-360 固态激光雷达（大疆生态）",
+  "url": "https://www.livoxtech.com/mid-360",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": null,
+  "origin": "厂商产品页（公开资料）",
+  "notes": "四足上最常用的中距雷达：360°×59° 视场、非重复扫描。注意它是**以太网**输出，不是串口；车载供电与网口线束要一起规划。",
+  "specs": {
+   "image_url": null,
+   "image_source": null,
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "mass_kg": 0.265,
+   "armature_kgm2": null,
+   "kt_Nm_per_A": null,
+   "range_m": 40,
+   "fov": "360°×59°",
+   "fps": 10,
+   "points_per_s": 200000,
+   "iface": "以太网 / PTP 同步"
+  }
+ }
+]

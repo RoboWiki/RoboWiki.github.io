@@ -1,0 +1,60 @@
+[
+ {
+  "category": "lidar",
+  "subtype": "solid",
+  "id": "unitree-l1",
+  "vendor": "宇树 Unitree",
+  "model": "L1",
+  "title": "宇树 L1 4D 激光雷达",
+  "url": "https://www.unitree.com/",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": null,
+  "origin": "Seeed wiki 集成指南（非规格书）",
+  "notes": "宇树自研 4D 雷达，主打与自家四足/人形的整机配套。规格待补：需按厂商规格书逐项核对，本站不估。",
+  "specs": {
+   "image_url": null,
+   "image_source": null,
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "mass_kg": null,
+   "armature_kgm2": null,
+   "kt_Nm_per_A": null,
+   "range_m": null,
+   "fov": null,
+   "fps": null,
+   "iface": null
+  }
+ },
+ {
+  "category": "lidar",
+  "subtype": "solid",
+  "id": "unitree-l2",
+  "vendor": "宇树 Unitree",
+  "model": "L2",
+  "title": "宇树 L2 4D 激光雷达",
+  "url": "https://www.unitree.com/",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": null,
+  "origin": "Seeed wiki 集成指南（非规格书）",
+  "notes": "L2 是 L1 的后续型号，参数差异以官网为准。规格待补：需按厂商规格书逐项核对，本站不估。",
+  "specs": {
+   "image_url": null,
+   "image_source": null,
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "mass_kg": null,
+   "armature_kgm2": null,
+   "kt_Nm_per_A": null,
+   "range_m": null,
+   "fov": null,
+   "fps": null,
+   "iface": null
+  }
+ }
+]

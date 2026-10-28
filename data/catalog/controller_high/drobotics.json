@@ -1,0 +1,33 @@
+[
+ {
+  "category": "controller_high",
+  "subtype": "sbc",
+  "id": "drobotics-rdk-x5",
+  "vendor": "地平线 D-Robotics",
+  "model": "RDK X5",
+  "title": "地平线 RDK X5 开发板",
+  "url": "https://developer.d-robotics.cc/",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": null,
+  "origin": "厂商公开资料（待逐项核对）",
+  "notes": "国产替代 Jetson 的一档：8 核 A55 + 10 TOPS BPU。生态与 CUDA 不通用，已有 TensorRT 工程迁移成本要算进去。",
+  "specs": {
+   "image_url": null,
+   "image_source": null,
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "mass_kg": null,
+   "armature_kgm2": null,
+   "kt_Nm_per_A": null,
+   "soc": "Sunrise 5",
+   "cpu": "8×Cortex-A55",
+   "npu_tops": 10,
+   "ram_gb": 8,
+   "os": "Ubuntu 22.04",
+   "iface": "USB 3.0 / GbE / MIPI CSI"
+  }
+ }
+]

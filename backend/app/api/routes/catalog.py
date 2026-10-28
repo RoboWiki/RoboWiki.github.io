@@ -9,6 +9,7 @@ from sqlmodel import select
 
 from ...crud import posts_out
 from ...models import Offer, Part, Post
+from ...core.config import settings
 from ..deps import Db, MaybeUser
 
 router = APIRouter(tags=["catalog"])
@@ -16,7 +17,25 @@ router = APIRouter(tags=["catalog"])
 #: 品类。顺序即展示顺序：关节电机是重点，放最前。
 #: 机械结构 / 电池 / 线束 目前**没有收录** —— 不是漏了，是没有可信来源，
 #: 宁可空着也不编（见 README 的口径纪律）。
-CATEGORY_LABELS = {
+def _labels_from_taxonomy() -> dict[str, str]:
+    """品类中文名从 data/taxonomy.json 读 —— 与站点、schema 同一份注册表。
+
+    读不到时退回下面的内置表：宁可标签旧一点，也不能让 API 起不来。
+    """
+    import json as _json
+    import pathlib as _pl
+
+    p = _pl.Path(settings.data_dir) / "taxonomy.json"
+    if not p.exists():
+        return {}
+    try:
+        d = _json.loads(p.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    return {c["id"]: c.get("name", c["id"]) for c in d.get("categories") or []}
+
+
+_FALLBACK_CATEGORY_LABELS = {
     "actuator": "关节电机",
     "controller_high": "上位机",
     "controller_low": "下位机",
@@ -29,6 +48,8 @@ CATEGORY_LABELS = {
     "module": "其余模块",
     "chip": "硬件芯片",
 }
+
+CATEGORY_LABELS = {**_FALLBACK_CATEGORY_LABELS, **_labels_from_taxonomy()}
 
 #: 还没有数据的品类：前端要显示「待补充」，不能当成 500 或空列表了事
 #: 目前确实没有可信来源的品类。归档导入后 lidar/camera/imu/module 已经有数据，
