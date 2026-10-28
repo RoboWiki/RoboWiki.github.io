@@ -62,9 +62,9 @@ const props = withDefaults(defineProps<{ lang?: 'zh' | 'en' }>(), { lang: 'zh' }
 const en = computed(() => props.lang === 'en')
 /** 只翻界面壳；型号与参数值保持原文。 */
 const L = computed(() => en.value
-  ? { search: 'Search model / brand / type', compare: 'Compare', all: 'All params',
+  ? { featured: 'Featured', search: 'Search model / brand / type', compare: 'Compare', all: 'All params',
       none: 'No photo yet', count: 'items', sort: 'Sort by' }
-  : { search: '搜型号 / 品牌 / 类型', compare: '对比', all: '全部参数',
+  : { featured: '精选', search: '搜型号 / 品牌 / 类型', compare: '对比', all: '全部参数',
       none: '暂无产品图', count: '件', sort: '按' })
 
 const all = ref<Part[]>([])
@@ -72,6 +72,14 @@ const loading = ref(true)
 const fail = ref('')
 
 const q = ref('')
+//: 精选：白名单来自 public/catalog.json 的 featured.ids（构建时读 data/featured.json）
+const featuredIds = ref<Set<string>>(new Set())
+const featuredOnly = ref(
+  typeof localStorage !== 'undefined' && localStorage.getItem('rs.featuredOnly') === '0'
+    ? false
+    : true,   // 默认开启
+)
+const hasCuration = computed(() => featuredIds.value.size > 0)
 const cat = ref('actuator')
 const vendor = ref('')
 const sort = ref<string>('tau_peak_Nm')
@@ -109,6 +117,8 @@ onMounted(async () => {
     if (!r.ok) throw new Error(String(r.status))
     const d = await r.json()
     all.value = d.parts
+    const fids = d.featured?.ids
+    if (Array.isArray(fids)) featuredIds.value = new Set(fids)
     if (Array.isArray(d.categories) && d.categories.length) {
       CATS.value = d.categories.map((c: any) => ({
         v: c.id, t: c.name, keys: c.keys || [], sorts: c.sorts || [],
@@ -124,6 +134,14 @@ onMounted(async () => {
 
 /** 换品类时重置筛选与排序。
  *  「按峰值扭矩」对芯片/雷达毫无意义 —— 默认排序应该跟着品类走。 */
+function toggleFeatured() {
+  if (!hasCuration.value) return
+  featuredOnly.value = !featuredOnly.value
+  try {
+    localStorage.setItem('rs.featuredOnly', featuredOnly.value ? '1' : '0')
+  } catch { /* 隐私模式下忽略 */ }
+}
+
 function setCat(v: string) {
   cat.value = v
   vendor.value = ''
@@ -153,8 +171,11 @@ function sortValue(p: Part, k: string): any {
 
 const rows = computed(() => {
   const key = (p: Part) => sortValue(p, sort.value)
+  // 精选门：开关打开且白名单非空时才过滤
+  const gate = featuredOnly.value && hasCuration.value
   let out = all.value.filter(
     p => p.category === cat.value
+      && (!gate || featuredIds.value.has(p.id))
       && (!vendor.value || p.vendor === vendor.value)
       && (!q.value || `${p.model} ${p.vendor} ${p.subtypeLabel}`
         .toLowerCase().includes(q.value.toLowerCase())),
@@ -226,6 +247,18 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
     <p v-else-if="fail" class="pd-muted">{{ fail }}</p>
 
     <template v-else>
+      <!-- 精选：白名单来自 data/featured.json，默认开启 -->
+      <div class="pd-row pd-featrow">
+        <button class="pd-chip pd-featured"
+                :class="{ on: featuredOnly && hasCuration, off: !hasCuration }"
+                :disabled="!hasCuration"
+                :title="hasCuration ? '只看精选（data/featured.json）' : '精选清单还没填：data/featured.json'"
+                @click="toggleFeatured()">
+          <span class="pd-star">★</span>{{ L.featured }}
+          <span class="pd-n">{{ hasCuration ? featuredIds.size : '未筛选' }}</span>
+        </button>
+      </div>
+
       <!-- 分类 -->
       <div class="pd-row">
         <button v-for="c in CATS" :key="c.v"
@@ -385,6 +418,11 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
   font-size: 0.8rem; padding: 0.36rem 0.75rem; border-radius: 999px; cursor: pointer;
   border: 1px solid var(--vp-c-divider); background: var(--vp-c-bg); color: var(--vp-c-text-2);
 }
+.pd-featrow { margin-bottom: 0.15rem; }
+.pd-featured { border-color: var(--vp-c-brand-1); color: var(--vp-c-brand-1); font-weight: 700; }
+.pd-featured.on { background: var(--vp-c-brand-1); border-color: var(--vp-c-brand-1); color: #fff; }
+.pd-featured.off { opacity: 0.55; cursor: not-allowed; }
+.pd-star { margin-right: 0.25rem; font-size: 0.7rem; }
 .pd-chip {
   font-size: 0.8rem; padding: 0.3rem 0.7rem; border-radius: 999px; cursor: pointer;
   border: 1px solid var(--vp-c-divider); background: var(--vp-c-bg); color: var(--vp-c-text-2);

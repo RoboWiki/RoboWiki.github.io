@@ -72,3 +72,16 @@ def test_catalog_json_carries_categories():
         pytest.skip("先跑 python -m pipeline build")
     d = json.loads(p.read_text(encoding="utf-8"))
     assert [c["id"] for c in d["categories"]] == [c[0] for c in cat_labels()]
+
+
+def test_featured_ids_exist():
+    """精选清单是白名单：里面的 id 必须真实存在，否则按钮显示的件数与实际不符。"""
+    import json
+    from pipeline.load import load_parts
+
+    feat = json.loads(
+        (ROOT / "data" / "featured.json").read_text(encoding="utf-8"))
+    ids = set(feat.get("ids") or [])
+    have = {r["id"] for r in load_parts()}
+    ghost = sorted(ids - have)
+    assert not ghost, f"精选清单里有不存在的部件：{ghost}"

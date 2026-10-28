@@ -175,6 +175,14 @@ def main() -> None:
     # 能挂讨论的落点。厂商页只适合横向比，单型号的实测必须落在单型号页上。
     seen_slug: dict[str, str] = {}
     slugs: dict[str, str] = {}
+    # 精选白名单：data/featured.json（人工维护，见 tools/mark_featured.py）
+    try:
+        _feat = json.loads((ROOT / "data" / "featured.json").read_text(encoding="utf-8"))
+    except Exception:
+        _feat = {"ids": []}
+    featured_ids = list(_feat.get("ids") or [])
+    featured_set = set(featured_ids)
+
     for r in rows:
         slugs[r["id"]] = part_slug(r["id"], r["vendor"], r["model"], seen_slug)
 
@@ -276,8 +284,8 @@ def main() -> None:
             "depthRange": s.get("depth_range_m"), "rangeM": s.get("range_m"),
             "specs": {k: v for k, v in s.items()
                       if v not in (None, "") and not k.startswith("image")},
+            "featured": r["id"] in featured_set,
             "notes": (r.get("notes") or "")[:600],
-            "specs": {k: v for k, v in s.items() if v is not None},
         })
     pub = OUT / "public"
     pub.mkdir(parents=True, exist_ok=True)
@@ -285,6 +293,7 @@ def main() -> None:
         json.dumps({"count": len(digest), "parts": digest,
                     # 品类表随产物一起发：前端不再硬编码品类名，
                     # 加品类 / 改名只动 data/taxonomy.json
+                    "featured": {"ids": featured_ids, "updated_at": _feat.get("updated_at")},
                     "categories": [
                         {"id": c["id"], "name": c.get("name", c["id"]),
                          "hint": c.get("hint", ""),
