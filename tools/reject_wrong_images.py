@@ -20,6 +20,12 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 #: 2026-10-28 已由用户提供官方电机图，登记在 data/part_images.json ——
 #: 所以它们已经从这张表里摘掉了。下表是仍然有效的剔除项。
 WRONG: dict[str, str] = {
+    "dji-rm-board-a": "抓到的是二维码，不是开发板",
+    "dji-rm-board-c": "抓到的是二维码，不是开发板",
+    "unitree-l1": "抓到的是 UNITREE 商标，不是雷达",
+    "unitree-l2": "抓到的是 UNITREE 商标，不是雷达",
+    "nvidia-orin-nano-8gb": "抓到的是多型号拼图，看不出哪个是 Orin Nano",
+    "nvidia-orin-nx-16gb": "抓到的是多型号拼图，看不出哪个是 Orin NX",
     # 达妙官网 og:image 给的是人形整机图，不是 JH 系列关节模组本体
     "达妙-dm-dm-jh11-51-2ec": "抓到的是达妙人形整机宣传图，不是 JH11 关节模组",
     "达妙-dm-dm-jh11-101-2ec": "抓到的是达妙人形整机宣传图，不是 JH11 关节模组",

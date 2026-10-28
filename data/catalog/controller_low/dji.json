@@ -12,7 +12,7 @@
   "last_checked": "2026-10-28",
   "price_cny": null,
   "origin": "厂商公开资料（待逐项核对）",
-  "notes": "RM 生态的通用主控：F427 + 板载 IMU，CAN/PWM/ADC/DBUS 齐全。注意它面向 RM 赛制，供电与接口定义跟通用驱动板不一样。",
+  "notes": "RM 生态的通用主控：F427 + 板载 IMU，CAN/PWM/ADC/DBUS 齐全。注意它面向 RM 赛制，供电与接口定义跟通用驱动板不一样。 产品图待补（抓到的不是产品本体）。",
   "specs": {
    "image_url": null,
    "image_source": null,
@@ -42,7 +42,7 @@
   "last_checked": "2026-10-28",
   "price_cny": null,
   "origin": "厂商公开资料（待逐项核对）",
-  "notes": "比 A 型更小更便宜的一档，常用来带云台/拨弹。CAN 路数比 A 型少。",
+  "notes": "比 A 型更小更便宜的一档，常用来带云台/拨弹。CAN 路数比 A 型少。 产品图待补（抓到的不是产品本体）。",
   "specs": {
    "image_url": null,
    "image_source": null,

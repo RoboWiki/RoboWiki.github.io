@@ -12,7 +12,7 @@
   "last_checked": "2026-10-28",
   "price_cny": null,
   "origin": "厂商公开资料（待逐项核对）",
-  "notes": "四足/人形做感知与策略推理的常见下限：8 GB 内存同时跑相机流 + 策略会很紧。「Super 模式」需 JetPack 6.2 以上，算力标称才到 40 TOPS。",
+  "notes": "四足/人形做感知与策略推理的常见下限：8 GB 内存同时跑相机流 + 策略会很紧。「Super 模式」需 JetPack 6.2 以上，算力标称才到 40 TOPS。 产品图待补（抓到的不是产品本体）。",
   "specs": {
    "image_url": null,
    "image_source": null,
@@ -46,7 +46,7 @@
   "last_checked": "2026-10-28",
   "price_cny": null,
   "origin": "厂商公开资料（待逐项核对）",
-  "notes": "算力是 Orin Nano 的两倍多、内存带宽更大；功耗与散热要求也高一档，小机身四足要提前算散热。",
+  "notes": "算力是 Orin Nano 的两倍多、内存带宽更大；功耗与散热要求也高一档，小机身四足要提前算散热。 产品图待补（抓到的不是产品本体）。",
   "specs": {
    "image_url": null,
    "image_source": null,

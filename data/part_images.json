@@ -35,5 +35,19 @@
  "dji-robomaster-m3508-p19": "/parts/dji-robomaster-m3508-p19.jpg",
  "unitree-im6014": "/parts/unitree-im6014.jpg",
  "unitree-go-m8010-6": "/parts/unitree-go-m8010-6.jpg",
- "unitree-unitree-a1": "/parts/unitree-unitree-a1.jpg"
+ "unitree-unitree-a1": "/parts/unitree-unitree-a1.jpg",
+ "orbbec-gemini-335": "/parts/orbbec-gemini-335.png",
+ "orbbec-gemini-336": "/parts/orbbec-gemini-336.png",
+ "chip-st-stm32f405rgt6": "/parts/chip-st-stm32f405rgt6.png",
+ "chip-st-stm32g431cbu6": "/parts/chip-st-stm32g431cbu6.png",
+ "chip-ti-tmc4671": "/parts/chip-ti-tmc4671.jpg",
+ "chip-bosch-bmi088": "/parts/chip-bosch-bmi088.jpg",
+ "chip-ams-as5047p": "/parts/chip-ams-as5047p.jpg",
+ "nvidia-orin-nano-8gb": "/parts/nvidia-orin-nano-8gb.jpg",
+ "nvidia-orin-nx-16gb": "/parts/nvidia-orin-nx-16gb.jpg",
+ "dji-rm-board-a": "/parts/dji-rm-board-a.png",
+ "dji-rm-board-c": "/parts/dji-rm-board-c.png",
+ "livox-mid-360": "/parts/livox-mid-360.jpg",
+ "unitree-l1": "/parts/unitree-l1.jpg",
+ "unitree-l2": "/parts/unitree-l2.jpg"
 }
