@@ -43,15 +43,16 @@ export interface GiscusConfig {
 /** 填成对象即启用。填之前先看文件头的四条前提。 */
 export const giscus: GiscusConfig | null = {
   repo: 'RoboWiki/RoboWiki.github.io',
-  repoId: 'TODO_REREGISTER',
+  repoId: 'R_kgDOVascog',
   category: 'Announcements',
-  categoryId: 'TODO_REREGISTER',
+  categoryId: 'DIC_kwDOVascos4DJ12O',
   mapping: 'specific',
   lang: 'zh-CN',
 }
 
 export const isGiscusEnabled = (): boolean => giscus !== null
 
-// TODO(giscus)：换仓库后 repoId / categoryId 失效。
-// 去 https://giscus.app 用新仓库 RoboWiki/RoboWiki.github.io 重新生成，
-// 把两个 id 填回来即可；在此之前评论区不会加载（不报错，静默不显示）。
+// 2026-10-29 已按新仓库填写：
+//   repoId     = R_kgDOVascog            （RoboWiki/RoboWiki.github.io 的 node id）
+//   categoryId = DIC_kwDOVascos4DJ12O    （Discussions → Announcements）
+// 换仓库 / 换分类时这两个 id 都会失效，症状是评论区静默不出现（不报错）。

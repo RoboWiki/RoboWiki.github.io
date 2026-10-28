@@ -23,13 +23,8 @@ outline: false
   <a href="https://github.com/zeitvex" target="_blank" rel="noopener">GitHub</a>
 </div>
 <div class="ct">
-  <div class="ct-head"><b>RoboWiki 编辑部</b><span class="ct-role">编辑</span></div>
-  <p>采购合同与口径的编者按；优惠与来源规则的整理</p>
-  
-</div>
-<div class="ct">
-  <div class="ct-head"><b>Dichen33</b><span class="ct-role">贡献者</span></div>
-  <p>整机数据 15 台（含 URDF / 仓库链接）、上位机与下位机大批扩充、IMU 与相机雷达补充、部件资料采集指南（docs/data-collection-guide.md）</p>
+  <div class="ct-head"><b>Dichen33</b><span class="ct-role">创始贡献者</span></div>
+  <p>整机数据 15 台（含 URDF / 仓库链接）、上位机与下位机批量扩充、IMU 与相机雷达补充，合计 50 条进入目录；另写了一份《部件资料收集指南》，把「从开源项目找到型号 → 进官网 → 落地」的流程固定成规范。</p>
   <a href="https://github.com/Dichen33" target="_blank" rel="noopener">GitHub</a>
 </div></div>
   </section>

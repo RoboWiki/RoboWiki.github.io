@@ -14,6 +14,7 @@ import json
 import pathlib
 
 ROLE = {"维护者": ("维护者", "Maintainer"),
+        "创始贡献者": ("创始贡献者", "Founding contributor"),
         "编辑": ("编辑", "Editor"),
         "贡献者": ("贡献者", "Contributor")}
 
@@ -110,11 +111,21 @@ def build(root: pathlib.Path, out_dir: pathlib.Path, pub_dir: pathlib.Path) -> N
         "repo": "RoboWiki/RoboWiki.github.io", "source": "—", "updated_at": "—",
         "total": 0, "total_contributions": 0, "contributors": []}
     pub_dir.mkdir(parents=True, exist_ok=True)
-    (pub_dir / "contributors.json").write_text(
-        json.dumps(snap, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
     rows_path = root / "data" / "contributors.json"
     rows = json.loads(rows_path.read_text(encoding="utf-8")) if rows_path.exists() else []
+
+    # 把手工名单里的角色合进快照：卡片要显示「创始贡献者 / 维护者」
+    role_by_login = {(r.get("handle") or r.get("name") or "").lower(): r.get("role")
+                     for r in rows}
+    role_by_login.pop("", None)
+    for c in snap.get("contributors", []):
+        role = role_by_login.get((c.get("login") or "").lower())
+        if role:
+            c["role"] = role
+
+    (pub_dir / "contributors.json").write_text(
+        json.dumps(snap, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
     (out_dir / "contributors.md").write_text(page(rows, "zh"), encoding="utf-8")
     (out_dir / "en").mkdir(parents=True, exist_ok=True)

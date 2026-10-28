@@ -12,18 +12,11 @@
   ]
  },
  {
-  "handle": "robowiki",
-  "name": "RoboWiki 编辑部",
-  "role": "编辑",
-  "did": "采购合同与口径的编者按；优惠与来源规则的整理",
-  "links": []
- },
- {
   "name": "Dichen33",
   "handle": "Dichen33",
-  "role": "贡献者",
-  "did": "整机数据 15 台（含 URDF / 仓库链接）、上位机与下位机大批扩充、IMU 与相机雷达补充、部件资料采集指南（docs/data-collection-guide.md）",
-  "did_en": "15 whole-robot entries with URDF/repo links, a large expansion of high- and low-level controllers, extra IMU / camera / LiDAR models, and the part-data collection guide",
+  "role": "创始贡献者",
+  "did": "整机数据 15 台（含 URDF / 仓库链接）、上位机与下位机批量扩充、IMU 与相机雷达补充，合计 50 条进入目录；另写了一份《部件资料收集指南》，把「从开源项目找到型号 → 进官网 → 落地」的流程固定成规范。",
+  "did_en": "15 whole-robot entries with URDF/repo links, a bulk expansion of high- and low-level controllers plus IMU/camera/LiDAR (50 entries in total), and the part-data collection guide that turns the workflow into a spec.",
   "links": [
    {
     "label": "GitHub",

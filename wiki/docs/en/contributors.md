@@ -23,13 +23,8 @@ outline: false
   <a href="https://github.com/zeitvex" target="_blank" rel="noopener">GitHub</a>
 </div>
 <div class="ct">
-  <div class="ct-head"><b>RoboWiki 编辑部</b><span class="ct-role">Editor</span></div>
-  <p>采购合同与口径的编者按；优惠与来源规则的整理</p>
-  
-</div>
-<div class="ct">
-  <div class="ct-head"><b>Dichen33</b><span class="ct-role">Contributor</span></div>
-  <p>15 whole-robot entries with URDF/repo links, a large expansion of high- and low-level controllers, extra IMU / camera / LiDAR models, and the part-data collection guide</p>
+  <div class="ct-head"><b>Dichen33</b><span class="ct-role">Founding contributor</span></div>
+  <p>15 whole-robot entries with URDF/repo links, a bulk expansion of high- and low-level controllers plus IMU/camera/LiDAR (50 entries in total), and the part-data collection guide that turns the workflow into a spec.</p>
   <a href="https://github.com/Dichen33" target="_blank" rel="noopener">GitHub</a>
 </div></div>
   </section>

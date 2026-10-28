@@ -12,7 +12,7 @@
  */
 import { computed, onMounted, ref } from 'vue'
 
-interface Person { login: string; avatar: string | null; url: string | null; contributions: number; bot: boolean }
+interface Person { login: string; avatar: string | null; url: string | null; contributions: number; bot: boolean; role?: string }
 interface Snap {
   repo: string; source: string; updated_at: string
   total: number; total_contributions: number; contributors: Person[]
@@ -68,7 +68,8 @@ const people = computed(() => snap.value?.contributors ?? [])
               <div class="cw-login">{{ p.login }}</div>
               <div class="cw-meta">
                 <span>{{ p.contributions }} {{ L.times_n }}</span>
-                <em v-if="i === 0 && !p.bot">{{ L.maintainer }}</em>
+                <em v-if="p.role">{{ p.role }}</em>
+                <em v-else-if="i === 0 && !p.bot">{{ L.maintainer }}</em>
                 <em v-if="p.bot" class="bot">{{ L.bot }}</em>
               </div>
             </div>
