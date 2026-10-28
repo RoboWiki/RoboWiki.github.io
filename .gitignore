@@ -1,4 +1,4 @@
-﻿__pycache__/
+__pycache__/
 *.pyc
 .pytest_cache/
 roboselect.db
@@ -6,9 +6,14 @@ roboselect.db-wal
 roboselect.db-shm
 node_modules/
 frontend/dist/
-shot-*.png
 .venv/
 .env
+
+# 开发期的一次性产物：截图、探针脚本、日志 —— 不进库
+shot-*.*
+_dev.log
+_*.py
+_*.js
 
 # 测试用的一次性沙箱
 .tmp-validate/
