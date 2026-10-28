@@ -603,6 +603,18 @@
   "Winbond": {
    "slug": "winbond",
    "cn": "华邦"
+  },
+  "Monolithic Power Systems": {
+   "slug": "mps",
+   "cn": "MPS 芯源"
+  },
+  "OrangePi": {
+   "slug": "orangepi",
+   "cn": "香橙派"
+  },
+  "RoboSense": {
+   "slug": "robosense",
+   "cn": "速腾聚创"
   }
  }
 }

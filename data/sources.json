@@ -1,0 +1,93 @@
+[
+ {
+  "name": "Livox 览沃（大疆生态）",
+  "url": "https://www.livoxtech.com/cn",
+  "kind": "官网",
+  "covers": "激光雷达",
+  "what": "Mid-360 等型号的量程、视场、点频与接口定义"
+ },
+ {
+  "name": "达妙科技 DAMIAO",
+  "url": "https://www.damiaokeji.com/",
+  "kind": "官网",
+  "covers": "关节电机 / 主控",
+  "what": "DM 系列关节电机的扭矩、减速比、惯量与选型手册"
+ },
+ {
+  "name": "奥比中光 Orbbec",
+  "url": "https://orbbec.com.cn/",
+  "kind": "官网",
+  "covers": "深度相机",
+  "what": "Gemini 系列的深度量程、视场、分辨率与 SDK"
+ },
+ {
+  "name": "MPS 芯源系统",
+  "url": "https://www.monolithicpower.cn/cn/",
+  "kind": "官网",
+  "covers": "电源芯片",
+  "what": "驱动板供电与 DC-DC 选型（效率曲线、封装、热阻）"
+ },
+ {
+  "name": "RoboMaster 官方 Wiki",
+  "url": "https://bbs.robomaster.com/wiki/20204847/804051",
+  "kind": "官方 Wiki",
+  "covers": "下位机 / 电机",
+  "what": "开发板 A 型与 C 型的接口定义、CAN 分配、例程"
+ },
+ {
+  "name": "地平线 D-Robotics RDK 文档",
+  "url": "https://developer.d-robotics.cc/rdk_x_doc/RDK?v=3.5.0&p=RDK+X5",
+  "kind": "官方文档",
+  "covers": "上位机",
+  "what": "RDK X5 的算力、接口、系统镜像与 BPU 工具链"
+ },
+ {
+  "name": "香橙派 OrangePi",
+  "url": "http://www.orangepi.cn/html/hardWare/computerAndMicrocontrollers/index.html",
+  "kind": "官网",
+  "covers": "上位机",
+  "what": "RK3588 系列单板计算机的接口与供电"
+ },
+ {
+  "name": "速腾聚创 RoboSense",
+  "url": "https://www.robosense.cn/index",
+  "kind": "官网",
+  "covers": "激光雷达",
+  "what": "机械式与固态雷达的量程、线数、点频"
+ },
+ {
+  "name": "Intel RealSense",
+  "url": "https://www.intelrealsense.com/",
+  "kind": "官网",
+  "covers": "深度相机",
+  "what": "D400 系列的深度量程、基线、快门类型与 IMU 规格"
+ },
+ {
+  "name": "NVIDIA Jetson",
+  "url": "https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/",
+  "kind": "官网",
+  "covers": "上位机",
+  "what": "Orin Nano / NX 的 GPU 核数、算力、内存带宽与功耗档位"
+ },
+ {
+  "name": "大疆 RoboMaster",
+  "url": "https://www.robomaster.com/",
+  "kind": "官网",
+  "covers": "下位机 / 电机",
+  "what": "开发板与 M3508 / M2006 / GM6020 的产品页"
+ },
+ {
+  "name": "宇树 Unitree",
+  "url": "https://www.unitree.com/",
+  "kind": "官网",
+  "covers": "关节电机 / 激光雷达",
+  "what": "电机与 4D 雷达的型号页"
+ },
+ {
+  "name": "灵足时代 RobStride",
+  "url": "https://www.robstride.com/",
+  "kind": "官网",
+  "covers": "关节电机",
+  "what": "RS / EL 系列的规格与通信协议"
+ }
+]

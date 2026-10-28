@@ -1225,6 +1225,18 @@ html.dark .rl-th {{ color: #e0b159; }}
     ]
     srow = "\n".join(f"| {a} | {b} | {c} |" for a, b, c in srcs)
 
+    # ── 厂商官网 / 官方文档 ──────────────────────────────────────────
+    # 一手来源单列：参数最终都要能追溯到这些页面（或它们的 PDF）。
+    try:
+        offs = json.loads((ROOT / "data" / "sources.json").read_text(encoding="utf-8"))
+    except Exception:
+        offs = []
+    orow = "\n".join(
+        f'| <a href="{o.get("url")}" target="_blank" rel="noopener">{o.get("name")}</a> '
+        f'| {o.get("kind") or "—"} | {o.get("covers") or "—"} | {o.get("what") or "—"} |'
+        for o in offs)
+
+
     # ── 贡献者 ──────────────────────────────────────────────────────────
     # 名单手工维护（data/contributors.json），不从 git log 生成：
     # CI 是浅克隆，git log 只有一次提交；而且「谁贡献了什么」本来就该人写，
@@ -1448,6 +1460,23 @@ html.dark .rl-th {{ color: #e0b159; }}
 
     (OUT / "sources.md").write_text(FRONT.format(title="数据来源") + f"""
 # 数据来源
+
+判定一条数据够不够格进目录，只看一件事：**它能不能指回一手来源。**
+
+- `A` 级 = 逐项核对过厂商手册 / 官方文档（下表的「厂商官网 / 官方文档」）
+- `B` 级 = 采自公开商品页或第三方整理，未逐项核对
+- `C` 级 = 转述，仅作线索
+
+## 厂商官网 / 官方文档
+
+参数最终都要能追到这些页面或它们的 PDF。列出来也是给贡献者的入口 ——
+补数据时先去这里找，而不是去电商页抄。
+
+| 来源 | 类型 | 覆盖品类 | 取什么 |
+|---|---|---|---|
+{orow}
+
+## 项目与归档
 
 | 来源 | 取走了什么 | 形态 |
 |---|---|---|
