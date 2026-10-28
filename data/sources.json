@@ -89,5 +89,26 @@
   "kind": "官网",
   "covers": "关节电机",
   "what": "RS / EL 系列的规格与通信协议"
+ },
+ {
+  "name": "奥比中光 产品页（Gemini 系列）",
+  "url": "https://www.orbbec.com.cn/index/Product/index.html?cate=38&ptoduct_cate=1&industry=15&page=2",
+  "kind": "官网产品页",
+  "covers": "深度相机",
+  "what": "Gemini 系列的深度量程、视场、接口与 SDK（比首页更具体）"
+ },
+ {
+  "name": "RealSense 国内代理（realsenseai.com）",
+  "url": "https://www.realsenseai.com/cn/stereo-depth-cameras/",
+  "kind": "国内代理",
+  "covers": "深度相机",
+  "what": "D400 系列在国内的规格页与产品图；Intel 官网对本站 TLS 拦截，这里可达"
+ },
+ {
+  "name": "大疆商城 RoboMaster 专区",
+  "url": "https://store.dji.com/cn/shop/robomasters?from=robomaster_online",
+  "kind": "官方商城",
+  "covers": "下位机 / 电机",
+  "what": "开发板、电机、配件在售型号与官方产品图（价格随时变，不录）"
  }
 ]

@@ -70,6 +70,22 @@ def iter_seed_files():
     return [settings.data_dir / fn for fn in SEED_FILES]
 
 
+def _load_offers() -> list[dict]:
+    """读 data/offers/*.json（一家一文件）；没有目录时退回旧的 data/offers.json。"""
+    rows: list[dict] = []
+    d = settings.data_dir / "offers"
+    if d.exists():
+        for f in sorted(d.glob("*.json")):
+            try:
+                rows.extend(json.loads(f.read_text(encoding="utf-8")))
+            except Exception:
+                continue
+    if rows:
+        return rows
+    old = settings.data_dir / "offers.json"
+    return json.loads(old.read_text(encoding="utf-8")) if old.exists() else []
+
+
 def seed_catalog(db: Session) -> dict[str, int]:
     """灌零件与优惠。幂等；种子里没有的行会被删掉（评论随之级联）。"""
     stats: dict[str, int] = {}
@@ -109,10 +125,10 @@ def seed_catalog(db: Session) -> dict[str, int]:
         db.delete(p)
     stats["removed_stale"] = len(stale)
 
-    offers_path = settings.data_dir / "offers.json"
-    if offers_path.exists():
-        offers = json.loads(offers_path.read_text(encoding="utf-8"))
-        for o in offers:
+    # 优惠：data/offers/*.json 是唯一源（旧扁平 offers.json 已废弃）
+    offer_rows = _load_offers()
+    if offer_rows:
+        for o in offer_rows:
             obj = db.get(Offer, o["id"])
             if obj is None:
                 obj = Offer(id=o["id"])
@@ -126,7 +142,8 @@ def seed_catalog(db: Session) -> dict[str, int]:
             obj.starts_on = o.get("starts_on")
             obj.expires_on = o.get("expires_on")
             obj.demo = bool(o.get("demo"))
-        stats["offers"] = len(offers)
+            obj.exclude_parts = o.get("exclude_parts") or []
+        stats["offers"] = len(offer_rows)
 
     db.commit()
     return stats

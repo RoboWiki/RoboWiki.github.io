@@ -15,7 +15,7 @@
   "notes": "入门级主动双目（结构光辅助），ROS/Orbbec SDK 生态完整。规格待补：需按厂商规格书逐项核对，本站不估。 产品图待补：Orbbec 产品页为 JS 渲染，HTML 里没有图片地址，需人工提供截图",
   "specs": {
    "image_url": "/parts/orbbec-gemini-335.png",
-   "image_source": "厂商资料抓取（orbbec-gemini-335.png）",
+   "image_source": "厂商官方产品图（用户提供链接）",
    "tau_peak_Nm": null,
    "tau_rated_Nm": null,
    "gear": null,
@@ -44,7 +44,7 @@
   "notes": "与 335 同代，差异在深度/RGB 分辨率与部分工作模式。规格待补：需按厂商规格书逐项核对，本站不估。 产品图待补：同上，需人工提供截图",
   "specs": {
    "image_url": "/parts/orbbec-gemini-336.png",
-   "image_source": "厂商资料抓取（orbbec-gemini-336.png）",
+   "image_source": "厂商官方产品图（用户提供链接）",
    "tau_peak_Nm": null,
    "tau_rated_Nm": null,
    "gear": null,

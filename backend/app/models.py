@@ -56,6 +56,9 @@ class Offer(SQLModel, table=True):
     starts_on: str | None = None
     expires_on: str | None = None
     demo: bool = False
+    #: 厂商级优惠不适用的型号（JSON 数组）。例：灵足教育 9 折排除 EL05。
+    #: 没有这一列，API 会把一个拿不到的价显示在卡片上。
+    exclude_parts: list[str] = Field(default_factory=list, sa_column=Column(JSON))
     created_at: datetime = Field(default_factory=utcnow)
 
 

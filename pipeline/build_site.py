@@ -223,6 +223,8 @@ def main() -> None:
                 or (not o.get("part_id") and o.get("vendor") == r["vendor"])]
         cand = [o for o in cand
                 if (o.get("expires_on") or "9999") >= today and o.get("detail")]
+        # 厂商级优惠可以显式排除某些型号（例：灵足 9 折不适用于 EL05）
+        cand = [o for o in cand if r["id"] not in (o.get("exclude_parts") or [])]
 
         def eff(o):
             if o.get("price_cny") is not None:

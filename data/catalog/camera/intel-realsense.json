@@ -58,5 +58,66 @@
    "fov": "87°×58°",
    "imu": true
   }
+ },
+ {
+  "category": "camera",
+  "subtype": "stereo",
+  "id": "intel-d405",
+  "vendor": "Intel RealSense",
+  "model": "D405",
+  "title": "Intel RealSense D405 近距双目相机",
+  "url": "https://www.realsenseai.com/cn/stereo-depth-cameras/",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": null,
+  "origin": "Intel RealSense 国内代理 realsenseai.com（官方页面）",
+  "notes": "**近距离**用的：视场窄、最近可到 7 cm，装夹爪上做抓取定位很合适。别拿它看远处——超过 50 cm 精度掉得很快。",
+  "specs": {
+   "image_url": "/parts/intel-d405.png",
+   "image_source": "厂商官方产品图（用户提供链接）",
+   "mass_kg": null,
+   "voltage_V": null,
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "armature_kgm2": null,
+   "kt_Nm_per_A": null,
+   "iface": "USB-C 3.1 Gen1",
+   "depth_range_m": "0.07–0.5",
+   "fps": 90,
+   "fov": "87°×58°"
+  }
+ },
+ {
+  "category": "camera",
+  "subtype": "stereo",
+  "id": "intel-d457",
+  "vendor": "Intel RealSense",
+  "model": "D457",
+  "title": "Intel RealSense D457 GMSL2/FAKRA 双目相机",
+  "url": "https://www.realsenseai.com/cn/stereo-depth-cameras/",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-28",
+  "price_cny": null,
+  "origin": "Intel RealSense 国内代理 realsenseai.com（官方页面）",
+  "notes": "给**移动机器人**用的版本：GMSL2 + FAKRA 车规线束，能跑十几米长线，IP65 防护。代价是需要 GMSL 采集卡，Jetson 平台友好，PC 上要另配。",
+  "specs": {
+   "image_url": "/parts/intel-d457.png",
+   "image_source": "厂商官方产品图（用户提供链接）",
+   "mass_kg": null,
+   "voltage_V": null,
+   "tau_peak_Nm": null,
+   "tau_rated_Nm": null,
+   "gear": null,
+   "armature_kgm2": null,
+   "kt_Nm_per_A": null,
+   "iface": "GMSL2 / FAKRA",
+   "depth_range_m": "0.6–6",
+   "fps": 30,
+   "fov": "87°×58°",
+   "ip": "IP65"
+  }
  }
 ]

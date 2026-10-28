@@ -30,6 +30,11 @@
       "minLength": 4,
       "description": "获取条件：谁有资格、限购多少、怎么拿。没有这条就不上卡片。"
     },
+    "exclude_parts": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "厂商级优惠不适用的型号。例：灵足教育 9 折排除 EL05（成本原因）。"
+    },
     "url": { "type": ["string", "null"] },
     "starts_on": { "type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
     "expires_on": { "type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },

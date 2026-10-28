@@ -31,6 +31,9 @@ title: 数据来源
 | <a href="https://www.robomaster.com/" target="_blank" rel="noopener">大疆 RoboMaster</a> | 官网 | 下位机 / 电机 | 开发板与 M3508 / M2006 / GM6020 的产品页 |
 | <a href="https://www.unitree.com/" target="_blank" rel="noopener">宇树 Unitree</a> | 官网 | 关节电机 / 激光雷达 | 电机与 4D 雷达的型号页 |
 | <a href="https://www.robstride.com/" target="_blank" rel="noopener">灵足时代 RobStride</a> | 官网 | 关节电机 | RS / EL 系列的规格与通信协议 |
+| <a href="https://www.orbbec.com.cn/index/Product/index.html?cate=38&ptoduct_cate=1&industry=15&page=2" target="_blank" rel="noopener">奥比中光 产品页（Gemini 系列）</a> | 官网产品页 | 深度相机 | Gemini 系列的深度量程、视场、接口与 SDK（比首页更具体） |
+| <a href="https://www.realsenseai.com/cn/stereo-depth-cameras/" target="_blank" rel="noopener">RealSense 国内代理（realsenseai.com）</a> | 国内代理 | 深度相机 | D400 系列在国内的规格页与产品图；Intel 官网对本站 TLS 拦截，这里可达 |
+| <a href="https://store.dji.com/cn/shop/robomasters?from=robomaster_online" target="_blank" rel="noopener">大疆商城 RoboMaster 专区</a> | 官方商城 | 下位机 / 电机 | 开发板、电机、配件在售型号与官方产品图（价格随时变，不录） |
 
 ## 项目与归档
 

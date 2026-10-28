@@ -100,6 +100,20 @@ def derive(specs: dict) -> dict[str, Any]:
     return out
 
 
+def _offer_ok(offer, part_id: str, today: str) -> bool:
+    """优惠是否适用于该零件：未过期、有条件、且不在排除名单里。
+
+    排除列表是给「厂商级优惠但有例外」用的 —— 例：灵足教育 9 折适用范围是
+    RS 全系，EL05 因成本原因不参与（官方口径）。没有这条，卡片上会给 EL05
+    显示一个它其实拿不到的价。
+    """
+    if (offer.expires_on or "9999") >= today and not (offer.detail or ""):
+        return False
+    if part_id in (getattr(offer, "exclude_parts", None) or []):
+        return False
+    return True
+
+
 def part_out(p: Part, viewer: bool = False) -> dict:
     return {
         "id": p.id, "category": p.category,

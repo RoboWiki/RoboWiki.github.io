@@ -14,8 +14,8 @@
   "origin": "厂商公开资料（待逐项核对）",
   "notes": "RM 生态的通用主控：F427 + 板载 IMU，CAN/PWM/ADC/DBUS 齐全。注意它面向 RM 赛制，供电与接口定义跟通用驱动板不一样。 产品图待补（抓到的不是产品本体）。",
   "specs": {
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/dji-rm-board-a.png",
+   "image_source": "厂商官方产品图（用户提供链接）",
    "tau_peak_Nm": null,
    "tau_rated_Nm": null,
    "gear": null,
