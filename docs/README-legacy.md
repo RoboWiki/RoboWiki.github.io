@@ -33,9 +33,9 @@ scripts/   数据生成、闸门、文档生成、备份/回滚
 
 | 选型台（浅色） | 选型台（深色） |
 |---|---|
-| ![选型台](docs/screenshot-catalog.png) | ![深色](docs/screenshot-dark.png) |
+| ![选型台](docs/history/screenshot-catalog.png) | ![深色](docs/history/screenshot-dark.png) |
 | **文档站** | **数据后台** |
-| ![文档站](docs/screenshot-pages.png) | ![后台](docs/screenshot-admin.png) |
+| ![文档站](docs/history/screenshot-pages.png) | ![后台](docs/history/screenshot-admin.png) |
 
 ### 明暗切换
 
@@ -339,7 +339,7 @@ python pipeline/validate.py           # 数据闸门
   电机抽象、3 个新增 RoboMaster 件、2 处来源冲突
 - [`docs/ecosystem.md`](docs/ecosystem.md) —— 国际 / 中文 / 开源生态的调研与借鉴清单
 - [`docs/references.md`](docs/references.md) —— 用了哪些上游项目、哪些只借设计
-- [`docs/screenshot-*.png`](docs/) —— 截图
+- [`docs/history/screenshot-*.png`](docs/) —— 截图
 
 ### 从生态里抄来的三件事（已落地）
 

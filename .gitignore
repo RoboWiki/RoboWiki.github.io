@@ -38,7 +38,7 @@ data/_inventory/*.jsonl
 inbox/*
 !inbox/README.md
 
-# 历史归档与旧采集产物（备份保留在本地 %TEMP%/roboselect-archive，可随时恢复）
+# 历史归档与旧采集产物（仓库外：00_open/roboselect-archive，见其 MANIFEST.md）
 data/_backup/
 data/motors.json
 data/motors_zju.json

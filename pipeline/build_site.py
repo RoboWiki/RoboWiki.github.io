@@ -71,11 +71,10 @@ def num(v, digits: int = 3) -> str:
 
 
 def load() -> list[dict]:
-    """读目录数据。
+    """唯一事实源：data/catalog/<品类>/<厂商>.json（人工维护，一家一文件）。
 
-    统一走 scripts/load_catalog.py：优先 data/catalog/<品类>/<厂商>.json（人工维护），
-    没有才退回 data/motors.json（采集产物）。这样贡献者只改自己的那个文件，
-    采集脚本重跑也不会覆盖人工修订。
+    旧扁平文件（motors.json / controllers_*.json / sensors.json）已于 2026-10-28
+    出库归档，**不再回退** —— 只有一个来源，才不会出现「改了没生效」。
     """
     from .load import load_parts
 

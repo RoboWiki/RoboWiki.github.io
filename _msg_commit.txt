@@ -1,0 +1,24 @@
+chore: 收干净架构收敛的尾巴 —— 废弃工具拦截 / 注释订正 / 历史截图归档
+
+上一轮「catalog 唯一事实源」的重构方向对，但删了数据没删配套。这轮补 5 件事。
+
+1) 旧工具加废弃拦截（真隐患）
+   build_motors / build_zju_parts / build_catalog / split_data / focus_data /
+   restrict_to_focus 这 6 个脚本仍按旧扁平结构写 data/motors.json、controllers_*.json、
+   sensors.json、focus.json —— 而 loader 已不读它们，跑起来「成功」但无人消费，
+   正是这次收敛要消灭的「改了没生效」。
+   新增 tools/_deprecated.py：默认打印废弃说明并 exit 2，指向 data/catalog/ 与
+   python -m pipeline validate；确需考古时设 ROBOSELECT_ALLOW_LEGACY=1 放行。
+   踩坑记录：第一版把 guard 插在 from __future__ 之前，直接语法错，已修正插入位置。
+
+2) _load_offers() 去掉不存在的 data/offers.json 回退，与「单一事实源」一致
+3) build_site.load() docstring 订正（代码只走 catalog/，注释还写着退回 motors.json）
+4) 17 张 docs/screenshot-*.png 是 12:43 旧界面（46 件时代），移入 docs/history/ +
+   新 README 说明「与当前界面不一致」；三份引用文档路径同步更新（已逐个验证可达）
+5) 历史归档搬到仓库外
+   %TEMP%/roboselect-archive（会被系统清理）→ 00_open/roboselect-archive（git 仓库外，
+   天然不提交），附 MANIFEST.md：244 文件 / 6.9 MB、来源、移出提交 57dfad8、恢复方式。
+   .gitignore 注释同步指向新位置。
+
+验证：pipeline all 通过（36 警告）· pytest 96 passed · Pages base 构建通过
+      6 个废弃脚本实测 exit 2 并打印说明

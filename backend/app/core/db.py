@@ -71,10 +71,9 @@ def _load_offers() -> list[dict]:
                 rows.extend(json.loads(f.read_text(encoding="utf-8")))
             except Exception:
                 continue
-    if rows:
-        return rows
-    old = settings.data_dir / "offers.json"
-    return json.loads(old.read_text(encoding="utf-8")) if old.exists() else []
+    # 旧 data/offers.json 已随 2026-10-28 的收敛出库，不再回退：
+    # 单一事实源 = data/offers/*.json，一家一文件。
+    return rows
 
 
 def seed_catalog(db: Session) -> dict[str, int]:

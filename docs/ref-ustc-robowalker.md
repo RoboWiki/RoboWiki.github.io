@@ -61,7 +61,7 @@
 - `GET /api/protocols`、`GET /api/protocols/{id}` —— 只读免鉴权
 - `/semantics` 页新增「总线与协议口径」表，可展开看每条的口径提醒与证据
 
-![协议口径](screenshot-protocols.png)
+![协议口径](history/screenshot-protocols.png)
 
 ### 4.2 修正一个数据
 

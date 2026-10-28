@@ -18,6 +18,11 @@
 | `rename_vendors.py` | 厂商改名 | 会连带改 URL slug |
 | `apply_pricing*.py` | 批量写价格与优惠 | 以脚本里的表为准，会覆盖手改 |
 
+> **2026-10-28 起**：按旧扁平结构写文件的脚本（build_motors / build_catalog /
+> split_data / focus_data / restrict_to_focus / build_zju_parts）已加拦截，
+> 直接运行会打印废弃说明并退出（exit 2）。因为 data/catalog/ 已是唯一事实源，
+> 它们写出的文件没有读取方。确需考古时设 ROBOSELECT_ALLOW_LEGACY=1 放行。
+
 **协作时不要随手跑。** 如果只是加一个型号或改一个参数，
 直接改 `data/catalog/` 下的 JSON 然后 `make validate` —— 那才是 PR 该做的事。
 

@@ -150,7 +150,7 @@ http://127.0.0.1:8000/wiki/     ← 文档站（VitePress，分层导航 + 每�
 | 讨论 | 零件详情抽屉 + 社区信息流 | **每页底下一条线程** |
 | 数据来源 | 同一份 `data/*.json` | 同一份（生成时读） |
 
-![文档页与讨论串](screenshot-wiki-comments.png)
+![文档页与讨论串](history/screenshot-wiki-comments.png)
 
 ## 5. 复现
 
