@@ -1,0 +1,78 @@
+[
+ {
+  "category": "chip",
+  "subtype": "ldo",
+  "id": "jlc-c71136",
+  "vendor": "UTC",
+  "vendor_cn": "UTC(友顺)",
+  "model": "78L05G-AB3-R",
+  "title": "UTC(友顺) 78L05G-AB3-R",
+  "url": "https://item.szlcsc.com/71136.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.4865,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "UTC 78LXX 单片固定电压稳压器，适合 ≤100 mA 的场合。",
+  "specs": {
+   "package": "SOT-89-3",
+   "category_cn": "线性稳压器(LDO)",
+   "lcsc_part": "C71136",
+   "params": {
+    "输出极性": "正极",
+    "工作电压": "30V",
+    "输出电压": "5V",
+    "输出电流": "100mA"
+   },
+   "price_tiers": [
+    {
+     "qty": 5,
+     "price": 0.4865
+    },
+    {
+     "qty": 50,
+     "price": 0.394
+    },
+    {
+     "qty": 150,
+     "price": 0.3464
+    },
+    {
+     "qty": 500,
+     "price": 0.3072
+    },
+    {
+     "qty": 2500,
+     "price": 0.2801
+    },
+    {
+     "qty": 4000,
+     "price": 0.2708
+    }
+   ],
+   "price_lead": null,
+   "stock": "195K+",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "基础库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "30V",
+   "voltage_out": "5V",
+   "current_out": "100mA",
+   "polarity": "正极",
+   "image_url": "/parts/jlc-c71136.jpg",
+   "image_source": "立创商城商品图（C71136，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241017/5F24914FD2C04F6A59596ABDC03CB337.pdf"
+  }
+ }
+]

@@ -204,7 +204,20 @@ function num(v: any, d = 3): string {
   return String(Number(n.toFixed(d)))
 }
 
-const money = (v: number | null) => (v == null ? null : `¥${Math.round(v).toLocaleString('en-US')}`)
+/**
+ * 价格格式：按量级选小数位。
+ * 芯片动辄 ¥0.1548，四舍五入成整数会变成 ¥0 —— 那是最糟的失真。
+ */
+function money(v: number | null): string | null {
+  if (v == null) return null
+  const a = Math.abs(v)
+  let digits = 0
+  if (a < 1) digits = 4
+  else if (a < 10) digits = 2
+  else if (a < 100) digits = 1
+  const s = v.toFixed(digits).replace(/\.0+$/, '').replace(/(\.\d*[1-9])0+$/, '$1')
+  return `¥${Number(s).toLocaleString('en-US', { maximumFractionDigits: digits })}`
+}
 
 /** 卡片上的 4 个关键参数 —— 按品类取，不是写死关节电机那四个 */
 /** 卡片上的关键参数：完全按品类定义渲染（4–6 个），不再写 if-else 分支。

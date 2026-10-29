@@ -1,0 +1,689 @@
+[
+ {
+  "category": "chip",
+  "subtype": "battery",
+  "id": "jlc-c725790",
+  "vendor": "UMW",
+  "vendor_cn": "UMW(友台半导体)",
+  "model": "TP4056",
+  "title": "UMW(友台半导体) TP4056",
+  "url": "https://item.szlcsc.com/725790.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.4714,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "单节锂电恒流/恒压线性充电，ESOP8，外围元件少，符合 USB 电源规格。",
+  "specs": {
+   "package": "ESOP-8",
+   "category_cn": "电池管理",
+   "lcsc_part": "C725790",
+   "params": {
+    "芯片类型": "充电芯片",
+    "工作电压": "4V~6.5V",
+    "最大充电电流": "1A",
+    "充电饱和电压": "4.2V"
+   },
+   "price_tiers": [
+    {
+     "qty": 5,
+     "price": 0.4714
+    },
+    {
+     "qty": 50,
+     "price": 0.3723
+    },
+    {
+     "qty": 150,
+     "price": 0.3213
+    },
+    {
+     "qty": 500,
+     "price": 0.2793
+    },
+    {
+     "qty": 2500,
+     "price": 0.2401
+    },
+    {
+     "qty": 4000,
+     "price": 0.2302
+    }
+   ],
+   "price_lead": null,
+   "stock": "352K+",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商满16-15",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商满16-15",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "4V~6.5V",
+   "chip_function": "充电芯片",
+   "charge_current": "1A",
+   "v_float": "4.2V",
+   "image_url": "/parts/jlc-c725790.jpg",
+   "image_source": "立创商城商品图（C725790，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241018/96212EE0C689E061405D8A0E33A0BC33.pdf"
+  }
+ },
+ {
+  "category": "chip",
+  "subtype": "battery",
+  "id": "jlc-c725791",
+  "vendor": "UMW",
+  "vendor_cn": "UMW(友台半导体)",
+  "model": "TP4057",
+  "title": "UMW(友台半导体) TP4057",
+  "url": "https://item.szlcsc.com/725791.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.2589,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "单节锂电线性充电，SOT-23-6；靠内部 MOS 架构与防反充电路省掉检测电阻和隔离二极管。",
+  "specs": {
+   "package": "SOT-23-6",
+   "category_cn": "电池管理",
+   "lcsc_part": "C725791",
+   "params": {
+    "芯片类型": "充电芯片",
+    "工作电压": "4V~6.5V",
+    "最大充电电流": "500mA",
+    "充电饱和电压": "4.24V"
+   },
+   "price_tiers": [
+    {
+     "qty": 20,
+     "price": 0.2589
+    },
+    {
+     "qty": 200,
+     "price": 0.1991
+    },
+    {
+     "qty": 600,
+     "price": 0.1659
+    },
+    {
+     "qty": 3000,
+     "price": 0.1346
+    },
+    {
+     "qty": 9000,
+     "price": 0.1174
+    },
+    {
+     "qty": 21000,
+     "price": 0.108
+    }
+   ],
+   "price_lead": null,
+   "stock": "149K+",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商满16-15",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商满16-15",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "4V~6.5V",
+   "chip_function": "充电芯片",
+   "charge_current": "500mA",
+   "v_float": "4.24V",
+   "image_url": "/parts/jlc-c725791.jpg",
+   "image_source": "立创商城商品图（C725791，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241018/96212EE0C689E061405D8A0E33A0BC33.pdf"
+  }
+ },
+ {
+  "category": "chip",
+  "subtype": "dcdc",
+  "id": "jlc-c347421",
+  "vendor": "UMW",
+  "vendor_cn": "UMW(友台半导体)",
+  "model": "LM2596S-5.0(UMW)",
+  "title": "UMW(友台半导体) LM2596S-5.0(UMW)",
+  "url": "https://item.szlcsc.com/347421.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 3.73,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "LM2596 系列单片降压，3 A 负载，内置频率补偿与固定频率振荡器；外围元件最少。",
+  "specs": {
+   "package": "TO-263-5",
+   "category_cn": "DC-DC电源芯片",
+   "lcsc_part": "C347421",
+   "params": {
+    "功能类型": "降压型",
+    "工作电压": "7V~40V",
+    "输出电压": "5V",
+    "输出电流": "3A"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 3.73
+    },
+    {
+     "qty": 10,
+     "price": 3.09
+    },
+    {
+     "qty": 30,
+     "price": 2.64
+    },
+    {
+     "qty": 100,
+     "price": 2.27
+    },
+    {
+     "qty": 500,
+     "price": 1.98
+    },
+    {
+     "qty": 800,
+     "price": 1.91
+    }
+   ],
+   "price_lead": null,
+   "stock": "78K+",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商满16-15",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商满16-15",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "7V~40V",
+   "voltage_out": "5V",
+   "current_out": "3A",
+   "function_type": "降压型",
+   "image_url": "/parts/jlc-c347421.jpg",
+   "image_source": "立创商城商品图（C347421，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241018/96212EE0C689E061405D8A0E33A0BC33.pdf"
+  }
+ },
+ {
+  "category": "chip",
+  "subtype": "ldo",
+  "id": "jlc-c347258",
+  "vendor": "UMW",
+  "vendor_cn": "UMW(友台半导体)",
+  "model": "78L05",
+  "title": "UMW(友台半导体) 78L05",
+  "url": "https://item.szlcsc.com/347258.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.23,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "78L 系列三端固定稳压；最大 100 mA，带热过载与短路限流。",
+  "specs": {
+   "package": "SOT-89-3",
+   "category_cn": "线性稳压器(LDO)",
+   "lcsc_part": "C347258",
+   "params": {
+    "输出极性": "正极",
+    "工作电压": "30V",
+    "输出电压": "5V",
+    "输出电流": "100mA"
+   },
+   "price_tiers": [
+    {
+     "qty": 20,
+     "price": 0.23
+    },
+    {
+     "qty": 200,
+     "price": 0.1695
+    },
+    {
+     "qty": 1000,
+     "price": 0.1427
+    },
+    {
+     "qty": 2000,
+     "price": 0.1225
+    },
+    {
+     "qty": 10000,
+     "price": 0.1145
+    },
+    {
+     "qty": 20000,
+     "price": 0.1091
+    }
+   ],
+   "price_lead": null,
+   "stock": "779K+",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商满16-15",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商满16-15",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "30V",
+   "voltage_out": "5V",
+   "current_out": "100mA",
+   "polarity": "正极",
+   "image_url": "/parts/jlc-c347258.jpg",
+   "image_source": "立创商城商品图（C347258，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241018/96212EE0C689E061405D8A0E33A0BC33.pdf"
+  }
+ },
+ {
+  "category": "chip",
+  "subtype": "ldo",
+  "id": "jlc-c347278",
+  "vendor": "UMW",
+  "vendor_cn": "UMW(友台半导体)",
+  "model": "78M05",
+  "title": "UMW(友台半导体) 78M05",
+  "url": "https://item.szlcsc.com/347278.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.6478,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "TO-252 三端正稳压器，固定输出，适合板级本地稳压。",
+  "specs": {
+   "package": "TO-252",
+   "category_cn": "线性稳压器(LDO)",
+   "lcsc_part": "C347278",
+   "params": {
+    "输出极性": "正极",
+    "工作电压": "35V",
+    "输出电压": "5V",
+    "输出电流": "1A"
+   },
+   "price_tiers": [
+    {
+     "qty": 5,
+     "price": 0.6478
+    },
+    {
+     "qty": 50,
+     "price": 0.5102
+    },
+    {
+     "qty": 150,
+     "price": 0.4395
+    },
+    {
+     "qty": 500,
+     "price": 0.3812
+    },
+    {
+     "qty": 2500,
+     "price": 0.3331
+    },
+    {
+     "qty": 5000,
+     "price": 0.3193
+    }
+   ],
+   "price_lead": null,
+   "stock": "246K+",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商满16-15",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商满16-15",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "35V",
+   "voltage_out": "5V",
+   "current_out": "1A",
+   "polarity": "正极",
+   "image_url": "/parts/jlc-c347278.jpg",
+   "image_source": "立创商城商品图（C347278，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20240124/B510D5B713FAD84E0FD45DBFFB1DAF71.pdf"
+  }
+ },
+ {
+  "category": "chip",
+  "subtype": "ldo",
+  "id": "jlc-c347222",
+  "vendor": "UMW",
+  "vendor_cn": "UMW(友台半导体)",
+  "model": "AMS1117-3.3",
+  "title": "UMW(友台半导体) AMS1117-3.3",
+  "url": "https://item.szlcsc.com/347222.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.2971,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "正低压差稳压器；1A 时典型压差 1.2V。固定版输出精度 2%，可调版 1.5%。带热关断与限流。",
+  "specs": {
+   "package": "SOT-223",
+   "category_cn": "线性稳压器(LDO)",
+   "lcsc_part": "C347222",
+   "params": {
+    "输出极性": "正极",
+    "工作电压": "12V",
+    "输出电压": "3.3V",
+    "输出电流": "1A"
+   },
+   "price_tiers": [
+    {
+     "qty": 10,
+     "price": 0.2971
+    },
+    {
+     "qty": 100,
+     "price": 0.235
+    },
+    {
+     "qty": 300,
+     "price": 0.203
+    },
+    {
+     "qty": 2500,
+     "price": 0.1604
+    },
+    {
+     "qty": 5000,
+     "price": 0.1512
+    },
+    {
+     "qty": 10000,
+     "price": 0.145
+    }
+   ],
+   "price_lead": null,
+   "stock": "1KK+",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商满16-15",
+    "下单最高92折"
+   ],
+   "tags": [
+    "RoHS",
+    "SMT补贴",
+    "商满16-15",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "12V",
+   "voltage_out": "3.3V",
+   "current_out": "1A",
+   "polarity": "正极",
+   "image_url": "/parts/jlc-c347222.jpg",
+   "image_source": "立创商城商品图（C347222，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241018/96212EE0C689E061405D8A0E33A0BC33.pdf"
+  }
+ },
+ {
+  "category": "chip",
+  "subtype": "ldo",
+  "id": "jlc-c347256",
+  "vendor": "UMW",
+  "vendor_cn": "UMW(友台半导体)",
+  "model": "AMS1117-3.3S",
+  "title": "UMW(友台半导体) AMS1117-3.3S",
+  "url": "https://item.szlcsc.com/347256.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.2846,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "同上（UMW 版），SOT-89 封装，散热比 SOT-223 略好。",
+  "specs": {
+   "package": "SOT-89",
+   "category_cn": "线性稳压器(LDO)",
+   "lcsc_part": "C347256",
+   "params": {
+    "输出极性": "正极",
+    "工作电压": "18V",
+    "输出电压": "3.3V",
+    "输出电流": "1A"
+   },
+   "price_tiers": [
+    {
+     "qty": 10,
+     "price": 0.2846
+    },
+    {
+     "qty": 100,
+     "price": 0.2227
+    },
+    {
+     "qty": 300,
+     "price": 0.1908
+    },
+    {
+     "qty": 1000,
+     "price": 0.1593
+    },
+    {
+     "qty": 5000,
+     "price": 0.1502
+    },
+    {
+     "qty": 10000,
+     "price": 0.144
+    }
+   ],
+   "price_lead": null,
+   "stock": "472K+",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商满16-15",
+    "下单最高92折"
+   ],
+   "tags": [
+    "RoHS",
+    "SMT补贴",
+    "商满16-15",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "18V",
+   "voltage_out": "3.3V",
+   "current_out": "1A",
+   "polarity": "正极",
+   "image_url": "/parts/jlc-c347256.jpg",
+   "image_source": "立创商城商品图（C347256，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241018/96212EE0C689E061405D8A0E33A0BC33.pdf"
+  }
+ },
+ {
+  "category": "chip",
+  "subtype": "ldo",
+  "id": "jlc-c347223",
+  "vendor": "UMW",
+  "vendor_cn": "UMW(友台半导体)",
+  "model": "AMS1117-5.0",
+  "title": "UMW(友台半导体) AMS1117-5.0",
+  "url": "https://item.szlcsc.com/347223.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.2921,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "UMW 版固定 5 V。工作电压 12 V（比 AMS 原厂 15 V 低），余量要按这个算。",
+  "specs": {
+   "package": "SOT-223",
+   "category_cn": "线性稳压器(LDO)",
+   "lcsc_part": "C347223",
+   "params": {
+    "输出极性": "正极",
+    "工作电压": "12V",
+    "输出电压": "5V",
+    "输出电流": "1A"
+   },
+   "price_tiers": [
+    {
+     "qty": 10,
+     "price": 0.2921
+    },
+    {
+     "qty": 100,
+     "price": 0.23
+    },
+    {
+     "qty": 300,
+     "price": 0.198
+    },
+    {
+     "qty": 2500,
+     "price": 0.1596
+    },
+    {
+     "qty": 5000,
+     "price": 0.1504
+    },
+    {
+     "qty": 10000,
+     "price": 0.1442
+    }
+   ],
+   "price_lead": null,
+   "stock": "119K+",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商满16-15",
+    "下单最高92折"
+   ],
+   "tags": [
+    "RoHS",
+    "SMT补贴",
+    "商满16-15",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "12V",
+   "voltage_out": "5V",
+   "current_out": "1A",
+   "polarity": "正极",
+   "image_url": "/parts/jlc-c347223.jpg",
+   "image_source": "立创商城商品图（C347223，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241018/96212EE0C689E061405D8A0E33A0BC33.pdf"
+  }
+ },
+ {
+  "category": "chip",
+  "subtype": "ldo",
+  "id": "jlc-c347376",
+  "vendor": "UMW",
+  "vendor_cn": "UMW(友台半导体)",
+  "model": "XC6206P332MR",
+  "title": "UMW(友台半导体) XC6206P332MR",
+  "url": "https://item.szlcsc.com/347376.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.1141,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "CMOS 降压稳压器，高纹波抑制、低功耗；静态偏置约 6 µA。注意是 250 mA（TOREX 原版标 200 mA）。",
+  "specs": {
+   "package": "SOT-23",
+   "category_cn": "线性稳压器(LDO)",
+   "lcsc_part": "C347376",
+   "params": {
+    "输出极性": "正极",
+    "工作电压": "8V",
+    "输出电压": "3.3V",
+    "输出电流": "250mA"
+   },
+   "price_tiers": [
+    {
+     "qty": 50,
+     "price": 0.1141
+    },
+    {
+     "qty": 500,
+     "price": 0.0847
+    },
+    {
+     "qty": 3000,
+     "price": 0.0714
+    },
+    {
+     "qty": 6000,
+     "price": 0.0616
+    },
+    {
+     "qty": 24000,
+     "price": 0.0577
+    },
+    {
+     "qty": 51000,
+     "price": 0.055
+    }
+   ],
+   "price_lead": null,
+   "stock": "1KK+",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商满16-15",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商满16-15",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "8V",
+   "voltage_out": "3.3V",
+   "current_out": "250mA",
+   "polarity": "正极",
+   "image_url": "/parts/jlc-c347376.jpg",
+   "image_source": "立创商城商品图（C347376，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241018/96212EE0C689E061405D8A0E33A0BC33.pdf"
+  }
+ }
+]

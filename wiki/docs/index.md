@@ -19,7 +19,7 @@ titleTemplate: false
       <a class="rw-home-btn ghost" href="/learn/">从零开始学</a>
     </div>
     <div class="rw-home-stats">
-      <div><b>111</b><span>在库部件</span></div>
+      <div><b>152</b><span>在库部件</span></div>
       <div><b>11</b><span>有数据的品类（共 13 类）</span></div>
       <div><b>83</b><span>A 级：逐项对过厂商手册</span></div>
       <div><b>15</b><span>整机（带 URDF / 仓库）</span></div>
@@ -60,7 +60,7 @@ titleTemplate: false
         <span>URDF / 仓库链接可直接下载</span>
       </a>
       <a class="rw-home-entry" href="/catalog">
-        <b>机器人部件 · 111 件</b>
+        <b>机器人部件 · 152 件</b>
         <p>比参数：按任意列排序、可对比、带来源等级与真实评分。</p>
         <span>A 级 83 件逐项对过手册</span>
       </a>
@@ -136,8 +136,8 @@ titleTemplate: false
   <section class="rw-home-block">
     <h2>按品类</h2>
     <div class="rw-home-cats">
+      <a class="rw-home-cat" href="/catalog"><b>硬件芯片</b><span>59</span><em>电源 / 基准 / 电池管理 / 开关</em></a>
       <a class="rw-home-cat" href="/catalog"><b>关节电机</b><span>46</span><em>选型主战场</em></a>
-      <a class="rw-home-cat" href="/catalog"><b>硬件芯片</b><span>18</span><em>MCU / 驱动 / 收发器</em></a>
       <a class="rw-home-cat" href="/catalog"><b>上位机</b><span>9</span><em>推理与感知</em></a>
       <a class="rw-home-cat" href="/catalog"><b>激光雷达</b><span>9</span><em>地形与建图</em></a>
       <a class="rw-home-cat" href="/catalog"><b>深度相机</b><span>9</span><em>视觉感知</em></a>

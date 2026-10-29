@@ -1,0 +1,79 @@
+[
+ {
+  "category": "chip",
+  "subtype": "ldo",
+  "id": "jlc-c5446",
+  "vendor": "TOREX",
+  "vendor_cn": "TOREX(特瑞仕)",
+  "model": "XC6206P332MR-G",
+  "title": "TOREX(特瑞仕) XC6206P332MR-G",
+  "url": "https://item.szlcsc.com/5446.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.903,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "高精度低功耗三端正压调节器，CMOS + 激光微调；与低 ESR 陶瓷电容兼容，带限流折返保护。",
+  "specs": {
+   "package": "SOT-23-3L",
+   "category_cn": "线性稳压器(LDO)",
+   "lcsc_part": "C5446",
+   "params": {
+    "输出极性": "正极",
+    "工作电压": "6V",
+    "输出电压": "3.3V",
+    "输出电流": "200mA"
+   },
+   "price_tiers": [
+    {
+     "qty": 5,
+     "price": 0.903
+    },
+    {
+     "qty": 50,
+     "price": 0.7413
+    },
+    {
+     "qty": 150,
+     "price": 0.6582
+    },
+    {
+     "qty": 500,
+     "price": 0.5897
+    },
+    {
+     "qty": 3000,
+     "price": 0.5658
+    },
+    {
+     "qty": 6000,
+     "price": 0.5496
+    }
+   ],
+   "price_lead": null,
+   "stock": "533K+",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "基础库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "RoHS",
+    "SMT补贴",
+    "运9元运费券",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "6V",
+   "voltage_out": "3.3V",
+   "current_out": "200mA",
+   "polarity": "正极",
+   "image_url": "/parts/jlc-c5446.jpg",
+   "image_source": "立创商城商品图（C5446，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241120/7B3E66F3ADC25DE4289E89B16AE3E7A2.pdf"
+  }
+ }
+]

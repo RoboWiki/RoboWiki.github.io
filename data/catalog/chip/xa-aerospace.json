@@ -1,0 +1,239 @@
+[
+ {
+  "category": "chip",
+  "subtype": "dcdc",
+  "id": "jlc-c89358",
+  "vendor": "西安航天民芯",
+  "vendor_cn": "西安航天民芯",
+  "model": "MT2492",
+  "title": "西安航天民芯 MT2492",
+  "url": "https://item.szlcsc.com/89358.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.3156,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "2 A 同步整流降压，PWM/PFM 自动切换，带过流与热关断。",
+  "specs": {
+   "package": "SOT-23-6",
+   "category_cn": "DC-DC电源芯片",
+   "lcsc_part": "C89358",
+   "params": {
+    "功能类型": "降压型",
+    "工作电压": "4.5V~16V",
+    "输出电流": "2A",
+    "开关频率": "600kHz"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 0.3156
+    },
+    {
+     "qty": 10,
+     "price": 0.267
+    },
+    {
+     "qty": 30,
+     "price": 0.2454
+    },
+    {
+     "qty": 100,
+     "price": 0.2292
+    },
+    {
+     "qty": 500,
+     "price": 0.2227
+    },
+    {
+     "qty": 1000,
+     "price": 0.2184
+    }
+   ],
+   "price_lead": null,
+   "stock": "69K+",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "返11%",
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "返11%",
+    "运9元运费券",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "4.5V~16V",
+   "current_out": "2A",
+   "function_type": "降压型",
+   "freq": "600kHz",
+   "image_url": "/parts/jlc-c89358.jpg",
+   "image_source": "立创商城商品图（C89358，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241017/622F9045F25052C857E5A9DF9FD59A9C.pdf"
+  }
+ },
+ {
+  "category": "chip",
+  "subtype": "dcdc",
+  "id": "jlc-c84817",
+  "vendor": "西安航天民芯",
+  "vendor_cn": "西安航天民芯",
+  "model": "MT3608",
+  "title": "西安航天民芯 MT3608",
+  "url": "https://item.szlcsc.com/84817.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.5833,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "高效率 1.2 MHz 升压，集成 80 mΩ 功率 MOS；轻载自动 PFM。注意：标称 2 A 是开关电流，不是输出电流。",
+  "specs": {
+   "package": "SOT-23-6",
+   "category_cn": "DC-DC电源芯片",
+   "lcsc_part": "C84817",
+   "params": {
+    "功能类型": "升压型",
+    "工作电压": "2V~24V",
+    "输出电压": "600mV~28V",
+    "输出电流": "2A",
+    "开关频率": "1.2MHz"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 0.5833
+    },
+    {
+     "qty": 10,
+     "price": 0.5417
+    },
+    {
+     "qty": 30,
+     "price": 0.5203
+    },
+    {
+     "qty": 100,
+     "price": 0.5027
+    },
+    {
+     "qty": 500,
+     "price": 0.4965
+    },
+    {
+     "qty": 1000,
+     "price": 0.4924
+    }
+   ],
+   "price_lead": null,
+   "stock": "68K+",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "返14%",
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "返14%",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "2V~24V",
+   "voltage_out": "600mV~28V",
+   "current_out": "2A",
+   "function_type": "升压型",
+   "freq": "1.2MHz",
+   "image_url": "/parts/jlc-c84817.jpg",
+   "image_source": "立创商城商品图（C84817，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20231221/F522093DF941B85202C24CC8B72C51CD.pdf"
+  }
+ },
+ {
+  "category": "chip",
+  "subtype": "pwr_switch",
+  "id": "jlc-c42441843",
+  "vendor": "西安航天民芯",
+  "vendor_cn": "西安航天民芯",
+  "model": "MT9700-N",
+  "title": "西安航天民芯 MT9700-N",
+  "url": "https://item.szlcsc.com/42441843.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.348,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "单 P 沟道 MOS 负载开关，面向 USB 自供电/总线供电应用。",
+  "specs": {
+   "package": "SOT-23-5",
+   "category_cn": "功率电子开关",
+   "lcsc_part": "C42441843",
+   "params": {
+    "类型": "负载开关",
+    "通道数": "1",
+    "输入控制逻辑": "高电平有效",
+    "工作电压": "2.4V~5.5V"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 0.348
+    },
+    {
+     "qty": 10,
+     "price": 0.304
+    },
+    {
+     "qty": 30,
+     "price": 0.2814
+    },
+    {
+     "qty": 100,
+     "price": 0.2627
+    },
+    {
+     "qty": 500,
+     "price": 0.2562
+    },
+    {
+     "qty": 1000,
+     "price": 0.2518
+    }
+   ],
+   "price_lead": null,
+   "stock": "66K+",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "返19%",
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "返19%",
+    "运9元运费券",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "2.4V~5.5V",
+   "switch_type": "负载开关",
+   "channels": "1",
+   "logic": "高电平有效",
+   "image_url": "/parts/jlc-c42441843.jpg",
+   "image_source": "立创商城商品图（C42441843，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241017/622F9045F25052C857E5A9DF9FD59A9C.pdf"
+  }
+ }
+]

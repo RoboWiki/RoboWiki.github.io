@@ -1,0 +1,78 @@
+[
+ {
+  "category": "chip",
+  "subtype": "ldo",
+  "id": "jlc-c14289",
+  "vendor": "HOLTEK",
+  "vendor_cn": "HOLTEK(合泰/盛群)",
+  "model": "HT7533-1",
+  "title": "HOLTEK(合泰/盛群) HT7533-1",
+  "url": "https://item.szlcsc.com/14289.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.884,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "高压输入（30 V）小电流 LDO。适合电池组直接降压给 MCU，代价是只有 100 mA。",
+  "specs": {
+   "package": "SOT-89-3",
+   "category_cn": "线性稳压器(LDO)",
+   "lcsc_part": "C14289",
+   "params": {
+    "输出极性": "正极",
+    "工作电压": "30V",
+    "输出电压": "3.3V",
+    "输出电流": "100mA"
+   },
+   "price_tiers": [
+    {
+     "qty": 5,
+     "price": 0.884
+    },
+    {
+     "qty": 50,
+     "price": 0.7205
+    },
+    {
+     "qty": 150,
+     "price": 0.6365
+    },
+    {
+     "qty": 1000,
+     "price": 0.5478
+    },
+    {
+     "qty": 2000,
+     "price": 0.5237
+    },
+    {
+     "qty": 5000,
+     "price": 0.5073
+    }
+   ],
+   "price_lead": null,
+   "stock": "177K+",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "基础库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "30V",
+   "voltage_out": "3.3V",
+   "current_out": "100mA",
+   "polarity": "正极",
+   "image_url": "/parts/jlc-c14289.jpg",
+   "image_source": "立创商城商品图（C14289，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250805/3060A2B834846D8D6635617F67CD3AAF.pdf"
+  }
+ }
+]

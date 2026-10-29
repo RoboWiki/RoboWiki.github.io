@@ -1,0 +1,66 @@
+[
+ {
+  "category": "chip",
+  "subtype": "ldo",
+  "id": "jlc-c82942",
+  "vendor": "MICRONE",
+  "vendor_cn": "MICRONE(南京微盟)",
+  "model": "ME6211C33M5G-N",
+  "title": "MICRONE(南京微盟) ME6211C33M5G-N",
+  "url": "https://item.szlcsc.com/82942.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.3841,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "高精度低噪声 CMOS LDO；低输出噪声、高纹波抑制、低压差、开启快。带 CE 使能脚。",
+  "specs": {
+   "package": "SOT-23-5",
+   "category_cn": "线性稳压器(LDO)",
+   "lcsc_part": "C82942",
+   "params": {
+    "输出极性": "正极",
+    "工作电压": "6V",
+    "输出电压": "3.3V",
+    "输出电流": "500mA"
+   },
+   "price_tiers": [
+    {
+     "qty": 10,
+     "price": 0.3841
+    },
+    {
+     "qty": 100,
+     "price": 0.3115
+    },
+    {
+     "qty": 300,
+     "price": 0.2742
+    }
+   ],
+   "price_lead": null,
+   "stock": "8101",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "6V",
+   "voltage_out": "3.3V",
+   "current_out": "500mA",
+   "polarity": "正极",
+   "image_url": "/parts/jlc-c82942.jpg",
+   "image_source": "立创商城商品图（C82942，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250214/479D3FD4C9C3AB2CE1AAE7D1051DFBBB.pdf"
+  }
+ }
+]

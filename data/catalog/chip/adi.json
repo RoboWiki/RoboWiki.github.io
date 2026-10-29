@@ -1,0 +1,80 @@
+[
+ {
+  "category": "chip",
+  "subtype": "battery",
+  "id": "jlc-c2682616",
+  "vendor": "ADI",
+  "vendor_cn": "ADI(亚德诺)/MAXIM(美信)",
+  "model": "MAX17048G+T10",
+  "title": "ADI(亚德诺)/MAXIM(美信) MAX17048G+T10",
+  "url": "https://item.szlcsc.com/2682616.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 12.82,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "ModelGauge 电量计，无需检流电阻；微功耗，尺寸最小的一档。",
+  "specs": {
+   "package": "DFN-8-EP(2x2)",
+   "category_cn": "电池管理",
+   "lcsc_part": "C2682616",
+   "params": {
+    "芯片类型": "监测芯片",
+    "工作电压": "2.5V~4.5V",
+    "电池类型": "锂电池",
+    "电池节数": "1"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 12.82
+    },
+    {
+     "qty": 10,
+     "price": 11.27
+    },
+    {
+     "qty": 30,
+     "price": 10.17
+    },
+    {
+     "qty": 100,
+     "price": 8.9866
+    },
+    {
+     "qty": 500,
+     "price": 7.8302
+    },
+    {
+     "qty": 1000,
+     "price": 7.644
+    }
+   ],
+   "price_lead": 7.09,
+   "stock": "22K+",
+   "stock_lead": "20K",
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "9.8折近30天最低价",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "9.8折近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "2.5V~4.5V",
+   "chip_function": "监测芯片",
+   "battery_type": "锂电池",
+   "cells": "1",
+   "image_url": "/parts/jlc-c2682616.jpg",
+   "image_source": "立创商城商品图（C2682616，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250207/EE085AF4F31313DFC0354FB71E1530B6.pdf"
+  }
+ }
+]

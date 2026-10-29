@@ -1,0 +1,78 @@
+[
+ {
+  "category": "chip",
+  "subtype": "battery",
+  "id": "jlc-c16581",
+  "vendor": "TOPPOWER",
+  "vendor_cn": "TOPPOWER(南京拓微)",
+  "model": "TP4056-42-ESOP8",
+  "title": "TOPPOWER(南京拓微) TP4056-42-ESOP8",
+  "url": "https://item.szlcsc.com/16581.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 1.1326,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "锂电充电芯片——「42」表示满电电压 4.2 V。",
+  "specs": {
+   "package": "ESOP-8",
+   "category_cn": "电池管理",
+   "lcsc_part": "C16581",
+   "params": {
+    "芯片类型": "充电芯片",
+    "工作电压": "4V~8V",
+    "最大充电电流": "1A",
+    "充电饱和电压": "4.2V"
+   },
+   "price_tiers": [
+    {
+     "qty": 5,
+     "price": 1.1326
+    },
+    {
+     "qty": 50,
+     "price": 0.8968
+    },
+    {
+     "qty": 150,
+     "price": 0.7816
+    },
+    {
+     "qty": 500,
+     "price": 0.6789
+    },
+    {
+     "qty": 2500,
+     "price": 0.5575
+    },
+    {
+     "qty": 4000,
+     "price": 0.5406
+    }
+   ],
+   "price_lead": null,
+   "stock": "61K+",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "4V~8V",
+   "chip_function": "充电芯片",
+   "charge_current": "1A",
+   "v_float": "4.2V",
+   "image_url": "/parts/jlc-c16581.jpg",
+   "image_source": "立创商城商品图（C16581，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250728/836857281CD61AD1A124FBD97E522988.zip"
+  }
+ }
+]

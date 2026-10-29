@@ -693,21 +693,31 @@
   {
    "id": "chip",
    "name": "硬件芯片",
-   "hint": "MCU / 驱动 / 收发器",
+   "hint": "电源 / 基准 / 电池管理 / 开关",
    "subtypes": {
-    "mcu": "MCU / 主控",
-    "driver": "电机驱动",
-    "transceiver": "总线收发器",
-    "imu": "惯性传感芯片",
-    "encoder": "磁编码器",
-    "power": "电源",
-    "memory": "存储"
+    "ldo": "线性稳压 LDO",
+    "dcdc": "DC-DC 开关电源",
+    "vref": "电压基准",
+    "battery": "电池管理",
+    "pwr_switch": "功率电子开关",
+    "supervisor": "监控复位",
+    "pmic": "专业 PMIC"
    },
    "keys": [
     {
-     "k": "clock_mhz",
-     "label": "主频",
-     "unit": " MHz"
+     "k": "voltage_in",
+     "label": "工作电压",
+     "unit": ""
+    },
+    {
+     "k": "voltage_out",
+     "label": "输出电压",
+     "unit": ""
+    },
+    {
+     "k": "current_out",
+     "label": "输出电流",
+     "unit": ""
     },
     {
      "k": "package",
@@ -715,31 +725,17 @@
      "unit": ""
     },
     {
-     "k": "iface",
-     "label": "接口",
+     "k": "jlc_library",
+     "label": "SMT库",
      "unit": ""
     },
     {
-     "k": "voltage_V",
-     "label": "电压",
-     "unit": " V"
-    },
-    {
-     "k": "flash_kb",
-     "label": "闪存",
-     "unit": " KB"
-    },
-    {
-     "k": "can",
-     "label": "CAN",
-     "unit": " 路"
+     "k": "stock",
+     "label": "库存",
+     "unit": ""
     }
    ],
    "sorts": [
-    {
-     "k": "clock_mhz",
-     "label": "主频"
-    },
     {
      "k": "price",
      "label": "价格"
@@ -747,6 +743,10 @@
     {
      "k": "rating",
      "label": "评分"
+    },
+    {
+     "k": "current_out",
+     "label": "输出电流"
     }
    ],
    "rating_dims": [
@@ -795,11 +795,11 @@
    "cn": "英伟达"
   },
   "STMicroelectronics": {
-   "slug": "st",
+   "slug": "st-2",
    "cn": "意法半导体"
   },
   "Texas Instruments": {
-   "slug": "ti",
+   "slug": "ti-2",
    "cn": "德州仪器"
   },
   "Espressif": {
@@ -909,6 +909,86 @@
   "D-Robotics": {
    "slug": "d-robotics",
    "cn": "地瓜机器人"
+  },
+  "ADI": {
+   "slug": "adi",
+   "cn": "ADI"
+  },
+  "Advanced Monolithic Systems": {
+   "slug": "advanced-monolithic-syst",
+   "cn": "Advanced Monolithic Systems"
+  },
+  "CJ": {
+   "slug": "cj",
+   "cn": "CJ"
+  },
+  "DIODES": {
+   "slug": "diodes",
+   "cn": "DIODES"
+  },
+  "HOLTEK": {
+   "slug": "holtek",
+   "cn": "HOLTEK"
+  },
+  "JSMSEMI": {
+   "slug": "jsmsemi",
+   "cn": "JSMSEMI"
+  },
+  "MaxLinear": {
+   "slug": "maxlinear",
+   "cn": "MaxLinear"
+  },
+  "MICRONE": {
+   "slug": "microne",
+   "cn": "MICRONE"
+  },
+  "MSKSEMI": {
+   "slug": "msksemi",
+   "cn": "MSKSEMI"
+  },
+  "RICHTEK": {
+   "slug": "richtek",
+   "cn": "RICHTEK"
+  },
+  "Silergy": {
+   "slug": "silergy",
+   "cn": "Silergy"
+  },
+  "ST": {
+   "slug": "st",
+   "cn": "ST"
+  },
+  "TECH PUBLIC": {
+   "slug": "tech-public",
+   "cn": "TECH PUBLIC"
+  },
+  "TI": {
+   "slug": "ti",
+   "cn": "TI"
+  },
+  "TOPPOWER": {
+   "slug": "toppower",
+   "cn": "TOPPOWER"
+  },
+  "TOREX": {
+   "slug": "torex",
+   "cn": "TOREX"
+  },
+  "UMW": {
+   "slug": "umw",
+   "cn": "UMW"
+  },
+  "UTC": {
+   "slug": "utc",
+   "cn": "UTC"
+  },
+  "XLSEMI": {
+   "slug": "xlsemi",
+   "cn": "XLSEMI"
+  },
+  "西安航天民芯": {
+   "slug": "xa-aerospace",
+   "cn": "西安航天民芯"
   }
  }
 }

@@ -1,0 +1,156 @@
+[
+ {
+  "category": "chip",
+  "subtype": "ldo",
+  "id": "jlc-c6186",
+  "vendor": "Advanced Monolithic Systems",
+  "vendor_cn": "Advanced Monolithic Systems",
+  "model": "AMS1117-3.3",
+  "title": "Advanced Monolithic Systems AMS1117-3.3",
+  "url": "https://item.szlcsc.com/6186.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 1.2588,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "可调及固定电压稳压器，输出电流可达 1A；输入-输出压差低至 1V 即可工作，压差保证最大 1.3V（轻载更低）；片上调校将参考电压调整到 ±1.5%。",
+  "specs": {
+   "package": "SOT-223",
+   "category_cn": "线性稳压器(LDO)",
+   "lcsc_part": "C6186",
+   "params": {
+    "输出极性": "正极",
+    "工作电压": "15V",
+    "输出电压": "3.3V",
+    "输出电流": "1A"
+   },
+   "price_tiers": [
+    {
+     "qty": 5,
+     "price": 1.2588
+    },
+    {
+     "qty": 50,
+     "price": 0.9811
+    },
+    {
+     "qty": 150,
+     "price": 0.8456
+    },
+    {
+     "qty": 500,
+     "price": 0.7247
+    },
+    {
+     "qty": 2500,
+     "price": 0.6914
+    },
+    {
+     "qty": 5000,
+     "price": 0.6715
+    }
+   ],
+   "price_lead": null,
+   "stock": "1KK+",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "基础库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "RoHS",
+    "SMT补贴",
+    "运9元运费券",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "15V",
+   "voltage_out": "3.3V",
+   "current_out": "1A",
+   "polarity": "正极",
+   "image_url": "/parts/jlc-c6186.jpg",
+   "image_source": "立创商城商品图（C6186，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20251202/5B083AF3765ACFF0AB88E239097F0FA4.pdf"
+  }
+ },
+ {
+  "category": "chip",
+  "subtype": "ldo",
+  "id": "jlc-c6187",
+  "vendor": "Advanced Monolithic Systems",
+  "vendor_cn": "Advanced Monolithic Systems",
+  "model": "AMS1117-5.0",
+  "title": "Advanced Monolithic Systems AMS1117-5.0",
+  "url": "https://item.szlcsc.com/6187.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 1.5725,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "同 AMS1117 系列，固定 5 V 输出版。",
+  "specs": {
+   "package": "SOT-223",
+   "category_cn": "线性稳压器(LDO)",
+   "lcsc_part": "C6187",
+   "params": {
+    "输出极性": "正极",
+    "工作电压": "15V",
+    "输出电压": "5V",
+    "输出电流": "1A"
+   },
+   "price_tiers": [
+    {
+     "qty": 5,
+     "price": 1.5725
+    },
+    {
+     "qty": 50,
+     "price": 1.1964
+    },
+    {
+     "qty": 150,
+     "price": 1.0127
+    },
+    {
+     "qty": 500,
+     "price": 0.8489
+    },
+    {
+     "qty": 2500,
+     "price": 0.8039
+    },
+    {
+     "qty": 5000,
+     "price": 0.7769
+    }
+   ],
+   "price_lead": null,
+   "stock": "131K+",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "基础库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "RoHS",
+    "SMT补贴",
+    "运9元运费券",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "15V",
+   "voltage_out": "5V",
+   "current_out": "1A",
+   "polarity": "正极",
+   "image_url": "/parts/jlc-c6187.jpg",
+   "image_source": "立创商城商品图（C6187，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20231019/B4C92B5CACFE04F2BB959EC8EFD0CD04.pdf"
+  }
+ }
+]

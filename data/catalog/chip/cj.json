@@ -1,0 +1,155 @@
+[
+ {
+  "category": "chip",
+  "subtype": "ldo",
+  "id": "jlc-c21706",
+  "vendor": "CJ",
+  "vendor_cn": "CJ(江苏长电/长晶)",
+  "model": "CJ7805 3%",
+  "title": "CJ(江苏长电/长晶) CJ7805 3%",
+  "url": "https://item.szlcsc.com/21706.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 1.2042,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "5 V 输出，精度 ±3%。电流标到 1.5 A，实际取决于散热。",
+  "specs": {
+   "package": "TO-252-2(DPAK)",
+   "category_cn": "线性稳压器(LDO)",
+   "lcsc_part": "C21706",
+   "params": {
+    "输出极性": "正极",
+    "工作电压": "35V",
+    "输出电压": "5V",
+    "输出电流": "1.5A"
+   },
+   "price_tiers": [
+    {
+     "qty": 5,
+     "price": 1.2042
+    },
+    {
+     "qty": 50,
+     "price": 0.943
+    },
+    {
+     "qty": 150,
+     "price": 0.8156
+    },
+    {
+     "qty": 500,
+     "price": 0.7018
+    },
+    {
+     "qty": 2500,
+     "price": 0.6706
+    },
+    {
+     "qty": 5000,
+     "price": 0.6518
+    }
+   ],
+   "price_lead": null,
+   "stock": "80K+",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_in": "35V",
+   "voltage_out": "5V",
+   "current_out": "1.5A",
+   "polarity": "正极",
+   "image_url": "/parts/jlc-c21706.jpg",
+   "image_source": "立创商城商品图（C21706，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250227/60E68256FB016D9589576586646ECD3F.pdf"
+  }
+ },
+ {
+  "category": "chip",
+  "subtype": "vref",
+  "id": "jlc-c3113",
+  "vendor": "CJ",
+  "vendor_cn": "CJ(江苏长电/长晶)",
+  "model": "CJ431",
+  "title": "CJ(江苏长电/长晶) CJ431",
+  "url": "https://item.szlcsc.com/3113.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.2347,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "可调并联基准。**注意：引脚顺序与 TI TL431 不同**，直接替换会出错。",
+  "specs": {
+   "package": "SOT-23",
+   "category_cn": "电压基准芯片",
+   "lcsc_part": "C3113",
+   "params": {
+    "输出类型": "可调",
+    "输出电压": "2.5V~36V",
+    "输出电流": "100mA",
+    "精度": "±0.5%"
+   },
+   "price_tiers": [
+    {
+     "qty": 10,
+     "price": 0.2347
+    },
+    {
+     "qty": 100,
+     "price": 0.19
+    },
+    {
+     "qty": 300,
+     "price": 0.1669
+    },
+    {
+     "qty": 3000,
+     "price": 0.148
+    },
+    {
+     "qty": 6000,
+     "price": 0.1414
+    },
+    {
+     "qty": 9000,
+     "price": 0.1369
+    }
+   ],
+   "price_lead": null,
+   "stock": "398K+",
+   "stock_lead": null,
+   "lead_time": "现货 4 小时发货",
+   "jlc_library": "基础库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "voltage_out": "2.5V~36V",
+   "current_out": "100mA",
+   "output_type": "可调",
+   "accuracy": "±0.5%",
+   "image_url": "/parts/jlc-c3113.jpg",
+   "image_source": "立创商城商品图（C3113，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250227/60E68256FB016D9589576586646ECD3F.pdf"
+  }
+ }
+]

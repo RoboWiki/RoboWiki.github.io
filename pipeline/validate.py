@@ -55,6 +55,8 @@ KNOWN_SPEC_KEYS = {
     "doc_url", "doc_pdf", "repo_urls",
     # 相机：IMU 是否为板载（Realsense 两条在用）
     "imu",
+    # 电源类芯片（立创商城采集）
+    "category_cn", "lcsc_part", "params", "price_tiers", "price_lead", "stock", "stock_lead", "lead_time", "jlc_library", "tags", "fetched_at", "voltage_in", "voltage_out", "current_out", "function_type", "output_type", "polarity", "freq", "chip_function", "charge_current", "v_float", "battery_type", "cells", "switch_type", "channels", "logic", "features", "coupon",
 }
 
 #: UI 真正会读的键。B 级行字段参差，只要求这些键存在（值可为 null），
