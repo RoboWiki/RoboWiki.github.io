@@ -38,7 +38,8 @@
    ],
    "urdf_urls": [
     "https://github.com/unitreerobotics/unitree_ros/tree/master/robots/go2_description"
-   ]
+   ],
+   "ecosystem_id": "unitree_go2"
   },
   "notes": "Go2 家族有 AIR / PRO / X / EDU 四个版本，官网 2026-10-28 售价分别为 ¥9,997 / ¥18,600 / ¥29,999 / 联系销售，本条为 EDU。EDU 独有足端力传感器、深度相机与可选 Orin（40–100 TOPS），电池 15000 mAh、续航约 2–4 h；其余版本为 8000 mAh、约 1–2 h。载荷与速度取 EDU 列：载荷 ≈8 kg（极限 ~12 kg），速度 0–3.7 m/s（极限 ~5 m/s）。官网未给 EDU 整机售价，price_cny 留空。",
   "origin": "宇树官网 Go2 产品页参数表 + 支持中心核对（2026-10-28）"
@@ -82,7 +83,8 @@
    ],
    "urdf_urls": [
     "https://github.com/unitreerobotics/unitree_mujoco/tree/main/unitree_robots/go2w"
-   ]
+   ],
+   "ecosystem_id": "unitree_go2w"
   },
   "notes": "四轮足版本：16 个关节电机、7 寸充气胎，轮步复合。官网标称最大攀爬落差「<70 cm」、爬坡 35°；因官方只给上限而非具体值，climb_height_mm 留空。载荷 ≈8 kg（极限 ~12 kg），续航 1.5–3 h（15000 mAh）。官网未公开售价，price_cny 留空。 官方模型只有 MuJoCo MJCF（unitree_mujoco/unitree_robots/go2w），未单独发布 URDF。",
   "origin": "宇树官网 Go2-W 产品页参数表 + 支持中心核对（2026-10-28）"
@@ -127,7 +129,8 @@
    "urdf_urls": [
     "https://github.com/unitreerobotics/unitree_ros/tree/master/robots/g1_description",
     "https://github.com/unitreerobotics/unitree_rl_gym/tree/main/resources/robots/g1_description"
-   ]
+   ],
+   "ecosystem_id": "unitree_g1"
   },
   "notes": "官网分 G1 与 G1 EDU 两列：G1 ¥8.5 万元，EDU 联系销售。本条为 G1：23 自由度、35 kg、9000 mAh、续航约 2 h、单手臂最大负载约 2 kg（随伸展姿态变化，payload_kg 记的是手臂负载而非整机搬运负载）、膝关节最大扭矩 90 N·m；G1 EDU 为 23–43 自由度、手臂约 3 kg、膝 120 N·m、可选 Orin。官网未给额定电压，只写 13 串锂电池与 54V 5A 充电器，故 voltage_V 留空。官网未列行走速度。",
   "origin": "宇树官网 G1 产品页参数表 + 支持中心核对（2026-10-28）"
@@ -171,7 +174,8 @@
    ],
    "urdf_urls": [
     "https://github.com/unitreerobotics/unitree_ros/tree/master/robots/b2_description"
-   ]
+   ],
+   "ecosystem_id": "unitree_b2"
   },
   "notes": "工业级四足：12 自由度、整机 60 kg。官网给的是上限口径——站立负载 ≥120 kg、行走负载 >40 kg（payload_kg 取行走值）、速度 >6 m/s（按 6 记录）、爬坡 >45°（按 45 记录）、最大攀爬落差 40 cm、楼梯 20–25 cm。45 Ah / 2250 Wh / 58 V 电池，综合续航 4–6 h；IP67、工作温度 -20~55 ℃。算力可选 i5/i7 与 Orin NX，传感器为 1×3D 激光雷达 + 2×深度相机 + 2×光学相机。官网未公开售价，price_cny 留空。",
   "origin": "宇树官网 B2 产品页参数表核对（2026-10-28）"
@@ -220,5 +224,135 @@
   },
   "notes": "H1 共 19 自由度：单腿 5（髋 3 + 膝 1 + 踝 1）、单臂 4（可扩展）。官网峰值扭矩：膝 360 N·m、髋 220 N·m、踝 59 N·m、臂 75 N·m；身高 180 cm、体重 47 kg；移动速度 3.3 m/s（官网称潜在运动性能 >5 m/s）；864 Wh / 15 Ah / 67.2 V 电池。官网未列负载、续航、算力与对外接口，四项留空。注意：官方 URDF（unitree_ros/h1_description）只含 10 个腿部转动关节，手臂在模型中是固定件，不能拿模型关节数当整机自由度。H1 页面仍在线，但宇树当前主推 H2 系列。",
   "origin": "宇树官网 H1 产品页参数表 + 官方 URDF 关节数核对（2026-10-28）"
+ },
+ {
+  "id": "struct-unitree-go1",
+  "category": "robot",
+  "subtype": "quadruped",
+  "subtype_label": "四足",
+  "vendor": "unitree",
+  "vendor_cn": "宇树 Unitree",
+  "model": "Go1",
+  "title": "Unitree Go1",
+  "url": "https://www.unitree.com/cn/go1",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": null,
+  "origin": "本地 URDF（unitree_ros / legged_gym 资产）逐个数关节与加总质量；生态取自项目索引",
+  "notes": "宇树入门四足，**生态最老最全的一代**：官方 URDF/ROS 包、大量 legged_gym 分支与 AMP/MPC 工程都拿它当基准。缺点是硬件已停产，新项目多以 Go2 为起点；它的价值在「拿来对照写法」—— 训练代码的默认机型常年是它。",
+  "specs": {
+   "dof": 12,
+   "mass_kg": 12.0,
+   "payload_kg": null,
+   "speed_max_mps": null,
+   "size_mm": null,
+   "climb_height_mm": null,
+   "climb_angle_deg": null,
+   "battery": null,
+   "endurance_h": null,
+   "voltage_V": null,
+   "voltage_range_V": null,
+   "iface": null,
+   "compute": null,
+   "sensors": null,
+   "image_url": null,
+   "image_source": null,
+   "doc_url": null,
+   "doc_pdf": null,
+   "repo_urls": [
+    "https://github.com/unitreerobotics/unitree_ros"
+   ],
+   "urdf_urls": [
+    "https://github.com/unitreerobotics/unitree_ros/tree/master/robots/go1_description"
+   ],
+   "ecosystem_id": "unitree_go1"
+  }
+ },
+ {
+  "id": "struct-unitree-a1",
+  "category": "robot",
+  "subtype": "quadruped",
+  "subtype_label": "四足",
+  "vendor": "unitree",
+  "vendor_cn": "宇树 Unitree",
+  "model": "A1",
+  "title": "Unitree A1",
+  "url": "https://www.unitree.com/cn/a1",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": null,
+  "origin": "本地 URDF（legged_gym/resources/robots/a1）数关节 12、总质量 12.45 kg",
+  "notes": "更早的一代四足，**是 legged_gym / rsl_rl 原始论文里那台机器**。现在几乎只作为「历史基准」出现在训练工程里：看某个 reward 或观测项最初为什么这么写，回到 A1 的配置最快。",
+  "specs": {
+   "dof": 12,
+   "mass_kg": 12.45,
+   "payload_kg": null,
+   "speed_max_mps": null,
+   "size_mm": null,
+   "climb_height_mm": null,
+   "climb_angle_deg": null,
+   "battery": null,
+   "endurance_h": null,
+   "voltage_V": null,
+   "voltage_range_V": null,
+   "iface": null,
+   "compute": null,
+   "sensors": null,
+   "image_url": null,
+   "image_source": null,
+   "doc_url": null,
+   "doc_pdf": null,
+   "repo_urls": [
+    "https://github.com/leggedrobotics/legged_gym"
+   ],
+   "urdf_urls": [
+    "https://github.com/unitreerobotics/unitree_ros/tree/master/robots/a1_description"
+   ],
+   "ecosystem_id": "unitree_a1"
+  }
+ },
+ {
+  "id": "struct-unitree-b2-w",
+  "category": "robot",
+  "subtype": "wheeled",
+  "subtype_label": "轮足",
+  "vendor": "unitree",
+  "vendor_cn": "宇树 Unitree",
+  "model": "B2-W",
+  "title": "Unitree B2-W",
+  "url": "https://www.unitree.com/cn/b2",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": null,
+  "origin": "厂商公开页（形态与定位）；数值未逐项核对，留空",
+  "notes": "B2 的轮足版：腿末端换成轮子，平地和坡道效率比纯足式高得多，代价是越障与台阶能力。生态上 B2 系与 Go2W 共用一大批轮足训练工程，轮足专属的奖励项（轮速/站立）在 Go2W 那边更成熟。",
+  "specs": {
+   "dof": null,
+   "mass_kg": null,
+   "payload_kg": null,
+   "speed_max_mps": null,
+   "size_mm": null,
+   "climb_height_mm": null,
+   "climb_angle_deg": null,
+   "battery": null,
+   "endurance_h": null,
+   "voltage_V": null,
+   "voltage_range_V": null,
+   "iface": null,
+   "compute": null,
+   "sensors": null,
+   "image_url": null,
+   "image_source": null,
+   "doc_url": null,
+   "doc_pdf": null,
+   "repo_urls": [
+    "https://github.com/unitreerobotics/unitree_ros"
+   ],
+   "urdf_urls": null,
+   "ecosystem_id": "unitree_b2w"
+  }
  }
 ]

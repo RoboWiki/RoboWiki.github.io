@@ -1,0 +1,44 @@
+[
+ {
+  "id": "struct-limx-tron1",
+  "category": "robot",
+  "subtype": "biped",
+  "subtype_label": "双足",
+  "vendor": "limx",
+  "vendor_cn": "逐际动力 LimX Dynamics",
+  "model": "TRON 1",
+  "title": "LimX TRON 1",
+  "url": "https://www.limxdynamics.com/cn/tron1",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": null,
+  "origin": "厂商公开页（三形态定位）；数值未逐项核对，留空",
+  "notes": "**一台机器三种形态**（点足 PF / 双足 SF / 轮足 WF），腿可以换末端件。生态上按形态拆成三条工程线（limx_tron1_pf / _sf / _wf），各自带官方 SDK 与仿真；要评估「一套控制代码跨形态」的可行性，这是现成样本。",
+  "specs": {
+   "dof": null,
+   "mass_kg": null,
+   "payload_kg": null,
+   "speed_max_mps": null,
+   "size_mm": null,
+   "climb_height_mm": null,
+   "climb_angle_deg": null,
+   "battery": null,
+   "endurance_h": null,
+   "voltage_V": null,
+   "voltage_range_V": null,
+   "iface": null,
+   "compute": null,
+   "sensors": null,
+   "image_url": null,
+   "image_source": null,
+   "doc_url": null,
+   "doc_pdf": null,
+   "repo_urls": [
+    "https://github.com/limxdynamics"
+   ],
+   "urdf_urls": null,
+   "ecosystem_id": "limx_tron1"
+  }
+ }
+]

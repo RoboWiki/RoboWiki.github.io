@@ -19,6 +19,36 @@ Pollen Robotics 的小型开源双足：14 自由度（每腿 5 + 颈部 1 + 头
 | 算力平台 | 板载策略推理，控制频率 50 Hz |
 | 传感器 | 相机、激光雷达、双 IMU |
 
+## 开源生态
+
+<em>生态来自本地参考库的项目索引（8 个项目 / 角色由我们按项目定位标注）。
+只说明「哪些环节有现成开源实现」，不代表这些项目都能直接跑在这台机器上。</em>
+
+<div class="rb-roles"><span class="rb-role"><b>仿真</b>2</span> <span class="rb-role"><b>训练</b>3</span> <span class="rb-role"><b>工具/资料</b>3</span></div>
+
+**仿真**（2 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| microduck_rl | MicroDuck 官方 RL 训练栈（MuJoCo + PPO；7 套出厂动作与 ONNX 部署）——2026-10-19 更新到最新快照 | 199 |
+| microduck-simulator | MicroDuck 仿真器 | 57 |
+
+**训练**（3 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| unilab_new | 统一多机型 RL 实验框架（训练/评估/部署） | 1131 |
+| <a href="https://github.com/Farama-Foundation/Gymnasium" target="_blank" rel="noopener">Gymnasium</a> | Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考 | 457 |
+| microduck-s288 | MicroDuck S288 社区复刻：结构/电控/标定/RL 训练/真机部署 + 预训练 ONNX 与中文教程 | 158 |
+
+**工具/资料**（3 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| microduck_all | MicroDuck 综合工程 | 982 |
+| microduck | MicroDuck 板载运行时：Rust 50 Hz 控制环、BLE、WebRTC/摄像头、ToF 与硬件规格 | 461 |
+| microduck-studio | MicroDuck Studio（编辑/可视化） | 26 |
+
 ## 链接
 
 - URDF：<https://github.com/pollen-robotics/microduck_rl/tree/main/src/mjlab_microduck/robot/microduck>

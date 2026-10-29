@@ -22,7 +22,7 @@ titleTemplate: false
       <div><b>233</b><span>在库部件</span></div>
       <div><b>11</b><span>有数据的品类（共 13 类）</span></div>
       <div><b>81</b><span>A 级：逐项对过厂商手册</span></div>
-      <div><b>15</b><span>整机（带 URDF / 仓库）</span></div>
+      <div><b>20</b><span>整机（带 URDF / 仓库）</span></div>
       <div><b>149</b><span>加工与采购渠道</span></div>
     </div>
   </section>
@@ -55,7 +55,7 @@ titleTemplate: false
         <span>读完能做什么，写在每条路线的标题下</span>
       </a>
       <a class="rw-home-entry" href="/robots">
-        <b>机器人整机 · 15 台</b>
+        <b>机器人整机 · 20 台</b>
         <p>比方案：几自由度、带不带算力、续航、有没有开源 URDF。</p>
         <span>URDF / 仓库链接可直接下载</span>
       </a>

@@ -1,0 +1,1923 @@
+{
+ "generated_at": "2026-10-20T18:32:26",
+ "source": "legged_studio/00_resources/_index.json",
+ "note": "项目清单与文件数由上游索引机器生成；角色标签是我们按项目名/描述打的，用于「这台机器哪个环节有开源实现」。",
+ "robots": {
+  "unitree_go2": {
+   "label": "宇树 Go2 四足",
+   "count": 56,
+   "roles": {
+    "训练": 23,
+    "官方 SDK": 5,
+    "仿真": 17,
+    "控制/MPC": 2,
+    "工具/资料": 2,
+    "导航": 3,
+    "官方描述/资产": 3,
+    "部署": 1
+   },
+   "projects": [
+    {
+     "name": "legged_mpc_amp",
+     "role": "训练",
+     "desc": "legged_mpc_amp：NMPC+WBC 四足 AMP 数据生成器（BSD-3）",
+     "files": 3847,
+     "url": "https://github.com/dfki-ric/legged_mpc_amp"
+    },
+    {
+     "name": "quadruped-robotics-stack",
+     "role": "官方 SDK",
+     "desc": "darshmenon/quadruped-robotics-stack：ROS2 + Gazebo + MuJoCo 四足工作区（PPO / CHAMP / NMPC 三后端，Go2 完整可用）；**本地参考，未纳入版本：405.2MB 超",
+     "files": 2547,
+     "url": null
+    },
+    {
+     "name": "unilab_new",
+     "role": "训练",
+     "desc": "统一多机型 RL 实验框架（训练/评估/部署）",
+     "files": 1131,
+     "url": null
+    },
+    {
+     "name": "legbot_lab_PPO",
+     "role": "仿真",
+     "desc": "Legbot Lab PPO 分支：Isaac Lab 四足 RL 训练 + Sim2Real（含 Go2 资源；Apache-2.0）",
+     "files": 1066,
+     "url": null
+    },
+    {
+     "name": "lain_job",
+     "role": "训练",
+     "desc": "LLoco 技能式 RL 任务与部署（多机型）",
+     "files": 962,
+     "url": null
+    },
+    {
+     "name": "uni_rl",
+     "role": "训练",
+     "desc": "多机型统一 RL 训练框架（宇树全系）",
+     "files": 781,
+     "url": null
+    },
+    {
+     "name": "habitat-sim",
+     "role": "仿真",
+     "desc": "Meta habitat-sim 具身 AI 仿真引擎（C++：nav PathFinder/相机+鱼眼传感器栈/场景元数据）——H 组高级仿真、导航与传感器参考",
+     "files": 746,
+     "url": "https://github.com/facebookresearch/habitat-sim"
+    },
+    {
+     "name": "dfki-quad",
+     "role": "控制/MPC",
+     "desc": "DFKI Quadruped：MPC/WBC/步态序列器与 Go2 仿真控制栈（BSD-3）",
+     "files": 623,
+     "url": "https://github.com/dfki-ric/dfki-quad"
+    },
+    {
+     "name": "MGDP",
+     "role": "仿真",
+     "desc": "MGDP：通用深度感知四足运动控制（IsaacGym + Warp 深度传感器，跨机型迁移）",
+     "files": 573,
+     "url": null
+    },
+    {
+     "name": "legged_robot_competition",
+     "role": "训练",
+     "desc": "legged_robot_competition：基于 legged_gym 的 Go2 地形翻越比赛工程（无许可证，仅参考）",
+     "files": 505,
+     "url": null
+    },
+    {
+     "name": "Gymnasium",
+     "role": "训练",
+     "desc": "Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考",
+     "files": 457,
+     "url": "https://github.com/Farama-Foundation/Gymnasium"
+    },
+    {
+     "name": "mjlab",
+     "role": "仿真",
+     "desc": "mjlab 1.6.0：MuJoCo Warp + PyTorch 的轻量 GPU 训练框架（manager-based MDP；G1 velocity/tracking 等任务；上游最新快照）",
+     "files": 410,
+     "url": "https://github.com/mujocolab/mjlab"
+    },
+    {
+     "name": "mjlab_new",
+     "role": "仿真",
+     "desc": "mjlab 新版：机型资产 + MuJoCo RL 任务",
+     "files": 407,
+     "url": null
+    },
+    {
+     "name": "unitree_rl_mjlab",
+     "role": "仿真",
+     "desc": "宇树官方 mjlab 版 RL 工程：训练任务 + MuJoCo 部署（Go2/Go2W/G1）",
+     "files": 402,
+     "url": "https://github.com/unitreerobotics/unitree_rl_mjlab"
+    },
+    {
+     "name": "unitree_rl_mjlab_go2w",
+     "role": "训练",
+     "desc": "Go2W 专用 mjlab RL 工程（含 Go2/G1 资产）",
+     "files": 383,
+     "url": null
+    },
+    {
+     "name": "mjswan",
+     "role": "训练",
+     "desc": "mjlab 可视化/仿真套件",
+     "files": 379,
+     "url": null
+    },
+    {
+     "name": "robot_lab",
+     "role": "仿真",
+     "desc": "robot_lab：IsaacLab 版多机型训练框架",
+     "files": 369,
+     "url": "https://github.com/fan-ziqi/robot_lab"
+    },
+    {
+     "name": "taggy",
+     "role": "官方 SDK",
+     "desc": "Go2 的 ROS2 bringup / 控制 / Gazebo 仿真（Taggy 巡逻机器人原型）：/cmd_vel↔Sport 桥接、unitree_go 与 unitree_api 消息定义、D435i 传感器 launch 与 Ga",
+     "files": 329,
+     "url": null
+    },
+    {
+     "name": "fan_robotlab",
+     "role": "训练",
+     "desc": "robot_lab 的个人分支（多机型实验）",
+     "files": 308,
+     "url": null
+    },
+    {
+     "name": "gym_ex",
+     "role": "训练",
+     "desc": "legged_gym 系实验工程（多机型）",
+     "files": 306,
+     "url": null
+    },
+    {
+     "name": "LeggedGym-Ex",
+     "role": "训练",
+     "desc": "legged_gym 扩展版：多机型训练环境与任务",
+     "files": 305,
+     "url": null
+    },
+    {
+     "name": "LainLab",
+     "role": "训练",
+     "desc": "LainLab：mjlab 1.6 多厂商资产/任务/部署层（go2 skills 全套 + OpenDoge 自研；Apache-2.0）",
+     "files": 295,
+     "url": null
+    },
+    {
+     "name": "26Raicom",
+     "role": "工具/资料",
+     "desc": "2026 睿抗（RAICOM）多模态巡检赛道全国一等奖代码：8 阶段全流程——PID 黑线循迹 + 白线触发前跳、三路 TOF 迷宫五阶段状态机、IMU 俯仰闭环上/下台阶、D1 七自由度机械臂 DLS 逆运动学抓取（D435i 红圆 + ",
+     "files": 287,
+     "url": null
+    },
+    {
+     "name": "GO2_backflip",
+     "role": "训练",
+     "desc": "GO2_backflip PPO-backflip：相位条件后空翻训练与真机部署（MIT）",
+     "files": 285,
+     "url": null
+    },
+    {
+     "name": "kaiwu_rl",
+     "role": "训练",
+     "desc": "开悟 RL 工程（Go2/G1）",
+     "files": 284,
+     "url": null
+    },
+    {
+     "name": "genesislab",
+     "role": "仿真",
+     "desc": "GenesisLab：基于 Genesis 物理引擎的轻量腿足 RL 任务套件（RSL-RL / rl_games 集成）；envs / managers / components / engine 模块化分层，含 Go2 速度跟踪任务与 ",
+     "files": 276,
+     "url": null
+    },
+    {
+     "name": "him_dog",
+     "role": "训练",
+     "desc": "him_dog 四足工程",
+     "files": 212,
+     "url": null
+    },
+    {
+     "name": "LightNav-0",
+     "role": "导航",
+     "desc": "LightNav 视觉导航（Qwen3-VL 系）",
+     "files": 182,
+     "url": null
+    },
+    {
+     "name": "legbot_lab_PPO-CTS-MOE",
+     "role": "训练",
+     "desc": "Legbot Lab PPO+MoE+CTS 分支：四足 MoE-CTS 训练（含 Go2 资源；Apache-2.0）",
+     "files": 181,
+     "url": null
+    },
+    {
+     "name": "robot-descriptions-quadruped",
+     "role": "官方描述/资产",
+     "desc": "四足机型描述汇总（URDF/xacro/MJCF）",
+     "files": 180,
+     "url": null
+    },
+    {
+     "name": "amp_go2",
+     "role": "仿真",
+     "desc": "AMP Go2 基础复现：训练、参考动作、Sim2Sim 与 Sim2Real 流程",
+     "files": 173,
+     "url": null
+    },
+    {
+     "name": "rl_sar",
+     "role": "训练",
+     "desc": "RL-SAR：仿真到实机部署框架（多机型、含策略与 C++ 部署）",
+     "files": 170,
+     "url": "https://github.com/fan-ziqi/rl_sar"
+    },
+    {
+     "name": "rl_sar_zoo",
+     "role": "官方描述/资产",
+     "desc": "RL-SAR 机型 zoo：URDF/MJCF 与策略集合",
+     "files": 170,
+     "url": null
+    },
+    {
+     "name": "fan_rlsar",
+     "role": "训练",
+     "desc": "RL-SAR 的个人分支（多机型实验）",
+     "files": 165,
+     "url": null
+    },
+    {
+     "name": "LeggedSkillDeploy",
+     "role": "训练",
+     "desc": "多机型技能部署包（策略 + 部署配置）",
+     "files": 158,
+     "url": null
+    },
+    {
+     "name": "dial-mpc",
+     "role": "训练",
+     "desc": "LeCAR-Lab DIAL-MPC：采样式全身 MPC（扩散式退火+MPPI，免训练；Go2/H1/Allegro；JAX/Brax/MJX）",
+     "files": 128,
+     "url": null
+    },
+    {
+     "name": "legbot_lab_WF-CTS-MOE",
+     "role": "训练",
+     "desc": "Legbot Lab WF-CTS-MOE 分支：16-DOF 轮足 MoE-CTS 训练 + Go2/Go2W 资源（Apache-2.0）",
+     "files": 127,
+     "url": null
+    },
+    {
+     "name": "sim.stackforce.cc",
+     "role": "仿真",
+     "desc": "stackforce 仿真站点参考资源",
+     "files": 104,
+     "url": null
+    },
+    {
+     "name": "Odin-Nav-Stack",
+     "role": "导航",
+     "desc": "Odin1 深度相机 + NeuPAN 局部规划的导航栈",
+     "files": 103,
+     "url": null
+    },
+    {
+     "name": "go2_rl_robotlab",
+     "role": "仿真",
+     "desc": "基于 robot_lab 的 Go2 训练工程（IsaacLab）",
+     "files": 103,
+     "url": null
+    },
+    {
+     "name": "go2_flip_TO",
+     "role": "工具/资料",
+     "desc": "Go2 空翻动作数据采集：SE(3) 全身轨迹优化生成参考动作",
+     "files": 96,
+     "url": null
+    },
+    {
+     "name": "go2_rl_gym",
+     "role": "仿真",
+     "desc": "Go2 的 legged_gym + rsl_rl 训练/回放工程（IsaacGym 系）",
+     "files": 86,
+     "url": null
+    },
+    {
+     "name": "robot_mujoco",
+     "role": "官方描述/资产",
+     "desc": "多机型 MuJoCo 资产与场景",
+     "files": 80,
+     "url": null
+    },
+    {
+     "name": "parkour_mjlab",
+     "role": "仿真",
+     "desc": "Go2/G1 的 parkour 任务（mjlab）：Go2 PIE 深度跑酷训练 + sim2sim + 发布策略",
+     "files": 64,
+     "url": null
+    },
+    {
+     "name": "go2_unitree_ros2",
+     "role": "官方 SDK",
+     "desc": "Unitree SDK2 的 ROS2 封装参考：低层 /lowcmd（200Hz + CRC32）与 Sport API /api/sport/request 双通道、运动/关节状态与手柄读取、IMU 发布",
+     "files": 61,
+     "url": null
+    },
+    {
+     "name": "HIMLoco-for-Go2W",
+     "role": "仿真",
+     "desc": "HIMLoco for Go2W：Isaac Gym 训练 + MuJoCo 验证",
+     "files": 58,
+     "url": null
+    },
+    {
+     "name": "unitree-go2-slam-nav2",
+     "role": "官方 SDK",
+     "desc": "Go2 的 SLAM + Nav2 导航栈（ROS2）",
+     "files": 52,
+     "url": "https://github.com/abizovnuralem/go2_ros2_sdk"
+    },
+    {
+     "name": "Dreamwaq",
+     "role": "训练",
+     "desc": "DreamWaQ 盲式运动控制实现",
+     "files": 50,
+     "url": null
+    },
+    {
+     "name": "matrix_zsibot",
+     "role": "仿真",
+     "desc": "ZsiBot MATRiX 仿真平台源码快照的实现类子集（UE5 + MuJoCo + CARLA）：传感器声明、自定义/拼接场景、多机器人端口、相机与渲染协议、实景扫描 3DGS→PLY→MuJoCo proxy 流水线、G1 材质桥",
+     "files": 46,
+     "url": null
+    },
+    {
+     "name": "quadruped-locomotion-policy",
+     "role": "仿真",
+     "desc": "HuggingFace Kyu3224：Isaac Lab 训练的四足策略集合（平 48 维 / 崎岖 235 维观测，12 维力矩动作；覆盖 go1/go2/anymal/spot/hound）；LFS 指针未拉",
+     "files": 45,
+     "url": null
+    },
+    {
+     "name": "unitree_go2_nav",
+     "role": "导航",
+     "desc": "Go2 导航相关脚本与配置",
+     "files": 37,
+     "url": null
+    },
+    {
+     "name": "unitree_go2_edu_movement",
+     "role": "官方 SDK",
+     "desc": "Go2 EDU 视觉对接流水线（unitree_sdk2py）：AprilTag 位姿解算 + 滑窗滤波 + 梯形速度规划 + 三模式停靠判据，含前视鱼眼内参与 DDS 收发范式",
+     "files": 31,
+     "url": null
+    },
+    {
+     "name": "zsi_rl",
+     "role": "训练",
+     "desc": "Go2 的 RL 示例工程",
+     "files": 28,
+     "url": null
+    },
+    {
+     "name": "tdt-nav-kit",
+     "role": "部署",
+     "desc": "TDT 二维栅格导航算法组件（A*/Kinodynamic A* 前端 + Minimum-Snap/OSQP 轨迹后端，C++）——H 组导航规划参考",
+     "files": 18,
+     "url": null
+    },
+    {
+     "name": "unitree_mujoco",
+     "role": "仿真",
+     "desc": "宇树官方 MuJoCo 仿真器与机型 XML（Go1/Go2/G1）",
+     "files": 10,
+     "url": "https://github.com/unitreerobotics/unitree_mujoco"
+    },
+    {
+     "name": "Quad-Imaginarium",
+     "role": "控制/MPC",
+     "desc": "GaoLii/Quad-Imaginarium（arXiv 2606.28237）：7488 段语言标注四足动作、18.5h@24fps、19 维状态；数据集待论文接收后发布（本快照仅 README）",
+     "files": 2,
+     "url": null
+    }
+   ]
+  },
+  "unitree_g1": {
+   "label": "unitree_g1",
+   "count": 41,
+   "roles": {
+    "官方 SDK": 1,
+    "训练": 19,
+    "工具/资料": 8,
+    "官方描述/资产": 3,
+    "仿真": 10
+   },
+   "projects": [
+    {
+     "name": "g1-mujoco-ros2-nav-sim-G1-MuJoCo-ROS2-",
+     "role": "官方 SDK",
+     "desc": "G1 MuJoCo + ROS2 导航仿真",
+     "files": 2200,
+     "url": null
+    },
+    {
+     "name": "unilab_new",
+     "role": "训练",
+     "desc": "统一多机型 RL 实验框架（训练/评估/部署）",
+     "files": 1131,
+     "url": null
+    },
+    {
+     "name": "lain_job",
+     "role": "训练",
+     "desc": "LLoco 技能式 RL 任务与部署（多机型）",
+     "files": 962,
+     "url": null
+    },
+    {
+     "name": "rc_old",
+     "role": "工具/资料",
+     "desc": "ZEX-W 轮足旧版工程（含 Go1/G1 分支）",
+     "files": 954,
+     "url": null
+    },
+    {
+     "name": "uni_rl",
+     "role": "训练",
+     "desc": "多机型统一 RL 训练框架（宇树全系）",
+     "files": 781,
+     "url": null
+    },
+    {
+     "name": "robosuite_new",
+     "role": "官方描述/资产",
+     "desc": "robosuite：MuJoCo 操作仿真框架（arenas/robots/objects/tasks 模块化 MJCF 组合 + OSC 控制器 + 遥操作）——wuji 灵巧手操作任务与资源组合模型参考",
+     "files": 535,
+     "url": null
+    },
+    {
+     "name": "Gymnasium",
+     "role": "训练",
+     "desc": "Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考",
+     "files": 457,
+     "url": "https://github.com/Farama-Foundation/Gymnasium"
+    },
+    {
+     "name": "mjlab",
+     "role": "仿真",
+     "desc": "mjlab 1.6.0：MuJoCo Warp + PyTorch 的轻量 GPU 训练框架（manager-based MDP；G1 velocity/tracking 等任务；上游最新快照）",
+     "files": 410,
+     "url": "https://github.com/mujocolab/mjlab"
+    },
+    {
+     "name": "mjlab_new",
+     "role": "仿真",
+     "desc": "mjlab 新版：机型资产 + MuJoCo RL 任务",
+     "files": 407,
+     "url": null
+    },
+    {
+     "name": "unitree_rl_mjlab",
+     "role": "仿真",
+     "desc": "宇树官方 mjlab 版 RL 工程：训练任务 + MuJoCo 部署（Go2/Go2W/G1）",
+     "files": 402,
+     "url": "https://github.com/unitreerobotics/unitree_rl_mjlab"
+    },
+    {
+     "name": "unitree_rl_mjlab_go2w",
+     "role": "训练",
+     "desc": "Go2W 专用 mjlab RL 工程（含 Go2/G1 资产）",
+     "files": 383,
+     "url": null
+    },
+    {
+     "name": "mjswan",
+     "role": "训练",
+     "desc": "mjlab 可视化/仿真套件",
+     "files": 379,
+     "url": null
+    },
+    {
+     "name": "robot_lab",
+     "role": "仿真",
+     "desc": "robot_lab：IsaacLab 版多机型训练框架",
+     "files": 369,
+     "url": "https://github.com/fan-ziqi/robot_lab"
+    },
+    {
+     "name": "fan_robotlab",
+     "role": "训练",
+     "desc": "robot_lab 的个人分支（多机型实验）",
+     "files": 308,
+     "url": null
+    },
+    {
+     "name": "gym_ex",
+     "role": "训练",
+     "desc": "legged_gym 系实验工程（多机型）",
+     "files": 306,
+     "url": null
+    },
+    {
+     "name": "LeggedGym-Ex",
+     "role": "训练",
+     "desc": "legged_gym 扩展版：多机型训练环境与任务",
+     "files": 305,
+     "url": null
+    },
+    {
+     "name": "GMR",
+     "role": "工具/资料",
+     "desc": "GMR：CPU 实时通用动作重定向器（多机型人形）",
+     "files": 303,
+     "url": null
+    },
+    {
+     "name": "LainLab",
+     "role": "训练",
+     "desc": "LainLab：mjlab 1.6 多厂商资产/任务/部署层（go2 skills 全套 + OpenDoge 自研；Apache-2.0）",
+     "files": 295,
+     "url": null
+    },
+    {
+     "name": "kaiwu_rl",
+     "role": "训练",
+     "desc": "开悟 RL 工程（Go2/G1）",
+     "files": 284,
+     "url": null
+    },
+    {
+     "name": "genesislab",
+     "role": "仿真",
+     "desc": "GenesisLab：基于 Genesis 物理引擎的轻量腿足 RL 任务套件（RSL-RL / rl_games 集成）；envs / managers / components / engine 模块化分层，含 Go2 速度跟踪任务与 ",
+     "files": 276,
+     "url": null
+    },
+    {
+     "name": "mujoco_playground",
+     "role": "仿真",
+     "desc": "DeepMind MuJoCo Playground：Go1/G1 环境与策略",
+     "files": 243,
+     "url": "https://github.com/google-deepmind/mujoco_playground"
+    },
+    {
+     "name": "InstinctMJ",
+     "role": "训练",
+     "desc": "InstinctMJ：G1 人形 mjlab 工程",
+     "files": 220,
+     "url": null
+    },
+    {
+     "name": "TWIST2",
+     "role": "工具/资料",
+     "desc": "TWIST2：基于 VR 的可扩展人形全身数据采集系统",
+     "files": 186,
+     "url": null
+    },
+    {
+     "name": "rl_sar",
+     "role": "训练",
+     "desc": "RL-SAR：仿真到实机部署框架（多机型、含策略与 C++ 部署）",
+     "files": 170,
+     "url": "https://github.com/fan-ziqi/rl_sar"
+    },
+    {
+     "name": "rl_sar_zoo",
+     "role": "官方描述/资产",
+     "desc": "RL-SAR 机型 zoo：URDF/MJCF 与策略集合",
+     "files": 170,
+     "url": null
+    },
+    {
+     "name": "fan_rlsar",
+     "role": "训练",
+     "desc": "RL-SAR 的个人分支（多机型实验）",
+     "files": 165,
+     "url": null
+    },
+    {
+     "name": "LeggedSkillDeploy",
+     "role": "训练",
+     "desc": "多机型技能部署包（策略 + 部署配置）",
+     "files": 158,
+     "url": null
+    },
+    {
+     "name": "wbc-mjlab",
+     "role": "训练",
+     "desc": "WBC-Mjlab：mjlab 全身运动跟踪（WBC）共享 MDP，一策略多技能；含 G1 任务/动作库/导出",
+     "files": 156,
+     "url": null
+    },
+    {
+     "name": "UFO",
+     "role": "工具/资料",
+     "desc": "UFO：G1 人形工程",
+     "files": 154,
+     "url": null
+    },
+    {
+     "name": "robo_re",
+     "role": "训练",
+     "desc": "G1 人形 RL 工程",
+     "files": 154,
+     "url": null
+    },
+    {
+     "name": "TWIST",
+     "role": "工具/资料",
+     "desc": "TWIST：Unitree G1 全身遥操作与教师-学生模仿学习",
+     "files": 151,
+     "url": null
+    },
+    {
+     "name": "AMP_mjlab",
+     "role": "训练",
+     "desc": "AMP 动作先验训练（mjlab，G1）",
+     "files": 141,
+     "url": null
+    },
+    {
+     "name": "robot_mujoco",
+     "role": "官方描述/资产",
+     "desc": "多机型 MuJoCo 资产与场景",
+     "files": 80,
+     "url": null
+    },
+    {
+     "name": "parkour_mjlab",
+     "role": "仿真",
+     "desc": "Go2/G1 的 parkour 任务（mjlab）：Go2 PIE 深度跑酷训练 + sim2sim + 发布策略",
+     "files": 64,
+     "url": null
+    },
+    {
+     "name": "smp",
+     "role": "工具/资料",
+     "desc": "SMP：冻结扩散模型作为可复用运动奖励（G1 自然动作）",
+     "files": 53,
+     "url": null
+    },
+    {
+     "name": "humanoid-motion-planning",
+     "role": "工具/资料",
+     "desc": "人形运动规划算法",
+     "files": 49,
+     "url": null
+    },
+    {
+     "name": "matrix_zsibot",
+     "role": "仿真",
+     "desc": "ZsiBot MATRiX 仿真平台源码快照的实现类子集（UE5 + MuJoCo + CARLA）：传感器声明、自定义/拼接场景、多机器人端口、相机与渲染协议、实景扫描 3DGS→PLY→MuJoCo proxy 流水线、G1 材质桥",
+     "files": 46,
+     "url": null
+    },
+    {
+     "name": "legged_sim",
+     "role": "仿真",
+     "desc": "G1 仿真环境与场景",
+     "files": 38,
+     "url": null
+    },
+    {
+     "name": "g1-manipulation-challenge",
+     "role": "工具/资料",
+     "desc": "G1 操作挑战赛工程",
+     "files": 13,
+     "url": null
+    },
+    {
+     "name": "unitree_mujoco",
+     "role": "仿真",
+     "desc": "宇树官方 MuJoCo 仿真器与机型 XML（Go1/Go2/G1）",
+     "files": 10,
+     "url": "https://github.com/unitreerobotics/unitree_mujoco"
+    },
+    {
+     "name": "g1_spinkick_example",
+     "role": "训练",
+     "desc": "G1 回旋踢示例（mjlab）",
+     "files": 8,
+     "url": null
+    }
+   ]
+  },
+  "deeprobotics_m20": {
+   "label": "云深处 M20 轮足",
+   "count": 13,
+   "roles": {
+    "官方 SDK": 1,
+    "训练": 8,
+    "仿真": 2,
+    "官方描述/资产": 2
+   },
+   "projects": [
+    {
+     "name": "sdk_deploy",
+     "role": "官方 SDK",
+     "desc": "云深处 SDK 与部署代码",
+     "files": 8006,
+     "url": null
+    },
+    {
+     "name": "unilab_new",
+     "role": "训练",
+     "desc": "统一多机型 RL 实验框架（训练/评估/部署）",
+     "files": 1131,
+     "url": null
+    },
+    {
+     "name": "lain_job",
+     "role": "训练",
+     "desc": "LLoco 技能式 RL 任务与部署（多机型）",
+     "files": 962,
+     "url": null
+    },
+    {
+     "name": "Gymnasium",
+     "role": "训练",
+     "desc": "Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考",
+     "files": 457,
+     "url": "https://github.com/Farama-Foundation/Gymnasium"
+    },
+    {
+     "name": "robot_lab",
+     "role": "仿真",
+     "desc": "robot_lab：IsaacLab 版多机型训练框架",
+     "files": 369,
+     "url": "https://github.com/fan-ziqi/robot_lab"
+    },
+    {
+     "name": "fan_robotlab",
+     "role": "训练",
+     "desc": "robot_lab 的个人分支（多机型实验）",
+     "files": 308,
+     "url": null
+    },
+    {
+     "name": "robot-descriptions-quadruped",
+     "role": "官方描述/资产",
+     "desc": "四足机型描述汇总（URDF/xacro/MJCF）",
+     "files": 180,
+     "url": null
+    },
+    {
+     "name": "LeggedSkillDeploy",
+     "role": "训练",
+     "desc": "多机型技能部署包（策略 + 部署配置）",
+     "files": 158,
+     "url": null
+    },
+    {
+     "name": "deep_rl",
+     "role": "训练",
+     "desc": "云深处 RL 训练工程",
+     "files": 133,
+     "url": null
+    },
+    {
+     "name": "rl_training",
+     "role": "训练",
+     "desc": "云深处 RL 训练任务与配置",
+     "files": 132,
+     "url": null
+    },
+    {
+     "name": "m20_rl_isaacsim",
+     "role": "仿真",
+     "desc": "M20 轮足 IsaacSim RL 工程",
+     "files": 86,
+     "url": null
+    },
+    {
+     "name": "Dreamwaq",
+     "role": "训练",
+     "desc": "DreamWaQ 盲式运动控制实现",
+     "files": 50,
+     "url": null
+    },
+    {
+     "name": "deep_robotics_model",
+     "role": "官方描述/资产",
+     "desc": "云深处机型模型与描述文件",
+     "files": 18,
+     "url": "https://github.com/DeepRoboticsLab/deep_robotics_model"
+    }
+   ]
+  },
+  "unitree_go1": {
+   "label": "宇树 Go1 四足",
+   "count": 26,
+   "roles": {
+    "训练": 12,
+    "工具/资料": 1,
+    "仿真": 7,
+    "控制/MPC": 2,
+    "官方描述/资产": 2,
+    "官方 SDK": 2
+   },
+   "projects": [
+    {
+     "name": "unilab_new",
+     "role": "训练",
+     "desc": "统一多机型 RL 实验框架（训练/评估/部署）",
+     "files": 1131,
+     "url": null
+    },
+    {
+     "name": "lain_job",
+     "role": "训练",
+     "desc": "LLoco 技能式 RL 任务与部署（多机型）",
+     "files": 962,
+     "url": null
+    },
+    {
+     "name": "rc_old",
+     "role": "工具/资料",
+     "desc": "ZEX-W 轮足旧版工程（含 Go1/G1 分支）",
+     "files": 954,
+     "url": null
+    },
+    {
+     "name": "uni_rl",
+     "role": "训练",
+     "desc": "多机型统一 RL 训练框架（宇树全系）",
+     "files": 781,
+     "url": null
+    },
+    {
+     "name": "MGDP",
+     "role": "仿真",
+     "desc": "MGDP：通用深度感知四足运动控制（IsaacGym + Warp 深度传感器，跨机型迁移）",
+     "files": 573,
+     "url": null
+    },
+    {
+     "name": "Gymnasium",
+     "role": "训练",
+     "desc": "Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考",
+     "files": 457,
+     "url": "https://github.com/Farama-Foundation/Gymnasium"
+    },
+    {
+     "name": "mjlab",
+     "role": "仿真",
+     "desc": "mjlab 1.6.0：MuJoCo Warp + PyTorch 的轻量 GPU 训练框架（manager-based MDP；G1 velocity/tracking 等任务；上游最新快照）",
+     "files": 410,
+     "url": "https://github.com/mujocolab/mjlab"
+    },
+    {
+     "name": "mjlab_new",
+     "role": "仿真",
+     "desc": "mjlab 新版：机型资产 + MuJoCo RL 任务",
+     "files": 407,
+     "url": null
+    },
+    {
+     "name": "mjswan",
+     "role": "训练",
+     "desc": "mjlab 可视化/仿真套件",
+     "files": 379,
+     "url": null
+    },
+    {
+     "name": "robot_lab",
+     "role": "仿真",
+     "desc": "robot_lab：IsaacLab 版多机型训练框架",
+     "files": 369,
+     "url": "https://github.com/fan-ziqi/robot_lab"
+    },
+    {
+     "name": "fan_robotlab",
+     "role": "训练",
+     "desc": "robot_lab 的个人分支（多机型实验）",
+     "files": 308,
+     "url": null
+    },
+    {
+     "name": "gym_ex",
+     "role": "训练",
+     "desc": "legged_gym 系实验工程（多机型）",
+     "files": 306,
+     "url": null
+    },
+    {
+     "name": "LeggedGym-Ex",
+     "role": "训练",
+     "desc": "legged_gym 扩展版：多机型训练环境与任务",
+     "files": 305,
+     "url": null
+    },
+    {
+     "name": "mujoco_playground",
+     "role": "仿真",
+     "desc": "DeepMind MuJoCo Playground：Go1/G1 环境与策略",
+     "files": 243,
+     "url": "https://github.com/google-deepmind/mujoco_playground"
+    },
+    {
+     "name": "quaternion-mpc",
+     "role": "控制/MPC",
+     "desc": "CMU quaternion-mpc：四元数（Lie 群）奇异自由质心 MPC（Go1 行走/攀爬/空中姿态；ICRA25）",
+     "files": 224,
+     "url": null
+    },
+    {
+     "name": "him_dog",
+     "role": "训练",
+     "desc": "him_dog 四足工程",
+     "files": 212,
+     "url": null
+    },
+    {
+     "name": "robot-descriptions-quadruped",
+     "role": "官方描述/资产",
+     "desc": "四足机型描述汇总（URDF/xacro/MJCF）",
+     "files": 180,
+     "url": null
+    },
+    {
+     "name": "LeggedSkillDeploy",
+     "role": "训练",
+     "desc": "多机型技能部署包（策略 + 部署配置）",
+     "files": 158,
+     "url": null
+    },
+    {
+     "name": "legged_mpc_control",
+     "role": "官方 SDK",
+     "desc": "CMU legged_mpc_control：Convex MPC（13 态 SRB+OSQP）+ CI-MPC 对照 + 分层 WBC（ROS1/Gazebo）",
+     "files": 155,
+     "url": null
+    },
+    {
+     "name": "legged_control",
+     "role": "官方 SDK",
+     "desc": "qiayuanl legged_control：OCS2 质心 NMPC + WBC + 接触 KF（A1/Aliengo/Go1；ROS1；已停止维护）",
+     "files": 145,
+     "url": null
+    },
+    {
+     "name": "walk-these-ways",
+     "role": "训练",
+     "desc": "Improbable AI walk-these-ways：Go1 快速步态 RL 训练与部署（go1_gym / go1_gym_deploy）",
+     "files": 95,
+     "url": null
+    },
+    {
+     "name": "robot_mujoco",
+     "role": "官方描述/资产",
+     "desc": "多机型 MuJoCo 资产与场景",
+     "files": 80,
+     "url": null
+    },
+    {
+     "name": "HIMLoco",
+     "role": "训练",
+     "desc": "InternRobotics HIMLoco：四足高动态运动/越障 RL 训练工程（legged_gym + rsl_rl）",
+     "files": 72,
+     "url": null
+    },
+    {
+     "name": "legged_perceptive",
+     "role": "控制/MPC",
+     "desc": "qiayuanl legged_perceptive：legged_control 感知扩展（高程图+凸平面分解+感知增强 MPC；已停止维护）",
+     "files": 50,
+     "url": null
+    },
+    {
+     "name": "quadruped-locomotion-policy",
+     "role": "仿真",
+     "desc": "HuggingFace Kyu3224：Isaac Lab 训练的四足策略集合（平 48 维 / 崎岖 235 维观测，12 维力矩动作；覆盖 go1/go2/anymal/spot/hound）；LFS 指针未拉",
+     "files": 45,
+     "url": null
+    },
+    {
+     "name": "unitree_mujoco",
+     "role": "仿真",
+     "desc": "宇树官方 MuJoCo 仿真器与机型 XML（Go1/Go2/G1）",
+     "files": 10,
+     "url": "https://github.com/unitreerobotics/unitree_mujoco"
+    }
+   ]
+  },
+  "unitree_go2w": {
+   "label": "宇树 Go2W 轮足",
+   "count": 18,
+   "roles": {
+    "训练": 9,
+    "仿真": 7,
+    "官方描述/资产": 2
+   },
+   "projects": [
+    {
+     "name": "unilab_new",
+     "role": "训练",
+     "desc": "统一多机型 RL 实验框架（训练/评估/部署）",
+     "files": 1131,
+     "url": null
+    },
+    {
+     "name": "uni_rl",
+     "role": "训练",
+     "desc": "多机型统一 RL 训练框架（宇树全系）",
+     "files": 781,
+     "url": null
+    },
+    {
+     "name": "Gymnasium",
+     "role": "训练",
+     "desc": "Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考",
+     "files": 457,
+     "url": "https://github.com/Farama-Foundation/Gymnasium"
+    },
+    {
+     "name": "mjlab",
+     "role": "仿真",
+     "desc": "mjlab 1.6.0：MuJoCo Warp + PyTorch 的轻量 GPU 训练框架（manager-based MDP；G1 velocity/tracking 等任务；上游最新快照）",
+     "files": 410,
+     "url": "https://github.com/mujocolab/mjlab"
+    },
+    {
+     "name": "mjlab_new",
+     "role": "仿真",
+     "desc": "mjlab 新版：机型资产 + MuJoCo RL 任务",
+     "files": 407,
+     "url": null
+    },
+    {
+     "name": "unitree_rl_mjlab",
+     "role": "仿真",
+     "desc": "宇树官方 mjlab 版 RL 工程：训练任务 + MuJoCo 部署（Go2/Go2W/G1）",
+     "files": 402,
+     "url": "https://github.com/unitreerobotics/unitree_rl_mjlab"
+    },
+    {
+     "name": "unitree_rl_mjlab_go2w",
+     "role": "训练",
+     "desc": "Go2W 专用 mjlab RL 工程（含 Go2/G1 资产）",
+     "files": 383,
+     "url": null
+    },
+    {
+     "name": "robot_lab",
+     "role": "仿真",
+     "desc": "robot_lab：IsaacLab 版多机型训练框架",
+     "files": 369,
+     "url": "https://github.com/fan-ziqi/robot_lab"
+    },
+    {
+     "name": "fan_robotlab",
+     "role": "训练",
+     "desc": "robot_lab 的个人分支（多机型实验）",
+     "files": 308,
+     "url": null
+    },
+    {
+     "name": "rl_sar",
+     "role": "训练",
+     "desc": "RL-SAR：仿真到实机部署框架（多机型、含策略与 C++ 部署）",
+     "files": 170,
+     "url": "https://github.com/fan-ziqi/rl_sar"
+    },
+    {
+     "name": "rl_sar_zoo",
+     "role": "官方描述/资产",
+     "desc": "RL-SAR 机型 zoo：URDF/MJCF 与策略集合",
+     "files": 170,
+     "url": null
+    },
+    {
+     "name": "fan_rlsar",
+     "role": "训练",
+     "desc": "RL-SAR 的个人分支（多机型实验）",
+     "files": 165,
+     "url": null
+    },
+    {
+     "name": "LeggedSkillDeploy",
+     "role": "训练",
+     "desc": "多机型技能部署包（策略 + 部署配置）",
+     "files": 158,
+     "url": null
+    },
+    {
+     "name": "go2w_sim2sim",
+     "role": "仿真",
+     "desc": "Go2W 轮足 sim2sim 部署工程（MuJoCo）",
+     "files": 148,
+     "url": null
+    },
+    {
+     "name": "legbot_lab_WF-CTS-MOE",
+     "role": "训练",
+     "desc": "Legbot Lab WF-CTS-MOE 分支：16-DOF 轮足 MoE-CTS 训练 + Go2/Go2W 资源（Apache-2.0）",
+     "files": 127,
+     "url": null
+    },
+    {
+     "name": "robot_mujoco",
+     "role": "官方描述/资产",
+     "desc": "多机型 MuJoCo 资产与场景",
+     "files": 80,
+     "url": null
+    },
+    {
+     "name": "HIMLoco-for-Go2W",
+     "role": "仿真",
+     "desc": "HIMLoco for Go2W：Isaac Gym 训练 + MuJoCo 验证",
+     "files": 58,
+     "url": null
+    },
+    {
+     "name": "matrix_zsibot",
+     "role": "仿真",
+     "desc": "ZsiBot MATRiX 仿真平台源码快照的实现类子集（UE5 + MuJoCo + CARLA）：传感器声明、自定义/拼接场景、多机器人端口、相机与渲染协议、实景扫描 3DGS→PLY→MuJoCo proxy 流水线、G1 材质桥",
+     "files": 46,
+     "url": null
+    }
+   ]
+  },
+  "unitree_b2": {
+   "label": "宇树 B2 四足",
+   "count": 9,
+   "roles": {
+    "训练": 5,
+    "仿真": 1,
+    "官方描述/资产": 3
+   },
+   "projects": [
+    {
+     "name": "uni_rl",
+     "role": "训练",
+     "desc": "多机型统一 RL 训练框架（宇树全系）",
+     "files": 781,
+     "url": null
+    },
+    {
+     "name": "Gymnasium",
+     "role": "训练",
+     "desc": "Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考",
+     "files": 457,
+     "url": "https://github.com/Farama-Foundation/Gymnasium"
+    },
+    {
+     "name": "robot_lab",
+     "role": "仿真",
+     "desc": "robot_lab：IsaacLab 版多机型训练框架",
+     "files": 369,
+     "url": "https://github.com/fan-ziqi/robot_lab"
+    },
+    {
+     "name": "fan_robotlab",
+     "role": "训练",
+     "desc": "robot_lab 的个人分支（多机型实验）",
+     "files": 308,
+     "url": null
+    },
+    {
+     "name": "robot-descriptions-quadruped",
+     "role": "官方描述/资产",
+     "desc": "四足机型描述汇总（URDF/xacro/MJCF）",
+     "files": 180,
+     "url": null
+    },
+    {
+     "name": "rl_sar",
+     "role": "训练",
+     "desc": "RL-SAR：仿真到实机部署框架（多机型、含策略与 C++ 部署）",
+     "files": 170,
+     "url": "https://github.com/fan-ziqi/rl_sar"
+    },
+    {
+     "name": "rl_sar_zoo",
+     "role": "官方描述/资产",
+     "desc": "RL-SAR 机型 zoo：URDF/MJCF 与策略集合",
+     "files": 170,
+     "url": null
+    },
+    {
+     "name": "fan_rlsar",
+     "role": "训练",
+     "desc": "RL-SAR 的个人分支（多机型实验）",
+     "files": 165,
+     "url": null
+    },
+    {
+     "name": "robot_mujoco",
+     "role": "官方描述/资产",
+     "desc": "多机型 MuJoCo 资产与场景",
+     "files": 80,
+     "url": null
+    }
+   ]
+  },
+  "unitree_b2w": {
+   "label": "宇树 B2W 轮足",
+   "count": 9,
+   "roles": {
+    "训练": 5,
+    "仿真": 1,
+    "官方描述/资产": 3
+   },
+   "projects": [
+    {
+     "name": "uni_rl",
+     "role": "训练",
+     "desc": "多机型统一 RL 训练框架（宇树全系）",
+     "files": 781,
+     "url": null
+    },
+    {
+     "name": "Gymnasium",
+     "role": "训练",
+     "desc": "Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考",
+     "files": 457,
+     "url": "https://github.com/Farama-Foundation/Gymnasium"
+    },
+    {
+     "name": "robot_lab",
+     "role": "仿真",
+     "desc": "robot_lab：IsaacLab 版多机型训练框架",
+     "files": 369,
+     "url": "https://github.com/fan-ziqi/robot_lab"
+    },
+    {
+     "name": "fan_robotlab",
+     "role": "训练",
+     "desc": "robot_lab 的个人分支（多机型实验）",
+     "files": 308,
+     "url": null
+    },
+    {
+     "name": "robot-descriptions-quadruped",
+     "role": "官方描述/资产",
+     "desc": "四足机型描述汇总（URDF/xacro/MJCF）",
+     "files": 180,
+     "url": null
+    },
+    {
+     "name": "rl_sar",
+     "role": "训练",
+     "desc": "RL-SAR：仿真到实机部署框架（多机型、含策略与 C++ 部署）",
+     "files": 170,
+     "url": "https://github.com/fan-ziqi/rl_sar"
+    },
+    {
+     "name": "rl_sar_zoo",
+     "role": "官方描述/资产",
+     "desc": "RL-SAR 机型 zoo：URDF/MJCF 与策略集合",
+     "files": 170,
+     "url": null
+    },
+    {
+     "name": "fan_rlsar",
+     "role": "训练",
+     "desc": "RL-SAR 的个人分支（多机型实验）",
+     "files": 165,
+     "url": null
+    },
+    {
+     "name": "robot_mujoco",
+     "role": "官方描述/资产",
+     "desc": "多机型 MuJoCo 资产与场景",
+     "files": 80,
+     "url": null
+    }
+   ]
+  },
+  "deeprobotics_lite3": {
+   "label": "云深处 Lite3 四足",
+   "count": 15,
+   "roles": {
+    "官方 SDK": 1,
+    "训练": 7,
+    "仿真": 3,
+    "官方描述/资产": 4
+   },
+   "projects": [
+    {
+     "name": "sdk_deploy",
+     "role": "官方 SDK",
+     "desc": "云深处 SDK 与部署代码",
+     "files": 8006,
+     "url": null
+    },
+    {
+     "name": "unilab_new",
+     "role": "训练",
+     "desc": "统一多机型 RL 实验框架（训练/评估/部署）",
+     "files": 1131,
+     "url": null
+    },
+    {
+     "name": "MGDP",
+     "role": "仿真",
+     "desc": "MGDP：通用深度感知四足运动控制（IsaacGym + Warp 深度传感器，跨机型迁移）",
+     "files": 573,
+     "url": null
+    },
+    {
+     "name": "Gymnasium",
+     "role": "训练",
+     "desc": "Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考",
+     "files": 457,
+     "url": "https://github.com/Farama-Foundation/Gymnasium"
+    },
+    {
+     "name": "robot_lab",
+     "role": "仿真",
+     "desc": "robot_lab：IsaacLab 版多机型训练框架",
+     "files": 369,
+     "url": "https://github.com/fan-ziqi/robot_lab"
+    },
+    {
+     "name": "fan_robotlab",
+     "role": "训练",
+     "desc": "robot_lab 的个人分支（多机型实验）",
+     "files": 308,
+     "url": null
+    },
+    {
+     "name": "robot-descriptions-quadruped",
+     "role": "官方描述/资产",
+     "desc": "四足机型描述汇总（URDF/xacro/MJCF）",
+     "files": 180,
+     "url": null
+    },
+    {
+     "name": "rl_sar",
+     "role": "训练",
+     "desc": "RL-SAR：仿真到实机部署框架（多机型、含策略与 C++ 部署）",
+     "files": 170,
+     "url": "https://github.com/fan-ziqi/rl_sar"
+    },
+    {
+     "name": "rl_sar_zoo",
+     "role": "官方描述/资产",
+     "desc": "RL-SAR 机型 zoo：URDF/MJCF 与策略集合",
+     "files": 170,
+     "url": null
+    },
+    {
+     "name": "fan_rlsar",
+     "role": "训练",
+     "desc": "RL-SAR 的个人分支（多机型实验）",
+     "files": 165,
+     "url": null
+    },
+    {
+     "name": "deep_rl",
+     "role": "训练",
+     "desc": "云深处 RL 训练工程",
+     "files": 133,
+     "url": null
+    },
+    {
+     "name": "rl_training",
+     "role": "训练",
+     "desc": "云深处 RL 训练任务与配置",
+     "files": 132,
+     "url": null
+    },
+    {
+     "name": "m20_rl_isaacsim",
+     "role": "仿真",
+     "desc": "M20 轮足 IsaacSim RL 工程",
+     "files": 86,
+     "url": null
+    },
+    {
+     "name": "robot_mujoco",
+     "role": "官方描述/资产",
+     "desc": "多机型 MuJoCo 资产与场景",
+     "files": 80,
+     "url": null
+    },
+    {
+     "name": "deep_robotics_model",
+     "role": "官方描述/资产",
+     "desc": "云深处机型模型与描述文件",
+     "files": 18,
+     "url": "https://github.com/DeepRoboticsLab/deep_robotics_model"
+    }
+   ]
+  },
+  "limx_tron1_pf": {
+   "label": "limx_tron1_pf",
+   "count": 11,
+   "roles": {
+    "仿真": 2,
+    "训练": 4,
+    "官方描述/资产": 1,
+    "官方 SDK": 3,
+    "部署": 1
+   },
+   "projects": [
+    {
+     "name": "habitat-sim",
+     "role": "仿真",
+     "desc": "Meta habitat-sim 具身 AI 仿真引擎（C++：nav PathFinder/相机+鱼眼传感器栈/场景元数据）——H 组高级仿真、导航与传感器参考",
+     "files": 746,
+     "url": "https://github.com/facebookresearch/habitat-sim"
+    },
+    {
+     "name": "Gymnasium",
+     "role": "训练",
+     "desc": "Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考",
+     "files": 457,
+     "url": "https://github.com/Farama-Foundation/Gymnasium"
+    },
+    {
+     "name": "gym_ex",
+     "role": "训练",
+     "desc": "legged_gym 系实验工程（多机型）",
+     "files": 306,
+     "url": null
+    },
+    {
+     "name": "LeggedGym-Ex",
+     "role": "训练",
+     "desc": "legged_gym 扩展版：多机型训练环境与任务",
+     "files": 305,
+     "url": null
+    },
+    {
+     "name": "tron1-robot-description",
+     "role": "官方描述/资产",
+     "desc": "TRON1 机型描述（URDF/xacro）",
+     "files": 98,
+     "url": null
+    },
+    {
+     "name": "limxsdk-lowlevel",
+     "role": "官方 SDK",
+     "desc": "limxdynamics 官方低层 SDK（limxsdk：硬件接口/消息定义）",
+     "files": 90,
+     "url": null
+    },
+    {
+     "name": "tron1-rl-isaaclab",
+     "role": "仿真",
+     "desc": "TRON1 IsaacLab RL 训练工程",
+     "files": 79,
+     "url": null
+    },
+    {
+     "name": "tron1-rl-deploy-ros2",
+     "role": "官方 SDK",
+     "desc": "limxdynamics TRON1 RL 部署（ROS2 controller + hw，含 gazebo sim 与 gym/lab 双关节序参数表）",
+     "files": 78,
+     "url": null
+    },
+    {
+     "name": "tron1-rl-deploy-python",
+     "role": "训练",
+     "desc": "TRON1 Python 部署与策略文件",
+     "files": 75,
+     "url": null
+    },
+    {
+     "name": "tdt-nav-kit",
+     "role": "部署",
+     "desc": "TDT 二维栅格导航算法组件（A*/Kinodynamic A* 前端 + Minimum-Snap/OSQP 轨迹后端，C++）——H 组导航规划参考",
+     "files": 18,
+     "url": null
+    },
+    {
+     "name": "robot-joystick",
+     "role": "官方 SDK",
+     "desc": "limxdynamics 官方摇杆上位机（预编译，命令源参考）",
+     "files": 2,
+     "url": null
+    }
+   ]
+  },
+  "limx_tron1_sf": {
+   "label": "limx_tron1_sf",
+   "count": 11,
+   "roles": {
+    "仿真": 2,
+    "训练": 4,
+    "官方描述/资产": 1,
+    "官方 SDK": 3,
+    "部署": 1
+   },
+   "projects": [
+    {
+     "name": "habitat-sim",
+     "role": "仿真",
+     "desc": "Meta habitat-sim 具身 AI 仿真引擎（C++：nav PathFinder/相机+鱼眼传感器栈/场景元数据）——H 组高级仿真、导航与传感器参考",
+     "files": 746,
+     "url": "https://github.com/facebookresearch/habitat-sim"
+    },
+    {
+     "name": "Gymnasium",
+     "role": "训练",
+     "desc": "Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考",
+     "files": 457,
+     "url": "https://github.com/Farama-Foundation/Gymnasium"
+    },
+    {
+     "name": "gym_ex",
+     "role": "训练",
+     "desc": "legged_gym 系实验工程（多机型）",
+     "files": 306,
+     "url": null
+    },
+    {
+     "name": "LeggedGym-Ex",
+     "role": "训练",
+     "desc": "legged_gym 扩展版：多机型训练环境与任务",
+     "files": 305,
+     "url": null
+    },
+    {
+     "name": "tron1-robot-description",
+     "role": "官方描述/资产",
+     "desc": "TRON1 机型描述（URDF/xacro）",
+     "files": 98,
+     "url": null
+    },
+    {
+     "name": "limxsdk-lowlevel",
+     "role": "官方 SDK",
+     "desc": "limxdynamics 官方低层 SDK（limxsdk：硬件接口/消息定义）",
+     "files": 90,
+     "url": null
+    },
+    {
+     "name": "tron1-rl-isaaclab",
+     "role": "仿真",
+     "desc": "TRON1 IsaacLab RL 训练工程",
+     "files": 79,
+     "url": null
+    },
+    {
+     "name": "tron1-rl-deploy-ros2",
+     "role": "官方 SDK",
+     "desc": "limxdynamics TRON1 RL 部署（ROS2 controller + hw，含 gazebo sim 与 gym/lab 双关节序参数表）",
+     "files": 78,
+     "url": null
+    },
+    {
+     "name": "tron1-rl-deploy-python",
+     "role": "训练",
+     "desc": "TRON1 Python 部署与策略文件",
+     "files": 75,
+     "url": null
+    },
+    {
+     "name": "tdt-nav-kit",
+     "role": "部署",
+     "desc": "TDT 二维栅格导航算法组件（A*/Kinodynamic A* 前端 + Minimum-Snap/OSQP 轨迹后端，C++）——H 组导航规划参考",
+     "files": 18,
+     "url": null
+    },
+    {
+     "name": "robot-joystick",
+     "role": "官方 SDK",
+     "desc": "limxdynamics 官方摇杆上位机（预编译，命令源参考）",
+     "files": 2,
+     "url": null
+    }
+   ]
+  },
+  "limx_tron1_wf": {
+   "label": "limx_tron1_wf",
+   "count": 9,
+   "roles": {
+    "仿真": 2,
+    "训练": 2,
+    "官方描述/资产": 1,
+    "官方 SDK": 3,
+    "部署": 1
+   },
+   "projects": [
+    {
+     "name": "habitat-sim",
+     "role": "仿真",
+     "desc": "Meta habitat-sim 具身 AI 仿真引擎（C++：nav PathFinder/相机+鱼眼传感器栈/场景元数据）——H 组高级仿真、导航与传感器参考",
+     "files": 746,
+     "url": "https://github.com/facebookresearch/habitat-sim"
+    },
+    {
+     "name": "Gymnasium",
+     "role": "训练",
+     "desc": "Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考",
+     "files": 457,
+     "url": "https://github.com/Farama-Foundation/Gymnasium"
+    },
+    {
+     "name": "tron1-robot-description",
+     "role": "官方描述/资产",
+     "desc": "TRON1 机型描述（URDF/xacro）",
+     "files": 98,
+     "url": null
+    },
+    {
+     "name": "limxsdk-lowlevel",
+     "role": "官方 SDK",
+     "desc": "limxdynamics 官方低层 SDK（limxsdk：硬件接口/消息定义）",
+     "files": 90,
+     "url": null
+    },
+    {
+     "name": "tron1-rl-isaaclab",
+     "role": "仿真",
+     "desc": "TRON1 IsaacLab RL 训练工程",
+     "files": 79,
+     "url": null
+    },
+    {
+     "name": "tron1-rl-deploy-ros2",
+     "role": "官方 SDK",
+     "desc": "limxdynamics TRON1 RL 部署（ROS2 controller + hw，含 gazebo sim 与 gym/lab 双关节序参数表）",
+     "files": 78,
+     "url": null
+    },
+    {
+     "name": "tron1-rl-deploy-python",
+     "role": "训练",
+     "desc": "TRON1 Python 部署与策略文件",
+     "files": 75,
+     "url": null
+    },
+    {
+     "name": "tdt-nav-kit",
+     "role": "部署",
+     "desc": "TDT 二维栅格导航算法组件（A*/Kinodynamic A* 前端 + Minimum-Snap/OSQP 轨迹后端，C++）——H 组导航规划参考",
+     "files": 18,
+     "url": null
+    },
+    {
+     "name": "robot-joystick",
+     "role": "官方 SDK",
+     "desc": "limxdynamics 官方摇杆上位机（预编译，命令源参考）",
+     "files": 2,
+     "url": null
+    }
+   ]
+  },
+  "microduck": {
+   "label": "microduck",
+   "count": 8,
+   "roles": {
+    "训练": 3,
+    "工具/资料": 3,
+    "仿真": 2
+   },
+   "projects": [
+    {
+     "name": "unilab_new",
+     "role": "训练",
+     "desc": "统一多机型 RL 实验框架（训练/评估/部署）",
+     "files": 1131,
+     "url": null
+    },
+    {
+     "name": "microduck_all",
+     "role": "工具/资料",
+     "desc": "MicroDuck 综合工程",
+     "files": 982,
+     "url": null
+    },
+    {
+     "name": "microduck",
+     "role": "工具/资料",
+     "desc": "MicroDuck 板载运行时：Rust 50 Hz 控制环、BLE、WebRTC/摄像头、ToF 与硬件规格",
+     "files": 461,
+     "url": null
+    },
+    {
+     "name": "Gymnasium",
+     "role": "训练",
+     "desc": "Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考",
+     "files": 457,
+     "url": "https://github.com/Farama-Foundation/Gymnasium"
+    },
+    {
+     "name": "microduck_rl",
+     "role": "仿真",
+     "desc": "MicroDuck 官方 RL 训练栈（MuJoCo + PPO；7 套出厂动作与 ONNX 部署）——2026-10-19 更新到最新快照",
+     "files": 199,
+     "url": null
+    },
+    {
+     "name": "microduck-s288",
+     "role": "训练",
+     "desc": "MicroDuck S288 社区复刻：结构/电控/标定/RL 训练/真机部署 + 预训练 ONNX 与中文教程",
+     "files": 158,
+     "url": null
+    },
+    {
+     "name": "microduck-simulator",
+     "role": "仿真",
+     "desc": "MicroDuck 仿真器",
+     "files": 57,
+     "url": null
+    },
+    {
+     "name": "microduck-studio",
+     "role": "工具/资料",
+     "desc": "MicroDuck Studio（编辑/可视化）",
+     "files": 26,
+     "url": null
+    }
+   ]
+  },
+  "wuji_hand": {
+   "label": "wuji_hand",
+   "count": 4,
+   "roles": {
+    "官方描述/资产": 1,
+    "训练": 2,
+    "仿真": 1
+   },
+   "projects": [
+    {
+     "name": "robosuite_new",
+     "role": "官方描述/资产",
+     "desc": "robosuite：MuJoCo 操作仿真框架（arenas/robots/objects/tasks 模块化 MJCF 组合 + OSC 控制器 + 遥操作）——wuji 灵巧手操作任务与资源组合模型参考",
+     "files": 535,
+     "url": null
+    },
+    {
+     "name": "Gymnasium",
+     "role": "训练",
+     "desc": "Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考",
+     "files": 457,
+     "url": "https://github.com/Farama-Foundation/Gymnasium"
+    },
+    {
+     "name": "Gymnasium-Robotics",
+     "role": "仿真",
+     "desc": "Farama Gymnasium-Robotics：基于 MuJoCo 的机器人环境集合（Fetch / Shadow 灵巧手 / Adroit / Franka Kitchen / MaMuJoCo / D4RL Maze）；含多目标 G",
+     "files": 199,
+     "url": null
+    },
+    {
+     "name": "wuji-mjlab",
+     "role": "训练",
+     "desc": "无极灵巧手 mjlab 训练工程",
+     "files": 186,
+     "url": null
+    }
+   ]
+  },
+  "zex-w": {
+   "label": "ZEX-W 轮足",
+   "count": 2,
+   "roles": {
+    "工具/资料": 1,
+    "训练": 1
+   },
+   "projects": [
+    {
+     "name": "rc_old",
+     "role": "工具/资料",
+     "desc": "ZEX-W 轮足旧版工程（含 Go1/G1 分支）",
+     "files": 954,
+     "url": null
+    },
+    {
+     "name": "Gymnasium",
+     "role": "训练",
+     "desc": "Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考",
+     "files": 457,
+     "url": "https://github.com/Farama-Foundation/Gymnasium"
+    }
+   ]
+  },
+  "unitree_a1": {
+   "label": "unitree_a1",
+   "count": 3,
+   "roles": {
+    "官方 SDK": 2,
+    "控制/MPC": 1
+   },
+   "projects": [
+    {
+     "name": "legged_mpc_control",
+     "role": "官方 SDK",
+     "desc": "CMU legged_mpc_control：Convex MPC（13 态 SRB+OSQP）+ CI-MPC 对照 + 分层 WBC（ROS1/Gazebo）",
+     "files": 155,
+     "url": null
+    },
+    {
+     "name": "legged_control",
+     "role": "官方 SDK",
+     "desc": "qiayuanl legged_control：OCS2 质心 NMPC + WBC + 接触 KF（A1/Aliengo/Go1；ROS1；已停止维护）",
+     "files": 145,
+     "url": null
+    },
+    {
+     "name": "legged_perceptive",
+     "role": "控制/MPC",
+     "desc": "qiayuanl legged_perceptive：legged_control 感知扩展（高程图+凸平面分解+感知增强 MPC；已停止维护）",
+     "files": 50,
+     "url": null
+    }
+   ]
+  },
+  "limx_tron1": {
+   "label": "逐际动力 TRON 1（PF/SF/WF 三形态合并）",
+   "count": 11,
+   "roles": {
+    "仿真": 2,
+    "训练": 4,
+    "官方描述/资产": 1,
+    "官方 SDK": 3,
+    "部署": 1
+   },
+   "projects": [
+    {
+     "name": "habitat-sim",
+     "role": "仿真",
+     "desc": "Meta habitat-sim 具身 AI 仿真引擎（C++：nav PathFinder/相机+鱼眼传感器栈/场景元数据）——H 组高级仿真、导航与传感器参考",
+     "files": 746,
+     "url": "https://github.com/facebookresearch/habitat-sim"
+    },
+    {
+     "name": "Gymnasium",
+     "role": "训练",
+     "desc": "Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考",
+     "files": 457,
+     "url": "https://github.com/Farama-Foundation/Gymnasium"
+    },
+    {
+     "name": "gym_ex",
+     "role": "训练",
+     "desc": "legged_gym 系实验工程（多机型）",
+     "files": 306,
+     "url": null
+    },
+    {
+     "name": "LeggedGym-Ex",
+     "role": "训练",
+     "desc": "legged_gym 扩展版：多机型训练环境与任务",
+     "files": 305,
+     "url": null
+    },
+    {
+     "name": "tron1-robot-description",
+     "role": "官方描述/资产",
+     "desc": "TRON1 机型描述（URDF/xacro）",
+     "files": 98,
+     "url": null
+    },
+    {
+     "name": "limxsdk-lowlevel",
+     "role": "官方 SDK",
+     "desc": "limxdynamics 官方低层 SDK（limxsdk：硬件接口/消息定义）",
+     "files": 90,
+     "url": null
+    },
+    {
+     "name": "tron1-rl-isaaclab",
+     "role": "仿真",
+     "desc": "TRON1 IsaacLab RL 训练工程",
+     "files": 79,
+     "url": null
+    },
+    {
+     "name": "tron1-rl-deploy-ros2",
+     "role": "官方 SDK",
+     "desc": "limxdynamics TRON1 RL 部署（ROS2 controller + hw，含 gazebo sim 与 gym/lab 双关节序参数表）",
+     "files": 78,
+     "url": null
+    },
+    {
+     "name": "tron1-rl-deploy-python",
+     "role": "训练",
+     "desc": "TRON1 Python 部署与策略文件",
+     "files": 75,
+     "url": null
+    },
+    {
+     "name": "tdt-nav-kit",
+     "role": "部署",
+     "desc": "TDT 二维栅格导航算法组件（A*/Kinodynamic A* 前端 + Minimum-Snap/OSQP 轨迹后端，C++）——H 组导航规划参考",
+     "files": 18,
+     "url": null
+    },
+    {
+     "name": "robot-joystick",
+     "role": "官方 SDK",
+     "desc": "limxdynamics 官方摇杆上位机（预编译，命令源参考）",
+     "files": 2,
+     "url": null
+    }
+   ]
+  }
+ }
+}

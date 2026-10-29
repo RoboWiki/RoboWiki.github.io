@@ -22,6 +22,61 @@ LABEL = {
     "sensors": "传感器", "doc_url": "官方文档", "doc_pdf": "官方 PDF",
 }
 
+ROLE_ORDER = ["官方描述/资产", "官方 SDK", "仿真", "训练", "部署", "导航",
+              "控制/MPC", "工具/资料"]
+
+
+def _eco(root: pathlib.Path) -> dict:
+    f = root / "data" / "robot_ecosystem.json"
+    if not f.exists():
+        return {}
+    try:
+        return json.loads(f.read_text(encoding="utf-8")).get("robots") or {}
+    except Exception:
+        return {}
+
+
+def _eco_block(eco: dict | None) -> str:
+    """详情页的「开源生态」段：先给环节覆盖，再按角色列项目。"""
+    if not eco:
+        return ""
+    roles = eco.get("roles") or {}
+    chips = " ".join(
+        f'<span class="rb-role"><b>{r}</b>{roles[r]}</span>'
+        for r in ROLE_ORDER if r in roles)
+    groups: dict[str, list] = {}
+    for proj in eco.get("projects") or []:
+        groups.setdefault(proj["role"], []).append(proj)
+
+    blocks = []
+    for role in ROLE_ORDER:
+        items = groups.get(role)
+        if not items:
+            continue
+        rows = []
+        for proj in sorted(items, key=lambda x: -x["files"])[:8]:
+            name = proj["name"]
+            label = f'<a href="{proj["url"]}" target="_blank" rel="noopener">{name}</a>' \
+                if proj.get("url") else name
+            rows.append(f'| {label} | {proj["desc"] or "—"} | {proj["files"]} |')
+        blocks.append(f"""**{role}**（{len(items)} 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+{chr(10).join(rows)}
+""")
+
+    return f"""## 开源生态
+
+<em>生态来自本地参考库的项目索引（{eco.get('count')} 个项目 / 角色由我们按项目定位标注）。
+只说明「哪些环节有现成开源实现」，不代表这些项目都能直接跑在这台机器上。</em>
+
+<div class="rb-roles">{chips}</div>
+
+{chr(10).join(blocks)}
+"""
+
+
 SUBTYPE = {"quadruped": "四足", "humanoid": "人形", "wheeled": "轮式",
            "biped": "双足", "arm": "机械臂", "other": "其他"}
 
@@ -44,6 +99,7 @@ def _cards(rows: list[dict]) -> str:
         sub = SUBTYPE.get(r.get("subtype") or "", r.get("subtype") or "")
         urdf = s.get("urdf_urls") or []
         repo = s.get("repo_urls") or []
+        eco_count = s.get("ecosystem_count") or 0
         out.append(f"""<div class="rb-card">
   <div class="rb-plate">{'<img src="' + img + '" alt="' + r['model'] + '" loading="lazy">' if img else '<span class="rb-ph">暂无图</span>'}</div>
   <div class="rb-body">
@@ -56,7 +112,7 @@ def _cards(rows: list[dict]) -> str:
       <div><dt>续航</dt><dd>{_fmt(s.get('endurance_h'))} h</dd></div>
     </dl>
     <div class="rb-links">
-      <span class="rb-sim" title="进仿真接口已留（URDF 链接见详情页），暂未接入">进仿真</span>
+      {'<span class="rb-tag eco">生态 ×' + str(eco_count) + '</span>' if eco_count else ''}
       {'<span class="rb-tag">URDF ×' + str(len(urdf)) + '</span>' if urdf else ''}
       {'<span class="rb-tag">仓库 ×' + str(len(repo)) + '</span>' if repo else ''}
     </div>
@@ -78,13 +134,21 @@ def build(root: pathlib.Path, out: pathlib.Path, pub: pathlib.Path) -> None:
         print("  整机：data/robots/ 为空，跳过")
         return
 
-    # slug：vendor-model，稳定可读
+    eco_all = _eco(root)
+    for r in rows:
+        eid = (r.get("specs") or {}).get("ecosystem_id")
+        e = eco_all.get(eid) if eid else None
+        r.setdefault("specs", {})["ecosystem_count"] = (e or {}).get("count") or 0
+
+    # slug：用 id 去前缀 —— ASCII、稳定，厂商改名也不影响 URL
     def slug(r: dict) -> str:
-        base = f"{r.get('vendor','x')}-{r['model']}"
-        keep = "".join(ch if ch.isalnum() else "-" for ch in base.lower())
+        base = str(r.get("id") or f"{r.get('vendor','x')}-{r['model']}")
+        if base.startswith("struct-"):
+            base = base[len("struct-"):]
+        keep = "".join(ch if (ch.isalnum() and ch.isascii()) else "-" for ch in base.lower())
         while "--" in keep:
             keep = keep.replace("--", "-")
-        return keep.strip("-")
+        return keep.strip("-") or "robot"
 
     for r in rows:
         r["_slug"] = slug(r)
@@ -141,7 +205,7 @@ title: {r['model']}
 |---|---|
 {kvs or '| — | 暂无参数 |'}
 
-## 链接
+{_eco_block(eco_all.get((s.get("ecosystem_id") or "")))}## 链接
 
 {chr(10).join(links) or '—'}
 

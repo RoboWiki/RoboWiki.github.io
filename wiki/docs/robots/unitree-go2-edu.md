@@ -1,0 +1,121 @@
+---
+title: Go2 EDU
+---
+
+# 宇树科技 Go2 EDU
+
+![Go2 EDU](/parts/unitree-go2-edu.jpg)
+
+Go2 家族有 AIR / PRO / X / EDU 四个版本，官网 2026-10-28 售价分别为 ¥9,997 / ¥18,600 / ¥29,999 / 联系销售，本条为 EDU。EDU 独有足端力传感器、深度相机与可选 Orin（40–100 TOPS），电池 15000 mAh、续航约 2–4 h；其余版本为 8000 mAh、约 1–2 h。载荷与速度取 EDU 列：载荷 ≈8 kg（极限 ~12 kg），速度 0–3.7 m/s（极限 ~5 m/s）。官网未给 EDU 整机售价，price_cny 留空。
+
+## 关键参数
+
+| 字段 | 值 |
+|---|---|
+| 自由度 | 12 |
+| 整机质量 (kg) | 15 |
+| 负载 (kg) | 8 |
+| 最高速度 (m/s) | 3.7 |
+| 尺寸 (mm) | 700×310×400（站立）；760×310×200（折叠） |
+| 越障高度 (mm) | 160 |
+| 爬坡角 (°) | 40 |
+| 电池 | 15000 mAh（长续航版） |
+| 续航 (h) | 2–4 h |
+| 电压范围 | 28–33.6 |
+| 对外接口 | Wi-Fi 6、蓝牙 5.2、4G/eSIM |
+| 算力平台 | 8 核高性能 CPU；可选 Orin（40–100 TOPS） |
+| 传感器 | 4D 激光雷达 L2、深度相机、足端力传感器、前置摄像头 1280×720 / 120° |
+| 官方文档 | https://support.unitree.com/main/zh |
+
+## 开源生态
+
+<em>生态来自本地参考库的项目索引（56 个项目 / 角色由我们按项目定位标注）。
+只说明「哪些环节有现成开源实现」，不代表这些项目都能直接跑在这台机器上。</em>
+
+<div class="rb-roles"><span class="rb-role"><b>官方描述/资产</b>3</span> <span class="rb-role"><b>官方 SDK</b>5</span> <span class="rb-role"><b>仿真</b>17</span> <span class="rb-role"><b>训练</b>23</span> <span class="rb-role"><b>部署</b>1</span> <span class="rb-role"><b>导航</b>3</span> <span class="rb-role"><b>控制/MPC</b>2</span> <span class="rb-role"><b>工具/资料</b>2</span></div>
+
+**官方描述/资产**（3 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| robot-descriptions-quadruped | 四足机型描述汇总（URDF/xacro/MJCF） | 180 |
+| rl_sar_zoo | RL-SAR 机型 zoo：URDF/MJCF 与策略集合 | 170 |
+| robot_mujoco | 多机型 MuJoCo 资产与场景 | 80 |
+
+**官方 SDK**（5 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| quadruped-robotics-stack | darshmenon/quadruped-robotics-stack：ROS2 + Gazebo + MuJoCo 四足工作区（PPO / CHAMP / NMPC 三后端，Go2 完整可用）；**本地参考，未纳入版本：405.2MB 超 | 2547 |
+| taggy | Go2 的 ROS2 bringup / 控制 / Gazebo 仿真（Taggy 巡逻机器人原型）：/cmd_vel↔Sport 桥接、unitree_go 与 unitree_api 消息定义、D435i 传感器 launch 与 Ga | 329 |
+| go2_unitree_ros2 | Unitree SDK2 的 ROS2 封装参考：低层 /lowcmd（200Hz + CRC32）与 Sport API /api/sport/request 双通道、运动/关节状态与手柄读取、IMU 发布 | 61 |
+| <a href="https://github.com/abizovnuralem/go2_ros2_sdk" target="_blank" rel="noopener">unitree-go2-slam-nav2</a> | Go2 的 SLAM + Nav2 导航栈（ROS2） | 52 |
+| unitree_go2_edu_movement | Go2 EDU 视觉对接流水线（unitree_sdk2py）：AprilTag 位姿解算 + 滑窗滤波 + 梯形速度规划 + 三模式停靠判据，含前视鱼眼内参与 DDS 收发范式 | 31 |
+
+**仿真**（17 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| legbot_lab_PPO | Legbot Lab PPO 分支：Isaac Lab 四足 RL 训练 + Sim2Real（含 Go2 资源；Apache-2.0） | 1066 |
+| <a href="https://github.com/facebookresearch/habitat-sim" target="_blank" rel="noopener">habitat-sim</a> | Meta habitat-sim 具身 AI 仿真引擎（C++：nav PathFinder/相机+鱼眼传感器栈/场景元数据）——H 组高级仿真、导航与传感器参考 | 746 |
+| MGDP | MGDP：通用深度感知四足运动控制（IsaacGym + Warp 深度传感器，跨机型迁移） | 573 |
+| <a href="https://github.com/mujocolab/mjlab" target="_blank" rel="noopener">mjlab</a> | mjlab 1.6.0：MuJoCo Warp + PyTorch 的轻量 GPU 训练框架（manager-based MDP；G1 velocity/tracking 等任务；上游最新快照） | 410 |
+| mjlab_new | mjlab 新版：机型资产 + MuJoCo RL 任务 | 407 |
+| <a href="https://github.com/unitreerobotics/unitree_rl_mjlab" target="_blank" rel="noopener">unitree_rl_mjlab</a> | 宇树官方 mjlab 版 RL 工程：训练任务 + MuJoCo 部署（Go2/Go2W/G1） | 402 |
+| <a href="https://github.com/fan-ziqi/robot_lab" target="_blank" rel="noopener">robot_lab</a> | robot_lab：IsaacLab 版多机型训练框架 | 369 |
+| genesislab | GenesisLab：基于 Genesis 物理引擎的轻量腿足 RL 任务套件（RSL-RL / rl_games 集成）；envs / managers / components / engine 模块化分层，含 Go2 速度跟踪任务与  | 276 |
+
+**训练**（23 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/dfki-ric/legged_mpc_amp" target="_blank" rel="noopener">legged_mpc_amp</a> | legged_mpc_amp：NMPC+WBC 四足 AMP 数据生成器（BSD-3） | 3847 |
+| unilab_new | 统一多机型 RL 实验框架（训练/评估/部署） | 1131 |
+| lain_job | LLoco 技能式 RL 任务与部署（多机型） | 962 |
+| uni_rl | 多机型统一 RL 训练框架（宇树全系） | 781 |
+| legged_robot_competition | legged_robot_competition：基于 legged_gym 的 Go2 地形翻越比赛工程（无许可证，仅参考） | 505 |
+| <a href="https://github.com/Farama-Foundation/Gymnasium" target="_blank" rel="noopener">Gymnasium</a> | Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考 | 457 |
+| unitree_rl_mjlab_go2w | Go2W 专用 mjlab RL 工程（含 Go2/G1 资产） | 383 |
+| mjswan | mjlab 可视化/仿真套件 | 379 |
+
+**部署**（1 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| tdt-nav-kit | TDT 二维栅格导航算法组件（A*/Kinodynamic A* 前端 + Minimum-Snap/OSQP 轨迹后端，C++）——H 组导航规划参考 | 18 |
+
+**导航**（3 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| LightNav-0 | LightNav 视觉导航（Qwen3-VL 系） | 182 |
+| Odin-Nav-Stack | Odin1 深度相机 + NeuPAN 局部规划的导航栈 | 103 |
+| unitree_go2_nav | Go2 导航相关脚本与配置 | 37 |
+
+**控制/MPC**（2 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/dfki-ric/dfki-quad" target="_blank" rel="noopener">dfki-quad</a> | DFKI Quadruped：MPC/WBC/步态序列器与 Go2 仿真控制栈（BSD-3） | 623 |
+| Quad-Imaginarium | GaoLii/Quad-Imaginarium（arXiv 2606.28237）：7488 段语言标注四足动作、18.5h@24fps、19 维状态；数据集待论文接收后发布（本快照仅 README） | 2 |
+
+**工具/资料**（2 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| 26Raicom | 2026 睿抗（RAICOM）多模态巡检赛道全国一等奖代码：8 阶段全流程——PID 黑线循迹 + 白线触发前跳、三路 TOF 迷宫五阶段状态机、IMU 俯仰闭环上/下台阶、D1 七自由度机械臂 DLS 逆运动学抓取（D435i 红圆 +  | 287 |
+| go2_flip_TO | Go2 空翻动作数据采集：SE(3) 全身轨迹优化生成参考动作 | 96 |
+
+## 链接
+
+- 官方文档：<https://support.unitree.com/main/zh>
+- URDF：<https://github.com/unitreerobotics/unitree_ros/tree/master/robots/go2_description>
+- 仓库：<https://github.com/unitreerobotics/unitree_sdk2>
+- 仓库：<https://github.com/unitreerobotics/unitree_ros2>
+
+::: tip 进仿真（接口已留）
+「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，
+拖进 MuJoCo / Isaac 里用。
+:::
+
+> 来源：宇树官网 Go2 产品页参数表 + 支持中心核对（2026-10-28） · 等级 A · 核对 2026-10-28

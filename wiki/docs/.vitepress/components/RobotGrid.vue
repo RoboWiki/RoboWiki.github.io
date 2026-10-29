@@ -112,6 +112,8 @@ const repo = (x: Robot) => (x.specs?.repo_urls as string[] | undefined)?.length 
           <div><dt>续航</dt><dd>{{ withUnit(x.specs?.endurance_h, 'h') }}</dd></div>
         </dl>
         <div class="ex-foot">
+          <a v-if="x.specs?.ecosystem_count" class="ex-pill eco" :href="`./robots/${x._slug}.html`"
+             title="这台机器在本地参考库里有多少开源工程（按环节拆分见详情页）">生态 ×{{ x.specs.ecosystem_count }}</a>
           <span class="ex-pill off" title="进仿真接口已留（URDF 链接见详情页），暂未接入">进仿真</span>
           <a v-if="urdf(x)" class="ex-pill" :href="`./robots/${x._slug}.html`">URDF ×{{ urdf(x) }}</a>
           <a v-if="repo(x)" class="ex-pill" :href="`./robots/${x._slug}.html`">仓库 ×{{ repo(x) }}</a>
