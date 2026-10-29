@@ -31,9 +31,9 @@
    "url": "https://github.com/Beni-537",
    "contributions": 0,
    "baseline": 20,
-   "role": "贡献者",
+   "role": "创始贡献者",
    "contribution_total": 20
   }
  ],
- "note": "计数规则：初始贡献 + GitHub 叠加。zeitvex 与 Dichen33 各以 20 为起点（建库工作与资料提供）；Beni-537 同样以 20 起算 —— 他的工作在 PR 里，尚未进入默认分支，API 统计不到，但芯片这一批扩充是实打实的。之后三人在 GitHub 上的贡献继续往上叠加。机器人账号与虚拟编辑身份不计入。"
+ "note": "计数规则：初始贡献 + GitHub 叠加。三位创始贡献者（zeitvex / Dichen33 / Beni-537）各以 20 为起点 —— 建库、整机与上下位机资料、芯片扩充这些工作在默认分支之外（或还在 PR 里），GitHub API 统计不到，但不该记 0。之后三人在 GitHub 上的贡献继续往上叠加；机器人账号与虚拟编辑身份不计入。"
 }

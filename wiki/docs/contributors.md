@@ -28,7 +28,7 @@ outline: false
   <a href="https://github.com/Dichen33" target="_blank" rel="noopener">GitHub</a>
 </div>
 <div class="ct">
-  <div class="ct-head"><b>JadeCrane</b><span class="ct-role">贡献者</span></div>
+  <div class="ct-head"><b>JadeCrane</b><span class="ct-role">创始贡献者</span></div>
   <p>芯片品类从 14 颗补到 18 颗：新增 STM32H723 / TCAN334G / TMC2209 / AS5600；为 18 颗补齐官方文档页、手册 PDF 与官方仓库链接（逐条实测可打开）；补 17 颗的国内 1+ 挂牌价（含来源与采集日期）；补 12 张商品实拍图。另外登记了 doc_url / doc_pdf / repo_urls 三个参数名，让校验器的 20 条误报消失（82 → 62 警告）。</p>
   <a href="https://github.com/Beni-537" target="_blank" rel="noopener">GitHub</a>
 </div></div>
