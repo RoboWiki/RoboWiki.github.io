@@ -87,7 +87,7 @@ title: RoboSense Airy Lite
 
 ## 备注
 
-手册 51 页但参数表未提取到，暂留空。定位是小型化近距离雷达，适合中小型移动平台。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>定位是小型化近距离雷达，适合中小型移动平台</li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>手册 51 页但参数表未提取到，暂留空</li></ul></div></div>
 
 
 

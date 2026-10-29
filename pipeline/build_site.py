@@ -11,6 +11,7 @@
 from __future__ import annotations
 
 import hashlib
+import html
 import json
 import pathlib
 import re
@@ -76,6 +77,125 @@ def num(v, digits: int = 3) -> str:
     return f"{round(float(v), digits):g}"
 
 
+#: 这些品类的备注保持原样：关节电机页面是模板，其余几个也不在这次调整范围内。
+NOTE_PLAIN_CATEGORIES = {"actuator", "chip", "wiring", "esc", "sensor", "servo"}
+
+_NOTE_SCOPE = re.compile(
+    r"本站(?:目前只核到|这一条对应|只核到)|产品图待补|规格待补|未提取到|暂留空|"
+    r"未列|未填|留空|按 null 处理|收录|官网只提供|未提供独立|待补|"
+    r"同型号(?:其它|其他|还有)|未给出"
+)
+_NOTE_PRICE = re.compile(
+    r"[¥￥$€]\s?\d|(?:官方价|渠道价|售价|定价|单价|报价|商城|DFRobot|天猫|京东|淘宝)|"
+    r"(?:价格|售价|定价)\s*(?:[:：]|未|随|需|来源|约|为|在|从|与)|价格(?=\s*[。])"
+)
+_NOTE_CAUTION = re.compile(
+    r"注意|别(?:拿|选|按|直接|接|用|看)|不要|不适合|代价|冲突|必须|不可|"
+    r"不通用|不一致|不支持|确认|口径|订正|需要|坏消息|不会|"
+    r"需(?:人工|外接|向|登录|提前|显式|配合)|需\s*(?!HAT\b)[A-Z]|"
+    r"要(?:算|提前|显式|一起|适配|配合)|很紧|未注明|不替|省掉"
+)
+_NOTE_LABELS = {
+    "spec": "规格与说明",
+    "price": "价格与供货",
+    "caution": "需要注意",
+    "scope": "收录说明",
+}
+_NOTE_ORDER = ("spec", "price", "caution", "scope")
+_NOTE_MONEY = re.compile(
+    r"([¥￥$€]\s?\d[\d,]*(?:\.\d+)?(?:\s*[–—\-]\s*[\d,]+)?"
+    r"|\d[\d,]*(?:\.\d+)?\s*(?:万)?元)"
+)
+_NOTE_BOLD = re.compile(r"\*\*(.+?)\*\*")
+
+
+def _note_kind(text: str) -> str:
+    if _NOTE_SCOPE.search(text):
+        return "scope"
+    if _NOTE_PRICE.search(text):
+        return "price"
+    if _NOTE_CAUTION.search(text):
+        return "caution"
+    return "spec"
+
+
+def _note_semis(text: str) -> list[str]:
+    """按分号切句，但不切括号内和未闭合的 **加粗**。"""
+    out: list[str] = []
+    buf = ""
+    depth = 0
+    for ch in text:
+        if ch in "（(":
+            depth += 1
+        elif ch in "）)":
+            depth = max(0, depth - 1)
+        if ch in "；;" and depth == 0 and buf.count("**") % 2 == 0:
+            out.append(buf)
+            buf = ""
+        else:
+            buf += ch
+    if buf:
+        out.append(buf)
+    return out
+
+
+def _note_clean(text: str) -> str:
+    text = text.strip()
+    text = re.sub(r"^(?:注意|选型提醒)\s*[：:]?\s*", "", text)
+    text = re.sub(r"^(?:价格来源|价格|售价|定价)\s*[：:]\s*", "", text)
+    text = text.strip(" 。；;，,")
+    text = re.sub(r"\s*——\s*$", "", text)
+    return text.strip(" 。；;，,")
+
+
+def _note_inline(text: str) -> str:
+    text = html.escape(text, quote=False)
+    text = _NOTE_MONEY.sub(r'<span class="pn-money">\1</span>', text)
+    text = _NOTE_BOLD.sub(r"<strong>\1</strong>", text)
+    return text.replace("**", "")
+
+
+def render_notes(notes: str, category: str) -> str:
+    """把连续段落按语义拆成规格 / 价格 / 提醒 / 收录四块。
+
+    数据不动，只在构建时换呈现：先按句号、分号和价格/提醒等线索断句，
+    再按线索词归类；同一句里的分号片段若没有自己的线索，跟随整句。
+    """
+    if not notes or not notes.strip():
+        return "—"
+    if category in NOTE_PLAIN_CATEGORIES:
+        return notes
+    text = re.sub(r"\s+", " ", notes).strip()
+    text = re.sub(r"截图(?=\s)", "截图‖", text)
+    text = re.sub(r"，(?=(?:注意)?别)", "‖", text)
+    text = re.sub(r"，(?=注意(?:别|不|要|需))", "‖", text)
+    sentences = [p.strip() for p in re.split(r"(?<=[。！？])\s*|‖", text) if p.strip()]
+    groups: dict[str, list[str]] = {k: [] for k in _NOTE_LABELS}
+    for sentence in sentences:
+        parent = _note_kind(sentence)
+        for frag in _note_semis(sentence):
+            kind = _note_kind(frag)
+            if kind == "spec" and parent in ("price", "scope"):
+                kind = parent
+            item = _note_clean(frag)
+            if item and item not in groups[kind]:
+                groups[kind].append(item)
+    blocks = []
+    for kind in _NOTE_ORDER:
+        items = groups[kind]
+        if not items:
+            continue
+        lis = "".join(f"<li>{_note_inline(x)}</li>" for x in items)
+        blocks.append(
+            f'<div class="pn-block pn-{kind}">'
+            f'<div class="pn-label">{_NOTE_LABELS[kind]}</div>'
+            f'<ul class="pn-list">{lis}</ul></div>'
+        )
+    if not blocks:
+        return html.escape(text, quote=False)
+    return '<div class="part-notes">' + "".join(blocks) + "</div>"
+
+
 def load() -> list[dict]:
     """唯一事实源：data/catalog/<品类>/<厂商>.json（人工维护，一家一文件）。
 
@@ -134,6 +254,27 @@ def generic_table(items: list[dict], cat: str) -> str:
             return (f"| {mdl(p)} | {s.get('mcu') or '—'} | {s.get('foc_axes') or '—'} "
                     f"| {(str(s.get('can') or '—')) + (' FD' if s.get('canfd') else '')} "
                     f"| {num(s.get('current_loop_khz'))} | {num(s.get('voltage_max_V'))} "
+                    f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
+                    f"| {tier_badge(p['source_tier'], p['verified'])} |")
+    elif cat == "remote_controller":
+        head = ("| 型号 | 子类 | 通道 | 频段 GHz | 遥控距离 m | 输出协议 | 价格 ¥ | 来源 |\n"
+                "|---|---|---|---|---|---|---|---|")
+        def row(p):
+            s = p["specs"]
+            return (f"| {mdl(p)} | {p.get('subtype_label') or p['subtype']} "
+                    f"| {num(s.get('channels'))} | {num(s.get('frequency_ghz'))} "
+                    f"| {num(s.get('control_range_m'))} | {s.get('protocol') or '—'} "
+                    f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
+                    f"| {tier_badge(p['source_tier'], p['verified'])} |")
+    elif cat == "module":
+        head = ("| 型号 | 子类 | CAN 路数 | CAN FD | 速率 Mbps | 接口 | 价格 ¥ | 来源 |\n"
+                "|---|---|---|---|---|---|---|---|")
+        def row(p):
+            s = p["specs"]
+            fd = "—" if s.get("canfd") is None else ("是" if s.get("canfd") else "否")
+            return (f"| {mdl(p)} | {p.get('subtype_label') or p['subtype']} "
+                    f"| {num(s.get('can'))} | {fd} | {num(s.get('can_speed_mbps'))} "
+                    f"| {s.get('iface') or '—'} "
                     f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
                     f"| {tier_badge(p['source_tier'], p['verified'])} |")
     else:
@@ -377,6 +518,9 @@ def main() -> None:
         "voltage_in_V": "额定电压 (V)", "voltage_range_V": "电压范围",
         "clock_mhz": "主频 (MHz)", "flash_kb": "Flash (KB)", "ram_kb": "RAM (KB)",
         "can_speed_mbps": "CAN 速率 (Mbps)", "ram_bw_gbs": "带宽 (GB/s)",
+        "channels": "通道数", "frequency_ghz": "频段 (GHz)",
+        "control_range_m": "遥控距离 (m)",
+        "isolation": "电气隔离", "connector": "接头",
         "gpu": "GPU", "package": "封装", "protection": "保护",
         "pwm": "PWM 路数", "uart": "UART 路数", "imu": "板载 IMU",
         "process": "工艺", "quality": "加工质量", "punctual": "交货准时性",
@@ -406,13 +550,29 @@ def main() -> None:
             return v
         return num(v, 4)
 
-    def spec_rows(specs: dict, cat_key_list: list[str] | None = None) -> str:
+    _CAT_LABEL_OVERRIDES = {
+        "remote_controller": {
+            "battery": "电池",
+            "weight_g": "重量 (g)",
+            "protocol": "输出协议",
+        },
+    }
+
+    def spec_rows(specs: dict, cat_key_list: list[str] | None = None,
+                  category: str = "") -> str:
         """按品类出参数行。
 
         品类 keys 永远出现（缺 = —，这是本站的诚实口径）；
         其它字段只在有值时出现 —— 否则 IMU 页面会显示一排「峰值扭矩 —」，
         让人以为数据缺失，其实是字段根本不属于这个品类。
         """
+        overrides = _CAT_LABEL_OVERRIDES.get(category, {})
+
+        def cell(v) -> str:
+            if category == "module" and isinstance(v, bool):
+                return "是" if v else "否"
+            return _val(v)
+
         keys = [k for k in (cat_key_list or []) if k in specs or True]
         seen: set[str] = set()
         out = []
@@ -421,15 +581,15 @@ def main() -> None:
             if k in ("image_url", "image_source"):
                 continue
             seen.add(k)
-            label = SPEC_LABEL.get(k, k)
-            out.append(f"| {label} | {_val(v)} |")
+            label = overrides.get(k) or SPEC_LABEL.get(k, k)
+            out.append(f"| {label} | {cell(v)} |")
         for k, v in specs.items():
             if k in seen or k in ("image_url", "image_source"):
                 continue
             if v is None:
                 continue
-            label = SPEC_LABEL.get(k, k)
-            out.append(f"| {label} | {_val(v)} |")
+            label = overrides.get(k) or SPEC_LABEL.get(k, k)
+            out.append(f"| {label} | {cell(v)} |")
         return "\n".join(out)
 
     # ── 每页要用的派生量（只对关节电机算，其它品类没有这些语义）─────────
@@ -624,9 +784,37 @@ def main() -> None:
         elif cat in ("camera", "lidar"):
             out.append(("先算视场与量程", "近距离抓地形看深度量程下限，别只看最大值；"
                         "楼梯这类弱纹理场景，结构光/ToF 与双目表现差别很大。"))
+        elif cat == "remote_controller":
+            if s.get("control_range_m"):
+                out.append(("距离是空旷条件", f"标称 {num(s['control_range_m'])} m 是视距无遮挡、"
+                            f"无 2.4 GHz 干扰时的值。比赛现场 Wi-Fi / 图传扎堆，"
+                            f"实际按 1/3 估，并先在地面拉距离测一遍。"))
+            if s.get("protocol"):
+                out.append(("接收机输出要匹配", f"输出 {s['protocol']}。"
+                            f"下位机或飞控要能解析对应协议；SBUS 是反相串口，"
+                            f"接错电平不会坏但一定收不到数据。"))
+            if s.get("channels"):
+                out.append(("通道留余量", f"{num(s['channels'])} 个通道。"
+                            f"四足运动 + 云台/机械臂 + 模式切换，建议至少留 2 个备用通道。"))
+            if s.get("battery"):
+                out.append(("电池与续航", f"{s['battery']}。"
+                            f"长时间调试建议用可换电池或外接供电，别让电量低时丢信号。"))
         elif cat == "module":
-            out.append(("按子类看", "这一类是「其余模块」，字段不统一。"
-                        "用之前先确认接口与供电，再谈精度。"))
+            if s.get("can"):
+                out.append(("路数按总线负载配", f"{num(s['can'])} 路 CAN。"
+                            f"1 Mbps 下单路挂 12 个关节、每毫秒一帧反馈就会吃紧，"
+                            f"优先把腿和臂分到不同总线。"))
+            if s.get("canfd"):
+                out.append(("CAN FD 两端都要支持", f"数据段最高 {num(s.get('can_speed_mbps'))} Mbps，"
+                            f"但仲裁段仍是 1 Mbps；电机/下位机不支持 FD 时会自动退回 CAN 2.0。"))
+            if s.get("connector"):
+                out.append(("接线与终端电阻", f"接头 {s['connector']}。"
+                            f"CAN H/L 用双绞线，总线两端各 120 Ω；USB 侧供电不足会随机掉线，"
+                            f"长线建议外加隔离收发器。"))
+            if s.get("iface"):
+                out.append(("Linux 下先跑 SocketCAN", "用 can-utils 验证："
+                            "`ip link set can0 up type can bitrate 1000000`，"
+                            "再用 `candump can0` 看电机反馈，确认通了再接控制环。"))
 
         if not out:
             out.append(("暂无建议", "这个型号的关键参数还缺得多，先补齐再谈用法。"))
@@ -665,9 +853,14 @@ def main() -> None:
         # 以前这里写死了一份电机字段表，结果 IMU / 相机详情页也显示「峰值扭矩 —」，
         # 看着像数据缺失，其实是字段不属于这个品类。
         KEY = cat_keys(r) or ["iface"]
-        keyrows = "\n".join(
-            f"| {SPEC_LABEL.get(k, k)} | {_val(s.get(k))} |"
-            for k in KEY if k in s)
+        _over = _CAT_LABEL_OVERRIDES.get(cat, {})
+
+        def key_row(k: str) -> str:
+            v = s.get(k)
+            val = ("是" if v else "否") if cat == "module" and isinstance(v, bool) else _val(v)
+            return f"| {_over.get(k) or SPEC_LABEL.get(k, k)} | {val} |"
+
+        keyrows = "\n".join(key_row(k) for k in KEY if k in s)
         if not keyrows:
             keyrows = "| — | 这一类暂无核心字段 |"
 
@@ -850,7 +1043,7 @@ def main() -> None:
 
 | 字段 | 值 |
 |---|---|
-{spec_rows(s, cat_keys(r))}
+{spec_rows(s, cat_keys(r), r.get("category") or "")}
 
 ## 优惠与获取条件
 
@@ -864,7 +1057,7 @@ def main() -> None:
 
 ## 备注
 
-{r.get("notes") or "—"}
+{render_notes(r.get("notes") or "", r.get("category") or "")}
 
 {en_todo(r)}
 
@@ -957,7 +1150,7 @@ def main() -> None:
 
 {generic_table(items, c)}
 
-> 这些行是 `B` 级（来自公开文档/官网，未逐项核对），采购前请回原厂页面确认。
+{"> 来源等级见行末徽章：`A` = 逐项核对过官方手册，`B` = 公开网页。采购前请回原厂页面确认。" if c in ("remote_controller", "module") else "> 这些行是 `B` 级（来自公开文档/官网，未逐项核对），采购前请回原厂页面确认。"}
 """, encoding="utf-8")
 
 

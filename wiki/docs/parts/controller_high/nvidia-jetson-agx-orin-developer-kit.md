@@ -109,7 +109,7 @@ title: NVIDIA Jetson AGX Orin Developer Kit
 
 ## 备注
 
-官方开发者套件 = AGX Orin 64GB 模组 + 载板 + 散热；275 TOPS（INT8 稀疏）、2048 CUDA + 64 Tensor Cores、12×A78AE@2.2GHz、64GB 256-bit LPDDR5 204.8GB/s、64GB eMMC 5.1、15–60W 可调；10GbE + GbE、16-lane MIPI CSI（最多 6 路）、40-pin 排针含 1× CAN、PCIe x16 插槽（x8 通道）。110×110×71.65mm。官方定价 $3499（2026-07 由 $1999 上调）；国内渠道含税报价差异大，暂不取人民币公开价。TOPS 口径与 Orin Nano/NX 的稀疏标称不同，跨平台不要直接按 TOPS 比值估性能。 本站目前只核到 64 GB 这一档；同型号其它内存版本参数待补，价格也不同。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>官方开发者套件 = AGX Orin 64GB 模组 + 载板 + 散热</li><li>275 TOPS（INT8 稀疏）、2048 CUDA + 64 Tensor Cores、12×A78AE@2.2GHz、64GB 256-bit LPDDR5 204.8GB/s、64GB eMMC 5.1、15–60W 可调</li><li>10GbE + GbE、16-lane MIPI CSI（最多 6 路）、40-pin 排针含 1× CAN、PCIe x16 插槽（x8 通道）</li><li>110×110×71.65mm</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>官方定价 <span class="pn-money">$3499</span>（2026-07 由 <span class="pn-money">$1999</span> 上调）</li><li>国内渠道含税报价差异大，暂不取人民币公开价</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>TOPS 口径与 Orin Nano/NX 的稀疏标称不同，跨平台不要直接按 TOPS 比值估性能</li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>本站目前只核到 64 GB 这一档</li><li>同型号其它内存版本参数待补，价格也不同</li></ul></div></div>
 
 
 

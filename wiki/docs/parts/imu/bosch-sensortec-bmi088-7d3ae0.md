@@ -98,7 +98,7 @@ title: Bosch Sensortec BMI088
 
 ## 备注
 
-6 轴（3 轴陀螺 + 3 轴加速度计），陀螺量程 ±125/250/500/1000/2000 °/s，加速度计量程 ±3/6/12/24 g；ODR 12.5 Hz–2 kHz；VDD 2.4–3.6 V，VDDIO 1.2–3.6 V；全速运行 5.15 mA（按 3.3 V 折算约 0.017 W）。博世官方定位为无人机与机器人应用，四足/人形机器人姿态估计常用。官网未公开单价，价格随渠道与批次波动。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>6 轴（3 轴陀螺 + 3 轴加速度计），陀螺量程 ±125/250/500/1000/2000 °/s，加速度计量程 ±3/6/12/24 g</li><li>ODR 12.5 Hz–2 kHz</li><li>VDD 2.4–3.6 V，VDDIO 1.2–3.6 V</li><li>全速运行 5.15 mA（按 3.3 V 折算约 0.017 W）</li><li>博世官方定位为无人机与机器人应用，四足/人形机器人姿态估计常用</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>官网未公开单价，价格随渠道与批次波动</li></ul></div></div>
 
 
 

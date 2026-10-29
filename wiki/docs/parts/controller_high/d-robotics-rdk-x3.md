@@ -103,7 +103,7 @@ title: 地平线 D-Robotics RDK X3
 
 ## 备注
 
-4GB 版；板载无 eMMC，系统跑 microSD；5V/3A Type-C 供电；2× MIPI CSI 2-lane、千兆网口、Wi-Fi 2.4/5GHz + BT4.2；无原生 CAN。价格：微雪 4GB 基础套件 ¥449（含配件包，2026-10）；教育/竞赛渠道曾见 ¥379。5 TOPS 为 BPU INT8 标称，与 Jetson 稀疏 INT8 不可直接横比。 本站目前只核到 4 GB 这一档；同型号其它内存版本参数待补，价格也不同。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>4GB 版</li><li>板载无 eMMC，系统跑 microSD</li><li>5V/3A Type-C 供电</li><li>2× MIPI CSI 2-lane、千兆网口、Wi-Fi 2.4/5GHz + BT4.2</li><li>无原生 CAN</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>微雪 4GB 基础套件 <span class="pn-money">¥449</span>（含配件包，2026-10）</li><li>教育/竞赛渠道曾见 <span class="pn-money">¥379</span></li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>5 TOPS 为 BPU INT8 标称，与 Jetson 稀疏 INT8 不可直接横比</li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>本站目前只核到 4 GB 这一档</li><li>同型号其它内存版本参数待补，价格也不同</li></ul></div></div>
 
 
 

@@ -44,6 +44,9 @@ KNOWN_SPEC_KEYS = {
     "gyro_range_dps", "accel_range_g", "odr_hz", "iface", "noise", "resolution",
     "depth_range_m", "fps", "fov", "range_m", "points_per_s", "channel", "bits",
     "absolute", "temp_range_C",
+    # 遥控器 / CAN 模块
+    "channels", "frequency_ghz", "control_range_m", "protocol", "battery",
+    "can_speed_mbps", "isolation",
     # 归档导入用到的字段（见 tools/normalize_archive.py 的 FIELD_MAP）
     "tau_stall_Nm", "tau_hold_Nm", "i_stall_A", "dims", "temp_range",
     "storage_temp_range", "meas_range", "accuracy", "response_time", "power_w",
@@ -65,7 +68,8 @@ UI_KEYS = {
     "lidar": {"range_m", "image_url"},
     "camera": {"depth_range_m", "image_url"},
     "imu": {"odr_hz", "image_url"},
-    "module": {"image_url"},
+    "module": {"can", "image_url"},
+    "remote_controller": {"channels", "control_range_m", "image_url"},
     "controller_low": {"image_url"},
     "chip": {"package", "image_url"},
 }
@@ -97,6 +101,11 @@ PLAUSIBLE = {
     "power_max_w": (0.1, 5000.0),
     "current_loop_khz": (0.1, 200.0),
     "bits": (1.0, 32.0),
+    "channels": (1.0, 64.0),
+    "frequency_ghz": (0.3, 6.0),
+    "control_range_m": (1.0, 100000.0),
+    "can_speed_mbps": (0.01, 20.0),
+    "weight_g": (0.1, 10000.0),
 }
 
 

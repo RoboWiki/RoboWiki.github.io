@@ -276,6 +276,70 @@
    ]
   },
   {
+   "id": "remote_controller",
+   "name": "遥控器",
+   "hint": "手柄 / 板控 / 遥操作",
+   "subtypes": {
+    "radio": "板控",
+    "gamepad": "手柄式"
+   },
+   "keys": [
+    {
+     "k": "channels",
+     "label": "通道数",
+     "unit": " 个"
+    },
+    {
+     "k": "frequency_ghz",
+     "label": "频段",
+     "unit": " GHz"
+    },
+    {
+     "k": "control_range_m",
+     "label": "遥控距离",
+     "unit": " m"
+    },
+    {
+     "k": "protocol",
+     "label": "输出协议",
+     "unit": ""
+    },
+    {
+     "k": "battery",
+     "label": "电池",
+     "unit": ""
+    },
+    {
+     "k": "weight_g",
+     "label": "重量",
+     "unit": " g"
+    }
+   ],
+   "sorts": [
+    {
+     "k": "control_range_m",
+     "label": "遥控距离"
+    },
+    {
+     "k": "channels",
+     "label": "通道数"
+    },
+    {
+     "k": "price",
+     "label": "价格"
+    },
+    {
+     "k": "rating",
+     "label": "评分"
+    }
+   ],
+   "rating_dims": [
+    "value",
+    "build",
+    "docs"
+   ]
+  },
+  {
    "id": "esc",
    "name": "电调",
    "hint": "驱动器 / 调速器",
@@ -650,8 +714,10 @@
   {
    "id": "module",
    "name": "其余模块",
-   "hint": "力触觉 / 编码器",
-   "subtypes": {},
+   "hint": "CAN 通信 / 力触觉 / 编码器",
+   "subtypes": {
+    "can": "CAN 模块"
+   },
    "keys": [
     {
      "k": "iface",
@@ -659,22 +725,40 @@
      "unit": ""
     },
     {
-     "k": "resolution",
-     "label": "分辨率",
+     "k": "can",
+     "label": "CAN 路数",
+     "unit": " 路"
+    },
+    {
+     "k": "canfd",
+     "label": "CAN FD",
      "unit": ""
     },
     {
-     "k": "bits",
-     "label": "位宽",
-     "unit": " bit"
+     "k": "can_speed_mbps",
+     "label": "速率",
+     "unit": " Mbps"
     },
     {
      "k": "voltage_V",
      "label": "供电",
      "unit": " V"
+    },
+    {
+     "k": "connector",
+     "label": "接头",
+     "unit": ""
     }
    ],
    "sorts": [
+    {
+     "k": "can",
+     "label": "CAN 路数"
+    },
+    {
+     "k": "can_speed_mbps",
+     "label": "速率"
+    },
     {
      "k": "price",
      "label": "价格"
@@ -769,6 +853,10 @@
   "灵足 RobStride": {
    "slug": "lingzu-robstride",
    "cn": "灵足时代"
+  },
+  "乐迪 RadioLink": {
+   "slug": "radiolink",
+   "cn": "乐迪"
   },
   "宇树 Unitree": {
    "slug": "unitree",

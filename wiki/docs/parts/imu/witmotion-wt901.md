@@ -94,7 +94,7 @@ title: WitMotion 维特智能 WT901
 
 ## 备注
 
-9 轴（陀螺 + 加速度 + 磁力计），陀螺 ±2000 °/s、加速度 ±16 g、磁力 ±2 Gauss；输出速率 0.2–200 Hz；UART 4800–230400 bps，硬件 I²C 400 kHz；倾斜精度 0.2°，9 轴航向 0.1°（需磁校准）。官网规格表未列供电电压、尺寸和重量，未填；价格随渠道波动，官网未公开单价。WT901 与 JY901S 协议同源，但外形与接口版本多，下单前确认后缀。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>9 轴（陀螺 + 加速度 + 磁力计），陀螺 ±2000 °/s、加速度 ±16 g、磁力 ±2 Gauss</li><li>输出速率 0.2–200 Hz</li><li>UART 4800–230400 bps，硬件 I²C 400 kHz</li><li>倾斜精度 0.2°，9 轴航向 0.1°（需磁校准）</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>价格随渠道波动，官网未公开单价</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>WT901 与 JY901S 协议同源，但外形与接口版本多，下单前确认后缀</li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>官网规格表未列供电电压、尺寸和重量，未填</li></ul></div></div>
 
 
 

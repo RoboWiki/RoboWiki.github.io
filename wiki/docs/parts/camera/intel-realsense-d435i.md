@@ -99,7 +99,7 @@ title: Intel RealSense D435i
 
 ## 备注
 
-双目 + 红外投影，全局快门；内置 IMU 是它相对 D435 的主要差别。深度与 RGB 是不同传感器，做 SLAM 要显式做时间同步。 产品图待补：Intel 站点对本站 TLS 握手拦截，需人工提供截图 主动红外双目，四足地形感知最常用的型号。理想 0.3–3 m，最小 Z 约 0.28 m；深度 1280×720@90 fps，RGB 1920×1080@30 fps 卷帘；内置 BMI055 IMU；无外壳防护。官方店 $399（2026-10，缺货且收关税附加费），按 7.15 汇率约 ¥2850。Intel 2025-07 已将 RealSense 分拆为 RealSense, Inc.，旧 intelrealsense.com 域名失效，链接统一改 realsenseai.com。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>双目 + 红外投影，全局快门</li><li>内置 IMU 是它相对 D435 的主要差别</li><li>主动红外双目，四足地形感知最常用的型号</li><li>理想 0.3–3 m，最小 Z 约 0.28 m</li><li>深度 1280×720@90 fps，RGB 1920×1080@30 fps 卷帘</li><li>内置 BMI055 IMU</li><li>无外壳防护</li><li>Intel 2025-07 已将 RealSense 分拆为 RealSense, Inc.，旧 intelrealsense.com 域名失效，链接统一改 realsenseai.com</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>官方店 <span class="pn-money">$399</span>（2026-10，缺货且收关税附加费），按 7.15 汇率约 <span class="pn-money">¥2850</span></li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>深度与 RGB 是不同传感器，做 SLAM 要显式做时间同步</li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>产品图待补：Intel 站点对本站 TLS 握手拦截，需人工提供截图</li></ul></div></div>
 
 
 

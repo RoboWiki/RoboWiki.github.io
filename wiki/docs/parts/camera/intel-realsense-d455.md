@@ -99,7 +99,7 @@ title: Intel RealSense D455
 
 ## 备注
 
-基线比 D435i 长，远处精度更好、近处盲区更大；同样内置 IMU。 产品图待补：同上，需人工提供截图 D435i 的长基线版：双目基线 95 mm（D435i 为 50 mm），远处精度更好，代价是近处盲区涨到约 0.52 m。理想 0.6–6 m；深度 1280×720@90 fps，RGB 1280×800@30 fps 全局快门；内置 BMI055 IMU。官方 $499（2026-10），按 7.15 汇率约 ¥3570。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>基线比 D435i 长，远处精度更好、近处盲区更大</li><li>同样内置 IMU</li><li>理想 0.6–6 m</li><li>深度 1280×720@90 fps，RGB 1280×800@30 fps 全局快门</li><li>内置 BMI055 IMU</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>官方 <span class="pn-money">$499</span>（2026-10），按 7.15 汇率约 <span class="pn-money">¥3570</span></li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>D435i 的长基线版：双目基线 95 mm（D435i 为 50 mm），远处精度更好，代价是近处盲区涨到约 0.52 m</li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>产品图待补：同上，需人工提供截图</li></ul></div></div>
 
 
 

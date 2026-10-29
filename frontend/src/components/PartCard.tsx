@@ -48,6 +48,24 @@ const SPEC_CHIPS: Record<string, (p: Part) => { k: string; v: string }[]> = {
     if (s.odr_hz) out.push({ k: 'ODR', v: `${s.odr_hz} Hz` })
     return out.slice(0, 4)
   },
+  remote_controller: p => {
+    const s = p.specs
+    const out: { k: string; v: string }[] = []
+    if (s.channels) out.push({ k: '通道', v: `${s.channels} 个` })
+    if (s.control_range_m) out.push({ k: '距离', v: `${s.control_range_m} m` })
+    if (s.protocol) out.push({ k: '协议', v: String(s.protocol).split('/')[0].trim() })
+    if (s.weight_g) out.push({ k: '重量', v: `${s.weight_g} g` })
+    return out.slice(0, 4)
+  },
+  module: p => {
+    const s = p.specs
+    const out: { k: string; v: string }[] = []
+    if (s.can) out.push({ k: 'CAN', v: `${s.can}${s.canfd ? ' FD' : ''} 路` })
+    if (s.can_speed_mbps) out.push({ k: '速率', v: `${s.can_speed_mbps} Mbps` })
+    if (s.iface) out.push({ k: '接口', v: String(s.iface).split('/')[0] })
+    if (s.connector) out.push({ k: '接头', v: String(s.connector).split('(')[0] })
+    return out.slice(0, 4)
+  },
 }
 
 function Tier({ tier, verified }: { tier: string; verified: boolean }) {

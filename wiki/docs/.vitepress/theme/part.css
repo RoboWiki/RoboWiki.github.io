@@ -212,3 +212,85 @@ html.dark .pm-bad .pm-v { color: #f48771; }
   background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
   background-position: 0 0, 100% 0, 0 0, 100% 0;
 }
+
+/* ── 备注：按语义分块（2026-10-29）───────────────────────────────── */
+.part-notes {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0.2rem 0 1.1rem;
+}
+.part-notes .pn-block {
+  min-width: 0;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 10px;
+  padding: 0.55rem 0.85rem 0.6rem;
+  background: var(--vp-c-bg-alt);
+}
+.part-notes .pn-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--vp-c-text-3);
+}
+.part-notes .pn-label::before {
+  content: "";
+  width: 14px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--vp-c-brand-1);
+}
+.part-notes .pn-list {
+  margin: 0;
+  padding-left: 1.05rem;
+  list-style: disc;
+}
+.part-notes .pn-list li {
+  margin: 0.16rem 0;
+  font-size: 0.82rem;
+  line-height: 1.75;
+  color: var(--vp-c-text-2);
+  overflow-wrap: anywhere;
+}
+.part-notes .pn-list li::marker { color: var(--vp-c-text-3); }
+.part-notes .pn-list strong {
+  color: var(--vp-c-text-1);
+  font-weight: 600;
+}
+.part-notes .pn-price {
+  border-color: rgba(183, 121, 31, 0.26);
+  background: rgba(183, 121, 31, 0.045);
+}
+.part-notes .pn-price .pn-label::before { background: #b7791f; }
+.part-notes .pn-price .pn-money {
+  color: #9a6410;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.part-notes .pn-caution {
+  border-color: rgba(192, 43, 43, 0.22);
+  background: rgba(192, 43, 43, 0.035);
+}
+.part-notes .pn-caution .pn-label::before { background: #c02b2b; }
+.part-notes .pn-scope {
+  border-style: dashed;
+  background: transparent;
+}
+.part-notes .pn-scope .pn-label::before { background: var(--vp-c-text-3); }
+html.dark .part-notes .pn-price {
+  border-color: rgba(224, 177, 89, 0.28);
+  background: rgba(224, 177, 89, 0.06);
+}
+html.dark .part-notes .pn-price .pn-money { color: #e0b159; }
+html.dark .part-notes .pn-caution {
+  border-color: rgba(244, 135, 113, 0.24);
+  background: rgba(244, 135, 113, 0.055);
+}
+html.dark .part-notes .pn-caution .pn-label::before { background: #f48771; }
+@media (max-width: 640px) {
+  .part-notes .pn-block { padding: 0.5rem 0.7rem 0.55rem; }
+  .part-notes .pn-list li { font-size: 0.8rem; }
+}

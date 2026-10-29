@@ -107,7 +107,7 @@ title: 达妙 DAMIAO DM-MC-Board02
 
 ## 备注
 
-达妙自家主控板，和 DM 系列驱动配套。特点是 **3 路 CANFD + 2 路 RS485**，以及两路可控电源（每路 5A）可以直接给传感器/激光供电。56×40 mm、19.5 g，小机身四足塞得进。 同一款板的两种写法：DM-MC-Board02（官方型号）/ DM-MC02（商城简写），按官方型号收录。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>达妙自家主控板，和 DM 系列驱动配套</li><li>特点是 <strong>3 路 CANFD + 2 路 RS485</strong>，以及两路可控电源（每路 5A）可以直接给传感器/激光供电</li><li>56×40 mm、19.5 g，小机身四足塞得进</li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>同一款板的两种写法：DM-MC-Board02（官方型号）/ DM-MC02（商城简写），按官方型号收录</li></ul></div></div>
 
 
 

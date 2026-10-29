@@ -111,7 +111,7 @@ title: 宇树 Unitree L1
 
 ## 备注
 
-宇树自研的 4D 雷达（3D 位置 + 1D 灰度），无接触无刷转镜扫描。**分 PM / RM 两个型号**：PM 精度优、量程近（20 m@90%、10 m@10%）；RM 量程远（30 m@90%、15 m@10%）。买之前先确认是哪个。接口是 **TTL UART（2 Mbps）**，不是网口 —— 与 L2 的主要差异就在这里。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>宇树自研的 4D 雷达（3D 位置 + 1D 灰度），无接触无刷转镜扫描</li><li><strong>分 PM / RM 两个型号</strong>：PM 精度优、量程近（20 m@90%、10 m@10%）</li><li>RM 量程远（30 m@90%、15 m@10%）</li><li>接口是 <strong>TTL UART（2 Mbps）</strong>，不是网口 —— 与 L2 的主要差异就在这里</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>买之前先确认是哪个</li></ul></div></div>
 
 
 

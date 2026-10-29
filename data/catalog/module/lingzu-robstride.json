@@ -1,0 +1,38 @@
+[
+ {
+  "category": "module",
+  "subtype": "can",
+  "subtype_label": "CAN 模块",
+  "id": "lingzu-robstride-usb-can-hub",
+  "vendor": "灵足 RobStride",
+  "vendor_cn": "灵足时代",
+  "model": "USB-CAN HUB",
+  "title": "灵足时代 USB-CAN HUB 五路 CAN 集线器",
+  "url": "https://github.com/RobStride/Product_Information",
+  "source_tier": "A",
+  "verified": true,
+  "last_checked": "2026-10-29",
+  "price_cny": null,
+  "origin": "《USB_CANHUB 使用说明书 V1.0》（灵足时代，Product_Information 仓库）",
+  "notes": "5 路 CAN 口，USB 2.0 Type-C 供电与通信（5 V），另带 MX1.25-4P USB 接口。每路配 120 Ω 终端电阻拨码开关（ON 接入），接线端子为 2.54-3P 插拔式（CAN H / CAN L / GND）。官方说明按 1 Mbps 配置使用，不支持 CAN FD；Linux 下按 SocketCAN（can-utils）使用。价格：截至 2026-10-29 官方仓库与商城未标价，未找到可核对的公开报价。",
+  "specs": {
+   "iface": "USB 2.0 Type-C（5 V）/ MX1.25-4P",
+   "can": 5,
+   "canfd": false,
+   "can_speed_mbps": 1,
+   "voltage_V": 5,
+   "connector": "2.54-3P 插拔端子（CAN H / CAN L / GND）×5",
+   "isolation": null,
+   "dims": null,
+   "weight_g": null,
+   "image_url": "/parts/lingzu-robstride-usb-can-hub.jpg",
+   "image_source": "《USB_CANHUB 使用说明书 V1.0》产品图（2026-10-29 提取）",
+   "doc_url": "https://github.com/RobStride/Product_Information",
+   "doc_pdf": "https://raw.githubusercontent.com/RobStride/Product_Information/main/%E4%BA%A7%E5%93%81%E8%B5%84%E6%96%99/canhub/USB_CANHUB%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8EV1.0.pdf",
+   "repo_urls": [
+    "https://github.com/RobStride/robstride_ros_sample",
+    "https://github.com/ROBSTRIDE-DYNAMICS/Robstride-Dynamics-Python-SDK"
+   ]
+  }
+ }
+]

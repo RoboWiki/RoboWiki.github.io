@@ -91,7 +91,7 @@ title: 奥比中光 Orbbec Gemini 305
 
 ## 备注
 
-官方定位「轻量近距」：全局曝光双目 + 深度/彩色解耦设计，适合桌面级抓取与近距避障。远距场景别选它 —— 这是近距件。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>官方定位「轻量近距」：全局曝光双目 + 深度/彩色解耦设计，适合桌面级抓取与近距避障</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>远距场景别选它 —— 这是近距件</li></ul></div></div>
 
 
 

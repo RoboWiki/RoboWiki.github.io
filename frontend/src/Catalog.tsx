@@ -15,13 +15,14 @@ const CATS = [
   { value: 'actuator', label: '关节电机', hint: '选型主战场' },
   { value: 'controller_high', label: '上位机', hint: '推理与感知' },
   { value: 'controller_low', label: '下位机', hint: '力矩闭环' },
+  { value: 'remote_controller', label: '遥控器', hint: '手柄 / 板控 / 遥操作' },
   { value: 'structure', label: '机械结构', hint: '待收录' },
   { value: 'imu', label: 'IMU', hint: '姿态与振动' },
   { value: 'lidar', label: '激光雷达', hint: '地形与建图' },
   { value: 'camera', label: '深度相机', hint: '视觉感知' },
   { value: 'battery', label: '电池', hint: '待收录' },
   { value: 'wiring', label: '线束', hint: '待收录' },
-  { value: 'module', label: '其余模块', hint: '力触觉 / 编码器' },
+  { value: 'module', label: '其余模块', hint: 'CAN 通信 / 力触觉 / 编码器' },
 ]
 
 const SORTS = [

@@ -107,7 +107,7 @@ title: OrangePi Orange Pi 5 Plus
 
 ## 备注
 
-8GB LPDDR4x 版。RK3588、双 2.5GbE、双 M.2（M-key NVMe + E-key 无线）、2× MIPI CSI、8K 解码；100×75mm、86.5g；NPU 官方标称 6 TOPS。存储靠 eMMC 模块 / microSD / NVMe，裸板不带。无原生 CAN。价格：8GB 单板电商参考价 ¥795；4GB 首发 ¥649。 本站目前只核到 8 GB 这一档；同型号其它内存版本参数待补，价格也不同。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>8GB LPDDR4x 版</li><li>RK3588、双 2.5GbE、双 M.2（M-key NVMe + E-key 无线）、2× MIPI CSI、8K 解码</li><li>100×75mm、86.5g</li><li>NPU 官方标称 6 TOPS</li><li>存储靠 eMMC 模块 / microSD / NVMe，裸板不带</li><li>无原生 CAN</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>8GB 单板电商参考价 <span class="pn-money">¥795</span></li><li>4GB 首发 <span class="pn-money">¥649</span></li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>本站目前只核到 8 GB 这一档</li><li>同型号其它内存版本参数待补，价格也不同</li></ul></div></div>
 
 
 

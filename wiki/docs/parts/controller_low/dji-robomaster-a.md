@@ -98,7 +98,7 @@ title: 大疆 DJI RoboMaster 开发板 A 型
 
 ## 备注
 
-RM 生态的通用主控：F427 + 板载 IMU，CAN/PWM/ADC/DBUS 齐全。注意它面向 RM 赛制，供电与接口定义跟通用驱动板不一样。 产品图待补（抓到的不是产品本体）。 STM32F427IIH6；CAN1 6 口 / CAN2 4 口、4× UART、蓝牙串口、DBUS、16 路可调 PWM + 4 路无电源 PWM、18× GPIO、IMU + 电子罗盘；26V 上限、4–6S LiPo、持续 20A、85×58mm、48g。注意：这是主控板，不含 FOC 功率级，电机需外接 C620/C610 电调。官方价 ¥429。 CAN 口径订正：官方 A 型板是 CAN1（6 个接口）+ CAN2（4 个接口），即 2 条总线、10 个接口 —— 本站的 can 字段记**总线路数**，接口数看这里。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>RM 生态的通用主控：F427 + 板载 IMU，CAN/PWM/ADC/DBUS 齐全</li><li>STM32F427IIH6</li><li>CAN1 6 口 / CAN2 4 口、4× UART、蓝牙串口、DBUS、16 路可调 PWM + 4 路无电源 PWM、18× GPIO、IMU + 电子罗盘</li><li>26V 上限、4–6S LiPo、持续 20A、85×58mm、48g</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>官方价 <span class="pn-money">¥429</span></li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>它面向 RM 赛制，供电与接口定义跟通用驱动板不一样</li><li>这是主控板，不含 FOC 功率级，电机需外接 C620/C610 电调</li><li>CAN 口径订正：官方 A 型板是 CAN1（6 个接口）+ CAN2（4 个接口），即 2 条总线、10 个接口 —— 本站的 can 字段记<strong>总线路数</strong>，接口数看这里</li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>产品图待补（抓到的不是产品本体）</li></ul></div></div>
 
 
 

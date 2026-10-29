@@ -122,7 +122,7 @@ title: 宇树 Unitree L2
 
 ## 备注
 
-L2 是 L1 的升级：点频 128000 点/秒（L1 的 3 倍）、最大量程 30 m，并且**多了以太网**（ENET UDP + TTL UART 4 Mbps），组网不必再拖串口线。负角度模式可把竖直视场从 90° 扩到 96°。供电要 12 V / 1 A，别直接接 24 V。 非重复扫描，360°×96°，30 m@90%、盲区 0.05 m；有效点频 64,000 pts/s（采样 128,000 pts/s），精度 2 cm；内置 3 轴 IMU，官方提供只用 L2 + IMU 的 Point-LIO 开源 SLAM 方案。10 W（低温自加热峰值 13 W）、12 V、230 g。官网 ¥1799（2026-10），海外 $419。性价比高，但垂直 96° 加上非重复扫描意味着近距离点云比机械式稀，建图算法要适配。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>L2 是 L1 的升级：点频 128000 点/秒（L1 的 3 倍）、最大量程 30 m，并且<strong>多了以太网</strong>（ENET UDP + TTL UART 4 Mbps），组网不必再拖串口线</li><li>负角度模式可把竖直视场从 90° 扩到 96°</li><li>供电要 12 V / 1 A</li><li>非重复扫描，360°×96°，30 m@90%、盲区 0.05 m</li><li>有效点频 64,000 pts/s（采样 128,000 pts/s），精度 2 cm</li><li>内置 3 轴 IMU，官方提供只用 L2 + IMU 的 Point-LIO 开源 SLAM 方案</li><li>10 W（低温自加热峰值 13 W）、12 V、230 g</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>官网 <span class="pn-money">¥1799</span>（2026-10），海外 <span class="pn-money">$419</span></li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>别直接接 24 V</li><li>性价比高，但垂直 96° 加上非重复扫描意味着近距离点云比机械式稀，建图算法要适配</li></ul></div></div>
 
 
 

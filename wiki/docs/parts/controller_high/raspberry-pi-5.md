@@ -105,7 +105,7 @@ title: 树莓派 Raspberry Pi 5
 
 ## 备注
 
-8GB 版；板载无 eMMC，系统跑 microSD；5V/5A USB-C 供电（官方 27W PSU 另购）；2× 4-lane MIPI（CSI/DSI 可互换）、PCIe 2.0 x1；无原生 CAN，需 SPI/CAN 扩展。价格：官方 8GB $190（2026-10 核实），国内渠道约 ¥1600；官网当前同时主推 16GB $305。 本站目前只核到 8 GB 这一档；同型号其它内存版本参数待补，价格也不同。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>8GB 版</li><li>板载无 eMMC，系统跑 microSD</li><li>5V/5A USB-C 供电（官方 27W PSU 另购）</li><li>2× 4-lane MIPI（CSI/DSI 可互换）、PCIe 2.0 x1</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>官方 8GB <span class="pn-money">$190</span>（2026-10 核实），国内渠道约 <span class="pn-money">¥1600</span></li><li>官网当前同时主推 16GB <span class="pn-money">$305</span></li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>无原生 CAN，需 SPI/CAN 扩展</li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>本站目前只核到 8 GB 这一档</li><li>同型号其它内存版本参数待补，价格也不同</li></ul></div></div>
 
 
 

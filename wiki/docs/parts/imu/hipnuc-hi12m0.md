@@ -96,7 +96,7 @@ title: 超核电子 HiPNUC HI12M0
 
 ## 备注
 
-HI12 系列含 M0/H1/H2/S2/S3；本条为 HI12M0（IMU/VRU），陀螺 ±2000 °/s、加速度计 ±24 g（可调）。H1/H2 的 Z 轴陀螺为 ±400 °/s，S2/S3 为 ±4000 °/s、加速度计 ±32 g，S3 带 AHRS 与磁力计。接口命名 MI1 = UART + CAN；UART/USB 最高 1000 Hz，CAN 最高 200 Hz。3.2–5.5 V，M0 功耗 240 mW。官网未列重量与分辨率；价格需向官方商城/销售确认。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>HI12 系列含 M0/H1/H2/S2/S3</li><li>本条为 HI12M0（IMU/VRU），陀螺 ±2000 °/s、加速度计 ±24 g（可调）</li><li>H1/H2 的 Z 轴陀螺为 ±400 °/s，S2/S3 为 ±4000 °/s、加速度计 ±32 g，S3 带 AHRS 与磁力计</li><li>接口命名 MI1 = UART + CAN</li><li>UART/USB 最高 1000 Hz，CAN 最高 200 Hz</li><li>3.2–5.5 V，M0 功耗 240 mW</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>价格需向官方商城/销售确认</li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>官网未列重量与分辨率</li></ul></div></div>
 
 
 

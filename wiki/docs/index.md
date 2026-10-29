@@ -19,9 +19,9 @@ titleTemplate: false
       <a class="rw-home-btn ghost" href="/learn/">从零开始学</a>
     </div>
     <div class="rw-home-stats">
-      <div><b>111</b><span>在库部件</span></div>
-      <div><b>11</b><span>有数据的品类（共 13 类）</span></div>
-      <div><b>83</b><span>A 级：逐项对过厂商手册</span></div>
+      <div><b>118</b><span>在库部件</span></div>
+      <div><b>13</b><span>有数据的品类（共 14 类）</span></div>
+      <div><b>86</b><span>A 级：逐项对过厂商手册</span></div>
       <div><b>15</b><span>整机（带 URDF / 仓库）</span></div>
       <div><b>149</b><span>加工与采购渠道</span></div>
     </div>
@@ -60,9 +60,9 @@ titleTemplate: false
         <span>URDF / 仓库链接可直接下载</span>
       </a>
       <a class="rw-home-entry" href="/catalog">
-        <b>机器人部件 · 111 件</b>
+        <b>机器人部件 · 118 件</b>
         <p>比参数：按任意列排序、可对比、带来源等级与真实评分。</p>
-        <span>A 级 83 件逐项对过手册</span>
+        <span>A 级 86 件逐项对过手册</span>
       </a>
       <a class="rw-home-entry" href="/suppliers">
         <b>加工与采购 · 149 家</b>
@@ -142,13 +142,14 @@ titleTemplate: false
       <a class="rw-home-cat" href="/catalog"><b>激光雷达</b><span>9</span><em>地形与建图</em></a>
       <a class="rw-home-cat" href="/catalog"><b>深度相机</b><span>9</span><em>视觉感知</em></a>
       <a class="rw-home-cat" href="/catalog"><b>IMU</b><span>6</span><em>姿态与振动</em></a>
+      <a class="rw-home-cat" href="/catalog"><b>遥控器</b><span>4</span><em>手柄 / 板控 / 遥操作</em></a>
       <a class="rw-home-cat" href="/catalog"><b>舵机</b><span>3</span><em>串行总线 / PWM</em></a>
       <a class="rw-home-cat" href="/catalog"><b>下位机</b><span>3</span><em>力矩闭环</em></a>
       <a class="rw-home-cat" href="/catalog"><b>电调</b><span>3</span><em>驱动器 / 调速器</em></a>
       <a class="rw-home-cat" href="/catalog"><b>传感器</b><span>3</span><em>ToF / 电流 / 霍尔</em></a>
+      <a class="rw-home-cat" href="/catalog"><b>其余模块</b><span>3</span><em>CAN 通信 / 力触觉 / 编码器</em></a>
       <a class="rw-home-cat" href="/catalog"><b>线束</b><span>2</span><em>待收录</em></a>
       <a class="rw-home-cat" href="/catalog"><b>电池</b><span>待收录</span><em>待收录</em></a>
-      <a class="rw-home-cat" href="/catalog"><b>其余模块</b><span>待收录</span><em>力触觉 / 编码器</em></a>
     </div>
     <p class="rw-home-note">
       「待收录」不是漏了 —— 是没有可信来源。宁可空着，也不拿论文里的典型值充数。

@@ -96,7 +96,7 @@ title: Movella Xsens MTi-3
 
 ## 备注
 
-MTi-1 系列中的 AHRS 型号；陀螺 ±2000 °/s、加速度 ±16 g、磁力 ±8 G；输出频率最高 1 kHz；滚转/俯仰 0.5° RMS，MTi-3 航向 2° RMS；2.8–3.6 V、<100 mW、0.6 g、12.1×12.1×2.55 mm。官网只提供 MTi-3 DK 套件图，未提供独立模组产品图，image_url 留空；价格需向 Movella/Xsens 或代理商询价。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>MTi-1 系列中的 AHRS 型号</li><li>陀螺 ±2000 °/s、加速度 ±16 g、磁力 ±8 G</li><li>输出频率最高 1 kHz</li><li>滚转/俯仰 0.5° RMS，MTi-3 航向 2° RMS</li><li>2.8–3.6 V、&lt;100 mW、0.6 g、12.1×12.1×2.55 mm</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>价格需向 Movella/Xsens 或代理商询价</li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>官网只提供 MTi-3 DK 套件图，未提供独立模组产品图，image_url 留空</li></ul></div></div>
 
 
 

@@ -90,6 +90,16 @@ export const F: Record<string, FieldSpec> = {
   temp_range_C: { label: '温度范围' },
   size_mm: { label: '尺寸', unit: 'mm' },
   weight_g: { label: '重量', unit: 'g', dir: -1 },
+  // 遥控器
+  channels: { label: '通道数', unit: '个', dir: 1 },
+  frequency_ghz: { label: '频段', unit: 'GHz' },
+  control_range_m: { label: '遥控距离', unit: 'm', dir: 1 },
+  protocol: { label: '输出协议' },
+  battery: { label: '电池' },
+  // CAN 模块
+  can_speed_mbps: { label: 'CAN 速率', unit: 'Mbps', dir: 1 },
+  isolation: { label: '电气隔离', bool: true },
+  connector: { label: '接头' },
   price_cny: { label: '参考价', unit: '¥', dir: -1 },
 }
 

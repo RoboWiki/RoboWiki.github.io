@@ -91,7 +91,7 @@ title: Intel RealSense D457
 
 ## 备注
 
-给**移动机器人**用的版本：GMSL2 + FAKRA 车规线束，能跑十几米长线，IP65 防护。代价是需要 GMSL 采集卡，Jetson 平台友好，PC 上要另配。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>给<strong>移动机器人</strong>用的版本：GMSL2 + FAKRA 车规线束，能跑十几米长线，IP65 防护</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>代价是需要 GMSL 采集卡，Jetson 平台友好，PC 上要另配</li></ul></div></div>
 
 
 

@@ -101,7 +101,7 @@ title: RoboSense Airy
 
 ## 备注
 
-半球形 FOV（360°×90°），30 m@10%、最远 60 m，盲区 0.1 m；96 线，单回波 856,320 pts/s、双回波 1,712,640 pts/s；100 Mbps 以太网 UDP，内置 IMU；9–32 V、<8 W、φ60×63 mm、<240 g。官方页写 1 cm@1σ，产品手册典型值 1.5 cm@1σ——【来源冲突】。官方未公开定价，渠道约 ¥4078（2026-10）；Airy Lite 海外 €600。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>半球形 FOV（360°×90°），30 m@10%、最远 60 m，盲区 0.1 m</li><li>96 线，单回波 856,320 pts/s、双回波 1,712,640 pts/s</li><li>100 Mbps 以太网 UDP，内置 IMU</li><li>9–32 V、&lt;8 W、φ60×63 mm、&lt;240 g</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>官方未公开定价，渠道约 <span class="pn-money">¥4078</span>（2026-10）</li><li>Airy Lite 海外 <span class="pn-money">€600</span></li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>官方页写 1 cm@1σ，产品手册典型值 1.5 cm@1σ——【来源冲突】</li></ul></div></div>
 
 
 

@@ -35,10 +35,27 @@ def _labels_from_taxonomy() -> dict[str, str]:
     return {c["id"]: c.get("name", c["id"]) for c in d.get("categories") or []}
 
 
+def _subtypes_from_taxonomy() -> dict[str, dict[str, str]]:
+    """品类 -> {子类 id: 中文名}。子类名可能跨品类重名（esc/can 与 module/can），
+    所以不能只按 subtype 查全局表。"""
+    import json as _json
+    import pathlib as _pl
+
+    p = _pl.Path(settings.data_dir) / "taxonomy.json"
+    if not p.exists():
+        return {}
+    try:
+        d = _json.loads(p.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    return {c["id"]: (c.get("subtypes") or {}) for c in d.get("categories") or []}
+
+
 _FALLBACK_CATEGORY_LABELS = {
     "actuator": "关节电机",
     "controller_high": "上位机",
     "controller_low": "下位机",
+    "remote_controller": "遥控器",
     "structure": "机械结构",
     "imu": "IMU",
     "lidar": "激光雷达",
@@ -54,15 +71,22 @@ CATEGORY_LABELS = {**_FALLBACK_CATEGORY_LABELS, **_labels_from_taxonomy()}
 #: 还没有数据的品类：前端要显示「待补充」，不能当成 500 或空列表了事
 #: 目前确实没有可信来源的品类。归档导入后 lidar/camera/imu/module 已经有数据，
 #: 只剩这三类还是空的 —— 它们需要机械图纸/电芯规格书/线束表，商品页给不了。
-EMPTY_CATEGORIES = {"structure", "battery", "wiring"}
+EMPTY_CATEGORIES = {"battery"}
 SUBTYPE_LABELS = {
     "qdd": "准直驱 QDD", "planetary": "行星减速", "harmonic": "谐波减速",
     "direct": "直驱", "sbc": "单板计算机", "mcu": "MCU / 驱动器",
     "bridge": "调试桥", "imu": "IMU", "camera": "深度相机",
     "lidar": "激光雷达", "force": "力 / 触觉", "encoder": "编码器", "driver": "栅极驱动",
     "transceiver": "收发器", "memory": "存储", "power": "电源",
-    "servo": "舵机",
+    "servo": "舵机", "radio": "板控", "gamepad": "手柄式",
 }
+_SUBTYPES_BY_CATEGORY = _subtypes_from_taxonomy()
+
+
+def subtype_label(category: str, subtype: str) -> str:
+    return (_SUBTYPES_BY_CATEGORY.get(category) or {}).get(subtype) \
+        or SUBTYPE_LABELS.get(subtype, subtype)
+
 
 #: 允许排序的字段 → JSON 路径。白名单，用户输入不进 SQL。
 SORTABLE = {
@@ -72,6 +96,8 @@ SORTABLE = {
     "armature": "armature_kgm2", "rotor_inertia": "rotor_inertia_kgm2",
     "kt": "kt_Nm_per_A", "npu_tops": "npu_tops", "power_max": "power_max_w",
     "cuda_cores": "cuda_cores", "bits": "bits",
+    "channels": "channels", "control_range": "control_range_m",
+    "can": "can", "can_speed": "can_speed_mbps",
 }
 
 
@@ -119,7 +145,7 @@ def part_out(p: Part, viewer: bool = False) -> dict:
         "id": p.id, "category": p.category,
         "category_label": CATEGORY_LABELS.get(p.category, p.category),
         "subtype": p.subtype,
-        "subtype_label": SUBTYPE_LABELS.get(p.subtype, p.subtype),
+        "subtype_label": subtype_label(p.category, p.subtype),
         "vendor": p.vendor, "vendor_cn": p.vendor_cn, "model": p.model,
         "title": p.title, "url": p.url, "source_tier": p.source_tier,
         "verified": p.verified, "last_checked": p.last_checked,
@@ -177,7 +203,7 @@ def catalog(db: Db, category: str | None = None):
         select(Part.category, Part.subtype, func.count(Part.id))
         .group_by(Part.category, Part.subtype)).all()
     rows = [{"category": c, "category_label": CATEGORY_LABELS.get(c, c),
-             "subtype": s, "subtype_label": SUBTYPE_LABELS.get(s, s), "n": int(n)}
+             "subtype": s, "subtype_label": subtype_label(c, s), "n": int(n)}
             for c, s, n in facets]
     if category:
         vendors = db.exec(select(Part.vendor, func.count(Part.id))
