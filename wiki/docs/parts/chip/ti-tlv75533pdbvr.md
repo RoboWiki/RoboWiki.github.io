@@ -15,7 +15,7 @@ title: TI TLV75533PDBVR
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">ldo</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥0</span>
+      <span class="part-tag">¥0.7426</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: TI TLV75533PDBVR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 5.5V |
-| voltage_out | 3.3V |
-| current_out | 500mA |
+| 工作电压 | 5.5V |
+| 输出电压 | 3.3V |
+| 输出电流 | 500mA |
 | 封装 | SOT-23-5 |
-| jlc_library | 扩展库 |
-| stock | 105K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 105K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/404027.html">https://item.szlcsc.com/404027.html</a><br/>
@@ -64,22 +64,22 @@ title: TI TLV75533PDBVR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 5.5V |
-| voltage_out | 3.3V |
-| current_out | 500mA |
+| 工作电压 | 5.5V |
+| 输出电压 | 3.3V |
+| 输出电流 | 500mA |
 | 封装 | SOT-23-5 |
-| jlc_library | 扩展库 |
-| stock | 105K+ |
-| category_cn | 线性稳压器(LDO) |
-| lcsc_part | C404027 |
-| params | 输出极性=正极；工作电压=5.5V；输出电压=3.3V；输出电流=500mA |
-| price_tiers | {'qty': 5, 'price': 0.7426}、{'qty': 50, 'price': 0.5858}、{'qty': 150, 'price': 0.5051}、{'qty': 500, 'price': 0.4386}、{'qty': 3000, 'price': 0.4154}、{'qty': 6000, 'price': 0.3997} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| polarity | 正极 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 105K+ |
+| 类目 | 线性稳压器(LDO) |
+| 立创编号 | C404027 |
+| 参数 | 输出极性=正极；工作电压=5.5V；输出电压=3.3V；输出电流=500mA |
+| 价格梯度（含税） | {'qty': 5, 'price': 0.7426}、{'qty': 50, 'price': 0.5858}、{'qty': 150, 'price': 0.5051}、{'qty': 500, 'price': 0.4386}、{'qty': 3000, 'price': 0.4154}、{'qty': 6000, 'price': 0.3997} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 输出极性 | 正极 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
 
 ## 优惠与获取条件
 

@@ -15,7 +15,7 @@ title: UMW XC6206P332MR
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">ldo</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥0</span>
+      <span class="part-tag">¥0.1141</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: UMW XC6206P332MR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 8V |
-| voltage_out | 3.3V |
-| current_out | 250mA |
+| 工作电压 | 8V |
+| 输出电压 | 3.3V |
+| 输出电流 | 250mA |
 | 封装 | SOT-23 |
-| jlc_library | 扩展库 |
-| stock | 1KK+ |
+| SMT 库 | 扩展库 |
+| 库存 | 1KK+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/347376.html">https://item.szlcsc.com/347376.html</a><br/>
@@ -64,22 +64,22 @@ title: UMW XC6206P332MR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 8V |
-| voltage_out | 3.3V |
-| current_out | 250mA |
+| 工作电压 | 8V |
+| 输出电压 | 3.3V |
+| 输出电流 | 250mA |
 | 封装 | SOT-23 |
-| jlc_library | 扩展库 |
-| stock | 1KK+ |
-| category_cn | 线性稳压器(LDO) |
-| lcsc_part | C347376 |
-| params | 输出极性=正极；工作电压=8V；输出电压=3.3V；输出电流=250mA |
-| price_tiers | {'qty': 50, 'price': 0.1141}、{'qty': 500, 'price': 0.0847}、{'qty': 3000, 'price': 0.0714}、{'qty': 6000, 'price': 0.0616}、{'qty': 24000, 'price': 0.0577}、{'qty': 51000, 'price': 0.055} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 商满16-15、下单最高92折 |
-| tags | SMT补贴、商满16-15、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| polarity | 正极 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20241018/96212EE0C689E061405D8A0E33A0BC33.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 1KK+ |
+| 类目 | 线性稳压器(LDO) |
+| 立创编号 | C347376 |
+| 参数 | 输出极性=正极；工作电压=8V；输出电压=3.3V；输出电流=250mA |
+| 价格梯度（含税） | {'qty': 50, 'price': 0.1141}、{'qty': 500, 'price': 0.0847}、{'qty': 3000, 'price': 0.0714}、{'qty': 6000, 'price': 0.0616}、{'qty': 24000, 'price': 0.0577}、{'qty': 51000, 'price': 0.055} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 商满16-15、下单最高92折 |
+| 标签 | SMT补贴、商满16-15、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 输出极性 | 正极 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20241018/96212EE0C689E061405D8A0E33A0BC33.pdf |
 
 ## 优惠与获取条件
 

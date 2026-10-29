@@ -15,7 +15,7 @@ title: TI TLV75733PDBVR
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">ldo</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥1</span>
+      <span class="part-tag">¥1.32</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: TI TLV75733PDBVR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 5.5V |
-| voltage_out | 3.3V |
-| current_out | 1A |
+| 工作电压 | 5.5V |
+| 输出电压 | 3.3V |
+| 输出电流 | 1A |
 | 封装 | SOT-23-5 |
-| jlc_library | 扩展库 |
-| stock | 31K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 31K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/485517.html">https://item.szlcsc.com/485517.html</a><br/>
@@ -64,24 +64,24 @@ title: TI TLV75733PDBVR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 5.5V |
-| voltage_out | 3.3V |
-| current_out | 1A |
+| 工作电压 | 5.5V |
+| 输出电压 | 3.3V |
+| 输出电流 | 1A |
 | 封装 | SOT-23-5 |
-| jlc_library | 扩展库 |
-| stock | 31K+ |
-| category_cn | 线性稳压器(LDO) |
-| lcsc_part | C485517 |
-| params | 输出极性=正极；工作电压=5.5V；输出电压=3.3V；输出电流=1A |
-| price_tiers | {'qty': 5, 'price': 1.3191}、{'qty': 50, 'price': 1.0355}、{'qty': 150, 'price': 0.8971}、{'qty': 500, 'price': 0.7736}、{'qty': 3000, 'price': 0.7397}、{'qty': 6000, 'price': 0.7193} |
-| price_lead | 0.572 |
-| stock_lead | 9000 |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| polarity | 正极 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20231226/823FFD7B00BCBCBF37F864AB0ADB8D54.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 31K+ |
+| 类目 | 线性稳压器(LDO) |
+| 立创编号 | C485517 |
+| 参数 | 输出极性=正极；工作电压=5.5V；输出电压=3.3V；输出电流=1A |
+| 价格梯度（含税） | {'qty': 5, 'price': 1.3191}、{'qty': 50, 'price': 1.0355}、{'qty': 150, 'price': 0.8971}、{'qty': 500, 'price': 0.7736}、{'qty': 3000, 'price': 0.7397}、{'qty': 6000, 'price': 0.7193} |
+| 立推价 | 0.572 |
+| 立推库存 | 9000 |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 输出极性 | 正极 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20231226/823FFD7B00BCBCBF37F864AB0ADB8D54.pdf |
 
 ## 优惠与获取条件
 

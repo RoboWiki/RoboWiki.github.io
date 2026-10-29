@@ -15,7 +15,7 @@ title: CJ CJ431
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">vref</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥0</span>
+      <span class="part-tag">¥0.2347</span>
     </div>
 
 <div class="part-split">
@@ -25,11 +25,11 @@ title: CJ CJ431
 
 | 字段 | 值 |
 |---|---|
-| voltage_out | 2.5V~36V |
-| current_out | 100mA |
+| 输出电压 | 2.5V~36V |
+| 输出电流 | 100mA |
 | 封装 | SOT-23 |
-| jlc_library | 基础库 |
-| stock | 398K+ |
+| SMT 库 | 基础库 |
+| 库存 | 398K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/3113.html">https://item.szlcsc.com/3113.html</a><br/>
@@ -63,23 +63,23 @@ title: CJ CJ431
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | — |
-| voltage_out | 2.5V~36V |
-| current_out | 100mA |
+| 工作电压 | — |
+| 输出电压 | 2.5V~36V |
+| 输出电流 | 100mA |
 | 封装 | SOT-23 |
-| jlc_library | 基础库 |
-| stock | 398K+ |
-| category_cn | 电压基准芯片 |
-| lcsc_part | C3113 |
-| params | 输出类型=可调；输出电压=2.5V~36V；输出电流=100mA；精度=±0.5% |
-| price_tiers | {'qty': 10, 'price': 0.2347}、{'qty': 100, 'price': 0.19}、{'qty': 300, 'price': 0.1669}、{'qty': 3000, 'price': 0.148}、{'qty': 6000, 'price': 0.1414}、{'qty': 9000, 'price': 0.1369} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、近30天最低价、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| output_type | 可调 |
-| accuracy | ±0.5% |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250227/60E68256FB016D9589576586646ECD3F.pdf |
+| SMT 库 | 基础库 |
+| 库存 | 398K+ |
+| 类目 | 电压基准芯片 |
+| 立创编号 | C3113 |
+| 参数 | 输出类型=可调；输出电压=2.5V~36V；输出电流=100mA；精度=±0.5% |
+| 价格梯度（含税） | {'qty': 10, 'price': 0.2347}、{'qty': 100, 'price': 0.19}、{'qty': 300, 'price': 0.1669}、{'qty': 3000, 'price': 0.148}、{'qty': 6000, 'price': 0.1414}、{'qty': 9000, 'price': 0.1369} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、近30天最低价、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 输出类型 | 可调 |
+| 精度 | ±0.5% |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250227/60E68256FB016D9589576586646ECD3F.pdf |
 
 ## 优惠与获取条件
 

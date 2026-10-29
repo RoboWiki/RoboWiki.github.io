@@ -15,7 +15,7 @@ title: Silergy SY8089A1AAC
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">dcdc</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥0</span>
+      <span class="part-tag">¥0.5279</span>
     </div>
 
 <div class="part-split">
@@ -25,11 +25,11 @@ title: Silergy SY8089A1AAC
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 2.5V~5.5V |
-| current_out | 2A |
+| 工作电压 | 2.5V~5.5V |
+| 输出电流 | 2A |
 | 封装 | SOT-23-5 |
-| jlc_library | 扩展库 |
-| stock | 79K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 79K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/479074.html">https://item.szlcsc.com/479074.html</a><br/>
@@ -63,23 +63,23 @@ title: Silergy SY8089A1AAC
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 2.5V~5.5V |
-| voltage_out | — |
-| current_out | 2A |
+| 工作电压 | 2.5V~5.5V |
+| 输出电压 | — |
+| 输出电流 | 2A |
 | 封装 | SOT-23-5 |
-| jlc_library | 扩展库 |
-| stock | 79K+ |
-| category_cn | DC-DC电源芯片 |
-| lcsc_part | C479074 |
-| params | 功能类型=降压型；工作电压=2.5V~5.5V；输出电流=2A；开关频率=1.5MHz |
-| price_tiers | {'qty': 5, 'price': 0.5279}、{'qty': 50, 'price': 0.4207}、{'qty': 150, 'price': 0.3655}、{'qty': 500, 'price': 0.3201}、{'qty': 3000, 'price': 0.3043}、{'qty': 6000, 'price': 0.2936} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| function_type | 降压型 |
-| freq | 1.5MHz |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20241017/20D4E0A2B8B1F4D0C87998AFE945D902.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 79K+ |
+| 类目 | DC-DC电源芯片 |
+| 立创编号 | C479074 |
+| 参数 | 功能类型=降压型；工作电压=2.5V~5.5V；输出电流=2A；开关频率=1.5MHz |
+| 价格梯度（含税） | {'qty': 5, 'price': 0.5279}、{'qty': 50, 'price': 0.4207}、{'qty': 150, 'price': 0.3655}、{'qty': 500, 'price': 0.3201}、{'qty': 3000, 'price': 0.3043}、{'qty': 6000, 'price': 0.2936} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 功能类型 | 降压型 |
+| 开关频率 | 1.5MHz |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20241017/20D4E0A2B8B1F4D0C87998AFE945D902.pdf |
 
 ## 优惠与获取条件
 

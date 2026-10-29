@@ -73,7 +73,7 @@ title: 宇树 Unitree L1
 | range_note | PM：20 m@90%、10 m@10%；RM：30 m@90%、15 m@10% |
 | effective_points_per_s | 21,600 |
 | blind_m | 0.05 |
-| accuracy | ±2.0 cm |
+| 精度 | ±2.0 cm |
 | range_resolution | 8 mm |
 | wavelength_nm | 905 |
 | imu_rate_hz | 250 |

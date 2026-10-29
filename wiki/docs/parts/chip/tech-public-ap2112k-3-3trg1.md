@@ -15,7 +15,7 @@ title: TECH PUBLIC AP2112K-3.3TRG1
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">ldo</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥0</span>
+      <span class="part-tag">¥0.6796</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: TECH PUBLIC AP2112K-3.3TRG1
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 5.5V |
-| voltage_out | 3.3V |
-| current_out | 600mA |
+| 工作电压 | 5.5V |
+| 输出电压 | 3.3V |
+| 输出电流 | 600mA |
 | 封装 | SOT-23-5 |
-| jlc_library | 扩展库 |
-| stock | 28K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 28K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/23380830.html">https://item.szlcsc.com/23380830.html</a><br/>
@@ -64,22 +64,22 @@ title: TECH PUBLIC AP2112K-3.3TRG1
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 5.5V |
-| voltage_out | 3.3V |
-| current_out | 600mA |
+| 工作电压 | 5.5V |
+| 输出电压 | 3.3V |
+| 输出电流 | 600mA |
 | 封装 | SOT-23-5 |
-| jlc_library | 扩展库 |
-| stock | 28K+ |
-| category_cn | 线性稳压器(LDO) |
-| lcsc_part | C23380830 |
-| params | 输出极性=正极；工作电压=5.5V；输出电压=3.3V；输出电流=600mA |
-| price_tiers | {'qty': 5, 'price': 0.6796}、{'qty': 50, 'price': 0.5476}、{'qty': 150, 'price': 0.4816}、{'qty': 500, 'price': 0.4321}、{'qty': 3000, 'price': 0.3609}、{'qty': 6000, 'price': 0.341} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 商满16-15、PLUS专享券、下单最高92折 |
-| tags | SMT补贴、商满16-15、PLUS专享券、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| polarity | 正极 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250625/854B65E132CB607788A92ABED668330F.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 28K+ |
+| 类目 | 线性稳压器(LDO) |
+| 立创编号 | C23380830 |
+| 参数 | 输出极性=正极；工作电压=5.5V；输出电压=3.3V；输出电流=600mA |
+| 价格梯度（含税） | {'qty': 5, 'price': 0.6796}、{'qty': 50, 'price': 0.5476}、{'qty': 150, 'price': 0.4816}、{'qty': 500, 'price': 0.4321}、{'qty': 3000, 'price': 0.3609}、{'qty': 6000, 'price': 0.341} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 商满16-15、PLUS专享券、下单最高92折 |
+| 标签 | SMT补贴、商满16-15、PLUS专享券、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 输出极性 | 正极 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250625/854B65E132CB607788A92ABED668330F.pdf |
 
 ## 优惠与获取条件
 

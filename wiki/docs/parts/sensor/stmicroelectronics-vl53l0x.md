@@ -70,7 +70,7 @@ title: STMicroelectronics VL53L0X
 | voltage_range | — |
 | 质量 (kg) | — |
 | range_note | 30–2000 mm |
-| accuracy | ±3%（高精度）/ ±5%（高速） |
+| 精度 | ±3%（高精度）/ ±5%（高速） |
 | wavelength_nm | 940 |
 
 ## 优惠与获取条件

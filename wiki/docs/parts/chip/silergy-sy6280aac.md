@@ -15,7 +15,7 @@ title: Silergy SY6280AAC
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">pwr_switch</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥0</span>
+      <span class="part-tag">¥0.5556</span>
     </div>
 
 <div class="part-split">
@@ -25,10 +25,10 @@ title: Silergy SY6280AAC
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 2.4V~5.5V |
+| 工作电压 | 2.4V~5.5V |
 | 封装 | SOT-23-5 |
-| jlc_library | 扩展库 |
-| stock | 70K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 70K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/55136.html">https://item.szlcsc.com/55136.html</a><br/>
@@ -62,24 +62,24 @@ title: Silergy SY6280AAC
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 2.4V~5.5V |
-| voltage_out | — |
-| current_out | — |
+| 工作电压 | 2.4V~5.5V |
+| 输出电压 | — |
+| 输出电流 | — |
 | 封装 | SOT-23-5 |
-| jlc_library | 扩展库 |
-| stock | 70K+ |
-| category_cn | 功率电子开关 |
-| lcsc_part | C55136 |
-| params | 类型=高侧开关；通道数=1；输入控制逻辑=高电平有效；工作电压=2.4V~5.5V |
-| price_tiers | {'qty': 5, 'price': 0.5556}、{'qty': 50, 'price': 0.4411}、{'qty': 150, 'price': 0.3823}、{'qty': 500, 'price': 0.3338}、{'qty': 3000, 'price': 0.3168}、{'qty': 6000, 'price': 0.3054} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、近30天最低价、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| switch_type | 高侧开关 |
-| channels | 1 |
-| logic | 高电平有效 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20241017/20D4E0A2B8B1F4D0C87998AFE945D902.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 70K+ |
+| 类目 | 功率电子开关 |
+| 立创编号 | C55136 |
+| 参数 | 类型=高侧开关；通道数=1；输入控制逻辑=高电平有效；工作电压=2.4V~5.5V |
+| 价格梯度（含税） | {'qty': 5, 'price': 0.5556}、{'qty': 50, 'price': 0.4411}、{'qty': 150, 'price': 0.3823}、{'qty': 500, 'price': 0.3338}、{'qty': 3000, 'price': 0.3168}、{'qty': 6000, 'price': 0.3054} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、近30天最低价、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 类型 | 高侧开关 |
+| 通道数 | 1 |
+| 输入控制逻辑 | 高电平有效 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20241017/20D4E0A2B8B1F4D0C87998AFE945D902.pdf |
 
 ## 优惠与获取条件
 

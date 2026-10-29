@@ -15,7 +15,7 @@ title: TI TPS54302DDCR
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">dcdc</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥1</span>
+      <span class="part-tag">¥1.44</span>
     </div>
 
 <div class="part-split">
@@ -25,11 +25,11 @@ title: TI TPS54302DDCR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 4.5V~28V |
-| current_out | 3A |
+| 工作电压 | 4.5V~28V |
+| 输出电流 | 3A |
 | 封装 | TSOT-23-6 |
-| jlc_library | 扩展库 |
-| stock | 35K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 35K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/311983.html">https://item.szlcsc.com/311983.html</a><br/>
@@ -63,25 +63,25 @@ title: TI TPS54302DDCR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 4.5V~28V |
-| voltage_out | — |
-| current_out | 3A |
+| 工作电压 | 4.5V~28V |
+| 输出电压 | — |
+| 输出电流 | 3A |
 | 封装 | TSOT-23-6 |
-| jlc_library | 扩展库 |
-| stock | 35K+ |
-| category_cn | DC-DC电源芯片 |
-| lcsc_part | C311983 |
-| params | 功能类型=降压型；工作电压=4.5V~28V；输出电流=3A；开关频率=400kHz |
-| price_tiers | {'qty': 5, 'price': 1.4408}、{'qty': 50, 'price': 1.1577}、{'qty': 150, 'price': 1.0195}、{'qty': 500, 'price': 0.8962}、{'qty': 3000, 'price': 0.8624}、{'qty': 6000, 'price': 0.842} |
-| price_lead | 0.831 |
-| stock_lead | 33K |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、近30天最低价、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| function_type | 降压型 |
-| freq | 400kHz |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 35K+ |
+| 类目 | DC-DC电源芯片 |
+| 立创编号 | C311983 |
+| 参数 | 功能类型=降压型；工作电压=4.5V~28V；输出电流=3A；开关频率=400kHz |
+| 价格梯度（含税） | {'qty': 5, 'price': 1.4408}、{'qty': 50, 'price': 1.1577}、{'qty': 150, 'price': 1.0195}、{'qty': 500, 'price': 0.8962}、{'qty': 3000, 'price': 0.8624}、{'qty': 6000, 'price': 0.842} |
+| 立推价 | 0.831 |
+| 立推库存 | 33K |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、近30天最低价、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 功能类型 | 降压型 |
+| 开关频率 | 400kHz |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
 
 ## 优惠与获取条件
 

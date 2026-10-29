@@ -15,7 +15,7 @@ title: TI TPS54560DDAR
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">dcdc</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥6</span>
+      <span class="part-tag">¥6.55</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: TI TPS54560DDAR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 4.5V~60V |
-| voltage_out | 800mV~58.8V |
-| current_out | 5A |
+| 工作电压 | 4.5V~60V |
+| 输出电压 | 800mV~58.8V |
+| 输出电流 | 5A |
 | 封装 | SOIC-8-EP |
-| jlc_library | 扩展库 |
-| stock | 19K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 19K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/31966.html">https://item.szlcsc.com/31966.html</a><br/>
@@ -64,22 +64,22 @@ title: TI TPS54560DDAR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 4.5V~60V |
-| voltage_out | 800mV~58.8V |
-| current_out | 5A |
+| 工作电压 | 4.5V~60V |
+| 输出电压 | 800mV~58.8V |
+| 输出电流 | 5A |
 | 封装 | SOIC-8-EP |
-| jlc_library | 扩展库 |
-| stock | 19K+ |
-| category_cn | DC-DC电源芯片 |
-| lcsc_part | C31966 |
-| params | 功能类型=降压型；工作电压=4.5V~60V；输出电压=800mV~58.8V；输出电流=5A |
-| price_tiers | {'qty': 1, 'price': 6.55}、{'qty': 10, 'price': 5.75}、{'qty': 30, 'price': 5}、{'qty': 100, 'price': 4.44}、{'qty': 500, 'price': 4.21}、{'qty': 1000, 'price': 4.1} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| function_type | 降压型 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 19K+ |
+| 类目 | DC-DC电源芯片 |
+| 立创编号 | C31966 |
+| 参数 | 功能类型=降压型；工作电压=4.5V~60V；输出电压=800mV~58.8V；输出电流=5A |
+| 价格梯度（含税） | {'qty': 1, 'price': 6.55}、{'qty': 10, 'price': 5.75}、{'qty': 30, 'price': 5}、{'qty': 100, 'price': 4.44}、{'qty': 500, 'price': 4.21}、{'qty': 1000, 'price': 4.1} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 功能类型 | 降压型 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
 
 ## 优惠与获取条件
 

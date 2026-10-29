@@ -77,7 +77,7 @@ title: Intel RealSense D435i
 | size_mm | 90×25×25 |
 | weight_g | 75 |
 | doc_url | https://www.realsenseai.com/cn/products/d435i/ |
-| doc_pdf | https://www.realsenseai.com/wp-content/uploads/dlm_uploads/2025/08/Intel-RealSense-D400-Series-Datasheet-August-2025.pdf |
+| 官方手册 (PDF) | https://www.realsenseai.com/wp-content/uploads/dlm_uploads/2025/08/Intel-RealSense-D400-Series-Datasheet-August-2025.pdf |
 | repo_urls | https://github.com/IntelRealSense/librealsense |
 
 ## 优惠与获取条件

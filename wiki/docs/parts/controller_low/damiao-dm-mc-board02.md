@@ -81,7 +81,7 @@ title: 达妙 DAMIAO DM-MC-Board02
 | 板载 IMU | BMI088 |
 | 保护 | 防反接 / 缓启动 / 两路可控电源(5A) |
 | comm_upper | USB / CAN FD / RS485 / UART |
-| doc_pdf | https://gitee.com/kit-miao/dm-mc02/raw/master/说明书/达妙科技DM-MC-Board02电机开发板使用说明书V1.1.pdf |
+| 官方手册 (PDF) | https://gitee.com/kit-miao/dm-mc02/raw/master/说明书/达妙科技DM-MC-Board02电机开发板使用说明书V1.1.pdf |
 | weight_g | 19.5 |
 | 最高电压 (V) | 24 |
 | size_mm | 56×40 |

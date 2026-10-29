@@ -15,7 +15,7 @@ title: ADI MAX17048G+T10
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">battery</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥12</span>
+      <span class="part-tag">¥12.8</span>
     </div>
 
 <div class="part-split">
@@ -25,10 +25,10 @@ title: ADI MAX17048G+T10
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 2.5V~4.5V |
+| 工作电压 | 2.5V~4.5V |
 | 封装 | DFN-8-EP(2x2) |
-| jlc_library | 扩展库 |
-| stock | 22K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 22K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/2682616.html">https://item.szlcsc.com/2682616.html</a><br/>
@@ -62,26 +62,26 @@ title: ADI MAX17048G+T10
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 2.5V~4.5V |
-| voltage_out | — |
-| current_out | — |
+| 工作电压 | 2.5V~4.5V |
+| 输出电压 | — |
+| 输出电流 | — |
 | 封装 | DFN-8-EP(2x2) |
-| jlc_library | 扩展库 |
-| stock | 22K+ |
-| category_cn | 电池管理 |
-| lcsc_part | C2682616 |
-| params | 芯片类型=监测芯片；工作电压=2.5V~4.5V；电池类型=锂电池；电池节数=1 |
-| price_tiers | {'qty': 1, 'price': 12.82}、{'qty': 10, 'price': 11.27}、{'qty': 30, 'price': 10.17}、{'qty': 100, 'price': 8.9866}、{'qty': 500, 'price': 7.8302}、{'qty': 1000, 'price': 7.644} |
-| price_lead | 7.09 |
-| stock_lead | 20K |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、9.8折近30天最低价、下单最高92折 |
-| tags | SMT补贴、运9元运费券、9.8折近30天最低价、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| chip_function | 监测芯片 |
-| battery_type | 锂电池 |
-| cells | 1 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250207/EE085AF4F31313DFC0354FB71E1530B6.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 22K+ |
+| 类目 | 电池管理 |
+| 立创编号 | C2682616 |
+| 参数 | 芯片类型=监测芯片；工作电压=2.5V~4.5V；电池类型=锂电池；电池节数=1 |
+| 价格梯度（含税） | {'qty': 1, 'price': 12.82}、{'qty': 10, 'price': 11.27}、{'qty': 30, 'price': 10.17}、{'qty': 100, 'price': 8.9866}、{'qty': 500, 'price': 7.8302}、{'qty': 1000, 'price': 7.644} |
+| 立推价 | 7.09 |
+| 立推库存 | 20K |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、9.8折近30天最低价、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、9.8折近30天最低价、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 芯片类型 | 监测芯片 |
+| 电池类型 | 锂电池 |
+| 电池节数 | 1 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250207/EE085AF4F31313DFC0354FB71E1530B6.pdf |
 
 ## 优惠与获取条件
 

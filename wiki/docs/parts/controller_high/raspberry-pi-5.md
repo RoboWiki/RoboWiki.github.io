@@ -82,7 +82,7 @@ title: 树莓派 Raspberry Pi 5
 | pcie | 1× PCIe 2.0 x1 (M.2 HAT 转接) |
 | size_mm | 85×56 |
 | doc_url | https://www.raspberrypi.com/products/raspberry-pi-5/ |
-| doc_pdf | https://datasheets.raspberrypi.com/rpi5/raspberry-pi-5-product-brief.pdf |
+| 官方手册 (PDF) | https://datasheets.raspberrypi.com/rpi5/raspberry-pi-5-product-brief.pdf |
 | repo_urls | https://github.com/raspberrypi/linux、https://github.com/raspberrypi/documentation |
 | ram_options | 8 |
 

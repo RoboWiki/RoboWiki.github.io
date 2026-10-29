@@ -15,7 +15,7 @@ title: DIODES AP63203WU-7
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">dcdc</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥7</span>
+      <span class="part-tag">¥7.48</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: DIODES AP63203WU-7
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 3.8V~32V |
-| voltage_out | 3.3V |
-| current_out | 2A |
+| 工作电压 | 3.8V~32V |
+| 输出电压 | 3.3V |
+| 输出电流 | 2A |
 | 封装 | TSOT-23-6 |
-| jlc_library | 扩展库 |
-| stock | 0 |
+| SMT 库 | 扩展库 |
+| 库存 | 0 |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/780769.html">https://item.szlcsc.com/780769.html</a><br/>
@@ -64,22 +64,22 @@ title: DIODES AP63203WU-7
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 3.8V~32V |
-| voltage_out | 3.3V |
-| current_out | 2A |
+| 工作电压 | 3.8V~32V |
+| 输出电压 | 3.3V |
+| 输出电流 | 2A |
 | 封装 | TSOT-23-6 |
-| jlc_library | 扩展库 |
-| stock | 0 |
-| category_cn | DC-DC电源芯片 |
-| lcsc_part | C780769 |
-| params | 功能类型=降压型；工作电压=3.8V~32V；输出电压=3.3V；输出电流=2A |
-| price_tiers | {'qty': 1, 'price': 7.48}、{'qty': 10, 'price': 6.68}、{'qty': 30, 'price': 5.92}、{'qty': 100, 'price': 5.36}、{'qty': 500, 'price': 4.91}、{'qty': 1000, 'price': 4.8} |
-| lead_time | 需订货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、近30天最低价、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| function_type | 降压型 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250221/E985FDE9D34EE2FEF500A3501D1338AE.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 0 |
+| 类目 | DC-DC电源芯片 |
+| 立创编号 | C780769 |
+| 参数 | 功能类型=降压型；工作电压=3.8V~32V；输出电压=3.3V；输出电流=2A |
+| 价格梯度（含税） | {'qty': 1, 'price': 7.48}、{'qty': 10, 'price': 6.68}、{'qty': 30, 'price': 5.92}、{'qty': 100, 'price': 5.36}、{'qty': 500, 'price': 4.91}、{'qty': 1000, 'price': 4.8} |
+| 交期 | 需订货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、近30天最低价、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 功能类型 | 降压型 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250221/E985FDE9D34EE2FEF500A3501D1338AE.pdf |
 
 ## 优惠与获取条件
 

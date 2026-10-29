@@ -15,7 +15,7 @@ title: UMW TP4056
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">battery</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥0</span>
+      <span class="part-tag">¥0.4714</span>
     </div>
 
 <div class="part-split">
@@ -25,10 +25,10 @@ title: UMW TP4056
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 4V~6.5V |
+| 工作电压 | 4V~6.5V |
 | 封装 | ESOP-8 |
-| jlc_library | 扩展库 |
-| stock | 352K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 352K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/725790.html">https://item.szlcsc.com/725790.html</a><br/>
@@ -62,24 +62,24 @@ title: UMW TP4056
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 4V~6.5V |
-| voltage_out | — |
-| current_out | — |
+| 工作电压 | 4V~6.5V |
+| 输出电压 | — |
+| 输出电流 | — |
 | 封装 | ESOP-8 |
-| jlc_library | 扩展库 |
-| stock | 352K+ |
-| category_cn | 电池管理 |
-| lcsc_part | C725790 |
-| params | 芯片类型=充电芯片；工作电压=4V~6.5V；最大充电电流=1A；充电饱和电压=4.2V |
-| price_tiers | {'qty': 5, 'price': 0.4714}、{'qty': 50, 'price': 0.3723}、{'qty': 150, 'price': 0.3213}、{'qty': 500, 'price': 0.2793}、{'qty': 2500, 'price': 0.2401}、{'qty': 4000, 'price': 0.2302} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 商满16-15、下单最高92折 |
-| tags | SMT补贴、商满16-15、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| chip_function | 充电芯片 |
-| charge_current | 1A |
-| v_float | 4.2V |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20241018/96212EE0C689E061405D8A0E33A0BC33.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 352K+ |
+| 类目 | 电池管理 |
+| 立创编号 | C725790 |
+| 参数 | 芯片类型=充电芯片；工作电压=4V~6.5V；最大充电电流=1A；充电饱和电压=4.2V |
+| 价格梯度（含税） | {'qty': 5, 'price': 0.4714}、{'qty': 50, 'price': 0.3723}、{'qty': 150, 'price': 0.3213}、{'qty': 500, 'price': 0.2793}、{'qty': 2500, 'price': 0.2401}、{'qty': 4000, 'price': 0.2302} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 商满16-15、下单最高92折 |
+| 标签 | SMT补贴、商满16-15、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 芯片类型 | 充电芯片 |
+| 最大充电电流 | 1A |
+| 充电饱和电压 | 4.2V |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20241018/96212EE0C689E061405D8A0E33A0BC33.pdf |
 
 ## 优惠与获取条件
 

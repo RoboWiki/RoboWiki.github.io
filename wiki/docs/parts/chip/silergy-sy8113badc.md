@@ -15,7 +15,7 @@ title: Silergy SY8113BADC
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">dcdc</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥1</span>
+      <span class="part-tag">¥1.34</span>
     </div>
 
 <div class="part-split">
@@ -25,11 +25,11 @@ title: Silergy SY8113BADC
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 4.5V~18V |
-| current_out | 3A |
+| 工作电压 | 4.5V~18V |
+| 输出电流 | 3A |
 | 封装 | TSOT-23-6 |
-| jlc_library | 扩展库 |
-| stock | 18K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 18K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/78989.html">https://item.szlcsc.com/78989.html</a><br/>
@@ -63,23 +63,23 @@ title: Silergy SY8113BADC
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 4.5V~18V |
-| voltage_out | — |
-| current_out | 3A |
+| 工作电压 | 4.5V~18V |
+| 输出电压 | — |
+| 输出电流 | 3A |
 | 封装 | TSOT-23-6 |
-| jlc_library | 扩展库 |
-| stock | 18K+ |
-| category_cn | DC-DC电源芯片 |
-| lcsc_part | C78989 |
-| params | 功能类型=降压型；工作电压=4.5V~18V；输出电流=3A；开关频率=500kHz |
-| price_tiers | {'qty': 5, 'price': 1.3402}、{'qty': 50, 'price': 1.0508}、{'qty': 150, 'price': 0.9096}、{'qty': 500, 'price': 0.7836}、{'qty': 3000, 'price': 0.6439}、{'qty': 6000, 'price': 0.6231} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| function_type | 降压型 |
-| freq | 500kHz |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20231220/AC9769C08364036A6167CC3BCE05E307.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 18K+ |
+| 类目 | DC-DC电源芯片 |
+| 立创编号 | C78989 |
+| 参数 | 功能类型=降压型；工作电压=4.5V~18V；输出电流=3A；开关频率=500kHz |
+| 价格梯度（含税） | {'qty': 5, 'price': 1.3402}、{'qty': 50, 'price': 1.0508}、{'qty': 150, 'price': 0.9096}、{'qty': 500, 'price': 0.7836}、{'qty': 3000, 'price': 0.6439}、{'qty': 6000, 'price': 0.6231} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 功能类型 | 降压型 |
+| 开关频率 | 500kHz |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20231220/AC9769C08364036A6167CC3BCE05E307.pdf |
 
 ## 优惠与获取条件
 

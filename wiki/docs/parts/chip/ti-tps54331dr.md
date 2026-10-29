@@ -15,7 +15,7 @@ title: TI TPS54331DR
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">dcdc</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥1</span>
+      <span class="part-tag">¥1.87</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: TI TPS54331DR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 3.5V~28V |
-| voltage_out | 800mV~25V |
-| current_out | 3A |
+| 工作电压 | 3.5V~28V |
+| 输出电压 | 800mV~25V |
+| 输出电流 | 3A |
 | 封装 | SOIC-8 |
-| jlc_library | 扩展库 |
-| stock | 364K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 364K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/9865.html">https://item.szlcsc.com/9865.html</a><br/>
@@ -64,24 +64,24 @@ title: TI TPS54331DR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 3.5V~28V |
-| voltage_out | 800mV~25V |
-| current_out | 3A |
+| 工作电压 | 3.5V~28V |
+| 输出电压 | 800mV~25V |
+| 输出电流 | 3A |
 | 封装 | SOIC-8 |
-| jlc_library | 扩展库 |
-| stock | 364K+ |
-| category_cn | DC-DC电源芯片 |
-| lcsc_part | C9865 |
-| params | 功能类型=降压型；工作电压=3.5V~28V；输出电压=800mV~25V；输出电流=3A |
-| price_tiers | {'qty': 5, 'price': 1.8695}、{'qty': 50, 'price': 1.4409}、{'qty': 150, 'price': 1.2316}、{'qty': 500, 'price': 1.045}、{'qty': 2500, 'price': 0.9937}、{'qty': 5000, 'price': 0.9629} |
-| price_lead | 0.865 |
-| stock_lead | 150K |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| function_type | 降压型 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250723/110CE8C9D6677351A92F0EC7385C60A1.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 364K+ |
+| 类目 | DC-DC电源芯片 |
+| 立创编号 | C9865 |
+| 参数 | 功能类型=降压型；工作电压=3.5V~28V；输出电压=800mV~25V；输出电流=3A |
+| 价格梯度（含税） | {'qty': 5, 'price': 1.8695}、{'qty': 50, 'price': 1.4409}、{'qty': 150, 'price': 1.2316}、{'qty': 500, 'price': 1.045}、{'qty': 2500, 'price': 0.9937}、{'qty': 5000, 'price': 0.9629} |
+| 立推价 | 0.865 |
+| 立推库存 | 150K |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 功能类型 | 降压型 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250723/110CE8C9D6677351A92F0EC7385C60A1.pdf |
 
 ## 优惠与获取条件
 

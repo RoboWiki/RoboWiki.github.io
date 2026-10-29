@@ -15,7 +15,7 @@ title: UMW LM2596S-5.0(UMW)
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">dcdc</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥3</span>
+      <span class="part-tag">¥3.73</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: UMW LM2596S-5.0(UMW)
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 7V~40V |
-| voltage_out | 5V |
-| current_out | 3A |
+| 工作电压 | 7V~40V |
+| 输出电压 | 5V |
+| 输出电流 | 3A |
 | 封装 | TO-263-5 |
-| jlc_library | 扩展库 |
-| stock | 78K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 78K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/347421.html">https://item.szlcsc.com/347421.html</a><br/>
@@ -64,22 +64,22 @@ title: UMW LM2596S-5.0(UMW)
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 7V~40V |
-| voltage_out | 5V |
-| current_out | 3A |
+| 工作电压 | 7V~40V |
+| 输出电压 | 5V |
+| 输出电流 | 3A |
 | 封装 | TO-263-5 |
-| jlc_library | 扩展库 |
-| stock | 78K+ |
-| category_cn | DC-DC电源芯片 |
-| lcsc_part | C347421 |
-| params | 功能类型=降压型；工作电压=7V~40V；输出电压=5V；输出电流=3A |
-| price_tiers | {'qty': 1, 'price': 3.73}、{'qty': 10, 'price': 3.09}、{'qty': 30, 'price': 2.64}、{'qty': 100, 'price': 2.27}、{'qty': 500, 'price': 1.98}、{'qty': 800, 'price': 1.91} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 商满16-15、下单最高92折 |
-| tags | SMT补贴、商满16-15、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| function_type | 降压型 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20241018/96212EE0C689E061405D8A0E33A0BC33.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 78K+ |
+| 类目 | DC-DC电源芯片 |
+| 立创编号 | C347421 |
+| 参数 | 功能类型=降压型；工作电压=7V~40V；输出电压=5V；输出电流=3A |
+| 价格梯度（含税） | {'qty': 1, 'price': 3.73}、{'qty': 10, 'price': 3.09}、{'qty': 30, 'price': 2.64}、{'qty': 100, 'price': 2.27}、{'qty': 500, 'price': 1.98}、{'qty': 800, 'price': 1.91} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 商满16-15、下单最高92折 |
+| 标签 | SMT补贴、商满16-15、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 功能类型 | 降压型 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20241018/96212EE0C689E061405D8A0E33A0BC33.pdf |
 
 ## 优惠与获取条件
 

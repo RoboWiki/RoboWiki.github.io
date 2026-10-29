@@ -15,7 +15,7 @@ title: TI TPS61023DRLR
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">dcdc</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥1</span>
+      <span class="part-tag">¥1.44</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: TI TPS61023DRLR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 500mV~5.5V |
-| voltage_out | 2.2V~5.5V |
-| current_out | 3A |
+| 工作电压 | 500mV~5.5V |
+| 输出电压 | 2.2V~5.5V |
+| 输出电流 | 3A |
 | 封装 | SOT-563 |
-| jlc_library | 扩展库 |
-| stock | 855（立推 56K） |
+| SMT 库 | 扩展库 |
+| 库存 | 855（立推 56K） |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/919459.html">https://item.szlcsc.com/919459.html</a><br/>
@@ -64,24 +64,24 @@ title: TI TPS61023DRLR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 500mV~5.5V |
-| voltage_out | 2.2V~5.5V |
-| current_out | 3A |
+| 工作电压 | 500mV~5.5V |
+| 输出电压 | 2.2V~5.5V |
+| 输出电流 | 3A |
 | 封装 | SOT-563 |
-| jlc_library | 扩展库 |
-| stock | 855（立推 56K） |
-| category_cn | DC-DC电源芯片 |
-| lcsc_part | C919459 |
-| params | 功能类型=升压型；工作电压=500mV~5.5V；输出电压=2.2V~5.5V；输出电流=3A |
-| price_tiers | {'qty': 5, 'price': 1.4447}、{'qty': 50, 'price': 1.1287}、{'qty': 150, 'price': 0.9745}、{'qty': 500, 'price': 0.8369}、{'qty': 2500, 'price': 0.7227}、{'qty': 4000, 'price': 0.7001} |
-| price_lead | 0.65 |
-| stock_lead | 56K |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| function_type | 升压型 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 855（立推 56K） |
+| 类目 | DC-DC电源芯片 |
+| 立创编号 | C919459 |
+| 参数 | 功能类型=升压型；工作电压=500mV~5.5V；输出电压=2.2V~5.5V；输出电流=3A |
+| 价格梯度（含税） | {'qty': 5, 'price': 1.4447}、{'qty': 50, 'price': 1.1287}、{'qty': 150, 'price': 0.9745}、{'qty': 500, 'price': 0.8369}、{'qty': 2500, 'price': 0.7227}、{'qty': 4000, 'price': 0.7001} |
+| 立推价 | 0.65 |
+| 立推库存 | 56K |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 功能类型 | 升压型 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
 
 ## 优惠与获取条件
 

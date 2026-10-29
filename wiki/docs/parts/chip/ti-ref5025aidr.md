@@ -15,7 +15,7 @@ title: TI REF5025AIDR
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">vref</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥5</span>
+      <span class="part-tag">¥5.53</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: TI REF5025AIDR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 2.7V~18V |
-| voltage_out | 2.5V |
-| current_out | 10mA |
+| 工作电压 | 2.7V~18V |
+| 输出电压 | 2.5V |
+| 输出电流 | 10mA |
 | 封装 | SOIC-8 |
-| jlc_library | 扩展库 |
-| stock | 17K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 17K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/11341.html">https://item.szlcsc.com/11341.html</a><br/>
@@ -64,24 +64,24 @@ title: TI REF5025AIDR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 2.7V~18V |
-| voltage_out | 2.5V |
-| current_out | 10mA |
+| 工作电压 | 2.7V~18V |
+| 输出电压 | 2.5V |
+| 输出电流 | 10mA |
 | 封装 | SOIC-8 |
-| jlc_library | 扩展库 |
-| stock | 17K+ |
-| category_cn | 电压基准芯片 |
-| lcsc_part | C11341 |
-| params | 输出类型=固定；工作电压=2.7V~18V；输出电压=2.5V；输出电流=10mA |
-| price_tiers | {'qty': 1, 'price': 5.53}、{'qty': 10, 'price': 4.58}、{'qty': 30, 'price': 3.92}、{'qty': 100, 'price': 3.37}、{'qty': 500, 'price': 3.19}、{'qty': 1000, 'price': 3.09} |
-| price_lead | 2.743 |
-| stock_lead | 30K |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| output_type | 固定 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 17K+ |
+| 类目 | 电压基准芯片 |
+| 立创编号 | C11341 |
+| 参数 | 输出类型=固定；工作电压=2.7V~18V；输出电压=2.5V；输出电流=10mA |
+| 价格梯度（含税） | {'qty': 1, 'price': 5.53}、{'qty': 10, 'price': 4.58}、{'qty': 30, 'price': 3.92}、{'qty': 100, 'price': 3.37}、{'qty': 500, 'price': 3.19}、{'qty': 1000, 'price': 3.09} |
+| 立推价 | 2.743 |
+| 立推库存 | 30K |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 输出类型 | 固定 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
 
 ## 优惠与获取条件
 

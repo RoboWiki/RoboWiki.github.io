@@ -341,6 +341,17 @@ def main() -> None:
                        ensure_ascii=False), encoding="utf-8")
         print("  评分快照：无，写空表")
 
+    def money(v) -> str:
+        """价格显示：按量级取小数位。芯片 ¥0.1548 被四舍五入成 ¥0 是最糟的失真。"""
+        if v is None:
+            return "—"
+        a = abs(float(v))
+        digits = 0 if a >= 100 else 1 if a >= 10 else 2 if a >= 1 else 4
+        txt = f"{float(v):,.{digits}f}"
+        if digits:
+            txt = txt.rstrip("0").rstrip(".")
+        return "¥" + txt
+
     # ── 生成 191 个型号页 ─────────────────────────────────────────────
     SPEC_LABEL = {
         "tau_peak_Nm": "峰值扭矩 (N·m)", "tau_rated_Nm": "额定扭矩 (N·m)",
@@ -382,6 +393,36 @@ def main() -> None:
         "process": "工艺", "quality": "加工质量", "punctual": "交货准时性",
         "price_level": "价格档次", "invoice": "发票", "materials": "材料",
         "lead": "交期", "moq": "起订", "process_tag": "工艺分类",
+        "voltage_in": "工作电压",
+        "voltage_out": "输出电压",
+        "current_out": "输出电流",
+        "function_type": "功能类型",
+        "output_type": "输出类型",
+        "polarity": "输出极性",
+        "freq": "开关频率",
+        "accuracy": "精度",
+        "chip_function": "芯片类型",
+        "charge_current": "最大充电电流",
+        "v_float": "充电饱和电压",
+        "battery_type": "电池类型",
+        "cells": "电池节数",
+        "switch_type": "类型",
+        "channels": "通道数",
+        "logic": "输入控制逻辑",
+        "features": "功能特性",
+        "category_cn": "类目",
+        "lcsc_part": "立创编号",
+        "params": "参数",
+        "price_tiers": "价格梯度（含税）",
+        "price_lead": "立推价",
+        "stock": "库存",
+        "stock_lead": "立推库存",
+        "lead_time": "交期",
+        "jlc_library": "SMT 库",
+        "coupon": "优惠券 / 标签",
+        "tags": "标签",
+        "fetched_at": "采集日期",
+        "doc_pdf": "官方手册 (PDF)",
     }
 
     _TAX_BY_CAT = {c["id"]: [k["k"] for k in (c.get("keys") or [])]
@@ -810,7 +851,7 @@ def main() -> None:
       <span class="part-tag">{CAT_LABEL.get(cat, cat)}</span>
       <span class="part-tag soft">{r.get("subtype_label") or r["subtype"]}</span>
       <span class="part-tag tier{r["source_tier"]}">来源 {r["source_tier"]}{" ✓ 已核对" if r["verified"] else ""}</span>
-      {f'<span class="part-tag">¥{int(r["price_cny"]):,}</span>' if r.get("price_cny") else '<span class="part-tag muted">无公开报价</span>'}
+      {f'<span class="part-tag">{money(r["price_cny"])}</span>' if r.get("price_cny") else '<span class="part-tag muted">无公开报价</span>'}
     </div>
 
 <div class="part-split">

@@ -15,7 +15,7 @@ title: TI TL431AIDBZR
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">vref</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥0</span>
+      <span class="part-tag">¥0.4688</span>
     </div>
 
 <div class="part-split">
@@ -25,11 +25,11 @@ title: TI TL431AIDBZR
 
 | 字段 | 值 |
 |---|---|
-| voltage_out | 2.495V~36V |
-| current_out | 100mA |
+| 输出电压 | 2.495V~36V |
+| 输出电流 | 100mA |
 | 封装 | SOT-23-3 |
-| jlc_library | 扩展库 |
-| stock | 253K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 253K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/23892.html">https://item.szlcsc.com/23892.html</a><br/>
@@ -63,23 +63,23 @@ title: TI TL431AIDBZR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | — |
-| voltage_out | 2.495V~36V |
-| current_out | 100mA |
+| 工作电压 | — |
+| 输出电压 | 2.495V~36V |
+| 输出电流 | 100mA |
 | 封装 | SOT-23-3 |
-| jlc_library | 扩展库 |
-| stock | 253K+ |
-| category_cn | 电压基准芯片 |
-| lcsc_part | C23892 |
-| params | 输出类型=可调；输出电压=2.495V~36V；输出电流=100mA；精度=±1% |
-| price_tiers | {'qty': 5, 'price': 0.4688}、{'qty': 50, 'price': 0.3729}、{'qty': 150, 'price': 0.3236}、{'qty': 500, 'price': 0.283}、{'qty': 3000, 'price': 0.2688}、{'qty': 6000, 'price': 0.2592} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、近30天最低价、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| output_type | 可调 |
-| accuracy | ±1% |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 253K+ |
+| 类目 | 电压基准芯片 |
+| 立创编号 | C23892 |
+| 参数 | 输出类型=可调；输出电压=2.495V~36V；输出电流=100mA；精度=±1% |
+| 价格梯度（含税） | {'qty': 5, 'price': 0.4688}、{'qty': 50, 'price': 0.3729}、{'qty': 150, 'price': 0.3236}、{'qty': 500, 'price': 0.283}、{'qty': 3000, 'price': 0.2688}、{'qty': 6000, 'price': 0.2592} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、近30天最低价、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 输出类型 | 可调 |
+| 精度 | ±1% |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
 
 ## 优惠与获取条件
 

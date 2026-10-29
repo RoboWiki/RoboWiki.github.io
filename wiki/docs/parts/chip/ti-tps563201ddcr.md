@@ -15,7 +15,7 @@ title: TI TPS563201DDCR
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">dcdc</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥0</span>
+      <span class="part-tag">¥0.4074</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: TI TPS563201DDCR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 4.5V~17V |
-| voltage_out | 768mV~7V |
-| current_out | 3A |
+| 工作电压 | 4.5V~17V |
+| 输出电压 | 768mV~7V |
+| 输出电流 | 3A |
 | 封装 | SOT-23-THIN-6 |
-| jlc_library | 扩展库 |
-| stock | 101K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 101K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/116592.html">https://item.szlcsc.com/116592.html</a><br/>
@@ -64,25 +64,25 @@ title: TI TPS563201DDCR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 4.5V~17V |
-| voltage_out | 768mV~7V |
-| current_out | 3A |
+| 工作电压 | 4.5V~17V |
+| 输出电压 | 768mV~7V |
+| 输出电流 | 3A |
 | 封装 | SOT-23-THIN-6 |
-| jlc_library | 扩展库 |
-| stock | 101K+ |
-| category_cn | DC-DC电源芯片 |
-| lcsc_part | C116592 |
-| params | 功能类型=降压型；工作电压=4.5V~17V；输出电压=768mV~7V；输出电流=3A；开关频率=580kHz |
-| price_tiers | {'qty': 10, 'price': 0.4074}、{'qty': 100, 'price': 0.3303}、{'qty': 300, 'price': 0.2907}、{'qty': 3000, 'price': 0.258}、{'qty': 6000, 'price': 0.2466}、{'qty': 9000, 'price': 0.2389} |
-| price_lead | 0.222 |
-| stock_lead | 150K |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| function_type | 降压型 |
-| freq | 580kHz |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 101K+ |
+| 类目 | DC-DC电源芯片 |
+| 立创编号 | C116592 |
+| 参数 | 功能类型=降压型；工作电压=4.5V~17V；输出电压=768mV~7V；输出电流=3A；开关频率=580kHz |
+| 价格梯度（含税） | {'qty': 10, 'price': 0.4074}、{'qty': 100, 'price': 0.3303}、{'qty': 300, 'price': 0.2907}、{'qty': 3000, 'price': 0.258}、{'qty': 6000, 'price': 0.2466}、{'qty': 9000, 'price': 0.2389} |
+| 立推价 | 0.222 |
+| 立推库存 | 150K |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 功能类型 | 降压型 |
+| 开关频率 | 580kHz |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
 
 ## 优惠与获取条件
 

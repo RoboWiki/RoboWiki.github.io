@@ -15,7 +15,7 @@ title: HOLTEK HT7533-1
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">ldo</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥0</span>
+      <span class="part-tag">¥0.884</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: HOLTEK HT7533-1
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 30V |
-| voltage_out | 3.3V |
-| current_out | 100mA |
+| 工作电压 | 30V |
+| 输出电压 | 3.3V |
+| 输出电流 | 100mA |
 | 封装 | SOT-89-3 |
-| jlc_library | 基础库 |
-| stock | 177K+ |
+| SMT 库 | 基础库 |
+| 库存 | 177K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/14289.html">https://item.szlcsc.com/14289.html</a><br/>
@@ -64,22 +64,22 @@ title: HOLTEK HT7533-1
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 30V |
-| voltage_out | 3.3V |
-| current_out | 100mA |
+| 工作电压 | 30V |
+| 输出电压 | 3.3V |
+| 输出电流 | 100mA |
 | 封装 | SOT-89-3 |
-| jlc_library | 基础库 |
-| stock | 177K+ |
-| category_cn | 线性稳压器(LDO) |
-| lcsc_part | C14289 |
-| params | 输出极性=正极；工作电压=30V；输出电压=3.3V；输出电流=100mA |
-| price_tiers | {'qty': 5, 'price': 0.884}、{'qty': 50, 'price': 0.7205}、{'qty': 150, 'price': 0.6365}、{'qty': 1000, 'price': 0.5478}、{'qty': 2000, 'price': 0.5237}、{'qty': 5000, 'price': 0.5073} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| polarity | 正极 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250805/3060A2B834846D8D6635617F67CD3AAF.pdf |
+| SMT 库 | 基础库 |
+| 库存 | 177K+ |
+| 类目 | 线性稳压器(LDO) |
+| 立创编号 | C14289 |
+| 参数 | 输出极性=正极；工作电压=30V；输出电压=3.3V；输出电流=100mA |
+| 价格梯度（含税） | {'qty': 5, 'price': 0.884}、{'qty': 50, 'price': 0.7205}、{'qty': 150, 'price': 0.6365}、{'qty': 1000, 'price': 0.5478}、{'qty': 2000, 'price': 0.5237}、{'qty': 5000, 'price': 0.5073} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 输出极性 | 正极 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250805/3060A2B834846D8D6635617F67CD3AAF.pdf |
 
 ## 优惠与获取条件
 

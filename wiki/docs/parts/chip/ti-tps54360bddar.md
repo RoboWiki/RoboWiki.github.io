@@ -15,7 +15,7 @@ title: TI TPS54360BDDAR
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">dcdc</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥4</span>
+      <span class="part-tag">¥4.62</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: TI TPS54360BDDAR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 4.5V~60V |
-| voltage_out | 800mV~58.8V |
-| current_out | 3.5A |
+| 工作电压 | 4.5V~60V |
+| 输出电压 | 800mV~58.8V |
+| 输出电流 | 3.5A |
 | 封装 | SOIC-8-EP |
-| jlc_library | 扩展库 |
-| stock | 54K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 54K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/524806.html">https://item.szlcsc.com/524806.html</a><br/>
@@ -64,24 +64,24 @@ title: TI TPS54360BDDAR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 4.5V~60V |
-| voltage_out | 800mV~58.8V |
-| current_out | 3.5A |
+| 工作电压 | 4.5V~60V |
+| 输出电压 | 800mV~58.8V |
+| 输出电流 | 3.5A |
 | 封装 | SOIC-8-EP |
-| jlc_library | 扩展库 |
-| stock | 54K+ |
-| category_cn | DC-DC电源芯片 |
-| lcsc_part | C524806 |
-| params | 功能类型=降压型；工作电压=4.5V~60V；输出电压=800mV~58.8V；输出电流=3.5A |
-| price_tiers | {'qty': 1, 'price': 4.62}、{'qty': 10, 'price': 3.84}、{'qty': 30, 'price': 3.29}、{'qty': 100, 'price': 2.84}、{'qty': 500, 'price': 2.77}、{'qty': 1000, 'price': 2.68} |
-| price_lead | 2.43 |
-| stock_lead | 30K |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| function_type | 降压型 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 54K+ |
+| 类目 | DC-DC电源芯片 |
+| 立创编号 | C524806 |
+| 参数 | 功能类型=降压型；工作电压=4.5V~60V；输出电压=800mV~58.8V；输出电流=3.5A |
+| 价格梯度（含税） | {'qty': 1, 'price': 4.62}、{'qty': 10, 'price': 3.84}、{'qty': 30, 'price': 3.29}、{'qty': 100, 'price': 2.84}、{'qty': 500, 'price': 2.77}、{'qty': 1000, 'price': 2.68} |
+| 立推价 | 2.43 |
+| 立推库存 | 30K |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 功能类型 | 降压型 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
 
 ## 优惠与获取条件
 

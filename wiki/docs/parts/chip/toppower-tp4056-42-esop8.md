@@ -15,7 +15,7 @@ title: TOPPOWER TP4056-42-ESOP8
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">battery</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥1</span>
+      <span class="part-tag">¥1.13</span>
     </div>
 
 <div class="part-split">
@@ -25,10 +25,10 @@ title: TOPPOWER TP4056-42-ESOP8
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 4V~8V |
+| 工作电压 | 4V~8V |
 | 封装 | ESOP-8 |
-| jlc_library | 扩展库 |
-| stock | 61K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 61K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/16581.html">https://item.szlcsc.com/16581.html</a><br/>
@@ -62,24 +62,24 @@ title: TOPPOWER TP4056-42-ESOP8
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 4V~8V |
-| voltage_out | — |
-| current_out | — |
+| 工作电压 | 4V~8V |
+| 输出电压 | — |
+| 输出电流 | — |
 | 封装 | ESOP-8 |
-| jlc_library | 扩展库 |
-| stock | 61K+ |
-| category_cn | 电池管理 |
-| lcsc_part | C16581 |
-| params | 芯片类型=充电芯片；工作电压=4V~8V；最大充电电流=1A；充电饱和电压=4.2V |
-| price_tiers | {'qty': 5, 'price': 1.1326}、{'qty': 50, 'price': 0.8968}、{'qty': 150, 'price': 0.7816}、{'qty': 500, 'price': 0.6789}、{'qty': 2500, 'price': 0.5575}、{'qty': 4000, 'price': 0.5406} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| chip_function | 充电芯片 |
-| charge_current | 1A |
-| v_float | 4.2V |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250728/836857281CD61AD1A124FBD97E522988.zip |
+| SMT 库 | 扩展库 |
+| 库存 | 61K+ |
+| 类目 | 电池管理 |
+| 立创编号 | C16581 |
+| 参数 | 芯片类型=充电芯片；工作电压=4V~8V；最大充电电流=1A；充电饱和电压=4.2V |
+| 价格梯度（含税） | {'qty': 5, 'price': 1.1326}、{'qty': 50, 'price': 0.8968}、{'qty': 150, 'price': 0.7816}、{'qty': 500, 'price': 0.6789}、{'qty': 2500, 'price': 0.5575}、{'qty': 4000, 'price': 0.5406} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 芯片类型 | 充电芯片 |
+| 最大充电电流 | 1A |
+| 充电饱和电压 | 4.2V |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250728/836857281CD61AD1A124FBD97E522988.zip |
 
 ## 优惠与获取条件
 

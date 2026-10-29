@@ -15,7 +15,7 @@ title: TI REF3025AIDBZR
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">vref</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥3</span>
+      <span class="part-tag">¥3.29</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: TI REF3025AIDBZR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 2.55V~5.5V |
-| voltage_out | 2.5V |
-| current_out | 25mA |
+| 工作电压 | 2.55V~5.5V |
+| 输出电压 | 2.5V |
+| 输出电流 | 25mA |
 | 封装 | SOT-23 |
-| jlc_library | 扩展库 |
-| stock | 1 |
+| SMT 库 | 扩展库 |
+| 库存 | 1 |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/11334.html">https://item.szlcsc.com/11334.html</a><br/>
@@ -64,22 +64,22 @@ title: TI REF3025AIDBZR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 2.55V~5.5V |
-| voltage_out | 2.5V |
-| current_out | 25mA |
+| 工作电压 | 2.55V~5.5V |
+| 输出电压 | 2.5V |
+| 输出电流 | 25mA |
 | 封装 | SOT-23 |
-| jlc_library | 扩展库 |
-| stock | 1 |
-| category_cn | 电压基准芯片 |
-| lcsc_part | C11334 |
-| params | 输出类型=固定；工作电压=2.55V~5.5V；输出电压=2.5V；输出电流=25mA |
-| price_tiers | {'qty': 1, 'price': 3.29}、{'qty': 10, 'price': 2.76}、{'qty': 30, 'price': 2.39}、{'qty': 100, 'price': 2.09}、{'qty': 500, 'price': 1.99}、{'qty': 1000, 'price': 1.93} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| output_type | 固定 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 1 |
+| 类目 | 电压基准芯片 |
+| 立创编号 | C11334 |
+| 参数 | 输出类型=固定；工作电压=2.55V~5.5V；输出电压=2.5V；输出电流=25mA |
+| 价格梯度（含税） | {'qty': 1, 'price': 3.29}、{'qty': 10, 'price': 2.76}、{'qty': 30, 'price': 2.39}、{'qty': 100, 'price': 2.09}、{'qty': 500, 'price': 1.99}、{'qty': 1000, 'price': 1.93} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 输出类型 | 固定 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
 
 ## 优惠与获取条件
 

@@ -73,7 +73,7 @@ title: 宇树 Unitree L2
 | range_note | 30 m@90%、15 m@10% |
 | effective_points_per_s | 64,000 |
 | blind_m | 0.05 |
-| accuracy | ≤2.0 cm |
+| 精度 | ≤2.0 cm |
 | angular_resolution | 0.64° |
 | range_resolution | 4.5 mm |
 | wavelength_nm | 905 |

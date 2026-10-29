@@ -15,7 +15,7 @@ title: MICRONE ME6211C33M5G-N
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">ldo</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥0</span>
+      <span class="part-tag">¥0.3841</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: MICRONE ME6211C33M5G-N
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 6V |
-| voltage_out | 3.3V |
-| current_out | 500mA |
+| 工作电压 | 6V |
+| 输出电压 | 3.3V |
+| 输出电流 | 500mA |
 | 封装 | SOT-23-5 |
-| jlc_library | 扩展库 |
-| stock | 8101 |
+| SMT 库 | 扩展库 |
+| 库存 | 8101 |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/82942.html">https://item.szlcsc.com/82942.html</a><br/>
@@ -64,22 +64,22 @@ title: MICRONE ME6211C33M5G-N
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 6V |
-| voltage_out | 3.3V |
-| current_out | 500mA |
+| 工作电压 | 6V |
+| 输出电压 | 3.3V |
+| 输出电流 | 500mA |
 | 封装 | SOT-23-5 |
-| jlc_library | 扩展库 |
-| stock | 8101 |
-| category_cn | 线性稳压器(LDO) |
-| lcsc_part | C82942 |
-| params | 输出极性=正极；工作电压=6V；输出电压=3.3V；输出电流=500mA |
-| price_tiers | {'qty': 10, 'price': 0.3841}、{'qty': 100, 'price': 0.3115}、{'qty': 300, 'price': 0.2742} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| polarity | 正极 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250214/479D3FD4C9C3AB2CE1AAE7D1051DFBBB.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 8101 |
+| 类目 | 线性稳压器(LDO) |
+| 立创编号 | C82942 |
+| 参数 | 输出极性=正极；工作电压=6V；输出电压=3.3V；输出电流=500mA |
+| 价格梯度（含税） | {'qty': 10, 'price': 0.3841}、{'qty': 100, 'price': 0.3115}、{'qty': 300, 'price': 0.2742} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 输出极性 | 正极 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250214/479D3FD4C9C3AB2CE1AAE7D1051DFBBB.pdf |
 
 ## 优惠与获取条件
 

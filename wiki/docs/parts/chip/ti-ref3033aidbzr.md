@@ -15,7 +15,7 @@ title: TI REF3033AIDBZR
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">vref</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥2</span>
+      <span class="part-tag">¥2.81</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: TI REF3033AIDBZR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 3.35V~5.5V |
-| voltage_out | 3.3V |
-| current_out | 25mA |
+| 工作电压 | 3.35V~5.5V |
+| 输出电压 | 3.3V |
+| 输出电流 | 25mA |
 | 封装 | SOT-23 |
-| jlc_library | 扩展库 |
-| stock | 7861 |
+| SMT 库 | 扩展库 |
+| 库存 | 7861 |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/36658.html">https://item.szlcsc.com/36658.html</a><br/>
@@ -64,22 +64,22 @@ title: TI REF3033AIDBZR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 3.35V~5.5V |
-| voltage_out | 3.3V |
-| current_out | 25mA |
+| 工作电压 | 3.35V~5.5V |
+| 输出电压 | 3.3V |
+| 输出电流 | 25mA |
 | 封装 | SOT-23 |
-| jlc_library | 扩展库 |
-| stock | 7861 |
-| category_cn | 电压基准芯片 |
-| lcsc_part | C36658 |
-| params | 输出类型=固定；工作电压=3.35V~5.5V；输出电压=3.3V；输出电流=25mA |
-| price_tiers | {'qty': 1, 'price': 2.81}、{'qty': 10, 'price': 2.17}、{'qty': 30, 'price': 1.86}、{'qty': 100, 'price': 1.58}、{'qty': 500, 'price': 1.5}、{'qty': 1000, 'price': 1.45} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| output_type | 固定 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 7861 |
+| 类目 | 电压基准芯片 |
+| 立创编号 | C36658 |
+| 参数 | 输出类型=固定；工作电压=3.35V~5.5V；输出电压=3.3V；输出电流=25mA |
+| 价格梯度（含税） | {'qty': 1, 'price': 2.81}、{'qty': 10, 'price': 2.17}、{'qty': 30, 'price': 1.86}、{'qty': 100, 'price': 1.58}、{'qty': 500, 'price': 1.5}、{'qty': 1000, 'price': 1.45} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 输出类型 | 固定 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
 
 ## 优惠与获取条件
 

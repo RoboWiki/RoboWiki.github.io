@@ -15,7 +15,7 @@ title: TI TPS2116DRLR
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">pmic</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥2</span>
+      <span class="part-tag">¥2.39</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: TI TPS2116DRLR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 1.6V~5.5V |
-| voltage_out | 0V~5.5V |
-| current_out | 2.5A |
+| 工作电压 | 1.6V~5.5V |
+| 输出电压 | 0V~5.5V |
+| 输出电流 | 2.5A |
 | 封装 | SOT-583 |
-| jlc_library | 扩展库 |
-| stock | 51K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 51K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/3235557.html">https://item.szlcsc.com/3235557.html</a><br/>
@@ -64,24 +64,24 @@ title: TI TPS2116DRLR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 1.6V~5.5V |
-| voltage_out | 0V~5.5V |
-| current_out | 2.5A |
+| 工作电压 | 1.6V~5.5V |
+| 输出电压 | 0V~5.5V |
+| 输出电流 | 2.5A |
 | 封装 | SOT-583 |
-| jlc_library | 扩展库 |
-| stock | 51K+ |
-| category_cn | 专业电源管理(PMIC) |
-| lcsc_part | C3235557 |
-| params | 功能特性=工作状态指示；输入电压=1.6V~5.5V；输出电压=0V~5.5V；输出电流=2.5A |
-| price_tiers | {'qty': 1, 'price': 2.39}、{'qty': 10, 'price': 1.83}、{'qty': 30, 'price': 1.55}、{'qty': 100, 'price': 1.31}、{'qty': 500, 'price': 1.19}、{'qty': 1000, 'price': 1.15} |
-| price_lead | 0.97 |
-| stock_lead | 200K |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、近30天最低价、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| features | 工作状态指示 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 51K+ |
+| 类目 | 专业电源管理(PMIC) |
+| 立创编号 | C3235557 |
+| 参数 | 功能特性=工作状态指示；输入电压=1.6V~5.5V；输出电压=0V~5.5V；输出电流=2.5A |
+| 价格梯度（含税） | {'qty': 1, 'price': 2.39}、{'qty': 10, 'price': 1.83}、{'qty': 30, 'price': 1.55}、{'qty': 100, 'price': 1.31}、{'qty': 500, 'price': 1.19}、{'qty': 1000, 'price': 1.15} |
+| 立推价 | 0.97 |
+| 立推库存 | 200K |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、近30天最低价、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 功能特性 | 工作状态指示 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
 
 ## 优惠与获取条件
 

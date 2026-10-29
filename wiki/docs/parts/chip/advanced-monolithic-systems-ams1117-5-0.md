@@ -15,7 +15,7 @@ title: Advanced Monolithic Systems AMS1117-5.0
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">ldo</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥1</span>
+      <span class="part-tag">¥1.57</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: Advanced Monolithic Systems AMS1117-5.0
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 15V |
-| voltage_out | 5V |
-| current_out | 1A |
+| 工作电压 | 15V |
+| 输出电压 | 5V |
+| 输出电流 | 1A |
 | 封装 | SOT-223 |
-| jlc_library | 基础库 |
-| stock | 131K+ |
+| SMT 库 | 基础库 |
+| 库存 | 131K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/6187.html">https://item.szlcsc.com/6187.html</a><br/>
@@ -64,22 +64,22 @@ title: Advanced Monolithic Systems AMS1117-5.0
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 15V |
-| voltage_out | 5V |
-| current_out | 1A |
+| 工作电压 | 15V |
+| 输出电压 | 5V |
+| 输出电流 | 1A |
 | 封装 | SOT-223 |
-| jlc_library | 基础库 |
-| stock | 131K+ |
-| category_cn | 线性稳压器(LDO) |
-| lcsc_part | C6187 |
-| params | 输出极性=正极；工作电压=15V；输出电压=5V；输出电流=1A |
-| price_tiers | {'qty': 5, 'price': 1.5725}、{'qty': 50, 'price': 1.1964}、{'qty': 150, 'price': 1.0127}、{'qty': 500, 'price': 0.8489}、{'qty': 2500, 'price': 0.8039}、{'qty': 5000, 'price': 0.7769} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | RoHS、SMT补贴、运9元运费券、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| polarity | 正极 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20231019/B4C92B5CACFE04F2BB959EC8EFD0CD04.pdf |
+| SMT 库 | 基础库 |
+| 库存 | 131K+ |
+| 类目 | 线性稳压器(LDO) |
+| 立创编号 | C6187 |
+| 参数 | 输出极性=正极；工作电压=15V；输出电压=5V；输出电流=1A |
+| 价格梯度（含税） | {'qty': 5, 'price': 1.5725}、{'qty': 50, 'price': 1.1964}、{'qty': 150, 'price': 1.0127}、{'qty': 500, 'price': 0.8489}、{'qty': 2500, 'price': 0.8039}、{'qty': 5000, 'price': 0.7769} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | RoHS、SMT补贴、运9元运费券、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 输出极性 | 正极 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20231019/B4C92B5CACFE04F2BB959EC8EFD0CD04.pdf |
 
 ## 优惠与获取条件
 

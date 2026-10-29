@@ -15,7 +15,7 @@ title: JSMSEMI TL431
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">vref</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥0</span>
+      <span class="part-tag">¥0.1904</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: JSMSEMI TL431
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 37V |
-| voltage_out | 2.5V~36V |
-| current_out | 150mA |
+| 工作电压 | 37V |
+| 输出电压 | 2.5V~36V |
+| 输出电流 | 150mA |
 | 封装 | SOT-23 |
-| jlc_library | 扩展库 |
-| stock | 206K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 206K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/963380.html">https://item.szlcsc.com/963380.html</a><br/>
@@ -64,22 +64,22 @@ title: JSMSEMI TL431
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 37V |
-| voltage_out | 2.5V~36V |
-| current_out | 150mA |
+| 工作电压 | 37V |
+| 输出电压 | 2.5V~36V |
+| 输出电流 | 150mA |
 | 封装 | SOT-23 |
-| jlc_library | 扩展库 |
-| stock | 206K+ |
-| category_cn | 电压基准芯片 |
-| lcsc_part | C963380 |
-| params | 输出类型=可调；工作电压=37V；输出电压=2.5V~36V；输出电流=150mA |
-| price_tiers | {'qty': 20, 'price': 0.19044}、{'qty': 200, 'price': 0.1431}、{'qty': 600, 'price': 0.12213}、{'qty': 3000, 'price': 0.10629}、{'qty': 9000, 'price': 0.09999}、{'qty': 21000, 'price': 0.09576} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 商最高减100、9折近30天最低价、下单最高92折 |
-| tags | SMT补贴、商最高减100、9折近30天最低价、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| output_type | 可调 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20241017/21A61A2DF2FB171451B837C67E7CAF58.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 206K+ |
+| 类目 | 电压基准芯片 |
+| 立创编号 | C963380 |
+| 参数 | 输出类型=可调；工作电压=37V；输出电压=2.5V~36V；输出电流=150mA |
+| 价格梯度（含税） | {'qty': 20, 'price': 0.19044}、{'qty': 200, 'price': 0.1431}、{'qty': 600, 'price': 0.12213}、{'qty': 3000, 'price': 0.10629}、{'qty': 9000, 'price': 0.09999}、{'qty': 21000, 'price': 0.09576} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 商最高减100、9折近30天最低价、下单最高92折 |
+| 标签 | SMT补贴、商最高减100、9折近30天最低价、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 输出类型 | 可调 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20241017/21A61A2DF2FB171451B837C67E7CAF58.pdf |
 
 ## 优惠与获取条件
 

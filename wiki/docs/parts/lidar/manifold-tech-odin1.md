@@ -73,7 +73,7 @@ title: Manifold Tech Odin1
 | depth_resolution | 240 × 180 |
 | range_min_m | 0.2 |
 | range_note | 最大 30 m@10% 反射率（<500 lux）/ 70 m@90% 反射率（<500 lux）；视场 120° H × 90° V，角分辨率 0.5° × 0.5° |
-| accuracy | ±3 cm @1σ（室内 80% Lambertian 板，5 m 内；5–30 m 为 <1%） |
+| 精度 | ±3 cm @1σ（室内 80% Lambertian 板，5 m 内；5–30 m 为 <1%） |
 | angular_resolution | 0.5° × 0.5° |
 | wavelength_nm | 940 |
 | eye_safety | Class 1 人眼安全 |

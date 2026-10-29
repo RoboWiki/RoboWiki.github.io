@@ -86,7 +86,7 @@ title: 达妙 DAMIAO DM-IMU-L1
 | weight_g | 11.5 |
 | 分辨率 | 16-bit（BMI088） |
 | doc_url | https://github.com/OpenDogeRobotics/OpenDoge_hardware/tree/main/datasheets/dm-imu |
-| doc_pdf | https://cdn.jsdelivr.net/gh/OpenDogeRobotics/OpenDoge_hardware@main/datasheets/dm-imu/%E8%BE%BE%E5%A6%99%E7%A7%91%E6%8A%80DM-IMU-L1%E5%85%AD%E8%BD%B4IMU%E6%A8%A1%E5%9D%97%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E4%B9%A6V1.2.pdf |
+| 官方手册 (PDF) | https://cdn.jsdelivr.net/gh/OpenDogeRobotics/OpenDoge_hardware@main/datasheets/dm-imu/%E8%BE%BE%E5%A6%99%E7%A7%91%E6%8A%80DM-IMU-L1%E5%85%AD%E8%BD%B4IMU%E6%A8%A1%E5%9D%97%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E4%B9%A6V1.2.pdf |
 | repo_urls | https://github.com/OpenDogeRobotics/OpenDoge_hardware |
 
 ## 优惠与获取条件

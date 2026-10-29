@@ -78,7 +78,7 @@ title: Livox HAP
 | 额定电压 (V) | 12 |
 | 防护等级 | IP67 |
 | doc_url | https://www.livoxtech.com/cn/hap/downloads |
-| doc_pdf | https://dl.djicdn.com/downloads/Livox/HAP/HAP%28T1%29_User_Manual_V1.2_CHS.pdf |
+| 官方手册 (PDF) | https://dl.djicdn.com/downloads/Livox/HAP/HAP%28T1%29_User_Manual_V1.2_CHS.pdf |
 | repo_urls | https://github.com/Livox-SDK/livox_ros_driver2 |
 
 ## 优惠与获取条件

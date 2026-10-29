@@ -15,7 +15,7 @@ title: XLSEMI XL1509-5.0E1
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">dcdc</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥1</span>
+      <span class="part-tag">¥1.51</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: XLSEMI XL1509-5.0E1
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 4.5V~40V |
-| voltage_out | 5V |
-| current_out | 2A |
+| 工作电压 | 4.5V~40V |
+| 输出电压 | 5V |
+| 输出电流 | 2A |
 | 封装 | SOIC-8 |
-| jlc_library | 基础库 |
-| stock | 332K+ |
+| SMT 库 | 基础库 |
+| 库存 | 332K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/61063.html">https://item.szlcsc.com/61063.html</a><br/>
@@ -64,24 +64,24 @@ title: XLSEMI XL1509-5.0E1
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 4.5V~40V |
-| voltage_out | 5V |
-| current_out | 2A |
+| 工作电压 | 4.5V~40V |
+| 输出电压 | 5V |
+| 输出电流 | 2A |
 | 封装 | SOIC-8 |
-| jlc_library | 基础库 |
-| stock | 332K+ |
-| category_cn | DC-DC电源芯片 |
-| lcsc_part | C61063 |
-| params | 功能类型=降压型；工作电压=4.5V~40V；输出电压=5V；输出电流=2A |
-| price_tiers | {'qty': 5, 'price': 1.5073}、{'qty': 50, 'price': 1.1696}、{'qty': 150, 'price': 1.0047}、{'qty': 500, 'price': 0.8577}、{'qty': 2500, 'price': 0.7477}、{'qty': 4000, 'price': 0.7234} |
-| price_lead | 0.7 |
-| stock_lead | 200K |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、近30天最低价、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| function_type | 降压型 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20231207/18184E297979989CC959DA654C27F49B.pdf |
+| SMT 库 | 基础库 |
+| 库存 | 332K+ |
+| 类目 | DC-DC电源芯片 |
+| 立创编号 | C61063 |
+| 参数 | 功能类型=降压型；工作电压=4.5V~40V；输出电压=5V；输出电流=2A |
+| 价格梯度（含税） | {'qty': 5, 'price': 1.5073}、{'qty': 50, 'price': 1.1696}、{'qty': 150, 'price': 1.0047}、{'qty': 500, 'price': 0.8577}、{'qty': 2500, 'price': 0.7477}、{'qty': 4000, 'price': 0.7234} |
+| 立推价 | 0.7 |
+| 立推库存 | 200K |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、近30天最低价、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 功能类型 | 降压型 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20231207/18184E297979989CC959DA654C27F49B.pdf |
 
 ## 优惠与获取条件
 

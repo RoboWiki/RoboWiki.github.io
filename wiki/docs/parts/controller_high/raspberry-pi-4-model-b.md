@@ -82,7 +82,7 @@ title: 树莓派 Raspberry Pi 4 Model B
 | size_mm | 85×56 |
 | weight_g | 46 |
 | doc_url | https://www.raspberrypi.com/products/raspberry-pi-4-model-b/ |
-| doc_pdf | https://datasheets.raspberrypi.com/rpi4/raspberry-pi-4-product-brief.pdf |
+| 官方手册 (PDF) | https://datasheets.raspberrypi.com/rpi4/raspberry-pi-4-product-brief.pdf |
 | repo_urls | https://github.com/raspberrypi/linux、https://github.com/raspberrypi/documentation |
 | ram_options | 8 |
 

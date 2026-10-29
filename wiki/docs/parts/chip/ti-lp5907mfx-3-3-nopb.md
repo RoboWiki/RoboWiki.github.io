@@ -15,7 +15,7 @@ title: TI LP5907MFX-3.3/NOPB
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">ldo</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥1</span>
+      <span class="part-tag">¥1.01</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: TI LP5907MFX-3.3/NOPB
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 5.5V |
-| voltage_out | 3.3V |
-| current_out | 250mA |
+| 工作电压 | 5.5V |
+| 输出电压 | 3.3V |
+| 输出电流 | 250mA |
 | 封装 | SOT-23-5 |
-| jlc_library | 扩展库 |
-| stock | 34K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 34K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/80670.html">https://item.szlcsc.com/80670.html</a><br/>
@@ -64,22 +64,22 @@ title: TI LP5907MFX-3.3/NOPB
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 5.5V |
-| voltage_out | 3.3V |
-| current_out | 250mA |
+| 工作电压 | 5.5V |
+| 输出电压 | 3.3V |
+| 输出电流 | 250mA |
 | 封装 | SOT-23-5 |
-| jlc_library | 扩展库 |
-| stock | 34K+ |
-| category_cn | 线性稳压器(LDO) |
-| lcsc_part | C80670 |
-| params | 输出极性=正极；工作电压=5.5V；输出电压=3.3V；输出电流=250mA |
-| price_tiers | {'qty': 5, 'price': 1.0078}、{'qty': 50, 'price': 0.7771}、{'qty': 150, 'price': 0.6645}、{'qty': 500, 'price': 0.5641}、{'qty': 3000, 'price': 0.5365}、{'qty': 6000, 'price': 0.5199} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| polarity | 正极 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 34K+ |
+| 类目 | 线性稳压器(LDO) |
+| 立创编号 | C80670 |
+| 参数 | 输出极性=正极；工作电压=5.5V；输出电压=3.3V；输出电流=250mA |
+| 价格梯度（含税） | {'qty': 5, 'price': 1.0078}、{'qty': 50, 'price': 0.7771}、{'qty': 150, 'price': 0.6645}、{'qty': 500, 'price': 0.5641}、{'qty': 3000, 'price': 0.5365}、{'qty': 6000, 'price': 0.5199} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 输出极性 | 正极 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
 
 ## 优惠与获取条件
 

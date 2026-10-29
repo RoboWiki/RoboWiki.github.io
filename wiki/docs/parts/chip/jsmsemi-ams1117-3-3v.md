@@ -15,7 +15,7 @@ title: JSMSEMI AMS1117-3.3V
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">ldo</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥0</span>
+      <span class="part-tag">¥0.3295</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: JSMSEMI AMS1117-3.3V
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 15V |
-| voltage_out | 3.3V |
-| current_out | 1.2A |
+| 工作电压 | 15V |
+| 输出电压 | 3.3V |
+| 输出电流 | 1.2A |
 | 封装 | SOT-223 |
-| jlc_library | 扩展库 |
-| stock | 82K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 82K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/5205141.html">https://item.szlcsc.com/5205141.html</a><br/>
@@ -64,24 +64,24 @@ title: JSMSEMI AMS1117-3.3V
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 15V |
-| voltage_out | 3.3V |
-| current_out | 1.2A |
+| 工作电压 | 15V |
+| 输出电压 | 3.3V |
+| 输出电流 | 1.2A |
 | 封装 | SOT-223 |
-| jlc_library | 扩展库 |
-| stock | 82K+ |
-| category_cn | 线性稳压器(LDO) |
-| lcsc_part | C5205141 |
-| params | 输出极性=正极；工作电压=15V；输出电压=3.3V；输出电流=1.2A |
-| price_tiers | {'qty': 10, 'price': 0.32946}、{'qty': 100, 'price': 0.261155}、{'qty': 300, 'price': 0.22705}、{'qty': 2500, 'price': 0.201495}、{'qty': 5000, 'price': 0.180975}、{'qty': 10000, 'price': 0.170715} |
-| price_lead | 0.1485 |
-| stock_lead | 1KK |
-| lead_time | 现货 4 小时发货 |
-| coupon | 商最高减100、9.5折近30天最低价、下单最高92折 |
-| tags | SMT补贴、商最高减100、9.5折近30天最低价、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| polarity | 正极 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20260810/9FB4D1EF1DD6A0D87138E1278191BA1C.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 82K+ |
+| 类目 | 线性稳压器(LDO) |
+| 立创编号 | C5205141 |
+| 参数 | 输出极性=正极；工作电压=15V；输出电压=3.3V；输出电流=1.2A |
+| 价格梯度（含税） | {'qty': 10, 'price': 0.32946}、{'qty': 100, 'price': 0.261155}、{'qty': 300, 'price': 0.22705}、{'qty': 2500, 'price': 0.201495}、{'qty': 5000, 'price': 0.180975}、{'qty': 10000, 'price': 0.170715} |
+| 立推价 | 0.1485 |
+| 立推库存 | 1KK |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 商最高减100、9.5折近30天最低价、下单最高92折 |
+| 标签 | SMT补贴、商最高减100、9.5折近30天最低价、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 输出极性 | 正极 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20260810/9FB4D1EF1DD6A0D87138E1278191BA1C.pdf |
 
 ## 优惠与获取条件
 

@@ -15,7 +15,7 @@ title: TI TPS3823-33DBVR
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">supervisor</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥2</span>
+      <span class="part-tag">¥2.71</span>
     </div>
 
 <div class="part-split">
@@ -25,10 +25,10 @@ title: TI TPS3823-33DBVR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 2.5V；3V；3.3V；5V |
+| 工作电压 | 2.5V；3V；3.3V；5V |
 | 封装 | SOT-23-5 |
-| jlc_library | 扩展库 |
-| stock | 36K+ |
+| SMT 库 | 扩展库 |
+| 库存 | 36K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/7719.html">https://item.szlcsc.com/7719.html</a><br/>
@@ -62,23 +62,23 @@ title: TI TPS3823-33DBVR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 2.5V；3V；3.3V；5V |
-| voltage_out | — |
-| current_out | — |
+| 工作电压 | 2.5V；3V；3.3V；5V |
+| 输出电压 | — |
+| 输出电流 | — |
 | 封装 | SOT-23-5 |
-| jlc_library | 扩展库 |
-| stock | 36K+ |
-| category_cn | 监控和复位芯片 |
-| lcsc_part | C7719 |
-| params | 芯片类型=电压监控器；输出类型=推挽；工作电压=2.5V；3V；3.3V；5V；复位有效电平=低电平有效 |
-| price_tiers | {'qty': 1, 'price': 2.71}、{'qty': 10, 'price': 2.15}、{'qty': 30, 'price': 1.88}、{'qty': 100, 'price': 1.64}、{'qty': 500, 'price': 1.57}、{'qty': 1000, 'price': 1.53} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | SMT补贴、运9元运费券、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| output_type | 推挽 |
-| chip_function | 电压监控器 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
+| SMT 库 | 扩展库 |
+| 库存 | 36K+ |
+| 类目 | 监控和复位芯片 |
+| 立创编号 | C7719 |
+| 参数 | 芯片类型=电压监控器；输出类型=推挽；工作电压=2.5V；3V；3.3V；5V；复位有效电平=低电平有效 |
+| 价格梯度（含税） | {'qty': 1, 'price': 2.71}、{'qty': 10, 'price': 2.15}、{'qty': 30, 'price': 1.88}、{'qty': 100, 'price': 1.64}、{'qty': 500, 'price': 1.57}、{'qty': 1000, 'price': 1.53} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | SMT补贴、运9元运费券、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 输出类型 | 推挽 |
+| 芯片类型 | 电压监控器 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20250912/CE8B300B165F06F19AF9E8E2EE2DE390.pdf |
 
 ## 优惠与获取条件
 

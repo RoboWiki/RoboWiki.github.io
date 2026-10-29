@@ -15,7 +15,7 @@ title: ST L78M05ABDT-TR
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">ldo</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag">¥1</span>
+      <span class="part-tag">¥1.26</span>
     </div>
 
 <div class="part-split">
@@ -25,12 +25,12 @@ title: ST L78M05ABDT-TR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 35V |
-| voltage_out | 5V |
-| current_out | 500mA |
+| 工作电压 | 35V |
+| 输出电压 | 5V |
+| 输出电流 | 500mA |
 | 封装 | TO-252-2(DPAK) |
-| jlc_library | 基础库 |
-| stock | 156K+ |
+| SMT 库 | 基础库 |
+| 库存 | 156K+ |
 
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/58069.html">https://item.szlcsc.com/58069.html</a><br/>
@@ -64,22 +64,22 @@ title: ST L78M05ABDT-TR
 
 | 字段 | 值 |
 |---|---|
-| voltage_in | 35V |
-| voltage_out | 5V |
-| current_out | 500mA |
+| 工作电压 | 35V |
+| 输出电压 | 5V |
+| 输出电流 | 500mA |
 | 封装 | TO-252-2(DPAK) |
-| jlc_library | 基础库 |
-| stock | 156K+ |
-| category_cn | 线性稳压器(LDO) |
-| lcsc_part | C58069 |
-| params | 输出极性=正极；工作电压=35V；输出电压=5V；输出电流=500mA |
-| price_tiers | {'qty': 5, 'price': 1.2616}、{'qty': 50, 'price': 0.9786}、{'qty': 150, 'price': 0.8404}、{'qty': 500, 'price': 0.7172}、{'qty': 2500, 'price': 0.6833}、{'qty': 5000, 'price': 0.663} |
-| lead_time | 现货 4 小时发货 |
-| coupon | 运9元运费券、下单最高92折 |
-| tags | RoHS、SMT补贴、运9元运费券、私有库、下单最高92折 |
-| fetched_at | 2026-10-29 |
-| polarity | 正极 |
-| doc_pdf | https://atta.szlcsc.com/upload/public/pdf/source/20241126/175D27B848240B08A4FE8B716DE9A2F2.pdf |
+| SMT 库 | 基础库 |
+| 库存 | 156K+ |
+| 类目 | 线性稳压器(LDO) |
+| 立创编号 | C58069 |
+| 参数 | 输出极性=正极；工作电压=35V；输出电压=5V；输出电流=500mA |
+| 价格梯度（含税） | {'qty': 5, 'price': 1.2616}、{'qty': 50, 'price': 0.9786}、{'qty': 150, 'price': 0.8404}、{'qty': 500, 'price': 0.7172}、{'qty': 2500, 'price': 0.6833}、{'qty': 5000, 'price': 0.663} |
+| 交期 | 现货 4 小时发货 |
+| 优惠券 / 标签 | 运9元运费券、下单最高92折 |
+| 标签 | RoHS、SMT补贴、运9元运费券、私有库、下单最高92折 |
+| 采集日期 | 2026-10-29 |
+| 输出极性 | 正极 |
+| 官方手册 (PDF) | https://atta.szlcsc.com/upload/public/pdf/source/20241126/175D27B848240B08A4FE8B716DE9A2F2.pdf |
 
 ## 优惠与获取条件
 
