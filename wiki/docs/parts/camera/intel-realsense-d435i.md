@@ -13,7 +13,7 @@ title: Intel RealSense D435i
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">深度相机</span>
-      <span class="part-tag soft">stereo</span>
+      <span class="part-tag soft">双目</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥2,850</span>
     </div>

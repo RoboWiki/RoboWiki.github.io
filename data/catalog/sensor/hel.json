@@ -1,0 +1,75 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c332361",
+  "vendor": "HEL(鸿志)",
+  "vendor_cn": "HEL(鸿志)",
+  "model": "5D-9",
+  "title": "HEL(鸿志) 5D-9",
+  "url": "https://item.szlcsc.com/332361.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.2665,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "**功率型 NTC**（抑制开机浪涌），不是测温用的：串在电源回路里，冷态 5Ω 限流，热了阻值自动降到很小。",
+  "specs": {
+   "package": "插件,P=7.5mm",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C332361",
+   "params": {
+    "阻值": "5Ω",
+    "电阻精度": "±20%",
+    "B值": "2700K",
+    "最大稳态电流": "3A"
+   },
+   "price_tiers": [
+    {
+     "qty": 10,
+     "price": 0.2665
+    },
+    {
+     "qty": 100,
+     "price": 0.2203
+    },
+    {
+     "qty": 500,
+     "price": 0.1822
+    },
+    {
+     "qty": 1000,
+     "price": 0.1627
+    },
+    {
+     "qty": 5000,
+     "price": 0.1558
+    },
+    {
+     "qty": 10000,
+     "price": 0.1512
+    }
+   ],
+   "price_lead": null,
+   "stock": "103K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c332361.jpg",
+   "image_source": "立创商城商品图（C332361，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20181130/C332364_0266F3C8738D0DC1C749F64F93229EB9.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ }
+]

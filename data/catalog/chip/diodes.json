@@ -74,7 +74,8 @@
    "image_url": "/parts/jlc-c780769.jpg",
    "image_source": "立创商城商品图（C780769，2026-10-29 采集）",
    "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250221/E985FDE9D34EE2FEF500A3501D1338AE.pdf"
-  }
+  },
+  "subtype_label": "DC-DC 开关电源"
  },
  {
   "category": "chip",
@@ -150,7 +151,8 @@
    "image_url": "/parts/jlc-c2071056.jpg",
    "image_source": "立创商城商品图（C2071056，2026-10-29 采集）",
    "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250221/E985FDE9D34EE2FEF500A3501D1338AE.pdf"
-  }
+  },
+  "subtype_label": "DC-DC 开关电源"
  },
  {
   "category": "chip",
@@ -218,6 +220,7 @@
    "image_url": "/parts/jlc-c51118.jpg",
    "image_source": "立创商城商品图（C51118，2026-10-29 采集）",
    "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250221/E985FDE9D34EE2FEF500A3501D1338AE.pdf"
-  }
+  },
+  "subtype_label": "线性稳压 LDO"
  }
 ]

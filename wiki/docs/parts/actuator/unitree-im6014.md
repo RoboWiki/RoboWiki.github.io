@@ -13,7 +13,7 @@ title: 宇树 Unitree IM6014
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">关节电机</span>
-      <span class="part-tag soft">planetary</span>
+      <span class="part-tag soft">行星减速</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥1,800</span>
     </div>

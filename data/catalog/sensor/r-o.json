@@ -1,0 +1,377 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c49247665",
+  "vendor": "R+O(宏嘉诚)",
+  "vendor_cn": "R+O(宏嘉诚)",
+  "model": "HNTC0603-103F3450FA",
+  "title": "R+O(宏嘉诚) HNTC0603-103F3450FA",
+  "url": "https://item.szlcsc.com/49247665.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.243485,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "B 常数公差 ±1%，-40~+125℃，无卤。注意这版 B 值是 3450，不是常见的 3950。",
+  "specs": {
+   "package": "0603",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C49247665",
+   "params": {
+    "功率": "100mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 10,
+     "price": 0.243485
+    },
+    {
+     "qty": 100,
+     "price": 0.19855
+    },
+    {
+     "qty": 300,
+     "price": 0.175465
+    },
+    {
+     "qty": 1000,
+     "price": 0.15637
+    },
+    {
+     "qty": 4000,
+     "price": 0.137275
+    },
+    {
+     "qty": 8000,
+     "price": 0.13281
+    }
+   ],
+   "price_lead": null,
+   "stock": "540K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商最高减100",
+    "9.5折近30天最低价",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商最高减100",
+    "9.5折近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c49247665.jpg",
+   "image_source": "立创商城商品图（C49247665，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250801/F8E954762D03E2D15CF5E108AD7E3B78.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c49247666",
+  "vendor": "R+O(宏嘉诚)",
+  "vendor_cn": "R+O(宏嘉诚)",
+  "model": "HNTC0603-103F3950FB",
+  "title": "R+O(宏嘉诚) HNTC0603-103F3950FB",
+  "url": "https://item.szlcsc.com/49247666.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.194465,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "B 值 3950 版，同系列。",
+  "specs": {
+   "package": "0603",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C49247666",
+   "params": {
+    "功率": "100mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 10,
+     "price": 0.194465
+    },
+    {
+     "qty": 100,
+     "price": 0.17309
+    },
+    {
+     "qty": 300,
+     "price": 0.16245
+    },
+    {
+     "qty": 1000,
+     "price": 0.15447
+    },
+    {
+     "qty": 4000,
+     "price": 0.13566
+    },
+    {
+     "qty": 8000,
+     "price": 0.13243
+    }
+   ],
+   "price_lead": null,
+   "stock": "41K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商最高减100",
+    "9.5折近30天最低价",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商最高减100",
+    "9.5折近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c49247666.jpg",
+   "image_source": "立创商城商品图（C49247666，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250805/6E1495C0B3C0E64F3E67A6968E230D1D.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c49247682",
+  "vendor": "R+O(宏嘉诚)",
+  "vendor_cn": "R+O(宏嘉诚)",
+  "model": "HNTC0402-103F3950FB",
+  "title": "R+O(宏嘉诚) HNTC0402-103F3950FB",
+  "url": "https://item.szlcsc.com/49247682.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.13376,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "0402 版，B 值 3950。",
+  "specs": {
+   "package": "0402",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C49247682",
+   "params": {
+    "功率": "100mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 20,
+     "price": 0.13376
+    },
+    {
+     "qty": 200,
+     "price": 0.10488
+    },
+    {
+     "qty": 600,
+     "price": 0.088825
+    },
+    {
+     "qty": 2000,
+     "price": 0.079135
+    },
+    {
+     "qty": 10000,
+     "price": 0.07087
+    },
+    {
+     "qty": 20000,
+     "price": 0.06631
+    }
+   ],
+   "price_lead": null,
+   "stock": "154K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商最高减100",
+    "9.5折近30天最低价",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商最高减100",
+    "9.5折近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c49247682.jpg",
+   "image_source": "立创商城商品图（C49247682，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250801/DE9205EE3DA3F8A3893DEEB40492E826.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c49247668",
+  "vendor": "R+O(宏嘉诚)",
+  "vendor_cn": "R+O(宏嘉诚)",
+  "model": "HNTC0603-104F3950FB",
+  "title": "R+O(宏嘉诚) HNTC0603-104F3950FB",
+  "url": "https://item.szlcsc.com/49247668.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.1824,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "100kΩ 版（不是 10k），同 0603 封装。",
+  "specs": {
+   "package": "0603",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C49247668",
+   "params": {
+    "功率": "100mW",
+    "阻值": "100kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 10,
+     "price": 0.1824
+    },
+    {
+     "qty": 100,
+     "price": 0.161025
+    },
+    {
+     "qty": 300,
+     "price": 0.15029
+    },
+    {
+     "qty": 1000,
+     "price": 0.14231
+    },
+    {
+     "qty": 4000,
+     "price": 0.13585
+    },
+    {
+     "qty": 8000,
+     "price": 0.13262
+    }
+   ],
+   "price_lead": null,
+   "stock": "65K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商最高减100",
+    "9.5折近30天最低价",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商最高减100",
+    "9.5折近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c49247668.jpg",
+   "image_source": "立创商城商品图（C49247668，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250801/1EBE604D6CF9CD07E6516E37BB575177.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c49247679",
+  "vendor": "R+O(宏嘉诚)",
+  "vendor_cn": "R+O(宏嘉诚)",
+  "model": "HNTC0603-104F4250FB",
+  "title": "R+O(宏嘉诚) HNTC0603-104F4250FB",
+  "url": "https://item.szlcsc.com/49247679.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.2451,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "100kΩ + B 值 4250 的版本。",
+  "specs": {
+   "package": "0603",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C49247679",
+   "params": {
+    "功率": "100mW",
+    "阻值": "100kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 10,
+     "price": 0.2451
+    },
+    {
+     "qty": 100,
+     "price": 0.19988
+    },
+    {
+     "qty": 300,
+     "price": 0.176605
+    },
+    {
+     "qty": 1000,
+     "price": 0.157415
+    },
+    {
+     "qty": 4000,
+     "price": 0.13813
+    },
+    {
+     "qty": 8000,
+     "price": 0.133665
+    }
+   ],
+   "price_lead": null,
+   "stock": "200K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商最高减100",
+    "9.5折近30天最低价",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商最高减100",
+    "9.5折近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c49247679.jpg",
+   "image_source": "立创商城商品图（C49247679，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250801/E618EC6C853662C648CF34D08040B6B2.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ }
+]

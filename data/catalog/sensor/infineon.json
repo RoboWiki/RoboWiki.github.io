@@ -1,0 +1,76 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "pressure",
+  "id": "jlc-c3232508",
+  "vendor": "Infineon(英飞凌)",
+  "vendor_cn": "Infineon(英飞凌)",
+  "model": "DPS368XTSA1",
+  "title": "Infineon(英飞凌) DPS368XTSA1",
+  "url": "https://item.szlcsc.com/3232508.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 25.25,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "**防水防尘防潮**（IPx8 封装），24 位结果，FIFO 存 32 条；户外或潮湿环境选它。",
+  "specs": {
+   "package": "VLGA-8(2x2.5)",
+   "category_cn": "压力传感器",
+   "lcsc_part": "C3232508",
+   "params": {
+    "压力范围": "30Kpa~1.2bar",
+    "工作电压": "1.7V~3.6V",
+    "待机电流": "500nA",
+    "接口类型": "I2C；SPI"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 25.25
+    },
+    {
+     "qty": 10,
+     "price": 21.5
+    },
+    {
+     "qty": 30,
+     "price": 19.27
+    },
+    {
+     "qty": 100,
+     "price": 17.01
+    },
+    {
+     "qty": 500,
+     "price": 15.97
+    },
+    {
+     "qty": 1000,
+     "price": 15.5
+    }
+   ],
+   "price_lead": 15.3,
+   "stock": "12K+",
+   "stock_lead": "10K",
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c3232508.jpg",
+   "image_source": "立创商城商品图（C3232508，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20220812/DD997228859A2E6B5BE01B3E0ED58C18.pdf"
+  },
+  "subtype_label": "压力 / 气压"
+ }
+]

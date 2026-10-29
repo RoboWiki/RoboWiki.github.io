@@ -1,0 +1,77 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "temp",
+  "id": "jlc-c5451632",
+  "vendor": "HXY MOSFET(华轩阳电子)",
+  "vendor_cn": "HXY MOSFET(华轩阳电子)",
+  "model": "DS18B20",
+  "title": "HXY MOSFET(华轩阳电子) DS18B20",
+  "url": "https://item.szlcsc.com/5451632.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 3.1255,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "低价兼容件，±0.4℃（-10~70℃ 区间）。",
+  "specs": {
+   "package": "TO-92",
+   "category_cn": "温度传感器",
+   "lcsc_part": "C5451632",
+   "params": {
+    "检测温度": "-55℃~+125℃",
+    "精度": "±0.4℃",
+    "工作电压": "2.5V~5.5V",
+    "待机电流": "1uA"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 3.1255
+    },
+    {
+     "qty": 10,
+     "price": 2.546
+    },
+    {
+     "qty": 30,
+     "price": 2.2515
+    },
+    {
+     "qty": 100,
+     "price": 1.9665
+    },
+    {
+     "qty": 500,
+     "price": 1.7955
+    },
+    {
+     "qty": 1000,
+     "price": 1.71
+    }
+   ],
+   "price_lead": null,
+   "stock": "2319",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商最高减50",
+    "9.5折近30天最低价",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商最高减50",
+    "9.5折近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c5451632.jpg",
+   "image_source": "立创商城商品图（C5451632，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250918/D8502AE2AE7C7C2D7ACB508408B47C1B.pdf"
+  },
+  "subtype_label": "温度"
+ }
+]

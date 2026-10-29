@@ -73,7 +73,8 @@
    "image_url": "/parts/jlc-c479074.jpg",
    "image_source": "立创商城商品图（C479074，2026-10-29 采集）",
    "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241017/20D4E0A2B8B1F4D0C87998AFE945D902.pdf"
-  }
+  },
+  "subtype_label": "DC-DC 开关电源"
  },
  {
   "category": "chip",
@@ -149,7 +150,8 @@
    "image_url": "/parts/jlc-c78989.jpg",
    "image_source": "立创商城商品图（C78989，2026-10-29 采集）",
    "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20231220/AC9769C08364036A6167CC3BCE05E307.pdf"
-  }
+  },
+  "subtype_label": "DC-DC 开关电源"
  },
  {
   "category": "chip",
@@ -226,6 +228,7 @@
    "image_url": "/parts/jlc-c55136.jpg",
    "image_source": "立创商城商品图（C55136，2026-10-29 采集）",
    "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241017/20D4E0A2B8B1F4D0C87998AFE945D902.pdf"
-  }
+  },
+  "subtype_label": "功率电子开关"
  }
 ]

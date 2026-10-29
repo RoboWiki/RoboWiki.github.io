@@ -13,7 +13,7 @@ title: TI TPS2116DRLR
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">硬件芯片</span>
-      <span class="part-tag soft">pmic</span>
+      <span class="part-tag soft">专业 PMIC</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥2.39</span>
     </div>

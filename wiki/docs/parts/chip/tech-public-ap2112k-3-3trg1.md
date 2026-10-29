@@ -13,7 +13,7 @@ title: TECH PUBLIC AP2112K-3.3TRG1
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">硬件芯片</span>
-      <span class="part-tag soft">ldo</span>
+      <span class="part-tag soft">线性稳压 LDO</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥0.6796</span>
     </div>

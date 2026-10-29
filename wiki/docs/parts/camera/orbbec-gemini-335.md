@@ -13,7 +13,7 @@ title: 奥比中光 Orbbec Gemini 335
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">深度相机</span>
-      <span class="part-tag soft">structured</span>
+      <span class="part-tag soft">结构光</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥1,950</span>
     </div>

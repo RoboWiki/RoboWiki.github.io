@@ -13,7 +13,7 @@ title: 达妙 DAMIAO DM-IMU-L1
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">IMU</span>
-      <span class="part-tag soft">six-axis</span>
+      <span class="part-tag soft">六轴模组</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥59</span>
     </div>
@@ -25,7 +25,6 @@ title: 达妙 DAMIAO DM-IMU-L1
 
 | 字段 | 值 |
 |---|---|
-| ODR (Hz) | 1,000 |
 | 陀螺量程 (°/s) | 2,000 |
 | 加计量程 (g) | 24 |
 | 接口 | USB-C / CAN / RS485 |
@@ -64,12 +63,14 @@ title: 达妙 DAMIAO DM-IMU-L1
 
 | 字段 | 值 |
 |---|---|
-| ODR (Hz) | 1,000 |
 | 陀螺量程 (°/s) | 2,000 |
 | 加计量程 (g) | 24 |
 | 接口 | USB-C / CAN / RS485 |
 | 额定电压 (V) | 24 |
+| 封装 | — |
+| 库存 | — |
 | 电压范围 | 5–28 V DC（USB-C 可 5 V 供电） |
+| ODR (Hz) | 1,000 |
 | 输出周期说明 | 输出周期 1–1000 ms 可设，对应 1–1000 Hz |
 | 内部采样率 (Hz) | 2,000 |
 | 陀螺量程档位 | 125 / 250 / 500 / 1000 / 2000 °/s |

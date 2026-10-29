@@ -13,7 +13,7 @@ title: TI TLV62569DBVR
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">硬件芯片</span>
-      <span class="part-tag soft">dcdc</span>
+      <span class="part-tag soft">DC-DC 开关电源</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥0.4219</span>
     </div>

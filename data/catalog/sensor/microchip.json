@@ -1,0 +1,76 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "temp",
+  "id": "jlc-c127949",
+  "vendor": "MICROCHIP(美国微芯)",
+  "vendor_cn": "MICROCHIP(美国微芯)",
+  "model": "MCP9700AT-E/TT",
+  "title": "MICROCHIP(美国微芯) MCP9700AT-E/TT",
+  "url": "https://item.szlcsc.com/127949.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 2.54,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "**模拟输出**（线性电压，不是数字接口），±2℃；要用 MCU 的 ADC 读。",
+  "specs": {
+   "package": "SOT-23",
+   "category_cn": "温度传感器",
+   "lcsc_part": "C127949",
+   "params": {
+    "检测温度": "-40℃~+125℃",
+    "精度": "±2℃",
+    "工作电压": "2.3V~5.5V",
+    "工作电流": "6uA"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 2.54
+    },
+    {
+     "qty": 10,
+     "price": 2
+    },
+    {
+     "qty": 30,
+     "price": 1.77
+    },
+    {
+     "qty": 100,
+     "price": 1.48
+    },
+    {
+     "qty": 500,
+     "price": 1.35
+    },
+    {
+     "qty": 1000,
+     "price": 1.27
+    }
+   ],
+   "price_lead": 1.13,
+   "stock": "7948",
+   "stock_lead": "25K+",
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c127949.jpg",
+   "image_source": "立创商城商品图（C127949，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20180329/C97546_891156744EF359E8E03F21D22CC42BFE.pdf"
+  },
+  "subtype_label": "温度"
+ }
+]

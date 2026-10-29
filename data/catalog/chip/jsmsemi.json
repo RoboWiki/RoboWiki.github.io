@@ -75,7 +75,8 @@
    "image_url": "/parts/jlc-c5205141.jpg",
    "image_source": "立创商城商品图（C5205141，2026-10-29 采集）",
    "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20260810/9FB4D1EF1DD6A0D87138E1278191BA1C.pdf"
-  }
+  },
+  "subtype_label": "线性稳压 LDO"
  },
  {
   "category": "chip",
@@ -153,6 +154,7 @@
    "image_url": "/parts/jlc-c963380.jpg",
    "image_source": "立创商城商品图（C963380，2026-10-29 采集）",
    "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241017/21A61A2DF2FB171451B837C67E7CAF58.pdf"
-  }
+  },
+  "subtype_label": "电压基准"
  }
 ]

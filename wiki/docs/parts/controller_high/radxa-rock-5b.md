@@ -13,7 +13,7 @@ title: 瑞莎 Radxa ROCK 5B
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">上位机</span>
-      <span class="part-tag soft">sbc</span>
+      <span class="part-tag soft">单板计算机</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥884</span>
     </div>

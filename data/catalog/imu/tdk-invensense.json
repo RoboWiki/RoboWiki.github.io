@@ -1,0 +1,293 @@
+[
+ {
+  "category": "imu",
+  "subtype": "imu_chip",
+  "id": "jlc-c3288646",
+  "vendor": "TDK InvenSense(应美盛)",
+  "vendor_cn": "TDK InvenSense(应美盛)",
+  "model": "ICM-42670-P",
+  "title": "TDK InvenSense(应美盛) ICM-42670-P",
+  "url": "https://item.szlcsc.com/3288646.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 11.31,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "同类里噪声最低的一档，抗 20000g 冲击与 SMT 弯曲偏移；2.25KB FIFO。",
+  "specs": {
+   "package": "LGA-14(2.5x3)",
+   "category_cn": "姿态传感器/陀螺仪",
+   "lcsc_part": "C3288646",
+   "params": {
+    "加速度计轴向": "X,Y,Z",
+    "加速度计量程": "±16g",
+    "陀螺仪轴向": "X,Y,Z",
+    "陀螺仪量程": "±2000dps"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 11.31
+    },
+    {
+     "qty": 10,
+     "price": 9.99
+    },
+    {
+     "qty": 30,
+     "price": 9.06
+    },
+    {
+     "qty": 100,
+     "price": 8.22
+    },
+    {
+     "qty": 500,
+     "price": 7.83
+    },
+    {
+     "qty": 1000,
+     "price": 7.67
+    }
+   ],
+   "price_lead": 7.35,
+   "stock": "3067",
+   "stock_lead": "10K",
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c3288646.jpg",
+   "image_source": "立创商城商品图（C3288646，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241231/BACB6B17D2F07D3802BC0B041DB91B89.pdf",
+   "gyro_range_dps": "2000",
+   "accel_range_g": "16",
+   "odr_hz": null,
+   "iface": null,
+   "voltage_V": null
+  },
+  "subtype_label": "IMU 芯片"
+ },
+ {
+  "category": "imu",
+  "subtype": "imu_chip",
+  "id": "jlc-c22459454",
+  "vendor": "TDK InvenSense(应美盛)",
+  "vendor_cn": "TDK InvenSense(应美盛)",
+  "model": "ICM-45686",
+  "title": "TDK InvenSense(应美盛) ICM-45686",
+  "url": "https://item.szlcsc.com/22459454.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 72.88,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "双接口（UI + AUX），8KB FIFO；量程 ±32g/±4000dps，带片上 APEX 运动处理引擎。",
+  "specs": {
+   "package": "LGA-14(3x2.5)",
+   "category_cn": "姿态传感器/陀螺仪",
+   "lcsc_part": "C22459454",
+   "params": {
+    "加速度计轴向": "X,Y,Z",
+    "加速度计量程": "±32g",
+    "陀螺仪轴向": "X,Y,Z",
+    "陀螺仪量程": "±4000dps"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 72.88
+    },
+    {
+     "qty": 10,
+     "price": 62.09
+    },
+    {
+     "qty": 30,
+     "price": 55.52
+    },
+    {
+     "qty": 100,
+     "price": 50
+    }
+   ],
+   "price_lead": null,
+   "stock": "5390",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c22459454.jpg",
+   "image_source": "立创商城商品图（C22459454，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20240704/ABAB537AD22E53DEE8E4ED28732AF5C9.pdf",
+   "gyro_range_dps": "4000",
+   "accel_range_g": "32",
+   "odr_hz": null,
+   "iface": null,
+   "voltage_V": null
+  },
+  "subtype_label": "IMU 芯片"
+ },
+ {
+  "category": "imu",
+  "subtype": "imu_chip",
+  "id": "jlc-c726001",
+  "vendor": "TDK InvenSense(应美盛)",
+  "vendor_cn": "TDK InvenSense(应美盛)",
+  "model": "ICM-20948",
+  "title": "TDK InvenSense(应美盛) ICM-20948",
+  "url": "https://item.szlcsc.com/726001.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 122.03,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "**九轴**（陀螺 + 加速度 + 磁力计 + DMP），QFN-24。要航向角就选它，不用外挂磁力计。",
+  "specs": {
+   "package": "QFN-24(3x3)",
+   "category_cn": "姿态传感器/陀螺仪",
+   "lcsc_part": "C726001",
+   "params": {
+    "加速度计轴向": "X,Y,Z",
+    "加速度计量程": "±16g",
+    "陀螺仪轴向": "X,Y,Z",
+    "陀螺仪量程": "±2000dps"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 122.03
+    },
+    {
+     "qty": 10,
+     "price": 109.06
+    },
+    {
+     "qty": 30,
+     "price": 104.35
+    },
+    {
+     "qty": 100,
+     "price": 95
+    }
+   ],
+   "price_lead": null,
+   "stock": "2286",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c726001.jpg",
+   "image_source": "立创商城商品图（C726001，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20210715/C726001_EFE09342631EBC06FA98BEAE6CEEEE9D.pdf",
+   "gyro_range_dps": "2000",
+   "accel_range_g": "16",
+   "odr_hz": null,
+   "iface": null,
+   "voltage_V": null
+  },
+  "subtype_label": "IMU 芯片"
+ },
+ {
+  "category": "imu",
+  "subtype": "imu_chip",
+  "id": "jlc-c24112",
+  "vendor": "TDK InvenSense(应美盛)",
+  "vendor_cn": "TDK InvenSense(应美盛)",
+  "model": "MPU-6050",
+  "title": "TDK InvenSense(应美盛) MPU-6050",
+  "url": "https://item.szlcsc.com/24112.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 131.36,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "老经典：资料/教程最多，但已停产多年，**单价被炒到 ￥130**，新设计别再用。",
+  "specs": {
+   "package": "QFN-24-EP(4x4)",
+   "category_cn": "姿态传感器/陀螺仪",
+   "lcsc_part": "C24112",
+   "params": {
+    "加速度计轴向": "X,Y,Z",
+    "加速度计量程": "±16g",
+    "陀螺仪轴向": "X,Y,Z",
+    "陀螺仪量程": "±2000dps"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 131.36
+    },
+    {
+     "qty": 10,
+     "price": 117.27
+    },
+    {
+     "qty": 30,
+     "price": 112.15
+    },
+    {
+     "qty": 100,
+     "price": 102
+    }
+   ],
+   "price_lead": 96,
+   "stock": "3262",
+   "stock_lead": "10K",
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c24112.jpg",
+   "image_source": "立创商城商品图（C24112，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20140425/1457707046159.pdf",
+   "gyro_range_dps": "2000",
+   "accel_range_g": "16",
+   "odr_hz": null,
+   "iface": null,
+   "voltage_V": null
+  },
+  "subtype_label": "IMU 芯片"
+ }
+]

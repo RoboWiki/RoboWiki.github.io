@@ -1,0 +1,160 @@
+[
+ {
+  "category": "imu",
+  "subtype": "accel",
+  "id": "jlc-c2887190",
+  "vendor": "QST(上海矽睿)",
+  "vendor_cn": "QST(上海矽睿)",
+  "model": "QMA6100P",
+  "title": "QST(上海矽睿) QMA6100P",
+  "url": "https://item.szlcsc.com/2887190.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 3.59,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "三轴加速度，量程到 ±32g、14 位；屏幕旋转/计步/冲击检测这类应用的主场。",
+  "specs": {
+   "package": "LGA-12(2x2)",
+   "category_cn": "姿态传感器/陀螺仪",
+   "lcsc_part": "C2887190",
+   "params": {
+    "加速度计轴向": "X,Y,Z",
+    "加速度计量程": "±32g",
+    "传感器类型": "加速度计",
+    "输出位数": "14bit"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 3.59
+    },
+    {
+     "qty": 10,
+     "price": 2.87
+    },
+    {
+     "qty": 30,
+     "price": 2.52
+    },
+    {
+     "qty": 100,
+     "price": 2.21
+    },
+    {
+     "qty": 500,
+     "price": 1.82
+    },
+    {
+     "qty": 1000,
+     "price": 1.77
+    }
+   ],
+   "price_lead": null,
+   "stock": "26K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c2887190.jpg",
+   "image_source": "立创商城商品图（C2887190，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20220816/D187C036192D6D1892376D9839EC149E.pdf",
+   "accel_range_g": "32",
+   "odr_hz": null,
+   "gyro_range_dps": null,
+   "iface": null,
+   "voltage_V": null
+  },
+  "subtype_label": "加速度计芯片"
+ },
+ {
+  "category": "imu",
+  "subtype": "accel",
+  "id": "jlc-c3021082",
+  "vendor": "QST(上海矽睿)",
+  "vendor_cn": "QST(上海矽睿)",
+  "model": "QMI8658A",
+  "title": "QST(上海矽睿) QMI8658A",
+  "url": "https://item.szlcsc.com/3021082.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 12.13,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "国产 6 轴 IMU，陀螺噪声 13 mdps/√Hz，延迟低；性价比路线的主力替代。",
+  "specs": {
+   "package": "LGA-14",
+   "category_cn": "姿态传感器/陀螺仪",
+   "lcsc_part": "C3021082",
+   "params": {
+    "加速度计轴向": "X,Y,Z",
+    "加速度计量程": "±16g",
+    "陀螺仪轴向": "X,Y,Z",
+    "陀螺仪量程": "±2048dps"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 12.13
+    },
+    {
+     "qty": 10,
+     "price": 10.77
+    },
+    {
+     "qty": 30,
+     "price": 9.48
+    },
+    {
+     "qty": 100,
+     "price": 8.52
+    },
+    {
+     "qty": 500,
+     "price": 6.32
+    },
+    {
+     "qty": 1000,
+     "price": 6.13
+    }
+   ],
+   "price_lead": null,
+   "stock": "10K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c3021082.jpg",
+   "image_source": "立创商城商品图（C3021082，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20230804/748E61E1BAEF8C31413DC641004C80DF.pdf",
+   "gyro_range_dps": "2048",
+   "accel_range_g": "16",
+   "odr_hz": null,
+   "iface": null,
+   "voltage_V": null
+  },
+  "subtype_label": "加速度计芯片"
+ }
+]

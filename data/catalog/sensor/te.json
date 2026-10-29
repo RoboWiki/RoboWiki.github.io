@@ -1,0 +1,68 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "pressure",
+  "id": "jlc-c15639",
+  "vendor": "TE Connectivity(泰科电子)",
+  "vendor_cn": "TE Connectivity(泰科电子)",
+  "model": "MS561101BA03-50",
+  "title": "TE Connectivity(泰科电子) MS561101BA03-50",
+  "url": "https://item.szlcsc.com/15639.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 39.61,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "气压计量程可到 1 kPa（高海拔/低压差场合），老牌飞控常用件。",
+  "specs": {
+   "package": "QFN-8(3x5)",
+   "category_cn": "压力传感器",
+   "lcsc_part": "C15639",
+   "params": {
+    "压力范围": "1Kpa~1.2bar",
+    "工作电压": "1.8V~3.6V",
+    "待机电流": "140nA",
+    "接口类型": "SPI；I2C"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 39.61
+    },
+    {
+     "qty": 10,
+     "price": 35.78
+    },
+    {
+     "qty": 30,
+     "price": 33.33
+    },
+    {
+     "qty": 100,
+     "price": 30.97
+    }
+   ],
+   "price_lead": null,
+   "stock": "920",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c15639.jpg",
+   "image_source": "立创商城商品图（C15639，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20180821/C15639_4EFE89978C2F43A6E79F3F0E2C835599.pdf"
+  },
+  "subtype_label": "压力 / 气压"
+ }
+]

@@ -44,7 +44,8 @@
   },
   "notes": "",
   "origin": "灵足官方资料库 灵足时代EL系列产品规格介绍(2026.09.22).pdf（https://github.com/RobStride/Product_Information）",
-  "search": "灵足 robstride el05 北京灵足时代 can"
+  "search": "灵足 robstride el05 北京灵足时代 can",
+  "subtype_label": "准直驱 QDD"
  },
  {
   "id": "灵足-robstride-rs00",
@@ -91,7 +92,8 @@
   },
   "notes": "",
   "origin": "灵足官方资料库 灵足时代RS系列产品规格介绍(2026.010.09).pdf（https://github.com/RobStride/Product_Information）",
-  "search": "灵足 robstride rs00"
+  "search": "灵足 robstride rs00",
+  "subtype_label": "准直驱 QDD"
  },
  {
   "id": "灵足-robstride-rs01",
@@ -138,7 +140,8 @@
   },
   "notes": "",
   "origin": "灵足官方资料库 灵足时代RS系列产品规格介绍(2026.010.09).pdf（https://github.com/RobStride/Product_Information）",
-  "search": "灵足 robstride rs01"
+  "search": "灵足 robstride rs01",
+  "subtype_label": "准直驱 QDD"
  },
  {
   "id": "灵足-robstride-rs02",
@@ -185,7 +188,8 @@
   },
   "notes": "",
   "origin": "灵足官方资料库 灵足时代RS系列产品规格介绍(2026.010.09).pdf（https://github.com/RobStride/Product_Information）",
-  "search": "灵足 robstride rs02"
+  "search": "灵足 robstride rs02",
+  "subtype_label": "准直驱 QDD"
  },
  {
   "id": "灵足-robstride-rs03",
@@ -232,7 +236,8 @@
   },
   "notes": "",
   "origin": "灵足官方资料库 灵足时代RS系列产品规格介绍(2026.010.09).pdf（https://github.com/RobStride/Product_Information）",
-  "search": "灵足 robstride rs03"
+  "search": "灵足 robstride rs03",
+  "subtype_label": "准直驱 QDD"
  },
  {
   "id": "灵足-robstride-rs04",
@@ -279,7 +284,8 @@
   },
   "notes": "",
   "origin": "灵足官方资料库 灵足时代RS系列产品规格介绍(2026.010.09).pdf（https://github.com/RobStride/Product_Information）",
-  "search": "灵足 robstride rs04"
+  "search": "灵足 robstride rs04",
+  "subtype_label": "准直驱 QDD"
  },
  {
   "id": "灵足-robstride-rs05",
@@ -326,7 +332,8 @@
   },
   "notes": "",
   "origin": "灵足官方资料库 灵足时代RS系列产品规格介绍(2026.010.09).pdf（https://github.com/RobStride/Product_Information）",
-  "search": "灵足 robstride rs05"
+  "search": "灵足 robstride rs05",
+  "subtype_label": "准直驱 QDD"
  },
  {
   "id": "灵足-robstride-rs06",
@@ -373,7 +380,8 @@
   },
   "notes": "",
   "origin": "灵足官方资料库 灵足时代RS系列产品规格介绍(2026.010.09).pdf（https://github.com/RobStride/Product_Information）",
-  "search": "灵足 robstride rs06"
+  "search": "灵足 robstride rs06",
+  "subtype_label": "准直驱 QDD"
  },
  {
   "id": "灵足-robstride-rs10",
@@ -420,6 +428,7 @@
   },
   "notes": "",
   "origin": "灵足官方资料库 灵足时代RS系列产品规格介绍(2026.010.09).pdf（https://github.com/RobStride/Product_Information）",
-  "search": "灵足 robstride rs10 北京灵足时代 can"
+  "search": "灵足 robstride rs10 北京灵足时代 can",
+  "subtype_label": "准直驱 QDD"
  }
 ]

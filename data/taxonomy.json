@@ -344,21 +344,22 @@
    "id": "imu",
    "name": "IMU",
    "hint": "姿态与振动",
-   "subtypes": {},
+   "subtypes": {
+    "imu_chip": "IMU 芯片",
+    "accel": "加速度计芯片",
+    "imu_module": "IMU 模组",
+    "six-axis": "六轴模组",
+    "nine-axis": "九轴模组"
+   },
    "keys": [
-    {
-     "k": "odr_hz",
-     "label": "ODR",
-     "unit": " Hz"
-    },
     {
      "k": "gyro_range_dps",
      "label": "陀螺量程",
-     "unit": " °/s"
+     "unit": " dps"
     },
     {
      "k": "accel_range_g",
-     "label": "加计量程",
+     "label": "加速度量程",
      "unit": " g"
     },
     {
@@ -368,15 +369,21 @@
     },
     {
      "k": "voltage_V",
-     "label": "供电",
-     "unit": " V"
+     "label": "工作电压",
+     "unit": ""
+    },
+    {
+     "k": "package",
+     "label": "封装",
+     "unit": ""
+    },
+    {
+     "k": "stock",
+     "label": "库存",
+     "unit": ""
     }
    ],
    "sorts": [
-    {
-     "k": "odr_hz",
-     "label": "ODR"
-    },
     {
      "k": "price",
      "label": "价格"
@@ -396,27 +403,25 @@
   {
    "id": "sensor",
    "name": "传感器",
-   "hint": "ToF / 电流 / 霍尔",
+   "hint": "NTC / 温湿度 / 温度 / 压力 / 光 / ToF / 触摸",
    "subtypes": {
+    "ntc": "NTC 热敏电阻",
+    "temp_humid": "温湿度",
+    "temp": "温度",
+    "pressure": "压力 / 气压",
+    "light": "光敏 / 环境光",
+    "position": "位置 / 角度",
     "tof": "ToF 测距",
+    "touch": "触摸",
+    "vibration": "振动",
     "current": "电流检测",
-    "hall": "霍尔/磁"
+    "hall": "霍尔 / 磁"
    },
    "keys": [
     {
-     "k": "range_m",
-     "label": "量程",
-     "unit": " m"
-    },
-    {
-     "k": "fov",
-     "label": "视场",
+     "k": "package",
+     "label": "封装",
      "unit": ""
-    },
-    {
-     "k": "fps",
-     "label": "帧率",
-     "unit": " Hz"
     },
     {
      "k": "iface",
@@ -424,21 +429,27 @@
      "unit": ""
     },
     {
-     "k": "voltage_range",
-     "label": "供电",
+     "k": "voltage_V",
+     "label": "工作电压",
      "unit": ""
     },
     {
-     "k": "mass_kg",
-     "label": "质量",
-     "unit": " kg"
+     "k": "accuracy",
+     "label": "精度",
+     "unit": ""
+    },
+    {
+     "k": "range",
+     "label": "量程",
+     "unit": ""
+    },
+    {
+     "k": "stock",
+     "label": "库存",
+     "unit": ""
     }
    ],
    "sorts": [
-    {
-     "k": "range_m",
-     "label": "量程"
-    },
     {
      "k": "price",
      "label": "价格"
@@ -446,6 +457,10 @@
     {
      "k": "rating",
      "label": "评分"
+    },
+    {
+     "k": "accuracy",
+     "label": "精度"
     }
    ],
    "rating_dims": [
@@ -989,6 +1004,210 @@
   "西安航天民芯": {
    "slug": "xa-aerospace",
    "cn": "西安航天民芯"
+  },
+  "达妙科技": {
+   "slug": "v62758",
+   "cn": "达妙科技"
+  },
+  "大疆": {
+   "slug": "v92813",
+   "cn": "大疆"
+  },
+  "北京灵足时代": {
+   "slug": "v8418",
+   "cn": "北京灵足时代"
+  },
+  "宇树科技": {
+   "slug": "v9756",
+   "cn": "宇树科技"
+  },
+  "RealSense（原 Intel）": {
+   "slug": "realsense-intel",
+   "cn": "RealSense（原 Intel）"
+  },
+  "奥比中光": {
+   "slug": "v93251",
+   "cn": "奥比中光"
+  },
+  "ADI(亚德诺)/MAXIM(美信)": {
+   "slug": "adi-maxim",
+   "cn": "ADI(亚德诺)/MAXIM(美信)"
+  },
+  "地瓜机器人": {
+   "slug": "v98148",
+   "cn": "地瓜机器人"
+  },
+  "瑞莎科技": {
+   "slug": "v64615",
+   "cn": "瑞莎科技"
+  },
+  "英伟达": {
+   "slug": "v98950",
+   "cn": "英伟达"
+  },
+  "香橙派": {
+   "slug": "v86013",
+   "cn": "香橙派"
+  },
+  "大疆创新": {
+   "slug": "v13309",
+   "cn": "大疆创新"
+  },
+  "博世传感": {
+   "slug": "v1652",
+   "cn": "博世传感"
+  },
+  "北京超核电子": {
+   "slug": "v38610",
+   "cn": "北京超核电子"
+  },
+  "QST(上海矽睿)": {
+   "slug": "qst",
+   "cn": "QST(上海矽睿)"
+  },
+  "SILAN(士兰微)": {
+   "slug": "silan",
+   "cn": "SILAN(士兰微)"
+  },
+  "TDK InvenSense(应美盛)": {
+   "slug": "tdk-invensense",
+   "cn": "TDK InvenSense(应美盛)"
+  },
+  "TDK 应美盛": {
+   "slug": "tdk-2",
+   "cn": "TDK 应美盛"
+  },
+  "Tokmas(托克马斯)": {
+   "slug": "tokmas",
+   "cn": "Tokmas(托克马斯)"
+  },
+  "深圳市维特智能科技": {
+   "slug": "v23774",
+   "cn": "深圳市维特智能科技"
+  },
+  "Movella（Xsens）": {
+   "slug": "movella-xsens",
+   "cn": "Movella（Xsens）"
+  },
+  "览沃": {
+   "slug": "v67188",
+   "cn": "览沃"
+  },
+  "上海曼孚科技": {
+   "slug": "v34180",
+   "cn": "上海曼孚科技"
+  },
+  "速腾聚创": {
+   "slug": "v37444",
+   "cn": "速腾聚创"
+  },
+  "思岚科技": {
+   "slug": "v45312",
+   "cn": "思岚科技"
+  },
+  "宇树": {
+   "slug": "v11816",
+   "cn": "宇树"
+  },
+  "广州奥松": {
+   "slug": "aosong",
+   "cn": "广州奥松"
+  },
+  "EVERLIGHT(亿光)": {
+   "slug": "everlight",
+   "cn": "EVERLIGHT(亿光)"
+  },
+  "FH(风华)": {
+   "slug": "fenghua",
+   "cn": "FH(风华)"
+  },
+  "Goertek(歌尔)": {
+   "slug": "goertek",
+   "cn": "Goertek(歌尔)"
+  },
+  "hanxia(韩下)": {
+   "slug": "hanxia",
+   "cn": "hanxia(韩下)"
+  },
+  "HEL(鸿志)": {
+   "slug": "hel",
+   "cn": "HEL(鸿志)"
+  },
+  "HXY MOSFET(华轩阳电子)": {
+   "slug": "hxy",
+   "cn": "HXY MOSFET(华轩阳电子)"
+  },
+  "Infineon(英飞凌)": {
+   "slug": "infineon",
+   "cn": "Infineon(英飞凌)"
+  },
+  "JCHL(晶创和立)": {
+   "slug": "jchl",
+   "cn": "JCHL(晶创和立)"
+  },
+  "KUU": {
+   "slug": "kuu",
+   "cn": "KUU"
+  },
+  "MICROCHIP(美国微芯)": {
+   "slug": "microchip",
+   "cn": "MICROCHIP(美国微芯)"
+  },
+  "muRata(村田)": {
+   "slug": "murata",
+   "cn": "muRata(村田)"
+  },
+  "Nyfea(徕飞)": {
+   "slug": "nyfea",
+   "cn": "Nyfea(徕飞)"
+  },
+  "R+O(宏嘉诚)": {
+   "slug": "r-o",
+   "cn": "R+O(宏嘉诚)"
+  },
+  "ROHM(罗姆)": {
+   "slug": "rohm",
+   "cn": "ROHM(罗姆)"
+  },
+  "RUILON(瑞隆源)": {
+   "slug": "ruilon",
+   "cn": "RUILON(瑞隆源)"
+  },
+  "Sensirion(瑞士盛思锐)": {
+   "slug": "sensirion",
+   "cn": "Sensirion(瑞士盛思锐)"
+  },
+  "时恒": {
+   "slug": "shiheng",
+   "cn": "时恒"
+  },
+  "STE(松田)": {
+   "slug": "ste",
+   "cn": "STE(松田)"
+  },
+  "Sunlord(顺络)": {
+   "slug": "sunlord",
+   "cn": "Sunlord(顺络)"
+  },
+  "TDSEMIC(拓电半导体)": {
+   "slug": "tdsemic",
+   "cn": "TDSEMIC(拓电半导体)"
+  },
+  "TE Connectivity(泰科电子)": {
+   "slug": "te-connectivity",
+   "cn": "TE Connectivity(泰科电子)"
+  },
+  "深圳飞特模型": {
+   "slug": "v47476",
+   "cn": "深圳飞特模型"
+  },
+  "飞特": {
+   "slug": "v87478",
+   "cn": "飞特"
+  },
+  "达妙": {
+   "slug": "v74599",
+   "cn": "达妙"
   }
  }
 }

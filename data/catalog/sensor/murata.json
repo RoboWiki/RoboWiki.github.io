@@ -1,0 +1,446 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c13564",
+  "vendor": "muRata(村田)",
+  "vendor_cn": "muRata(村田)",
+  "model": "NCP18XH103F03RB",
+  "title": "muRata(村田) NCP18XH103F03RB",
+  "url": "https://item.szlcsc.com/13564.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.31,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "村田 0603 NTC，10kΩ ±1%，B 值 ±1%。通用测温与温度补偿。",
+  "specs": {
+   "package": "0603",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C13564",
+   "params": {
+    "功率": "100mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 10,
+     "price": 0.31
+    },
+    {
+     "qty": 100,
+     "price": 0.2611
+    },
+    {
+     "qty": 300,
+     "price": 0.2359
+    },
+    {
+     "qty": 1000,
+     "price": 0.2152
+    },
+    {
+     "qty": 4000,
+     "price": 0.201
+    },
+    {
+     "qty": 8000,
+     "price": 0.1961
+    }
+   ],
+   "price_lead": null,
+   "stock": "138K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "RoHS",
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c13564.jpg",
+   "image_source": "立创商城商品图（C13564，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20130819/1457706638081.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c77131",
+  "vendor": "muRata(村田)",
+  "vendor_cn": "muRata(村田)",
+  "model": "NCP15XH103F03RC",
+  "title": "muRata(村田) NCP15XH103F03RC",
+  "url": "https://item.szlcsc.com/77131.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.1143,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "0402 小尺寸版，同 10kΩ/±1%。",
+  "specs": {
+   "package": "0402",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C77131",
+   "params": {
+    "功率": "100mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 50,
+     "price": 0.1143
+    },
+    {
+     "qty": 500,
+     "price": 0.0906
+    },
+    {
+     "qty": 1500,
+     "price": 0.0801
+    },
+    {
+     "qty": 10000,
+     "price": 0.0674
+    },
+    {
+     "qty": 20000,
+     "price": 0.0642
+    },
+    {
+     "qty": 50000,
+     "price": 0.0621
+    }
+   ],
+   "price_lead": null,
+   "stock": "290K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "RoHS",
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c77131.jpg",
+   "image_source": "立创商城商品图（C77131，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20191017/C437581_F6360BF8E6A38281D0EED84DF6C92458.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c162670",
+  "vendor": "muRata(村田)",
+  "vendor_cn": "muRata(村田)",
+  "model": "NCU18XH103F6SRB",
+  "title": "muRata(村田) NCU18XH103F6SRB",
+  "url": "https://item.szlcsc.com/162670.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.391,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "车规 NCU 系列（UL/cUL 认证），长期老化稳定性好，价格是同规格普通件的两倍。",
+  "specs": {
+   "package": "0603",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C162670",
+   "params": {
+    "功率": "100mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 10,
+     "price": 0.391
+    },
+    {
+     "qty": 100,
+     "price": 0.3355
+    },
+    {
+     "qty": 300,
+     "price": 0.307
+    },
+    {
+     "qty": 1000,
+     "price": 0.2835
+    },
+    {
+     "qty": 4000,
+     "price": 0.2045
+    },
+    {
+     "qty": 8000,
+     "price": 0.199
+    }
+   ],
+   "price_lead": null,
+   "stock": "59K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c162670.jpg",
+   "image_source": "立创商城商品图（C162670，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20260224/1B7DA7408EF71CA48527ACD202CD9221.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c333993",
+  "vendor": "muRata(村田)",
+  "vendor_cn": "muRata(村田)",
+  "model": "NCU15XH103F6SRC",
+  "title": "muRata(村田) NCU15XH103F6SRC",
+  "url": "https://item.szlcsc.com/333993.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.2555,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "车规 NCU 0402 版，B=3380K，面向发动机控制单元等车载场景。",
+  "specs": {
+   "package": "0402",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C333993",
+   "params": {
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%",
+    "B值": "3380K"
+   },
+   "price_tiers": [
+    {
+     "qty": 20,
+     "price": 0.2555
+    },
+    {
+     "qty": 200,
+     "price": 0.2066
+    },
+    {
+     "qty": 600,
+     "price": 0.1794
+    },
+    {
+     "qty": 2000,
+     "price": 0.163
+    },
+    {
+     "qty": 10000,
+     "price": 0.1489
+    },
+    {
+     "qty": 20000,
+     "price": 0.1413
+    }
+   ],
+   "price_lead": null,
+   "stock": "40K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c333993.jpg",
+   "image_source": "立创商城商品图（C333993，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20181206/C333993_AE3AD76CA23D314C2F37E76C0017A0E6.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c98098",
+  "vendor": "muRata(村田)",
+  "vendor_cn": "muRata(村田)",
+  "model": "NCP03XH103F05RL",
+  "title": "muRata(村田) NCP03XH103F05RL",
+  "url": "https://item.szlcsc.com/98098.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.1021,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "0201 极小封装，手工焊不友好，量产用。",
+  "specs": {
+   "package": "0201",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C98098",
+   "params": {
+    "功率": "100mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 50,
+     "price": 0.1021
+    },
+    {
+     "qty": 500,
+     "price": 0.0829
+    },
+    {
+     "qty": 1500,
+     "price": 0.0722
+    },
+    {
+     "qty": 15000,
+     "price": 0.0657
+    },
+    {
+     "qty": 30000,
+     "price": 0.0602
+    },
+    {
+     "qty": 45000,
+     "price": 0.0572
+    }
+   ],
+   "price_lead": null,
+   "stock": "65K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c98098.jpg",
+   "image_source": "立创商城商品图（C98098，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20230811/15917592CFFC97B1FD49D926208FF3E8.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c77130",
+  "vendor": "muRata(村田)",
+  "vendor_cn": "muRata(村田)",
+  "model": "NCP15WF104F03RC",
+  "title": "muRata(村田) NCP15WF104F03RC",
+  "url": "https://item.szlcsc.com/77130.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.1198,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "100kΩ 版，0402。",
+  "specs": {
+   "package": "0402",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C77130",
+   "params": {
+    "功率": "100mW",
+    "阻值": "100kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 20,
+     "price": 0.1198
+    },
+    {
+     "qty": 200,
+     "price": 0.0918
+    },
+    {
+     "qty": 600,
+     "price": 0.0793
+    },
+    {
+     "qty": 2000,
+     "price": 0.07
+    },
+    {
+     "qty": 10000,
+     "price": 0.0663
+    },
+    {
+     "qty": 20000,
+     "price": 0.0638
+    }
+   ],
+   "price_lead": null,
+   "stock": "291K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c77130.jpg",
+   "image_source": "立创商城商品图（C77130，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20191017/C437581_F6360BF8E6A38281D0EED84DF6C92458.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ }
+]

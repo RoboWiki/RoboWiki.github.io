@@ -13,7 +13,7 @@ title: Silergy SY6280AAC
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">硬件芯片</span>
-      <span class="part-tag soft">pwr_switch</span>
+      <span class="part-tag soft">功率电子开关</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥0.5556</span>
     </div>

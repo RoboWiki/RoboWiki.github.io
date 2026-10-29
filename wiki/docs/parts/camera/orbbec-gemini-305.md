@@ -13,7 +13,7 @@ title: 奥比中光 Orbbec Gemini 305
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">深度相机</span>
-      <span class="part-tag soft">stereo</span>
+      <span class="part-tag soft">双目</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
     </div>

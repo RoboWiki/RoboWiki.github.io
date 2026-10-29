@@ -13,7 +13,7 @@ title: 奥比中光 Orbbec Gemini 336
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">深度相机</span>
-      <span class="part-tag soft">structured</span>
+      <span class="part-tag soft">结构光</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
     </div>

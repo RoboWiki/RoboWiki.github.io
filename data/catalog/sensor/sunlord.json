@@ -1,0 +1,443 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c279936",
+  "vendor": "Sunlord(顺络)",
+  "vendor_cn": "Sunlord(顺络)",
+  "model": "SDNT1608X103F3950FTF",
+  "title": "Sunlord(顺络) SDNT1608X103F3950FTF",
+  "url": "https://item.szlcsc.com/279936.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.1344,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "顺络 SMD 系列，0603 / 10k / B=3950。",
+  "specs": {
+   "package": "0603",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C279936",
+   "params": {
+    "功率": "100mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 20,
+     "price": 0.1344
+    },
+    {
+     "qty": 200,
+     "price": 0.1063
+    },
+    {
+     "qty": 600,
+     "price": 0.0938
+    },
+    {
+     "qty": 4000,
+     "price": 0.0844
+    },
+    {
+     "qty": 8000,
+     "price": 0.0806
+    },
+    {
+     "qty": 20000,
+     "price": 0.0781
+    }
+   ],
+   "price_lead": null,
+   "stock": "89K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c279936.jpg",
+   "image_source": "立创商城商品图（C279936，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250613/843D00CF2C300AE0276A3364ED88CCAD.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c525660",
+  "vendor": "Sunlord(顺络)",
+  "vendor_cn": "Sunlord(顺络)",
+  "model": "SDNT1608X103F3435FTF",
+  "title": "Sunlord(顺络) SDNT1608X103F3435FTF",
+  "url": "https://item.szlcsc.com/525660.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.1456,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "同系列，B 值 3435。",
+  "specs": {
+   "package": "0603",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C525660",
+   "params": {
+    "功率": "100mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 20,
+     "price": 0.1456
+    },
+    {
+     "qty": 200,
+     "price": 0.1176
+    },
+    {
+     "qty": 600,
+     "price": 0.1021
+    },
+    {
+     "qty": 4000,
+     "price": 0.0902
+    },
+    {
+     "qty": 8000,
+     "price": 0.0821
+    },
+    {
+     "qty": 20000,
+     "price": 0.0777
+    }
+   ],
+   "price_lead": null,
+   "stock": "83K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c525660.jpg",
+   "image_source": "立创商城商品图（C525660，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250613/843D00CF2C300AE0276A3364ED88CCAD.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c316397",
+  "vendor": "Sunlord(顺络)",
+  "vendor_cn": "Sunlord(顺络)",
+  "model": "SDNT1608X103F3380FTF",
+  "title": "Sunlord(顺络) SDNT1608X103F3380FTF",
+  "url": "https://item.szlcsc.com/316397.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.1321,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "同系列，B 值 3380。",
+  "specs": {
+   "package": "0603",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C316397",
+   "params": {
+    "功率": "100mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 50,
+     "price": 0.1321
+    },
+    {
+     "qty": 500,
+     "price": 0.1072
+    },
+    {
+     "qty": 1500,
+     "price": 0.0934
+    },
+    {
+     "qty": 4000,
+     "price": 0.0801
+    },
+    {
+     "qty": 24000,
+     "price": 0.0729
+    }
+   ],
+   "price_lead": null,
+   "stock": "46K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c316397.jpg",
+   "image_source": "立创商城商品图（C316397，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250613/843D00CF2C300AE0276A3364ED88CCAD.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c919169",
+  "vendor": "Sunlord(顺络)",
+  "vendor_cn": "Sunlord(顺络)",
+  "model": "SDNT1608X104F3950FTF",
+  "title": "Sunlord(顺络) SDNT1608X104F3950FTF",
+  "url": "https://item.szlcsc.com/919169.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.0912,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "100kΩ 版，B=3950。",
+  "specs": {
+   "package": "0603",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C919169",
+   "params": {
+    "功率": "100mW",
+    "阻值": "100kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 20,
+     "price": 0.0912
+    },
+    {
+     "qty": 200,
+     "price": 0.079
+    },
+    {
+     "qty": 600,
+     "price": 0.0722
+    },
+    {
+     "qty": 4000,
+     "price": 0.0681
+    },
+    {
+     "qty": 8000,
+     "price": 0.0646
+    },
+    {
+     "qty": 20000,
+     "price": 0.0627
+    }
+   ],
+   "price_lead": null,
+   "stock": "63K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c919169.jpg",
+   "image_source": "立创商城商品图（C919169，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250613/843D00CF2C300AE0276A3364ED88CCAD.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c95968",
+  "vendor": "Sunlord(顺络)",
+  "vendor_cn": "Sunlord(顺络)",
+  "model": "SDNT2012X103F3950FTF",
+  "title": "Sunlord(顺络) SDNT2012X103F3950FTF",
+  "url": "https://item.szlcsc.com/95968.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.2803,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "0805 封装，功率 200mW（比 0603 大一档）。",
+  "specs": {
+   "package": "0805",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C95968",
+   "params": {
+    "功率": "200mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 10,
+     "price": 0.2803
+    },
+    {
+     "qty": 100,
+     "price": 0.2353
+    },
+    {
+     "qty": 300,
+     "price": 0.2122
+    },
+    {
+     "qty": 1000,
+     "price": 0.1931
+    },
+    {
+     "qty": 4000,
+     "price": 0.1652
+    },
+    {
+     "qty": 8000,
+     "price": 0.1607
+    }
+   ],
+   "price_lead": null,
+   "stock": "56K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c95968.jpg",
+   "image_source": "立创商城商品图（C95968，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250613/843D00CF2C300AE0276A3364ED88CCAD.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c95939",
+  "vendor": "Sunlord(顺络)",
+  "vendor_cn": "Sunlord(顺络)",
+  "model": "SDNT1005X103F3950FTF",
+  "title": "Sunlord(顺络) SDNT1005X103F3950FTF",
+  "url": "https://item.szlcsc.com/95939.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.091,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "0402 版；现货 29K，另有在途 170K。",
+  "specs": {
+   "package": "0402",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C95939",
+   "params": {
+    "功率": "100mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 20,
+     "price": 0.091
+    },
+    {
+     "qty": 200,
+     "price": 0.0732
+    },
+    {
+     "qty": 600,
+     "price": 0.0633
+    },
+    {
+     "qty": 2000,
+     "price": 0.056826
+    },
+    {
+     "qty": 10000,
+     "price": 0.051678
+    },
+    {
+     "qty": 20000,
+     "price": 0.049005
+    }
+   ],
+   "price_lead": null,
+   "stock": "29K+（在途 170K）",
+   "stock_lead": null,
+   "lead_time": "现货 4h / 在途 3 工作日",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "9.9折",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "9.9折",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c95939.jpg",
+   "image_source": "立创商城商品图（C95939，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250613/843D00CF2C300AE0276A3364ED88CCAD.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ }
+]

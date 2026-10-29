@@ -1,0 +1,149 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "light",
+  "id": "jlc-c10081",
+  "vendor": "JCHL(晶创和立)",
+  "vendor_cn": "JCHL(晶创和立)",
+  "model": "GL5528(10-20)",
+  "title": "JCHL(晶创和立) GL5528(10-20)",
+  "url": "https://item.szlcsc.com/10081.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.2806,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "光敏电阻（模拟，需 ADC 或比较器）。便宜、慢，做「有光/无光」判断足够。",
+  "specs": {
+   "package": "插件,P=3.4mm",
+   "category_cn": "光敏电阻",
+   "lcsc_part": "C10081",
+   "params": {
+    "暗电阻": "1MΩ",
+    "亮电阻@10Lux": "8kΩ~20kΩ",
+    "耐压": "150V",
+    "光谱峰值": "540nm"
+   },
+   "price_tiers": [
+    {
+     "qty": 10,
+     "price": 0.2806
+    },
+    {
+     "qty": 100,
+     "price": 0.2254
+    },
+    {
+     "qty": 400,
+     "price": 0.1978
+    },
+    {
+     "qty": 1000,
+     "price": 0.1771
+    },
+    {
+     "qty": 5000,
+     "price": 0.1605
+    },
+    {
+     "qty": 10000,
+     "price": 0.1522
+    }
+   ],
+   "price_lead": null,
+   "stock": "23K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商最高减15",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商最高减15",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c10081.jpg",
+   "image_source": "立创商城商品图（C10081，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20200417/C515010_C10502EF7F431E893A7F20DB83F527F0.pdf"
+  },
+  "subtype_label": "光敏 / 环境光"
+ },
+ {
+  "category": "sensor",
+  "subtype": "light",
+  "id": "jlc-c11299",
+  "vendor": "JCHL(晶创和立)",
+  "vendor_cn": "JCHL(晶创和立)",
+  "model": "GL5506（4-7K）",
+  "title": "JCHL(晶创和立) GL5506（4-7K）",
+  "url": "https://item.szlcsc.com/11299.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.2775,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "阻值档更小（4–7k），响应更快、体积更小；光控灯/报警器常用。",
+  "specs": {
+   "package": "插件,P=3mm",
+   "category_cn": "光敏电阻",
+   "lcsc_part": "C11299",
+   "params": {
+    "暗电阻": "500kΩ",
+    "亮电阻@10Lux": "4kΩ~7kΩ",
+    "耐压": "150V",
+    "光谱峰值": "540nm"
+   },
+   "price_tiers": [
+    {
+     "qty": 10,
+     "price": 0.2775
+    },
+    {
+     "qty": 100,
+     "price": 0.2223
+    },
+    {
+     "qty": 400,
+     "price": 0.187
+    },
+    {
+     "qty": 1000,
+     "price": 0.1663
+    },
+    {
+     "qty": 5000,
+     "price": 0.1498
+    },
+    {
+     "qty": 10000,
+     "price": 0.1415
+    }
+   ],
+   "price_lead": null,
+   "stock": "36K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商最高减15",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商最高减15",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c11299.jpg",
+   "image_source": "立创商城商品图（C11299，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20190717/C404970_9E7F09BFF291DADB79FAB6E4B0C8F85D.pdf"
+  },
+  "subtype_label": "光敏 / 环境光"
+ }
+]

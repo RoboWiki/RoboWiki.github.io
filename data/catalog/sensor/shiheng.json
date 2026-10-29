@@ -1,0 +1,298 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c2889048",
+  "vendor": "时恒",
+  "vendor_cn": "时恒",
+  "model": "CMFA 103F3435",
+  "title": "时恒 CMFA 103F3435",
+  "url": "https://item.szlcsc.com/2889048.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.225,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "时恒贴片 0603，B 值 3435。",
+  "specs": {
+   "package": "0603",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C2889048",
+   "params": {
+    "功率": "100mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 20,
+     "price": 0.225
+    },
+    {
+     "qty": 200,
+     "price": 0.1818
+    },
+    {
+     "qty": 600,
+     "price": 0.1578
+    },
+    {
+     "qty": 4000,
+     "price": 0.1084
+    },
+    {
+     "qty": 8000,
+     "price": 0.0959
+    },
+    {
+     "qty": 20000,
+     "price": 0.0892
+    }
+   ],
+   "price_lead": null,
+   "stock": "123K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c2889048.jpg",
+   "image_source": "立创商城商品图（C2889048，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20210906/CAD1E7B38351C3905C88DDA95C143B00.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c13879",
+  "vendor": "时恒",
+  "vendor_cn": "时恒",
+  "model": "MF52A103F3950 (A1)",
+  "title": "时恒 MF52A103F3950 (A1)",
+  "url": "https://item.szlcsc.com/13879.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.3123,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "插件式 10kΩ/B3950；耗散系数 ≥2mW/℃，时间常数 ≤7s，-55~125℃。",
+  "specs": {
+   "package": "插件,P=1.7mm",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C13879",
+   "params": {
+    "功率": "50mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 10,
+     "price": 0.3123
+    },
+    {
+     "qty": 100,
+     "price": 0.2549
+    },
+    {
+     "qty": 500,
+     "price": 0.2131
+    },
+    {
+     "qty": 1000,
+     "price": 0.1887
+    },
+    {
+     "qty": 5000,
+     "price": 0.1803
+    },
+    {
+     "qty": 10000,
+     "price": 0.1745
+    }
+   ],
+   "price_lead": null,
+   "stock": "299K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c13879.jpg",
+   "image_source": "立创商城商品图（C13879，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20260813/72CDF7EFC8F3FD7F8EBABABC3D4A9BB1.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c84036",
+  "vendor": "时恒",
+  "vendor_cn": "时恒",
+  "model": "MF52A103F3435 (A1)",
+  "title": "时恒 MF52A103F3435 (A1)",
+  "url": "https://item.szlcsc.com/84036.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.3133,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "同系列，B 值 3435。",
+  "specs": {
+   "package": "插件,P=1.7mm",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C84036",
+   "params": {
+    "功率": "50mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 10,
+     "price": 0.3133
+    },
+    {
+     "qty": 100,
+     "price": 0.252
+    },
+    {
+     "qty": 500,
+     "price": 0.2138
+    },
+    {
+     "qty": 1000,
+     "price": 0.1908
+    },
+    {
+     "qty": 5000,
+     "price": 0.1725
+    },
+    {
+     "qty": 10000,
+     "price": 0.1633
+    }
+   ],
+   "price_lead": null,
+   "stock": "28K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c84036.jpg",
+   "image_source": "立创商城商品图（C84036，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20161024/1477288590593.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c394024",
+  "vendor": "时恒",
+  "vendor_cn": "时恒",
+  "model": "MF52D 103F3950-100",
+  "title": "时恒 MF52D 103F3950-100",
+  "url": "https://item.szlcsc.com/394024.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.668,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "绝缘 PVC 引线，线长 100mm。适合外置测温探头。",
+  "specs": {
+   "package": "插件",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C394024",
+   "params": {
+    "功率": "50mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 5,
+     "price": 0.668
+    },
+    {
+     "qty": 50,
+     "price": 0.5339
+    },
+    {
+     "qty": 150,
+     "price": 0.4668
+    },
+    {
+     "qty": 1000,
+     "price": 0.4137
+    },
+    {
+     "qty": 2000,
+     "price": 0.3734
+    },
+    {
+     "qty": 5000,
+     "price": 0.3533
+    }
+   ],
+   "price_lead": null,
+   "stock": "28K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c394024.jpg",
+   "image_source": "立创商城商品图（C394024，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20190614/C394024_3E28CF67D0F11D941AC92978249433DA.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ }
+]

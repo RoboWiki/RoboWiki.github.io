@@ -13,7 +13,7 @@ title: NVIDIA Jetson Orin Nano
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">上位机</span>
-      <span class="part-tag soft">module</span>
+      <span class="part-tag soft">计算模组</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
     </div>

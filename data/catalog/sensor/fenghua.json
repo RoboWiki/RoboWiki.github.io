@@ -1,0 +1,151 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c338606",
+  "vendor": "FH(风华)",
+  "vendor_cn": "FH(风华)",
+  "model": "CMFA103J3950HANT",
+  "title": "FH(风华) CMFA103J3950HANT",
+  "url": "https://item.szlcsc.com/338606.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.0994,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "风华版，精度 ±5%/B±3% —— 比 ±1% 那批差一档，价格也低一档。",
+  "specs": {
+   "package": "0603",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C338606",
+   "params": {
+    "阻值": "10kΩ",
+    "电阻精度": "±5%",
+    "B值精度": "±3%",
+    "B值": "3950K"
+   },
+   "price_tiers": [
+    {
+     "qty": 50,
+     "price": 0.0994
+    },
+    {
+     "qty": 500,
+     "price": 0.0792
+    },
+    {
+     "qty": 1500,
+     "price": 0.0681
+    },
+    {
+     "qty": 4000,
+     "price": 0.0585
+    },
+    {
+     "qty": 24000,
+     "price": 0.0527
+    },
+    {
+     "qty": 48000,
+     "price": 0.0496
+    }
+   ],
+   "price_lead": null,
+   "stock": "126K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c338606.jpg",
+   "image_source": "立创商城商品图（C338606，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20251218/1E55C0E0F8F57760231C505FA6E9C5C1.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c51597",
+  "vendor": "FH(风华)",
+  "vendor_cn": "FH(风华)",
+  "model": "CMFB103F3950FANT",
+  "title": "FH(风华) CMFB103F3950FANT",
+  "url": "https://item.szlcsc.com/51597.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.469656,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "0805 版，±1%。",
+  "specs": {
+   "package": "0805",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C51597",
+   "params": {
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%",
+    "B值": "3950K"
+   },
+   "price_tiers": [
+    {
+     "qty": 10,
+     "price": 0.469656
+    },
+    {
+     "qty": 100,
+     "price": 0.384021
+    },
+    {
+     "qty": 300,
+     "price": 0.341154
+    },
+    {
+     "qty": 1000,
+     "price": 0.309078
+    },
+    {
+     "qty": 4000,
+     "price": 0.26829
+    },
+    {
+     "qty": 8000,
+     "price": 0.25542
+    }
+   ],
+   "price_lead": null,
+   "stock": "45K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "9.9折近30天最低价",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "9.9折近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c51597.jpg",
+   "image_source": "立创商城商品图（C51597，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20161024/1477287952711.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ }
+]

@@ -1,0 +1,77 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "vibration",
+  "id": "jlc-c42371121",
+  "vendor": "hanxia(韩下)",
+  "vendor_cn": "hanxia(韩下)",
+  "model": "HX 0805-C2",
+  "title": "hanxia(韩下) HX 0805-C2",
+  "url": "https://item.szlcsc.com/42371121.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.53618,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "贴片滚珠震动开关，2.0×1.35×0.9mm。只能判「有没有震动」，给不出幅值。",
+  "specs": {
+   "package": "SMD,2x1.4mm",
+   "category_cn": "振动传感器",
+   "lcsc_part": "C42371121",
+   "params": {
+    "额定电压": "6V",
+    "额定电流": "10mA",
+    "工作寿命": "20万次",
+    "工作温度": "-20℃~+70℃"
+   },
+   "price_tiers": [
+    {
+     "qty": 5,
+     "price": 0.53618
+    },
+    {
+     "qty": 50,
+     "price": 0.422085
+    },
+    {
+     "qty": 150,
+     "price": 0.365085
+    },
+    {
+     "qty": 500,
+     "price": 0.322335
+    },
+    {
+     "qty": 2000,
+     "price": 0.28329
+    },
+    {
+     "qty": 4000,
+     "price": 0.26619
+    }
+   ],
+   "price_lead": 0.2128,
+   "stock": "79K+",
+   "stock_lead": "100K",
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商最高减30",
+    "9.5折",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商最高减30",
+    "9.5折",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c42371121.jpg",
+   "image_source": "立创商城商品图（C42371121，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241028/ED0C3A0021EA1433FFBCEB0D276AE4DE.pdf"
+  },
+  "subtype_label": "振动"
+ }
+]

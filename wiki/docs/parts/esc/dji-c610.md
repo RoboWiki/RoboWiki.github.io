@@ -13,7 +13,7 @@ title: 大疆 DJI C610
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">电调</span>
-      <span class="part-tag soft">can</span>
+      <span class="part-tag soft">CAN 控制</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag muted">无公开报价</span>
     </div>

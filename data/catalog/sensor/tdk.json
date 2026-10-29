@@ -1,0 +1,214 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c209959",
+  "vendor": "TDK InvenSense",
+  "vendor_cn": "TDK InvenSense",
+  "model": "NTCG103JF103FT1",
+  "title": "TDK NTCG103JF103FT1",
+  "url": "https://item.szlcsc.com/209959.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.2304,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "TDK 0402；**无现货，订货 7–9 个工作日，最小包装 10000 个**。",
+  "specs": {
+   "package": "0402",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C209959",
+   "params": {
+    "功率": "100mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 0.2304
+    },
+    {
+     "qty": 100,
+     "price": 0.192
+    },
+    {
+     "qty": 1000,
+     "price": 0.1541
+    },
+    {
+     "qty": 2500,
+     "price": 0.1308
+    },
+    {
+     "qty": 5000,
+     "price": 0.1222
+    }
+   ],
+   "price_lead": null,
+   "stock": "4647（订货）",
+   "stock_lead": null,
+   "lead_time": "订货 7–9 工作日",
+   "jlc_library": "非 SMT 库",
+   "coupon": [],
+   "tags": [
+    "RoHS",
+    "近30天最低价"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c209959.jpg",
+   "image_source": "立创商城商品图（C209959，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241111/F1164E15BC3759C64AE79DDADCCC43FB.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c406719",
+  "vendor": "TDK InvenSense",
+  "vendor_cn": "TDK InvenSense",
+  "model": "NTCG163JF103FT1S",
+  "title": "TDK NTCG163JF103FT1S",
+  "url": "https://item.szlcsc.com/406719.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 1.3951,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "TDK 0603 版；单价明显高于同规格国产件（￥1.4 vs ￥0.2），差价全在长期稳定性。",
+  "specs": {
+   "package": "0603",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C406719",
+   "params": {
+    "功率": "100mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 5,
+     "price": 1.3951
+    },
+    {
+     "qty": 50,
+     "price": 1.1107
+    },
+    {
+     "qty": 150,
+     "price": 0.972
+    },
+    {
+     "qty": 500,
+     "price": 0.8482
+    },
+    {
+     "qty": 2500,
+     "price": 0.7858
+    },
+    {
+     "qty": 4000,
+     "price": 0.7654
+    }
+   ],
+   "price_lead": null,
+   "stock": "52K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c406719.jpg",
+   "image_source": "立创商城商品图（C406719，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20190723/C406719_56E4CA7886271F3E26D47484E1680181.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c209893",
+  "vendor": "TDK InvenSense",
+  "vendor_cn": "TDK InvenSense",
+  "model": "B57332V5103F360",
+  "title": "TDK B57332V5103F360",
+  "url": "https://item.szlcsc.com/209893.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.5355,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "AEC-Q200 认证，镍阻挡层端接，可测到 150℃，高温高湿下老化稳定。",
+  "specs": {
+   "package": "0603",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C209893",
+   "params": {
+    "功率": "180mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 5,
+     "price": 0.5355
+    },
+    {
+     "qty": 50,
+     "price": 0.4235
+    },
+    {
+     "qty": 150,
+     "price": 0.3675
+    },
+    {
+     "qty": 500,
+     "price": 0.3255
+    },
+    {
+     "qty": 2500,
+     "price": 0.2919
+    },
+    {
+     "qty": 4000,
+     "price": 0.275
+    }
+   ],
+   "price_lead": null,
+   "stock": "71K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c209893.jpg",
+   "image_source": "立创商城商品图（C209893，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20180725/C209893_3E20A4FCEBCC841838CF028DBFDEBAEE.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ }
+]

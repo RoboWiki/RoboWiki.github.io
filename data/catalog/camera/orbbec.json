@@ -28,7 +28,9 @@
    "gear": null,
    "armature_kgm2": null,
    "kt_Nm_per_A": null
-  }
+  },
+  "vendor_cn": null,
+  "subtype_label": "双目"
  },
  {
   "category": "camera",
@@ -69,7 +71,8 @@
     "https://github.com/orbbec/OrbbecSDK_v2"
    ]
   },
-  "vendor_cn": "奥比中光"
+  "vendor_cn": "奥比中光",
+  "subtype_label": "结构光"
  },
  {
   "category": "camera",
@@ -98,6 +101,8 @@
    "depth_range_m": null,
    "fps": null,
    "fov": null
-  }
+  },
+  "vendor_cn": null,
+  "subtype_label": "结构光"
  }
 ]

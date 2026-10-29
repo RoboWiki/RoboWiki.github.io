@@ -44,7 +44,8 @@
   },
   "notes": "6.33:1, Go1 quadruped 【来源冲突】GO-M8010-6 数据手册 p3 表：重量 约530 g、尺寸 96.5×92.5×42.3 mm、最大扭矩 23.7 N·m、最大转速 30 rad/s@24V、减速比 1:6.33、转矩常数 0.63895 N·m/A；本目录原记录（Unitree 官网）重量为 420 g。重量不一致，未做覆盖。两份手册都只给「最大扭矩」，**没有额定扭矩**。 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是宇树四足整机宣传图，不是 GO-M8010-6，需厂商型号页原图",
   "origin": "Draft actuator_catalog.json（114 行总体）",
-  "search": "unitree go-m8010-6"
+  "search": "unitree go-m8010-6",
+  "subtype_label": "准直驱 QDD"
  },
  {
   "id": "unitree-im6014",
@@ -94,7 +95,8 @@
   },
   "notes": "G1 arm motor, model N6014B-12.6. Unitree publishes max torque 34.4 N.m (opposing the rotation; 31.7 N.m with it), 535 g, phi65 x 60, gear 3:38 = 12.667:1 and max no-load speed 54.2 rad/s at 60 V. That 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是宇树四足整机宣传图，不是 IM6014 电机，需厂商型号页原图",
   "origin": "Draft actuator_catalog.json（114 行总体）",
-  "search": "unitree im6014"
+  "search": "unitree im6014",
+  "subtype_label": "行星减速"
  },
  {
   "id": "unitree-unitree-a1",
@@ -141,6 +143,7 @@
   },
   "notes": "~6:1, A1 quadruped, 78x62mm. Unitree's own motor page publishes max instantaneous torque 33.5 N.m, max joint speed 21 rad/s and 605 g - the three fields this row is fitted on. It does NOT publish the  【来源冲突】宇树 A1 数据手册（ZJU-HelloWorld/Wiki 收录）p1 表：减速比写 1:9、重量 605 g、最大扭矩 33.5 N·m、最大转速 21.0 rad/s@24V、转矩常数 0.8732 N·m/A；而本目录原记录（Unitree 官网）为减速比 6:1。两者不一致，未做覆盖，待人工核对实物铭牌或最新版手册。 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是 A1 整机而非电机本体，选型页需要电机图，需厂商型号页原图",
   "origin": "Draft actuator_catalog.json（114 行总体）",
-  "search": "unitree unitree a1"
+  "search": "unitree unitree a1",
+  "subtype_label": "准直驱 QDD"
  }
 ]

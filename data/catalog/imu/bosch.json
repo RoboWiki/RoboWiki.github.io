@@ -34,5 +34,155 @@
   },
   "notes": "6 轴（3 轴陀螺 + 3 轴加速度计），陀螺量程 ±125/250/500/1000/2000 °/s，加速度计量程 ±3/6/12/24 g；ODR 12.5 Hz–2 kHz；VDD 2.4–3.6 V，VDDIO 1.2–3.6 V；全速运行 5.15 mA（按 3.3 V 折算约 0.017 W）。博世官方定位为无人机与机器人应用，四足/人形机器人姿态估计常用。官网未公开单价，价格随渠道与批次波动。",
   "origin": "Bosch Sensortec BMI088 产品页 + BST-BMI088-DS001 数据手册核对（2026-10-28）"
+ },
+ {
+  "category": "imu",
+  "subtype": "imu_chip",
+  "id": "jlc-c93216",
+  "vendor": "Bosch Sensortec",
+  "vendor_cn": "Bosch Sensortec",
+  "model": "BNO055",
+  "title": "Bosch(博世) BNO055",
+  "url": "https://item.szlcsc.com/93216.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 55.61,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "**SiP 方案**：封装内自带 32 位 Cortex-M0+ 跑传感器融合，直接输出四元数/欧拉角。省掉自己写融合。",
+  "specs": {
+   "package": "LGA-28(3.8x5.2)",
+   "category_cn": "姿态传感器/陀螺仪",
+   "lcsc_part": "C93216",
+   "params": {
+    "加速度计轴向": "X,Y,Z",
+    "加速度计量程": "±16g",
+    "陀螺仪轴向": "X,Y,Z",
+    "陀螺仪量程": "±2000dps"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 55.61
+    },
+    {
+     "qty": 10,
+     "price": 47.54
+    },
+    {
+     "qty": 30,
+     "price": 42.62
+    },
+    {
+     "qty": 100,
+     "price": 38.5
+    }
+   ],
+   "price_lead": 34.5,
+   "stock": "11K+",
+   "stock_lead": "28K",
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c93216.jpg",
+   "image_source": "立创商城商品图（C93216，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20170908/C93216_1504870163958958144.pdf",
+   "gyro_range_dps": "2000",
+   "accel_range_g": "16",
+   "odr_hz": null,
+   "iface": null,
+   "voltage_V": null
+  },
+  "subtype_label": "IMU 芯片"
+ },
+ {
+  "category": "imu",
+  "subtype": "imu_chip",
+  "id": "jlc-c2836813",
+  "vendor": "Bosch Sensortec",
+  "vendor_cn": "Bosch Sensortec",
+  "model": "BMI270",
+  "title": "Bosch(博世) BMI270",
+  "url": "https://item.szlcsc.com/2836813.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 15.84,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "BMI088 的消费级后继（少了高分振抑制），价格便宜一半以上。",
+  "specs": {
+   "package": "LGA-14(2.5x3)",
+   "category_cn": "姿态传感器/陀螺仪",
+   "lcsc_part": "C2836813",
+   "params": {
+    "加速度计轴向": "X,Y,Z",
+    "加速度计量程": "±16g",
+    "陀螺仪轴向": "X,Y,Z",
+    "陀螺仪量程": "±2000dps"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 15.84
+    },
+    {
+     "qty": 10,
+     "price": 14.25
+    },
+    {
+     "qty": 30,
+     "price": 13.12
+    },
+    {
+     "qty": 100,
+     "price": 8.14
+    },
+    {
+     "qty": 500,
+     "price": 7.66
+    },
+    {
+     "qty": 1000,
+     "price": 7.47
+    }
+   ],
+   "price_lead": 7,
+   "stock": "26K+",
+   "stock_lead": "30K",
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c2836813.jpg",
+   "image_source": "立创商城商品图（C2836813，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20210625/C2836813_35E1F3F92097F45A3828DF13DDBA01A5.pdf",
+   "gyro_range_dps": "2000",
+   "accel_range_g": "16",
+   "odr_hz": null,
+   "iface": null,
+   "voltage_V": null
+  },
+  "subtype_label": "IMU 芯片"
  }
 ]

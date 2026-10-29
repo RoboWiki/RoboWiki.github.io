@@ -1,0 +1,75 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "light",
+  "id": "jlc-c146233",
+  "vendor": "EVERLIGHT(亿光)",
+  "vendor_cn": "EVERLIGHT(亿光)",
+  "model": "ALS-PT19-315C/L177/TR8",
+  "title": "EVERLIGHT(亿光) ALS-PT19-315C/L177/TR8",
+  "url": "https://item.szlcsc.com/146233.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.6768,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "模拟光敏三极管（0603），λp=630nm；**无现货，需订货**。",
+  "specs": {
+   "package": "0603",
+   "category_cn": "环境光传感器",
+   "lcsc_part": "C146233",
+   "params": {
+    "感测类型": "光强",
+    "工作电压": "2.5V~5.5V",
+    "工作温度": "-40℃~+85℃",
+    "长度": "1.7mm"
+   },
+   "price_tiers": [
+    {
+     "qty": 5,
+     "price": 0.6768
+    },
+    {
+     "qty": 50,
+     "price": 0.5328
+    },
+    {
+     "qty": 150,
+     "price": 0.4608
+    },
+    {
+     "qty": 500,
+     "price": 0.4068
+    },
+    {
+     "qty": 2500,
+     "price": 0.3517
+    },
+    {
+     "qty": 4000,
+     "price": 0.33
+    }
+   ],
+   "price_lead": null,
+   "stock": "0（订货）",
+   "stock_lead": null,
+   "lead_time": "订货",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c146233.jpg",
+   "image_source": "立创商城商品图（C146233，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250815/7CC9E6BE2E7836D28DC6815D296887C2.pdf"
+  },
+  "subtype_label": "光敏 / 环境光"
+ }
+]

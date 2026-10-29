@@ -32,7 +32,8 @@
    "gear": null,
    "armature_kgm2": null,
    "kt_Nm_per_A": null
-  }
+  },
+  "subtype_label": "CAN 控制"
  },
  {
   "category": "esc",
@@ -67,7 +68,8 @@
    "gear": null,
    "armature_kgm2": null,
    "kt_Nm_per_A": null
-  }
+  },
+  "subtype_label": "CAN 控制"
  },
  {
   "category": "esc",
@@ -102,6 +104,7 @@
    "gear": null,
    "armature_kgm2": null,
    "kt_Nm_per_A": null
-  }
+  },
+  "subtype_label": "PWM 控制"
  }
 ]

@@ -1,0 +1,76 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "light",
+  "id": "jlc-c78960",
+  "vendor": "ROHM(罗姆)",
+  "vendor_cn": "ROHM(罗姆)",
+  "model": "BH1750FVI-TR",
+  "title": "ROHM(罗姆) BH1750FVI-TR",
+  "url": "https://item.szlcsc.com/78960.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 5.63,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "数字 16 位 I²C 环境光，2.4–3.6V。做照度闭环（自动调光）最常用的一颗。",
+  "specs": {
+   "package": "WSOF-6",
+   "category_cn": "环境光传感器",
+   "lcsc_part": "C78960",
+   "params": {
+    "感测类型": "光强",
+    "感光能力": "65.535klx",
+    "接口类型": "I2C",
+    "分辨率": "16bit"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 5.63
+    },
+    {
+     "qty": 10,
+     "price": 4.7
+    },
+    {
+     "qty": 30,
+     "price": 4.04
+    },
+    {
+     "qty": 100,
+     "price": 3.5
+    },
+    {
+     "qty": 500,
+     "price": 3.14
+    },
+    {
+     "qty": 1000,
+     "price": 3.04
+    }
+   ],
+   "price_lead": null,
+   "stock": "37K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c78960.jpg",
+   "image_source": "立创商城商品图（C78960，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20160723/1469258984787.pdf"
+  },
+  "subtype_label": "光敏 / 环境光"
+ }
+]

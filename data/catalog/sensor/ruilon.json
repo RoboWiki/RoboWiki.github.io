@@ -1,0 +1,227 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c53820",
+  "vendor": "RUILON(瑞隆源)",
+  "vendor_cn": "RUILON(瑞隆源)",
+  "model": "NTC10D-11",
+  "title": "RUILON(瑞隆源) NTC10D-11",
+  "url": "https://item.szlcsc.com/53820.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.509675,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "功率型，10Ω/3A，抑制上电浪涌。",
+  "specs": {
+   "package": "插件,P=7.5mm",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C53820",
+   "params": {
+    "阻值": "10Ω",
+    "电阻精度": "±20%",
+    "B值": "2800K",
+    "最大稳态电流": "3A"
+   },
+   "price_tiers": [
+    {
+     "qty": 5,
+     "price": 0.509675
+    },
+    {
+     "qty": 50,
+     "price": 0.446025
+    },
+    {
+     "qty": 150,
+     "price": 0.414295
+    },
+    {
+     "qty": 500,
+     "price": 0.390355
+    },
+    {
+     "qty": 2500,
+     "price": 0.37126
+    },
+    {
+     "qty": 5000,
+     "price": 0.36176
+    }
+   ],
+   "price_lead": null,
+   "stock": "77K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商最高减50",
+    "9.5折",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商最高减50",
+    "9.5折",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c53820.jpg",
+   "image_source": "立创商城商品图（C53820，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20260717/0EF4F47097E76965F3F292D0F7608A13.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c3790",
+  "vendor": "RUILON(瑞隆源)",
+  "vendor_cn": "RUILON(瑞隆源)",
+  "model": "NTC 10D-9",
+  "title": "RUILON(瑞隆源) NTC 10D-9",
+  "url": "https://item.szlcsc.com/3790.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.528295,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "功率型 10Ω/1A。",
+  "specs": {
+   "package": "插件,P=7.5mm",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C3790",
+   "params": {
+    "阻值": "10Ω",
+    "电阻精度": "±20%",
+    "B值": "2700K",
+    "最大稳态电流": "1A"
+   },
+   "price_tiers": [
+    {
+     "qty": 5,
+     "price": 0.528295
+    },
+    {
+     "qty": 50,
+     "price": 0.42028
+    },
+    {
+     "qty": 150,
+     "price": 0.36632
+    },
+    {
+     "qty": 500,
+     "price": 0.32357
+    },
+    {
+     "qty": 2500,
+     "price": 0.29108
+    },
+    {
+     "qty": 5000,
+     "price": 0.27493
+    }
+   ],
+   "price_lead": null,
+   "stock": "39K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商最高减50",
+    "9.5折近30天最低价",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商最高减50",
+    "9.5折近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c3790.jpg",
+   "image_source": "立创商城商品图（C3790，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20240308/4711AB77E818E596C92042CB33335490.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c9179",
+  "vendor": "RUILON(瑞隆源)",
+  "vendor_cn": "RUILON(瑞隆源)",
+  "model": "NTC 5D-11",
+  "title": "RUILON(瑞隆源) NTC 5D-11",
+  "url": "https://item.szlcsc.com/9179.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.602205,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "功率型 5Ω/4A，MF72 系列，内弯脚，脚径 0.8mm。",
+  "specs": {
+   "package": "插件,P=7.5mm",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C9179",
+   "params": {
+    "阻值": "5Ω",
+    "最大稳态电流": "4A",
+    "耗散系数": "14mW/℃",
+    "热时间常数": "50s"
+   },
+   "price_tiers": [
+    {
+     "qty": 20,
+     "price": 0.602205
+    },
+    {
+     "qty": 200,
+     "price": 0.52592
+    },
+    {
+     "qty": 500,
+     "price": 0.46132
+    },
+    {
+     "qty": 2000,
+     "price": 0.432725
+    },
+    {
+     "qty": 10000,
+     "price": 0.40983
+    },
+    {
+     "qty": 20000,
+     "price": 0.39843
+    }
+   ],
+   "price_lead": null,
+   "stock": "116K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商最高减50",
+    "9.5折",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商最高减50",
+    "9.5折",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c9179.jpg",
+   "image_source": "立创商城商品图（C9179，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20240308/4711AB77E818E596C92042CB33335490.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ }
+]

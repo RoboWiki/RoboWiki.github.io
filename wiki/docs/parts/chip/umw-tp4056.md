@@ -13,7 +13,7 @@ title: UMW TP4056
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">硬件芯片</span>
-      <span class="part-tag soft">battery</span>
+      <span class="part-tag soft">电池管理</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥0.4714</span>
     </div>

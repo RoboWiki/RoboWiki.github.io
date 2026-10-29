@@ -1,0 +1,226 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "temp_humid",
+  "id": "jlc-c2757850",
+  "vendor": "广州奥松",
+  "vendor_cn": "广州奥松",
+  "model": "AHT20",
+  "title": "广州奥松 AHT20",
+  "url": "https://item.szlcsc.com/2757850.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 4.88,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "数字温湿度，I²C，SMD 双列扁平无引脚，出厂已标定。机器人上用得多。",
+  "specs": {
+   "package": "SMD",
+   "category_cn": "温湿度传感器",
+   "lcsc_part": "C2757850",
+   "params": {
+    "温度范围": "-40℃~+120℃",
+    "湿度范围": "0%RH~100%RH",
+    "接口类型": "I2C",
+    "工作电压": "2.2V~5.5V"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 4.88
+    },
+    {
+     "qty": 10,
+     "price": 4.17
+    },
+    {
+     "qty": 30,
+     "price": 3.66
+    },
+    {
+     "qty": 100,
+     "price": 3.24
+    },
+    {
+     "qty": 500,
+     "price": 2.76
+    },
+    {
+     "qty": 1000,
+     "price": 2.68
+    }
+   ],
+   "price_lead": null,
+   "stock": "40K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "9.5折近30天最低价",
+    "下单最高92折"
+   ],
+   "tags": [
+    "RoHS",
+    "SMT补贴",
+    "运9元运费券",
+    "9.5折近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c2757850.jpg",
+   "image_source": "立创商城商品图（C2757850，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241111/5F86914A34F34C3B495054E865FD2DD6.pdf"
+  },
+  "subtype_label": "温湿度"
+ },
+ {
+  "category": "sensor",
+  "subtype": "temp_humid",
+  "id": "jlc-c3012622",
+  "vendor": "广州奥松",
+  "vendor_cn": "广州奥松",
+  "model": "AHT20-F",
+  "title": "广州奥松 AHT20-F",
+  "url": "https://item.szlcsc.com/3012622.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 5,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "新一代，底面 3×3mm、高 1.0mm，加了 PTFE 防水透气膜，恶劣环境更稳。",
+  "specs": {
+   "package": "SMD-6P,3x3mm",
+   "category_cn": "温湿度传感器",
+   "lcsc_part": "C3012622",
+   "params": {
+    "温度范围": "-40℃~+85℃",
+    "湿度范围": "0%RH~100%RH",
+    "接口类型": "I2C",
+    "工作电压": "2.2V~5.5V"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 5
+    },
+    {
+     "qty": 10,
+     "price": 4.25
+    },
+    {
+     "qty": 30,
+     "price": 3.72
+    },
+    {
+     "qty": 100,
+     "price": 3.28
+    },
+    {
+     "qty": 500,
+     "price": 2.96
+    },
+    {
+     "qty": 1000,
+     "price": 2.87
+    }
+   ],
+   "price_lead": null,
+   "stock": "14K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c3012622.jpg",
+   "image_source": "立创商城商品图（C3012622，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20220512/0D1202ED7D1FEF1E65C45BAEA3A262F3.pdf"
+  },
+  "subtype_label": "温湿度"
+ },
+ {
+  "category": "sensor",
+  "subtype": "temp_humid",
+  "id": "jlc-c117051",
+  "vendor": "广州奥松",
+  "vendor_cn": "广州奥松",
+  "model": "DHT11",
+  "title": "广州奥松 DHT11",
+  "url": "https://item.szlcsc.com/117051.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 8.36,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "新款电容式；精度低、响应慢，适合教学与毕业设计，不适合闭环控制。",
+  "specs": {
+   "package": "SIP-4",
+   "category_cn": "温湿度传感器",
+   "lcsc_part": "C117051",
+   "params": {
+    "温度范围": "-20℃~+60℃",
+    "湿度范围": "5%RH~95%RH",
+    "工作电压": "3.3V~5.5V",
+    "工作电流": "1mA"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 8.36
+    },
+    {
+     "qty": 10,
+     "price": 7.45
+    },
+    {
+     "qty": 50,
+     "price": 6.05
+    },
+    {
+     "qty": 100,
+     "price": 5.41
+    },
+    {
+     "qty": 500,
+     "price": 5.15
+    },
+    {
+     "qty": 1000,
+     "price": 5.03
+    }
+   ],
+   "price_lead": null,
+   "stock": "7171",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c117051.jpg",
+   "image_source": "立创商城商品图（C117051，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20260817/E186D00F5234671A9041259868856F09.pdf"
+  },
+  "subtype_label": "温湿度"
+ }
+]

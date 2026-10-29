@@ -1,0 +1,80 @@
+[
+ {
+  "category": "imu",
+  "subtype": "accel",
+  "id": "jlc-c19274408",
+  "vendor": "SILAN(士兰微)",
+  "vendor_cn": "SILAN(士兰微)",
+  "model": "SC7A20HTR",
+  "title": "SILAN(士兰微) SC7A20HTR",
+  "url": "https://item.szlcsc.com/19274408.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 1.7491,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "**只有加速度计**（三轴），国产低价；做倾角/碰撞检测够，做姿态解算不够。",
+  "specs": {
+   "package": "LGA-12(2x2)",
+   "category_cn": "姿态传感器/陀螺仪",
+   "lcsc_part": "C19274408",
+   "params": {
+    "加速度计轴向": "X,Y,Z",
+    "加速度计量程": "±16g",
+    "传感器类型": "加速度计",
+    "输出位数": "12bit"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 1.7491
+    },
+    {
+     "qty": 10,
+     "price": 1.4442
+    },
+    {
+     "qty": 30,
+     "price": 1.2953
+    },
+    {
+     "qty": 100,
+     "price": 1.1625
+    },
+    {
+     "qty": 500,
+     "price": 1.0465
+    },
+    {
+     "qty": 1000,
+     "price": 1.0246
+    }
+   ],
+   "price_lead": null,
+   "stock": "101K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c19274408.jpg",
+   "image_source": "立创商城商品图（C19274408，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20231222/B4EB8A0DB32006C0C2DCBF47B8DC5BCF.pdf",
+   "accel_range_g": "16",
+   "odr_hz": null,
+   "gyro_range_dps": null,
+   "iface": null,
+   "voltage_V": null
+  },
+  "subtype_label": "加速度计芯片"
+ }
+]

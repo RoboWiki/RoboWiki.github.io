@@ -40,7 +40,8 @@
    ],
    "imu": null
   },
-  "vendor_cn": "RealSense（原 Intel）"
+  "vendor_cn": "RealSense（原 Intel）",
+  "subtype_label": "双目"
  },
  {
   "category": "camera",
@@ -83,7 +84,8 @@
    ],
    "power_w": null
   },
-  "vendor_cn": "RealSense（原 Intel）"
+  "vendor_cn": "RealSense（原 Intel）",
+  "subtype_label": "双目"
  },
  {
   "category": "camera",
@@ -126,7 +128,8 @@
    ],
    "power_w": null
   },
-  "vendor_cn": "RealSense（原 Intel）"
+  "vendor_cn": "RealSense（原 Intel）",
+  "subtype_label": "双目"
  },
  {
   "category": "camera",
@@ -157,6 +160,8 @@
    "fps": 30,
    "fov": "87°×58°",
    "ip": "IP65"
-  }
+  },
+  "vendor_cn": null,
+  "subtype_label": "双目"
  }
 ]

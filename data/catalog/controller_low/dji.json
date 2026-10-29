@@ -51,7 +51,8 @@
    "doc_pdf": null,
    "torque_mode": null
   },
-  "vendor_cn": "大疆创新"
+  "vendor_cn": "大疆创新",
+  "subtype_label": "主控板"
  },
  {
   "category": "controller_low",
@@ -105,6 +106,7 @@
     "https://github.com/RoboMaster/Development-Board-C-Examples"
    ]
   },
-  "vendor_cn": "大疆创新"
+  "vendor_cn": "大疆创新",
+  "subtype_label": "主控板"
  }
 ]

@@ -1,0 +1,76 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "temp_humid",
+  "id": "jlc-c51901042",
+  "vendor": "Nyfea(徕飞)",
+  "vendor_cn": "Nyfea(徕飞)",
+  "model": "FHT30-TR",
+  "title": "Nyfea(徕飞) FHT30-TR",
+  "url": "https://item.szlcsc.com/51901042.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 6.81,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "国产 MEMS 温湿度，I²C 可达 1MHz，两个可选地址，2.0–5V 宽压。",
+  "specs": {
+   "package": "DFN-8(2.5x2.5)",
+   "category_cn": "温湿度传感器",
+   "lcsc_part": "C51901042",
+   "params": {
+    "温度范围": "-45℃~+130℃",
+    "湿度范围": "0%RH~100%RH",
+    "接口类型": "I2C",
+    "工作电压": "2V~5.5V"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 6.81
+    },
+    {
+     "qty": 10,
+     "price": 5.65
+    },
+    {
+     "qty": 30,
+     "price": 5.02
+    },
+    {
+     "qty": 100,
+     "price": 4.31
+    },
+    {
+     "qty": 500,
+     "price": 3.99
+    },
+    {
+     "qty": 1000,
+     "price": 3.85
+    }
+   ],
+   "price_lead": null,
+   "stock": "12K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商满16-15",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商满16-15",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c51901042.jpg",
+   "image_source": "立创商城商品图（C51901042，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20261022/E1A9917646C9088296CC85AFABC425FB.pdf"
+  },
+  "subtype_label": "温湿度"
+ }
+]

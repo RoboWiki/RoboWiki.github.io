@@ -64,7 +64,8 @@
   "vendor_cn": "览沃",
   "model": "Mid-70",
   "title": "Livox Mid-70 固态激光雷达",
-  "url": "https://www.livoxtech.com/"
+  "url": "https://www.livoxtech.com/",
+  "subtype_label": "固态"
  },
  {
   "source_tier": "B",
@@ -88,6 +89,7 @@
   "vendor_cn": "速腾聚创",
   "model": "Airy Lite",
   "title": "速腾聚创 Airy Lite 激光雷达",
-  "url": "https://www.robosense.cn/"
+  "url": "https://www.robosense.cn/",
+  "subtype_label": "固态"
  }
 ]

@@ -1,0 +1,76 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "pressure",
+  "id": "jlc-c30589048",
+  "vendor": "Goertek(歌尔)",
+  "vendor_cn": "Goertek(歌尔)",
+  "model": "SPA06-003",
+  "title": "Goertek(歌尔) SPA06-003",
+  "url": "https://item.szlcsc.com/30589048.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 4.53,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "国产电容式气压件，功耗低（待机 500nA），价格只有 Bosch 的一半。",
+  "specs": {
+   "package": "LGA-8(2x2.5)",
+   "category_cn": "压力传感器",
+   "lcsc_part": "C30589048",
+   "params": {
+    "压力范围": "30Kpa~1.1bar",
+    "工作电压": "1.7V~3.6V",
+    "待机电流": "500nA",
+    "接口类型": "I2C；SPI"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 4.53
+    },
+    {
+     "qty": 10,
+     "price": 3.85
+    },
+    {
+     "qty": 30,
+     "price": 3.36
+    },
+    {
+     "qty": 100,
+     "price": 2.96
+    },
+    {
+     "qty": 500,
+     "price": 2.71
+    },
+    {
+     "qty": 1000,
+     "price": 2.64
+    }
+   ],
+   "price_lead": 2.1,
+   "stock": "72K+",
+   "stock_lead": "90K",
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c30589048.jpg",
+   "image_source": "立创商城商品图（C30589048，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250324/B352BF186950B4724B9037D6E53E6D4A.pdf"
+  },
+  "subtype_label": "压力 / 气压"
+ }
+]

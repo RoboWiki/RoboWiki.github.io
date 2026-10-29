@@ -1,0 +1,82 @@
+[
+ {
+  "category": "imu",
+  "subtype": "imu_chip",
+  "id": "jlc-c54308212",
+  "vendor": "Tokmas(托克马斯)",
+  "vendor_cn": "Tokmas(托克马斯)",
+  "model": "ICM-42688-P(TOKMAS)",
+  "title": "Tokmas(托克马斯) ICM-42688-P(TOKMAS)",
+  "url": "https://item.szlcsc.com/54308212.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 16.5048,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "**pin-to-pin 替代 ICM-42688-P**，但驱动要改（原厂索取）。价格约为原厂件的 1/8。",
+  "specs": {
+   "package": "LGA-14(2.5x3)",
+   "category_cn": "姿态传感器/陀螺仪",
+   "lcsc_part": "C54308212",
+   "params": {
+    "加速度计轴向": "X,Y,Z",
+    "加速度计量程": "±16g",
+    "陀螺仪轴向": "X,Y,Z",
+    "陀螺仪量程": "±2000dps"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 16.5048
+    },
+    {
+     "qty": 10,
+     "price": 14.4256
+    },
+    {
+     "qty": 30,
+     "price": 12.9444
+    },
+    {
+     "qty": 100,
+     "price": 11.6012
+    },
+    {
+     "qty": 500,
+     "price": 10.9848
+    },
+    {
+     "qty": 1000,
+     "price": 10.7364
+    }
+   ],
+   "price_lead": null,
+   "stock": "2574",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "9.2折近30天最低价",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "9.2折近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c54308212.jpg",
+   "image_source": "立创商城商品图（C54308212，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20260420/FE7B94740D7818E07C0E97467968F0E2.pdf",
+   "gyro_range_dps": "2000",
+   "accel_range_g": "16",
+   "odr_hz": null,
+   "iface": null,
+   "voltage_V": null
+  },
+  "subtype_label": "IMU 芯片"
+ }
+]

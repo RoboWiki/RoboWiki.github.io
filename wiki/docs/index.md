@@ -19,9 +19,9 @@ titleTemplate: false
       <a class="rw-home-btn ghost" href="/learn/">从零开始学</a>
     </div>
     <div class="rw-home-stats">
-      <div><b>152</b><span>在库部件</span></div>
+      <div><b>233</b><span>在库部件</span></div>
       <div><b>11</b><span>有数据的品类（共 13 类）</span></div>
-      <div><b>83</b><span>A 级：逐项对过厂商手册</span></div>
+      <div><b>81</b><span>A 级：逐项对过厂商手册</span></div>
       <div><b>15</b><span>整机（带 URDF / 仓库）</span></div>
       <div><b>149</b><span>加工与采购渠道</span></div>
     </div>
@@ -60,9 +60,9 @@ titleTemplate: false
         <span>URDF / 仓库链接可直接下载</span>
       </a>
       <a class="rw-home-entry" href="/catalog">
-        <b>机器人部件 · 152 件</b>
+        <b>机器人部件 · 233 件</b>
         <p>比参数：按任意列排序、可对比、带来源等级与真实评分。</p>
-        <span>A 级 83 件逐项对过手册</span>
+        <span>A 级 81 件逐项对过手册</span>
       </a>
       <a class="rw-home-entry" href="/suppliers">
         <b>加工与采购 · 149 家</b>
@@ -136,16 +136,16 @@ titleTemplate: false
   <section class="rw-home-block">
     <h2>按品类</h2>
     <div class="rw-home-cats">
+      <a class="rw-home-cat" href="/catalog"><b>传感器</b><span>64</span><em>NTC / 温湿度 / 温度 / 压力 / 光 / ToF / 触摸</em></a>
       <a class="rw-home-cat" href="/catalog"><b>硬件芯片</b><span>59</span><em>电源 / 基准 / 电池管理 / 开关</em></a>
       <a class="rw-home-cat" href="/catalog"><b>关节电机</b><span>46</span><em>选型主战场</em></a>
+      <a class="rw-home-cat" href="/catalog"><b>IMU</b><span>26</span><em>姿态与振动</em></a>
       <a class="rw-home-cat" href="/catalog"><b>上位机</b><span>9</span><em>推理与感知</em></a>
       <a class="rw-home-cat" href="/catalog"><b>激光雷达</b><span>9</span><em>地形与建图</em></a>
       <a class="rw-home-cat" href="/catalog"><b>深度相机</b><span>9</span><em>视觉感知</em></a>
-      <a class="rw-home-cat" href="/catalog"><b>IMU</b><span>6</span><em>姿态与振动</em></a>
       <a class="rw-home-cat" href="/catalog"><b>舵机</b><span>3</span><em>串行总线 / PWM</em></a>
       <a class="rw-home-cat" href="/catalog"><b>下位机</b><span>3</span><em>力矩闭环</em></a>
       <a class="rw-home-cat" href="/catalog"><b>电调</b><span>3</span><em>驱动器 / 调速器</em></a>
-      <a class="rw-home-cat" href="/catalog"><b>传感器</b><span>3</span><em>ToF / 电流 / 霍尔</em></a>
       <a class="rw-home-cat" href="/catalog"><b>线束</b><span>2</span><em>待收录</em></a>
       <a class="rw-home-cat" href="/catalog"><b>电池</b><span>待收录</span><em>待收录</em></a>
       <a class="rw-home-cat" href="/catalog"><b>其余模块</b><span>待收录</span><em>力触觉 / 编码器</em></a>

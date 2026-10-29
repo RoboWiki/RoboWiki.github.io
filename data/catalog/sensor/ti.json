@@ -1,0 +1,360 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "temp_humid",
+  "id": "jlc-c82227",
+  "vendor": "TI",
+  "vendor_cn": "TI",
+  "model": "HDC1080DMBR",
+  "title": "TI(德州仪器) HDC1080DMBR",
+  "url": "https://item.szlcsc.com/82227.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 12.09,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "TI 2%RH 低功耗数字湿度传感器，WSON-6。",
+  "specs": {
+   "package": "WSON-6(3x3)",
+   "category_cn": "温湿度传感器",
+   "lcsc_part": "C82227",
+   "params": {
+    "温度范围": "-40℃~+125℃",
+    "湿度范围": "0%RH~100%RH",
+    "接口类型": "I2C",
+    "工作电压": "2.7V~5.5V"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 12.09
+    },
+    {
+     "qty": 10,
+     "price": 10.47
+    },
+    {
+     "qty": 30,
+     "price": 9.33
+    },
+    {
+     "qty": 100,
+     "price": 8.29
+    },
+    {
+     "qty": 500,
+     "price": 7.81
+    },
+    {
+     "qty": 1000,
+     "price": 7.62
+    }
+   ],
+   "price_lead": null,
+   "stock": "386",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c82227.jpg",
+   "image_source": "立创商城商品图（C82227，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250320/E3BB32F82911CCE086245F74F40B1459.pdf"
+  },
+  "subtype_label": "温湿度"
+ },
+ {
+  "category": "sensor",
+  "subtype": "temp",
+  "id": "jlc-c699536",
+  "vendor": "TI",
+  "vendor_cn": "TI",
+  "model": "TMP117AIDRVR",
+  "title": "TI(德州仪器) TMP117AIDRVR",
+  "url": "https://item.szlcsc.com/699536.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 6.26,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "0.1℃ 数字温度传感器，可替代 PT100/PT1000 的免标定方案，带 48 位 EEPROM。",
+  "specs": {
+   "package": "WDFN-6-EP(2x2)",
+   "category_cn": "温度传感器",
+   "lcsc_part": "C699536",
+   "params": {
+    "检测温度": "-55℃~+150℃",
+    "精度": "±0.1℃",
+    "工作电压": "1.7V~5.5V",
+    "待机电流": "3.1uA"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 6.26
+    },
+    {
+     "qty": 10,
+     "price": 5.49
+    },
+    {
+     "qty": 30,
+     "price": 4.77
+    },
+    {
+     "qty": 100,
+     "price": 4.24
+    },
+    {
+     "qty": 500,
+     "price": 4.02
+    },
+    {
+     "qty": 1000,
+     "price": 3.91
+    }
+   ],
+   "price_lead": 3.888,
+   "stock": "9636",
+   "stock_lead": "51K",
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c699536.jpg",
+   "image_source": "立创商城商品图（C699536，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20230922/5029B9170C8F09CEA4E3AEAAE6A4F003.pdf"
+  },
+  "subtype_label": "温度"
+ },
+ {
+  "category": "sensor",
+  "subtype": "temp",
+  "id": "jlc-c22428347",
+  "vendor": "TI",
+  "vendor_cn": "TI",
+  "model": "TMP119AIYBGR",
+  "title": "TI(德州仪器) TMP119AIYBGR",
+  "url": "https://item.szlcsc.com/22428347.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 22,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "医用级精度（ASTM E1112/ISO 80601），0.0078℃ 分辨率，16 位结果。**建议使用前烘烤**。",
+  "specs": {
+   "package": "DSBGA-6",
+   "category_cn": "温度传感器",
+   "lcsc_part": "C22428347",
+   "params": {
+    "检测温度": "-55℃~+150℃",
+    "精度": "±0.08℃",
+    "工作电压": "1.8V~5.5V",
+    "待机电流": "2uA"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 22
+    },
+    {
+     "qty": 10,
+     "price": 19.06
+    },
+    {
+     "qty": 30,
+     "price": 17.31
+    },
+    {
+     "qty": 100,
+     "price": 15.55
+    },
+    {
+     "qty": 500,
+     "price": 14.73
+    },
+    {
+     "qty": 1000,
+     "price": 14.37
+    }
+   ],
+   "price_lead": null,
+   "stock": "1512（在途 3000）",
+   "stock_lead": null,
+   "lead_time": "现货 4h / 在途 3 工作日",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c22428347.jpg",
+   "image_source": "立创商城商品图（C22428347，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250320/E3BB32F82911CCE086245F74F40B1459.pdf"
+  },
+  "subtype_label": "温度"
+ },
+ {
+  "category": "sensor",
+  "subtype": "temp",
+  "id": "jlc-c28927",
+  "vendor": "TI",
+  "vendor_cn": "TI",
+  "model": "TMP112AIDRLR",
+  "title": "TI(德州仪器) TMP112AIDRLR",
+  "url": "https://item.szlcsc.com/28927.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 1.8595,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "±0.5℃、1.4V 起工作，I²C/SMBus，带报警。**现货只剩 20 片**。",
+  "specs": {
+   "package": "SOT-563",
+   "category_cn": "温度传感器",
+   "lcsc_part": "C28927",
+   "params": {
+    "检测温度": "-40℃~+125℃",
+    "精度": "±0.5℃",
+    "工作电压": "1.4V~3.6V",
+    "待机电流": "1uA"
+   },
+   "price_tiers": [
+    {
+     "qty": 5,
+     "price": 1.8595
+    },
+    {
+     "qty": 50,
+     "price": 1.4348
+    },
+    {
+     "qty": 150,
+     "price": 1.2275
+    }
+   ],
+   "price_lead": null,
+   "stock": "20",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c28927.jpg",
+   "image_source": "立创商城商品图（C28927，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250320/E3BB32F82911CCE086245F74F40B1459.pdf"
+  },
+  "subtype_label": "温度"
+ },
+ {
+  "category": "sensor",
+  "subtype": "temp",
+  "id": "jlc-c99269",
+  "vendor": "TI",
+  "vendor_cn": "TI",
+  "model": "TMP102AIDRLR",
+  "title": "TI(德州仪器) TMP102AIDRLR",
+  "url": "https://item.szlcsc.com/99269.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 3.96,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "2.56mm² 封装的 I²C 数字温度传感器。",
+  "specs": {
+   "package": "SOT-563",
+   "category_cn": "温度传感器",
+   "lcsc_part": "C99269",
+   "params": {
+    "检测温度": "-40℃~+125℃",
+    "精度": "±0.5℃",
+    "工作电压": "1.4V~3.6V",
+    "待机电流": "1uA"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 3.96
+    },
+    {
+     "qty": 10,
+     "price": 3.29
+    },
+    {
+     "qty": 30,
+     "price": 2.82
+    },
+    {
+     "qty": 100,
+     "price": 2.44
+    },
+    {
+     "qty": 500,
+     "price": 2.32
+    },
+    {
+     "qty": 1000,
+     "price": 2.24
+    }
+   ],
+   "price_lead": 2.005,
+   "stock": "14K+",
+   "stock_lead": "28K",
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c99269.jpg",
+   "image_source": "立创商城商品图（C99269，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250320/E3BB32F82911CCE086245F74F40B1459.pdf"
+  },
+  "subtype_label": "温度"
+ }
+]

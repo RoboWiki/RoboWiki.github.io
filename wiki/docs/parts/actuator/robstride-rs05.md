@@ -13,7 +13,7 @@ title: 灵足 RobStride RS05
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">关节电机</span>
-      <span class="part-tag soft">qdd</span>
+      <span class="part-tag soft">准直驱 QDD</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥499</span>
     </div>

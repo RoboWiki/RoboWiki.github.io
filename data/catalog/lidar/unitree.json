@@ -63,7 +63,9 @@
    "power_peak_w": null,
    "rgb_fov": null,
    "rgb_resolution": null
-  }
+  },
+  "vendor_cn": null,
+  "subtype_label": "固态"
  },
  {
   "category": "lidar",
@@ -132,6 +134,7 @@
    "rgb_fov": null,
    "rgb_resolution": null
   },
-  "vendor_cn": "宇树"
+  "vendor_cn": "宇树",
+  "subtype_label": "固态"
  }
 ]

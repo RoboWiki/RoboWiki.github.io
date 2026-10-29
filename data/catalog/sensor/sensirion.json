@@ -1,0 +1,224 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "temp_humid",
+  "id": "jlc-c2909890",
+  "vendor": "Sensirion(瑞士盛思锐)",
+  "vendor_cn": "Sensirion(瑞士盛思锐)",
+  "model": "SHT40-AD1B-R2",
+  "title": "Sensirion(瑞士盛思锐) SHT40-AD1B-R2",
+  "url": "https://item.szlcsc.com/2909890.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 10.69,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "±1.8% / max ±3.5%RH 数字温湿度，1.08V 起工作。",
+  "specs": {
+   "package": "DFN-4-EP(1.5x1.5)",
+   "category_cn": "温湿度传感器",
+   "lcsc_part": "C2909890",
+   "params": {
+    "温度范围": "-40℃~+125℃",
+    "湿度范围": "0%RH~100%RH",
+    "接口类型": "I2C",
+    "工作电压": "1.08V~3.6V"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 10.69
+    },
+    {
+     "qty": 10,
+     "price": 9.44
+    },
+    {
+     "qty": 30,
+     "price": 8.55
+    },
+    {
+     "qty": 100,
+     "price": 7.74
+    },
+    {
+     "qty": 500,
+     "price": 7.09
+    },
+    {
+     "qty": 1000,
+     "price": 6.94
+    }
+   ],
+   "price_lead": null,
+   "stock": "9803",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c2909890.jpg",
+   "image_source": "立创商城商品图（C2909890，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20211021/851BA36A5CA574D725310F52CADA4510.pdf"
+  },
+  "subtype_label": "温湿度"
+ },
+ {
+  "category": "sensor",
+  "subtype": "temp_humid",
+  "id": "jlc-c2848306",
+  "vendor": "Sensirion(瑞士盛思锐)",
+  "vendor_cn": "Sensirion(瑞士盛思锐)",
+  "model": "SHT40-AD1B-R3",
+  "title": "Sensirion(瑞士盛思锐) SHT40-AD1B-R3",
+  "url": "https://item.szlcsc.com/2848306.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 11.33,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "同封装另一卷装规格；带内部加热器三档，可抗凝露/恶劣环境。",
+  "specs": {
+   "package": "DFN-4-EP(1.5x1.5)",
+   "category_cn": "温湿度传感器",
+   "lcsc_part": "C2848306",
+   "params": {
+    "温度范围": "-40℃~+125℃",
+    "湿度范围": "0%RH~100%RH",
+    "接口类型": "I2C",
+    "工作电压": "1.08V~3.6V"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 11.33
+    },
+    {
+     "qty": 10,
+     "price": 9.62
+    },
+    {
+     "qty": 30,
+     "price": 8.54
+    },
+    {
+     "qty": 100,
+     "price": 7.45
+    },
+    {
+     "qty": 500,
+     "price": 6.95
+    },
+    {
+     "qty": 1000,
+     "price": 6.74
+    }
+   ],
+   "price_lead": null,
+   "stock": "6024",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c2848306.jpg",
+   "image_source": "立创商城商品图（C2848306，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20210720/C2848306_34971E33C77B50764797513792751601.pdf"
+  },
+  "subtype_label": "温湿度"
+ },
+ {
+  "category": "sensor",
+  "subtype": "temp_humid",
+  "id": "jlc-c2687423",
+  "vendor": "Sensirion(瑞士盛思锐)",
+  "vendor_cn": "Sensirion(瑞士盛思锐)",
+  "model": "SHT30-DIS-B10KS",
+  "title": "Sensirion(瑞士盛思锐) SHT30-DIS-B10KS",
+  "url": "https://item.szlcsc.com/2687423.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 15.66,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "±2%RH（10–90%），老款经典型号，5V 也能直接供。",
+  "specs": {
+   "package": "DFN-8-EP(2.5x2.5)",
+   "category_cn": "温湿度传感器",
+   "lcsc_part": "C2687423",
+   "params": {
+    "温度范围": "-40℃~+125℃",
+    "湿度范围": "0%RH~100%RH",
+    "接口类型": "I2C",
+    "工作电压": "2.15V~5.5V"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 15.66
+    },
+    {
+     "qty": 10,
+     "price": 13.68
+    },
+    {
+     "qty": 30,
+     "price": 12.27
+    },
+    {
+     "qty": 100,
+     "price": 11
+    },
+    {
+     "qty": 500,
+     "price": 10.41
+    },
+    {
+     "qty": 1000,
+     "price": 10.17
+    }
+   ],
+   "price_lead": null,
+   "stock": "19K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c2687423.jpg",
+   "image_source": "立创商城商品图（C2687423，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20210120/C2687423_31DB3FACC3E95675626B9DEF500B4777.pdf"
+  },
+  "subtype_label": "温湿度"
+ }
+]

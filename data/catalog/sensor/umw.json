@@ -1,0 +1,150 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "temp",
+  "id": "jlc-c376006",
+  "vendor": "UMW",
+  "vendor_cn": "UMW",
+  "model": "DS18B20(UMW)",
+  "title": "UMW(友台半导体) DS18B20(UMW)",
+  "url": "https://item.szlcsc.com/376006.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 3.55,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "1-Wire 数字温度计，9–12 位可编程；可寄生供电，一条线挂多个。",
+  "specs": {
+   "package": "TO-92",
+   "category_cn": "温度传感器",
+   "lcsc_part": "C376006",
+   "params": {
+    "检测温度": "-55℃~+125℃",
+    "精度": "±0.4℃",
+    "工作电压": "3V~5.5V",
+    "接口类型": "单总线"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 3.55
+    },
+    {
+     "qty": 10,
+     "price": 2.94
+    },
+    {
+     "qty": 30,
+     "price": 2.51
+    },
+    {
+     "qty": 100,
+     "price": 2.16
+    },
+    {
+     "qty": 500,
+     "price": 1.9
+    },
+    {
+     "qty": 1000,
+     "price": 1.83
+    }
+   ],
+   "price_lead": null,
+   "stock": "64K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商满16-15",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商满16-15",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c376006.jpg",
+   "image_source": "立创商城商品图（C376006，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20260522/8B279C82A2B869A13B6BBAE0DE96BC41.pdf"
+  },
+  "subtype_label": "温度"
+ },
+ {
+  "category": "sensor",
+  "subtype": "temp",
+  "id": "jlc-c695836",
+  "vendor": "UMW",
+  "vendor_cn": "UMW",
+  "model": "DS18B20U(UMW)",
+  "title": "UMW(友台半导体) DS18B20U(UMW)",
+  "url": "https://item.szlcsc.com/695836.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 4.45,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "贴片 MSOP-8 版，适合上 SMT 线（TO-92 要手插）。",
+  "specs": {
+   "package": "MSOP-8",
+   "category_cn": "温度传感器",
+   "lcsc_part": "C695836",
+   "params": {
+    "检测温度": "-55℃~+125℃",
+    "精度": "±0.4℃",
+    "工作电压": "2.5V~5.5V",
+    "待机电流": "750nA"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 4.45
+    },
+    {
+     "qty": 10,
+     "price": 3.69
+    },
+    {
+     "qty": 30,
+     "price": 3.16
+    },
+    {
+     "qty": 100,
+     "price": 2.72
+    },
+    {
+     "qty": 500,
+     "price": 2.35
+    },
+    {
+     "qty": 1000,
+     "price": 2.27
+    }
+   ],
+   "price_lead": null,
+   "stock": "35K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商满16-15",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商满16-15",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c695836.jpg",
+   "image_source": "立创商城商品图（C695836，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20260522/8B279C82A2B869A13B6BBAE0DE96BC41.pdf"
+  },
+  "subtype_label": "温度"
+ }
+]

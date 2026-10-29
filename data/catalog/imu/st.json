@@ -1,0 +1,792 @@
+[
+ {
+  "category": "imu",
+  "subtype": "imu_chip",
+  "id": "jlc-c967633",
+  "vendor": "ST",
+  "vendor_cn": "ST",
+  "model": "LSM6DS3TR-C",
+  "title": "ST(意法半导体) LSM6DS3TR-C",
+  "url": "https://item.szlcsc.com/967633.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 8.89,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "入门级 6 轴 IMU（iNEMO），手机/便携平台的主力件，资料最全。",
+  "specs": {
+   "package": "LGA-14(2.5x3)",
+   "category_cn": "姿态传感器/陀螺仪",
+   "lcsc_part": "C967633",
+   "params": {
+    "加速度计轴向": "X,Y,Z",
+    "加速度计量程": "±16g",
+    "陀螺仪轴向": "X,Y,Z",
+    "陀螺仪量程": "±2000dps"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 8.89
+    },
+    {
+     "qty": 10,
+     "price": 7.79
+    },
+    {
+     "qty": 30,
+     "price": 6.75
+    },
+    {
+     "qty": 100,
+     "price": 5.98
+    },
+    {
+     "qty": 500,
+     "price": 5.66
+    },
+    {
+     "qty": 1000,
+     "price": 5.5
+    }
+   ],
+   "price_lead": 5.1,
+   "stock": "22K+",
+   "stock_lead": "50K",
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c967633.jpg",
+   "image_source": "立创商城商品图（C967633，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20210226/C967633_4D8B3A108D63359423D57B97CE5134B1.pdf",
+   "gyro_range_dps": "2000",
+   "accel_range_g": "16",
+   "odr_hz": null,
+   "iface": null,
+   "voltage_V": null
+  },
+  "subtype_label": "IMU 芯片"
+ },
+ {
+  "category": "imu",
+  "subtype": "imu_chip",
+  "id": "jlc-c126672",
+  "vendor": "ST",
+  "vendor_cn": "ST",
+  "model": "LSM6DSLTR",
+  "title": "ST(意法半导体) LSM6DSLTR",
+  "url": "https://item.szlcsc.com/126672.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 15.6,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "6 轴 IMU，超低功耗；比 6DS3 新一代，寄存器兼容性一般。",
+  "specs": {
+   "package": "LGA-14(2.5x3)",
+   "category_cn": "姿态传感器/陀螺仪",
+   "lcsc_part": "C126672",
+   "params": {
+    "加速度计轴向": "X,Y,Z",
+    "加速度计量程": "±16g",
+    "陀螺仪轴向": "X,Y,Z",
+    "陀螺仪量程": "±2000dps"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 15.6
+    },
+    {
+     "qty": 10,
+     "price": 13.57
+    },
+    {
+     "qty": 30,
+     "price": 12.14
+    },
+    {
+     "qty": 100,
+     "price": 10.83
+    },
+    {
+     "qty": 500,
+     "price": 10.23
+    },
+    {
+     "qty": 1000,
+     "price": 9.98
+    }
+   ],
+   "price_lead": 8.3,
+   "stock": "19K+",
+   "stock_lead": "20K",
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c126672.jpg",
+   "image_source": "立创商城商品图（C126672，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241220/EC0E31733C6A72FEA5A1013CA65AFC31.pdf",
+   "gyro_range_dps": "2000",
+   "accel_range_g": "16",
+   "odr_hz": null,
+   "iface": null,
+   "voltage_V": null
+  },
+  "subtype_label": "IMU 芯片"
+ },
+ {
+  "category": "imu",
+  "subtype": "imu_chip",
+  "id": "jlc-c2655100",
+  "vendor": "ST",
+  "vendor_cn": "ST",
+  "model": "LSM6DSOTR",
+  "title": "ST(意法半导体) LSM6DSOTR",
+  "url": "https://item.szlcsc.com/2655100.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 24.38,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "带有限状态机与高级数字功能的低功耗 6 轴。",
+  "specs": {
+   "package": "LGA-14(2.5x3)",
+   "category_cn": "姿态传感器/陀螺仪",
+   "lcsc_part": "C2655100",
+   "params": {
+    "加速度计轴向": "X,Y,Z",
+    "加速度计量程": "±16g",
+    "陀螺仪轴向": "X,Y,Z",
+    "陀螺仪量程": "±2000dps"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 24.38
+    },
+    {
+     "qty": 10,
+     "price": 21.03
+    },
+    {
+     "qty": 30,
+     "price": 17.67
+    },
+    {
+     "qty": 100,
+     "price": 15.65
+    },
+    {
+     "qty": 500,
+     "price": 14.73
+    },
+    {
+     "qty": 1000,
+     "price": 14.31
+    }
+   ],
+   "price_lead": null,
+   "stock": "17K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c2655100.jpg",
+   "image_source": "立创商城商品图（C2655100，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20210701/9974CFC31D223BA5E00E2E6AAA61F1A7.pdf",
+   "gyro_range_dps": "2000",
+   "accel_range_g": "16",
+   "odr_hz": null,
+   "iface": null,
+   "voltage_V": null
+  },
+  "subtype_label": "IMU 芯片"
+ },
+ {
+  "category": "imu",
+  "subtype": "imu_chip",
+  "id": "jlc-c481766",
+  "vendor": "ST",
+  "vendor_cn": "ST",
+  "model": "LSM6DSOXTR",
+  "title": "ST(意法半导体) LSM6DSOXTR",
+  "url": "https://item.szlcsc.com/481766.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 23.59,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "6DSO 带**机器学习核心**（决策树可跑在传感器里），做姿态分类省 MCU 算力。",
+  "specs": {
+   "package": "LGA-14(2.5x3)",
+   "category_cn": "姿态传感器/陀螺仪",
+   "lcsc_part": "C481766",
+   "params": {
+    "加速度计轴向": "X,Y,Z",
+    "加速度计量程": "±16g",
+    "陀螺仪轴向": "X,Y,Z",
+    "陀螺仪量程": "±2000dps"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 23.59
+    },
+    {
+     "qty": 10,
+     "price": 20.5
+    },
+    {
+     "qty": 30,
+     "price": 18.67
+    },
+    {
+     "qty": 100,
+     "price": 16.81
+    },
+    {
+     "qty": 500,
+     "price": 15.95
+    },
+    {
+     "qty": 1000,
+     "price": 15.57
+    }
+   ],
+   "price_lead": null,
+   "stock": "10K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c481766.jpg",
+   "image_source": "立创商城商品图（C481766，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20200318/C481766_D6E5D8E06CA02BE668E0C9E4990BFAAC.pdf",
+   "gyro_range_dps": "2000",
+   "accel_range_g": "16",
+   "odr_hz": null,
+   "iface": null,
+   "voltage_V": null
+  },
+  "subtype_label": "IMU 芯片"
+ },
+ {
+  "category": "imu",
+  "subtype": "imu_chip",
+  "id": "jlc-c784817",
+  "vendor": "ST",
+  "vendor_cn": "ST",
+  "model": "LSM6DSRTR",
+  "title": "ST(意法半导体) LSM6DSRTR",
+  "url": "https://item.szlcsc.com/784817.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 18.77,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "陀螺量程到 ±4000dps（比常见的 2000 高一档），适合高速旋转机构。",
+  "specs": {
+   "package": "LGA-14(2.5x3)",
+   "category_cn": "姿态传感器/陀螺仪",
+   "lcsc_part": "C784817",
+   "params": {
+    "加速度计轴向": "X,Y,Z",
+    "加速度计量程": "±16g",
+    "陀螺仪轴向": "X,Y,Z",
+    "陀螺仪量程": "±4000dps"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 18.77
+    },
+    {
+     "qty": 10,
+     "price": 16.5
+    },
+    {
+     "qty": 30,
+     "price": 14.91
+    },
+    {
+     "qty": 100,
+     "price": 13.45
+    },
+    {
+     "qty": 500,
+     "price": 12.78
+    },
+    {
+     "qty": 1000,
+     "price": 12.5
+    }
+   ],
+   "price_lead": null,
+   "stock": "5347",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c784817.jpg",
+   "image_source": "立创商城商品图（C784817，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20200917/C784817_588B181F536F08BA56850445B1DD436C.pdf",
+   "gyro_range_dps": "4000",
+   "accel_range_g": "16",
+   "odr_hz": null,
+   "iface": null,
+   "voltage_V": null
+  },
+  "subtype_label": "IMU 芯片"
+ },
+ {
+  "category": "imu",
+  "subtype": "imu_chip",
+  "id": "jlc-c5267406",
+  "vendor": "ST",
+  "vendor_cn": "ST",
+  "model": "LSM6DSV16XTR",
+  "title": "ST(意法半导体) LSM6DSV16XTR",
+  "url": "https://item.szlcsc.com/5267406.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 20.5,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "常开型（always-on）IMU，带机器学习核心与 Qvar 静电传感。",
+  "specs": {
+   "package": "LGA-14(2.5x3)",
+   "category_cn": "姿态传感器/陀螺仪",
+   "lcsc_part": "C5267406",
+   "params": {
+    "加速度计轴向": "X,Y,Z",
+    "加速度计量程": "±16g",
+    "陀螺仪轴向": "X,Y,Z",
+    "陀螺仪量程": "±4000dps"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 20.5
+    },
+    {
+     "qty": 10,
+     "price": 17.87
+    },
+    {
+     "qty": 30,
+     "price": 16.53
+    },
+    {
+     "qty": 100,
+     "price": 14.73
+    },
+    {
+     "qty": 500,
+     "price": 14.08
+    },
+    {
+     "qty": 1000,
+     "price": 13.81
+    }
+   ],
+   "price_lead": 13,
+   "stock": "4385",
+   "stock_lead": "25K",
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c5267406.jpg",
+   "image_source": "立创商城商品图（C5267406，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20230906/926BB1EF3E5E330CDE1020DD1AB4C151.pdf",
+   "gyro_range_dps": "4000",
+   "accel_range_g": "16",
+   "odr_hz": null,
+   "iface": null,
+   "voltage_V": null
+  },
+  "subtype_label": "IMU 芯片"
+ },
+ {
+  "category": "imu",
+  "subtype": "imu_chip",
+  "id": "jlc-c2655101",
+  "vendor": "ST",
+  "vendor_cn": "ST",
+  "model": "ISM330DHCXTR",
+  "title": "ST(意法半导体) ISM330DHCXTR",
+  "url": "https://item.szlcsc.com/2655101.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 34.02,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "**工业级**常开 6 轴，温漂与抗振比消费级好；机器人关节上用得住。",
+  "specs": {
+   "package": "LGA-14(2.5x3)",
+   "category_cn": "姿态传感器/陀螺仪",
+   "lcsc_part": "C2655101",
+   "params": {
+    "加速度计轴向": "X,Y,Z",
+    "加速度计量程": "±16g",
+    "陀螺仪轴向": "X,Y,Z",
+    "陀螺仪量程": "±4000dps"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 34.02
+    },
+    {
+     "qty": 10,
+     "price": 29.16
+    },
+    {
+     "qty": 30,
+     "price": 25.19
+    },
+    {
+     "qty": 100,
+     "price": 22.27
+    },
+    {
+     "qty": 500,
+     "price": 20.92
+    },
+    {
+     "qty": 1000,
+     "price": 20.32
+    }
+   ],
+   "price_lead": 19,
+   "stock": "4330",
+   "stock_lead": "10K",
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c2655101.jpg",
+   "image_source": "立创商城商品图（C2655101，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20210701/64D3B64DD4826309C8CF515BD36A29A7.pdf",
+   "gyro_range_dps": "4000",
+   "accel_range_g": "16",
+   "odr_hz": null,
+   "iface": null,
+   "voltage_V": null
+  },
+  "subtype_label": "IMU 芯片"
+ },
+ {
+  "category": "imu",
+  "subtype": "accel",
+  "id": "jlc-c189624",
+  "vendor": "ST",
+  "vendor_cn": "ST",
+  "model": "LIS2DW12TR",
+  "title": "ST(意法半导体) LIS2DW12TR",
+  "url": "https://item.szlcsc.com/189624.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 6.35,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "超低功耗三轴加速度，可配单/双击、自由落体、唤醒、6D/4D 方向检测。",
+  "specs": {
+   "package": "LGA-12(2x2)",
+   "category_cn": "姿态传感器/陀螺仪",
+   "lcsc_part": "C189624",
+   "params": {
+    "加速度计轴向": "X,Y,Z",
+    "加速度计量程": "±16g",
+    "传感器类型": "加速度计",
+    "输出位数": "16bit"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 6.35
+    },
+    {
+     "qty": 10,
+     "price": 5.56
+    },
+    {
+     "qty": 30,
+     "price": 4.82
+    },
+    {
+     "qty": 100,
+     "price": 4.27
+    },
+    {
+     "qty": 500,
+     "price": 4.05
+    },
+    {
+     "qty": 1000,
+     "price": 3.93
+    }
+   ],
+   "price_lead": 3.58,
+   "stock": "35K+",
+   "stock_lead": "40K",
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c189624.jpg",
+   "image_source": "立创商城商品图（C189624，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20180403/C189624_150963097ED842400E055DE40577DCB1.pdf",
+   "accel_range_g": "16",
+   "odr_hz": null,
+   "gyro_range_dps": null,
+   "iface": null,
+   "voltage_V": null
+  },
+  "subtype_label": "加速度计芯片"
+ },
+ {
+  "category": "imu",
+  "subtype": "accel",
+  "id": "jlc-c110926",
+  "vendor": "ST",
+  "vendor_cn": "ST",
+  "model": "LIS2DH12TR",
+  "title": "ST(意法半导体) LIS2DH12TR",
+  "url": "https://item.szlcsc.com/110926.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 5.69,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "老一代低功耗三轴加速度，±2/4/8/16g 可选，I²C/SPI + 内置 FIFO。",
+  "specs": {
+   "package": "LGA-12(2x2)",
+   "category_cn": "姿态传感器/陀螺仪",
+   "lcsc_part": "C110926",
+   "params": {
+    "加速度计轴向": "X,Y,Z",
+    "加速度计量程": "±16g",
+    "传感器类型": "加速度计",
+    "输出位数": "8/10/12bit"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 5.69
+    },
+    {
+     "qty": 10,
+     "price": 4.74
+    },
+    {
+     "qty": 30,
+     "price": 4.07
+    },
+    {
+     "qty": 100,
+     "price": 3.51
+    },
+    {
+     "qty": 500,
+     "price": 3.34
+    },
+    {
+     "qty": 1000,
+     "price": 3.23
+    }
+   ],
+   "price_lead": 2.95,
+   "stock": "58K+",
+   "stock_lead": "80K",
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c110926.jpg",
+   "image_source": "立创商城商品图（C110926，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20241220/2F480C8F57F5916C60D90C515AF946D6.pdf",
+   "accel_range_g": "16",
+   "odr_hz": null,
+   "gyro_range_dps": null,
+   "iface": null,
+   "voltage_V": null
+  },
+  "subtype_label": "加速度计芯片"
+ },
+ {
+  "category": "imu",
+  "subtype": "accel",
+  "id": "jlc-c15134",
+  "vendor": "ST",
+  "vendor_cn": "ST",
+  "model": "LIS3DHTR",
+  "title": "ST(意法半导体) LIS3DHTR",
+  "url": "https://item.szlcsc.com/15134.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 11.7,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "经典三轴加速度（LLGA-16 3×3×1.0）；老设计里到处都是，单价已偏高。",
+  "specs": {
+   "package": "LGA-16(3x3)",
+   "category_cn": "姿态传感器/陀螺仪",
+   "lcsc_part": "C15134",
+   "params": {
+    "加速度计轴向": "X,Y,Z",
+    "加速度计量程": "±16g",
+    "传感器类型": "加速度计",
+    "输出位数": "16bit"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 11.7
+    },
+    {
+     "qty": 10,
+     "price": 10.21
+    },
+    {
+     "qty": 30,
+     "price": 9.16
+    },
+    {
+     "qty": 100,
+     "price": 8.2
+    },
+    {
+     "qty": 500,
+     "price": 7.75
+    },
+    {
+     "qty": 1000,
+     "price": 7.57
+    }
+   ],
+   "price_lead": 6.92,
+   "stock": "769（立推 17K+）",
+   "stock_lead": "17K+",
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c15134.jpg",
+   "image_source": "立创商城商品图（C15134，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20170502/1493709336456.pdf",
+   "accel_range_g": "16",
+   "odr_hz": null,
+   "gyro_range_dps": null,
+   "iface": null,
+   "voltage_V": null
+  },
+  "subtype_label": "加速度计芯片"
+ }
+]

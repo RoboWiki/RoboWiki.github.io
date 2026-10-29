@@ -13,7 +13,7 @@ title: Livox Mid-360
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">激光雷达</span>
-      <span class="part-tag soft">solid</span>
+      <span class="part-tag soft">固态</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥3,999</span>
     </div>

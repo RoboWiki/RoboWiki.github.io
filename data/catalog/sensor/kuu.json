@@ -1,0 +1,152 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c2892547",
+  "vendor": "KUU",
+  "vendor_cn": "KUU",
+  "model": "KNTC0603/10KF3950",
+  "title": "KUU KNTC0603/10KF3950",
+  "url": "https://item.szlcsc.com/2892547.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.17404,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "国产 0603 常备件；立推 600K 起 ￥0.0748。",
+  "specs": {
+   "package": "0603",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C2892547",
+   "params": {
+    "功率": "100mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 20,
+     "price": 0.17404
+    },
+    {
+     "qty": 200,
+     "price": 0.13908
+    },
+    {
+     "qty": 600,
+     "price": 0.119605
+    },
+    {
+     "qty": 4000,
+     "price": 0.09215
+    },
+    {
+     "qty": 8000,
+     "price": 0.08208
+    },
+    {
+     "qty": 20000,
+     "price": 0.076665
+    }
+   ],
+   "price_lead": 0.0748,
+   "stock": "97K+",
+   "stock_lead": "600K",
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商最高减20",
+    "9.5折",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商最高减20",
+    "9.5折",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c2892547.jpg",
+   "image_source": "立创商城商品图（C2892547，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20210908/154E92DD1F52D9B3804AA862EC2D5FAB.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ },
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c2892549",
+  "vendor": "KUU",
+  "vendor_cn": "KUU",
+  "model": "KNTC0805/10KF3950",
+  "title": "KUU KNTC0805/10KF3950",
+  "url": "https://item.szlcsc.com/2892549.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.25973,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "0805 版。",
+  "specs": {
+   "package": "0805",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C2892549",
+   "params": {
+    "功率": "100mW",
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%"
+   },
+   "price_tiers": [
+    {
+     "qty": 10,
+     "price": 0.25973
+    },
+    {
+     "qty": 100,
+     "price": 0.21185
+    },
+    {
+     "qty": 300,
+     "price": 0.18791
+    },
+    {
+     "qty": 1000,
+     "price": 0.169955
+    },
+    {
+     "qty": 4000,
+     "price": 0.132525
+    },
+    {
+     "qty": 8000,
+     "price": 0.125305
+    }
+   ],
+   "price_lead": null,
+   "stock": "81K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商最高减20",
+    "9.5折近30天最低价",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商最高减20",
+    "9.5折近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c2892549.jpg",
+   "image_source": "立创商城商品图（C2892549，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20210908/807609DBC36A8EA3650FF46134591C85.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ }
+]

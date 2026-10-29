@@ -1,0 +1,75 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "tof",
+  "id": "jlc-c3178291",
+  "vendor": "ST",
+  "vendor_cn": "ST",
+  "model": "VL53L4CDV0DH/1",
+  "title": "ST(意法半导体) VL53L4CDV0DH/1",
+  "url": "https://item.szlcsc.com/3178291.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 19.48,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "飞行时间（ToF）测距，0–130cm，抗环境光；比超声波快且不受材质反射率影响那么大。",
+  "specs": {
+   "package": "SMD-12P",
+   "category_cn": "位置传感器",
+   "lcsc_part": "C3178291",
+   "params": {
+    "接口类型": "I2C",
+    "工作电压": "2.6V~3.5V",
+    "线性范围": "0cm~130cm",
+    "工作电流": "24mA"
+   },
+   "price_tiers": [
+    {
+     "qty": 1,
+     "price": 19.48
+    },
+    {
+     "qty": 10,
+     "price": 17.38
+    },
+    {
+     "qty": 30,
+     "price": 14.87
+    },
+    {
+     "qty": 100,
+     "price": 13.51
+    },
+    {
+     "qty": 500,
+     "price": 12.88
+    },
+    {
+     "qty": 1000,
+     "price": 12.63
+    }
+   ],
+   "price_lead": null,
+   "stock": "11K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "运9元运费券",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "运9元运费券",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c3178291.jpg",
+   "image_source": "立创商城商品图（C3178291，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20221107/BE9994483FC65BEC03A9A3E978A2D9BD.pdf"
+  },
+  "subtype_label": "ToF 测距"
+ }
+]

@@ -13,7 +13,7 @@ title: 大疆 DJI RoboMaster 开发板 C 型
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">下位机</span>
-      <span class="part-tag soft">mcu</span>
+      <span class="part-tag soft">主控板</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥379</span>
     </div>

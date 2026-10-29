@@ -67,6 +67,7 @@
    "tau_rated_Nm": null,
    "imu_rate_hz": null,
    "gear": null
-  }
+  },
+  "subtype_label": "固态"
  }
 ]

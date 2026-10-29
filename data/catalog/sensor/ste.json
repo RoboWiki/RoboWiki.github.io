@@ -1,0 +1,76 @@
+[
+ {
+  "category": "sensor",
+  "subtype": "ntc",
+  "id": "jlc-c3000141",
+  "vendor": "STE(松田)",
+  "vendor_cn": "STE(松田)",
+  "model": "MT52B103F3950F01000",
+  "title": "STE(松田) MT52B103F3950F01000",
+  "url": "https://item.szlcsc.com/3000141.html",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": 0.5923,
+  "origin": "立创商城搜索页（2026-10-29）",
+  "notes": "MF52B 10k±1%/3950，红色漆包线，线长 100mm。",
+  "specs": {
+   "package": "插件",
+   "category_cn": "NTC热敏电阻",
+   "lcsc_part": "C3000141",
+   "params": {
+    "阻值": "10kΩ",
+    "电阻精度": "±1%",
+    "B值精度": "±1%",
+    "B值": "3950K"
+   },
+   "price_tiers": [
+    {
+     "qty": 5,
+     "price": 0.5923
+    },
+    {
+     "qty": 50,
+     "price": 0.4713
+    },
+    {
+     "qty": 150,
+     "price": 0.4108
+    },
+    {
+     "qty": 1000,
+     "price": 0.3544
+    },
+    {
+     "qty": 2000,
+     "price": 0.3181
+    },
+    {
+     "qty": 5000,
+     "price": 0.2999
+    }
+   ],
+   "price_lead": null,
+   "stock": "17K+",
+   "stock_lead": null,
+   "lead_time": "现货 4h",
+   "jlc_library": "扩展库",
+   "coupon": [
+    "商最高减50",
+    "下单最高92折"
+   ],
+   "tags": [
+    "SMT补贴",
+    "商最高减50",
+    "近30天最低价",
+    "私有库",
+    "下单最高92折"
+   ],
+   "fetched_at": "2026-10-29",
+   "image_url": "/parts/jlc-c3000141.jpg",
+   "image_source": "立创商城商品图（C3000141，2026-10-29 采集）",
+   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20220421/4C9ED61AEEBD0560001C4E62DFAA304B.pdf"
+  },
+  "subtype_label": "NTC 热敏电阻"
+ }
+]
