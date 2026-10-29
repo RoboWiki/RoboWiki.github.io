@@ -197,7 +197,10 @@ function num(v: any, d = 3): string {
   const n = Number(v)
   if (!isFinite(n)) return String(v)
   const a = Math.abs(n)
-  if (a && (a < 0.001 || a >= 100000)) return n.toExponential(1)
+  // 大整数加千分位（700000 -> 700,000），与详情页 python 端 num() 保持一致；
+  // 科学计数法只留给真正的小数。
+  if (a >= 1000 && Number.isInteger(n)) return n.toLocaleString('en-US')
+  if (a && a < 0.001) return n.toExponential(1)
   return String(Number(n.toFixed(d)))
 }
 

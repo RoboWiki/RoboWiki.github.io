@@ -45,7 +45,17 @@
    "ip": null,
    "voltage_V": null,
    "size_mm": null,
-   "weight_g": null
+   "weight_g": null,
+   "range_min_m": null,
+   "fps_note": null,
+   "slam_accuracy": null,
+   "rgb_shutter": null,
+   "depth_resolution": null,
+   "output": null,
+   "rgb_sensor": null,
+   "power_peak_w": null,
+   "rgb_fov": null,
+   "rgb_resolution": null
   },
   "category": "lidar",
   "subtype": "solid",

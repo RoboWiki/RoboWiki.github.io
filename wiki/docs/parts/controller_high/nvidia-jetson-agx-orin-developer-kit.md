@@ -75,7 +75,7 @@ title: NVIDIA Jetson AGX Orin Developer Kit
 | cores | 12 |
 | cpu_arch | arm64 |
 | GPU | 2048-core Ampere + 64 Tensor Cores |
-| CUDA 核 | 2048 |
+| CUDA 核 | 2,048 |
 | storage_gb | 64 |
 | os | JetPack 6 (Ubuntu 22.04) |
 | cuda | 1 |

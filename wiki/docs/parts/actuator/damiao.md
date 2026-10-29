@@ -38,8 +38,8 @@ title: 达妙 DAMIAO
 | [**DM-JH11-51-2EC**](/parts/actuator/damiao-dm-jh11-51-2ec) | 7.8 | 3.2 | 51 | 60 | 0.345 | 0.016 | 1,299 | `A✓` |
 | [**DM-J4310-2EC V1.1**](/parts/actuator/damiao-dm-j4310-2ec-v1-1) | 7 | 3 | 10 | 400 | 0.306 | 1.80e-03 | — | `A✓` |
 | [**DM-J3507-2EC**](/parts/actuator/damiao-dm-j3507-2ec) | 3 | 0.8 | 7 | 910 | 0.15 | 4.26e-04 | 550 | `A✓` |
-| [**DM-D5730 -1EC**](/parts/actuator/damiao-dm-d5730-1ec) | 1.9 | 0.65 | 1 | 1500 | 0.628 | 6.00e-05 | 399 | `A✓` |
-| [**DM-D5730 -1EE**](/parts/actuator/damiao-dm-d5730-1ee) | 1.9 | 0.65 | 1 | 1500 | 0.628 | 6.00e-05 | — | `A✓` |
+| [**DM-D5730 -1EC**](/parts/actuator/damiao-dm-d5730-1ec) | 1.9 | 0.65 | 1 | 1,500 | 0.628 | 6.00e-05 | 399 | `A✓` |
+| [**DM-D5730 -1EE**](/parts/actuator/damiao-dm-d5730-1ee) | 1.9 | 0.65 | 1 | 1,500 | 0.628 | 6.00e-05 | — | `A✓` |
 
 ## 这一页的讨论
 

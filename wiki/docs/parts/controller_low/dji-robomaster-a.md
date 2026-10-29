@@ -69,7 +69,7 @@ title: 大疆 DJI RoboMaster 开发板 A 型
 | 电流环 (kHz) | — |
 | 接口 | CAN / UART / SPI / I2C / PWM / ADC |
 | 主频 (MHz) | 180 |
-| Flash (KB) | 2048 |
+| Flash (KB) | 2,048 |
 | RAM (KB) | 256 |
 | 额定电压 (V) | 24 |
 | 最高电压 (V) | 26 |

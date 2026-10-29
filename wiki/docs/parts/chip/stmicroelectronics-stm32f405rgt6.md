@@ -28,7 +28,7 @@ title: STMicroelectronics STM32F405RGT6
 | 主频 (MHz) | 168 |
 | 封装 | LQFP64 |
 | 额定电压 (V) | 3.3 |
-| Flash (KB) | 1024 |
+| Flash (KB) | 1,024 |
 | CAN 路数 | 2 |
 
 <div class="part-src">
@@ -67,7 +67,7 @@ title: STMicroelectronics STM32F405RGT6
 | 封装 | LQFP64 |
 | 接口 | — |
 | 额定电压 (V) | 3.3 |
-| Flash (KB) | 1024 |
+| Flash (KB) | 1,024 |
 | CAN 路数 | 2 |
 | cores | 1 |
 | RAM (KB) | 192 |

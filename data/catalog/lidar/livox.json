@@ -100,7 +100,17 @@
    "effective_points_per_s": null,
    "blind_m": null,
    "ambient_light_lux": null,
-   "wavelength_nm": null
+   "wavelength_nm": null,
+   "range_min_m": null,
+   "fps_note": null,
+   "slam_accuracy": null,
+   "rgb_shutter": null,
+   "depth_resolution": null,
+   "output": null,
+   "rgb_sensor": null,
+   "power_peak_w": null,
+   "rgb_fov": null,
+   "rgb_resolution": null
   },
   "vendor_cn": "览沃"
  }

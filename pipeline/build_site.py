@@ -66,7 +66,11 @@ def num(v, digits: int = 3) -> str:
     if isinstance(v, str):
         return v
     a = abs(float(v))
-    if a and (a < 0.01 or a >= 100000):
+    # 大整数：加千分位（700000 -> 700,000）。科学计数法只留给真正的小数，
+    # 否则「点频」这种整数会显示成 7.00e+05，读起来像程序输出而不是参数。
+    if a >= 1000 and float(v).is_integer():
+        return f"{int(v):,}"
+    if a and a < 0.01:
         return f"{v:.2e}"
     return f"{round(float(v), digits):g}"
 

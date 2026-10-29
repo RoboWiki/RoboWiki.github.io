@@ -27,7 +27,7 @@ title: 宇树 Unitree L1
 |---|---|
 | 量程 (m) | 20 |
 | 视场 | 360° × 90° |
-| 点频 (点/s) | 43200 |
+| 点频 (点/s) | 43,200 |
 | 帧率 (fps) | 11 |
 | 接口 | TTL UART 2 Mbps |
 | 质量 (kg) | — |
@@ -66,12 +66,12 @@ title: 宇树 Unitree L1
 |---|---|
 | 量程 (m) | 20 |
 | 视场 | 360° × 90° |
-| 点频 (点/s) | 43200 |
+| 点频 (点/s) | 43,200 |
 | 帧率 (fps) | 11 |
 | 接口 | TTL UART 2 Mbps |
 | 质量 (kg) | — |
 | range_note | PM：20 m@90%、10 m@10%；RM：30 m@90%、15 m@10% |
-| effective_points_per_s | 21600 |
+| effective_points_per_s | 21,600 |
 | blind_m | 0.05 |
 | accuracy | ±2.0 cm |
 | range_resolution | 8 mm |
@@ -79,7 +79,7 @@ title: 宇树 Unitree L1
 | imu_rate_hz | 250 |
 | eye_safety | Class 1（IEC 60825-1:2014） |
 | 工作温度 | -10–60 ℃ |
-| ambient_light_lux | 1.00e+05 |
+| ambient_light_lux | 100,000 |
 | scan | 无接触无刷转镜 |
 | data_4d | 3D 位置 + 1D 灰度 |
 

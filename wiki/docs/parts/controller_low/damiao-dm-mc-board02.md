@@ -69,7 +69,7 @@ title: 达妙 DAMIAO DM-MC-Board02
 | 电流环 (kHz) | — |
 | 接口 | CANFD×3 / RS485×2 / USB×1 / SBUS×1 / PWM×4 / UART×3 / SWD |
 | 主频 (MHz) | 550 |
-| Flash (KB) | 1024 |
+| Flash (KB) | 1,024 |
 | RAM (KB) | 564 |
 | CAN 速率 (Mbps) | 5 |
 | 额定电压 (V) | 24 |

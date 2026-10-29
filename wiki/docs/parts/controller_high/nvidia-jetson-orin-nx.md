@@ -77,7 +77,7 @@ title: NVIDIA Jetson Orin NX
 | cuda | 1 |
 | cores | 8 |
 | cpu_arch | arm64 |
-| CUDA 核 | 1024 |
+| CUDA 核 | 1,024 |
 | ros2 | 1 |
 | pcie | 1× PCIe Gen4 x4 + 3× PCIe Gen4 x1（载板决定） |
 | size_mm | 69.6×45 |

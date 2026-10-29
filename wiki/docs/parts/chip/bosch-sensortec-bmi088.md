@@ -67,8 +67,8 @@ title: Bosch Sensortec BMI088
 | 额定电压 (V) | 3.3 |
 | Flash (KB) | — |
 | CAN 路数 | — |
-| ODR (Hz) | 1600 |
-| 陀螺量程 (°/s) | 2000 |
+| ODR (Hz) | 1,600 |
+| 陀螺量程 (°/s) | 2,000 |
 | 加计量程 (g) | 24 |
 | doc_url | https://www.bosch-sensortec.com/products/motion-sensors/imus/bmi088/ |
 | doc_pdf | https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi088-ds001.pdf |

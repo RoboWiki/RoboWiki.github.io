@@ -37,8 +37,8 @@ titleTemplate: false
 <a class="hc" href="/parts/esc/"><b>电调</b><span>3</span><em>驱动器 / 调速器</em></a>
 <a class="hc" href="/parts/imu/"><b>IMU</b><span>6</span><em>姿态与振动</em></a>
 <a class="hc" href="/parts/sensor/"><b>传感器</b><span>3</span><em>ToF / 电流 / 霍尔</em></a>
-<a class="hc" href="/parts/lidar/"><b>激光雷达</b><span>8</span><em>地形与建图</em></a>
-<a class="hc" href="/parts/camera/"><b>深度相机</b><span>10</span><em>视觉感知</em></a>
+<a class="hc" href="/parts/lidar/"><b>激光雷达</b><span>9</span><em>地形与建图</em></a>
+<a class="hc" href="/parts/camera/"><b>深度相机</b><span>9</span><em>视觉感知</em></a>
 <a class="hc" href="/parts/battery/"><b>电池</b><span>待收录</span><em>待收录</em></a>
 <a class="hc" href="/parts/wiring/"><b>线束</b><span>2</span><em>待收录</em></a>
 <a class="hc" href="/parts/module/"><b>其余模块</b><span>待收录</span><em>力触觉 / 编码器</em></a>

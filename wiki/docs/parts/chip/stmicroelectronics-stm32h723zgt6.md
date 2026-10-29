@@ -28,7 +28,7 @@ title: STMicroelectronics STM32H723ZGT6
 | 主频 (MHz) | 550 |
 | 封装 | LQFP-144 |
 | 额定电压 (V) | 3.3 |
-| Flash (KB) | 1024 |
+| Flash (KB) | 1,024 |
 | CAN 路数 | 3 |
 
 <div class="part-src">
@@ -67,7 +67,7 @@ title: STMicroelectronics STM32H723ZGT6
 | 封装 | LQFP-144 |
 | 接口 | — |
 | 额定电压 (V) | 3.3 |
-| Flash (KB) | 1024 |
+| Flash (KB) | 1,024 |
 | CAN 路数 | 3 |
 | cores | 1 |
 | RAM (KB) | 564 |

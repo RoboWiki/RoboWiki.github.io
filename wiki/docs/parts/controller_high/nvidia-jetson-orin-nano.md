@@ -77,7 +77,7 @@ title: NVIDIA Jetson Orin Nano
 | cuda | 1 |
 | cores | 6 |
 | cpu_arch | arm64 |
-| CUDA 核 | 1024 |
+| CUDA 核 | 1,024 |
 | power_idle_w | 7 |
 | ros2 | 1 |
 | eth | 1× GbE |

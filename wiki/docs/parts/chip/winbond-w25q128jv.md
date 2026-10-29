@@ -28,7 +28,7 @@ title: Winbond W25Q128JV
 | 封装 | SOIC-8 |
 | 接口 | SPI / QSPI |
 | 额定电压 (V) | 3.3 |
-| Flash (KB) | 16384 |
+| Flash (KB) | 16,384 |
 
 <div class="part-src">
 来源：<a href="#">—</a><br/>
@@ -66,7 +66,7 @@ title: Winbond W25Q128JV
 | 封装 | SOIC-8 |
 | 接口 | SPI / QSPI |
 | 额定电压 (V) | 3.3 |
-| Flash (KB) | 16384 |
+| Flash (KB) | 16,384 |
 | CAN 路数 | — |
 | doc_pdf | https://www.winbond.com/resource-files/w25q128jv%20revf%2003272018%20plus.pdf |
 
