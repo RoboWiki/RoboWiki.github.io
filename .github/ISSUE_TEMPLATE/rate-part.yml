@@ -1,16 +1,17 @@
 name: 部件评价
-description: 30 秒写完。三项必填（总分 / 是否用过 / 一句话理由），四维打分是可选项。
+description: 30 秒写完。三项必填（总分 / 是否用过 / 一句话理由），分维度打分是可选项。
 title: "[评分] "
 labels: ["rating"]
 body:
   - type: markdown
     attributes:
       value: |
-        **只有三项必填**，其余都可以跳过。
+        **必填只有三项**：总分 → 你用没用过 → 一句话理由。看到「可选」就可以收工提交了。
 
-        从部件页点「写评价」进来时，标题里已经带了部件 id —— **不用再手填**。
-        想改分直接编辑这条 issue，不要开新的（一人一件一票，重复开只会覆盖旧的那条）。
+        从部件页点「写评价」进来时，标题里已经带了部件 id —— **不用手抄 id**。
+        想改分直接**编辑**这条 issue，不要开新的（一人一件一票，重复开只会覆盖旧的那条）。
 
+  # ── 必填三件 ──────────────────────────────────────────────────────
   - type: dropdown
     id: score
     attributes:
@@ -24,33 +25,31 @@ body:
     id: own_hardware
     attributes:
       label: 你用过这个件吗？
-      description: 这一项决定这条评价的可信度 —— 装过机的人打的分会单独统计。
+      description: 勾一下即可。这一项决定这条评价的可信度 —— 装过机的人打的分会单独统计，和只看参数的分数不混在一起。
       options:
-        - label: 我装过 / 用过
+        - label: 我装过 / 用过（不勾也能提交，但请如实）
           required: false
-    validations:
-      required: false
 
   - type: textarea
     id: note
     attributes:
       label: 一句话理由
-      description: 一句话就够，100 字内。带上数字（负载、占空比、温度、用了多久）比形容词有用得多。
+      description: 一句话就够（100 字内）。带上数字（负载、占空比、温度、用了多久）比形容词有用得多。
       placeholder: 髋关节，整机 20 kg，连续 30 N·m 跑了三个月，外壳 55 ℃；背隙比标称大。
-      maxlength: 120
     validations:
       required: true
 
+  # ── 可选：通用三维 ────────────────────────────────────────────────
   - type: markdown
     attributes:
       value: |
         ---
 
-        ### 可选：分维度打分
+        ## 可选：三个通用维度
 
-        **不填也能提交。** 填了会让这条评价更有用 —— 同样打 4 分，
-        「参数靠谱但文档稀烂」和「文档齐全但做工一般」对下一个人完全是两回事。
-        不同品类关心的维度不一样，页面上只显示这一类该看的维度。
+        **不填也能提交**，填了这条评价对下一个人的参考价值高很多 ——
+        同样打 4 分，「参数靠谱但文档稀烂」和「文档齐全但做工一般」完全是两回事。
+        这三项所有品类都看；再往下还有这一类零件特有的维度。
 
   - type: dropdown
     id: value
@@ -79,11 +78,21 @@ body:
     validations:
       required: false
 
+  # ── 可选：品类特有维度 ────────────────────────────────────────────
+  - type: markdown
+    attributes:
+      value: |
+        ### 可选：这一类零件特有的维度
+
+        只有**你评价的那一类零件**会用到其中一项，跟你不相关的直接跳过：
+        电机 / 舵机 / 芯片 / 传感器 / IMU / 雷达 / 相机 / 电调 / 电池 → 填「参数可信度」；
+        上位机 / 下位机 → 填「兼容与生态」。
+
   - type: dropdown
     id: spec_trust
     attributes:
-      label: 参数可信度
-      description: 标称的数字和你实际用下来的感受是否对得上（芯片 / 电机 / 传感器这类看这项）
+      label: 参数可信度（电机 / 芯片 / 传感器这类填）
+      description: 标称的数字和你实际用下来的感受是否对得上
       options: ["5 - 完全对得上", "4 - 基本对得上", "3 - 有小偏差", "2 - 偏差明显", "1 - 与宣称不符"]
     validations:
       required: false
@@ -91,18 +100,19 @@ body:
   - type: dropdown
     id: compat
     attributes:
-      label: 兼容与生态
-      description: 驱动、固件、社区资料好不好接（主控板这类看这项）
+      label: 兼容与生态（主控板这类填）
+      description: 驱动、固件、社区资料好不好接
       options: ["5 - 开箱即用", "4 - 有坑但能通", "3 - 要自己写不少", "2 - 生态很差", "1 - 基本没法用"]
     validations:
       required: false
 
+  # ── 可选：工况 ────────────────────────────────────────────────────
   - type: markdown
     attributes:
       value: |
         ### 可选：使用工况
 
-        工况决定这条评价对别人有没有参考价值 —— 但同样可以不填。
+        工况决定这条评价对别人有没有用（同样的分数，满载连续跑一年和上电试一下不是一回事），但可以不填。
 
   - type: dropdown
     id: duration
@@ -136,11 +146,12 @@ body:
     validations:
       required: false
 
+  # ── 兜底：部件 id ─────────────────────────────────────────────────
   - type: input
     id: part
     attributes:
       label: 部件 id（可选，通常留空）
-      description: 从部件页点「写评价」进来时，标题里已经带了 id，这里留空即可。手动填只有一种情况：你在别处复制了 id 想指定。
+      description: 从部件页点「写评价」进来时，标题里已经带了 id，这里留空即可。只有从别处复制了 id 想指定某一件时才填。
       placeholder: 达妙-dm-dm-j10422p-2ec
     validations:
       required: false

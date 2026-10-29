@@ -33,8 +33,18 @@ CATALOG = ROOT / "data" / "catalog"
 TITLE_RE = re.compile(r"^\s*\[评分\]\s*(\S+)")
 #: Issue Forms 渲染出来的结构是 `### 字段名\n\n值`，所以按标题切块取值
 def field(body: str, name: str) -> str | None:
-    m = re.search(rf"^###\s*{re.escape(name)}\s*$\s*(.+?)(?=^###|\Z)",
-                  body or "", re.S | re.M)
+    """取 Issue Forms 渲染出的 `### 字段名` 下面的值。
+
+    先按精确名匹配；匹配不到再按「标题以该名结尾」匹配 ——
+    这样就算有人在 label 前面加了「①」或「（可选）」也不至于静默取空
+    （取空会让整条评分被丢弃，而且不报错，很难查）。
+    """
+    body = body or ""
+    m = re.search(rf"^###\s*{re.escape(name)}\s*$\s*(.+?)(?=^###|\Z)", body, re.S | re.M)
+    if m:
+        return m.group(1).strip()
+    m = re.search(rf"^###\s*[^\n]*?{re.escape(name)}\s*$\s*(.+?)(?=^###|\Z)",
+                  body, re.S | re.M)
     return m.group(1).strip() if m else None
 
 
