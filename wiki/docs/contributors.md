@@ -26,6 +26,11 @@ outline: false
   <div class="ct-head"><b>Dichen33</b><span class="ct-role">创始贡献者</span></div>
   <p>整机数据 15 台（含 URDF / 仓库链接）、上位机与下位机批量扩充、IMU 与相机雷达补充 —— 共 50 条数据进入目录；另写了一份《部件资料收集指南》，把「从开源项目找到型号 → 进官网 → 落地」的流程固定成规范。</p>
   <a href="https://github.com/Dichen33" target="_blank" rel="noopener">GitHub</a>
+</div>
+<div class="ct">
+  <div class="ct-head"><b>JadeCrane</b><span class="ct-role">贡献者</span></div>
+  <p>芯片品类从 14 颗补到 18 颗：新增 STM32H723 / TCAN334G / TMC2209 / AS5600；为 18 颗补齐官方文档页、手册 PDF 与官方仓库链接（逐条实测可打开）；补 17 颗的国内 1+ 挂牌价（含来源与采集日期）；补 12 张商品实拍图。另外登记了 doc_url / doc_pdf / repo_urls 三个参数名，让校验器的 20 条误报消失（82 → 62 警告）。</p>
+  <a href="https://github.com/Beni-537" target="_blank" rel="noopener">GitHub</a>
 </div></div>
   </section>
 

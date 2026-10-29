@@ -7,14 +7,15 @@ title: Texas Instruments DRV8323S
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/chip-ti-drv8323s.jpg" alt="DRV8323S" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">driver</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag muted">无公开报价</span>
+      <span class="part-tag">¥25</span>
     </div>
 
 <div class="part-split">
@@ -67,6 +68,8 @@ title: Texas Instruments DRV8323S
 | Flash (KB) | — |
 | CAN 路数 | — |
 | 电压范围 | 6–60 V |
+| doc_url | https://www.ti.com/product/DRV8323 |
+| doc_pdf | https://www.ti.com/lit/ds/symlink/drv8323.pdf |
 
 ## 优惠与获取条件
 
@@ -83,11 +86,11 @@ title: Texas Instruments DRV8323S
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.ti.com/product/DRV8323" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商公开资料，未逐项核对到手册页码</td></tr><tr><td><a href="https://www.google.com/search?q=Texas+Instruments+DRV8323S+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=DRV8323S&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Texas+Instruments+DRV8323S+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/chip/common.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/chip/common.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.ti.com/product/DRV8323" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.ti.com/lit/ds/symlink/drv8323.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>立创商城商品图（本站条目 C701784 无图，取同型号不同包装的 DRV8323SRTAT / C2150452 实拍，2026-10-29 采集）</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商公开资料，未逐项核对到手册页码</td></tr><tr><td><a href="https://www.google.com/search?q=Texas+Instruments+DRV8323S+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=DRV8323S&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Texas+Instruments+DRV8323S+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/chip/common.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/chip/common.json</td></tr></tbody></table>
 
 ## 备注
 
-关节驱动板最常见的栅极驱动：内置三路电流放大器 + SPI 可配增益，省掉外部运放。注意它是**驱动器**不是控制器，FOC 还得由 MCU 算。 产品图待补：厂商产品页为 JS 渲染，HTML 里没有图片地址，需人工提供截图
+关节驱动板最常见的栅极驱动：内置三路电流放大器 + SPI 可配增益，省掉外部运放。注意它是**驱动器**不是控制器，FOC 还得由 MCU 算。 产品图待补：厂商产品页为 JS 渲染，HTML 里没有图片地址，需人工提供截图 价格：立创商城 item.szlcsc.com/736860.html（DRV8323SRTAR）1+ ￥25.26，2026-10-29 采集，含税挂牌价、不含运费税费。
 
 
 

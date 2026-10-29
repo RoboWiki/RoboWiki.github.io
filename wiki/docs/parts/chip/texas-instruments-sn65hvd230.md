@@ -7,14 +7,15 @@ title: Texas Instruments SN65HVD230
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/chip-ti-sn65hvd230.jpg" alt="SN65HVD230" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">transceiver</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag muted">无公开报价</span>
+      <span class="part-tag">¥3</span>
     </div>
 
 <div class="part-split">
@@ -67,6 +68,8 @@ title: Texas Instruments SN65HVD230
 | Flash (KB) | — |
 | CAN 路数 | — |
 | 电压范围 | 3–3.6 V |
+| doc_url | https://www.ti.com/product/SN65HVD230 |
+| doc_pdf | https://www.ti.com/lit/ds/symlink/sn65hvd230.pdf |
 
 ## 优惠与获取条件
 
@@ -83,11 +86,11 @@ title: Texas Instruments SN65HVD230
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.ti.com/product/SN65HVD230" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商公开资料，未逐项核对到手册页码</td></tr><tr><td><a href="https://www.google.com/search?q=Texas+Instruments+SN65HVD230+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=SN65HVD230&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Texas+Instruments+SN65HVD230+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/chip/common.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/chip/common.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.ti.com/product/SN65HVD230" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.ti.com/lit/ds/symlink/sn65hvd230.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>立创商城商品图（item.szlcsc.com/12661.html，C12084，2026-10-29 采集）</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商公开资料，未逐项核对到手册页码</td></tr><tr><td><a href="https://www.google.com/search?q=Texas+Instruments+SN65HVD230+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=SN65HVD230&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Texas+Instruments+SN65HVD230+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/chip/common.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/chip/common.json</td></tr></tbody></table>
 
 ## 备注
 
-3.3 V 单电源，省掉 5 V 轨。代价是共模范围与抗扰不如 5 V 器件 —— 长线束、电机旁边走线时更挑布线。 产品图待补：厂商产品页为 JS 渲染，HTML 里没有图片地址，需人工提供截图
+3.3 V 单电源，省掉 5 V 轨。代价是共模范围与抗扰不如 5 V 器件 —— 长线束、电机旁边走线时更挑布线。 产品图待补：厂商产品页为 JS 渲染，HTML 里没有图片地址，需人工提供截图 价格：立创商城 item.szlcsc.com/12661.html（SN65HVD230DR）1+ ￥3.41，2026-10-29 采集，含税挂牌价、不含运费税费。
 
 
 

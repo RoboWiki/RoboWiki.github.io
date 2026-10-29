@@ -15,7 +15,7 @@ title: STMicroelectronics STM32F405RGT6
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">mcu</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag muted">无公开报价</span>
+      <span class="part-tag">¥42</span>
     </div>
 
 <div class="part-split">
@@ -72,6 +72,9 @@ title: STMicroelectronics STM32F405RGT6
 | cores | 1 |
 | RAM (KB) | 192 |
 | CAN-FD | 0 |
+| doc_url | https://www.st.com/en/microcontrollers-microprocessors/stm32f405rg.html |
+| doc_pdf | https://www.st.com/resource/en/datasheet/stm32f405rg.pdf |
+| repo_urls | https://github.com/STMicroelectronics/STM32CubeF4 |
 
 ## 优惠与获取条件
 
@@ -88,11 +91,11 @@ title: STMicroelectronics STM32F405RGT6
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.st.com/en/microcontrollers-microprocessors/stm32f405rg.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商资料抓取（chip-st-stm32f405rgt6.png）</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商公开资料，未逐项核对到手册页码</td></tr><tr><td><a href="https://www.google.com/search?q=STMicroelectronics+STM32F405RGT6+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=STM32F405RGT6&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=STMicroelectronics+STM32F405RGT6+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/chip/common.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/chip/common.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.st.com/en/microcontrollers-microprocessors/stm32f405rg.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.st.com/resource/en/datasheet/stm32f405rg.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://github.com/STMicroelectronics/STM32CubeF4" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商资料抓取（chip-st-stm32f405rgt6.png）</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商公开资料，未逐项核对到手册页码</td></tr><tr><td><a href="https://www.google.com/search?q=STMicroelectronics+STM32F405RGT6+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=STM32F405RGT6&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=STMicroelectronics+STM32F405RGT6+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/chip/common.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/chip/common.json</td></tr></tbody></table>
 
 ## 备注
 
-关节驱动器里最常被拿来跑 FOC 的一颗：有 FPU、双 CAN、定时器够多。踩坑点：F405 的 CAN 是 bxCAN（不是 FDCAN），要 CAN FD 得看 G4/H7。
+关节驱动器里最常被拿来跑 FOC 的一颗：有 FPU、双 CAN、定时器够多。踩坑点：F405 的 CAN 是 bxCAN（不是 FDCAN），要 CAN FD 得看 G4/H7。 价格：立创商城 item.szlcsc.com/16424.html（STM32F405RGT6）1+ ￥42.05，2026-10-29 采集，含税挂牌价、不含运费税费。
 
 
 

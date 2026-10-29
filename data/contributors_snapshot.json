@@ -2,8 +2,8 @@
  "repo": "RoboWiki/RoboWiki.github.io",
  "source": "GitHub Contributors（gh api）",
  "updated_at": "2026-10-28 17:50",
- "total": 2,
- "total_contributions": 89,
+ "total": 3,
+ "total_contributions": 109,
  "contributors": [
   {
    "login": "zeitvex",
@@ -24,7 +24,16 @@
    "baseline": 20,
    "contribution_total": 20,
    "role": "创始贡献者"
+  },
+  {
+   "login": "Beni-537",
+   "avatar": "https://github.com/Beni-537.png",
+   "url": "https://github.com/Beni-537",
+   "contributions": 0,
+   "baseline": 20,
+   "role": "贡献者",
+   "contribution_total": 20
   }
  ],
- "note": "计数规则：初始贡献 + GitHub 叠加。zeitvex 与 Dichen33 各以 20 为起点（建库工作与资料提供）；之后两人在 GitHub 上的真实贡献继续往上叠加，GitHub Contributors 里涨多少，这里就跟着涨。Dichen33 的提交在 ccc 分支，API 统计不到，所以他的 GitHub 侧是 0。"
+ "note": "计数规则：初始贡献 + GitHub 叠加。zeitvex 与 Dichen33 各以 20 为起点（建库工作与资料提供）；Beni-537 同样以 20 起算 —— 他的工作在 PR 里，尚未进入默认分支，API 统计不到，但芯片这一批扩充是实打实的。之后三人在 GitHub 上的贡献继续往上叠加。机器人账号与虚拟编辑身份不计入。"
 }

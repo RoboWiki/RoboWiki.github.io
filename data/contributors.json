@@ -24,5 +24,18 @@
     "url": "https://github.com/Dichen33"
    }
   ]
+ },
+ {
+  "name": "JadeCrane",
+  "handle": "Beni-537",
+  "role": "贡献者",
+  "did": "芯片品类从 14 颗补到 18 颗：新增 STM32H723 / TCAN334G / TMC2209 / AS5600；为 18 颗补齐官方文档页、手册 PDF 与官方仓库链接（逐条实测可打开）；补 17 颗的国内 1+ 挂牌价（含来源与采集日期）；补 12 张商品实拍图。另外登记了 doc_url / doc_pdf / repo_urls 三个参数名，让校验器的 20 条误报消失（82 → 62 警告）。",
+  "did_en": "Expanded the chip category from 14 to 18 parts (STM32H723 / TCAN334G / TMC2209 / AS5600), added official doc pages, datasheet PDFs and official repos for all 18 (each link verified), domestic 1+ prices for 17 of them with source and collection date, and 12 product photos. Also registered the doc_url / doc_pdf / repo_urls keys, clearing 20 false warnings (82 → 62).",
+  "links": [
+   {
+    "label": "GitHub",
+    "url": "https://github.com/Beni-537"
+   }
+  ]
  }
 ]

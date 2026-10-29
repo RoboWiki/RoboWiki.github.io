@@ -70,6 +70,8 @@ title: TDK InvenSense ICM-42688-P
 | ODR (Hz) | 32000 |
 | 陀螺量程 (°/s) | 2000 |
 | 加计量程 (g) | 16 |
+| doc_url | https://invensense.tdk.com/products/motion-tracking/6-axis/icm-42688-p/ |
+| doc_pdf | https://invensense.tdk.com/wp-content/uploads/2020/04/ds-000347_icm-42688-p-datasheet.pdf |
 
 ## 优惠与获取条件
 
@@ -86,11 +88,11 @@ title: TDK InvenSense ICM-42688-P
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://invensense.tdk.com/products/motion-tracking/6-axis/icm-42688-p/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商公开资料，未逐项核对到手册页码</td></tr><tr><td><a href="https://www.google.com/search?q=TDK+InvenSense+ICM-42688-P+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=ICM-42688-P&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=TDK+InvenSense+ICM-42688-P+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/chip/common.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/chip/common.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://invensense.tdk.com/products/motion-tracking/6-axis/icm-42688-p/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://invensense.tdk.com/wp-content/uploads/2020/04/ds-000347_icm-42688-p-datasheet.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商公开资料，未逐项核对到手册页码</td></tr><tr><td><a href="https://www.google.com/search?q=TDK+InvenSense+ICM-42688-P+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=ICM-42688-P&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=TDK+InvenSense+ICM-42688-P+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/chip/common.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/chip/common.json</td></tr></tbody></table>
 
 ## 备注
 
-噪声密度比 BMI088 好，价格更低，但没有 BMI088 的抗振结构。跑跳多的四足建议先看振动谱再选。 产品图待补：厂商产品页为 JS 渲染，HTML 里没有图片地址，需人工提供截图
+噪声密度比 BMI088 好，价格更低，但没有 BMI088 的抗振结构。跑跳多的四足建议先看振动谱再选。 产品图待补：厂商产品页为 JS 渲染，HTML 里没有图片地址，需人工提供截图 价格：立创商城原厂条目（C1850418）无 1+ 档，只有 5000+ ￥148.131 的订货价，按口径记为 null；搜到的 ￥16.5 是 TOKMAS 兼容品，不是原厂件。 价格留空：TDK/InvenSense 无 1+ 零售挂牌价（该型号走代理与批量报价），故不填估值。需要报价请向代理询价。
 
 
 

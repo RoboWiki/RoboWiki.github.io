@@ -4,8 +4,17 @@
   "title": "部件（data/catalog/<品类>/<厂商>.json 中的一条）",
   "description": "PR、issue 表单、API 入参共用这一份定义。改字段先改这里。",
   "type": "object",
-  "required": ["category", "subtype", "id", "vendor", "model", "title",
-               "source_tier", "verified", "specs"],
+  "required": [
+    "category",
+    "subtype",
+    "id",
+    "vendor",
+    "model",
+    "title",
+    "source_tier",
+    "verified",
+    "specs"
+  ],
   "additionalProperties": true,
   "properties": {
     "id": {
@@ -14,48 +23,252 @@
       "description": "稳定标识。一经发布不要改：评分、讨论、外链都挂在它上面。"
     },
     "category": {
-      "enum": ["actuator", "servo", "sensor", "controller_high", "controller_low", "esc",
-               "imu", "lidar", "camera", "battery", "wiring", "module",
-               "chip"]
+      "enum": [
+        "actuator",
+        "servo",
+        "sensor",
+        "controller_high",
+        "controller_low",
+        "esc",
+        "imu",
+        "lidar",
+        "camera",
+        "battery",
+        "wiring",
+        "module",
+        "chip"
+      ]
     },
-    "subtype": { "type": "string" },
-    "vendor": { "type": "string", "minLength": 1 },
-    "vendor_cn": { "type": ["string", "null"] },
-    "model": { "type": "string", "minLength": 1 },
-    "title": { "type": "string", "minLength": 2 },
-    "url": { "type": ["string", "null"], "format": "uri" },
+    "subtype": {
+      "type": "string"
+    },
+    "vendor": {
+      "type": "string",
+      "minLength": 1
+    },
+    "vendor_cn": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "model": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 2
+    },
+    "url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri"
+    },
     "source_tier": {
-      "enum": ["A", "B", "C"],
+      "enum": [
+        "A",
+        "B",
+        "C"
+      ],
       "description": "A=逐项核对过厂商手册；B=公开网页；C=转述。等级决定敢不敢拿它做热设计。"
     },
-    "verified": { "type": "boolean" },
-    "last_checked": { "type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
-    "price_cny": { "type": ["number", "null"], "minimum": 0 },
-    "origin": { "type": ["string", "null"] },
-    "notes": { "type": ["string", "null"] },
+    "verified": {
+      "type": "boolean"
+    },
+    "last_checked": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "price_cny": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "origin": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "specs": {
       "type": "object",
       "description": "缺失字段写 null，不要省略 key —— 省略会让读侧分不清「没公布」和「没这个属性」。",
       "properties": {
-        "tau_peak_Nm": { "type": ["number", "null"], "minimum": 0 },
-        "tau_rated_Nm": { "type": ["number", "null"], "minimum": 0 },
-        "tau_stall_Nm": { "type": ["number", "null"], "minimum": 0 },
-        "tau_basis": { "enum": ["peak", "rated", null] },
-        "gear": { "type": ["number", "null"], "minimum": 1, "maximum": 300 },
-        "mass_kg": { "type": ["number", "null"], "exclusiveMinimum": 0 },
-        "rotor_inertia_kgm2": { "type": ["number", "null"], "exclusiveMinimum": 0 },
-        "inertia_basis": { "enum": ["rotor", "output", null] },
-        "armature_kgm2": { "type": ["number", "null"], "exclusiveMinimum": 0 },
-        "voltage_V": { "type": ["number", "null"], "minimum": 1, "maximum": 1000 },
-        "speed_noload_rpm": { "type": ["number", "null"], "minimum": 0 },
-        "speed_rated_rpm": { "type": ["number", "null"], "minimum": 0 },
-        "kt_Nm_per_A": { "type": ["number", "null"], "exclusiveMinimum": 0 },
-        "pole_pairs": { "type": ["number", "null"], "minimum": 1 },
-        "encoder": { "type": ["string", "null"] },
-        "comm": { "type": ["string", "null"] },
-        "ip": { "type": ["string", "null"] },
-        "image_url": { "type": ["string", "null"] },
-        "image_source": { "type": ["string", "null"] }
+        "tau_peak_Nm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "tau_rated_Nm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "tau_stall_Nm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "tau_basis": {
+          "enum": [
+            "peak",
+            "rated",
+            null
+          ]
+        },
+        "gear": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 1,
+          "maximum": 300
+        },
+        "mass_kg": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "rotor_inertia_kgm2": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "inertia_basis": {
+          "enum": [
+            "rotor",
+            "output",
+            null
+          ]
+        },
+        "armature_kgm2": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "voltage_V": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "speed_noload_rpm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "speed_rated_rpm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "kt_Nm_per_A": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "pole_pairs": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "encoder": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "comm": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ip": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "image_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "image_source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "doc_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "厂商官方文档页"
+        },
+        "doc_pdf": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "官方手册 / 数据手册 PDF 直链"
+        },
+        "repo_urls": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "description": "相关开源仓库（官方 SDK、驱动、例程）",
+          "items": {
+            "type": "string"
+          }
+        },
+        "imu": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "板载 IMU 型号（相机等模组用）"
+        }
       }
     }
   }

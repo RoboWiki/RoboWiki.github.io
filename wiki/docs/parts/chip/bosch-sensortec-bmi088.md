@@ -15,7 +15,7 @@ title: Bosch Sensortec BMI088
       <span class="part-tag">硬件芯片</span>
       <span class="part-tag soft">imu</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag muted">无公开报价</span>
+      <span class="part-tag">¥40</span>
     </div>
 
 <div class="part-split">
@@ -70,6 +70,9 @@ title: Bosch Sensortec BMI088
 | ODR (Hz) | 1600 |
 | 陀螺量程 (°/s) | 2000 |
 | 加计量程 (g) | 24 |
+| doc_url | https://www.bosch-sensortec.com/products/motion-sensors/imus/bmi088/ |
+| doc_pdf | https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi088-ds001.pdf |
+| repo_urls | https://github.com/boschsensortec/BMI08x_SensorAPI |
 
 ## 优惠与获取条件
 
@@ -86,11 +89,11 @@ title: Bosch Sensortec BMI088
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.bosch-sensortec.com/products/motion-sensors/imus/bmi088/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商资料抓取（chip-bosch-bmi088.jpg）</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商公开资料，未逐项核对到手册页码</td></tr><tr><td><a href="https://www.google.com/search?q=Bosch+Sensortec+BMI088+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=BMI088&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Bosch+Sensortec+BMI088+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/chip/common.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/chip/common.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.bosch-sensortec.com/products/motion-sensors/imus/bmi088/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi088-ds001.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://github.com/boschsensortec/BMI08x_SensorAPI" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商资料抓取（chip-bosch-bmi088.jpg）</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商公开资料，未逐项核对到手册页码</td></tr><tr><td><a href="https://www.google.com/search?q=Bosch+Sensortec+BMI088+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=BMI088&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Bosch+Sensortec+BMI088+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/chip/common.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/chip/common.json</td></tr></tbody></table>
 
 ## 备注
 
-四足上很常见：抗振比消费级 IMU 好，因为它是两颗独立 die。注意它的加速度计量程与带宽要在初始化里显式配，默认值往往不适合高频触地。
+四足上很常见：抗振比消费级 IMU 好，因为它是两颗独立 die。注意它的加速度计量程与带宽要在初始化里显式配，默认值往往不适合高频触地。 价格：立创商城 item.szlcsc.com/239391.html（BMI088）1+ ￥40.5，2026-10-29 采集，含税挂牌价、不含运费税费。
 
 
 

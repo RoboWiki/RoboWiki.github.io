@@ -493,6 +493,21 @@ def main() -> None:
 
         if r.get("url"):
             rows.append(("官方页面 / 数据出处", r["url"], "本页数字的出处"))
+
+        # 官方文档页 / 手册 PDF / 官方仓库：这三项是真一手来源，排在检索入口之前。
+        # 数据里没有就整行不出现 —— 不拿「Google 搜 datasheet」冒充官方链接。
+        seen_urls = {u for _, u, _ in rows if u}
+        if s.get("doc_url") and str(s["doc_url"]) != str(r.get("url") or ""):
+            rows.append(("官方文档页", str(s["doc_url"]), "厂商维护的文档入口"))
+        if s.get("doc_pdf") and str(s["doc_pdf"]) not in seen_urls:
+            rows.append(("官方手册 / 数据手册 (PDF)", str(s["doc_pdf"]),
+                         "参数的值以这份为准"))
+            seen_urls.add(str(s["doc_pdf"]))
+        for u in (s.get("repo_urls") or []):
+            if str(u) in seen_urls:
+                continue
+            seen_urls.add(str(u))
+            rows.append(("官方仓库 / SDK", str(u), "驱动、例程与协议实现"))
         if s.get("image_source"):
             rows.append(("产品图出处", "", str(s["image_source"])))
         if r.get("origin"):
@@ -1434,6 +1449,21 @@ outline: false
     (OUT / "method.md").write_text(
         "---\ntitle: 方法与来源\n---\n\n" + _body(_sem) + "\n\n---\n\n" + _body(_src),
         encoding="utf-8")
+    IMAGE_RIGHTS = """
+## 商品图与厂商图的版权
+
+页面上大部分产品图来自**厂商官网 / 官方手册**，少部分来自**立创商城等分销商的实拍**——
+每张图的下方「资料与链接」里都写着 `产品图出处`，可以逐张核对。
+
+- 图**只用来说明「这个件长什么样」**，不用于售卖、不用于背书
+- 版权归原厂商或原拍摄方；本站不做商业使用，也不授权他人商业使用
+- 找不到合适图片时宁可留空显示「暂无产品图」，也不拿宣传图、整机图或同系列图凑数
+- 例外：同型号不同包装的实拍（例如某个订单号无图时取同型号另一包装的图），
+  会在 `产品图出处` 里明确写出，不让读者以为是同一个料号
+
+如果权利人认为某张图不合适，请通过投稿页告知，我们会在 48 小时内撤下或替换。
+
+"""
     RATING_METHOD = """
 ## 评分是怎么算的
 
@@ -1478,7 +1508,7 @@ outline: false
     # 汇总成 /method：参数口径 + 数据来源 + 评分规则，一页讲完
     (OUT / "method.md").write_text(
         "---\ntitle: 方法与来源\n---\n\n"
-        + _body(_sem) + "\n\n---\n\n" + _body(_src) + "\n" + RATING_METHOD,
+        + _body(_sem) + "\n\n---\n\n" + _body(_src) + "\n" + IMAGE_RIGHTS + RATING_METHOD,
         encoding="utf-8")
 
     print("  方法与来源 -> method.md")
