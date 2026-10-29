@@ -52,6 +52,11 @@ def main() -> None:
         if not isinstance(it, dict) or "login" not in it:
             continue
         kind = it.get("type", "User")
+        login = str(it["login"])
+        # bot 不算贡献者：部署工作流以 github-actions[bot] 身份提交，
+        # 但它没有「核了什么」，列上来只会稀释名单
+        if kind.lower() != "user" or login.endswith("[bot]"):
+            continue
         people.append({
             "login": it["login"],
             "avatar": it.get("avatar_url"),
@@ -79,6 +84,8 @@ def main() -> None:
     # 手工登记过、但 API 里没有的人（例如只在非默认分支提交的）也要保留
     logins = {p_["login"].lower() for p_ in people}
     for low, prev in old.items():
+        if low in logins or low.endswith("[bot]"):
+            continue
         if low not in logins:
             keep = dict(prev)
             keep["contributions"] = int(keep.get("contributions") or 0)

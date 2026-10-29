@@ -16,8 +16,8 @@
   "name": "Dichen33",
   "handle": "Dichen33",
   "role": "创始贡献者",
-  "did": "整机数据 15 台（含 URDF / 仓库链接）、上位机与下位机批量扩充、IMU 与相机雷达补充 —— 共 50 条数据进入目录；另写了一份《部件资料收集指南》，把「从开源项目找到型号 → 进官网 → 落地」的流程固定成规范。",
-  "did_en": "15 whole-robot entries with URDF/repo links, a bulk expansion of high- and low-level controllers plus IMU/camera/LiDAR — 50 data rows in total — and the part-data collection guide.",
+  "did": "整机数据 15 台（含 URDF / 仓库链接）、上位机与下位机批量扩充、IMU 与相机雷达补充—— 共 50 条数据进入目录；另写了一份《部件资料收集指南》，把「从开源项目找到型号 → 进官网 → 落地」的流程固定成规范。另外「遥控器」这一整个品类是他从 ccc 分支带进来的：5 个遥控器 + 2 个 CAN 模块（含 7 张实拍图、参数与备注），顺手把部件页备注改成分组卡片；并加了「首页品类卡点击后预选对应品类」—— 跳转带 ?cat=，从首页点「电源」直接落到该品类。",
+  "did_en": "15 whole-robot entries with URDF/repo links, a bulk expansion of high- and low-level controllers plus IMU/camera/LiDAR — 50 data rows in total — and the part-data collection guide. The remote-controller category came from his ccc branch: 5 transmitters and 2 CAN modules with 7 product photos, specs and notes, plus the grouped-card layout for part notes and the home-page category jump that preselects the category.",
   "links": [
    {
     "label": "GitHub",
