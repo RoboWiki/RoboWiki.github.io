@@ -410,3 +410,13 @@ html.dark .ex-plate img {
 @media (max-width: 640px) {
   .rw-home { padding: 1.4rem 1rem 3rem; }
 }
+/* 整机卡片的一句定位：数字之外先给判断，最多两行 */
+.ex-desc {
+  margin: 0.15rem 0 0.4rem; font-size: 0.8rem; line-height: 1.5;
+  color: var(--vp-c-text-2);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+/* 有开源生态的那一行用品牌色，突出「能借的东西有多少」 */
+.ex-kv .hi dd { color: var(--vp-c-brand-1); font-weight: 600; }
+.ex-kv .hi dt { color: var(--vp-c-brand-1); }

@@ -58,59 +58,14 @@ def build(out: pathlib.Path, root: pathlib.Path) -> None:
     items = data["items"]
     groups = data["groups"]
 
-    cards = []
-    for g in groups:
-        rows = [x for x in items if x["group"] == g["id"]]
-        if not rows:
-            continue
-        body = []
-        for x in rows:
-            lic = x.get("license") or "未核对"
-            ver = x.get("version")
-            ver_s = f"v{ver}" if ver else "版本未核对"
-            link = (f'<a href="{x["repo"]}" target="_blank" rel="noopener">仓库</a>'
-                    if x.get("repo") and x["repo"].rstrip("/") != "https://github.com" else
-                    "仓库未核对")
-            docs = (f' · <a href="{x["docs"]}" target="_blank" rel="noopener">文档</a>'
-                    if x.get("docs") else "")
-            body.append(f"""<article class="sw-card">
-  <header>
-    <h3>{x['name']}</h3>
-    <span class="sw-vendor">{x['vendor']}</span>
-  </header>
-  <div class="sw-chips"><span class="sw-chip lic">{lic}</span><span class="sw-chip">{ver_s}</span><span class="sw-chip">{x['lang']}</span></div>
-  <p class="sw-what">{x['what']}</p>
-  <p class="sw-when"><b>什么时候用它</b>：{x['when']}</p>
-  <p class="sw-note">{x['note']}</p>
-  <footer>{link}{docs}</footer>
-</article>""")
-        cards.append(f"""<section class="sw-group">
-  <h2>{g['name']}</h2>
-  <p class="sw-hint">{GIST.get(g['id']) or g['hint']}</p>
-  <div class="sw-grid">
-{chr(10).join(body)}
-  </div>
-</section>""")
-
-    md = f"""---
+    md = """---
 title: 机器人软件
 layout: page
 sidebar: false
 outline: false
 ---
 
-# 机器人软件
-
-<p class="sw-lead">引擎、训练框架、中间件、数学库、模仿学习 —— 这五层决定了
-「仿真像不像真的、策略怎么练、怎么和真机说话」。这里按层给<b>许可、版本、
-什么时候该用它</b>，不做项目大全：清单会漂，判断不会。</p>
-
-<p class="sw-meta">{len(items)} 个软件 · 许可与版本取自本地仓库（2026-10-29），
-读不到的标「未核对」—— 这一栏写错比空着糟。</p>
-
-{chr(10).join(cards)}
-
-{_pick_html()}
+<SoftwareGrid />
 """
     (out / "software.md").write_text(md, encoding="utf-8")
     (out / "public" / "software.json").write_text(

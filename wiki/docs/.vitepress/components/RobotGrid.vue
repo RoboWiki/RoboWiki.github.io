@@ -43,7 +43,11 @@ const facets = computed(() => {
     const k = x.subtype || 'other'
     m.set(k, (m.get(k) || 0) + 1)
   }
-  return [...m.entries()].map(([v, n]) => ({ group: 'sub', value: v, label: SUB[v] || v, count: n }))
+  const sub = [...m.entries()].map(([v, n]) => ({ group: 'sub', value: v, label: SUB[v] || v, count: n }))
+  const withEco = all.value.filter((x) => eco(x) > 0).length
+  sub.push({ group: 'eco', value: 'yes', label: '有开源生态', count: withEco })
+  sub.push({ group: 'eco', value: 'no', label: '未收录', count: all.value.length - withEco })
+  return sub
 })
 
 const num = (v: any) => (typeof v === 'number' ? v : -Infinity)
@@ -53,6 +57,9 @@ const rows = computed(() => {
   const sub = active.value.sub
   let out = all.value.filter((x) => {
     if (sub && (x.subtype || 'other') !== sub) return false
+    const ecoSel = active.value.eco
+    if (ecoSel === 'yes' && eco(x) <= 0) return false
+    if (ecoSel === 'no' && eco(x) > 0) return false
     if (!kw) return true
     return [x.model, x.vendor, x.vendor_cn, x.subtype]
       .filter(Boolean).join(' ').toLowerCase().includes(kw)
@@ -61,6 +68,8 @@ const rows = computed(() => {
     if (sortKey.value === 'dof') return num(b.specs?.dof) - num(a.specs?.dof)
     if (sortKey.value === 'mass') return num(a.specs?.mass_kg) - num(b.specs?.mass_kg)
     if (sortKey.value === 'payload') return num(b.specs?.payload_kg) - num(a.specs?.payload_kg)
+    if (sortKey.value === 'eco') return eco(b) - eco(a)
+    if (sortKey.value === 'price') return price(a) - price(b)
     return (a.vendor_cn || a.vendor).localeCompare(b.vendor_cn || b.vendor, 'zh')
   })
   return out
@@ -73,6 +82,16 @@ function withUnit(v: any, unit: string): string {
   return /[a-zA-Z\u4e00-\u9fa5]/.test(t) ? t : `${t} ${unit}`
 }
 const urdf = (x: Robot) => (x.specs?.urdf_urls as string[] | undefined)?.length || 0
+const eco = (x: Robot) => (x.specs?.ecosystem_count as number | undefined) || 0
+/** 定位：notes 首句（到第一个句号为止），最多两行 —— 数字之外总得有句话 */
+function pitch(x: Robot): string {
+  const t = (x as any).notes || (x.specs?.pitch as string) || ''
+  if (!t) return ''
+  const m = String(t).split(/(?<=[。；])/)[0] || String(t)
+  // notes 里有 markdown 粗体；卡片是纯文本渲染，会把星号露出来 —— 去掉标记
+  return m.replace(/\*\*(.+?)\*\*/g, '$1').trim()
+}
+const price = (x: Robot) => (typeof (x as any).price_cny === 'number' ? (x as any).price_cny : Infinity)
 const repo = (x: Robot) => (x.specs?.repo_urls as string[] | undefined)?.length || 0
 </script>
 
@@ -80,10 +99,14 @@ const repo = (x: Robot) => (x.specs?.repo_urls as string[] | undefined)?.length 
   <ExplorerShell
     kicker="机器人整机"
     title="部件选完之后，看整机方案。"
-    lead="与「机器人部件」平行，不是它的子集。部件比参数，整机看方案：几自由度、带不带算力、电池续航、有没有开源 URDF。"
+    lead="与「机器人部件」平行，不是它的子集。部件比参数，整机看方案与生态：几自由度、带不带算力、以及这台机器在开源世界里有多少现成工程可以借。"
     search-placeholder="搜型号 / 厂商"
     :facets="facets"
-    :sorts="[{ k: 'vendor', label: '按厂商' }, { k: 'dof', label: '按自由度' }, { k: 'mass', label: '按质量' }, { k: 'payload', label: '按负载' }]"
+    :sorts="[
+      { k: 'eco', label: '按开源生态' }, { k: 'vendor', label: '按厂商' },
+      { k: 'dof', label: '按自由度' }, { k: 'mass', label: '按质量' },
+      { k: 'payload', label: '按负载' }, { k: 'price', label: '按价格' },
+    ]"
     v-model:sort-key="sortKey"
     v-model:active="active"
     :count="rows.length"
@@ -105,15 +128,14 @@ const repo = (x: Robot) => (x.specs?.repo_urls as string[] | undefined)?.length 
           <em class="ex-tag">{{ SUB[x.subtype || 'other'] || x.subtype }}</em>
         </div>
         <p class="ex-sub">{{ x.vendor_cn || x.vendor }}</p>
+        <p v-if="pitch(x)" class="ex-desc">{{ pitch(x) }}</p>
         <dl class="ex-kv">
           <div><dt>自由度</dt><dd>{{ val(x.specs?.dof) }}</dd></div>
           <div><dt>质量</dt><dd>{{ withUnit(x.specs?.mass_kg, 'kg') }}</dd></div>
           <div><dt>负载</dt><dd>{{ withUnit(x.specs?.payload_kg, 'kg') }}</dd></div>
-          <div><dt>续航</dt><dd>{{ withUnit(x.specs?.endurance_h, 'h') }}</dd></div>
+          <div :class="{ hi: eco(x) > 0 }"><dt>开源生态</dt><dd>{{ eco(x) ? eco(x) + ' 项' : '—' }}</dd></div>
         </dl>
         <div class="ex-foot">
-          <a v-if="x.specs?.ecosystem_count" class="ex-pill eco" :href="`./robots/${x._slug}.html`"
-             title="这台机器在本地参考库里有多少开源工程（按环节拆分见详情页）">生态 ×{{ x.specs.ecosystem_count }}</a>
           <span class="ex-pill off" title="进仿真接口已留（URDF 链接见详情页），暂未接入">进仿真</span>
           <a v-if="urdf(x)" class="ex-pill" :href="`./robots/${x._slug}.html`">URDF ×{{ urdf(x) }}</a>
           <a v-if="repo(x)" class="ex-pill" :href="`./robots/${x._slug}.html`">仓库 ×{{ repo(x) }}</a>
