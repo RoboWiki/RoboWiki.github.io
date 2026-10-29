@@ -264,3 +264,40 @@ html.dark .vp-doc div[class*='language-'] {
 .rb-role b { color: var(--vp-c-text-1); font-weight: 600; }
 /* 列表卡片的生态 pill 用一点强调色，和「进仿真（灰）」区分开 */
 .ex-pill.eco { color: var(--vp-c-brand-1); border-color: var(--vp-c-brand-2); }
+
+/* ── 机器人软件（pipeline/build_software.py 生成）────────────────── */
+.sw-page { max-width: 1080px; margin: 0 auto; padding: 1.6rem 1.25rem 3rem; }
+.sw-lead { color: var(--vp-c-text-2); line-height: 1.7; max-width: 46em; }
+.sw-meta { color: var(--vp-c-text-3); font-size: 0.85rem; margin-top: 0.4rem; }
+.sw-group { margin: 2.2rem 0 0; }
+.sw-group h2 { font-size: 1.25rem; margin: 0 0 0.3rem; }
+.sw-hint { color: var(--vp-c-text-2); font-size: 0.9rem; margin: 0 0 1rem; }
+.sw-grid { display: grid; gap: 0.9rem; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.sw-card {
+  border: 1px solid var(--vp-c-divider); border-radius: 12px; padding: 0.95rem 1rem;
+  background: var(--vp-c-bg-soft); display: flex; flex-direction: column; gap: 0.45rem;
+}
+.sw-card header { display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }
+.sw-card h3 { font-size: 1.02rem; margin: 0; }
+.sw-vendor { font-size: 0.78rem; color: var(--vp-c-text-3); }
+.sw-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.sw-chip {
+  font-size: 0.72rem; padding: 0.1rem 0.45rem; border-radius: 999px;
+  border: 1px solid var(--vp-c-divider); color: var(--vp-c-text-2);
+}
+.sw-chip.lic { color: var(--vp-c-brand-1); border-color: var(--vp-c-brand-2); }
+.sw-what { margin: 0; font-size: 0.88rem; line-height: 1.6; }
+.sw-when { margin: 0; font-size: 0.85rem; line-height: 1.6; color: var(--vp-c-text-2); }
+.sw-when b { color: var(--vp-c-text-1); }
+.sw-note { margin: 0; font-size: 0.8rem; line-height: 1.55; color: var(--vp-c-text-3); }
+.sw-card footer { margin-top: auto; padding-top: 0.4rem; font-size: 0.82rem; }
+.sw-card footer a { color: var(--vp-c-brand-1); text-decoration: none; }
+.sw-card footer a:hover { text-decoration: underline; }
+.sw-pick { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 0.6rem; }
+.sw-pick th, .sw-pick td {
+  text-align: left; padding: 0.42rem 0.6rem; border-bottom: 1px solid var(--vp-c-divider);
+  vertical-align: top;
+}
+.sw-pick th { color: var(--vp-c-text-2); font-weight: 600; font-size: 0.82rem; }
+.sw-pick td:first-child { width: 38%; color: var(--vp-c-text-1); }
+.sw-pick td:last-child { color: var(--vp-c-text-2); }

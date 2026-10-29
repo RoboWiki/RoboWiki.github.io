@@ -11,9 +11,10 @@ import sidebar from './sidebar.json' with { type: 'json' }
 const zhTheme = {
   nav: [
     { text: '首页', link: '/' },
-    { text: '学习路线', link: '/learn/' },
-    { text: '机器人整机', link: '/robots' },
     { text: '机器人部件', link: '/catalog' },
+    { text: '机器人整机', link: '/robots' },
+    { text: '机器人软件', link: '/software' },
+    { text: '学习路线', link: '/learn/' },
     { text: '加工与采购', link: '/suppliers' },
     { text: '贡献者', link: '/contributors' },
     { text: '投稿', link: '/submit' },

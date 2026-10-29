@@ -27,6 +27,7 @@ OUT = ROOT / "wiki" / "docs"
 from .load import cat_labels as _cat_labels
 from .build_home import build as build_home
 from .build_robots import build as build_robots
+from .build_software import build as build_software
 from .contrib_page import build as build_contributors
 from .load import cat_dims, load_taxonomy
 
@@ -1267,6 +1268,7 @@ html.dark .rl-th {{ color: #e0b159; }}
           f"{len(learn.get('articles', []))} 篇 -> public/learn.json")
 
     build_robots(ROOT, OUT, pub)
+    build_software(OUT, ROOT)
     build_contributors(ROOT, OUT, pub)
 
 
