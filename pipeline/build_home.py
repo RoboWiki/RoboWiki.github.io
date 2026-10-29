@@ -133,7 +133,7 @@ titleTemplate: false
       </a>
       <a class="rw-home-entry" href="/software">
         <b>机器人软件 · {c['software']} 个</b>
-        <p>引擎、训练框架、中间件、数学库、模仿学习 —— 按层给许可与版本。</p>
+        <p>引擎、训练框架、算法与方法、模型架构、中间件、数学库 —— 按分组给许可与版本。</p>
         <span>读不到的许可标「未核对」，不猜</span>
       </a>
       <a class="rw-home-entry" href="/learn/">

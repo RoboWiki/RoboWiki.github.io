@@ -1,5 +1,5 @@
 {
- "note": "机器人软件板块的数据。许可与版本优先取自本地仓库的 LICENSE/pyproject（2026-10-29 读取），读不到的标 null 并在 note 里说明，不猜。",
+ "note": "机器人软件板块的数据。许可与版本优先取自本地仓库的 LICENSE/pyproject（2026-10-29 读取），读不到的标 null 并在 note 里说明，不猜。模型架构（MLP/MoE）与算法方法（PPO/AMP）是通用概念，不按单一项目计许可与版本。",
  "groups": [
   {
    "id": "physics",
@@ -10,6 +10,16 @@
    "id": "training",
    "name": "训练框架",
    "hint": "决定「策略怎么练出来」"
+  },
+  {
+   "id": "method",
+   "name": "算法与方法",
+   "hint": "用什么算法、怎么解任务"
+  },
+  {
+   "id": "architecture",
+   "name": "模型架构",
+   "hint": "策略网络长什么样"
   },
   {
    "id": "middleware",
@@ -167,6 +177,115 @@
    "what": "把「仿真验证 + 真机部署」做成一条链的框架，四足/轮足/人形都有，机上侧是 C++ 推理。",
    "when": "策略训完了，要落到真机（读状态、跑推理、发指令）时看它的部署侧怎么写。",
    "note": "配套 rl_sar_zoo 有各机型的 URDF/MJCF 与策略集合。"
+  },
+  {
+   "id": "dreamwaq",
+   "group": "method",
+   "name": "DreamWaQ",
+   "vendor": "KAIST",
+   "license": null,
+   "version": null,
+   "repo": null,
+   "repo_note": "官方未提供代码",
+   "docs": "https://sites.google.com/view/dreamwaq",
+   "lang": "Python / Isaac Gym",
+   "what": "只靠本体感知的「盲走」四足 RL 框架：非对称 actor-critic 让 Actor 从历史观测中隐式推断地形与扰动，不依赖相机或 LiDAR。",
+   "when": "机器人没有外感知，或视觉/激光在黑暗、扬尘里不可靠时用它。",
+   "note": "论文 ICRA 2023（arXiv:2301.10602）；训练基于 Isaac Gym / legged_gym。"
+  },
+  {
+   "id": "dreamwaqpp",
+   "group": "method",
+   "name": "DreamWaQ++",
+   "vendor": "KAIST",
+   "license": null,
+   "version": null,
+   "repo": null,
+   "repo_note": "官方未提供代码",
+   "docs": "https://dreamwaqpp.github.io",
+   "lang": "Python / Isaac Gym",
+   "what": "DreamWaQ 的多模态版：本体感知 + 3D 点云，经 Multi-Modal Mixer 融合，能在崎岖地形与台阶上无碰撞行走。",
+   "when": "机器人带 RealSense 或 LiDAR、需要提前看见台阶与陡坡时用它。",
+   "note": "论文 IEEE T-RO 2026（arXiv:2409.19709）；对传感器噪声与延迟更鲁棒，训练仍基于 Isaac Gym / legged_gym。"
+  },
+  {
+   "id": "beamdojo",
+   "group": "method",
+   "name": "BeamDojo",
+   "vendor": "上海 AI Lab 等",
+   "license": null,
+   "version": null,
+   "repo": null,
+   "repo_note": "官方未提供代码",
+   "docs": "https://why618188.github.io/beamdojo/",
+   "lang": null,
+   "what": "为人形机器人在稀疏立足点（梅花桩、平衡木）上行走定制的 RL 框架：采样式落脚奖励 + 双 critic + 两阶段训练。",
+   "when": "任务就是窄支撑面上精确落脚时直接参考；它是特定任务的解决方案，不是通用训练平台。",
+   "note": "论文 arXiv:2502.10363；真机用机载 LiDAR 高程图，换机型需重做奖励与观测。"
+  },
+  {
+   "id": "amp",
+   "group": "method",
+   "name": "AMP（对抗运动先验）",
+   "vendor": "通用方法",
+   "license": null,
+   "version": null,
+   "repo": null,
+   "repo_note": "非独立项目",
+   "concept": true,
+   "docs": "https://xbpeng.github.io/projects/AMP/index.html",
+   "lang": "任意 RL 框架",
+   "what": "用判别器把参考动作变成风格奖励：策略除了完成任务，还要让动作分布接近参考动作。",
+   "when": "要做动作模仿、自然步态约束，或手工奖励写不全时用它；前提是有一份参考动作数据。",
+   "note": "论文 SIGGRAPH 2021（arXiv:2104.02180）；常与 PPO 搭配，四足与人形上都有使用。"
+  },
+  {
+   "id": "ppo",
+   "group": "method",
+   "name": "PPO（近端策略优化）",
+   "vendor": "通用方法",
+   "license": null,
+   "version": null,
+   "repo": null,
+   "repo_note": "非独立项目",
+   "concept": true,
+   "docs": "https://arxiv.org/abs/1707.06347",
+   "lang": "任意 RL 框架",
+   "what": "最常用的 on-policy RL 算法：用裁剪的似然比限制每次更新幅度，稳定、好实现，是腿足 RL 的默认基线。",
+   "when": "有大量并行仿真环境、要把策略稳定练出来时先用它；更看重样本效率时再看 off-policy 方法。",
+   "note": "论文 arXiv:1707.06347（OpenAI, 2017）；rsl_rl、Isaac Lab、mjlab 的主流默认算法基本都是它。"
+  },
+  {
+   "id": "mlp",
+   "group": "architecture",
+   "name": "MLP（多层感知机）",
+   "vendor": "通用架构",
+   "license": null,
+   "version": null,
+   "repo": null,
+   "repo_note": "非独立项目",
+   "concept": true,
+   "docs": "https://docs.pytorch.org/tutorials/beginner/basics/buildmodel_tutorial.html",
+   "lang": "任意 DL 框架",
+   "what": "最通用、最基础的前馈网络：把固定长度的观测映射成动作，训练稳定、推理便宜，常被当作四足 RL 的基线。",
+   "when": "输入维度固定、对时序依赖不强时先用它；地形记忆或扰动估计很关键时再考虑 LSTM / Transformer。",
+   "note": "适合当基线，不是上限：层宽、层数、学习率通常比换架构更影响结果。"
+  },
+  {
+   "id": "moe",
+   "group": "architecture",
+   "name": "MoE（混合专家）",
+   "vendor": "通用架构",
+   "license": null,
+   "version": null,
+   "repo": null,
+   "repo_note": "非独立项目",
+   "concept": true,
+   "docs": "https://huggingface.co/blog/moe",
+   "lang": "PyTorch / JAX",
+   "what": "门控网络按输入只激活少数专家，在不显著抬高推理成本的前提下扩大容量；通常作为 MLP 或 LSTM 之上的插件。",
+   "when": "任务包含明显不同的模式（多步态、多地形）而单一 MLP 容量不够时考虑；训练与部署复杂度较高。",
+   "note": "成本主要花在路由与负载均衡：专家数、top-k、门控噪声都要调，不是参数越多越好。"
   },
   {
    "id": "ros2",
