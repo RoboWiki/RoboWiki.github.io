@@ -43,9 +43,10 @@ def _counts(root: pathlib.Path) -> dict:
         "robots": robots,
         "suppliers": sups,
         "cat_rows": sorted(
-            ((c["name"], c["hint"], sum(1 for r in rows if r["category"] == c["id"]))
+            ((c["id"], c["name"], c["hint"],
+              sum(1 for r in rows if r["category"] == c["id"]))
              for c in cats),
-            key=lambda t: -t[2]),
+            key=lambda t: -t[3]),
     }
 
 
@@ -53,9 +54,9 @@ def build(out_dir: pathlib.Path, root: pathlib.Path) -> None:
     c = _counts(root)
 
     cat_lines = "\n".join(
-        f'      <a class="rw-home-cat" href="/catalog"><b>{name}</b>'
+        f'      <a class="rw-home-cat" href="/catalog?category={cid}"><b>{name}</b>'
         f'<span>{n or "待收录"}</span><em>{hint}</em></a>'
-        for name, hint, n in c["cat_rows"]
+        for cid, name, hint, n in c["cat_rows"]
     )
 
     md = f'''---

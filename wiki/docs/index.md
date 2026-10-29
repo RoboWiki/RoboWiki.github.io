@@ -136,20 +136,20 @@ titleTemplate: false
   <section class="rw-home-block">
     <h2>按品类</h2>
     <div class="rw-home-cats">
-      <a class="rw-home-cat" href="/catalog"><b>关节电机</b><span>46</span><em>选型主战场</em></a>
-      <a class="rw-home-cat" href="/catalog"><b>硬件芯片</b><span>18</span><em>MCU / 驱动 / 收发器</em></a>
-      <a class="rw-home-cat" href="/catalog"><b>上位机</b><span>9</span><em>推理与感知</em></a>
-      <a class="rw-home-cat" href="/catalog"><b>激光雷达</b><span>9</span><em>地形与建图</em></a>
-      <a class="rw-home-cat" href="/catalog"><b>深度相机</b><span>9</span><em>视觉感知</em></a>
-      <a class="rw-home-cat" href="/catalog"><b>IMU</b><span>6</span><em>姿态与振动</em></a>
-      <a class="rw-home-cat" href="/catalog"><b>遥控器</b><span>4</span><em>手柄 / 板控 / 遥操作</em></a>
-      <a class="rw-home-cat" href="/catalog"><b>舵机</b><span>3</span><em>串行总线 / PWM</em></a>
-      <a class="rw-home-cat" href="/catalog"><b>下位机</b><span>3</span><em>力矩闭环</em></a>
-      <a class="rw-home-cat" href="/catalog"><b>电调</b><span>3</span><em>驱动器 / 调速器</em></a>
-      <a class="rw-home-cat" href="/catalog"><b>传感器</b><span>3</span><em>ToF / 电流 / 霍尔</em></a>
-      <a class="rw-home-cat" href="/catalog"><b>其余模块</b><span>3</span><em>CAN 通信 / 力触觉 / 编码器</em></a>
-      <a class="rw-home-cat" href="/catalog"><b>线束</b><span>2</span><em>待收录</em></a>
-      <a class="rw-home-cat" href="/catalog"><b>电池</b><span>待收录</span><em>待收录</em></a>
+      <a class="rw-home-cat" href="/catalog?category=actuator"><b>关节电机</b><span>46</span><em>选型主战场</em></a>
+      <a class="rw-home-cat" href="/catalog?category=chip"><b>硬件芯片</b><span>18</span><em>MCU / 驱动 / 收发器</em></a>
+      <a class="rw-home-cat" href="/catalog?category=controller_high"><b>上位机</b><span>9</span><em>推理与感知</em></a>
+      <a class="rw-home-cat" href="/catalog?category=lidar"><b>激光雷达</b><span>9</span><em>地形与建图</em></a>
+      <a class="rw-home-cat" href="/catalog?category=camera"><b>深度相机</b><span>9</span><em>视觉感知</em></a>
+      <a class="rw-home-cat" href="/catalog?category=imu"><b>IMU</b><span>6</span><em>姿态与振动</em></a>
+      <a class="rw-home-cat" href="/catalog?category=remote_controller"><b>遥控器</b><span>4</span><em>手柄 / 板控 / 遥操作</em></a>
+      <a class="rw-home-cat" href="/catalog?category=servo"><b>舵机</b><span>3</span><em>串行总线 / PWM</em></a>
+      <a class="rw-home-cat" href="/catalog?category=controller_low"><b>下位机</b><span>3</span><em>力矩闭环</em></a>
+      <a class="rw-home-cat" href="/catalog?category=esc"><b>电调</b><span>3</span><em>驱动器 / 调速器</em></a>
+      <a class="rw-home-cat" href="/catalog?category=sensor"><b>传感器</b><span>3</span><em>ToF / 电流 / 霍尔</em></a>
+      <a class="rw-home-cat" href="/catalog?category=module"><b>其余模块</b><span>3</span><em>CAN 通信 / 力触觉 / 编码器</em></a>
+      <a class="rw-home-cat" href="/catalog?category=wiring"><b>线束</b><span>2</span><em>待收录</em></a>
+      <a class="rw-home-cat" href="/catalog?category=battery"><b>电池</b><span>待收录</span><em>待收录</em></a>
     </div>
     <p class="rw-home-note">
       「待收录」不是漏了 —— 是没有可信来源。宁可空着，也不拿论文里的典型值充数。
