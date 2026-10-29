@@ -102,7 +102,7 @@ title: ST LIS2DW12TR
 
 ## 备注
 
-超低功耗三轴加速度，可配单/双击、自由落体、唤醒、6D/4D 方向检测。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>超低功耗三轴加速度，可配单/双击、自由落体、唤醒、6D/4D 方向检测</li></ul></div></div>
 
 
 

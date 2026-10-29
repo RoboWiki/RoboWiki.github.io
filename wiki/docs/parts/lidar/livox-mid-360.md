@@ -100,7 +100,7 @@ title: Livox Mid-360
 
 ## 备注
 
-四足上最常用的中距雷达：360°×59° 视场、非重复扫描。注意它是**以太网**输出，不是串口；车载供电与网口线束要一起规划。 非重复扫描，40 m@10% / 70 m@80%；垂直 FOV -7°~52°（59°），点频 200,000 pts/s、10 Hz；内置 ICM40609 IMU，支持 PTPv2/GPS 授时；6.5 W、9–27 V、IP67。DJI 商城 ¥3999（2026-10）。四足上做地形/避障的主力型号，近距离点密度靠非重复扫描堆出来。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>四足上最常用的中距雷达：360°×59° 视场、非重复扫描</li><li>非重复扫描，40 m@10% / 70 m@80%</li><li>垂直 FOV -7°~52°（59°），点频 200,000 pts/s、10 Hz</li><li>内置 ICM40609 IMU，支持 PTPv2/GPS 授时</li><li>6.5 W、9–27 V、IP67</li><li>四足上做地形/避障的主力型号，近距离点密度靠非重复扫描堆出来</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>DJI 商城 <span class="pn-money">¥3999</span>（2026-10）</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>它是<strong>以太网</strong>输出，不是串口</li><li>车载供电与网口线束要一起规划</li></ul></div></div>
 
 
 

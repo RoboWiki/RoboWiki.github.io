@@ -1,0 +1,32 @@
+[
+ {
+  "category": "remote_controller",
+  "subtype": "gamepad",
+  "subtype_label": "手柄式",
+  "id": "unitree-r3",
+  "vendor": "宇树 Unitree",
+  "vendor_cn": "宇树科技",
+  "model": "R3",
+  "title": "宇树 Unitree R3 遥控器",
+  "url": "https://www.unitree.com/cn/R3",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-29",
+  "price_cny": null,
+  "origin": "宇树官网 R3 产品页（2026-10-29 采集）",
+  "notes": "Go2 / Go2-W / G1 / H1 / B2 等整机常用手柄：双摇杆 + 12 个按键 + 4 个肩键，2.4 GHz 无线数传与蓝牙，官方标称遥控距离 100 m 以上。780 mAh 电池、续航约 5 h，5 V / 700 mA 充电；216.43×100×41.42 mm、300 g。官方页面未给出频道数与具体频段，按 null 处理。价格：截至 2026-10-29 官方页面未标价，未找到可核对的公开报价。",
+  "specs": {
+   "channels": null,
+   "frequency_ghz": null,
+   "control_range_m": 100,
+   "protocol": "无线数传 / 蓝牙",
+   "battery": "780 mAh（5 V / 700 mA 充电）",
+   "weight_g": 300,
+   "image_url": "/parts/unitree-r3.jpg",
+   "image_source": "宇树官网 R3 产品页产品图（2026-10-29 下载并裁剪）",
+   "doc_url": "https://www.unitree.com/cn/R3",
+   "doc_pdf": null,
+   "repo_urls": []
+  }
+ }
+]

@@ -102,7 +102,7 @@ title: Bosch Sensortec BNO055
 
 ## 备注
 
-**SiP 方案**：封装内自带 32 位 Cortex-M0+ 跑传感器融合，直接输出四元数/欧拉角。省掉自己写融合。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li><strong>SiP 方案</strong>：封装内自带 32 位 Cortex-M0+ 跑传感器融合，直接输出四元数/欧拉角</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>省掉自己写融合</li></ul></div></div>
 
 
 

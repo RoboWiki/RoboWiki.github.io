@@ -98,7 +98,7 @@ title: Luxonis OAK-D Pro
 
 ## 备注
 
-主动双目 + IR 点阵/补光，深度在板载 RVC2 上直接算，主机只收结果，适合算力紧张的机上方案。官方推荐 0.7–12 m（800P 最小 0.7 m，扩展模式可到约 0.2 m；理论最远 35 m）；深度 1280×800@120 fps，RGB 12MP@60 fps（IMX378）；IMU 为 BNO086 或 BMI270（分批）。官方 $429（2026-10），按 7.15 汇率约 ¥3060。Waveshare 标的 0.2–9 m 是不同测试口径，与官方推荐值不一致。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>主动双目 + IR 点阵/补光，深度在板载 RVC2 上直接算，主机只收结果，适合算力紧张的机上方案</li><li>官方推荐 0.7–12 m（800P 最小 0.7 m，扩展模式可到约 0.2 m；理论最远 35 m）</li><li>深度 1280×800@120 fps，RGB 12MP@60 fps（IMX378）</li><li>IMU 为 BNO086 或 BMI270（分批）</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>官方 <span class="pn-money">$429</span>（2026-10），按 7.15 汇率约 <span class="pn-money">¥3060</span></li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>Waveshare 标的 0.2–9 m 是不同测试口径，与官方推荐值不一致</li></ul></div></div>
 
 
 

@@ -100,7 +100,7 @@ title: SILAN(士兰微) SC7A20HTR
 
 ## 备注
 
-**只有加速度计**（三轴），国产低价；做倾角/碰撞检测够，做姿态解算不够。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li><strong>只有加速度计</strong>（三轴），国产低价</li><li>做倾角/碰撞检测够，做姿态解算不够</li></ul></div></div>
 
 
 

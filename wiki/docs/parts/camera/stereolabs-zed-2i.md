@@ -99,7 +99,7 @@ title: Stereolabs ZED 2i
 
 ## 备注
 
-双目 + 9 轴 IMU + 气压计 + 磁力计，120 mm 基线；2.1 mm 镜头下深度 0.3–20 m、FOV 110°H×70°V（对角 120°），1080p@30 fps；USB-C 3.1，5 V/380 mA（约 1.9 W），IP66。官方 $499（2026-10），按 7.15 汇率约 ¥3570。重量官方产品页 230 g，Clearpath 文档写 166 g——【来源冲突】，以官方页为准。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>双目 + 9 轴 IMU + 气压计 + 磁力计，120 mm 基线</li><li>2.1 mm 镜头下深度 0.3–20 m、FOV 110°H×70°V（对角 120°），1080p@30 fps</li><li>USB-C 3.1，5 V/380 mA（约 1.9 W），IP66</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>官方 <span class="pn-money">$499</span>（2026-10），按 7.15 汇率约 <span class="pn-money">¥3570</span></li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>重量官方产品页 230 g，Clearpath 文档写 166 g——【来源冲突】，以官方页为准</li></ul></div></div>
 
 
 

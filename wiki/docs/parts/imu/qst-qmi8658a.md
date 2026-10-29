@@ -100,7 +100,7 @@ title: QST(上海矽睿) QMI8658A
 
 ## 备注
 
-国产 6 轴 IMU，陀螺噪声 13 mdps/√Hz，延迟低；性价比路线的主力替代。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>国产 6 轴 IMU，陀螺噪声 13 mdps/√Hz，延迟低</li><li>性价比路线的主力替代</li></ul></div></div>
 
 
 

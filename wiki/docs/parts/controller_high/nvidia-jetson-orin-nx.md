@@ -104,7 +104,7 @@ title: NVIDIA Jetson Orin NX
 
 ## 备注
 
-算力是 Orin Nano 的两倍多、内存带宽更大；功耗与散热要求也高一档，小机身四足要提前算散热。 产品图待补（抓到的不是产品本体）。 本站这一条对应 **16 GB** 版本（内存是参数，不写进型号名）；同型号还有其它容量版本，选型时先确认容量再比价格。 本站目前只核到 16 GB 这一档；同型号其它内存版本参数待补，价格也不同。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>算力是 Orin Nano 的两倍多、内存带宽更大</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>功耗与散热要求也高一档，小机身四足要提前算散热</li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>产品图待补（抓到的不是产品本体）</li><li>本站这一条对应 <strong>16 GB</strong> 版本（内存是参数，不写进型号名）</li><li>同型号还有其它容量版本，选型时先确认容量再比价格</li><li>本站目前只核到 16 GB 这一档</li><li>同型号其它内存版本参数待补，价格也不同</li></ul></div></div>
 
 
 

@@ -106,7 +106,7 @@ title: 大疆 DJI RoboMaster 开发板 C 型
 
 ## 备注
 
-RM 生态的小板：比 A 型便宜更小，常用来带云台/拨弹。**CAN 是 2 条总线、4 个接口**（CAN1 两个 2-pin、CAN2 两个 4-pin），布线按接口数算。24V 输入带防反接与过压保护，5V 口专门给激光。手册未注明 MCU 具体型号，只写「高性能 STM32」——常见资料为 STM32F407IGH6，本站不替厂商补型号。 STM32F407IGH6TR（168MHz、1MB Flash、192KB RAM，含 64KB CCM）；CAN1/CAN2 各 2 口、2× UART、7× PWM、DBUS、IIC、SPI、DCMI 数字摄像头、BMI088 + IST8310；8–28V 输入、待机 0.01A@24V、60×41×16mm、38g。注意：这是主控板，不含 FOC 功率级，需外接电调。官方价 ¥379。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>RM 生态的小板：比 A 型便宜更小，常用来带云台/拨弹</li><li><strong>CAN 是 2 条总线、4 个接口</strong>（CAN1 两个 2-pin、CAN2 两个 4-pin），布线按接口数算</li><li>24V 输入带防反接与过压保护，5V 口专门给激光</li><li>STM32F407IGH6TR（168MHz、1MB Flash、192KB RAM，含 64KB CCM）</li><li>CAN1/CAN2 各 2 口、2× UART、7× PWM、DBUS、IIC、SPI、DCMI 数字摄像头、BMI088 + IST8310</li><li>8–28V 输入、待机 0.01A@24V、60×41×16mm、38g</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>官方价 <span class="pn-money">¥379</span></li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>手册未注明 MCU 具体型号，只写「高性能 STM32」——常见资料为 STM32F407IGH6，本站不替厂商补型号</li><li>这是主控板，不含 FOC 功率级，需外接电调</li></ul></div></div>
 
 
 

@@ -100,7 +100,7 @@ title: TDK InvenSense(应美盛) ICM-20948
 
 ## 备注
 
-**九轴**（陀螺 + 加速度 + 磁力计 + DMP），QFN-24。要航向角就选它，不用外挂磁力计。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li><strong>九轴</strong>（陀螺 + 加速度 + 磁力计 + DMP），QFN-24</li><li>要航向角就选它，不用外挂磁力计</li></ul></div></div>
 
 
 

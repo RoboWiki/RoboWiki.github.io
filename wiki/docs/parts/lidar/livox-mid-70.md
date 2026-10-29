@@ -91,7 +91,7 @@ title: Livox Mid-70
 
 ## 备注
 
-圆形 70.4° 视场、最近 0.05 m —— 近距离覆盖比 Mid-360 强，但没有 360° 水平环视。供电 DC 10–15 V，注意别接 24 V。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>圆形 70.4° 视场、最近 0.05 m —— 近距离覆盖比 Mid-360 强，但没有 360° 水平环视</li><li>供电 DC 10–15 V</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>别接 24 V</li></ul></div></div>
 
 
 

@@ -99,7 +99,7 @@ title: Intel RealSense D405
 
 ## 备注
 
-**近距离**用的：视场窄、最近可到 7 cm，装夹爪上做抓取定位很合适。别拿它看远处——超过 50 cm 精度掉得很快。 近距微距机型，最短 7 cm（480p），适合抓取、手眼标定、近距离避障，不适合当整机地形相机。深度 1280×720@90 fps，RGB 1280×720@30/90 fps 全局快门；无 IMU；待机 35 mW、出流约 1.55 W。官方 $325（2026-10），按 7.15 汇率约 ¥2320。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li><strong>近距离</strong>用的：视场窄、最近可到 7 cm，装夹爪上做抓取定位很合适</li><li>深度 1280×720@90 fps，RGB 1280×720@30/90 fps 全局快门</li><li>无 IMU</li><li>待机 35 mW、出流约 1.55 W</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>官方 <span class="pn-money">$325</span>（2026-10），按 7.15 汇率约 <span class="pn-money">¥2320</span></li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>别拿它看远处——超过 50 cm 精度掉得很快</li><li>近距微距机型，最短 7 cm（480p），适合抓取、手眼标定、近距离避障，不适合当整机地形相机</li></ul></div></div>
 
 
 

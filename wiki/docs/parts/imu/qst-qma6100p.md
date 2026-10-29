@@ -100,7 +100,7 @@ title: QST(上海矽睿) QMA6100P
 
 ## 备注
 
-三轴加速度，量程到 ±32g、14 位；屏幕旋转/计步/冲击检测这类应用的主场。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>三轴加速度，量程到 ±32g、14 位</li><li>屏幕旋转/计步/冲击检测这类应用的主场</li></ul></div></div>
 
 
 

@@ -105,7 +105,7 @@ title: 树莓派 Raspberry Pi 4 Model B
 
 ## 备注
 
-8GB 版；BCM2711 4×Cortex-A72@1.8GHz、VideoCore VI、LPDDR4-3200（on-die ECC）；2× micro-HDMI（4Kp60）、2× USB3 + 2× USB2、GbE、PoE+（需 HAT）、2-lane MIPI CSI + 2-lane MIPI DSI、40-pin GPIO；无原生 CAN、无外露 PCIe；5V/3A USB-C 或 GPIO 供电；85×56mm、46g。价格：官方 8GB 定价 $165（2026-10 Product Brief，受内存涨价影响已较首发上调）；国内渠道约 ¥641–682（2026-10）。 本站目前只核到 8 GB 这一档；同型号其它内存版本参数待补，价格也不同。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>8GB 版</li><li>BCM2711 4×Cortex-A72@1.8GHz、VideoCore VI、LPDDR4-3200（on-die ECC）</li><li>2× micro-HDMI（4Kp60）、2× USB3 + 2× USB2、GbE、PoE+（需 HAT）、2-lane MIPI CSI + 2-lane MIPI DSI、40-pin GPIO</li><li>无原生 CAN、无外露 PCIe</li><li>5V/3A USB-C 或 GPIO 供电</li><li>85×56mm、46g</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>官方 8GB 定价 <span class="pn-money">$165</span>（2026-10 Product Brief，受内存涨价影响已较首发上调）</li><li>国内渠道约 <span class="pn-money">¥641–682</span>（2026-10）</li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>本站目前只核到 8 GB 这一档</li><li>同型号其它内存版本参数待补，价格也不同</li></ul></div></div>
 
 
 

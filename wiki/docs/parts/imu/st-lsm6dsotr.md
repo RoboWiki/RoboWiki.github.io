@@ -100,7 +100,7 @@ title: ST LSM6DSOTR
 
 ## 备注
 
-带有限状态机与高级数字功能的低功耗 6 轴。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>带有限状态机与高级数字功能的低功耗 6 轴</li></ul></div></div>
 
 
 

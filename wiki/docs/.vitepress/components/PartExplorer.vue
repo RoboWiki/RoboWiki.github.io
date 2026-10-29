@@ -80,7 +80,12 @@ const featuredOnly = ref(
     : true,   // 默认开启
 )
 const hasCuration = computed(() => featuredIds.value.size > 0)
-const cat = ref('actuator')
+/** 首页品类卡带 ?category=<id> 进来：先按参数选中，加载 taxonomy 后再校验。 */
+const initialCat = (() => {
+  if (typeof window === 'undefined') return ''
+  return new URLSearchParams(window.location.search).get('category')?.trim() || ''
+})()
+const cat = ref(initialCat || 'actuator')
 const vendor = ref('')
 const sort = ref<string>('tau_peak_Nm')
 const order = ref<'desc' | 'asc'>('desc')
@@ -124,6 +129,8 @@ onMounted(async () => {
         v: c.id, t: c.name, keys: c.keys || [], sorts: c.sorts || [],
       }))
       if (!CATS.value.some(c => c.v === cat.value)) cat.value = CATS.value[0].v
+      sort.value = defaultSortFor(cat.value)
+      if (initialCat) syncCategoryUrl()
     }
   } catch (e: any) {
     fail.value = `部件库加载失败（${e.message}）`
@@ -146,8 +153,22 @@ function setCat(v: string) {
   cat.value = v
   vendor.value = ''
   q.value = ''
+  sort.value = defaultSortFor(v)
+  syncCategoryUrl()
+}
+
+function defaultSortFor(v: string) {
   const m = CATS.value.find(c => c.v === v)
-  sort.value = m?.sorts?.[0]?.k || 'price'
+  return m?.sorts?.[0]?.k || 'price'
+}
+
+/** 品类进 URL：刷新/分享能回到同一栏，首页品类卡也靠这个参数落地。 */
+function syncCategoryUrl() {
+  if (typeof window === 'undefined') return
+  const url = new URL(window.location.href)
+  if (url.searchParams.get('category') === cat.value) return
+  url.searchParams.set('category', cat.value)
+  history.replaceState(history.state, '', url)
 }
 
 const catCount = (v: string) => all.value.filter(p => p.category === v).length

@@ -29,6 +29,7 @@
         "sensor",
         "controller_high",
         "controller_low",
+        "remote_controller",
         "esc",
         "imu",
         "lidar",
@@ -268,6 +269,68 @@
             "null"
           ],
           "description": "板载 IMU 型号（相机等模组用）"
+        },
+        "channels": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "遥控器通道数"
+        },
+        "frequency_ghz": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "遥控器频段（GHz）"
+        },
+        "control_range_m": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "遥控距离（m），按厂商口径记录"
+        },
+        "protocol": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "输出协议 / 总线协议"
+        },
+        "battery": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "电池或支持电池规格"
+        },
+        "can_speed_mbps": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "CAN / CAN FD 速率（Mbps）"
+        },
+        "canfd": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "isolation": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "总线是否电气隔离"
+        },
+        "connector": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "接线端子 / 接头规格"
         }
       }
     }

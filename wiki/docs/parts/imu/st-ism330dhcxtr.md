@@ -102,7 +102,7 @@ title: ST ISM330DHCXTR
 
 ## 备注
 
-**工业级**常开 6 轴，温漂与抗振比消费级好；机器人关节上用得住。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li><strong>工业级</strong>常开 6 轴，温漂与抗振比消费级好</li><li>机器人关节上用得住</li></ul></div></div>
 
 
 

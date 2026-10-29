@@ -102,7 +102,7 @@ title: ST LSM6DSLTR
 
 ## 备注
 
-6 轴 IMU，超低功耗；比 6DS3 新一代，寄存器兼容性一般。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>6 轴 IMU，超低功耗</li><li>比 6DS3 新一代，寄存器兼容性一般</li></ul></div></div>
 
 
 

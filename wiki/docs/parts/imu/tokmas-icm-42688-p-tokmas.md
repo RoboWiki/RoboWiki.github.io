@@ -100,7 +100,7 @@ title: Tokmas(托克马斯) ICM-42688-P(TOKMAS)
 
 ## 备注
 
-**pin-to-pin 替代 ICM-42688-P**，但驱动要改（原厂索取）。价格约为原厂件的 1/8。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li><strong>pin-to-pin 替代 ICM-42688-P</strong>，但驱动要改（原厂索取）</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>价格约为原厂件的 1/8</li></ul></div></div>
 
 
 

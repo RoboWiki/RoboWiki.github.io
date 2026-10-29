@@ -101,7 +101,7 @@ title: 奥比中光 Orbbec Gemini 335
 
 ## 备注
 
-入门级主动双目（结构光辅助），ROS/Orbbec SDK 生态完整。规格待补：需按厂商规格书逐项核对，本站不估。 主动双目 + 内置 IMU，深度 1280×800@30 fps，RGB 1920×1080@30 fps（86°×55°），整机 <3 W、IP5X，国内供货和价格比 RealSense 稳定。官方国际页写 0.10–20 m+（最佳 0.26–3 m），国内发布资料写 0.3–10 m——【来源冲突】，以实际固件与场景为准，别按 20 m 做远距规划。国内官方价 ¥1950（2026-10，天猫 1920–1950），海外 $264。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>入门级主动双目（结构光辅助），ROS/Orbbec SDK 生态完整</li><li>主动双目 + 内置 IMU，深度 1280×800@30 fps，RGB 1920×1080@30 fps（86°×55°），整机 &lt;3 W、IP5X，国内供货和价格比 RealSense 稳定</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>国内官方价 <span class="pn-money">¥1950</span>（2026-10，天猫 1920–1950），海外 <span class="pn-money">$264</span></li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>官方国际页写 0.10–20 m+（最佳 0.26–3 m），国内发布资料写 0.3–10 m——【来源冲突】，以实际固件与场景为准</li><li>别按 20 m 做远距规划</li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>规格待补：需按厂商规格书逐项核对，本站不估</li></ul></div></div>
 
 
 

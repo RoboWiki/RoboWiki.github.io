@@ -102,7 +102,7 @@ title: ST LSM6DS3TR-C
 
 ## 备注
 
-入门级 6 轴 IMU（iNEMO），手机/便携平台的主力件，资料最全。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>入门级 6 轴 IMU（iNEMO），手机/便携平台的主力件，资料最全</li></ul></div></div>
 
 
 

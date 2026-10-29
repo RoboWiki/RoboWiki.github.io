@@ -102,7 +102,7 @@ title: Bosch Sensortec BMI270
 
 ## 备注
 
-BMI088 的消费级后继（少了高分振抑制），价格便宜一半以上。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>BMI088 的消费级后继（少了高分振抑制），价格便宜一半以上</li></ul></div></div>
 
 
 

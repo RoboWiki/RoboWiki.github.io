@@ -100,7 +100,7 @@ title: ST LSM6DSOXTR
 
 ## 备注
 
-6DSO 带**机器学习核心**（决策树可跑在传感器里），做姿态分类省 MCU 算力。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>6DSO 带<strong>机器学习核心</strong>（决策树可跑在传感器里），做姿态分类省 MCU 算力</li></ul></div></div>
 
 
 

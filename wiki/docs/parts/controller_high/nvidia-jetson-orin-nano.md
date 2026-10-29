@@ -110,7 +110,7 @@ title: NVIDIA Jetson Orin Nano
 
 ## 备注
 
-四足/人形做感知与策略推理的常见下限：8 GB 内存同时跑相机流 + 策略会很紧。「Super 模式」需 JetPack 6.2 以上，算力标称才到 40 TOPS。 产品图待补（抓到的不是产品本体）。 本站这一条对应 **8 GB** 版本（内存是参数，不写进型号名）；同型号还有其它容量版本，选型时先确认容量再比价格。 本站目前只核到 8 GB 这一档；同型号其它内存版本参数待补，价格也不同。
+<div class="part-notes"><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>四足/人形做感知与策略推理的常见下限：8 GB 内存同时跑相机流 + 策略会很紧</li><li>「Super 模式」需 JetPack 6.2 以上，算力标称才到 40 TOPS</li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>产品图待补（抓到的不是产品本体）</li><li>本站这一条对应 <strong>8 GB</strong> 版本（内存是参数，不写进型号名）</li><li>同型号还有其它容量版本，选型时先确认容量再比价格</li><li>本站目前只核到 8 GB 这一档</li><li>同型号其它内存版本参数待补，价格也不同</li></ul></div></div>
 
 
 

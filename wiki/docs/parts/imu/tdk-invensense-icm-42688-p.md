@@ -98,7 +98,7 @@ title: TDK InvenSense ICM-42688-P
 
 ## 备注
 
-6 轴；陀螺量程 ±15.6/31.2/62.5/125/250/500/1000/2000 °/s，加速度计量程 ±2/4/8/16 g；低噪声模式 6 轴电流 0.88 mA（按 3.3 V 折算约 0.003 W）；VDD/VDDIO 1.71–3.6 V；最高 ODR 32 kHz。常用于四足/人形机器人与无人机的高频姿态估计。TDK 数据手册下载需登录账号，doc_pdf 留空；官网未公开单价。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>6 轴</li><li>陀螺量程 ±15.6/31.2/62.5/125/250/500/1000/2000 °/s，加速度计量程 ±2/4/8/16 g</li><li>低噪声模式 6 轴电流 0.88 mA（按 3.3 V 折算约 0.003 W）</li><li>VDD/VDDIO 1.71–3.6 V</li><li>最高 ODR 32 kHz</li><li>常用于四足/人形机器人与无人机的高频姿态估计</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>官网未公开单价</li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>TDK 数据手册下载需登录账号，doc_pdf 留空</li></ul></div></div>
 
 
 

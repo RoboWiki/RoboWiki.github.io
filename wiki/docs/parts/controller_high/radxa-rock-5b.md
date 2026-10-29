@@ -106,7 +106,7 @@ title: 瑞莎 Radxa ROCK 5B
 
 ## 备注
 
-8GB LPDDR4x 版。RK3588（4×A76@2.4 + 4×A55@1.8）、Mali-G610 MP4、NPU 6 TOPS、2.5GbE、M.2 M-key（PCIe 3.0 x4，支持 NVMe）、USB-C PD、40-pin 扩展口。存储需 eMMC 模块或 microSD，裸板不带。无原生 CAN，需要 CAN 请走 M.2/SPI 扩展。价格：8GB+8GB 存储渠道价约 ¥884（2025-12）；裸板随内存/存储配置浮动。 本站目前只核到 8 GB 这一档；同型号其它内存版本参数待补，价格也不同。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>8GB LPDDR4x 版</li><li>RK3588（4×A76@2.4 + 4×A55@1.8）、Mali-G610 MP4、NPU 6 TOPS、2.5GbE、M.2 M-key（PCIe 3.0 x4，支持 NVMe）、USB-C PD、40-pin 扩展口</li><li>存储需 eMMC 模块或 microSD，裸板不带</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>8GB+8GB 存储渠道价约 <span class="pn-money">¥884</span>（2025-12）</li><li>裸板随内存/存储配置浮动</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>无原生 CAN，需要 CAN 请走 M.2/SPI 扩展</li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>本站目前只核到 8 GB 这一档</li><li>同型号其它内存版本参数待补，价格也不同</li></ul></div></div>
 
 
 

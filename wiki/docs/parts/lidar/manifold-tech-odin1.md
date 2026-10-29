@@ -113,7 +113,7 @@ title: Manifold Tech Odin1
 
 ## 备注
 
-不是纯激光雷达：一颗 940 nm 深度模组（240×180、0.2–70 m、最高 70 万点/秒、120°×90°）+ 一颗 1600×1296 全局曝光 RGB + IMU，片上带 SLAM（±5 cm + 1%），直接输出真彩点云、位姿与高频 IMU。选型提醒：它是**一体式方案**，省掉相机-雷达标定与时间同步；代价是视场固定 120°×90°、且深度分辨率只有 240×180，做精细物体识别不够用。IP66、280 g、额定 11 W。价格未公开，需向厂商询价。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>不是纯激光雷达：一颗 940 nm 深度模组（240×180、0.2–70 m、最高 70 万点/秒、120°×90°）+ 一颗 1600×1296 全局曝光 RGB + IMU，片上带 SLAM（±5 cm + 1%），直接输出真彩点云、位姿与高频 IMU</li><li>IP66、280 g、额定 11 W</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>价格未公开，需向厂商询价</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>它是<strong>一体式方案</strong>，省掉相机-雷达标定与时间同步</li><li>代价是视场固定 120°×90°、且深度分辨率只有 240×180，做精细物体识别不够用</li></ul></div></div>
 
 
 

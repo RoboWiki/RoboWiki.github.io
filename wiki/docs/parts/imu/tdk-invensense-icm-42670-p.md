@@ -102,7 +102,7 @@ title: TDK InvenSense(应美盛) ICM-42670-P
 
 ## 备注
 
-同类里噪声最低的一档，抗 20000g 冲击与 SMT 弯曲偏移；2.25KB FIFO。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>同类里噪声最低的一档，抗 20000g 冲击与 SMT 弯曲偏移</li><li>2.25KB FIFO</li></ul></div></div>
 
 
 

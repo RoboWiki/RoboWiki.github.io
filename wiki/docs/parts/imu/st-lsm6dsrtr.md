@@ -100,7 +100,7 @@ title: ST LSM6DSRTR
 
 ## 备注
 
-陀螺量程到 ±4000dps（比常见的 2000 高一档），适合高速旋转机构。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>陀螺量程到 ±4000dps（比常见的 2000 高一档），适合高速旋转机构</li></ul></div></div>
 
 
 

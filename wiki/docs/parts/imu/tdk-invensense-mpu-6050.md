@@ -102,7 +102,7 @@ title: TDK InvenSense(应美盛) MPU-6050
 
 ## 备注
 
-老经典：资料/教程最多，但已停产多年，**单价被炒到 ￥130**，新设计别再用。
+<div class="part-notes"><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>老经典：资料/教程最多，但已停产多年，<strong>单价被炒到 <span class="pn-money">￥130</span></strong>，新设计别再用</li></ul></div></div>
 
 
 

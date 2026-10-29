@@ -102,7 +102,7 @@ title: ST LIS2DH12TR
 
 ## 备注
 
-老一代低功耗三轴加速度，±2/4/8/16g 可选，I²C/SPI + 内置 FIFO。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>老一代低功耗三轴加速度，±2/4/8/16g 可选，I²C/SPI + 内置 FIFO</li></ul></div></div>
 
 
 

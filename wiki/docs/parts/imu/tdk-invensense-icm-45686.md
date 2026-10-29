@@ -100,7 +100,7 @@ title: TDK InvenSense(应美盛) ICM-45686
 
 ## 备注
 
-双接口（UI + AUX），8KB FIFO；量程 ±32g/±4000dps，带片上 APEX 运动处理引擎。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>双接口（UI + AUX），8KB FIFO</li><li>量程 ±32g/±4000dps，带片上 APEX 运动处理引擎</li></ul></div></div>
 
 
 

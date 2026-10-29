@@ -102,7 +102,7 @@ title: ST LIS3DHTR
 
 ## 备注
 
-经典三轴加速度（LLGA-16 3×3×1.0）；老设计里到处都是，单价已偏高。
+<div class="part-notes"><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>经典三轴加速度（LLGA-16 3×3×1.0）</li><li>老设计里到处都是，单价已偏高</li></ul></div></div>
 
 
 

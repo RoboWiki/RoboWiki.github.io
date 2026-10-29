@@ -89,7 +89,7 @@ title: 奥比中光 Orbbec Gemini 336
 
 ## 备注
 
-与 335 同代，差异在深度/RGB 分辨率与部分工作模式。规格待补：需按厂商规格书逐项核对，本站不估。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>与 335 同代，差异在深度/RGB 分辨率与部分工作模式</li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>规格待补：需按厂商规格书逐项核对，本站不估</li></ul></div></div>
 
 
 

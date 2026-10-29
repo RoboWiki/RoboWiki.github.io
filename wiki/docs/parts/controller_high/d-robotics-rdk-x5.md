@@ -104,7 +104,7 @@ title: 地平线 D-Robotics RDK X5
 
 ## 备注
 
-国产替代 Jetson 的一档：8 核 A55 + 10 TOPS BPU。生态与 CUDA 不通用，已有 TensorRT 工程迁移成本要算进去。 产品图待补：RDK 文档站对应图片 404，需人工提供截图 本站目前只核到 8 GB 这一档；同型号其它内存版本参数待补，价格也不同。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>国产替代 Jetson 的一档：8 核 A55 + 10 TOPS BPU</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>生态与 CUDA 不通用，已有 TensorRT 工程迁移成本要算进去</li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>产品图待补：RDK 文档站对应图片 404，需人工提供截图</li><li>本站目前只核到 8 GB 这一档</li><li>同型号其它内存版本参数待补，价格也不同</li></ul></div></div>
 
 
 

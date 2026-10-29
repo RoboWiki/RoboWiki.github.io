@@ -102,7 +102,7 @@ title: ST LSM6DSV16XTR
 
 ## 备注
 
-常开型（always-on）IMU，带机器学习核心与 Qvar 静电传感。
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>常开型（always-on）IMU，带机器学习核心与 Qvar 静电传感</li></ul></div></div>
 
 
 
