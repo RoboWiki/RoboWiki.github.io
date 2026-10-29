@@ -35,7 +35,7 @@ title: Feetech 飞特 5264 端子线
 </div>
 
 <div class="part-comm">
-<PartRating part-id="feetech-5264-cable" />
+<PartRating part-id="feetech-5264-cable" :dims='["value", "build", "docs"]' />
 </div>
 
 </div>

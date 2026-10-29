@@ -40,7 +40,7 @@ title: Stereolabs ZED 2i
 </div>
 
 <div class="part-comm">
-<PartRating part-id="sens-stereolabs-zed-2i" />
+<PartRating part-id="sens-stereolabs-zed-2i" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

@@ -41,7 +41,7 @@ title: Intel RealSense D405
 </div>
 
 <div class="part-comm">
-<PartRating part-id="intel-d405" />
+<PartRating part-id="intel-d405" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

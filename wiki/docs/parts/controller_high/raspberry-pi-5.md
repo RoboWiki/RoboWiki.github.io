@@ -40,7 +40,7 @@ title: 树莓派 Raspberry Pi 5
 </div>
 
 <div class="part-comm">
-<PartRating part-id="cont-raspberrypi-rpi-5-8gb" />
+<PartRating part-id="cont-raspberrypi-rpi-5-8gb" :dims='["value", "build", "docs", "compat"]' />
 </div>
 
 </div>

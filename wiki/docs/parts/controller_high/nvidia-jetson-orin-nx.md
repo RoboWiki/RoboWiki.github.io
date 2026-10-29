@@ -40,7 +40,7 @@ title: NVIDIA Jetson Orin NX
 </div>
 
 <div class="part-comm">
-<PartRating part-id="nvidia-orin-nx-16gb" />
+<PartRating part-id="nvidia-orin-nx-16gb" :dims='["value", "build", "docs", "compat"]' />
 </div>
 
 </div>

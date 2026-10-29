@@ -38,7 +38,7 @@ title: Analog Devices (Trinamic) TMC2209
 </div>
 
 <div class="part-comm">
-<PartRating part-id="chip-adi-tmc2209" />
+<PartRating part-id="chip-adi-tmc2209" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

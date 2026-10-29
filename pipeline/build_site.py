@@ -27,7 +27,7 @@ OUT = ROOT / "wiki" / "docs"
 from .load import cat_labels as _cat_labels
 from .build_robots import build as build_robots
 from .contrib_page import build as build_contributors
-from .load import load_taxonomy
+from .load import cat_dims, load_taxonomy
 
 #: 品类表来自 data/taxonomy.json —— 不再在这里硬编码。
 #: 改品类名只改注册表，站点导航、筛选、后端标签、schema 会一起跟上。
@@ -669,9 +669,11 @@ def main() -> None:
         # 社区一侧：评分组件（星标 + 分布 + 打分入口），评论由页尾 giscus 承担。
         # 不再写死「暂无评分」—— 组件自己判断：有后端读实时值，
         # 没有就读构建时烤的快照，都没有才显示空态。
+        _dims = cat_dims().get(r["category"]) or ["value", "build", "docs"]
+        rdims = json.dumps(_dims, ensure_ascii=False).replace("'", "\\'")
         comm = f'''
 <div class="part-comm">
-<PartRating part-id="{pid}" />
+<PartRating part-id="{pid}" :dims='{rdims}' />
 </div>
 '''
 
@@ -1470,14 +1472,24 @@ outline: false
 评分不是一个总分，是**四个维度 + 使用工况 + 样本量**。这样做的原因很实际：
 同样打 4 分，「参数靠谱、文档稀烂」和「文档齐全、做工一般」对下一个读者是完全不同的信息。
 
-### 四个维度
+### 打分只要三项
 
-| 维度 | 它回答的问题 |
-|---|---|
-| 参数可信度 | 手册/官网写的数字，和实测或使用感受是否对得上 |
-| 做工 | 外壳、端子、背隙、装配一致性 |
-| 文档与支持 | 手册、SDK、固件、厂家回复速度 |
-| 性价比 | 同等能力下，这个价格值不值 |
+从部件页点「写评价」进 GitHub 表单，**必填只有三项**：总分、是否用过、一句话理由。
+分维度打分与使用工况都是可选项 —— 门槛低才有人愿意点。
+
+### 维度按品类显示
+
+所有品类都有三个通用维度：**性价比 / 做工 / 文档与支持**；
+再按品类加一项它真正关心的：
+
+| 品类 | 额外维度 | 为什么是它 |
+|---|---|---|
+| 关节电机 / 舵机 / 芯片 / 传感器 / IMU / 雷达 / 相机 / 电调 / 电池 | 参数可信度 | 这类件的核心风险是「标称的数字和实际不一样」 |
+| 上位机 / 下位机 | 兼容与生态 | 这类件的核心风险是「买回来接不上、驱动难写」 |
+| 线束 / 结构 | 无 | 只有通用三维 —— 硬塞维度只会让人乱填 |
+
+维度定义在 `data/taxonomy.json` 的 `rating_dims` 里，加品类时顺手声明即可，
+组件不用改。
 
 **每个维度的样本量单独统计。** 有人只打总分没填维度，那一票不进维度均值 ——
 所以页面上会显示成 `4.6/5`、`2.8/3`，斜杠后就是这一维的实际样本数。

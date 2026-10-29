@@ -110,3 +110,14 @@ def effective_price(part: dict, offers: list[dict], today: str) -> dict | None:
         if best is None or o["price_cny"] < best["price_cny"]:
             best = o
     return best
+
+
+def cat_dims() -> dict[str, list[str]]:
+    """品类 -> 该品类关心的评分维度（来自 taxonomy 的 rating_dims）。
+
+    为什么放在 taxonomy 而不是写死在组件里：
+        不同品类关心的不一样 —— 电机看「参数可信度」，主控板看「兼容与生态」，
+        线束这类只有通用的三项。写死在组件里就只能四维一套打天下。
+    """
+    return {c["id"]: (c.get("rating_dims") or ["value", "build", "docs"])
+            for c in (load_taxonomy().get("categories") or [])}

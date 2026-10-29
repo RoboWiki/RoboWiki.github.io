@@ -40,7 +40,7 @@ title: 大疆 DJI RoboMaster 开发板 C 型
 </div>
 
 <div class="part-comm">
-<PartRating part-id="dji-rm-board-c" />
+<PartRating part-id="dji-rm-board-c" :dims='["value", "build", "docs", "compat"]' />
 </div>
 
 </div>

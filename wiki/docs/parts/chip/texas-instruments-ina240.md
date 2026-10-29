@@ -38,7 +38,7 @@ title: Texas Instruments INA240
 </div>
 
 <div class="part-comm">
-<PartRating part-id="chip-ti-ina240" />
+<PartRating part-id="chip-ti-ina240" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

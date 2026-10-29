@@ -38,7 +38,7 @@ title: TDK InvenSense ICM-42688-P
 </div>
 
 <div class="part-comm">
-<PartRating part-id="chip-tdk-icm42688p" />
+<PartRating part-id="chip-tdk-icm42688p" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

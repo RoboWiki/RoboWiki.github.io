@@ -38,7 +38,7 @@ title: ams OSRAM AS5600
 </div>
 
 <div class="part-comm">
-<PartRating part-id="chip-ams-as5600" />
+<PartRating part-id="chip-ams-as5600" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

@@ -19,7 +19,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { withBase } from 'vitepress'
 
-interface Dims { spec_trust?: number; build?: number; docs?: number; value?: number }
+interface Dims { spec_trust?: number; build?: number; docs?: number; value?: number; compat?: number }
 
 interface Summary {
   count: number
@@ -33,7 +33,11 @@ interface Summary {
   low_sample?: boolean
 }
 
-const props = defineProps<{ partId: string }>()
+const props = defineProps<{
+  partId: string
+  /** 该品类关心的维度，来自 taxonomy 的 rating_dims（build 时传入） */
+  dims?: string[]
+}>()
 
 const empty: Summary = {
   count: 0, avg: null,
@@ -43,12 +47,14 @@ const empty: Summary = {
 const s = ref<Summary>({ ...empty })
 const source = ref<'live' | 'snapshot' | 'none'>('none')
 
-const DIM_LABEL: { key: keyof Dims; label: string; hint: string }[] = [
-  { key: 'spec_trust', label: '参数可信度', hint: '手册数字与实际是否对得上' },
-  { key: 'build', label: '做工', hint: '外壳、端子、背隙、装配一致性' },
-  { key: 'docs', label: '文档与支持', hint: '手册、SDK、固件、厂家回复' },
-  { key: 'value', label: '性价比', hint: '同等能力下贵不贵' },
-]
+/** 全部可能的维度；具体渲染哪些由 props.dims 决定 */
+const DIM_ALL: Record<string, { label: string; hint: string }> = {
+  value: { label: '性价比', hint: '同等能力下贵不贵' },
+  build: { label: '做工', hint: '外壳、端子、背隙、装配一致性' },
+  docs: { label: '文档与支持', hint: '手册、SDK、固件、厂家回复' },
+  spec_trust: { label: '参数可信度', hint: '标称数字与实际是否对得上' },
+  compat: { label: '兼容与生态', hint: '驱动、固件、社区资料好不好接' },
+}
 
 const USAGE_LABEL: Record<string, Record<string, string>> = {
   duration: { '<1个月': '<1 月', '1-3个月': '1–3 月', '3-12个月': '3–12 月', '>1年': '>1 年' },
@@ -72,13 +78,18 @@ const bars = computed(() => {
   }))
 })
 
-const dims = computed(() => DIM_LABEL
-  .map(d => ({
-    ...d,
-    v: s.value.dims_avg?.[d.key] ?? null,
-    n: s.value.dims_n?.[d.key] ?? 0,
-  }))
-  .filter(d => d.v != null))
+const dims = computed(() => {
+  const want = props.dims?.length ? props.dims : Object.keys(DIM_ALL)
+  return want
+    .filter(k => DIM_ALL[k])
+    .map(k => ({
+      key: k,
+      ...DIM_ALL[k],
+      v: (s.value.dims_avg as any)?.[k] ?? null,
+      n: (s.value.dims_n as any)?.[k] ?? 0,
+    }))
+    .filter(d => d.v != null)
+})
 
 const usageRows = computed(() => {
   const uc = s.value.usage_count || {}
@@ -160,8 +171,8 @@ onMounted(load)
         <span class="rt-dim-v">{{ d.v!.toFixed(1) }}<em v-if="d.n < s.count">/{{ d.n }}</em></span>
       </div>
       <p class="rt-dims-note">
-        四维分母不同：只统计填了该项的样本（斜杠后的数字）。
-        有人只打总分，那一票不进四维 —— 不补 0，也不猜。
+        只显示这个品类该看的维度（不同品类关心的不一样）；分母是填了该项的样本数，见斜杠后的数字。
+        有人只打总分没打分维度，那一票不进维度均值 —— 不补 0，也不猜。
       </p>
     </div>
 
@@ -182,7 +193,7 @@ onMounted(load)
     </div>
 
     <p class="rt-hint">
-      在 GitHub 上开一条 <strong>issue</strong>（表单，约 1 分钟）：总分必填，四维选填。
+      在 GitHub 上开一条 <strong>issue</strong>（表单，约 1 分钟）：三项必填（总分 / 是否用过 / 一句话理由），分维度选填。
       <strong>一人一件一票</strong>（唯一键 = 你的账号 + 部件 id），改主意就编辑那条 issue，
       不会被算成两票。汇总由 Actions 自动跑：不是实时，但每一条都能查到是谁、凭什么。
     </p>

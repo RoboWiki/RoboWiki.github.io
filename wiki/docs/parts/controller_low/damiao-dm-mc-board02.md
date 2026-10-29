@@ -40,7 +40,7 @@ title: 达妙 DAMIAO DM-MC-Board02
 </div>
 
 <div class="part-comm">
-<PartRating part-id="damiao-dm-mc-board02" />
+<PartRating part-id="damiao-dm-mc-board02" :dims='["value", "build", "docs", "compat"]' />
 </div>
 
 </div>

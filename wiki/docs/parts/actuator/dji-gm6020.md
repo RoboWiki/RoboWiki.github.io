@@ -41,7 +41,7 @@ title: 大疆 DJI GM6020
 </div>
 
 <div class="part-comm">
-<PartRating part-id="dji-robomaster-gm6020" />
+<PartRating part-id="dji-robomaster-gm6020" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

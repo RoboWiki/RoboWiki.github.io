@@ -40,7 +40,7 @@ title: Livox Mid-70
 </div>
 
 <div class="part-comm">
-<PartRating part-id="livox-mid-70" />
+<PartRating part-id="livox-mid-70" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

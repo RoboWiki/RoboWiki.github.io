@@ -40,7 +40,7 @@ title: 瑞莎 Radxa ROCK 5B
 </div>
 
 <div class="part-comm">
-<PartRating part-id="cont-radxa-rock-5b-8gb" />
+<PartRating part-id="cont-radxa-rock-5b-8gb" :dims='["value", "build", "docs", "compat"]' />
 </div>
 
 </div>

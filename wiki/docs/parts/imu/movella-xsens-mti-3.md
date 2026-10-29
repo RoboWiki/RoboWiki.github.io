@@ -39,7 +39,7 @@ title: Movella Xsens MTi-3
 </div>
 
 <div class="part-comm">
-<PartRating part-id="sens-xsens-mti-3" />
+<PartRating part-id="sens-xsens-mti-3" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

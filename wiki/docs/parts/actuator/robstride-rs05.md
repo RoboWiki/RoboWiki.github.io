@@ -41,7 +41,7 @@ title: 灵足 RobStride RS05
 </div>
 
 <div class="part-comm">
-<PartRating part-id="灵足-robstride-rs05" />
+<PartRating part-id="灵足-robstride-rs05" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

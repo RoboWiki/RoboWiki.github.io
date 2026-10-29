@@ -40,7 +40,7 @@ title: RoboSense Airy
 </div>
 
 <div class="part-comm">
-<PartRating part-id="sens-robosense-airy" />
+<PartRating part-id="sens-robosense-airy" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

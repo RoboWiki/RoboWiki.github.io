@@ -38,7 +38,7 @@ title: MagnTek MT6835
 </div>
 
 <div class="part-comm">
-<PartRating part-id="chip-magnTek-mt6835" />
+<PartRating part-id="chip-magnTek-mt6835" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

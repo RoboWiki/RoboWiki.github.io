@@ -69,6 +69,12 @@
      "k": "rating",
      "label": "评分"
     }
+   ],
+   "rating_dims": [
+    "value",
+    "build",
+    "docs",
+    "spec_trust"
    ]
   },
   {
@@ -131,6 +137,12 @@
      "k": "rating",
      "label": "评分"
     }
+   ],
+   "rating_dims": [
+    "value",
+    "build",
+    "docs",
+    "spec_trust"
    ]
   },
   {
@@ -194,6 +206,12 @@
      "k": "rating",
      "label": "评分"
     }
+   ],
+   "rating_dims": [
+    "value",
+    "build",
+    "docs",
+    "compat"
    ]
   },
   {
@@ -249,6 +267,12 @@
      "k": "rating",
      "label": "评分"
     }
+   ],
+   "rating_dims": [
+    "value",
+    "build",
+    "docs",
+    "compat"
    ]
   },
   {
@@ -308,6 +332,12 @@
      "k": "rating",
      "label": "评分"
     }
+   ],
+   "rating_dims": [
+    "value",
+    "build",
+    "docs",
+    "spec_trust"
    ]
   },
   {
@@ -355,6 +385,12 @@
      "k": "rating",
      "label": "评分"
     }
+   ],
+   "rating_dims": [
+    "value",
+    "build",
+    "docs",
+    "spec_trust"
    ]
   },
   {
@@ -411,6 +447,12 @@
      "k": "rating",
      "label": "评分"
     }
+   ],
+   "rating_dims": [
+    "value",
+    "build",
+    "docs",
+    "spec_trust"
    ]
   },
   {
@@ -474,6 +516,12 @@
      "k": "rating",
      "label": "评分"
     }
+   ],
+   "rating_dims": [
+    "value",
+    "build",
+    "docs",
+    "spec_trust"
    ]
   },
   {
@@ -534,6 +582,12 @@
      "k": "rating",
      "label": "评分"
     }
+   ],
+   "rating_dims": [
+    "value",
+    "build",
+    "docs",
+    "spec_trust"
    ]
   },
   {
@@ -557,6 +611,12 @@
      "k": "rating",
      "label": "评分"
     }
+   ],
+   "rating_dims": [
+    "value",
+    "build",
+    "docs",
+    "spec_trust"
    ]
   },
   {
@@ -580,6 +640,11 @@
      "k": "rating",
      "label": "评分"
     }
+   ],
+   "rating_dims": [
+    "value",
+    "build",
+    "docs"
    ]
   },
   {
@@ -618,6 +683,11 @@
      "k": "rating",
      "label": "评分"
     }
+   ],
+   "rating_dims": [
+    "value",
+    "build",
+    "docs"
    ]
   },
   {
@@ -678,6 +748,12 @@
      "k": "rating",
      "label": "评分"
     }
+   ],
+   "rating_dims": [
+    "value",
+    "build",
+    "docs",
+    "spec_trust"
    ]
   }
  ],

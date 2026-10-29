@@ -38,7 +38,7 @@ title: Texas Instruments SN65HVD230
 </div>
 
 <div class="part-comm">
-<PartRating part-id="chip-ti-sn65hvd230" />
+<PartRating part-id="chip-ti-sn65hvd230" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

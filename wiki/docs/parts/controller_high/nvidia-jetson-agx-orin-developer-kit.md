@@ -40,7 +40,7 @@ title: NVIDIA Jetson AGX Orin Developer Kit
 </div>
 
 <div class="part-comm">
-<PartRating part-id="cont-nvidia-jetson-agx-orin-64gb" />
+<PartRating part-id="cont-nvidia-jetson-agx-orin-64gb" :dims='["value", "build", "docs", "compat"]' />
 </div>
 
 </div>

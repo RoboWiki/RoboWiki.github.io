@@ -40,7 +40,7 @@ title: Manifold Tech Odin1
 </div>
 
 <div class="part-comm">
-<PartRating part-id="sens-manifold-odin1" />
+<PartRating part-id="sens-manifold-odin1" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

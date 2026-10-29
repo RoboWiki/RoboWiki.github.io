@@ -37,7 +37,7 @@ title: Texas Instruments LM5165
 </div>
 
 <div class="part-comm">
-<PartRating part-id="chip-ti-lm5165" />
+<PartRating part-id="chip-ti-lm5165" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

@@ -40,7 +40,7 @@ title: Slamtec RPLIDAR S2
 </div>
 
 <div class="part-comm">
-<PartRating part-id="sens-slamtec-rplidar-s2" />
+<PartRating part-id="sens-slamtec-rplidar-s2" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

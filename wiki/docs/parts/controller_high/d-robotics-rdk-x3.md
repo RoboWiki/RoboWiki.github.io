@@ -40,7 +40,7 @@ title: 地平线 D-Robotics RDK X3
 </div>
 
 <div class="part-comm">
-<PartRating part-id="cont-drobotics-rdk-x3-4gb" />
+<PartRating part-id="cont-drobotics-rdk-x3-4gb" :dims='["value", "build", "docs", "compat"]' />
 </div>
 
 </div>

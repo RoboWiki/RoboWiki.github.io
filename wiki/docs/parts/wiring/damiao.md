@@ -35,7 +35,7 @@ title: 达妙 DAMIAO 电机连接线
 </div>
 
 <div class="part-comm">
-<PartRating part-id="damiao-motor-cable" />
+<PartRating part-id="damiao-motor-cable" :dims='["value", "build", "docs"]' />
 </div>
 
 </div>

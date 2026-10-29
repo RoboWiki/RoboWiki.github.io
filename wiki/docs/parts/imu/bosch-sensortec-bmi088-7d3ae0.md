@@ -40,7 +40,7 @@ title: Bosch Sensortec BMI088
 </div>
 
 <div class="part-comm">
-<PartRating part-id="sens-bosch-bmi088" />
+<PartRating part-id="sens-bosch-bmi088" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

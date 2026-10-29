@@ -41,7 +41,7 @@ title: Feetech 飞特 ST-3235-C001
 </div>
 
 <div class="part-comm">
-<PartRating part-id="feetech-st-3235-c001" />
+<PartRating part-id="feetech-st-3235-c001" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

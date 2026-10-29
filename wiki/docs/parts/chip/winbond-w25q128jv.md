@@ -39,7 +39,7 @@ title: Winbond W25Q128JV
 </div>
 
 <div class="part-comm">
-<PartRating part-id="chip-winbond-w25q128jv" />
+<PartRating part-id="chip-winbond-w25q128jv" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

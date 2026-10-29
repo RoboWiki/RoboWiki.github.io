@@ -41,7 +41,7 @@ title: 宇树 Unitree L1
 </div>
 
 <div class="part-comm">
-<PartRating part-id="unitree-l1" />
+<PartRating part-id="unitree-l1" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

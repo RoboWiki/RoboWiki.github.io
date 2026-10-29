@@ -40,7 +40,7 @@ title: STMicroelectronics STM32H723ZGT6
 </div>
 
 <div class="part-comm">
-<PartRating part-id="chip-st-stm32h723zgt6" />
+<PartRating part-id="chip-st-stm32h723zgt6" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

@@ -40,7 +40,7 @@ title: NVIDIA Jetson Orin Nano
 </div>
 
 <div class="part-comm">
-<PartRating part-id="nvidia-orin-nano-8gb" />
+<PartRating part-id="nvidia-orin-nano-8gb" :dims='["value", "build", "docs", "compat"]' />
 </div>
 
 </div>

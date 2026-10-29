@@ -41,7 +41,7 @@ title: Espressif ESP32-S3-WROOM-1
 </div>
 
 <div class="part-comm">
-<PartRating part-id="chip-espressif-esp32-s3-wroom-1" />
+<PartRating part-id="chip-espressif-esp32-s3-wroom-1" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

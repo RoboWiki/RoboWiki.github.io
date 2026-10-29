@@ -40,7 +40,7 @@ title: STMicroelectronics VL53L0X
 </div>
 
 <div class="part-comm">
-<PartRating part-id="st-vl53l0x" />
+<PartRating part-id="st-vl53l0x" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

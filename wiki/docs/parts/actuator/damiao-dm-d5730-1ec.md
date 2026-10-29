@@ -41,7 +41,7 @@ title: 达妙 DAMIAO DM-D5730 -1EC
 </div>
 
 <div class="part-comm">
-<PartRating part-id="达妙-dm-dm-d5730-1ec" />
+<PartRating part-id="达妙-dm-dm-d5730-1ec" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

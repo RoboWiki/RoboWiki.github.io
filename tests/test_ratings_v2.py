@@ -78,3 +78,33 @@ def test_old_format_still_works(tmp_path):
     assert one["avg"] == 5
     assert one["dims_avg"] is None
     assert one["own_hardware_count"] == 0
+
+
+def _blk2(name, value):
+    return f"### {name}\n\n{value}\n\n"
+
+
+def test_title_only_id_and_new_labels(tmp_path):
+    """从部件页点进来时标题已带 id、表单里「部件 id」留空 —— 必须能聚合。"""
+    body = (_blk2("总分", "5") + _blk2("你用过这个件吗？", "- [x] 我装过 / 用过")
+            + _blk2("一句话理由", "连续 30 N·m 三个月")
+            + _blk2("性价比", "5 - 很值") + _blk2("兼容与生态", "4 - 有坑但能通"))
+    issue = {"number": 11, "title": f"[评分] {PART}", "body": body,
+             "createdAt": "2026-10-28T00:00:00Z", "state": "open",
+             "labels": [{"name": "rating"}], "author": {"login": "dave"}}
+    one = _run(tmp_path, [issue])["parts"][PART]
+    assert one["count"] == 1
+    assert one["own_hardware_count"] == 1
+    assert one["dims_avg"]["value"] == 5
+    assert one["dims_avg"]["compat"] == 4
+    assert one["dims_n"]["compat"] == 1
+
+
+def test_missing_id_is_recorded_not_crash(tmp_path):
+    """标题和字段都没有 id：记进 errors，不能整条崩掉。"""
+    issue = {"number": 12, "title": "[评分]", "body": _blk2("总分", "4"),
+             "createdAt": "2026-10-28T00:00:00Z", "state": "open",
+             "labels": [{"name": "rating"}], "author": {"login": "erin"}}
+    _run(tmp_path, [issue])
+    errs = json.loads((tmp_path / "ratings_errors.json").read_text(encoding="utf-8"))
+    assert any("部件 id" in e for e in errs), errs

@@ -38,7 +38,7 @@ title: Texas Instruments TCAN334G
 </div>
 
 <div class="part-comm">
-<PartRating part-id="chip-ti-tcan334g" />
+<PartRating part-id="chip-ti-tcan334g" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

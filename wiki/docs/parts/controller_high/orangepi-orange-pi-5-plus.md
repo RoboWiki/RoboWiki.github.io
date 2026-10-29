@@ -40,7 +40,7 @@ title: OrangePi Orange Pi 5 Plus
 </div>
 
 <div class="part-comm">
-<PartRating part-id="cont-orange-pi-5-plus-8gb" />
+<PartRating part-id="cont-orange-pi-5-plus-8gb" :dims='["value", "build", "docs", "compat"]' />
 </div>
 
 </div>

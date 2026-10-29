@@ -40,7 +40,7 @@ title: 超核电子 HiPNUC HI12M0
 </div>
 
 <div class="part-comm">
-<PartRating part-id="sens-hipnuc-hi12m0" />
+<PartRating part-id="sens-hipnuc-hi12m0" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

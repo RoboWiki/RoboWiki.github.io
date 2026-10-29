@@ -40,7 +40,7 @@ title: 树莓派 Raspberry Pi 4 Model B
 </div>
 
 <div class="part-comm">
-<PartRating part-id="cont-raspberrypi-rpi-4-8gb" />
+<PartRating part-id="cont-raspberrypi-rpi-4-8gb" :dims='["value", "build", "docs", "compat"]' />
 </div>
 
 </div>

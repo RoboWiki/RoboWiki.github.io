@@ -40,7 +40,7 @@ title: WitMotion 维特智能 WT901
 </div>
 
 <div class="part-comm">
-<PartRating part-id="sens-witmotion-wt901" />
+<PartRating part-id="sens-witmotion-wt901" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

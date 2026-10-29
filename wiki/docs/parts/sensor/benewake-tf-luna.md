@@ -40,7 +40,7 @@ title: 北醒 Benewake TF-Luna
 </div>
 
 <div class="part-comm">
-<PartRating part-id="benewake-tf-luna" />
+<PartRating part-id="benewake-tf-luna" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

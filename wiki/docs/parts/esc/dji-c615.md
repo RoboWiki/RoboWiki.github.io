@@ -41,7 +41,7 @@ title: 大疆 DJI C615
 </div>
 
 <div class="part-comm">
-<PartRating part-id="dji-c615" />
+<PartRating part-id="dji-c615" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

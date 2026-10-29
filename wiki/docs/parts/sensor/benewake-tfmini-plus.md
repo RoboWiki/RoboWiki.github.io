@@ -38,7 +38,7 @@ title: 北醒 Benewake TFmini Plus
 </div>
 
 <div class="part-comm">
-<PartRating part-id="benewake-tfmini-plus" />
+<PartRating part-id="benewake-tfmini-plus" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

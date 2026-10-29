@@ -41,7 +41,7 @@ title: 宇树 Unitree IM6014
 </div>
 
 <div class="part-comm">
-<PartRating part-id="unitree-im6014" />
+<PartRating part-id="unitree-im6014" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

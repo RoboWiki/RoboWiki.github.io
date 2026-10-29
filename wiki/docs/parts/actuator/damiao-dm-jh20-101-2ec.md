@@ -40,7 +40,7 @@ title: 达妙 DAMIAO DM-JH20-101-2EC
 </div>
 
 <div class="part-comm">
-<PartRating part-id="达妙-dm-dm-jh20-101-2ec" />
+<PartRating part-id="达妙-dm-dm-jh20-101-2ec" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

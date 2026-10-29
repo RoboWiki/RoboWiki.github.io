@@ -38,7 +38,7 @@ title: NXP TJA1051T/3
 </div>
 
 <div class="part-comm">
-<PartRating part-id="chip-nxp-tja1051t3" />
+<PartRating part-id="chip-nxp-tja1051t3" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

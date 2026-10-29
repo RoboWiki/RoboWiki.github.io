@@ -40,7 +40,7 @@ title: STMicroelectronics STM32F405RGT6
 </div>
 
 <div class="part-comm">
-<PartRating part-id="chip-st-stm32f405rgt6" />
+<PartRating part-id="chip-st-stm32f405rgt6" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

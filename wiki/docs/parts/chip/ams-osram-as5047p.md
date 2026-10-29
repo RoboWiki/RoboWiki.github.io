@@ -38,7 +38,7 @@ title: ams OSRAM AS5047P
 </div>
 
 <div class="part-comm">
-<PartRating part-id="chip-ams-as5047p" />
+<PartRating part-id="chip-ams-as5047p" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

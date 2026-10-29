@@ -69,14 +69,18 @@ def main() -> None:
 
         title = it.get("title") or ""
         m = TITLE_RE.match(title)
-        part = m.group(1) if m else (field(body, "部件 id") or "").strip()
-        part = part.strip("` ")
+        # 标题优先（从部件页点按钮会自动带上），表单字段只作兜底且可为空
+        part = (m.group(1) if m else "") or (field(body, "部件 id") or "")
+        part = part.strip().strip("` ")
+        if not part:
+            errors.append(f"#{it['number']}: 标题与表单里都没有部件 id")
+            continue
         if part not in known:
             errors.append(f"#{it['number']}: 部件 id 不在目录里（{part!r}）")
             continue
 
-        raw = (field(body, "总分（1–5）") or field(body, "评分（1–5）")
-               or field(body, "评分") or "").strip()
+        raw = (field(body, "总分") or field(body, "总分（1–5）")
+               or field(body, "评分（1–5）") or field(body, "评分") or "").strip()
         dm = re.search(r"[1-5]", raw)
         if not dm:
             errors.append(f"#{it['number']}: 评分解析不出 1–5（{raw!r}）")
@@ -85,14 +89,15 @@ def main() -> None:
 
         # 勾选框必须看 [x]：v1 用子串匹配，「- [ ] 我装过 / 用过这个件」也会被算成 True，
         # 结果每条评价都被标成「装过机」，那个单独统计就失去意义了。
-        usage_block = field(body, "使用情况") or ""
+        usage_block = (field(body, "你用过这个件吗？") or field(body, "你用过这个件吗")
+                        or field(body, "使用情况") or "")
         own = bool(re.search(r"-\s*\[[xX]\][^\n]*装过", usage_block))
         note = (field(body, "一句话理由") or "").strip()[:200]
 
         # 四维：表单选项形如「4 - 基本对得上」，取开头那个数字。
         # 缺就是缺（None），绝不补 0 —— 0 分是差评，没填是不知情。
-        DIMS = (("spec_trust", "参数可信度"), ("build", "做工"),
-                ("docs", "文档与支持"), ("value", "性价比"))
+        DIMS = (("value", "性价比"), ("build", "做工"), ("docs", "文档与支持"),
+                ("spec_trust", "参数可信度"), ("compat", "兼容与生态"))
         dims: dict[str, int] = {}
         for key, label in DIMS:
             raw_d = field(body, label) or ""
@@ -134,7 +139,7 @@ def main() -> None:
         # 四维均值：只对填了的样本求，并给出各自的 n
         dims_avg: dict[str, float] = {}
         dims_n: dict[str, int] = {}
-        for key in ("spec_trust", "build", "docs", "value"):
+        for key in ("value", "build", "docs", "spec_trust", "compat"):
             vals = [r["dims"][key] for r in rs
                     if (r.get("dims") or {}).get(key) is not None]
             if vals:

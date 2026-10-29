@@ -40,7 +40,7 @@ title: Livox HAP
 </div>
 
 <div class="part-comm">
-<PartRating part-id="sens-livox-hap" />
+<PartRating part-id="sens-livox-hap" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

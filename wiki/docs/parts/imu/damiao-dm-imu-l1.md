@@ -40,7 +40,7 @@ title: 达妙 DAMIAO DM-IMU-L1
 </div>
 
 <div class="part-comm">
-<PartRating part-id="damiao-dm-imu-l1" />
+<PartRating part-id="damiao-dm-imu-l1" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

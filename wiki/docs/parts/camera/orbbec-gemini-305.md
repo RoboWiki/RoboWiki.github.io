@@ -41,7 +41,7 @@ title: 奥比中光 Orbbec Gemini 305
 </div>
 
 <div class="part-comm">
-<PartRating part-id="orbbec-gemini-305" />
+<PartRating part-id="orbbec-gemini-305" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

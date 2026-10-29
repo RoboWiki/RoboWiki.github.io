@@ -41,7 +41,7 @@ title: Livox Mid-360
 </div>
 
 <div class="part-comm">
-<PartRating part-id="livox-mid-360" />
+<PartRating part-id="livox-mid-360" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

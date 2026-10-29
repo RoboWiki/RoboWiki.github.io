@@ -40,7 +40,7 @@ title: Luxonis OAK-D Pro
 </div>
 
 <div class="part-comm">
-<PartRating part-id="sens-luxonis-oak-d-pro" />
+<PartRating part-id="sens-luxonis-oak-d-pro" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

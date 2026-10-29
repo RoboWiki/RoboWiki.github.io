@@ -41,7 +41,7 @@ title: 达妙 DAMIAO DM-J10010L-2EC
 </div>
 
 <div class="part-comm">
-<PartRating part-id="达妙-dm-dm-j10010l-2ec" />
+<PartRating part-id="达妙-dm-dm-j10010l-2ec" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

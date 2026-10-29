@@ -41,7 +41,7 @@ title: 达妙 DAMIAO DM-J4310-2EC V1.2
 </div>
 
 <div class="part-comm">
-<PartRating part-id="达妙-dm-dm-j4310-2ec-v1-2" />
+<PartRating part-id="达妙-dm-dm-j4310-2ec-v1-2" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

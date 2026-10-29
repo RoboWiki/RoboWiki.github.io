@@ -41,7 +41,7 @@ title: 宇树 Unitree GO-M8010-6
 </div>
 
 <div class="part-comm">
-<PartRating part-id="unitree-go-m8010-6" />
+<PartRating part-id="unitree-go-m8010-6" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

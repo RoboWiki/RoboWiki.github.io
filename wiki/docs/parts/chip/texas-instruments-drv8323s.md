@@ -38,7 +38,7 @@ title: Texas Instruments DRV8323S
 </div>
 
 <div class="part-comm">
-<PartRating part-id="chip-ti-drv8323s" />
+<PartRating part-id="chip-ti-drv8323s" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

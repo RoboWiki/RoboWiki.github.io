@@ -41,7 +41,7 @@ title: 达妙 DAMIAO DM-J8009P-2EC V1.1
 </div>
 
 <div class="part-comm">
-<PartRating part-id="达妙-dm-dm-j8009p-2ec-v1-1" />
+<PartRating part-id="达妙-dm-dm-j8009p-2ec-v1-1" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

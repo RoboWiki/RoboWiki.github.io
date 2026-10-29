@@ -38,7 +38,7 @@ title: Analog Devices (Trinamic) TMC4671
 </div>
 
 <div class="part-comm">
-<PartRating part-id="chip-ti-tmc4671" />
+<PartRating part-id="chip-ti-tmc4671" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>

@@ -1,0 +1,47 @@
+{
+ "total_ratings": 1,
+ "parts": {
+  "dji-robomaster-m3508-p19": {
+   "count": 1,
+   "avg": 5.0,
+   "histogram": {
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "5": 1
+   },
+   "own_hardware_count": 0,
+   "own_hardware_avg": null,
+   "dims_avg": {
+    "value": 5.0,
+    "compat": 4.0
+   },
+   "dims_n": {
+    "value": 1,
+    "compat": 1
+   },
+   "usage_count": null,
+   "low_sample": true,
+   "mine": null,
+   "votes": [
+    {
+     "issue": 11,
+     "author": "dave",
+     "part_id": "dji-robomaster-m3508-p19",
+     "score": 5,
+     "own_hardware": false,
+     "note": "连续 30 N·m 三个月",
+     "at": "2026-10-28T00:00:00Z",
+     "dims": {
+      "value": 5,
+      "compat": 4
+     },
+     "usage": null
+    }
+   ]
+  }
+ },
+ "snapshot": true,
+ "source": "github-issues"
+}
