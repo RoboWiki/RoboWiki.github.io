@@ -14,8 +14,8 @@ title: 大疆 DJI RoboMaster 开发板 A 型
     <div class="part-tags">
       <span class="part-tag">下位机</span>
       <span class="part-tag soft">mcu</span>
-      <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag muted">无公开报价</span>
+      <span class="part-tag tierA">来源 A ✓ 已核对</span>
+      <span class="part-tag">¥429</span>
     </div>
 
 <div class="part-split">
@@ -26,7 +26,7 @@ title: 大疆 DJI RoboMaster 开发板 A 型
 | 字段 | 值 |
 |---|---|
 | MCU | STM32F427IIH6 |
-| CAN 路数 | 4 |
+| CAN 路数 | 2 |
 | CAN-FD | 0 |
 | 电流环 (kHz) | — |
 | 接口 | CAN / UART / SPI / I2C / PWM / ADC |
@@ -55,7 +55,7 @@ title: 大疆 DJI RoboMaster 开发板 A 型
 真正的使用经验只能来自用过的人 —— 请写在页尾的讨论里。
 :::
 
-- **总线够不够** —— 4 路 CAN。12 个关节 × 1 kHz 反馈，单路 CAN 2.0 会吃紧，优先 FD 或多路分载。
+- **总线够不够** —— 2 路 CAN。12 个关节 × 1 kHz 反馈，单路 CAN 2.0 会吃紧，优先 FD 或多路分载。
 
 
 
@@ -64,10 +64,20 @@ title: 大疆 DJI RoboMaster 开发板 A 型
 | 字段 | 值 |
 |---|---|
 | MCU | STM32F427IIH6 |
-| CAN 路数 | 4 |
+| CAN 路数 | 2 |
 | CAN-FD | 0 |
 | 电流环 (kHz) | — |
 | 接口 | CAN / UART / SPI / I2C / PWM / ADC |
+| 主频 (MHz) | 180 |
+| Flash (KB) | 2048 |
+| RAM (KB) | 256 |
+| 额定电压 (V) | 24 |
+| 最高电压 (V) | 26 |
+| comm_upper | USB / CAN / UART / DBUS |
+| size_mm | 85×58 |
+| weight_g | 48 |
+| doc_url | https://www.robomaster.com/zh-CN/products/components/general/development-board |
+| repo_urls | https://github.com/RoboMaster/DevelopmentBoard-Examples |
 
 ## 优惠与获取条件
 
@@ -84,11 +94,11 @@ title: 大疆 DJI RoboMaster 开发板 A 型
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://bbs.robomaster.com/wiki/20204847/804051" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商官方产品图（用户提供链接）</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商公开资料（待逐项核对）</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+RoboMaster+%E5%BC%80%E5%8F%91%E6%9D%BF+A+%E5%9E%8B+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=RoboMaster+%E5%BC%80%E5%8F%91%E6%9D%BF+A+%E5%9E%8B&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+RoboMaster+%E5%BC%80%E5%8F%91%E6%9D%BF+A+%E5%9E%8B+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/controller_low/dji.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_low/dji.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://bbs.robomaster.com/wiki/20204847/804051" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.robomaster.com/zh-CN/products/components/general/development-board" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://github.com/RoboMaster/DevelopmentBoard-Examples" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商官方产品图（用户提供链接）</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商公开资料（待逐项核对）</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+RoboMaster+%E5%BC%80%E5%8F%91%E6%9D%BF+A+%E5%9E%8B+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=RoboMaster+%E5%BC%80%E5%8F%91%E6%9D%BF+A+%E5%9E%8B&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+RoboMaster+%E5%BC%80%E5%8F%91%E6%9D%BF+A+%E5%9E%8B+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/controller_low/dji.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_low/dji.json</td></tr></tbody></table>
 
 ## 备注
 
-RM 生态的通用主控：F427 + 板载 IMU，CAN/PWM/ADC/DBUS 齐全。注意它面向 RM 赛制，供电与接口定义跟通用驱动板不一样。 产品图待补（抓到的不是产品本体）。
+RM 生态的通用主控：F427 + 板载 IMU，CAN/PWM/ADC/DBUS 齐全。注意它面向 RM 赛制，供电与接口定义跟通用驱动板不一样。 产品图待补（抓到的不是产品本体）。 STM32F427IIH6；CAN1 6 口 / CAN2 4 口、4× UART、蓝牙串口、DBUS、16 路可调 PWM + 4 路无电源 PWM、18× GPIO、IMU + 电子罗盘；26V 上限、4–6S LiPo、持续 20A、85×58mm、48g。注意：这是主控板，不含 FOC 功率级，电机需外接 C620/C610 电调。官方价 ¥429。 CAN 口径订正：官方 A 型板是 CAN1（6 个接口）+ CAN2（4 个接口），即 2 条总线、10 个接口 —— 本站的 can 字段记**总线路数**，接口数看这里。
 
 
 

@@ -15,7 +15,7 @@ title: 达妙 DAMIAO DM-MC-Board02
       <span class="part-tag">下位机</span>
       <span class="part-tag soft">mcu</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
-      <span class="part-tag muted">无公开报价</span>
+      <span class="part-tag">¥199</span>
     </div>
 
 <div class="part-split">
@@ -80,6 +80,13 @@ title: 达妙 DAMIAO DM-MC-Board02
 | UART 路数 | 3 |
 | 板载 IMU | BMI088 |
 | 保护 | 防反接 / 缓启动 / 两路可控电源(5A) |
+| comm_upper | USB / CAN FD / RS485 / UART |
+| doc_pdf | https://gitee.com/kit-miao/dm-mc02/raw/master/说明书/达妙科技DM-MC-Board02电机开发板使用说明书V1.1.pdf |
+| weight_g | 19.5 |
+| 最高电压 (V) | 24 |
+| size_mm | 56×40 |
+| doc_url | https://gitee.com/kit-miao/dm-mc02 |
+| repo_urls | https://gitee.com/kit-miao/dm-mc02 |
 
 ## 优惠与获取条件
 
@@ -96,11 +103,11 @@ title: 达妙 DAMIAO DM-MC-Board02
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.damiaokeji.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>达妙官方说明书内嵌产品图（PDF 原图）</td></tr><tr><td class="rs-plain">收录说明</td><td>《达妙科技 DM-MC-Board02 电机开发板使用说明书 V1.1》(2025-07-23) 特征参数页</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-MC-Board02+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=DM-MC-Board02&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-MC-Board02+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/controller_low/damiao.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_low/damiao.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.damiaokeji.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://gitee.com/kit-miao/dm-mc02" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://gitee.com/kit-miao/dm-mc02/raw/master/说明书/达妙科技DM-MC-Board02电机开发板使用说明书V1.1.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://gitee.com/kit-miao/dm-mc02" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现</td></tr><tr><td class="rs-plain">产品图出处</td><td>达妙官方说明书内嵌产品图（PDF 原图）</td></tr><tr><td class="rs-plain">收录说明</td><td>《达妙科技 DM-MC-Board02 电机开发板使用说明书 V1.1》(2025-07-23) 特征参数页</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-MC-Board02+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=DM-MC-Board02&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-MC-Board02+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/controller_low/damiao.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_low/damiao.json</td></tr></tbody></table>
 
 ## 备注
 
-达妙自家主控板，和 DM 系列驱动配套。特点是 **3 路 CANFD + 2 路 RS485**，以及两路可控电源（每路 5A）可以直接给传感器/激光供电。56×40 mm、19.5 g，小机身四足塞得进。
+达妙自家主控板，和 DM 系列驱动配套。特点是 **3 路 CANFD + 2 路 RS485**，以及两路可控电源（每路 5A）可以直接给传感器/激光供电。56×40 mm、19.5 g，小机身四足塞得进。 同一款板的两种写法：DM-MC-Board02（官方型号）/ DM-MC02（商城简写），按官方型号收录。
 
 
 

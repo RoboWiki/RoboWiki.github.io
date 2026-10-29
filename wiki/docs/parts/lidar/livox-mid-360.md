@@ -14,8 +14,8 @@ title: Livox Mid-360
     <div class="part-tags">
       <span class="part-tag">激光雷达</span>
       <span class="part-tag soft">solid</span>
-      <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag muted">无公开报价</span>
+      <span class="part-tag tierA">来源 A ✓ 已核对</span>
+      <span class="part-tag">¥3,999</span>
     </div>
 
 <div class="part-split">
@@ -70,6 +70,16 @@ title: Livox Mid-360
 | 帧率 (fps) | 10 |
 | 接口 | 以太网 / PTP 同步 |
 | 质量 (kg) | 0.265 |
+| absolute | ≤2 cm @10 m |
+| temp_range_C | -20~55 |
+| size_mm | 65×65×60 |
+| weight_g | 265 |
+| power_w | 6.5 |
+| 额定电压 (V) | 12 |
+| 防护等级 | IP67 |
+| doc_url | https://www.livoxtech.com/cn/mid-360/specs |
+| doc_pdf | https://terra-1-g.djicdn.com/851d20f7b9f64838a34cd02351370894/Livox/Livox_Mid-360_User_Manual_CHS.pdf |
+| repo_urls | https://github.com/Livox-SDK/livox_ros_driver2 |
 
 ## 优惠与获取条件
 
@@ -86,11 +96,11 @@ title: Livox Mid-360
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.livoxtech.com/cn/mid-360" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商资料抓取（livox-mid-360.jpg）</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商产品页（公开资料）</td></tr><tr><td><a href="https://www.google.com/search?q=Livox+Mid-360+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Mid-360&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Livox+Mid-360+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/lidar/livox.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/livox.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.livoxtech.com/cn/mid-360" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.livoxtech.com/cn/mid-360/specs" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://terra-1-g.djicdn.com/851d20f7b9f64838a34cd02351370894/Livox/Livox_Mid-360_User_Manual_CHS.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://github.com/Livox-SDK/livox_ros_driver2" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商资料抓取（livox-mid-360.jpg）</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商产品页（公开资料）</td></tr><tr><td><a href="https://www.google.com/search?q=Livox+Mid-360+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Mid-360&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Livox+Mid-360+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/lidar/livox.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/livox.json</td></tr></tbody></table>
 
 ## 备注
 
-四足上最常用的中距雷达：360°×59° 视场、非重复扫描。注意它是**以太网**输出，不是串口；车载供电与网口线束要一起规划。
+四足上最常用的中距雷达：360°×59° 视场、非重复扫描。注意它是**以太网**输出，不是串口；车载供电与网口线束要一起规划。 非重复扫描，40 m@10% / 70 m@80%；垂直 FOV -7°~52°（59°），点频 200,000 pts/s、10 Hz；内置 ICM40609 IMU，支持 PTPv2/GPS 授时；6.5 W、9–27 V、IP67。DJI 商城 ¥3999（2026-10）。四足上做地形/避障的主力型号，近距离点密度靠非重复扫描堆出来。
 
 
 

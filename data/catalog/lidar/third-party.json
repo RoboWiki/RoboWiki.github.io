@@ -35,7 +35,17 @@
    "power_note": null,
    "range_note": null,
    "data_4d": null,
-   "wavelength_nm": null
+   "wavelength_nm": null,
+   "absolute": null,
+   "doc_pdf": null,
+   "doc_url": null,
+   "temp_range_C": null,
+   "repo_urls": null,
+   "power_w": null,
+   "ip": null,
+   "voltage_V": null,
+   "size_mm": null,
+   "weight_g": null
   },
   "category": "lidar",
   "subtype": "solid",

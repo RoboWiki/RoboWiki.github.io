@@ -14,8 +14,8 @@ title: Intel RealSense D435i
     <div class="part-tags">
       <span class="part-tag">深度相机</span>
       <span class="part-tag soft">stereo</span>
-      <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag muted">无公开报价</span>
+      <span class="part-tag tierA">来源 A ✓ 已核对</span>
+      <span class="part-tag">¥2,850</span>
     </div>
 
 <div class="part-split">
@@ -30,6 +30,7 @@ title: Intel RealSense D435i
 | 帧率 (fps) | 30 |
 | 接口 | USB-C 3.1 Gen1 |
 | 质量 (kg) | — |
+| 额定电压 (V) | 5 |
 
 <div class="part-src">
 来源：<a href="https://www.intelrealsense.com/depth-camera-d435i/">https://www.intelrealsense.com/depth-camera-d435i/</a><br/>
@@ -68,8 +69,16 @@ title: Intel RealSense D435i
 | 帧率 (fps) | 30 |
 | 接口 | USB-C 3.1 Gen1 |
 | 质量 (kg) | — |
-| 额定电压 (V) | — |
+| 额定电压 (V) | 5 |
 | 板载 IMU | 1 |
+| 分辨率 | 深度 1280×720；RGB 1920×1080 |
+| absolute | <2% @2 m |
+| temp_range_C | 0~35 |
+| size_mm | 90×25×25 |
+| weight_g | 75 |
+| doc_url | https://www.realsenseai.com/cn/products/d435i/ |
+| doc_pdf | https://www.realsenseai.com/wp-content/uploads/dlm_uploads/2025/08/Intel-RealSense-D400-Series-Datasheet-August-2025.pdf |
+| repo_urls | https://github.com/IntelRealSense/librealsense |
 
 ## 优惠与获取条件
 
@@ -86,11 +95,11 @@ title: Intel RealSense D435i
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.intelrealsense.com/depth-camera-d435i/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>RealSense 国内代理官网产品图</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商产品页（公开资料）</td></tr><tr><td><a href="https://www.google.com/search?q=Intel+RealSense+D435i+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=D435i&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Intel+RealSense+D435i+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/camera/intel-realsense.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/camera/intel-realsense.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.intelrealsense.com/depth-camera-d435i/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.realsenseai.com/cn/products/d435i/" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://www.realsenseai.com/wp-content/uploads/dlm_uploads/2025/08/Intel-RealSense-D400-Series-Datasheet-August-2025.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://github.com/IntelRealSense/librealsense" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现</td></tr><tr><td class="rs-plain">产品图出处</td><td>RealSense 国内代理官网产品图</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商产品页（公开资料）</td></tr><tr><td><a href="https://www.google.com/search?q=Intel+RealSense+D435i+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=D435i&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Intel+RealSense+D435i+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/camera/intel-realsense.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/camera/intel-realsense.json</td></tr></tbody></table>
 
 ## 备注
 
-双目 + 红外投影，全局快门；内置 IMU 是它相对 D435 的主要差别。深度与 RGB 是不同传感器，做 SLAM 要显式做时间同步。 产品图待补：Intel 站点对本站 TLS 握手拦截，需人工提供截图
+双目 + 红外投影，全局快门；内置 IMU 是它相对 D435 的主要差别。深度与 RGB 是不同传感器，做 SLAM 要显式做时间同步。 产品图待补：Intel 站点对本站 TLS 握手拦截，需人工提供截图 主动红外双目，四足地形感知最常用的型号。理想 0.3–3 m，最小 Z 约 0.28 m；深度 1280×720@90 fps，RGB 1920×1080@30 fps 卷帘；内置 BMI055 IMU；无外壳防护。官方店 $399（2026-10，缺货且收关税附加费），按 7.15 汇率约 ¥2850。Intel 2025-07 已将 RealSense 分拆为 RealSense, Inc.，旧 intelrealsense.com 域名失效，链接统一改 realsenseai.com。
 
 
 
