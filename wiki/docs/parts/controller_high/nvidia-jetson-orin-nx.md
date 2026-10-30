@@ -81,7 +81,7 @@ title: NVIDIA Jetson Orin NX
 | ros2 | 1 |
 | pcie | 1× PCIe Gen4 x4 + 3× PCIe Gen4 x1（载板决定） |
 | size_mm | 69.6×45 |
-| doc_url | https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/ |
+| 官方文档 | https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/ |
 | repo_urls | https://github.com/NVIDIA/jetson-gpio、https://github.com/NVIDIA-AI-IOT/ros2_jetson |
 | ram_options | 16 |
 

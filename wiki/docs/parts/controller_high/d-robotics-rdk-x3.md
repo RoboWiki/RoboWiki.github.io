@@ -80,7 +80,7 @@ title: 地平线 D-Robotics RDK X3
 | usb | 1× USB 3.0 Type-A + 2× USB 2.0 Type-A + 1× Micro USB 2.0 |
 | csi | 2 |
 | size_mm | 85×56 |
-| doc_url | https://developer.d-robotics.cc/rdkx3 |
+| 官方文档 | https://developer.d-robotics.cc/rdkx3 |
 | repo_urls | https://github.com/D-Robotics/rdk_model_zoo、https://github.com/D-Robotics/hobot_dnn |
 | ram_options | 4 |
 

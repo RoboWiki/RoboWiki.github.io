@@ -84,7 +84,7 @@ title: 大疆 DJI RoboMaster 开发板 C 型
 | weight_g | 38 |
 | 最高电压 (V) | 28 |
 | size_mm | 60×41×16 |
-| doc_url | https://www.robomaster.com/zh-CN/products/components/general/development-board-type-c |
+| 官方文档 | https://www.robomaster.com/zh-CN/products/components/general/development-board-type-c |
 | repo_urls | https://github.com/RoboMaster/Development-Board-C-Examples |
 
 ## 优惠与获取条件

@@ -73,7 +73,7 @@ title: 达妙 DAMIAO DM-USB2CANFD
 | CAN 速率 (Mbps) | 5 |
 | 额定电压 (V) | 5 |
 | 接头 | GH1.25 2P（CAN）×1；GH1.25 3P（UART）×1 |
-| doc_url | https://gitee.com/kit-miao/usb2canfd |
+| 官方文档 | https://gitee.com/kit-miao/usb2canfd |
 | 官方手册 (PDF) | https://gitee.com/kit-miao/usb2canfd/raw/master/%E8%BE%BE%E5%A6%99%E7%A7%91%E6%8A%80-USB%E8%BD%ACCANFD%E6%A8%A1%E5%9D%97%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E4%B9%A6V1.0.pdf |
 | repo_urls | https://gitee.com/kit-miao/dm-device-sdk |
 

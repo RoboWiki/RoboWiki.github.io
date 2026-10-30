@@ -19,8 +19,8 @@ titleTemplate: false
       <a class="rw-home-btn ghost" href="/learn/">从零开始学</a>
     </div>
     <div class="rw-home-stats">
-      <div><b>240</b><span>在库部件</span></div>
-      <div><b>13</b><span>有数据的品类（共 14 类）</span></div>
+      <div><b>242</b><span>在库部件</span></div>
+      <div><b>14</b><span>有数据的品类（共 14 类）</span></div>
       <div><b>84</b><span>A 级：逐项对过厂商手册</span></div>
       <div><b>21</b><span>整机（带 URDF / 仓库）</span></div>
       <div><b>149</b><span>加工与采购渠道</span></div>
@@ -80,7 +80,7 @@ titleTemplate: false
     <h2>六个入口</h2>
     <div class="rw-home-entries">
       <a class="rw-home-entry" href="/catalog">
-        <b>部件库 · 240 件</b>
+        <b>部件库 · 242 件</b>
         <p>比参数：按任意列排序、可对比、带来源等级与真实评分。</p>
         <span>A 级 84 件逐项对过手册</span>
       </a>
@@ -183,8 +183,8 @@ titleTemplate: false
       <a class="rw-home-cat" href="/catalog?category=controller_low"><b>下位机</b><span>3</span><em>力矩闭环</em></a>
       <a class="rw-home-cat" href="/catalog?category=esc"><b>电调</b><span>3</span><em>驱动器 / 调速器</em></a>
       <a class="rw-home-cat" href="/catalog?category=module"><b>其余模块</b><span>3</span><em>CAN 通信 / 力触觉 / 编码器</em></a>
+      <a class="rw-home-cat" href="/catalog?category=battery"><b>电池</b><span>2</span><em>智能电池 / 动力电池</em></a>
       <a class="rw-home-cat" href="/catalog?category=wiring"><b>线束</b><span>2</span><em>待收录</em></a>
-      <a class="rw-home-cat" href="/catalog?category=battery"><b>电池</b><span>待收录</span><em>待收录</em></a>
     </div>
     <p class="rw-home-note">
       「待收录」不是漏了 —— 是没有可信来源。宁可空着，也不拿论文里的典型值充数。

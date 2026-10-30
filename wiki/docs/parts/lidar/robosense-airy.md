@@ -79,7 +79,7 @@ title: RoboSense Airy
 | weight_g | 240 |
 | power_w | 8 |
 | 额定电压 (V) | 12 |
-| doc_url | https://www.robosense.ai/rslidar/Airy |
+| 官方文档 | https://www.robosense.ai/rslidar/Airy |
 | repo_urls | https://github.com/RoboSense-LiDAR/rslidar_sdk |
 
 ## 优惠与获取条件

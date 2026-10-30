@@ -79,7 +79,7 @@ title: 奥比中光 Orbbec Gemini 335
 | weight_g | 97 |
 | power_w | 3 |
 | 防护等级 | IP5X |
-| doc_url | https://www.orbbec.com/products/3d-cameras/gemini-335/ |
+| 官方文档 | https://www.orbbec.com/products/3d-cameras/gemini-335/ |
 | repo_urls | https://github.com/orbbec/OrbbecSDK_v2 |
 
 ## 优惠与获取条件

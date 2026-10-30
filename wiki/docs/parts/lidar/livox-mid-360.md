@@ -77,7 +77,7 @@ title: Livox Mid-360
 | power_w | 6.5 |
 | 额定电压 (V) | 12 |
 | 防护等级 | IP67 |
-| doc_url | https://www.livoxtech.com/cn/mid-360/specs |
+| 官方文档 | https://www.livoxtech.com/cn/mid-360/specs |
 | 官方手册 (PDF) | https://terra-1-g.djicdn.com/851d20f7b9f64838a34cd02351370894/Livox/Livox_Mid-360_User_Manual_CHS.pdf |
 | repo_urls | https://github.com/Livox-SDK/livox_ros_driver2 |
 

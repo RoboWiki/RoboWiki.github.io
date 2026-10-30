@@ -83,7 +83,7 @@ title: 瑞莎 Radxa ROCK 5B
 | csi | 1 |
 | pcie | 1× M.2 M-key (PCIe 3.0 x4) |
 | size_mm | 100×72 |
-| doc_url | https://docs.radxa.com/en/rock5/rock5b |
+| 官方文档 | https://docs.radxa.com/en/rock5/rock5b |
 | repo_urls | https://github.com/radxa-build/rock-5b |
 | ram_options | 8 |
 

@@ -76,7 +76,7 @@ title: Luxonis OAK-D Pro
 | weight_g | 91 |
 | power_w | 3.5 |
 | 防护等级 | IP66 |
-| doc_url | https://docs.luxonis.com/ |
+| 官方文档 | https://docs.luxonis.com/ |
 | repo_urls | https://github.com/luxonis/depthai |
 
 ## 优惠与获取条件

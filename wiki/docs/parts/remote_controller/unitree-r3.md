@@ -72,7 +72,7 @@ title: 宇树 Unitree R3
 | 输出协议 | 无线数传 / 蓝牙 |
 | 电池 | 780 mAh（5 V / 700 mA 充电） |
 | 重量 (g) | 300 |
-| doc_url | https://www.unitree.com/cn/R3 |
+| 官方文档 | https://www.unitree.com/cn/R3 |
 | repo_urls | — |
 
 ## 优惠与获取条件

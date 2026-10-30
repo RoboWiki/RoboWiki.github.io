@@ -558,6 +558,11 @@ def main() -> None:
         "battery_type": "电池类型",
         "cells": "电池节数",
         "switch_type": "类型",
+        # 电池
+        "capacity_mah": "容量 (mAh)", "energy_wh": "能量 (Wh)",
+        "discharge_rate_c": "额定放电倍率 (C)", "current_rated_A": "额定放电电流 (A)",
+        "v_charge_V": "充电截止电压 (V)", "mass_g": "质量 (g)", "chem": "电芯",
+        "doc_url": "官方文档",
         "channels": "通道数",
         "logic": "输入控制逻辑",
         "features": "功能特性",

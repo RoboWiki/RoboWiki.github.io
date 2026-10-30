@@ -73,7 +73,7 @@ title: 乐迪 RadioLink T12D
 | 输出协议 | PWM / SBUS / PPM / CRSF |
 | 电池 | 7.4–18 V（2S–4S 锂电 / 18650 / 8×AA） |
 | 重量 (g) | — |
-| doc_url | https://www.radiolink.com.cn/cn/t12d |
+| 官方文档 | https://www.radiolink.com.cn/cn/t12d |
 | repo_urls | — |
 
 ## 优惠与获取条件

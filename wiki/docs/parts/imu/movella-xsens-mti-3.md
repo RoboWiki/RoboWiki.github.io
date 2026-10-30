@@ -75,7 +75,7 @@ title: Movella Xsens MTi-3
 | temp_range_C | -40~85 |
 | size_mm | 12.1×12.1×2.55 |
 | weight_g | 0.6 |
-| doc_url | https://www.xsens.com/products/sensor-modules/xsens-mti-1-series |
+| 官方文档 | https://www.xsens.com/products/sensor-modules/xsens-mti-1-series |
 | repo_urls | https://github.com/xsens/xsens_mti_ros_node |
 
 ## 优惠与获取条件

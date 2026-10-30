@@ -84,7 +84,7 @@ title: OrangePi Orange Pi 5 Plus
 | pcie | 1× M.2 M-key (PCIe 3.0 x4) + 1× M.2 E-key |
 | size_mm | 100×75 |
 | weight_g | 86.5 |
-| doc_url | http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/details/Orange-Pi-5-Plus.html |
+| 官方文档 | http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/details/Orange-Pi-5-Plus.html |
 | repo_urls | https://github.com/orangepi-xunlong/orangepi-build、https://github.com/orangepi-xunlong/linux-orangepi |
 | ram_options | 8 |
 

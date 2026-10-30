@@ -78,7 +78,7 @@ title: Slamtec RPLIDAR S2
 | power_w | 2 |
 | 额定电压 (V) | 5 |
 | 防护等级 | IP65 |
-| doc_url | https://www.slamtec.com/cn/s2 |
+| 官方文档 | https://www.slamtec.com/cn/s2 |
 | repo_urls | https://github.com/Slamtec/rplidar_sdk |
 
 ## 优惠与获取条件

@@ -91,7 +91,7 @@ title: 宇树 Unitree L2
 | weight_g | 230 |
 | power_w | 10 |
 | 额定电压 (V) | 12 |
-| doc_url | https://support.unitree.com/home/zh/developer |
+| 官方文档 | https://support.unitree.com/home/zh/developer |
 | repo_urls | https://github.com/unitreerobotics/unilidar_sdk2 |
 
 ## 优惠与获取条件

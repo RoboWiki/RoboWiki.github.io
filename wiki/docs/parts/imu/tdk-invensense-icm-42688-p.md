@@ -76,7 +76,7 @@ title: TDK InvenSense ICM-42688-P
 | temp_range_C | -40~85 |
 | size_mm | 2.5×3×0.91 |
 | 分辨率 | 16-bit |
-| doc_url | https://invensense.tdk.com/products/motion-tracking/6-axis/icm-42688-p/ |
+| 官方文档 | https://invensense.tdk.com/products/motion-tracking/6-axis/icm-42688-p/ |
 | repo_urls | — |
 
 ## 优惠与获取条件

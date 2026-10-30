@@ -76,7 +76,7 @@ title: Intel RealSense D455
 | temp_range_C | 0~35 |
 | size_mm | 124×26×29 |
 | weight_g | 116 |
-| doc_url | https://www.realsenseai.com/cn/products/d455/ |
+| 官方文档 | https://www.realsenseai.com/cn/products/d455/ |
 | 官方手册 (PDF) | https://www.realsenseai.com/wp-content/uploads/dlm_uploads/2025/08/Intel-RealSense-D400-Series-Datasheet-August-2025.pdf |
 | repo_urls | https://github.com/IntelRealSense/librealsense |
 

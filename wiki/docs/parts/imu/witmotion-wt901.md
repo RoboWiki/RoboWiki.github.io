@@ -73,7 +73,7 @@ title: WitMotion 维特智能 WT901
 | noise | 0.028–0.07 °/s-rms；0.75–1 mg-rms（带宽 100 Hz） |
 | temp_range_C | -40~85 |
 | 分辨率 | 0.061 °/s/LSB；0.0005 g/LSB |
-| doc_url | https://www.wit-motion.com/Module/84.html |
+| 官方文档 | https://www.wit-motion.com/Module/84.html |
 | repo_urls | https://github.com/WITMOTION/WitStandardProtocol_JY901 |
 
 ## 优惠与获取条件

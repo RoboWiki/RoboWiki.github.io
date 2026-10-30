@@ -86,7 +86,7 @@ title: NVIDIA Jetson AGX Orin Developer Kit
 | csi | 6 |
 | pcie | 1× PCIe x16 插槽（x8 通道）+ 1× M.2 M-key + 1× M.2 E-key |
 | size_mm | 110×110×71.65 (dev kit) |
-| doc_url | https://docs.nvidia.com/jetson/agx-orin-devkit/user-guide/latest/index.html |
+| 官方文档 | https://docs.nvidia.com/jetson/agx-orin-devkit/user-guide/latest/index.html |
 | repo_urls | https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_common、https://github.com/dusty-nv/jetson-containers |
 | ram_options | 64 |
 

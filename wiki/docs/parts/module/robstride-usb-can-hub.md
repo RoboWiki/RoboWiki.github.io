@@ -72,7 +72,7 @@ title: 灵足 RobStride USB-CAN HUB
 | CAN 速率 (Mbps) | 1 |
 | 额定电压 (V) | 5 |
 | 接头 | 2.54-3P 插拔端子（CAN H / CAN L / GND）×5 |
-| doc_url | https://github.com/RobStride/Product_Information |
+| 官方文档 | https://github.com/RobStride/Product_Information |
 | 官方手册 (PDF) | https://raw.githubusercontent.com/RobStride/Product_Information/main/%E4%BA%A7%E5%93%81%E8%B5%84%E6%96%99/canhub/USB_CANHUB%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8EV1.0.pdf |
 | repo_urls | https://github.com/RobStride/robstride_ros_sample、https://github.com/ROBSTRIDE-DYNAMICS/Robstride-Dynamics-Python-SDK |
 

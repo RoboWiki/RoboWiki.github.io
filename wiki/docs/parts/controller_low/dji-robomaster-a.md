@@ -76,7 +76,7 @@ title: 大疆 DJI RoboMaster 开发板 A 型
 | comm_upper | USB / CAN / UART / DBUS |
 | size_mm | 85×58 |
 | weight_g | 48 |
-| doc_url | https://www.robomaster.com/zh-CN/products/components/general/development-board |
+| 官方文档 | https://www.robomaster.com/zh-CN/products/components/general/development-board |
 | repo_urls | https://github.com/RoboMaster/DevelopmentBoard-Examples |
 
 ## 优惠与获取条件

@@ -82,7 +82,7 @@ title: 地平线 D-Robotics RDK X5
 | CAN 路数 | 1 |
 | csi | 2 |
 | size_mm | 85×56 |
-| doc_url | https://developer.d-robotics.cc/rdkx5 |
+| 官方文档 | https://developer.d-robotics.cc/rdkx5 |
 | repo_urls | https://github.com/D-Robotics/rdk_model_zoo、https://github.com/D-Robotics/hobot_dnn |
 
 ## 优惠与获取条件

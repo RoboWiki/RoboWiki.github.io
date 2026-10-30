@@ -77,7 +77,7 @@ title: Stereolabs ZED 2i
 | weight_g | 230 |
 | power_w | 1.9 |
 | 防护等级 | IP66 |
-| doc_url | https://www.stereolabs.com/docs/ |
+| 官方文档 | https://www.stereolabs.com/docs/ |
 | repo_urls | https://github.com/stereolabs/zed-ros2-wrapper |
 
 ## 优惠与获取条件

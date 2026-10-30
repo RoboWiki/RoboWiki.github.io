@@ -75,7 +75,7 @@ title: 超核电子 HiPNUC HI12M0
 | power_w | 0.24 |
 | temp_range_C | -40~85 |
 | size_mm | 22×22×10（Molex 接口） |
-| doc_url | https://www.hipnuc.com/hi12.html |
+| 官方文档 | https://www.hipnuc.com/hi12.html |
 | repo_urls | https://github.com/hipnuc/products |
 
 ## 优惠与获取条件

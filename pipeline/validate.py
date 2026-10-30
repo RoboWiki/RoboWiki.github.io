@@ -58,6 +58,9 @@ KNOWN_SPEC_KEYS = {
     "doc_url", "doc_pdf", "repo_urls",
     # 相机：IMU 是否为板载（Realsense 两条在用）
     "imu",
+    # 电池（智能电池 / 动力电池）
+    "capacity_mah", "energy_wh", "discharge_rate_c", "current_rated_A",
+    "v_charge_V", "mass_g", "chem",
     # 电源类芯片（立创商城采集）
     "category_cn", "lcsc_part", "params", "price_tiers", "price_lead", "stock", "stock_lead", "lead_time", "jlc_library", "tags", "fetched_at", "voltage_in", "voltage_out", "current_out", "function_type", "output_type", "polarity", "freq", "chip_function", "charge_current", "v_float", "battery_type", "cells", "switch_type", "channels", "logic", "features", "coupon",
 }
@@ -74,6 +77,7 @@ UI_KEYS = {
     "remote_controller": {"channels", "control_range_m", "image_url"},
     "controller_low": {"image_url"},
     "chip": {"package", "image_url"},
+    "battery": {"capacity_mah", "voltage_V", "image_url"},
 }
 
 # 阈值（来自 RoboParts《关节参数虚标怎么辨别》的物理红线）

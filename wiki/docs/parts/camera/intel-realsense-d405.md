@@ -76,7 +76,7 @@ title: Intel RealSense D405
 | size_mm | 42×42×23 |
 | weight_g | 58 |
 | power_w | 1.55 |
-| doc_url | https://www.realsenseai.com/cn/products/d405/ |
+| 官方文档 | https://www.realsenseai.com/cn/products/d405/ |
 | 官方手册 (PDF) | https://www.realsenseai.com/wp-content/uploads/dlm_uploads/2025/08/Intel-RealSense-D400-Series-Datasheet-August-2025.pdf |
 | repo_urls | https://github.com/IntelRealSense/librealsense |
 

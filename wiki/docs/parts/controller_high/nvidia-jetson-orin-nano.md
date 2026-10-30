@@ -86,7 +86,7 @@ title: NVIDIA Jetson Orin Nano
 | csi | 2 |
 | pcie | 2× M.2 M-key (PCIe 3.0) + 1× M.2 E-key |
 | size_mm | 103×90.5×34.8 (dev kit) |
-| doc_url | https://developer.nvidia.com/embedded/learn/get-started-jetson-orin-nano-devkit |
+| 官方文档 | https://developer.nvidia.com/embedded/learn/get-started-jetson-orin-nano-devkit |
 | 官方手册 (PDF) | https://dam-cdn.nvd.orangelogic.com/AssetLink/2ug686w80406gxf6q8uv7r3l7265m2n8.pdf |
 | repo_urls | https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_common、https://github.com/dusty-nv/jetson-containers |
 | ram_options | 8 |

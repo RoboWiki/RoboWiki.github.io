@@ -1,0 +1,62 @@
+[
+ {
+  "category": "battery",
+  "subtype": "smart",
+  "id": "dji-tb47",
+  "vendor": "大疆 DJI",
+  "vendor_cn": "大疆",
+  "model": "TB47",
+  "title": "大疆 DJI TB47 智能电池",
+  "url": "https://www.dji.com/cn/inspire-1",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-30",
+  "price_cny": null,
+  "origin": "大疆官网 Inspire 1 规格页 + RoboMaster 社区《DJI 智能电池 TB47/TB48 使用手册 V2.4》（石恪，2024.6）",
+  "notes": "RoboMaster 赛事最常用的智能电池之一（悟 Inspire 1 原配）。6S 锂聚合物，内置智能电池管理（电量/寿命/通讯）。**额定放电 5C（约 22.5 A）**，保护板短时能承受 25 A 以上，但不建议持续贴近上限——超倍率放电会显著影响寿命，极端高温有起火风险。容量 4500 mAh / 22.2 V / 约 99.9 Wh。注意：TB47（悟 1）与 TB47D（经纬 M100）仅外壳不同，解决外形后可通用；极早期 RoboMaster 渠道的部分白色 TB47 为教育版固件，不能用于无人机（机器人使用不受影响）。能量、质量、充电截止电压为推算/二手来源，未经官方逐项核对，故整级标 B。",
+  "specs": {
+   "chem": "LiPo 6S（智能电池）",
+   "capacity_mah": 4500,
+   "voltage_V": 22.2,
+   "energy_wh": 99.9,
+   "discharge_rate_c": 5,
+   "current_rated_A": 22.5,
+   "v_charge_V": null,
+   "mass_g": null,
+   "iface": "DJI 智能电池专用接口（电量/寿命/温度通讯）",
+   "image_url": null,
+   "doc_url": "https://www.dji.com/cn/inspire-1"
+  },
+  "subtype_label": "智能电池"
+ },
+ {
+  "category": "battery",
+  "subtype": "smart",
+  "id": "dji-tb48",
+  "vendor": "大疆 DJI",
+  "vendor_cn": "大疆",
+  "model": "TB48",
+  "title": "大疆 DJI TB48 智能电池",
+  "url": "https://www.dji.com/cn/inspire-1",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-30",
+  "price_cny": null,
+  "origin": "大疆官网 Inspire 1 规格页 + RoboMaster 社区《DJI 智能电池 TB47/TB48 使用手册 V2.4》（石恪，2024.6）",
+  "notes": "TB47 的大容量版（悟 Inspire 1 选配）。6S **高压版锂聚合物（LiHV）**，标称电压 22.8 V 高于 TB47 的 22.2 V。容量 5700 mAh / 约 129.9 Wh。**额定放电同为 5C（约 22.5 A）**。TB48（悟 1）与 TB48D（经纬 M100）、TB48S（经纬 M600）外壳/适配不同，混用需谨慎。高压版电芯对充电器截止电压有要求，用非匹配充电器可能充不满或触发保护。能量、质量、充电截止电压为推算/二手来源，未经官方逐项核对，故整级标 B。",
+  "specs": {
+   "chem": "LiHV 6S 高压版（智能电池）",
+   "capacity_mah": 5700,
+   "voltage_V": 22.8,
+   "energy_wh": 129.9,
+   "discharge_rate_c": 5,
+   "current_rated_A": 22.5,
+   "v_charge_V": null,
+   "mass_g": null,
+   "iface": "DJI 智能电池专用接口（电量/寿命/温度通讯）",
+   "image_url": null,
+   "doc_url": "https://www.dji.com/cn/inspire-1"
+  },
+  "subtype_label": "智能电池"
+ }
+]
