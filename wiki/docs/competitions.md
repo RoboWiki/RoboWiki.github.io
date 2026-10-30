@@ -17,9 +17,9 @@ outline: false
   </header>
 
   <section class="comp-block">
-    <h2>RoboMaster</h2>
+    <h2>RoboCon/RoboMaster</h2>
     <p class="comp-sub">
-      本站的执行器库（大疆 / 达妙 / 灵足 / 宇树）就是 RM 赛场上的主力件，
+      本站的执行器库（大疆 / 达妙 / 灵足 / 宇树）就是 RC/RM 赛场上的主力件，
       每项都带来源等级与口径换算 —— 选型时直接比输出端扭矩，不用自己乘减速比。
     </p>
     <h3>赛季常用执行器速查（按峰值扭矩）</h3>
@@ -43,54 +43,59 @@ outline: false
   </section>
 
   <section class="comp-block">
-    <h2>能借现成工程的整机</h2>
+    <h2>按整机种类找现成工程</h2>
     <p class="comp-sub">
-      「别的队怎么做的」最快的回答方式：找一台开源生态完整的机器，把它的仿真与训练工程借过来。
-      以下整机都有公开 URDF / 仓库，按生态完整度排序。
+      「别的队怎么做的」最快的回答方式：先选整机种类，再进整机库看具体型号、URDF 与仓库。
+      点一张卡，整机页会预选对应种类，不用再手动筛。
     </p>
     <div class="comp-grid">
-      <a class="comp-card" href="/robots/unitree-g1">
-        <b>宇树 G1</b>
-        <span>人形 · 23 自由度</span>
-        <em>URDF 2 套 · 仓库 2 个</em>
+      <a class="comp-card" href="/robots?subtype=quadruped">
+        <b>四足</b>
+        <span>9 台整机 · 5 台有开源生态</span>
+        <em>进整机库筛选 →</em>
       </a>
-      <a class="comp-card" href="/robots/pollen-microduck">
-        <b>Pollen Robotics Microduck</b>
-        <span>双足 · 14 自由度</span>
-        <em>URDF 1 套 · 仓库 2 个</em>
+      <a class="comp-card" href="/robots?subtype=humanoid">
+        <b>人形</b>
+        <span>6 台整机 · 1 台有开源生态</span>
+        <em>进整机库筛选 →</em>
       </a>
-      <a class="comp-card" href="/robots/unitree-go2-edu">
-        <b>宇树 Go2 EDU</b>
-        <span>四足 · 12 自由度</span>
-        <em>URDF 1 套 · 仓库 2 个</em>
+      <a class="comp-card" href="/robots?subtype=wheeled_quadruped">
+        <b>四轮足</b>
+        <span>3 台整机 · 3 台有开源生态</span>
+        <em>进整机库筛选 →</em>
       </a>
-      <a class="comp-card" href="/robots/unitree-go2-w">
-        <b>宇树 Go2-W</b>
-        <span>四轮足 · 16 自由度</span>
-        <em>URDF 1 套 · 仓库 2 个</em>
+      <a class="comp-card" href="/robots?subtype=wheeled_quadruped_inward_knee">
+        <b>四轮足·内膝肘</b>
+        <span>1 台整机 · 1 台有开源生态</span>
+        <em>进整机库筛选 →</em>
       </a>
-      <a class="comp-card" href="/robots/unitree-b2">
-        <b>宇树 B2</b>
-        <span>四足 · 12 自由度</span>
-        <em>URDF 1 套 · 仓库 2 个</em>
+      <a class="comp-card" href="/robots?subtype=biped">
+        <b>双足</b>
+        <span>2 台整机 · 2 台有开源生态</span>
+        <em>进整机库筛选 →</em>
       </a>
-      <a class="comp-card" href="/robots/deeprobotics-lite3">
-        <b>DEEP Robotics Lite3</b>
-        <span>四足 · 12 自由度</span>
-        <em>URDF 1 套 · 仓库 1 个</em>
+      <a class="comp-card" href="/robots?subtype=infantry">
+        <b>步兵</b>
+        <span>待收录 · 暂无整机数据</span>
+        <em>进整机库筛选 →</em>
       </a>
-      <a class="comp-card" href="/robots/unitree-go1">
-        <b>Unitree Go1</b>
-        <span>四足 · 12 自由度</span>
-        <em>URDF 1 套 · 仓库 1 个</em>
+      <a class="comp-card" href="/robots?subtype=sentry">
+        <b>哨兵</b>
+        <span>待收录 · 暂无整机数据</span>
+        <em>进整机库筛选 →</em>
       </a>
-      <a class="comp-card" href="/robots/unitree-a1">
-        <b>Unitree A1</b>
-        <span>四足 · 12 自由度</span>
-        <em>URDF 1 套 · 仓库 1 个</em>
+      <a class="comp-card" href="/robots?subtype=hero">
+        <b>英雄</b>
+        <span>待收录 · 暂无整机数据</span>
+        <em>进整机库筛选 →</em>
+      </a>
+      <a class="comp-card" href="/robots?subtype=engineer">
+        <b>工程</b>
+        <span>待收录 · 暂无整机数据</span>
+        <em>进整机库筛选 →</em>
       </a>
     </div>
-    <p class="comp-note">全部 21 台整机在<a href="/robots">整机库</a>，可按「有无开源生态」筛选。</p>
+    <p class="comp-note">全部 21 台整机在<a href="/robots">整机库</a>；步兵、哨兵、英雄、工程待收录，欢迎<a href="/submit">投稿</a>。</p>
   </section>
 
   <section class="comp-block">

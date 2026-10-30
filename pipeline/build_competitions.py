@@ -22,6 +22,20 @@ import pathlib
 
 FRONT = "---\ntitle: 竞赛与实战\nlayout: page\nsidebar: false\noutline: false\n---\n"
 
+# 竞赛页按整机种类组织，不直接罗列型号；点卡片到整机页预选对应种类。
+# 四轮足与内膝肘互斥：山猫 M20 只归内膝肘，不重复算进四轮足。
+COMP_TYPES = [
+    ("quadruped", "四足", ("quadruped",)),
+    ("humanoid", "人形", ("humanoid",)),
+    ("wheeled_quadruped", "四轮足", ("wheeled_quadruped",)),
+    ("wheeled_quadruped_inward_knee", "四轮足·内膝肘", ("wheeled_quadruped_inward_knee",)),
+    ("biped", "双足", ("biped",)),
+    ("infantry", "步兵", ("infantry",)),
+    ("sentry", "哨兵", ("sentry",)),
+    ("hero", "英雄", ("hero",)),
+    ("engineer", "工程", ("engineer",)),
+]
+
 
 def _load_robots(root: pathlib.Path) -> list[dict]:
     out: list[dict] = []
@@ -37,7 +51,6 @@ def _load_parts(root: pathlib.Path) -> list[dict]:
     return out
 
 
-import hashlib
 import re
 
 
@@ -50,24 +63,11 @@ def _part_href(a: dict) -> str:
     return f"/parts/actuator/{base}"
 
 
-def _robot_href(r: dict) -> str:
-    # slug 规则必须与 build_robots.py 的 slug() 完全一致，
-    # 否则这里生成的链接全是 404（死链测试会拦，但最好一开始就对）。
-    base = str(r.get("id") or f"{r.get('vendor', 'x')}-{r['model']}")
-    if base.startswith("struct-"):
-        base = base[len("struct-"):]
-    keep = "".join(ch if (ch.isalnum() and ch.isascii()) else "-" for ch in base.lower())
-    while "--" in keep:
-        keep = keep.replace("--", "-")
-    return f"/robots/{keep.strip('-') or 'robot'}"
-
-
 def build(out_dir: pathlib.Path, root: pathlib.Path) -> None:
     robots = _load_robots(root)
     parts = _load_parts(root)
     actuators = [p for p in parts if p.get("category") == "actuator"]
     actuators.sort(key=lambda r: -(r.get("specs", {}).get("tau_peak_Nm") or 0))
-    robots_with_eco = [r for r in robots if (r.get("specs") or {}).get("ecosystem_id")]
     try:
         n_sup = len(json.loads((root / "data" / "suppliers.json").read_text(encoding="utf-8")))
     except Exception:
@@ -87,24 +87,25 @@ def build(out_dir: pathlib.Path, root: pathlib.Path) -> None:
         for a in actuators[:8]
     )
 
-    # 有开源生态的整机（可直接进仿真 / 借工程）
-    robot_cards = "\n".join(
-        '      <a class="comp-card" href="{href}">\n'
-        "        <b>{t}</b>\n"
-        "        <span>{sub} · {dof} 自由度</span>\n"
-        "        <em>URDF {urdf} 套 · 仓库 {repo} 个</em>\n"
-        "      </a>".format(
-            href=_robot_href(r),
-            t=r.get("title") or r.get("model"),
-            sub=r.get("subtype_label") or "",
-            dof=(r.get("specs") or {}).get("dof") or "—",
-            urdf=len((r.get("specs") or {}).get("urdf_urls") or []),
-            repo=len((r.get("specs") or {}).get("repo_urls") or []),
-        )
-        for r in sorted(robots_with_eco,
-                        key=lambda r: -(len((r.get("specs") or {}).get("urdf_urls") or [])
-                                        + len((r.get("specs") or {}).get("repo_urls") or [])))[:8]
-    )
+    # 按整机种类给入口，而不是替读者选好型号；计数只陈述现状，不排序。
+    type_cards = []
+    missing_types = []
+    for tid, label, subtypes in COMP_TYPES:
+        rows = [r for r in robots if r.get("subtype") in subtypes]
+        eco_n = sum(1 for r in rows if (r.get("specs") or {}).get("ecosystem_id"))
+        if rows:
+            detail = f"{len(rows)} 台整机 · {eco_n} 台有开源生态"
+        else:
+            missing_types.append(label)
+            detail = "待收录 · 暂无整机数据"
+        type_cards.append(
+            f'      <a class="comp-card" href="/robots?subtype={tid}">\n'
+            f"        <b>{label}</b>\n"
+            f"        <span>{detail}</span>\n"
+            "        <em>进整机库筛选 →</em>\n"
+            "      </a>")
+    type_cards = "\n".join(type_cards)
+    missing_note = "、".join(missing_types)
 
     md = FRONT + """
 <div class="comp">
@@ -119,9 +120,9 @@ def build(out_dir: pathlib.Path, root: pathlib.Path) -> None:
   </header>
 
   <section class="comp-block">
-    <h2>RoboMaster</h2>
+    <h2>RoboCon/RoboMaster</h2>
     <p class="comp-sub">
-      本站的执行器库（大疆 / 达妙 / 灵足 / 宇树）就是 RM 赛场上的主力件，
+      本站的执行器库（大疆 / 达妙 / 灵足 / 宇树）就是 RC/RM 赛场上的主力件，
       每项都带来源等级与口径换算 —— 选型时直接比输出端扭矩，不用自己乘减速比。
     </p>
     <h3>赛季常用执行器速查（按峰值扭矩）</h3>
@@ -138,15 +139,15 @@ def build(out_dir: pathlib.Path, root: pathlib.Path) -> None:
   </section>
 
   <section class="comp-block">
-    <h2>能借现成工程的整机</h2>
+    <h2>按整机种类找现成工程</h2>
     <p class="comp-sub">
-      「别的队怎么做的」最快的回答方式：找一台开源生态完整的机器，把它的仿真与训练工程借过来。
-      以下整机都有公开 URDF / 仓库，按生态完整度排序。
+      「别的队怎么做的」最快的回答方式：先选整机种类，再进整机库看具体型号、URDF 与仓库。
+      点一张卡，整机页会预选对应种类，不用再手动筛。
     </p>
     <div class="comp-grid">
-""" + robot_cards + """
+""" + type_cards + """
     </div>
-    <p class="comp-note">全部 """ + str(len(robots)) + """ 台整机在<a href="/robots">整机库</a>，可按「有无开源生态」筛选。</p>
+    <p class="comp-note">全部 """ + str(len(robots)) + """ 台整机在<a href="/robots">整机库</a>；""" + (missing_note + "待收录，欢迎<a href=\"/submit\">投稿</a>。" if missing_note else "可按「有无开源生态」继续筛选。") + """</p>
   </section>
 
   <section class="comp-block">
@@ -227,4 +228,4 @@ def build(out_dir: pathlib.Path, root: pathlib.Path) -> None:
 
     (out_dir / "competitions.md").write_text(md, encoding="utf-8")
     print(f"  竞赛与实战 -> competitions.md（执行器速查 {min(8, len(actuators))} 行 / "
-          f"生态整机 {min(8, len(robots_with_eco))} 张）")
+          f"整机种类 {len(COMP_TYPES)} 张）")

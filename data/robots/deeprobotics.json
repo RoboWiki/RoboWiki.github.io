@@ -70,8 +70,8 @@
    "iface": null,
    "compute": null,
    "sensors": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/deeprobotics-lite3.png",
+   "image_source": "官网 https://www.deeprobotics.cn/robot/index/product1.html（2026-10-30 下载）",
    "doc_url": null,
    "doc_pdf": null,
    "repo_urls": [

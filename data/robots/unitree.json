@@ -256,8 +256,8 @@
    "iface": null,
    "compute": null,
    "sensors": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/unitree-go1.png",
+   "image_source": "官网 https://www.unitree.com/go1/（2026-10-30 下载）",
    "doc_url": null,
    "doc_pdf": null,
    "repo_urls": [
@@ -300,8 +300,8 @@
    "iface": null,
    "compute": null,
    "sensors": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/unitree-a1.png",
+   "image_source": "官网 https://www.unitree.com/a1/（2026-10-30 下载）",
    "doc_url": null,
    "doc_pdf": null,
    "repo_urls": [
@@ -316,8 +316,8 @@
  {
   "id": "struct-unitree-b2-w",
   "category": "robot",
-  "subtype": "wheeled",
-  "subtype_label": "轮足",
+  "subtype": "wheeled_quadruped",
+  "subtype_label": "四轮足",
   "vendor": "unitree",
   "vendor_cn": "宇树 Unitree",
   "model": "B2-W",
@@ -344,8 +344,8 @@
    "iface": null,
    "compute": null,
    "sensors": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/unitree-b2-w.png",
+   "image_source": "官网 https://www.unitree.com/b2-w/（2026-10-30 下载）",
    "doc_url": null,
    "doc_pdf": null,
    "repo_urls": [
