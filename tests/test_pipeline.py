@@ -227,6 +227,14 @@ def _check_link(exists: set[str], link: str) -> bool:
     return path in exists
 
 
+def _public_file_exists(built, link: str) -> bool:
+    """public/ 下真实存在的静态文件（PDF / PPTX / DOCX / 图片）不算死链。"""
+    if not link.startswith("/"):
+        return False
+    rel = link.lstrip("/").split("#")[0].split("?")[0]
+    return (built / rel).exists() or (built / "public" / rel).exists()
+
+
 def test_no_dead_internal_links(built):
     """生成的 .md 里所有站内页面链接（markdown 链接 + HTML href）都必须有落点。
 
@@ -242,6 +250,8 @@ def test_no_dead_internal_links(built):
         links = [m.group(1) for m in _MD_LINK.finditer(text)]
         links += [m.group(1) for m in _HTML_HREF.finditer(text)]
         for link in links:
+            if _public_file_exists(built, link):
+                continue
             if not _is_page_link(link):
                 continue
             if not _check_link(exists, link):

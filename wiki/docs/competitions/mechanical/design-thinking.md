@@ -7,13 +7,13 @@ title: 结构设计的思维逻辑：先定接口，再画件
 ::: warning 来源与授权
 本文由 **哈尔滨工业大学 竞技机器人队** 的原始材料《结构设计的思维逻辑》（斯基系列）移植而来：
 文字按页搬运、**未改写结论**；图未重排，每页标了原 PDF 页码，需要看图请回原文。
-原文 PDF：[下载 / 在线阅读](/competitions/design-thinking.pdf)。
+原文 PDF：<a href="/competitions/design-thinking.pdf">下载 / 在线阅读</a>。
 版权归原作者；如作者要求撤下，见 [免责声明与许可](/notice)。
 :::
 
 讲「怎么想」而不是「怎么画」：功能分解、接口确定、何时用标准件、何时必须非标，以及为什么照抄开源方案常常性能反而更差。
 
-> 共 9 页 · 原文 PDF [在此](/competitions/design-thinking.pdf) · 移植方式：逐页抽文字，
+> 共 9 页 · 原文 PDF <a href="/competitions/design-thinking.pdf">在此</a> · 移植方式：逐页抽文字，
 > 按句切段，去页眉水印；段落顺序与原文一致，可读性做了处理，内容未改。
 
 

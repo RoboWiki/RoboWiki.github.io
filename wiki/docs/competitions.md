@@ -21,7 +21,7 @@ outline: false
     <h2>四个模块</h2>
     <div class="comp-mods">
   <a class="comp-mod on" href="/competitions/ec">
-    <div class="comp-mod-head"><b>电控</b><em>1 篇</em></div>
+    <div class="comp-mod-head"><b>电控</b><em>3 篇</em></div>
     <p>主控选型与实时性、CAN 总线与频率预算、电机驱动器配置、状态估计与整车控制状态机、赛场调试与日志回放。</p>
     <span>这一块最缺的是「别人踩过的坑」：同样的 CAN 负载，为什么有的队稳定有的队掉线。</span>
   </a>
@@ -35,8 +35,8 @@ outline: false
     <p>里程碑与冻结点、接口表先行、评审机制、并行与依赖、赛季节奏、复盘。</p>
     <span>技术都对还是输，通常是流程问题：接口没定死、评审没做，最后一周全在返工。</span>
   </a>
-  <a class="comp-mod" href="/competitions/hardware">
-    <div class="comp-mod-head"><b>硬件</b><em>待补</em></div>
+  <a class="comp-mod on" href="/competitions/hardware">
+    <div class="comp-mod-head"><b>硬件</b><em>2 篇</em></div>
     <p>电源树与上下电时序、电机驱动与保护、传感器接口与接地、PCB 布局布线在强电流下的注意事项、故障排查。</p>
     <span>赛场上的「玄学问题」八成出在电源与接地，这一块值得攒案例。</span>
   </a>
