@@ -19,8 +19,14 @@
 """
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
+
+# 子进程一律用 UTF-8 输出：Windows 中文系统默认 cp936，
+# validate/build_site 打印的中文会被 GBK 编码，
+# 测试与 CI 端按 UTF-8 解码时直接炸（UnicodeDecodeError）。
+_ENV = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}
 
 STEPS = {
     "validate": ["validate"],
@@ -31,7 +37,7 @@ STEPS = {
 
 def _run(module: str) -> int:
     print(f"\n=== {module} ===", flush=True)
-    return subprocess.call([sys.executable, "-m", f"pipeline.{module}"])
+    return subprocess.call([sys.executable, "-m", f"pipeline.{module}"], env=_ENV)
 
 
 def main() -> int:

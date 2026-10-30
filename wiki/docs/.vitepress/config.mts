@@ -9,14 +9,39 @@ import sidebar from './sidebar.json' with { type: 'json' }
 // 这是 VitePress 的官方做法；把 nav 写在顶层 themeConfig 会被 root 语言吃掉，
 // 表现就是「页面是英文，导航还是中文」。
 const zhTheme = {
+  // 导航按「任务」收敛成 6 项，同类内容并拢（多方评审的共同结论）：
+  //   部件 / 整机 / 软件本质是可查询对比的数据库 → 收进「资源库」
+  //   学习路线与竞赛都是「帮我做出东西」的内容 → 收进「学习与竞赛」
+  //   方法与来源是信任底座，必须全局可达，但不占一级入口的叙事位 → 收进「关于」
+  //   投稿是全站动作，不是一个内容页 → 放导航最右，视觉上像按钮
   nav: [
     { text: '首页', link: '/' },
-    { text: '机器人部件', link: '/catalog' },
-    { text: '机器人整机', link: '/robots' },
-    { text: '机器人软件', link: '/software' },
-    { text: '使用指南', link: '/learn/' },
+    {
+      text: '资源库',
+      items: [
+        { text: '机器人部件', link: '/catalog' },
+        { text: '机器人整机', link: '/robots' },
+        { text: '机器人软件', link: '/software' },
+      ],
+    },
+    {
+      text: '学习与竞赛',
+      items: [
+        { text: '学习路线', link: '/learn/' },
+        { text: '竞赛与实战', link: '/competitions' },
+      ],
+    },
     { text: '加工与采购', link: '/suppliers' },
     { text: '贡献者', link: '/contributors' },
+    {
+      text: '关于',
+      items: [
+        { text: '使用指南', link: '/learn/' },
+        { text: '方法与来源', link: '/method' },
+        { text: '数据来源', link: '/sources' },
+        { text: '转载规范', link: '/learn/reprint' },
+      ],
+    },
     { text: '投稿', link: '/submit' },
   ],
   sidebar,
@@ -37,18 +62,25 @@ const zhTheme = {
   },
   docPageLink: { text: '在部件库里按任意列排序' },
   footer: {
-    message: '数据带来源 · 口径可追溯 · 不卖零件不收佣金',
-    copyright: 'RoboWiki · 机器人部件选择社区',
+    message: '数据带来源 · 口径可追溯 · 不卖零件不收佣金 · <a href="/method">方法与来源</a>',
+    copyright: 'RoboWiki · 机器人信息的公共底稿',
   },
 }
 
 const enTheme = {
+  // 英文区是子集：只放已有英文页面的入口，避免导航指向 404。
+  // （robots / software / submit / method / competitions 目前只有中文版。）
   nav: [
     { text: 'Home', link: '/en/' },
+    {
+      text: 'Library',
+      items: [
+        { text: 'Parts', link: '/en/catalog' },
+        { text: 'Suppliers', link: '/en/suppliers' },
+      ],
+    },
     { text: 'Learning path', link: '/en/learn/' },
-    { text: 'Robots', link: '/en/robots' },
-    { text: 'Parts', link: '/en/catalog' },
-    { text: 'Suppliers', link: '/en/suppliers' },
+    { text: 'Sources & method', link: '/en/sources' },
     { text: 'Contributors', link: '/en/contributors' },
   ],
   outline: { label: 'On this page', level: [2, 3] },

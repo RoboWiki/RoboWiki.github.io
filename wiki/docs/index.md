@@ -27,6 +27,36 @@ titleTemplate: false
     </div>
   </section>
   <section class="rw-home-block">
+    <h2>按需求走</h2>
+    <p class="rw-home-sub">不按分类找，按你想做的事进。</p>
+    <div class="rw-home-tasks">
+      <a class="rw-home-task" href="/learn/">
+        <b>我想入门机器人</b>
+        <span>从组成到选型再到仿真，按路线走</span>
+      </a>
+      <a class="rw-home-task" href="/robots">
+        <b>我想找开源方案</b>
+        <span>带 URDF / 仓库的整机，能不能复现一眼看清</span>
+      </a>
+      <a class="rw-home-task" href="/catalog?category=actuator">
+        <b>我想选电机 / 传感器</b>
+        <span>按任意列排序，官方口径 + 真实评分并排看</span>
+      </a>
+      <a class="rw-home-task" href="/suppliers">
+        <b>我要加工零件</b>
+        <span>质量 / 交期 / 价格档 / 发票，来自社区实战反馈</span>
+      </a>
+      <a class="rw-home-task" href="/competitions">
+        <b>我要参加比赛</b>
+        <span>RM / Robocon 的方案、部件与加工经验入口</span>
+      </a>
+      <a class="rw-home-task" href="/submit">
+        <b>我想分享 / 纠错</b>
+        <span>补数据、写评价、写实测、投文章，全是 GitHub 表单</span>
+      </a>
+    </div>
+  </section>
+  <section class="rw-home-block">
     <h2>这个站在做什么</h2>
     <div class="rw-home-three">
       <div>
@@ -36,7 +66,7 @@ titleTemplate: false
       </div>
       <div>
         <b>② 维护开源生态的可用性</b>
-        <p>整机页的 15 台机器人都标了 URDF 与仓库链接 —— 判断一套方案能不能直接进仿真，
+        <p>整机页标了 URDF 与仓库链接 —— 判断一套方案能不能直接进仿真，
         比看参数表更硬。链接打不开就不写，写了就要能打开。</p>
       </div>
       <div>
@@ -162,6 +192,7 @@ titleTemplate: false
   </section>
   <section class="rw-home-foot">
     <a href="/method">方法与来源</a>
+    <a href="/competitions">竞赛与实战</a>
     <a href="/submit">投稿：补数据 / 写评价 / 写文章</a>
     <a href="/learn/reprint">转载规范</a>
     <a href="/contributors">贡献者</a>

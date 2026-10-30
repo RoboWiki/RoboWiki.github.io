@@ -27,6 +27,7 @@ OUT = ROOT / "wiki" / "docs"
 #: 机械结构 / 电池 / 线束 没有收录：不是漏了，是没有可信来源，宁缺不编。
 from .load import cat_labels as _cat_labels
 from .build_home import build as build_home
+from .build_competitions import build as build_competitions
 from .build_robots import build as build_robots
 from .build_software import build as build_software
 from .contrib_page import build as build_contributors
@@ -308,7 +309,8 @@ def main() -> None:
     # 那些页面还能被访问到，等于把废弃数据留在线上。
     # 手写页面（explore.md）不在清理范围内。
     GENERATED = ["index.md", "semantics.md", "protocols.md", "sources.md",
-                 "contributors.md", "suppliers.md", "robots.md", "method.md"]
+                 "contributors.md", "suppliers.md", "robots.md", "method.md",
+                 "competitions.md"]
     for name in GENERATED:
         p = OUT / name
         if p.exists():
@@ -1132,6 +1134,7 @@ def main() -> None:
 
     # 首页：结构在 pipeline/build_home.py（定位 + 三件事 + 入口 + 口径速查）
     build_home(OUT, ROOT)
+    build_competitions(OUT, ROOT)
 
     # ── 部件总表 ────────────────────────────────────────────────────────
     cat_links = "\n".join(f"- **[{name}](/parts/{c}/)** —— {desc}（{sum(1 for r in rows if r['category'] == c)} 件）"

@@ -365,6 +365,17 @@ html.dark .ex-plate img {
 .rw-home-three > div { border-left: 3px solid var(--vp-c-brand-soft); padding: 0.1rem 0 0.1rem 0.85rem; }
 .rw-home-three b { font-size: 0.88rem; color: var(--vp-c-text-1); }
 .rw-home-three p { margin: 0.35rem 0 0; font-size: 0.8rem; line-height: 1.85; color: var(--vp-c-text-2); }
+/* 任务入口：比资源入口更轻一级（无卡框、纯文字行），
+   视觉上先扫到任务、再落到资源，符合「新用户按任务想，不按分类想」 */
+.rw-home-tasks { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.35rem 0.9rem; }
+.rw-home-task {
+  display: flex; flex-direction: column; gap: 0.12rem; text-decoration: none;
+  padding: 0.5rem 0.7rem; border-radius: 9px; border: 1px dashed var(--vp-c-divider);
+  transition: border-color 0.15s, background 0.15s;
+}
+.rw-home-task:hover { border-color: var(--vp-c-brand-1); background: var(--vp-c-bg-soft); text-decoration: none; }
+.rw-home-task b { font-size: 0.84rem; color: var(--vp-c-text-1); }
+.rw-home-task span { font-size: 0.72rem; line-height: 1.65; color: var(--vp-c-text-3); }
 .rw-home-entries { display: grid; grid-template-columns: repeat(auto-fit, minmax(232px, 1fr)); gap: 0.7rem; }
 .rw-home-entry {
   display: flex; flex-direction: column; gap: 0.3rem; text-decoration: none;

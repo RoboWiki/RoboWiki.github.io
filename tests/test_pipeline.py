@@ -26,9 +26,12 @@ sys.path.insert(0, str(ROOT))
 
 
 def run(mod: str, *args: str) -> subprocess.CompletedProcess:
+    # Windows 中文系统下，子进程默认按 cp936 输出中文，
+    # 父进程按 UTF-8 解码会炸。强制子进程用 UTF-8 输出。
+    env = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}
     return subprocess.run([sys.executable, "-m", f"pipeline.{mod}", *args],
                           capture_output=True, text=True, encoding="utf-8",
-                          cwd=str(ROOT))
+                          cwd=str(ROOT), env=env)
 
 
 # ── 闸门 ──────────────────────────────────────────────────────────────────

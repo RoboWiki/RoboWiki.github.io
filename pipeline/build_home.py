@@ -6,12 +6,13 @@
     所以首页直接给一张「口径速查」，想深究再去 /method。
 
 结构（自上而下）：
-    1 定位一句话 + 三个动作按钮 + 六个数字
-    2 这个站在做什么：三块（信息底稿 / 开源生态 / 真实评价）
-    3 五个入口（学习路线 / 整机 / 部件 / 加工采购 / 贡献者）
-    4 口径速查（A/B/C、null、扭矩端口径、评分规则、价格日期）
-    5 做什么 / 不做什么
-    6 底部：方法与来源 / 投稿 / 数据来源
+    1 定位一句话 + 三个动作按钮 + 五个数字
+    2 按需求走：六个任务入口（多方评审共识：新用户不按分类思考，按任务思考）
+    3 这个站在做什么：三块（信息底稿 / 开源生态 / 真实评价）
+    4 六个资源入口（部件 / 整机 / 软件 / 指南 / 加工 / 贡献者）
+    5 口径速查（A/B/C、null、扭矩端口径、评分规则、价格日期）
+    6 按品类
+    7 底部：方法与来源 / 投稿 / 转载规范 / 贡献者
 
 样式沿用 .ex-* 视觉层，并加 .rw-home-* 前缀避免与页面级样式串台
 （VitePress 的 <style> 是全站打包的，通用类名会泄漏到别的页面）。
@@ -99,6 +100,36 @@ titleTemplate: false
     </div>
   </section>
   <section class="rw-home-block">
+    <h2>按需求走</h2>
+    <p class="rw-home-sub">不按分类找，按你想做的事进。</p>
+    <div class="rw-home-tasks">
+      <a class="rw-home-task" href="/learn/">
+        <b>我想入门机器人</b>
+        <span>从组成到选型再到仿真，按路线走</span>
+      </a>
+      <a class="rw-home-task" href="/robots">
+        <b>我想找开源方案</b>
+        <span>带 URDF / 仓库的整机，能不能复现一眼看清</span>
+      </a>
+      <a class="rw-home-task" href="/catalog?category=actuator">
+        <b>我想选电机 / 传感器</b>
+        <span>按任意列排序，官方口径 + 真实评分并排看</span>
+      </a>
+      <a class="rw-home-task" href="/suppliers">
+        <b>我要加工零件</b>
+        <span>质量 / 交期 / 价格档 / 发票，来自社区实战反馈</span>
+      </a>
+      <a class="rw-home-task" href="/competitions">
+        <b>我要参加比赛</b>
+        <span>RM / Robocon 的方案、部件与加工经验入口</span>
+      </a>
+      <a class="rw-home-task" href="/submit">
+        <b>我想分享 / 纠错</b>
+        <span>补数据、写评价、写实测、投文章，全是 GitHub 表单</span>
+      </a>
+    </div>
+  </section>
+  <section class="rw-home-block">
     <h2>这个站在做什么</h2>
     <div class="rw-home-three">
       <div>
@@ -108,7 +139,7 @@ titleTemplate: false
       </div>
       <div>
         <b>② 维护开源生态的可用性</b>
-        <p>整机页的 15 台机器人都标了 URDF 与仓库链接 —— 判断一套方案能不能直接进仿真，
+        <p>整机页标了 URDF 与仓库链接 —— 判断一套方案能不能直接进仿真，
         比看参数表更硬。链接打不开就不写，写了就要能打开。</p>
       </div>
       <div>
@@ -221,6 +252,7 @@ titleTemplate: false
   </section>
   <section class="rw-home-foot">
     <a href="/method">方法与来源</a>
+    <a href="/competitions">竞赛与实战</a>
     <a href="/submit">投稿：补数据 / 写评价 / 写文章</a>
     <a href="/learn/reprint">转载规范</a>
     <a href="/contributors">贡献者</a>
