@@ -1776,16 +1776,24 @@
   },
   "zex-w": {
    "label": "ZEX-W 轮足",
-   "count": 2,
+   "count": 3,
    "roles": {
+    "官方项目": 1,
     "工具/资料": 1,
     "训练": 1
    },
    "projects": [
     {
+     "name": "RC_WheelLeg",
+     "role": "官方项目",
+     "desc": "ZEX-W 本体仓库：机械 / 硬件 / 固件 / mjlab 训练 / sim2sim / ROS 2 双线部署 / BOM",
+     "files": 197,
+     "url": "https://github.com/zeitvex/RC_WheelLeg"
+    },
+    {
      "name": "rc_old",
      "role": "工具/资料",
-     "desc": "ZEX-W 轮足旧版工程（含 Go1/G1 分支）",
+     "desc": "ZEX-W 轮足旧版工程（含 Go1/G1 分支）；本地工程，无公开仓库",
      "files": 954,
      "url": null
     },

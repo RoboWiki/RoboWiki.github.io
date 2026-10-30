@@ -10,6 +10,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 import pathlib
 import subprocess
 import urllib.request
@@ -37,6 +38,22 @@ def via_rest() -> list[dict]:
                  "Accept": "application/vnd.github+json"})
     with urllib.request.urlopen(req, timeout=25) as resp:
         return json.loads(resp.read().decode())
+
+
+
+def local_commit_counts() -> dict[str, int]:
+    """按作者名数本地 main 的提交（用于校正 GitHub API 的缓存滞后）。"""
+    try:
+        r = subprocess.run(["git", "log", "--format=%an", "HEAD"],
+                           capture_output=True, text=True, cwd=str(Path(__file__).resolve().parents[1]))
+    except Exception:
+        return {}
+    out: dict[str, int] = {}
+    for line in (r.stdout or "").splitlines():
+        name = line.strip()
+        if name:
+            out[name] = out.get(name, 0) + 1
+    return out
 
 
 def main() -> None:
@@ -74,7 +91,13 @@ def main() -> None:
             old = {(c.get("login") or "").lower(): c for c in prev.get("contributors", [])}
         except Exception:
             old = {}
+    git_counts = local_commit_counts()
     for p_ in people:
+        p_["api_contributions"] = p_["contributions"]
+        g = git_counts.get(p_["login"]) or git_counts.get(p_.get("name") or "")
+        if g:
+            p_["git_commits"] = g
+            p_["contributions"] = max(p_["contributions"], g)
         prev = old.get(p_["login"].lower(), {})
         p_["baseline"] = prev.get("baseline", 0)
         p_["contribution_total"] = p_["baseline"] + p_["contributions"]
