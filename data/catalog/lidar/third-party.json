@@ -55,7 +55,8 @@
    "rgb_sensor": null,
    "power_peak_w": null,
    "rgb_fov": null,
-   "rgb_resolution": null
+   "rgb_resolution": null,
+   "repo_license": null
   },
   "category": "lidar",
   "subtype": "solid",

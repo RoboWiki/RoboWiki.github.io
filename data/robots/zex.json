@@ -38,7 +38,8 @@
     "https://github.com/zeitvex/RC_WheelLeg"
    ],
    "urdf_urls": [],
-   "ecosystem_id": "zex-w"
+   "ecosystem_id": "zex-w",
+   "repo_license": null
   }
  }
 ]

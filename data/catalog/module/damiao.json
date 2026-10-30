@@ -31,7 +31,8 @@
    "doc_pdf": "https://gitee.com/kit-miao/usb2canfd-dual/raw/master/DM-USB2CANFD_Dual%20%E6%A8%A1%E5%9D%97%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E4%B9%A6%20V1.0.pdf",
    "repo_urls": [
     "https://gitee.com/kit-miao/dm-device-sdk"
-   ]
+   ],
+   "repo_license": null
   }
  },
  {
@@ -66,7 +67,8 @@
    "doc_pdf": "https://gitee.com/kit-miao/usb2canfd/raw/master/%E8%BE%BE%E5%A6%99%E7%A7%91%E6%8A%80-USB%E8%BD%ACCANFD%E6%A8%A1%E5%9D%97%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E4%B9%A6V1.0.pdf",
    "repo_urls": [
     "https://gitee.com/kit-miao/dm-device-sdk"
-   ]
+   ],
+   "repo_license": null
   }
  }
 ]

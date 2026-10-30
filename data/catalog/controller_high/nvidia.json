@@ -45,7 +45,8 @@
    ],
    "ram_options": [
     64
-   ]
+   ],
+   "repo_license": null
   },
   "notes": "官方开发者套件 = AGX Orin 64GB 模组 + 载板 + 散热；275 TOPS（INT8 稀疏）、2048 CUDA + 64 Tensor Cores、12×A78AE@2.2GHz、64GB 256-bit LPDDR5 204.8GB/s、64GB eMMC 5.1、15–60W 可调；10GbE + GbE、16-lane MIPI CSI（最多 6 路）、40-pin 排针含 1× CAN、PCIe x16 插槽（x8 通道）。110×110×71.65mm。官方定价 $3499（2026-07 由 $1999 上调）；国内渠道含税报价差异大，暂不取人民币公开价。TOPS 口径与 Orin Nano/NX 的稀疏标称不同，跨平台不要直接按 TOPS 比值估性能。 本站目前只核到 64 GB 这一档；同型号其它内存版本参数待补，价格也不同。",
   "origin": "NVIDIA 官网 Jetson AGX Orin 规格表 + Jetson AGX Orin Developer Kit User Guide 核对（2026-10-28）",
@@ -97,7 +98,8 @@
    ],
    "ram_options": [
     16
-   ]
+   ],
+   "repo_license": null
   },
   "vendor_cn": null,
   "subtype_label": "计算模组"
@@ -154,7 +156,8 @@
    ],
    "ram_options": [
     8
-   ]
+   ],
+   "repo_license": null
   },
   "vendor_cn": null,
   "subtype_label": "计算模组"

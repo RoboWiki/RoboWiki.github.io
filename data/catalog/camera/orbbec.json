@@ -69,7 +69,8 @@
    "doc_url": "https://www.orbbec.com/products/3d-cameras/gemini-335/",
    "repo_urls": [
     "https://github.com/orbbec/OrbbecSDK_v2"
-   ]
+   ],
+   "repo_license": null
   },
   "vendor_cn": "奥比中光",
   "subtype_label": "结构光"

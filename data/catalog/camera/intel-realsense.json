@@ -38,7 +38,8 @@
    "repo_urls": [
     "https://github.com/IntelRealSense/librealsense"
    ],
-   "imu": null
+   "imu": null,
+   "repo_license": null
   },
   "vendor_cn": "RealSense（原 Intel）",
   "subtype_label": "双目"
@@ -82,7 +83,8 @@
    "repo_urls": [
     "https://github.com/IntelRealSense/librealsense"
    ],
-   "power_w": null
+   "power_w": null,
+   "repo_license": null
   },
   "vendor_cn": "RealSense（原 Intel）",
   "subtype_label": "双目"
@@ -126,7 +128,8 @@
    "repo_urls": [
     "https://github.com/IntelRealSense/librealsense"
    ],
-   "power_w": null
+   "power_w": null,
+   "repo_license": null
   },
   "vendor_cn": "RealSense（原 Intel）",
   "subtype_label": "双目"

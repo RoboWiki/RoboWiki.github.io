@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/RoboWiki/RoboWiki.github.io/schema/software.schema.json",
+  "title": "软件/库（data/software.json items 中的一条）",
+  "description": "ADR-005 P1。校验对象是 items[] 里的单条软件记录；外层 {note, groups, items} 包装暂不在本 schema 范围。现有数据尚无 source_tier/verified/last_checked/origin 字段，故本版 required 只收现有真实字段，公共字段定义 $ref 自 base.schema.json，待数据补齐后逐个迁入 required。",
+  "type": "object",
+  "required": [
+    "id",
+    "group",
+    "name",
+    "vendor",
+    "docs",
+    "what",
+    "when"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "$ref": "base.schema.json#/properties/id" },
+    "source_tier": { "$ref": "base.schema.json#/properties/source_tier" },
+    "verified": { "$ref": "base.schema.json#/properties/verified" },
+    "last_checked": { "$ref": "base.schema.json#/properties/last_checked" },
+    "origin": { "$ref": "base.schema.json#/properties/origin" },
+    "sources": { "$ref": "base.schema.json#/properties/sources" },
+    "notes": { "$ref": "base.schema.json#/properties/notes" },
+    "group": {
+      "type": "string",
+      "description": "分组 id，对应 software.json 顶层 groups[] 的 id（physics/training/method/architecture/middleware/math/imitation 等）。"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "软件名，相当于 base 的 title（软件实体用 name 而非 title）。"
+    },
+    "vendor": { "type": "string", "minLength": 1, "description": "开发方/维护方。" },
+    "license": {
+      "type": ["string", "null"],
+      "description": "软件许可证（SPDX，如 Apache-2.0）。注意与 base.license 语义不同：这里指软件本身，base 指数据记录。"
+    },
+    "version": { "type": ["string", "null"], "description": "收录时的版本号；不逐版本更新则留 null 并在 note 说明口径。" },
+    "repo": { "type": ["string", "null"], "description": "代码仓库链接。" },
+    "docs": { "type": "string", "description": "文档/官网链接，相当于 base 的 url。" },
+    "lang": { "type": ["string", "null"], "description": "主要语言/绑定，如 C / Python。" },
+    "what": { "type": "string", "minLength": 1, "description": "它是什么、解决什么。" },
+    "when": { "type": "string", "minLength": 1, "description": "什么时候选它。" },
+    "note": { "type": "string", "description": "使用上的坑与取舍（单条字段，别与 base.notes 混用，迁移时可合并）。" },
+    "repo_note": { "type": "string", "description": "仓库结构/多仓说明。" },
+    "concept": { "type": "boolean", "description": "true 表示这是一条概念/方法条目而非具体软件。" }
+  }
+}

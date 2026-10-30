@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/RoboWiki/RoboWiki.github.io/schema/base.schema.json",
+  "title": "实体基座（所有数据实体共用的公共字段）",
+  "description": "ADR-005 P1：robot / software / supplier / part 等实体的统一底座。实体 schema 通过 $ref 引用这里的单个 property 定义（#/properties/xxx）复用约束，不直接 allOf 继承本文件的整体 required——因为部分存量数据暂缺 verified/last_checked 等字段，由各自实体 schema 决定收紧节奏。",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "title",
+    "source_tier",
+    "verified",
+    "last_checked",
+    "origin",
+    "url"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^\\S{2,96}$",
+      "description": "稳定标识，一经发布不要改。注意：目标形式是命名空间:id（如 robot:unitree-go2），约束 pattern 为 ^[a-z][a-z0-9]*[:][a-z0-9][a-z0-9._-]{1,94}$；但现有 id（struct-*、sup-*、mujoco 等）还没有冒号前缀，迁移完成前先用宽松 pattern ^\\S{2,96}$。迁移时收紧这里即可。"
+    },
+    "kind": {
+      "type": "string",
+      "description": "实体大类，如 robot / software / supplier / part。与 id 的命名空间前缀保持一致。"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "对外展示名。"
+    },
+    "source_tier": {
+      "enum": ["A", "B", "C"],
+      "description": "来源等级：A=官方一手（官网/官方仓库/官方文档），B=社区整理/权威二手，C=传闻/待核。"
+    },
+    "verified": {
+      "type": ["boolean", "integer"],
+      "description": "是否已核对。历史上用过 0/1 整数，两种都接受；新数据请用布尔。"
+    },
+    "last_checked": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "最近一次核对日期（YYYY-MM-DD）。"
+    },
+    "origin": {
+      "type": "string",
+      "minLength": 1,
+      "description": "一句话出处说明（人读），如「XX 官网参数表核对（2026-10-28）」。"
+    },
+    "url": {
+      "type": ["string", "null"],
+      "description": "主链接（官网/官方页）。没有官网的实体可为 null。"
+    },
+    "sources": {
+      "type": "array",
+      "description": "结构化溯源列表，比 origin 一句话更细。增量补充，不强制回填。",
+      "items": {
+        "type": "object",
+        "required": ["url"],
+        "additionalProperties": true,
+        "properties": {
+          "url": { "type": "string", "description": "来源链接。" },
+          "kind": { "type": "string", "description": "来源类型，如 official_site / repo / doc / video / forum。" },
+          "checked_on": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "该来源的核对日期。"
+          }
+        }
+      }
+    },
+    "license": {
+      "type": ["string", "null"],
+      "description": "内容/数据本身的许可证（如 CC-BY-SA-4.0）。实体记录的是软件许可证时放实体 schema 自己的 license 字段。"
+    },
+    "notes": {
+      "type": ["string", "null"],
+      "description": "备注与口径说明（人读长文）。"
+    }
+  }
+}

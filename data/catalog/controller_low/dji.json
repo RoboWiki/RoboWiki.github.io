@@ -49,7 +49,8 @@
    "imu": null,
    "uart": null,
    "doc_pdf": null,
-   "torque_mode": null
+   "torque_mode": null,
+   "repo_license": null
   },
   "vendor_cn": "大疆创新",
   "subtype_label": "主控板"
@@ -104,7 +105,8 @@
    "doc_url": "https://www.robomaster.com/zh-CN/products/components/general/development-board-type-c",
    "repo_urls": [
     "https://github.com/RoboMaster/Development-Board-C-Examples"
-   ]
+   ],
+   "repo_license": null
   },
   "vendor_cn": "大疆创新",
   "subtype_label": "主控板"

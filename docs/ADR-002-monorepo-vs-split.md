@@ -79,3 +79,17 @@ Kant 的 4 条硬约束是真的，裁定：**不拆仓，但必须满足下列�
 
 ### 附录：论证来源
 - Mill（数据/管线）、Bernoulli（社区）、Euclid（部署/平台，含 GitHub 官方文档引用）、Averroes（长期演进）、Kant（反面 steelman）五个独立智能体，2026-10-30 并行产出，本文件为汇总裁定。
+
+---
+
+## P0 落地状态（2026-10-31）
+
+| 项 | 状态 | 落到哪 |
+|---|---|---|
+| 语义常量解耦 | ✅ 已完成 | 常量搬到 `schema/semantics.json`；`pipeline/build_site.py` 直接读文件，**不再 `sys.path.insert(backend)`**；后端 `semantics.py` 也从同一份 JSON 读，路由不变 |
+| 永久 ID 不变量 | ✅ 已完成 | `data/_id_registry.json`（只追加）+ `tools/id_registry.py` + `pipeline/validate.py` 的三条检查；中文旧 id 标 `legacy` 保留（评分唯一键是「账号 + id」，改名等于让已有评价指错地方），**新 id 必须 ASCII** |
+| 数据独立版本化 | ✅ 已就绪 | `.github/workflows/data-release.yml`：校验通过后把 `data/` + `schema/` 打成 tar.gz 发 Release，附 `SHA256SUMS.txt` 与 `MANIFEST.json`（含条目数与 semantics 版本） |
+| 资源出处与许可 | ✅ 已完成 | `specs.image_source` 必填（有图就要写出来源）；`specs.repo_license` 显式 `null` 表示「未核」；四条规则固定进 `tests/test_data_governance.py` |
+
+**结论不变**：仍不物理拆仓。但这四件做完，`data/` 已经具备「随时能干净拆出去」的条件 ——
+拆的那天不需要重编号、不需要重讲口径、也不需要重新决定许可怎么记。

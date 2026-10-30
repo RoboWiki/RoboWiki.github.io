@@ -38,7 +38,8 @@
    ],
    "urdf_urls": [
     "https://github.com/FFTAI/Wiki-GRx-Models/tree/master/GRX/GR2/GR2v3.0.1/urdf"
-   ]
+   ],
+   "repo_license": null
   },
   "notes": "GR-2 为傅利叶第二代通用人形：53 自由度、单臂负载 3 kg、行走速度 5 km/h（≈1.39 m/s）、续航约 2 h、最大关节扭矩 436 N·m。官方宣传册未给身高与整机重量（媒体常见的 1.75 m / 63 kg 未获官方确认，故留空）；官网 GR-2 详情页已下线，仅 GRx 系列介绍页可访问。价格未公开，price_cny 留空。",
   "origin": "傅利叶官网 GRx 系列页 + GR-2 官方宣传册 PDF + Wiki-GRx-Models URDF 核对（2026-10-28）"

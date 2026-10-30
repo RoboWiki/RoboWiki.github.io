@@ -32,7 +32,8 @@
    "repo_urls": [
     "https://github.com/RobStride/robstride_ros_sample",
     "https://github.com/ROBSTRIDE-DYNAMICS/Robstride-Dynamics-Python-SDK"
-   ]
+   ],
+   "repo_license": null
   }
  }
 ]

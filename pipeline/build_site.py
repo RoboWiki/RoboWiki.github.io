@@ -26,6 +26,7 @@ OUT = ROOT / "wiki" / "docs"
 #: 品类。顺序即展示顺序 —— 关节电机是重点，放最前。
 #: 机械结构 / 电池 / 线束 没有收录：不是漏了，是没有可信来源，宁缺不编。
 from .load import cat_labels as _cat_labels
+from .meta import meta as _artifact_meta
 from .build_home import build as build_home
 from .build_competitions import build as build_competitions
 from .build_robots import build as build_robots
@@ -449,7 +450,8 @@ def main() -> None:
     pub = OUT / "public"
     pub.mkdir(parents=True, exist_ok=True)
     (pub / "catalog.json").write_text(
-        json.dumps({"count": len(digest), "parts": digest,
+        json.dumps({"meta": _artifact_meta(len(digest)),
+                    "count": len(digest), "parts": digest,
                     # 品类表随产物一起发：前端不再硬编码品类名，
                     # 加品类 / 改名只动 data/taxonomy.json
                     "featured": {"ids": featured_ids, "updated_at": _feat.get("updated_at")},
@@ -490,7 +492,8 @@ def main() -> None:
         print(f"  评分快照 -> public/ratings.json（{n} 个零件有分）")
     else:
         (pub / "ratings.json").write_text(
-            json.dumps({"total_ratings": 0, "parts": {}, "snapshot": True},
+            json.dumps({"meta": _artifact_meta(0),
+                            "total_ratings": 0, "parts": {}, "snapshot": True},
                        ensure_ascii=False), encoding="utf-8")
         print("  评分快照：无，写空表")
 
@@ -1198,13 +1201,14 @@ def main() -> None:
 """, encoding="utf-8")
 
 
-    # ── 参数口径（直接 import 后端的常量，杜绝漂移）──────────────────
-    import sys
-    sys.path.insert(0, str(ROOT / "backend"))
-    from app.api.routes.semantics import (  # noqa: E402
-        COMPARABILITY, CONVERSIONS, FIELD_SEMANTICS, RED_LINES,
-        SUPPLIER_QUESTIONS, TRINARY,
-    )
+    # ── 参数口径：读 schema/semantics.json（唯一事实源，不再 import 后端）──
+    _sem = json.loads((ROOT / "schema" / "semantics.json").read_text(encoding="utf-8"))
+    COMPARABILITY = _sem["comparability"]
+    CONVERSIONS = _sem["conversions"]
+    FIELD_SEMANTICS = _sem["field_semantics"]
+    RED_LINES = _sem["red_lines"]
+    SUPPLIER_QUESTIONS = _sem["supplier_questions"]
+    TRINARY = _sem["trinary"]
 
     def rows3(items, cols):
         head = "| " + " | ".join(cols) + " |\n|" + "---|" * len(cols)
@@ -1455,7 +1459,8 @@ html.dark .rl-th {{ color: #e0b159; }}
     except Exception:
         learn = {"routes": [], "articles": []}
     (pub / "learn.json").write_text(
-        json.dumps(learn, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        json.dumps({"meta": _artifact_meta(len(learn.get("articles", []))), **learn},
+                       ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print(f"  学习路线 {len(learn.get('routes', []))} 条 / "
           f"{len(learn.get('articles', []))} 篇 -> public/learn.json")
 
@@ -1472,7 +1477,8 @@ html.dark .rl-th {{ color: #e0b159; }}
     except Exception:
         sups = []
     (pub / "suppliers.json").write_text(
-        json.dumps({"count": len(sups), "suppliers": sups},
+        json.dumps({"meta": _artifact_meta(len(sups)),
+                       "count": len(sups), "suppliers": sups},
                    ensure_ascii=False, separators=(",", ":")),
         encoding="utf-8")
     # 加工与采购（原「供应商」）：页头由 ExplorerShell 提供

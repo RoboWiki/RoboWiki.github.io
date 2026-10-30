@@ -1,0 +1,1471 @@
+{
+ "ids": {
+  "cont-drobotics-rdk-x3-4gb": {
+   "added": "2026-10-31",
+   "category": "controller_high",
+   "model": "RDK X3"
+  },
+  "cont-nvidia-jetson-agx-orin-64gb": {
+   "added": "2026-10-31",
+   "category": "controller_high",
+   "model": "Jetson AGX Orin Developer Kit"
+  },
+  "cont-orange-pi-5-plus-8gb": {
+   "added": "2026-10-31",
+   "category": "controller_high",
+   "model": "Orange Pi 5 Plus"
+  },
+  "cont-radxa-rock-5b-8gb": {
+   "added": "2026-10-31",
+   "category": "controller_high",
+   "model": "ROCK 5B"
+  },
+  "cont-raspberrypi-rpi-4-8gb": {
+   "added": "2026-10-31",
+   "category": "controller_high",
+   "model": "Raspberry Pi 4 Model B"
+  },
+  "cont-raspberrypi-rpi-5-8gb": {
+   "added": "2026-10-31",
+   "category": "controller_high",
+   "model": "Raspberry Pi 5"
+  },
+  "damiao-dm-imu-l1": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "DM-IMU-L1"
+  },
+  "damiao-dm-mc-board02": {
+   "added": "2026-10-31",
+   "category": "controller_low",
+   "model": "DM-MC-Board02"
+  },
+  "damiao-motor-cable": {
+   "added": "2026-10-31",
+   "category": "wiring",
+   "model": "电机连接线"
+  },
+  "damiao-usb2canfd": {
+   "added": "2026-10-31",
+   "category": "module",
+   "model": "DM-USB2CANFD"
+  },
+  "damiao-usb2canfd-dual": {
+   "added": "2026-10-31",
+   "category": "module",
+   "model": "DM-USB2CANFD Dual"
+  },
+  "dji-c610": {
+   "added": "2026-10-31",
+   "category": "esc",
+   "model": "C610"
+  },
+  "dji-c615": {
+   "added": "2026-10-31",
+   "category": "esc",
+   "model": "C615"
+  },
+  "dji-c620": {
+   "added": "2026-10-31",
+   "category": "esc",
+   "model": "C620"
+  },
+  "dji-rm-board-a": {
+   "added": "2026-10-31",
+   "category": "controller_low",
+   "model": "RoboMaster 开发板 A 型"
+  },
+  "dji-rm-board-c": {
+   "added": "2026-10-31",
+   "category": "controller_low",
+   "model": "RoboMaster 开发板 C 型"
+  },
+  "dji-robomaster-gm6020": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "GM6020"
+  },
+  "dji-robomaster-m2006-p36": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "M2006 P36"
+  },
+  "dji-robomaster-m3508-p19": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "M3508 P19"
+  },
+  "dji-tb47": {
+   "added": "2026-10-31",
+   "category": "battery",
+   "model": "TB47"
+  },
+  "dji-tb48": {
+   "added": "2026-10-31",
+   "category": "battery",
+   "model": "TB48"
+  },
+  "drobotics-rdk-x5": {
+   "added": "2026-10-31",
+   "category": "controller_high",
+   "model": "RDK X5"
+  },
+  "feetech-5264-cable": {
+   "added": "2026-10-31",
+   "category": "wiring",
+   "model": "5264 端子线"
+  },
+  "feetech-st-3215-c018": {
+   "added": "2026-10-31",
+   "category": "servo",
+   "model": "ST-3215-C018"
+  },
+  "feetech-st-3235-c001": {
+   "added": "2026-10-31",
+   "category": "servo",
+   "model": "ST-3235-C001"
+  },
+  "feetech-st-3250-c001": {
+   "added": "2026-10-31",
+   "category": "servo",
+   "model": "ST-3250-C001"
+  },
+  "intel-d405": {
+   "added": "2026-10-31",
+   "category": "camera",
+   "model": "D405"
+  },
+  "intel-d435i": {
+   "added": "2026-10-31",
+   "category": "camera",
+   "model": "D435i"
+  },
+  "intel-d455": {
+   "added": "2026-10-31",
+   "category": "camera",
+   "model": "D455"
+  },
+  "intel-d457": {
+   "added": "2026-10-31",
+   "category": "camera",
+   "model": "D457"
+  },
+  "jlc-c10081": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "GL5528(10-20)"
+  },
+  "jlc-c110926": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "LIS2DH12TR"
+  },
+  "jlc-c11299": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "GL5506（4-7K）"
+  },
+  "jlc-c11334": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "REF3025AIDBZR"
+  },
+  "jlc-c11341": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "REF5025AIDR"
+  },
+  "jlc-c114425": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS5450DDAR"
+  },
+  "jlc-c116592": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS563201DDCR"
+  },
+  "jlc-c117051": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "DHT11"
+  },
+  "jlc-c126672": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "LSM6DSLTR"
+  },
+  "jlc-c127949": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "MCP9700AT-E/TT"
+  },
+  "jlc-c13564": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NCP18XH103F03RB"
+  },
+  "jlc-c13879": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "MF52A103F3950 (A1)"
+  },
+  "jlc-c141836": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TLV62569DBVR"
+  },
+  "jlc-c14289": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "HT7533-1"
+  },
+  "jlc-c146233": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "ALS-PT19-315C/L177/TR8"
+  },
+  "jlc-c15134": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "LIS3DHTR"
+  },
+  "jlc-c15639": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "MS561101BA03-50"
+  },
+  "jlc-c15651": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "RT9193-33GB"
+  },
+  "jlc-c162670": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NCU18XH103F6SRB"
+  },
+  "jlc-c16581": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TP4056-42-ESOP8"
+  },
+  "jlc-c189624": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "LIS2DW12TR"
+  },
+  "jlc-c191884": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS54202DDCR"
+  },
+  "jlc-c19274408": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "SC7A20HTR"
+  },
+  "jlc-c2071056": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AP63205WU-7"
+  },
+  "jlc-c209893": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "B57332V5103F360"
+  },
+  "jlc-c209959": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NTCG103JF103FT1"
+  },
+  "jlc-c21706": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "CJ7805 3%"
+  },
+  "jlc-c22391138": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "BMP580"
+  },
+  "jlc-c22428347": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "TMP119AIYBGR"
+  },
+  "jlc-c22459454": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "ICM-45686"
+  },
+  "jlc-c23380830": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AP2112K-3.3TRG1"
+  },
+  "jlc-c23892": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TL431AIDBZR"
+  },
+  "jlc-c24112": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "MPU-6050"
+  },
+  "jlc-c2655100": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "LSM6DSOTR"
+  },
+  "jlc-c2655101": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "ISM330DHCXTR"
+  },
+  "jlc-c2682616": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "MAX17048G+T10"
+  },
+  "jlc-c2687423": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "SHT30-DIS-B10KS"
+  },
+  "jlc-c2757850": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "AHT20"
+  },
+  "jlc-c279936": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "SDNT1608X103F3950FTF"
+  },
+  "jlc-c2836813": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "BMI270"
+  },
+  "jlc-c2848306": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "SHT40-AD1B-R3"
+  },
+  "jlc-c2862740": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS7A2033PDBVR"
+  },
+  "jlc-c2887190": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "QMA6100P"
+  },
+  "jlc-c2889048": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "CMFA 103F3435"
+  },
+  "jlc-c2892547": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "KNTC0603/10KF3950"
+  },
+  "jlc-c2892549": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "KNTC0805/10KF3950"
+  },
+  "jlc-c28927": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "TMP112AIDRLR"
+  },
+  "jlc-c2909890": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "SHT40-AD1B-R2"
+  },
+  "jlc-c3000141": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "MT52B103F3950F01000"
+  },
+  "jlc-c3012622": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "AHT20-F"
+  },
+  "jlc-c3021082": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "QMI8658A"
+  },
+  "jlc-c30589048": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "SPA06-003"
+  },
+  "jlc-c3113": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "CJ431"
+  },
+  "jlc-c311983": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS54302DDCR"
+  },
+  "jlc-c316397": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "SDNT1608X103F3380FTF"
+  },
+  "jlc-c3178291": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "VL53L4CDV0DH/1"
+  },
+  "jlc-c31966": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS54560DDAR"
+  },
+  "jlc-c3232508": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "DPS368XTSA1"
+  },
+  "jlc-c3235557": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS2116DRLR"
+  },
+  "jlc-c3288646": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "ICM-42670-P"
+  },
+  "jlc-c332361": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "5D-9"
+  },
+  "jlc-c333993": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NCU15XH103F6SRC"
+  },
+  "jlc-c338606": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "CMFA103J3950HANT"
+  },
+  "jlc-c347222": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AMS1117-3.3"
+  },
+  "jlc-c347223": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AMS1117-5.0"
+  },
+  "jlc-c347256": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AMS1117-3.3S"
+  },
+  "jlc-c347258": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "78L05"
+  },
+  "jlc-c347278": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "78M05"
+  },
+  "jlc-c347376": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "XC6206P332MR"
+  },
+  "jlc-c347421": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "LM2596S-5.0(UMW)"
+  },
+  "jlc-c36658": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "REF3033AIDBZR"
+  },
+  "jlc-c376006": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "DS18B20(UMW)"
+  },
+  "jlc-c3790": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NTC 10D-9"
+  },
+  "jlc-c38423": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "REF3030AIDBZR"
+  },
+  "jlc-c394024": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "MF52D 103F3950-100"
+  },
+  "jlc-c404027": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TLV75533PDBVR"
+  },
+  "jlc-c406719": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NTCG163JF103FT1S"
+  },
+  "jlc-c42371121": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "HX 0805-C2"
+  },
+  "jlc-c42422127": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "TTP223-BA6-TD"
+  },
+  "jlc-c42441843": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "MT9700-N"
+  },
+  "jlc-c47773": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "RT9013-33GB"
+  },
+  "jlc-c477928": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "LM5164DDAR"
+  },
+  "jlc-c479074": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "SY8089A1AAC"
+  },
+  "jlc-c481766": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "LSM6DSOXTR"
+  },
+  "jlc-c485517": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TLV75733PDBVR"
+  },
+  "jlc-c49247665": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "HNTC0603-103F3450FA"
+  },
+  "jlc-c49247666": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "HNTC0603-103F3950FB"
+  },
+  "jlc-c49247668": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "HNTC0603-104F3950FB"
+  },
+  "jlc-c49247679": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "HNTC0603-104F4250FB"
+  },
+  "jlc-c49247682": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "HNTC0402-103F3950FB"
+  },
+  "jlc-c51118": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AP2112K-3.3TRG1"
+  },
+  "jlc-c5120796": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AMS1117-3.3V"
+  },
+  "jlc-c51597": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "CMFB103F3950FANT"
+  },
+  "jlc-c51901042": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "FHT30-TR"
+  },
+  "jlc-c5205141": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AMS1117-3.3V"
+  },
+  "jlc-c524806": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS54360BDDAR"
+  },
+  "jlc-c525660": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "SDNT1608X103F3435FTF"
+  },
+  "jlc-c5267406": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "LSM6DSV16XTR"
+  },
+  "jlc-c5362283": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "BMP581"
+  },
+  "jlc-c53820": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NTC10D-11"
+  },
+  "jlc-c54308212": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "ICM-42688-P(TOKMAS)"
+  },
+  "jlc-c5446": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "XC6206P332MR-G"
+  },
+  "jlc-c5451632": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "DS18B20"
+  },
+  "jlc-c55136": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "SY6280AAC"
+  },
+  "jlc-c58069": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "L78M05ABDT-TR"
+  },
+  "jlc-c61063": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "XL1509-5.0E1"
+  },
+  "jlc-c6186": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AMS1117-3.3"
+  },
+  "jlc-c6187": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AMS1117-5.0"
+  },
+  "jlc-c695836": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "DS18B20U(UMW)"
+  },
+  "jlc-c699536": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "TMP117AIDRVR"
+  },
+  "jlc-c71136": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "78L05G-AB3-R"
+  },
+  "jlc-c725790": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TP4056"
+  },
+  "jlc-c725791": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TP4057"
+  },
+  "jlc-c726001": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "ICM-20948"
+  },
+  "jlc-c77130": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NCP15WF104F03RC"
+  },
+  "jlc-c77131": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NCP15XH103F03RC"
+  },
+  "jlc-c7719": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS3823-33DBVR"
+  },
+  "jlc-c779278": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "BMP388"
+  },
+  "jlc-c780769": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AP63203WU-7"
+  },
+  "jlc-c784817": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "LSM6DSRTR"
+  },
+  "jlc-c78960": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "BH1750FVI-TR"
+  },
+  "jlc-c78989": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "SY8113BADC"
+  },
+  "jlc-c80670": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "LP5907MFX-3.3/NOPB"
+  },
+  "jlc-c82227": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "HDC1080DMBR"
+  },
+  "jlc-c82942": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "ME6211C33M5G-N"
+  },
+  "jlc-c84036": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "MF52A103F3435 (A1)"
+  },
+  "jlc-c84817": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "MT3608"
+  },
+  "jlc-c89358": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "MT2492"
+  },
+  "jlc-c9055": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "SPX3819M5-L-3-3/TR"
+  },
+  "jlc-c9179": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NTC 5D-11"
+  },
+  "jlc-c919169": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "SDNT1608X104F3950FTF"
+  },
+  "jlc-c919459": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS61023DRLR"
+  },
+  "jlc-c92489": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "BME280"
+  },
+  "jlc-c93216": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "BNO055"
+  },
+  "jlc-c95939": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "SDNT1005X103F3950FTF"
+  },
+  "jlc-c95968": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "SDNT2012X103F3950FTF"
+  },
+  "jlc-c963380": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TL431"
+  },
+  "jlc-c967633": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "LSM6DS3TR-C"
+  },
+  "jlc-c9753": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "DS18B20+"
+  },
+  "jlc-c98098": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NCP03XH103F05RL"
+  },
+  "jlc-c9864": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS5430DDAR"
+  },
+  "jlc-c9865": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS54331DR"
+  },
+  "jlc-c99269": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "TMP102AIDRLR"
+  },
+  "lingzu-robstride-usb-can-hub": {
+   "added": "2026-10-31",
+   "category": "module",
+   "model": "USB-CAN HUB"
+  },
+  "livox-mid-360": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "Mid-360"
+  },
+  "livox-mid-70": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "Mid-70"
+  },
+  "nvidia-orin-nano-8gb": {
+   "added": "2026-10-31",
+   "category": "controller_high",
+   "model": "Jetson Orin Nano"
+  },
+  "nvidia-orin-nx-16gb": {
+   "added": "2026-10-31",
+   "category": "controller_high",
+   "model": "Jetson Orin NX"
+  },
+  "orbbec-gemini-305": {
+   "added": "2026-10-31",
+   "category": "camera",
+   "model": "Gemini 305"
+  },
+  "orbbec-gemini-335": {
+   "added": "2026-10-31",
+   "category": "camera",
+   "model": "Gemini 335"
+  },
+  "orbbec-gemini-336": {
+   "added": "2026-10-31",
+   "category": "camera",
+   "model": "Gemini 336"
+  },
+  "radiolink-at9s-pro": {
+   "added": "2026-10-31",
+   "category": "remote_controller",
+   "model": "AT9S Pro"
+  },
+  "radiolink-t12d": {
+   "added": "2026-10-31",
+   "category": "remote_controller",
+   "model": "T12D"
+  },
+  "radiolink-t8s": {
+   "added": "2026-10-31",
+   "category": "remote_controller",
+   "model": "T8S"
+  },
+  "robosense-airy-lite": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "Airy Lite"
+  },
+  "sens-bosch-bmi088": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "BMI088"
+  },
+  "sens-hipnuc-hi12m0": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "HI12M0"
+  },
+  "sens-livox-hap": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "HAP"
+  },
+  "sens-luxonis-oak-d-pro": {
+   "added": "2026-10-31",
+   "category": "camera",
+   "model": "OAK-D Pro"
+  },
+  "sens-manifold-odin1": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "Odin1"
+  },
+  "sens-robosense-airy": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "Airy"
+  },
+  "sens-slamtec-rplidar-s2": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "RPLIDAR S2"
+  },
+  "sens-stereolabs-zed-2i": {
+   "added": "2026-10-31",
+   "category": "camera",
+   "model": "ZED 2i"
+  },
+  "sens-tdk-icm-42688-p": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "ICM-42688-P"
+  },
+  "sens-witmotion-wt901": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "WT901"
+  },
+  "sens-xsens-mti-3": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "MTi-3"
+  },
+  "software:amp": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "AMP（对抗运动先验）"
+  },
+  "software:beamdojo": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "BeamDojo"
+  },
+  "software:dreamwaq": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "DreamWaQ"
+  },
+  "software:dreamwaqpp": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "DreamWaQ++"
+  },
+  "software:genesis": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "Genesis"
+  },
+  "software:gmr": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "GMR"
+  },
+  "software:isaac-lab": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "Isaac Lab"
+  },
+  "software:legged-gym": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "legged_gym + rsl_rl"
+  },
+  "software:lerobot": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "LeRobot"
+  },
+  "software:mjlab": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "mjlab"
+  },
+  "software:mlp": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "MLP（多层感知机）"
+  },
+  "software:moe": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "MoE（混合专家）"
+  },
+  "software:mujoco": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "MuJoCo"
+  },
+  "software:mujoco-menagerie": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "MuJoCo Menagerie"
+  },
+  "software:mujoco-playground": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "MuJoCo Playground"
+  },
+  "software:pinocchio": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "Pinocchio"
+  },
+  "software:ppo": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "PPO（近端策略优化）"
+  },
+  "software:rl-sar": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "RL-SAR"
+  },
+  "software:robot-lab": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "robot_lab"
+  },
+  "software:ros2": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "ROS 2"
+  },
+  "software:unilab": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "UniLab"
+  },
+  "software:unitree-sdk2": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "Unitree SDK2 / unitree_ros2"
+  },
+  "struct-berkeley-humanoid-lite": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Berkeley Humanoid Lite"
+  },
+  "struct-deeprobotics-lite3": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Lite3"
+  },
+  "struct-deeprobotics-lynx-m20": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "山猫 M20"
+  },
+  "struct-fourier-gr2": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "GR-2"
+  },
+  "struct-kscale-stompy": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Stompy"
+  },
+  "struct-limx-tron1": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "TRON 1"
+  },
+  "struct-odri-solo12": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Solo 12"
+  },
+  "struct-pollen-microduck": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Microduck"
+  },
+  "struct-roboparty-roboto01": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "ROBOTO 01（RP1）"
+  },
+  "struct-stanford-doggo": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Doggo"
+  },
+  "struct-stanford-pupper-v3": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Pupper v3"
+  },
+  "struct-unitree-a1": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "A1"
+  },
+  "struct-unitree-b2": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "B2"
+  },
+  "struct-unitree-b2-w": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "B2-W"
+  },
+  "struct-unitree-g1": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "G1"
+  },
+  "struct-unitree-go1": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Go1"
+  },
+  "struct-unitree-go2-edu": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Go2 EDU"
+  },
+  "struct-unitree-go2-w": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Go2-W"
+  },
+  "struct-unitree-h1": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "H1"
+  },
+  "struct-yobotics-y30": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Y30"
+  },
+  "struct-zex-w": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "ZEX-W"
+  },
+  "unitree-go-m8010-6": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "GO-M8010-6"
+  },
+  "unitree-im6014": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "IM6014"
+  },
+  "unitree-l1": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "L1"
+  },
+  "unitree-l2": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "L2"
+  },
+  "unitree-r3": {
+   "added": "2026-10-31",
+   "category": "remote_controller",
+   "model": "R3"
+  },
+  "unitree-unitree-a1": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "Unitree A1"
+  },
+  "灵足-robstride-el05": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "EL05"
+  },
+  "灵足-robstride-rs00": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "RS00"
+  },
+  "灵足-robstride-rs01": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "RS01"
+  },
+  "灵足-robstride-rs02": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "RS02"
+  },
+  "灵足-robstride-rs03": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "RS03"
+  },
+  "灵足-robstride-rs04": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "RS04"
+  },
+  "灵足-robstride-rs05": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "RS05"
+  },
+  "灵足-robstride-rs06": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "RS06"
+  },
+  "灵足-robstride-rs10": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "RS10"
+  },
+  "达妙-dm-dm-d5730-1ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-D5730 -1EC"
+  },
+  "达妙-dm-dm-d5730-1ee": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-D5730 -1EE"
+  },
+  "达妙-dm-dm-j10010-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J10010-2EC"
+  },
+  "达妙-dm-dm-j10010l-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J10010L-2EC"
+  },
+  "达妙-dm-dm-j10422p-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J10422P-2EC"
+  },
+  "达妙-dm-dm-j3507-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J3507-2EC"
+  },
+  "达妙-dm-dm-j4310-2ec-v1-1": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J4310-2EC V1.1"
+  },
+  "达妙-dm-dm-j4310-2ec-v1-2": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J4310-2EC V1.2"
+  },
+  "达妙-dm-dm-j4310m-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J4310M-2EC"
+  },
+  "达妙-dm-dm-j4310p-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J4310P-2EC"
+  },
+  "达妙-dm-dm-j4340-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J4340-2EC"
+  },
+  "达妙-dm-dm-j4340-2ec-v1-1": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J4340-2EC V1.1"
+  },
+  "达妙-dm-dm-j4340p-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J4340P-2EC"
+  },
+  "达妙-dm-dm-j4340p-2ec-v1-1": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J4340P-2EC V1.1"
+  },
+  "达妙-dm-dm-j6006-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J6006-2EC"
+  },
+  "达妙-dm-dm-j6216l-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J6216L-2EC"
+  },
+  "达妙-dm-dm-j6216p-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J6216P-2EC"
+  },
+  "达妙-dm-dm-j6248p-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J6248P-2EC"
+  },
+  "达妙-dm-dm-j8006-2ec-v1-1": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J8006-2EC V1.1"
+  },
+  "达妙-dm-dm-j8009-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J8009-2EC"
+  },
+  "达妙-dm-dm-j8009p-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J8009P-2EC"
+  },
+  "达妙-dm-dm-j8009p-2ec-v1-1": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J8009P-2EC V1.1"
+  },
+  "达妙-dm-dm-j8520p-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J8520P-2EC"
+  },
+  "达妙-dm-dm-jh11-101-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-JH11-101-2EC"
+  },
+  "达妙-dm-dm-jh11-51-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-JH11-51-2EC"
+  },
+  "达妙-dm-dm-jh14-101-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-JH14-101-2EC"
+  },
+  "达妙-dm-dm-jh14-51-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-JH14-51-2EC"
+  },
+  "达妙-dm-dm-jh17-101-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-JH17-101-2EC"
+  },
+  "达妙-dm-dm-jh17-51-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-JH17-51-2EC"
+  },
+  "达妙-dm-dm-jh20-101-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-JH20-101-2EC"
+  },
+  "达妙-dm-dm-jh20-51-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-JH20-51-2EC"
+  }
+ },
+ "note": "永久 ID 注册表：只追加，不删除、不复用。改名保留旧 id 作 alias。",
+ "version": 1
+}

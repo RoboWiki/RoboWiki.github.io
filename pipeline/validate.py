@@ -15,6 +15,8 @@ from __future__ import annotations
 import argparse
 import json
 import pathlib
+from pathlib import Path
+import re
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -25,6 +27,46 @@ TAU_BASIS = {"peak", "rated"}
 INERTIA_BASIS = {"rotor", "output"}
 
 # 数值字段白名单：出现没见过的小写驼峰/拼写错误时报警，防止词表漂移
+
+# ── 永久 ID（数据要被外部按版本引用，id 就不能改名/复用）───────────
+ID_RE = re.compile(r"^[a-z0-9][a-z0-9\-]{1,63}$")
+
+
+def check_id_registry(root: Path, rows: list[dict]) -> list[str]:
+    """① 当前 id 都在注册表 ② 老 id 没消失 ③ 新 id 必须 ASCII"""
+    reg_path = root / "data" / "_id_registry.json"
+    if not reg_path.exists():
+        return ["ID 注册表不存在：data/_id_registry.json（跑 tools/id_registry.py）"]
+    reg = json.loads(reg_path.read_text(encoding="utf-8"))
+    known = reg.get("ids") or {}
+    cur = {r["id"] for r in rows if r.get("id")}
+    out: list[str] = []
+    for rid in sorted(cur - set(known)):
+        out.append(f"{rid}: id 不在注册表里（新增实体要跑 tools/id_registry.py 登记）")
+    for rid in sorted(set(known) - cur):
+        if not known[rid].get("removed"):
+            out.append(f"{rid}: 注册表里有、数据里没有 —— 改名或删除要留 tombstone")
+    for rid in sorted(cur):
+        meta = known.get(rid) or {}
+        plain = rid.split(":", 1)[-1]  # software:xxx 的冒号是命名空间，不是 id 的一部分
+        if not meta.get("legacy") and not ID_RE.match(plain):
+            out.append(f"{rid}: id 必须是 ASCII（小写字母/数字/连字符）；中文 id 只允许历史遗留")
+    return out
+
+
+
+# ── 资源许可与出处（图片能引用，就必须说明从哪来）─────────────────
+def check_asset_provenance(rows: list[dict]) -> list[str]:
+    out = []
+    for r in rows:
+        sp = r.get("specs") or {}
+        if sp.get("image_url") and not sp.get("image_source", "repo_license"):
+            out.append(f"{r.get('id')}: 有 image_url 但没写 image_source —— 图必须能追溯出处")
+        if sp.get("repo_urls") and not sp.get("repo_license"):
+            out.append(f"{r.get('id')}: 引用了仓库但没写 repo_license —— 读不到就写 null")
+    return out
+
+
 KNOWN_SPEC_KEYS = {
     # 执行器
     "tau_peak_Nm", "tau_rated_Nm", "tau_basis", "speed_noload_rpm", "speed_rated_rpm",
@@ -324,6 +366,19 @@ def main() -> int:
               f"产品图 {with_img} ({with_img/n:.0%})")
         if with_arm / n < 0.5:
             warns.append(f"armature 覆盖率只有 {with_arm/n:.0%}（仿真可用性偏低）")
+
+    # 永久 ID：数据将来要被外部按版本引用，id 不能改名/复用
+    all_rows = []
+    for _f in sorted((ROOT / "data" / "catalog").glob("*/*.json")):
+        all_rows += json.loads(_f.read_text(encoding="utf-8"))
+    for _f in sorted((ROOT / "data" / "robots").glob("*.json")):
+        all_rows += json.loads(_f.read_text(encoding="utf-8"))
+    _sw = ROOT / "data" / "software.json"
+    if _sw.exists():
+        for _it in json.loads(_sw.read_text(encoding="utf-8")).get("items", []):
+            all_rows.append({"id": f"software:{_it['id']}", "model": _it.get("name")})
+    errors.extend(check_id_registry(ROOT, all_rows))
+    warns.extend(check_asset_provenance(all_rows))
 
     print(f"检查了 {len(seen_ids)} 个实体 / {len(rows_by_subtype)} 个 subtype")
     for w in warns:

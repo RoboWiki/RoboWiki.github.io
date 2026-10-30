@@ -62,7 +62,8 @@
    "rgb_sensor": null,
    "power_peak_w": null,
    "rgb_fov": null,
-   "rgb_resolution": null
+   "rgb_resolution": null,
+   "repo_license": null
   },
   "vendor_cn": null,
   "subtype_label": "固态"
@@ -132,7 +133,8 @@
    "rgb_sensor": null,
    "power_peak_w": null,
    "rgb_fov": null,
-   "rgb_resolution": null
+   "rgb_resolution": null,
+   "repo_license": null
   },
   "vendor_cn": "宇树",
   "subtype_label": "固态"
