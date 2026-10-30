@@ -32,6 +32,9 @@ onMounted(async () => {
 const hasNote = (s: Sup) => !!s.notes
 
 const facets = computed(() => {
+  // 榜单放在最上面：红黑榜是这个板块的核心信息，不该埋进品类里
+  const board = new Map<string, number>()
+  for (const s of all.value) if (s.listing) board.set(s.listing, (board.get(s.listing) || 0) + 1)
   const cat = new Map<string, number>()
   const fine = new Map<string, number>()
   for (const s of all.value) {
@@ -42,8 +45,10 @@ const facets = computed(() => {
       fine.set(f, (fine.get(f) || 0) + 1)
     }
   }
-  const out = [...cat.entries()].sort((a, b) => b[1] - a[1])
-    .map(([v, n]) => ({ group: 'cat', value: v, label: v, count: n }))
+  const out = [...board.entries()].sort((a, b) => b[1] - a[1])
+    .map(([v, n]) => ({ group: 'board', value: v, label: v, count: n }))
+  out.push(...[...cat.entries()].sort((a, b) => b[1] - a[1])
+    .map(([v, n]) => ({ group: 'cat', value: v, label: v, count: n })))
   out.push(...[...fine.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10)
     .map(([v, n]) => ({ group: 'fine', value: v, label: v, count: n })))
   return out
@@ -56,6 +61,7 @@ const PRICE: Record<string, number> = {
 const rows = computed(() => {
   const kw = q.value.trim().toLowerCase()
   let out = all.value.filter((s) => {
+    if (active.value.board && s.listing !== active.value.board) return false
     if (active.value.cat && (s.category || '未分类') !== active.value.cat) return false
     if (active.value.fine) {
       const f = s.fine || s.process || '未记工艺'
@@ -65,7 +71,10 @@ const rows = computed(() => {
     return [s.name, s.process, s.quality, s.punctual, s.price_level, s.materials, s.notes]
       .filter(Boolean).join(' ').toLowerCase().includes(kw)
   })
+  const BOARD: Record<string, number> = { 黑榜: 0, 红榜: 1 }
   out = [...out].sort((a, b) => {
+    if (sortKey.value === 'board')
+      return (BOARD[a.listing || ''] ?? 9) - (BOARD[b.listing || ''] ?? 9)
     if (sortKey.value === 'notes') return (hasNote(b) ? 1 : 0) - (hasNote(a) ? 1 : 0)
     if (sortKey.value === 'name') return a.name.localeCompare(b.name, 'zh')
     return (PRICE[(a.price_level || '').trim()] ?? 99) - (PRICE[(b.price_level || '').trim()] ?? 99)
@@ -81,7 +90,7 @@ const rows = computed(() => {
     lead="与部件库同一套交互，但比的是另一件事：加工质量、交货准不准、价格档、能不能开票。数据来自社区整理的实战反馈，不是厂商自述。"
     search-placeholder="搜店名 / 工艺 / 点评关键词"
     :facets="facets"
-    :sorts="[{ k: 'price', label: '按价格档' }, { k: 'notes', label: '优先有点评' }, { k: 'name', label: '按名称' }]"
+    :sorts="[{ k: 'board', label: '红黑榜优先' }, { k: 'price', label: '按价格档' }, { k: 'notes', label: '优先有点评' }, { k: 'name', label: '按名称' }]"
     v-model:sort-key="sortKey"
     v-model:active="active"
     :count="rows.length"
@@ -90,12 +99,15 @@ const rows = computed(() => {
   >
     <template #note>
       来源两张社区表：加工/材料的「供应商名录」与元件电商的「红黑榜」。
-      <strong>已脱敏</strong>：去掉填写人与掌柜 ID、去掉店铺链接（淘宝链接带 spm 跟踪与
-      user_number_id，能反查到个人）、去掉「学校 + 姓名」署名、联系方式与具体日期（只留到月）。
-      红黑榜标 <code>C</code> 级：<strong>当线索看，别当结论</strong>。展示政策：红榜保留店名；黑榜<strong>至少 2 条独立反馈才点名</strong>，单条反馈的店名打码（保留可辨识前缀 + ××），但仍保留成色 / 主营 / 问题类型，你自己能对上号。理由：一条匿名指控不足以毁一家店的生意。
+      <strong>红黑榜是这一页最硬的信息</strong>：黑榜 26 家按「问题类型」看（假货 / 翻新 / 混卖），
+      红榜 32 家按「凭什么推荐」看。「榜单」筛选可直接单挑一类。
+      <strong>已脱敏的是爆料人</strong>：填写人、掌柜 ID、店铺链接（带 spm 与 user_number_id 可反查个人）、
+      「学校 + 姓名」署名、联系方式一律去掉，日期只到月 —— 商家名与问题描述保持原样，不软化。
+      等级：加工/材料 <code>B</code>，单条社区反馈 <code>C</code>（当线索看）。
     </template>
 
-    <div v-for="s in rows" :key="s.id" class="ex-card">
+    <div v-for="s in rows" :key="s.id" class="ex-card"
+         :class="{ 'is-black': s.listing === '黑榜', 'is-red': s.listing === '红榜' }">
       <div class="ex-body" style="padding-top:0.75rem">
         <div class="ex-title">
           <b>{{ s.name }}</b>
@@ -150,6 +162,14 @@ const rows = computed(() => {
   overflow: hidden;
 }
 
+/* 黑榜：左红边 + 淡红底，扫一眼就能挑出来；红榜：淡品牌色底 */
+.ex-card.is-black {
+  border-left: 3px solid #dc2626;
+  background: color-mix(in srgb, #dc2626 4%, var(--vp-c-bg-soft));
+}
+.ex-card.is-red {
+  border-left: 3px solid var(--vp-c-brand-1);
+}
 /* 红黑榜徽标：黑榜琥珀色（警示，不刺眼），红榜品牌色（推荐） */
 .ex-tag.tag-bad { color: #b45309; border-color: #d97706; font-weight: 600; }
 .ex-tag.tag-good { color: var(--vp-c-brand-1); border-color: var(--vp-c-brand-2); font-weight: 600; }
