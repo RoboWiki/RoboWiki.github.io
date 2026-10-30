@@ -47,3 +47,11 @@ data/motors_zju.json
 data/focus.json
 ui-*.png
 .pytest-tmp/
+
+# 只忽略**仓库根目录**的图片（截图核对用），public/ 下的素材图不受影响
+/*.png
+/*.jpg
+/*.jpeg
+
+# 浏览器调试产物
+.playwright-cli/
