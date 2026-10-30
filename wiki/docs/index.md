@@ -23,7 +23,7 @@ titleTemplate: false
       <div><b>14</b><span>有数据的品类（共 14 类）</span></div>
       <div><b>84</b><span>A 级：逐项对过厂商手册</span></div>
       <div><b>21</b><span>整机（带 URDF / 仓库）</span></div>
-      <div><b>149</b><span>加工与采购渠道</span></div>
+      <div><b>207</b><span>加工与采购渠道</span></div>
     </div>
   </section>
   <section class="rw-home-block">
@@ -100,7 +100,7 @@ titleTemplate: false
         <span>先讲数据的用法与边界，再讲怎么动手</span>
       </a>
       <a class="rw-home-entry" href="/suppliers">
-        <b>加工与采购 · 149 家</b>
+        <b>加工与采购 · 207 家</b>
         <p>比「活找谁做」：质量、交期、价格档、能不能开票。</p>
         <span>来自社区实战反馈，不是厂商自述</span>
       </a>

@@ -10,7 +10,9 @@ import ExplorerShell from './ExplorerShell.vue'
 
 interface Sup {
   id: string; name: string; brand?: string; kind?: 'platform' | 'shop'
-  url?: string | null; category?: string | null; fine?: string | null
+  url?: string | null; has_url?: boolean; category?: string | null; fine?: string | null
+  listing?: '红榜' | '黑榜' | null; reason?: string | null; grade?: string | null
+  channel?: string | null; reported_at?: string | null
   process?: string | null; quality?: string | null; punctual?: string | null
   price_level?: string | null; invoice?: string | null; materials?: string | null
   lead?: string | null; notes?: string | null; tier?: string | null
@@ -87,20 +89,31 @@ const rows = computed(() => {
     @update:q="q = $event"
   >
     <template #note>
-      质量 / 交期 / 价格 / 发票是<strong>他人实战反馈的转述</strong>，统一标 <code>B</code> 级；
-      原表里带学校与姓名的署名已全部去标识。空着就写空着，不用「全能」填空。
+      来源两张社区表：加工/材料的「供应商名录」与元件电商的「红黑榜」。
+      <strong>已脱敏</strong>：去掉填写人与掌柜 ID、去掉店铺链接（淘宝链接带 spm 跟踪与
+      user_number_id，能反查到个人）、去掉「学校 + 姓名」署名、联系方式与具体日期（只留到月）。
+      红黑榜是<strong>单条匿名反馈</strong>，可能有个体偏差，标 <code>C</code> 级 —— 当线索看，别当结论。
     </template>
 
     <div v-for="s in rows" :key="s.id" class="ex-card">
       <div class="ex-body" style="padding-top:0.75rem">
         <div class="ex-title">
-          <a v-if="s.url" :href="s.url" target="_blank" rel="noopener nofollow">{{ s.name }}</a>
-          <b v-else>{{ s.name }}</b>
+          <b>{{ s.name }}</b>
+          <em v-if="s.listing" class="ex-tag" :class="s.listing === '黑榜' ? 'tag-bad' : 'tag-good'">{{ s.listing }}</em>
           <em class="ex-tag">{{ s.category || '未分类' }}</em>
           <em v-if="s.fine && s.fine !== s.category" class="ex-tag">{{ s.fine }}</em>
         </div>
         <p class="ex-sub">{{ s.process || '工艺未记' }}</p>
+        <p v-if="s.reason" class="ex-sub" style="color:var(--vp-c-text-1)">
+          <b>上榜原因</b>：{{ s.reason }}
+        </p>
         <dl class="ex-kv">
+          <template v-if="s.kind === 'component_shop'">
+            <div v-if="s.grade"><dt>成色</dt><dd>{{ s.grade }}</dd></div>
+            <div v-if="s.fine"><dt>主营</dt><dd>{{ s.fine }}</dd></div>
+            <div v-if="s.channel"><dt>渠道</dt><dd>{{ s.channel }}</dd></div>
+            <div v-if="s.reported_at"><dt>收录</dt><dd>{{ s.reported_at }}</dd></div>
+          </template>
           <div v-if="s.quality"><dt>质量</dt><dd>{{ s.quality }}</dd></div>
           <div v-if="s.punctual"><dt>交期</dt><dd>{{ s.punctual }}</dd></div>
           <div v-if="s.price_level"><dt>价格</dt><dd>{{ s.price_level }}</dd></div>
@@ -115,8 +128,10 @@ const rows = computed(() => {
         </p>
         <div class="ex-foot">
           <span class="ex-muted" style="font-size:0.7rem">等级 {{ s.tier || '—' }}</span>
-          <a v-if="s.url" class="ex-link" :href="s.url" target="_blank" rel="noopener nofollow"
-             style="margin-left:auto">店铺 →</a>
+          <span v-if="s.has_url" class="ex-muted" style="margin-left:auto;font-size:0.7rem"
+                title="为避免引流与反查，本站不收录店铺链接；需要时请自行按店名搜索">
+            有店铺可搜（不收录链接）
+          </span>
         </div>
       </div>
     </div>
@@ -134,4 +149,8 @@ const rows = computed(() => {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* 红黑榜徽标：黑榜琥珀色（警示，不刺眼），红榜品牌色（推荐） */
+.ex-tag.tag-bad { color: #b45309; border-color: #d97706; font-weight: 600; }
+.ex-tag.tag-good { color: var(--vp-c-brand-1); border-color: var(--vp-c-brand-2); font-weight: 600; }
 </style>

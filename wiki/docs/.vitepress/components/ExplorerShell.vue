@@ -78,7 +78,7 @@ function onSearch(e: Event) {
       <div v-if="kicker" class="ex-kicker">{{ kicker }}</div>
       <h1>{{ title }}</h1>
       <p v-if="lead" class="ex-lead">{{ lead }}</p>
-      <div v-if="note" class="ex-note"><slot name="note">{{ note }}</slot></div>
+      <div v-if="note || $slots.note" class="ex-note"><slot name="note">{{ note }}</slot></div>
     </header>
 
     <div class="ex-bar">
