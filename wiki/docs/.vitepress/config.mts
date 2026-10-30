@@ -56,9 +56,9 @@ const zhTheme = {
   skipToContentLabel: '跳到内容',
   notFound: {
     title: '页面没找到',
-    quote: '这个型号可能还没建页。部件库里能查到全部在库的型号。',
-    linkLabel: '打开部件库',
-    linkText: '去部件库',
+    quote: '这个地址没有对应的页面 —— 可能是链接写错了，或内容还没建。首页能进所有板块。',
+    linkLabel: '回到首页',
+    linkText: '去首页',
   },
   docPageLink: { text: '在部件库里按任意列排序' },
   footer: {
@@ -94,9 +94,9 @@ const enTheme = {
   skipToContentLabel: 'Skip to content',
   notFound: {
     title: 'Page not found',
-    quote: 'This model may not have a page yet. The parts library lists everything we hold.',
-    linkLabel: 'Open parts library',
-    linkText: 'Go to parts',
+    quote: 'Nothing lives at this address yet. The home page reaches every section.',
+    linkLabel: 'Back to home',
+    linkText: 'Go home',
   },
   docPageLink: { text: 'Sort by any column in the parts library' },
   footer: {
