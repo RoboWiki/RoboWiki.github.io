@@ -13,7 +13,7 @@ title: TDSEMIC(拓电半导体) TTP223-BA6-TD
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">传感器</span>
-      <span class="part-tag soft">触摸</span>
+      <span class="part-tag soft">触摸传感器</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥0.9933</span>
     </div>

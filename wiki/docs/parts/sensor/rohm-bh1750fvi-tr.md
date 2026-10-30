@@ -13,7 +13,7 @@ title: ROHM(罗姆) BH1750FVI-TR
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">传感器</span>
-      <span class="part-tag soft">光敏 / 环境光</span>
+      <span class="part-tag soft">光照传感器</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥5.63</span>
     </div>

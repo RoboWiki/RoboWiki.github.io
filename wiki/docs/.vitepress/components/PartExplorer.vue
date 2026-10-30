@@ -63,9 +63,9 @@ const en = computed(() => props.lang === 'en')
 /** 只翻界面壳；型号与参数值保持原文。 */
 const L = computed(() => en.value
   ? { featured: 'Featured', search: 'Search model / brand / type', compare: 'Compare', all: 'All params',
-      none: 'No photo yet', count: 'items', sort: 'Sort by' }
+      none: 'No photo yet', count: 'items', sort: 'Sort by', vendor: 'Vendor', type: 'Type' }
   : { featured: '精选', search: '搜型号 / 品牌 / 类型', compare: '对比', all: '全部参数',
-      none: '暂无产品图', count: '件', sort: '按' })
+      none: '暂无产品图', count: '件', sort: '按', vendor: '厂商', type: '类型' })
 
 const all = ref<Part[]>([])
 const loading = ref(true)
@@ -87,6 +87,7 @@ const initialCat = (() => {
 })()
 const cat = ref(initialCat || 'actuator')
 const vendor = ref('')
+const sensorType = ref('')
 const sort = ref<string>('tau_peak_Nm')
 const order = ref<'desc' | 'asc'>('desc')
 const picked = ref<Part[]>([])
@@ -97,6 +98,7 @@ const detail = ref<Part | null>(null)
 interface Cat {
   v: string
   t: string
+  subtypes?: Record<string, string>
   keys: { k: string; label: string; unit?: string }[]
   sorts: { k: string; label: string }[]
 }
@@ -108,7 +110,7 @@ const FALLBACK_CATS = [
   { v: 'module', t: '其余模块' },
   { v: 'chip', t: '硬件芯片' },
 ]
-const CATS = ref<Cat[]>(FALLBACK_CATS.map(c => ({ ...c, keys: [], sorts: [] })))
+const CATS = ref<Cat[]>(FALLBACK_CATS.map(c => ({ ...c, subtypes: {}, keys: [], sorts: [] })))
 
 //: 排序项按品类来（data/taxonomy.json 的 sorts）。
 //: 「按峰值扭矩」对芯片毫无意义 —— 每类该有自己的默认排序。
@@ -126,7 +128,7 @@ onMounted(async () => {
     if (Array.isArray(fids)) featuredIds.value = new Set(fids)
     if (Array.isArray(d.categories) && d.categories.length) {
       CATS.value = d.categories.map((c: any) => ({
-        v: c.id, t: c.name, keys: c.keys || [], sorts: c.sorts || [],
+        v: c.id, t: c.name, subtypes: c.subtypes || {}, keys: c.keys || [], sorts: c.sorts || [],
       }))
       if (!CATS.value.some(c => c.v === cat.value)) cat.value = CATS.value[0].v
       sort.value = defaultSortFor(cat.value)
@@ -152,6 +154,7 @@ function toggleFeatured() {
 function setCat(v: string) {
   cat.value = v
   vendor.value = ''
+  sensorType.value = ''
   q.value = ''
   sort.value = defaultSortFor(v)
   syncCategoryUrl()
@@ -173,6 +176,15 @@ function syncCategoryUrl() {
 
 const catCount = (v: string) => all.value.filter(p => p.category === v).length
 
+/** 空列表提示分两种：真没收录，还是收了但筛没了。混成一句会让人以为数据丢了。 */
+const emptyText = computed(() => {
+  const typeEmpty = cat.value === 'sensor' && !!sensorType.value
+    && !all.value.some(p => p.category === 'sensor' && p.subtype === sensorType.value)
+  return typeEmpty || !catCount(cat.value)
+    ? '这一类还没有收录 —— 没有可信来源，宁缺不编'
+    : '没有符合条件的部件'
+})
+
 /** 当前品类的元数据：卡片显示哪些参数、能按什么排序，都来自这里。 */
 const meta = computed(() => CATS.value.find(c => c.v === cat.value))
 const catName = computed(() => meta.value?.t || '部件')
@@ -180,6 +192,18 @@ const sortOpts = computed(() =>
   (meta.value?.sorts?.length ? meta.value.sorts : FALLBACK_SORTS))
 const vendors = computed(() =>
   [...new Set(all.value.filter(p => p.category === cat.value).map(p => p.vendor))].sort())
+
+/** 传感器按**类型**筛选，不按厂商：同类传感器跨厂商横向比才有意义。
+ *  0 计数的类型照样列出（虚线），让「以后该收什么」显式可见，而不是假装完整。 */
+const sensorTypes = computed(() => {
+  if (cat.value !== 'sensor') return []
+  const items = Object.entries(meta.value?.subtypes || {}).map(([v, label]) => ({
+    v, label: String(label),
+    count: all.value.filter(p => p.category === 'sensor' && p.subtype === v).length,
+  }))
+  const filled = items.filter(x => x.count).sort((a, b) => b.count - a.count)
+  return [...filled, ...items.filter(x => !x.count)]
+})
 
 /** 排序取值器：specs 里的键、或内置的 price / rating。
  *  空值统一返回 null，排序时沉底（缺失就是缺失，不该混进比较）。 */
@@ -198,6 +222,7 @@ const rows = computed(() => {
     p => p.category === cat.value
       && (!gate || featuredIds.value.has(p.id))
       && (!vendor.value || p.vendor === vendor.value)
+      && (!sensorType.value || p.subtype === sensorType.value)
       && (!q.value || `${p.model} ${p.vendor} ${p.subtypeLabel}`
         .toLowerCase().includes(q.value.toLowerCase())),
   )
@@ -317,9 +342,20 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
           {{ order === 'desc' ? '↓ 降序' : '↑ 升序' }}
         </button>
         <span class="pd-sep" />
-        <button v-for="v in vendors" :key="v"
-                :class="['pd-chip', 'sm', vendor === v ? 'on' : '']"
-                @click="vendor = vendor === v ? '' : v">{{ v }}</button>
+        <span class="pd-lab">{{ cat === 'sensor' ? L.type : L.vendor }}</span>
+        <template v-if="cat === 'sensor'">
+          <button v-for="t in sensorTypes" :key="t.v"
+                  :class="['pd-chip', 'sm', sensorType === t.v ? 'on' : '', t.count ? '' : 'empty']"
+                  :title="t.count ? `${t.count} 件` : '还没有收录（没有可信来源，不编数据）'"
+                  @click="sensorType = sensorType === t.v ? '' : t.v">
+            {{ t.label }}<span class="pd-n">{{ t.count || '—' }}</span>
+          </button>
+        </template>
+        <template v-else>
+          <button v-for="v in vendors" :key="v"
+                  :class="['pd-chip', 'sm', vendor === v ? 'on' : '']"
+                  @click="vendor = vendor === v ? '' : v">{{ v }}</button>
+        </template>
         <span class="pd-count">{{ rows.length }} {{ L.count }}</span>
       </div>
 
@@ -421,7 +457,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
       </div>
 
       <p v-if="!rows.length" class="pd-muted" style="padding:2rem 0;text-align:center">
-        {{ catCount(cat) ? '没有符合条件的部件' : '这一类还没有收录 —— 没有可信来源，宁缺不编' }}
+        {{ emptyText }}
       </p>
 
       <!-- 全部参数 -->
@@ -482,6 +518,10 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
 .pd-chip.empty { border-style: dashed; color: var(--vp-c-text-3); }
 .pd-n { margin-left: 0.35rem; opacity: 0.6; font-variant-numeric: tabular-nums; }
 .pd-sep { width: 1px; height: 18px; background: var(--vp-c-divider); margin: 0 0.25rem; }
+.pd-lab {
+  font-size: 0.72rem; color: var(--vp-c-text-3); letter-spacing: 0.04em;
+  margin: 0 0.1rem 0 0.25rem;
+}
 .pd-count { margin-left: auto; font-size: 0.78rem; color: var(--vp-c-text-3); }
 
 /* 卡片网格：固定 4 列。auto-fill 在宽屏会排到 6 列，卡片被压得太窄 ——

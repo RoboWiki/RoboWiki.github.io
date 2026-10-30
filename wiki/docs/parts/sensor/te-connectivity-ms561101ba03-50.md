@@ -13,7 +13,7 @@ title: TE Connectivity(泰科电子) MS561101BA03-50
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">传感器</span>
-      <span class="part-tag soft">压力 / 气压</span>
+      <span class="part-tag soft">压力 / 气压传感器</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥39.6</span>
     </div>

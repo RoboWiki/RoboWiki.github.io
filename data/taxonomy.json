@@ -467,19 +467,20 @@
   {
    "id": "sensor",
    "name": "传感器",
-   "hint": "NTC / 温湿度 / 温度 / 压力 / 光 / ToF / 触摸",
+   "hint": "NTC / 温湿度 / 温度 / 压力 / 光照 / ToF / 力矩",
    "subtypes": {
     "ntc": "NTC 热敏电阻",
-    "temp_humid": "温湿度",
-    "temp": "温度",
-    "pressure": "压力 / 气压",
-    "light": "光敏 / 环境光",
-    "position": "位置 / 角度",
-    "tof": "ToF 测距",
-    "touch": "触摸",
-    "vibration": "振动",
-    "current": "电流检测",
-    "hall": "霍尔 / 磁"
+    "temp_humid": "温湿度传感器",
+    "temp": "温度传感器",
+    "pressure": "压力 / 气压传感器",
+    "light": "光照传感器",
+    "position": "位置 / 角度传感器",
+    "tof": "ToF 测距传感器",
+    "touch": "触摸传感器",
+    "vibration": "振动传感器",
+    "current": "电流检测传感器",
+    "hall": "霍尔 / 磁传感器",
+    "force_torque": "力矩传感器"
    },
    "keys": [
     {

@@ -71,7 +71,7 @@
    "image_source": "立创商城商品图（C2909890，2026-10-29 采集）",
    "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20211021/851BA36A5CA574D725310F52CADA4510.pdf"
   },
-  "subtype_label": "温湿度"
+  "subtype_label": "温湿度传感器"
  },
  {
   "category": "sensor",
@@ -145,7 +145,7 @@
    "image_source": "立创商城商品图（C2848306，2026-10-29 采集）",
    "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20210720/C2848306_34971E33C77B50764797513792751601.pdf"
   },
-  "subtype_label": "温湿度"
+  "subtype_label": "温湿度传感器"
  },
  {
   "category": "sensor",
@@ -219,6 +219,6 @@
    "image_source": "立创商城商品图（C2687423，2026-10-29 采集）",
    "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20210120/C2687423_31DB3FACC3E95675626B9DEF500B4777.pdf"
   },
-  "subtype_label": "温湿度"
+  "subtype_label": "温湿度传感器"
  }
 ]

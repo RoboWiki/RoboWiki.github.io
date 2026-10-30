@@ -71,7 +71,7 @@
    "image_source": "立创商城商品图（C10081，2026-10-29 采集）",
    "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20200417/C515010_C10502EF7F431E893A7F20DB83F527F0.pdf"
   },
-  "subtype_label": "光敏 / 环境光"
+  "subtype_label": "光照传感器"
  },
  {
   "category": "sensor",
@@ -144,6 +144,6 @@
    "image_source": "立创商城商品图（C11299，2026-10-29 采集）",
    "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20190717/C404970_9E7F09BFF291DADB79FAB6E4B0C8F85D.pdf"
   },
-  "subtype_label": "光敏 / 环境光"
+  "subtype_label": "光照传感器"
  }
 ]
