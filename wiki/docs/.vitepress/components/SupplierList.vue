@@ -92,7 +92,7 @@ const rows = computed(() => {
       来源两张社区表：加工/材料的「供应商名录」与元件电商的「红黑榜」。
       <strong>已脱敏</strong>：去掉填写人与掌柜 ID、去掉店铺链接（淘宝链接带 spm 跟踪与
       user_number_id，能反查到个人）、去掉「学校 + 姓名」署名、联系方式与具体日期（只留到月）。
-      红黑榜是<strong>单条匿名反馈</strong>，可能有个体偏差，标 <code>C</code> 级 —— 当线索看，别当结论。
+      红黑榜标 <code>C</code> 级：<strong>当线索看，别当结论</strong>。展示政策：红榜保留店名；黑榜<strong>至少 2 条独立反馈才点名</strong>，单条反馈的店名打码（保留可辨识前缀 + ××），但仍保留成色 / 主营 / 问题类型，你自己能对上号。理由：一条匿名指控不足以毁一家店的生意。
     </template>
 
     <div v-for="s in rows" :key="s.id" class="ex-card">

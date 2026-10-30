@@ -37,7 +37,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: pr-check
+  # 按 ref 分组：全局组会让两个 PR 互相 cancel（取消掉对方的数据闸门）
+  group: pr-check-${{ github.event.pull_request.number || github.ref_name }}
   cancel-in-progress: true
 
 jobs:

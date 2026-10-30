@@ -59,15 +59,17 @@ Kant 的 4 条硬约束是真的，裁定：**不拆仓，但必须满足下列�
 
 届时正确姿势是**版本化 schema/semantics 包 + dispatch**（非 submodule/复制），用 `git filter-repo` 按目录保历史切分。因为第 3 节的 ID 规范与产物契约已就位，那是平滑切分，不是推翻。
 
-## 6. 立即执行的仓内整改（兑现对方案的好思想，不拆仓）
+## 6. 仓内整改（已全部完成，2026-10-31 对账）
 
 | 项 | 动作 | 负责 | 状态 |
 |---|---|---|---|
-| 永久 ID | schema 声明 id 为主键 + validate 校验不复用/不回收 | 数据闸门 | 待做 |
-| 资源许可 | part schema 加 image_license/image_credit | schema | 待做 |
-| 语义常量解耦 | semantics 6 常量抽到 schema/semantics.json，pages.yml 去掉「为 import 常量装后端依赖」 | pipeline | 待做 |
-| CI 分层 | pr-gate 按 paths 分层，纯 data PR 不跑前端构建 | CI | 待做 |
-| 数据版本出口 | 定期 git archive data/ 发 Release | 运维 | 待做 |
+| 永久 ID | `data/_id_registry.json`（只追加）+ `tools/id_registry.py`（--check / --alias / --tombstone）+ validate 三条检查 | 数据闸门 | ✅ 已完成 |
+| 资源出处 | `specs.image_source` 必填（有图必写出处）；`specs.repo_license` 逐条查 GitHub license API，读不到写 null | schema | ✅ 已完成 |
+| 语义常量解耦 | 口径常量搬到 `schema/semantics.json`；pipeline 不再 import 后端；后端也从同一份读 | pipeline | ✅ 已完成 |
+| CI 分层 | pr-gate 8 个 job：1 个分层器 + 5 条按层检查 + validate 恒跑 + fail-closed 汇总 | CI | ✅ 已完成 |
+| 数据版本出口 | `tools/export_data.py` + `.github/workflows/data-release.yml`（tar.gz + MANIFEST + SHA256） | 运维 | ✅ 已完成 |
+| 投稿链路 | ADR-004 的 issue 表单 + 聚合 workflow；`tests/test_data_governance.py` 固定四条治理规则 | 产品 | ✅ 已完成 |
+| 供应商/竞赛脱敏 | 去掉填写人、掌柜 ID、店铺链接（spm 可反查个人）、学校+姓名、联系方式；日期只到月 | 数据 | ✅ 已完成 |
 
 ## 7. 否决的（对方案里超前/不适用的）
 

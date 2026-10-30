@@ -19,7 +19,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-836a50f5",
@@ -41,7 +43,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-31936681",
@@ -63,11 +67,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-4e951bca",
-  "name": "XINGSF兴盛发电子官方店",
+  "name": "XINGSF××",
   "display_name": "XINGSF兴盛发电子官方店",
   "category": "元件电商",
   "fine": "电子元件",
@@ -85,7 +91,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-d1890447",
@@ -107,7 +115,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-f5b2581d",
@@ -129,7 +139,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-d5183ecc",
@@ -151,7 +163,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-2b0b8f72",
@@ -173,11 +187,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-20177976",
-  "name": "上迈科技",
+  "name": "上迈××",
   "display_name": "上迈科技",
   "category": "元件电商",
   "fine": "各种直流电机",
@@ -195,7 +211,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-0dc7446a",
@@ -217,7 +235,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-be4b4eab",
@@ -239,7 +259,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-f1bc57d4",
@@ -261,11 +283,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-b52f9829",
-  "name": "创客风暴",
+  "name": "创客××",
   "display_name": "创客风暴",
   "category": "元件电商",
   "fine": "淘宝爆款电子模块",
@@ -283,7 +307,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-caba8741",
@@ -305,7 +331,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-ea6a4902",
@@ -327,11 +355,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-ebb59a85",
-  "name": "华富联电子商行",
+  "name": "华富联电子商××",
   "display_name": "华富联电子商行",
   "category": "元件电商",
   "fine": "电子元件",
@@ -349,11 +379,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-97530f14",
-  "name": "卡邦利旗舰店",
+  "name": "卡邦××",
   "display_name": "卡邦利",
   "category": "元件电商",
   "fine": "IC配单",
@@ -371,7 +403,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-52597a64",
@@ -393,11 +427,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-bd6619eb",
-  "name": "古翊旗舰店",
+  "name": "古翊××",
   "display_name": "古翊旗舰店",
   "category": "元件电商",
   "fine": "IC",
@@ -415,11 +451,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-18ed2bb5",
-  "name": "唯美电子",
+  "name": "唯美××",
   "display_name": "唯美电子",
   "category": "元件电商",
   "fine": "开发板",
@@ -437,11 +475,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-4dd4d2d8",
-  "name": "四裕电子企业店",
+  "name": "四裕电子企业××",
   "display_name": "四裕电子企业店",
   "category": "元件电商",
   "fine": "各种电容",
@@ -459,7 +499,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-557bc686",
@@ -481,7 +523,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-ba1d6696",
@@ -503,11 +547,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-49b8080b",
-  "name": "安富世纪威尔健专卖店",
+  "name": "安富世纪威尔××",
   "display_name": "安富世纪威尔健专卖店",
   "category": "元件电商",
   "fine": "各类IC",
@@ -525,11 +571,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-78cff4a8",
-  "name": "宏讯丰电子",
+  "name": "宏讯××",
   "display_name": "宏讯丰电子",
   "category": "元件电商",
   "fine": "老IC",
@@ -547,7 +595,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-d509515f",
@@ -569,7 +619,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-7264df31",
@@ -591,7 +643,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-a0688c32",
@@ -613,7 +667,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-b7696ff6",
@@ -635,7 +691,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-a234c5fc",
@@ -657,11 +715,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-ecdfadda",
-  "name": "欧贝顿旗舰店",
+  "name": "欧贝××",
   "display_name": "欧贝顿旗舰店",
   "category": "元件电商",
   "fine": "电阻电容电感",
@@ -679,11 +739,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-3ebd5543",
-  "name": "深名扬电子模块批发保护板温度计数显表",
+  "name": "深名扬电子模××",
   "display_name": "深名扬",
   "category": "元件电商",
   "fine": "各类电子元件和模块",
@@ -701,7 +763,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-b612159c",
@@ -723,11 +787,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-a8a1076c",
-  "name": "深圳妙泽电子",
+  "name": "深圳××",
   "display_name": "深圳妙泽电子",
   "category": "元件电商",
   "fine": "芯片",
@@ -745,7 +811,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-680a39e3",
@@ -767,7 +835,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 2,
+  "name_masked": false
  },
  {
   "id": "sup-346fe614",
@@ -789,11 +859,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 2,
+  "name_masked": false
  },
  {
   "id": "sup-1fceb4cb",
-  "name": "深圳市伟诚鑫电子有限公司",
+  "name": "深圳市伟诚鑫××",
   "display_name": "深圳市伟诚鑫电子有限公司",
   "category": "元件电商",
   "fine": "各类电子元器件",
@@ -811,7 +883,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-06443f7f",
@@ -833,11 +907,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-132de8f3",
-  "name": "深圳市华源芯电子有限公司",
+  "name": "深圳市华源芯××",
   "display_name": "华源芯电子",
   "category": "元件电商",
   "fine": "开关、集成IC、元件包",
@@ -855,11 +931,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-90218db2",
-  "name": "深圳市坤烽芯城科技",
+  "name": "深圳市坤烽芯××",
   "display_name": "坤烽芯城",
   "category": "元件电商",
   "fine": "IC 晶体管等",
@@ -877,11 +955,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-ff0b54e5",
-  "name": "深圳市康胜世纪电子企",
+  "name": "深圳市康胜世××",
   "display_name": "深圳市康胜世纪电子企",
   "category": "元件电商",
   "fine": "芯片",
@@ -899,11 +979,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-fd6d3a83",
-  "name": "深圳市金维利电子",
+  "name": "深圳市金维利××",
   "display_name": "深圳市金维利电子",
   "category": "元件电商",
   "fine": "芯片",
@@ -921,11 +1003,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-efab0116",
-  "name": "深圳市锦悦电子科技",
+  "name": "深圳市锦悦电××",
   "display_name": "深圳市锦悦电子科技",
   "category": "元件电商",
   "fine": "各种电容",
@@ -943,7 +1027,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-cb9a97ce",
@@ -965,7 +1051,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-9d95431f",
@@ -987,11 +1075,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-dcbc3b15",
-  "name": "火星星数码",
+  "name": "火星××",
   "display_name": "火星星数码",
   "category": "元件电商",
   "fine": "快克861DW",
@@ -1009,7 +1099,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-7420a4e5",
@@ -1031,11 +1123,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-98bb393a",
-  "name": "科天微数码专营店",
+  "name": "科天微数码专××",
   "display_name": "科天微、桥田",
   "category": "元件电商",
   "fine": "各类电子元件和模块",
@@ -1053,7 +1147,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-c76f43f5",
@@ -1075,11 +1171,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-413b45ad",
-  "name": "翻倍倍",
+  "name": "翻倍××",
   "display_name": "翻倍倍",
   "category": "元件电商",
   "fine": "各类电子模块",
@@ -1097,11 +1195,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-9f11a8da",
-  "name": "联科达电子",
+  "name": "联科××",
   "display_name": "联科达电子",
   "category": "元件电商",
   "fine": "各类芯片",
@@ -1119,7 +1219,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-9d9dbc1f",
@@ -1141,7 +1243,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-f30f6bcf",
@@ -1163,7 +1267,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-01ac9086",
@@ -1185,7 +1291,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-7510e769",
@@ -1207,7 +1315,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-a2a8dcd4",
@@ -1229,11 +1339,13 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-fa89fc2c",
-  "name": "高芯达电子企业",
+  "name": "高芯达电子企××",
   "display_name": "高芯达电子",
   "category": "元件电商",
   "fine": "微动",
@@ -1251,7 +1363,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接；黑榜单条匿名反馈，店名部分打码（≥2 条独立反馈才点名）",
+  "reports": 1,
+  "name_masked": true
  },
  {
   "id": "sup-84b49e41",
@@ -1273,7 +1387,9 @@
   "price_level": null,
   "invoice": null,
   "tier": "C",
-  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接"
+  "origin": "《红黑榜》表：社区匿名填写，已去除填写人、掌柜 ID 与店铺链接",
+  "reports": 1,
+  "name_masked": false
  },
  {
   "id": "sup-6ee93e06",
