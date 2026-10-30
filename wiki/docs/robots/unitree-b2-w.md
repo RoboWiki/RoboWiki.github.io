@@ -21,13 +21,12 @@ B2 的轮足版：腿末端换成轮子，平地和坡道效率比纯足式高�
 
 <div class="rb-roles"><span class="rb-role"><b>官方描述/资产</b>3</span> <span class="rb-role"><b>仿真</b>1</span> <span class="rb-role"><b>训练</b>5</span></div>
 
-**官方描述/资产**（3 个）
+**官方描述/资产**（2 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
 | <a href="https://github.com/fiveages-sim/robot-descriptions-quadruped" target="_blank" rel="noopener">robot-descriptions-quadruped</a> | 四足机型描述汇总（URDF/xacro/MJCF） | 180 |
 | <a href="https://github.com/fan-ziqi/rl_sar_zoo" target="_blank" rel="noopener">rl_sar_zoo</a> | RL-SAR 机型 zoo：URDF/MJCF 与策略集合 | 170 |
-| robot_mujoco | 多机型 MuJoCo 资产与场景 | 80 |
 
 **仿真**（1 个）
 
@@ -35,15 +34,13 @@ B2 的轮足版：腿末端换成轮子，平地和坡道效率比纯足式高�
 |---|---|---|
 | <a href="https://github.com/fan-ziqi/robot_lab" target="_blank" rel="noopener">robot_lab</a> | robot_lab：IsaacLab 版多机型训练框架 | 369 |
 
-**训练**（5 个）
+**训练**（3 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
 | <a href="https://github.com/Tencent-Hunyuan/UniRL" target="_blank" rel="noopener">uni_rl</a> | 多机型统一 RL 训练框架（宇树全系） | 781 |
 | <a href="https://github.com/Farama-Foundation/Gymnasium" target="_blank" rel="noopener">Gymnasium</a> | Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考 | 457 |
-| fan_robotlab | robot_lab 的个人分支（多机型实验） | 308 |
 | <a href="https://github.com/fan-ziqi/rl_sar" target="_blank" rel="noopener">rl_sar</a> | RL-SAR：仿真到实机部署框架（多机型、含策略与 C++ 部署） | 170 |
-| fan_rlsar | RL-SAR 的个人分支（多机型实验） | 165 |
 
 ## 链接
 

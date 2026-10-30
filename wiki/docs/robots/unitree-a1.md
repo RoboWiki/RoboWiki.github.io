@@ -15,26 +15,6 @@ title: A1
 | 自由度 | 12 |
 | 整机质量 (kg) | 12.45 |
 
-## 开源生态
-
-<em>生态来自本地参考库的项目索引（3 个项目 / 角色由我们按项目定位标注）。
-只说明「哪些环节有现成开源实现」，不代表这些项目都能直接跑在这台机器上。</em>
-
-<div class="rb-roles"><span class="rb-role"><b>官方 SDK</b>2</span> <span class="rb-role"><b>控制/MPC</b>1</span></div>
-
-**官方 SDK**（2 个）
-
-| 项目 | 说明 | 文件数 |
-|---|---|---|
-| legged_mpc_control | CMU legged_mpc_control：Convex MPC（13 态 SRB+OSQP）+ CI-MPC 对照 + 分层 WBC（ROS1/Gazebo） | 155 |
-| legged_control | qiayuanl legged_control：OCS2 质心 NMPC + WBC + 接触 KF（A1/Aliengo/Go1；ROS1；已停止维护） | 145 |
-
-**控制/MPC**（1 个）
-
-| 项目 | 说明 | 文件数 |
-|---|---|---|
-| legged_perceptive | qiayuanl legged_perceptive：legged_control 感知扩展（高程图+凸平面分解+感知增强 MPC；已停止维护） | 50 |
-
 ## 链接
 
 - URDF：<https://github.com/unitreerobotics/unitree_ros/tree/master/robots/a1_description>

@@ -59,8 +59,8 @@ title: 分享与转载规范
 学术或报告里引用本站，用这个格式：
 
 ```
-RoboWiki 编辑部. 《关节电机参数怎么读》[EB/OL].
-https://robowiki.github.io/learn/motor-specs, 2026-10-29.
+RoboWiki 编辑部. 《怎么用这个网站》[EB/OL].
+https://robowiki.github.io/learn/, 2026-10-30.
 ```
 
 数据类引用（参数表）建议同时写明**核对日期**，因为价格与固件版本会变。

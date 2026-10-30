@@ -22,13 +22,12 @@ title: Lite3
 
 <div class="rb-roles"><span class="rb-role"><b>官方描述/资产</b>4</span> <span class="rb-role"><b>官方 SDK</b>1</span> <span class="rb-role"><b>仿真</b>3</span> <span class="rb-role"><b>训练</b>7</span></div>
 
-**官方描述/资产**（4 个）
+**官方描述/资产**（3 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
 | <a href="https://github.com/fiveages-sim/robot-descriptions-quadruped" target="_blank" rel="noopener">robot-descriptions-quadruped</a> | 四足机型描述汇总（URDF/xacro/MJCF） | 180 |
 | <a href="https://github.com/fan-ziqi/rl_sar_zoo" target="_blank" rel="noopener">rl_sar_zoo</a> | RL-SAR 机型 zoo：URDF/MJCF 与策略集合 | 170 |
-| robot_mujoco | 多机型 MuJoCo 资产与场景 | 80 |
 | <a href="https://github.com/DeepRoboticsLab/deep_robotics_model" target="_blank" rel="noopener">deep_robotics_model</a> | 云深处机型模型与描述文件 | 18 |
 
 **官方 SDK**（1 个）
@@ -45,16 +44,12 @@ title: Lite3
 | <a href="https://github.com/fan-ziqi/robot_lab" target="_blank" rel="noopener">robot_lab</a> | robot_lab：IsaacLab 版多机型训练框架 | 369 |
 | <a href="https://github.com/ThunderMaxwell/m20_rl_isaacsim" target="_blank" rel="noopener">m20_rl_isaacsim</a> | M20 轮足 IsaacSim RL 工程 | 86 |
 
-**训练**（7 个）
+**训练**（3 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
-| unilab_new | 统一多机型 RL 实验框架（训练/评估/部署） | 1131 |
 | <a href="https://github.com/Farama-Foundation/Gymnasium" target="_blank" rel="noopener">Gymnasium</a> | Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考 | 457 |
-| fan_robotlab | robot_lab 的个人分支（多机型实验） | 308 |
 | <a href="https://github.com/fan-ziqi/rl_sar" target="_blank" rel="noopener">rl_sar</a> | RL-SAR：仿真到实机部署框架（多机型、含策略与 C++ 部署） | 170 |
-| fan_rlsar | RL-SAR 的个人分支（多机型实验） | 165 |
-| deep_rl | 云深处 RL 训练工程 | 133 |
 | <a href="https://github.com/DeepRoboticsLab/rl_training" target="_blank" rel="noopener">rl_training</a> | 云深处 RL 训练任务与配置 | 132 |
 
 ## 链接

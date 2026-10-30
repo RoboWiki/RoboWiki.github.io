@@ -30,13 +30,12 @@ title: G1
 
 <div class="rb-roles"><span class="rb-role"><b>官方描述/资产</b>3</span> <span class="rb-role"><b>官方 SDK</b>1</span> <span class="rb-role"><b>仿真</b>10</span> <span class="rb-role"><b>训练</b>19</span> <span class="rb-role"><b>工具/资料</b>8</span></div>
 
-**官方描述/资产**（3 个）
+**官方描述/资产**（2 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
 | <a href="https://github.com/ARISE-Initiative/robosuite" target="_blank" rel="noopener">robosuite_new</a> | robosuite：MuJoCo 操作仿真框架（arenas/robots/objects/tasks 模块化 MJCF 组合 + OSC 控制器 + 遥操作）——wuji 灵巧手操作任务与资源组合模型参考 | 535 |
 | <a href="https://github.com/fan-ziqi/rl_sar_zoo" target="_blank" rel="noopener">rl_sar_zoo</a> | RL-SAR 机型 zoo：URDF/MJCF 与策略集合 | 170 |
-| robot_mujoco | 多机型 MuJoCo 资产与场景 | 80 |
 
 **官方 SDK**（1 个）
 
@@ -44,37 +43,35 @@ title: G1
 |---|---|---|
 | <a href="https://github.com/GrayStars/g1-mujoco-ros2-nav-sim-G1-MuJoCo-ROS2-" target="_blank" rel="noopener">g1-mujoco-ros2-nav-sim-G1-MuJoCo-ROS2-</a> | G1 MuJoCo + ROS2 导航仿真 | 2200 |
 
-**仿真**（10 个）
+**仿真**（7 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
 | <a href="https://github.com/mujocolab/mjlab" target="_blank" rel="noopener">mjlab</a> | mjlab 1.6.0：MuJoCo Warp + PyTorch 的轻量 GPU 训练框架（manager-based MDP；G1 velocity/tracking 等任务；上游最新快照） | 410 |
-| mjlab_new | mjlab 新版：机型资产 + MuJoCo RL 任务 | 407 |
 | <a href="https://github.com/fan-ziqi/unitree_rl_mjlab" target="_blank" rel="noopener">unitree_rl_mjlab</a> | 宇树官方 mjlab 版 RL 工程：训练任务 + MuJoCo 部署（Go2/Go2W/G1） | 402 |
 | <a href="https://github.com/fan-ziqi/robot_lab" target="_blank" rel="noopener">robot_lab</a> | robot_lab：IsaacLab 版多机型训练框架 | 369 |
 | <a href="https://github.com/Renforce-Dynamics/genesislab" target="_blank" rel="noopener">genesislab</a> | GenesisLab：基于 Genesis 物理引擎的轻量腿足 RL 任务套件（RSL-RL / rl_games 集成）；envs / managers / components / engine 模块化分层，含 Go2 速度跟踪任务与  | 276 |
 | <a href="https://github.com/google-deepmind/mujoco_playground" target="_blank" rel="noopener">mujoco_playground</a> | DeepMind MuJoCo Playground：Go1/G1 环境与策略 | 243 |
 | <a href="https://github.com/yhx1203/parkour_mjlab" target="_blank" rel="noopener">parkour_mjlab</a> | Go2/G1 的 parkour 任务（mjlab）：Go2 PIE 深度跑酷训练 + sim2sim + 发布策略 | 64 |
-| matrix_zsibot | ZsiBot MATRiX 仿真平台源码快照的实现类子集（UE5 + MuJoCo + CARLA）：传感器声明、自定义/拼接场景、多机器人端口、相机与渲染协议、实景扫描 3DGS→PLY→MuJoCo proxy 流水线、G1 材质桥 | 46 |
+| <a href="https://github.com/unitreerobotics/unitree_mujoco" target="_blank" rel="noopener">unitree_mujoco</a> | 宇树官方 MuJoCo 仿真器与机型 XML（Go1/Go2/G1） | 10 |
 
-**训练**（19 个）
+**训练**（12 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
-| unilab_new | 统一多机型 RL 实验框架（训练/评估/部署） | 1131 |
-| lain_job | LLoco 技能式 RL 任务与部署（多机型） | 962 |
 | <a href="https://github.com/Tencent-Hunyuan/UniRL" target="_blank" rel="noopener">uni_rl</a> | 多机型统一 RL 训练框架（宇树全系） | 781 |
 | <a href="https://github.com/Farama-Foundation/Gymnasium" target="_blank" rel="noopener">Gymnasium</a> | Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考 | 457 |
 | <a href="https://github.com/koki67/unitree_rl_mjlab_go2w" target="_blank" rel="noopener">unitree_rl_mjlab_go2w</a> | Go2W 专用 mjlab RL 工程（含 Go2/G1 资产） | 383 |
 | <a href="https://github.com/ttktjmt/mjswan" target="_blank" rel="noopener">mjswan</a> | mjlab 可视化/仿真套件 | 379 |
-| fan_robotlab | robot_lab 的个人分支（多机型实验） | 308 |
-| gym_ex | legged_gym 系实验工程（多机型） | 306 |
+| <a href="https://github.com/lupinjia/LeggedGym-Ex" target="_blank" rel="noopener">LeggedGym-Ex</a> | legged_gym 扩展版：多机型训练环境与任务 | 305 |
+| <a href="https://github.com/Lain-Ego0/LainLab" target="_blank" rel="noopener">LainLab</a> | LainLab：mjlab 1.6 多厂商资产/任务/部署层（go2 skills 全套 + OpenDoge 自研；Apache-2.0） | 295 |
+| <a href="https://github.com/Djttt/kaiwu-rl" target="_blank" rel="noopener">kaiwu_rl</a> | 开悟 RL 工程（Go2/G1） | 284 |
+| <a href="https://github.com/project-instinct/InstinctMJ" target="_blank" rel="noopener">InstinctMJ</a> | InstinctMJ：G1 人形 mjlab 工程 | 220 |
 
-**工具/资料**（8 个）
+**工具/资料**（7 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
-| rc_old | ZEX-W 轮足旧版工程（含 Go1/G1 分支） | 954 |
 | <a href="https://github.com/YanjieZe/GMR" target="_blank" rel="noopener">GMR</a> | GMR：CPU 实时通用动作重定向器（多机型人形） | 303 |
 | <a href="https://github.com/amazon-far/TWIST2" target="_blank" rel="noopener">TWIST2</a> | TWIST2：基于 VR 的可扩展人形全身数据采集系统 | 186 |
 | <a href="https://github.com/Roboparty/UFO" target="_blank" rel="noopener">UFO</a> | UFO：G1 人形工程 | 154 |

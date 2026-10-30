@@ -46,7 +46,12 @@ def _eco_block(eco: dict | None) -> str:
         for r in ROLE_ORDER if r in roles)
     groups: dict[str, list] = {}
     for proj in eco.get("projects") or []:
+        # 本地工程与「通用 API 参考」不上页面：读者点不动、也说明不了这台机器
+        if not proj.get("url"):
+            continue
         groups.setdefault(proj["role"], []).append(proj)
+    if not groups:
+        return ""
 
     blocks = []
     for role in ROLE_ORDER:

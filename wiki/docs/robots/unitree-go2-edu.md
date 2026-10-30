@@ -34,49 +34,47 @@ Go2 家族有 AIR / PRO / X / EDU 四个版本，官网 2026-10-28 售价分别�
 
 <div class="rb-roles"><span class="rb-role"><b>官方描述/资产</b>3</span> <span class="rb-role"><b>官方 SDK</b>5</span> <span class="rb-role"><b>仿真</b>17</span> <span class="rb-role"><b>训练</b>23</span> <span class="rb-role"><b>部署</b>1</span> <span class="rb-role"><b>导航</b>3</span> <span class="rb-role"><b>控制/MPC</b>2</span> <span class="rb-role"><b>工具/资料</b>2</span></div>
 
-**官方描述/资产**（3 个）
+**官方描述/资产**（2 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
 | <a href="https://github.com/fiveages-sim/robot-descriptions-quadruped" target="_blank" rel="noopener">robot-descriptions-quadruped</a> | 四足机型描述汇总（URDF/xacro/MJCF） | 180 |
 | <a href="https://github.com/fan-ziqi/rl_sar_zoo" target="_blank" rel="noopener">rl_sar_zoo</a> | RL-SAR 机型 zoo：URDF/MJCF 与策略集合 | 170 |
-| robot_mujoco | 多机型 MuJoCo 资产与场景 | 80 |
 
-**官方 SDK**（5 个）
+**官方 SDK**（4 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
 | <a href="https://github.com/darshmenon/quadruped-robotics-stack" target="_blank" rel="noopener">quadruped-robotics-stack</a> | darshmenon/quadruped-robotics-stack：ROS2 + Gazebo + MuJoCo 四足工作区（PPO / CHAMP / NMPC 三后端，Go2 完整可用）；**本地参考，未纳入版本：405.2MB 超 | 2547 |
 | <a href="https://github.com/open-taggy/taggy" target="_blank" rel="noopener">taggy</a> | Go2 的 ROS2 bringup / 控制 / Gazebo 仿真（Taggy 巡逻机器人原型）：/cmd_vel↔Sport 桥接、unitree_go 与 unitree_api 消息定义、D435i 传感器 launch 与 Ga | 329 |
-| go2_unitree_ros2 | Unitree SDK2 的 ROS2 封装参考：低层 /lowcmd（200Hz + CRC32）与 Sport API /api/sport/request 双通道、运动/关节状态与手柄读取、IMU 发布 | 61 |
 | <a href="https://github.com/h-naderi/unitree-go2-slam-nav2" target="_blank" rel="noopener">unitree-go2-slam-nav2</a> | Go2 的 SLAM + Nav2 导航栈（ROS2） | 52 |
 | <a href="https://github.com/shahriar193/unitree_go2_edu_movement" target="_blank" rel="noopener">unitree_go2_edu_movement</a> | Go2 EDU 视觉对接流水线（unitree_sdk2py）：AprilTag 位姿解算 + 滑窗滤波 + 梯形速度规划 + 三模式停靠判据，含前视鱼眼内参与 DDS 收发范式 | 31 |
 
-**仿真**（17 个）
+**仿真**（12 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
-| legbot_lab_PPO | Legbot Lab PPO 分支：Isaac Lab 四足 RL 训练 + Sim2Real（含 Go2 资源；Apache-2.0） | 1066 |
 | <a href="https://github.com/facebookresearch/habitat-sim" target="_blank" rel="noopener">habitat-sim</a> | Meta habitat-sim 具身 AI 仿真引擎（C++：nav PathFinder/相机+鱼眼传感器栈/场景元数据）——H 组高级仿真、导航与传感器参考 | 746 |
 | <a href="https://github.com/arclab-hku/MGDP" target="_blank" rel="noopener">MGDP</a> | MGDP：通用深度感知四足运动控制（IsaacGym + Warp 深度传感器，跨机型迁移） | 573 |
 | <a href="https://github.com/mujocolab/mjlab" target="_blank" rel="noopener">mjlab</a> | mjlab 1.6.0：MuJoCo Warp + PyTorch 的轻量 GPU 训练框架（manager-based MDP；G1 velocity/tracking 等任务；上游最新快照） | 410 |
-| mjlab_new | mjlab 新版：机型资产 + MuJoCo RL 任务 | 407 |
 | <a href="https://github.com/fan-ziqi/unitree_rl_mjlab" target="_blank" rel="noopener">unitree_rl_mjlab</a> | 宇树官方 mjlab 版 RL 工程：训练任务 + MuJoCo 部署（Go2/Go2W/G1） | 402 |
 | <a href="https://github.com/fan-ziqi/robot_lab" target="_blank" rel="noopener">robot_lab</a> | robot_lab：IsaacLab 版多机型训练框架 | 369 |
 | <a href="https://github.com/Renforce-Dynamics/genesislab" target="_blank" rel="noopener">genesislab</a> | GenesisLab：基于 Genesis 物理引擎的轻量腿足 RL 任务套件（RSL-RL / rl_games 集成）；envs / managers / components / engine 模块化分层，含 Go2 速度跟踪任务与  | 276 |
+| <a href="https://github.com/ak1raljl/amp_go2" target="_blank" rel="noopener">amp_go2</a> | AMP Go2 基础复现：训练、参考动作、Sim2Sim 与 Sim2Real 流程 | 173 |
+| <a href="https://github.com/wertyuilife2/go2_rl_robotlab" target="_blank" rel="noopener">go2_rl_robotlab</a> | 基于 robot_lab 的 Go2 训练工程（IsaacLab） | 103 |
 
-**训练**（23 个）
+**训练**（14 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
 | <a href="https://github.com/Lxliam/legged_mpc_amp" target="_blank" rel="noopener">legged_mpc_amp</a> | legged_mpc_amp：NMPC+WBC 四足 AMP 数据生成器（BSD-3） | 3847 |
-| unilab_new | 统一多机型 RL 实验框架（训练/评估/部署） | 1131 |
-| lain_job | LLoco 技能式 RL 任务与部署（多机型） | 962 |
 | <a href="https://github.com/Tencent-Hunyuan/UniRL" target="_blank" rel="noopener">uni_rl</a> | 多机型统一 RL 训练框架（宇树全系） | 781 |
 | <a href="https://github.com/jindadu00/legged_robot_competition" target="_blank" rel="noopener">legged_robot_competition</a> | legged_robot_competition：基于 legged_gym 的 Go2 地形翻越比赛工程（无许可证，仅参考） | 505 |
 | <a href="https://github.com/Farama-Foundation/Gymnasium" target="_blank" rel="noopener">Gymnasium</a> | Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考 | 457 |
 | <a href="https://github.com/koki67/unitree_rl_mjlab_go2w" target="_blank" rel="noopener">unitree_rl_mjlab_go2w</a> | Go2W 专用 mjlab RL 工程（含 Go2/G1 资产） | 383 |
 | <a href="https://github.com/ttktjmt/mjswan" target="_blank" rel="noopener">mjswan</a> | mjlab 可视化/仿真套件 | 379 |
+| <a href="https://github.com/lupinjia/LeggedGym-Ex" target="_blank" rel="noopener">LeggedGym-Ex</a> | legged_gym 扩展版：多机型训练环境与任务 | 305 |
+| <a href="https://github.com/Lain-Ego0/LainLab" target="_blank" rel="noopener">LainLab</a> | LainLab：mjlab 1.6 多厂商资产/任务/部署层（go2 skills 全套 + OpenDoge 自研；Apache-2.0） | 295 |
 
 **部署**（1 个）
 

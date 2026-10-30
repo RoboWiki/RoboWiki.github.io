@@ -11,7 +11,6 @@ import ContributorGrid from '../components/ContributorGrid.vue'
 import RobotGrid from '../components/RobotGrid.vue'
 import SoftwareGrid from '../components/SoftwareGrid.vue'
 import ExplorerShell from '../components/ExplorerShell.vue'
-import LearnHub from '../components/LearnHub.vue'
 import PartRating from '../components/PartRating.vue'
 import './custom.css'
 import './part.css'
@@ -32,7 +31,6 @@ export default {
     app.component('RobotGrid', RobotGrid)
 app.component('SoftwareGrid', SoftwareGrid)
     app.component('ExplorerShell', ExplorerShell)
-    app.component('LearnHub', LearnHub)
-    app.component('PartRating', PartRating)
+        app.component('PartRating', PartRating)
   },
 } satisfies Theme

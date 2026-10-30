@@ -137,9 +137,9 @@ titleTemplate: false
         <span>读不到的许可标「未核对」，不猜</span>
       </a>
       <a class="rw-home-entry" href="/learn/">
-        <b>学习路线</b>
-        <p>三条有顺序的路线（会选型 / 搭得起来 / 进得了仿真）+ 成体系文章。</p>
-        <span>读完能做什么，写在每条路线的标题下</span>
+        <b>使用指南</b>
+        <p>这个站怎么读：来源等级怎么看、为什么有的是「—」、评分与筛选怎么用。</p>
+        <span>不写教程套路，只讲清数据的用法与边界</span>
       </a>
       <a class="rw-home-entry" href="/suppliers">
         <b>加工与采购 · {c['suppliers']} 家</b>

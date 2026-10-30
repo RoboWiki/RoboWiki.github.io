@@ -42,12 +42,11 @@ title: TRON 1
 | <a href="https://github.com/facebookresearch/habitat-sim" target="_blank" rel="noopener">habitat-sim</a> | Meta habitat-sim 具身 AI 仿真引擎（C++：nav PathFinder/相机+鱼眼传感器栈/场景元数据）——H 组高级仿真、导航与传感器参考 | 746 |
 | <a href="https://github.com/limxdynamics/tron1-rl-isaaclab" target="_blank" rel="noopener">tron1-rl-isaaclab</a> | TRON1 IsaacLab RL 训练工程 | 79 |
 
-**训练**（4 个）
+**训练**（3 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
 | <a href="https://github.com/Farama-Foundation/Gymnasium" target="_blank" rel="noopener">Gymnasium</a> | Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考 | 457 |
-| gym_ex | legged_gym 系实验工程（多机型） | 306 |
 | <a href="https://github.com/lupinjia/LeggedGym-Ex" target="_blank" rel="noopener">LeggedGym-Ex</a> | legged_gym 扩展版：多机型训练环境与任务 | 305 |
 | <a href="https://github.com/limxdynamics/tron1-rl-deploy-python" target="_blank" rel="noopener">tron1-rl-deploy-python</a> | TRON1 Python 部署与策略文件 | 75 |
 
