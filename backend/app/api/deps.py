@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import time
 from collections import defaultdict, deque
-from typing import Annotated
+from typing import Annotated, Optional
 
 from fastapi import Depends, Header, HTTPException, Request, status
 from sqlmodel import Session, select
@@ -64,7 +64,7 @@ def optional_user(
 
 
 CurrentUser = Annotated[User, Depends(current_user)]
-MaybeUser = Annotated[User | None, Depends(optional_user)]
+MaybeUser = Annotated[Optional[User], Depends(optional_user)]
 
 
 # ── 简易限流（进程内；多副本部署要换 Redis）─────────────────────────────────

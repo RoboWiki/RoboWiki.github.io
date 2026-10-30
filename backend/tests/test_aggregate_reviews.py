@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import json
+import os
 import pathlib
 import subprocess
 import sys
@@ -69,7 +70,8 @@ def run(issues) -> dict:
         out = pathlib.Path(td) / "out"
         r = subprocess.run([sys.executable, str(ROOT / "pipeline" / "ingest_reviews.py"),
                             str(p), "--out", str(out)],
-                           capture_output=True, text=True, encoding="utf-8")
+                           capture_output=True, text=True, encoding="utf-8",
+                           env={**os.environ, "PYTHONIOENCODING": "utf-8"})
         assert r.returncode == 0, r.stdout + r.stderr
         snap = json.loads((out / "reviews_snapshot.json").read_text(encoding="utf-8"))
         errs = json.loads((out / "reviews_errors.json").read_text(encoding="utf-8"))

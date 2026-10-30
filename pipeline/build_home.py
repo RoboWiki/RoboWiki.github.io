@@ -9,7 +9,7 @@
     1 定位一句话 + 三个动作按钮 + 五个数字
     2 按需求走：六个任务入口（多方评审共识：新用户不按分类思考，按任务思考）
     3 这个站在做什么：三块（信息底稿 / 开源生态 / 真实评价）
-    4 六个资源入口（部件 / 整机 / 软件 / 指南 / 加工 / 贡献者）
+    4 六个资源入口（部件 / 整机 / 软件 / 学习 / 加工 / 贡献者）
     5 口径速查（A/B/C、null、扭矩端口径、评分规则、价格日期）
     6 按品类
     7 底部：方法与来源 / 投稿 / 转载规范 / 贡献者
@@ -33,13 +33,31 @@ def _count_software(root: pathlib.Path) -> int:
         return 0
 
 
+def _eco_ids(root: pathlib.Path) -> set:
+    """有开源生态条目的 ecosystem_id 集合（与 build_robots 的 _eco 同源）。"""
+    f = root / "data" / "robot_ecosystem.json"
+    if not f.exists():
+        return set()
+    try:
+        robots = json.loads(f.read_text(encoding="utf-8")).get("robots") or {}
+    except Exception:
+        return set()
+    return {k for k, v in robots.items() if (v or {}).get("count")}
+
+
 def _counts(root: pathlib.Path) -> dict:
     rows = []
     for f in (root / "data" / "catalog").glob("*/*.json"):
         rows += json.loads(f.read_text(encoding="utf-8"))
     robots = 0
+    robots_with_eco = 0
+    eco_ids = _eco_ids(root)
     for f in (root / "data" / "robots").glob("*.json"):
-        robots += len(json.loads(f.read_text(encoding="utf-8")))
+        data = json.loads(f.read_text(encoding="utf-8"))
+        robots += len(data)
+        robots_with_eco += sum(
+            1 for r in data
+            if ((r.get("specs") or {}).get("ecosystem_id") or "") in eco_ids)
     try:
         sups = len(json.loads((root / "data" / "suppliers.json").read_text(encoding="utf-8")))
     except Exception:
@@ -52,6 +70,7 @@ def _counts(root: pathlib.Path) -> dict:
         "cats_total": len(cats),
         "tier_a": sum(1 for r in rows if r.get("source_tier") == "A"),
         "robots": robots,
+        "robots_with_eco": robots_with_eco,
         "software": _count_software(root),
         "suppliers": sups,
         "cat_rows": sorted(
@@ -70,6 +89,10 @@ def build(out_dir: pathlib.Path, root: pathlib.Path) -> None:
         f'<span>{n or "待收录"}</span><em>{hint}</em></a>'
         for cid, name, hint, n in c["cat_rows"]
     )
+
+    eco_n = c["robots_with_eco"]
+    eco_note = (f"{eco_n} 台标了「生态 ×N」，点进去看每个环节是谁"
+                if eco_n else "有开源生态的整机标「生态 ×N」，点进去看每个环节是谁")
 
     md = f'''---
 layout: page
@@ -160,7 +183,7 @@ titleTemplate: false
       <a class="rw-home-entry" href="/robots">
         <b>整机库 · {c['robots']} 台</b>
         <p>比方案与生态：几自由度、带不带算力、有没有开源描述与训练工程。</p>
-        <span>11 台标了「生态 ×N」，点进去看每个环节是谁</span>
+        <span>{eco_note}</span>
       </a>
       <a class="rw-home-entry" href="/software">
         <b>软件库 · {c['software']} 个</b>
@@ -168,9 +191,9 @@ titleTemplate: false
         <span>读不到的许可标「未核对」，不猜</span>
       </a>
       <a class="rw-home-entry" href="/learn/">
-        <b>使用指南</b>
-        <p>这个站怎么读：来源等级怎么看、为什么有的是「—」、评分与筛选怎么用。</p>
-        <span>不写教程套路，只讲清数据的用法与边界</span>
+        <b>学习</b>
+        <p>怎么用这个站、怎么读参数口径，也有从入门到选型的学习路线。</p>
+        <span>先讲数据的用法与边界，再讲怎么动手</span>
       </a>
       <a class="rw-home-entry" href="/suppliers">
         <b>加工与采购 · {c['suppliers']} 家</b>

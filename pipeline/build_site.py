@@ -215,16 +215,17 @@ def tier_badge(t: str, verified) -> str:
 
 
 
-#: id -> 型号页地址。main() 里填；表格渲染时用它把型号变成可点的链接。
+#: id -> 型号页地址。main() 每轮构建开头清空后填；表格渲染时用它把型号变成可点的链接。
+#: 留在模块级是因为填充方和消费方都在 main() 里 — mdl() 本身不查它，
+#: 表格渲染函数可以脱离模块状态单测。
 HREF: dict[str, str] = {}
 
 
-def mdl(p: dict) -> str:
+def mdl(p: dict, href: str | None = None) -> str:
     """型号单元格：有页面就链接，没有就纯文本。"""
-    href = HREF.get(p["id"])
     return f"[**{p['model']}**]({href})" if href else f"**{p['model']}**"
 
-def actuator_table(items: list[dict]) -> str:
+def actuator_table(items: list[dict], href: dict[str, str] | None = None) -> str:
     head = ("| 型号 | 峰值 τ N·m | 额定 τ N·m | 减速比 | 空载 rpm | 质量 kg "
             "| 转子惯量 kg·m² | 价格 ¥ | 来源 |\n"
             "|---|---|---|---|---|---|---|---|---|")
@@ -232,7 +233,7 @@ def actuator_table(items: list[dict]) -> str:
     for p in sorted(items, key=lambda r: -(r["specs"].get("tau_peak_Nm") or 0)):
         s = p["specs"]
         lines.append(
-            f"| {mdl(p)} | {num(s.get('tau_peak_Nm'))} | {num(s.get('tau_rated_Nm'))} "
+            f"| {mdl(p, (href or {}).get(p['id']))} | {num(s.get('tau_peak_Nm'))} | {num(s.get('tau_rated_Nm'))} "
             f"| {num(s.get('gear'))} | {num(s.get('speed_noload_rpm'))} | {num(s.get('mass_kg'))} "
             f"| {num(s.get('armature_kgm2'))} | "
             f"{'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
@@ -240,12 +241,12 @@ def actuator_table(items: list[dict]) -> str:
     return "\n".join(lines)
 
 
-def generic_table(items: list[dict], cat: str) -> str:
+def generic_table(items: list[dict], cat: str, href: dict[str, str] | None = None) -> str:
     if cat == "controller_high":
         head = "| 型号 | SoC | CUDA | NPU TOPS | 内存 GB | 峰值 W | 价格 ¥ | 来源 |\n|---|---|---|---|---|---|---|---|"
         def row(p):
             s = p["specs"]
-            return (f"| {mdl(p)} | {s.get('soc') or '—'} | {s.get('cuda_cores') or '—'} "
+            return (f"| {mdl(p, (href or {}).get(p['id']))} | {s.get('soc') or '—'} | {s.get('cuda_cores') or '—'} "
                     f"| {num(s.get('npu_tops'))} | {num(s.get('ram_gb'))} | {num(s.get('power_max_w'))} "
                     f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
                     f"| {tier_badge(p['source_tier'], p['verified'])} |")
@@ -253,7 +254,7 @@ def generic_table(items: list[dict], cat: str) -> str:
         head = "| 型号 | MCU | FOC 轴数 | CAN | 电流环 kHz | 最高 V | 价格 ¥ | 来源 |\n|---|---|---|---|---|---|---|---|"
         def row(p):
             s = p["specs"]
-            return (f"| {mdl(p)} | {s.get('mcu') or '—'} | {s.get('foc_axes') or '—'} "
+            return (f"| {mdl(p, (href or {}).get(p['id']))} | {s.get('mcu') or '—'} | {s.get('foc_axes') or '—'} "
                     f"| {(str(s.get('can') or '—')) + (' FD' if s.get('canfd') else '')} "
                     f"| {num(s.get('current_loop_khz'))} | {num(s.get('voltage_max_V'))} "
                     f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
@@ -263,7 +264,7 @@ def generic_table(items: list[dict], cat: str) -> str:
                 "|---|---|---|---|---|---|---|---|")
         def row(p):
             s = p["specs"]
-            return (f"| {mdl(p)} | {p.get('subtype_label') or p['subtype']} "
+            return (f"| {mdl(p, (href or {}).get(p['id']))} | {p.get('subtype_label') or p['subtype']} "
                     f"| {num(s.get('channels'))} | {num(s.get('frequency_ghz'))} "
                     f"| {num(s.get('control_range_m'))} | {s.get('protocol') or '—'} "
                     f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
@@ -274,7 +275,7 @@ def generic_table(items: list[dict], cat: str) -> str:
         def row(p):
             s = p["specs"]
             fd = "—" if s.get("canfd") is None else ("是" if s.get("canfd") else "否")
-            return (f"| {mdl(p)} | {p.get('subtype_label') or p['subtype']} "
+            return (f"| {mdl(p, (href or {}).get(p['id']))} | {p.get('subtype_label') or p['subtype']} "
                     f"| {num(s.get('can'))} | {fd} | {num(s.get('can_speed_mbps'))} "
                     f"| {s.get('iface') or '—'} "
                     f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
@@ -285,7 +286,7 @@ def generic_table(items: list[dict], cat: str) -> str:
             s = p["specs"]
             keys = ("bits", "depth_range_m", "range_m", "fps", "odr_hz", "iface")
             kv = "、".join(f"{k}={num(s[k])}" for k in keys if s.get(k))
-            return (f"| {mdl(p)} | {p.get('subtype_label') or p['subtype']} "
+            return (f"| {mdl(p, (href or {}).get(p['id']))} | {p.get('subtype_label') or p['subtype']} "
                     f"| {s.get('iface') or '—'} | {kv or '—'} "
                     f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
                     f"| {tier_badge(p['source_tier'], p['verified'])} |")
@@ -321,7 +322,7 @@ def main() -> None:
         (OUT / "parts" / c).mkdir(parents=True, exist_ok=True)
 
     # ── 每个型号独立一页 ─────────────────────────────────────────────
-    # 为什么要铺开成 191 页：这样「AK80-9 V3 到底怎么样」才有能分享、能被搜到、
+    # 为什么要铺开成几百页：这样「AK80-9 V3 到底怎么样」才有能分享、能被搜到、
     # 能挂讨论的落点。厂商页只适合横向比，单型号的实测必须落在单型号页上。
     seen_slug: dict[str, str] = {}
     slugs: dict[str, str] = {}
@@ -336,7 +337,10 @@ def main() -> None:
     for r in rows:
         slugs[r["id"]] = part_slug(r["id"], r["vendor"], r["model"], seen_slug)
 
-    # 表格里的型号要能点进型号页
+    # 表格里的型号要能点进型号页。
+    # 先清空：HREF 是模块级容器，测试在同一进程里跑第二遍构建时
+    # 不能带着上一轮残留的 id -> 链接映射。
+    HREF.clear()
     for r in rows:
         HREF[r["id"]] = f'/parts/{r["category"]}/{slugs[r["id"]]}'
 
@@ -368,8 +372,8 @@ def main() -> None:
 
     offers: list[dict] = load_offers()
 
-    def offer_of(r: dict) -> dict | None:
-        """给一个零件找**当前最便宜且条件齐全**的优惠。
+    def offer_of(r: dict) -> list[dict]:
+        """一个零件当前可用的全部优惠（按有效价升序），没有则空列表。
 
         优先级：具体 part_id 的 > 厂商级的；有明确优惠价的 > 只有折扣比例的。
         折扣比例（如教育优惠 9 折）用原价折算成有效价，卡片才能显示一个数。
@@ -496,7 +500,7 @@ def main() -> None:
             txt = txt.rstrip("0").rstrip(".")
         return "¥" + txt
 
-    # ── 生成 191 个型号页 ─────────────────────────────────────────────
+    # ── 每个型号一页（数量随目录走，不写死） ──────────────────────────
     SPEC_LABEL = {
         "tau_peak_Nm": "峰值扭矩 (N·m)", "tau_rated_Nm": "额定扭矩 (N·m)",
         "tau_basis": "扭矩口径", "speed_noload_rpm": "空载转速 (rpm)",
@@ -864,8 +868,6 @@ def main() -> None:
             out.append(("暂无建议", "这个型号的关键参数还缺得多，先补齐再谈用法。"))
         return out
 
-    METRIC_CLASS = {"good": "pm-good", "warn": "pm-warn", "bad": "pm-bad", "na": "pm-na"}
-
     def variants(r: dict) -> list[dict]:
         """同机座变体：同厂商 + 同外径的其他型号。
 
@@ -1118,21 +1120,8 @@ def main() -> None:
     n_rated = sum(1 for r in rows if (r.get("specs") or {}).get("tau_rated_Nm"))
     vendors = sorted({r["vendor"] for r in rows if r["category"] == "actuator"})
 
-    # ── 首页：这是社区，不是说明书 ──────────────────────────────────────
-    n_rated_pct = round(n_rated / n_act * 100) if n_act else 0
-    n_arm_pct = round(n_arm / n_act * 100) if n_act else 0
-    cat_cards = "\n".join(
-        f'<a class="hc" href="/parts/{c}/"><b>{name}</b>'
-        f'<span>{sum(1 for r in rows if r["category"] == c) or "待收录"}</span>'
-        f'<em>{desc}</em></a>'
-        for c, name, desc in CATS)
-    try:
-        n_sup = len(json.loads((ROOT / "data" / "suppliers.json").read_text(encoding="utf-8")))
-    except Exception:
-        n_sup = 0
-    n_tier_a = sum(1 for r in rows if r.get("source_tier") == "A")
-
-    # 首页：结构在 pipeline/build_home.py（定位 + 三件事 + 入口 + 口径速查）
+    # ── 首页与竞赛页：结构在 pipeline/build_home.py / build_competitions.py ──
+    # 这里不再自己拼首页卡片（上一版算好的统计量从没被用上，已删）。
     build_home(OUT, ROOT)
     build_competitions(OUT, ROOT)
 
@@ -1160,9 +1149,9 @@ def main() -> None:
 
 ## 跨厂商速览（按峰值扭矩降序，前 40）
 
-{actuator_table(sorted(items, key=lambda r: -(r['specs'].get('tau_peak_Nm') or 0))[:40])}
+{actuator_table(sorted(items, key=lambda r: -(r['specs'].get('tau_peak_Nm') or 0))[:40], HREF)}
 
-> 完整 147 行在[选型台](/)按任意列排序。这里只放前 40，因为一张表读不完等于没读。
+> 完整表在[部件库](/catalog)按任意列排序。这里只放前 40，因为一张表读不完等于没读。
 """, encoding="utf-8")
 
             # 每家一页
@@ -1179,7 +1168,7 @@ def main() -> None:
 
 共 **{len(sub)}** 型。数据等级 `A` 表示来自厂商手册/规格书且已逐项核对过。
 {note}
-{actuator_table(sub)}
+{actuator_table(sub, HREF)}
 
 ## 这一页的讨论
 
@@ -1193,7 +1182,7 @@ def main() -> None:
 
 {desc}，共 **{len(items)}** 件。
 
-{generic_table(items, c)}
+{generic_table(items, c, HREF)}
 
 {"> 来源等级见行末徽章：`A` = 逐项核对过官方手册，`B` = 公开网页。采购前请回原厂页面确认。" if c in ("remote_controller", "module") else "> 这些行是 `B` 级（来自公开文档/官网，未逐项核对），采购前请回原厂页面确认。"}
 """, encoding="utf-8")
@@ -1216,11 +1205,8 @@ def main() -> None:
                     else "、".join(map(str, it[c]))) for c in cols) + " |")
         return head + "\n" + "\n".join(body)
 
-    field_rows = [{"field": k, **v} for k, v in FIELD_SEMANTICS.items()]
-    section_redlines = rows3(RED_LINES, ["id", "name", "why"])
     section_conv = rows3(CONVERSIONS, ["from", "to", "formula"])
     section_comp = rows3(COMPARABILITY, ["grade", "name", "condition"])
-    section_field = rows3(field_rows, ["field", "label", "meaning"])
     section_ask = "\n".join(f"{i}. {q}" for i, q in enumerate(SUPPLIER_QUESTIONS, 1))
 
     # 红线做成卡片：6 列表格在小屏上没法读，而这一节是最该被读完的
@@ -1480,14 +1466,6 @@ html.dark .rl-th {{ color: #e0b159; }}
                    ensure_ascii=False, separators=(",", ":")),
         encoding="utf-8")
     # 加工与采购（原「供应商」）：页头由 ExplorerShell 提供
-    try:
-        sups = json.loads((ROOT / "data" / "suppliers.json").read_text(encoding="utf-8"))
-    except Exception:
-        sups = []
-    (pub / "suppliers.json").write_text(
-        json.dumps({"count": len(sups), "suppliers": sups},
-                   ensure_ascii=False, separators=(",", ":")),
-        encoding="utf-8")
     (OUT / "suppliers.md").write_text("""---
 title: 加工与采购
 layout: page
@@ -1648,10 +1626,6 @@ outline: false
             continue
         sidebar["/parts/"][0]["items"].append(
             {"text": name, "link": f"/parts/{c}/"})
-
-    sem = json.loads((DATA / ".." / "backend" / "app" / "api" / "routes" /
-                      "_semantics_cache.json").read_text(encoding="utf-8")) \
-        if (ROOT / "backend" / "app" / "api" / "routes" / "_semantics_cache.json").exists() else None
 
     (OUT / ".vitepress").mkdir(parents=True, exist_ok=True)
     (OUT / ".vitepress" / "sidebar.json").write_text(

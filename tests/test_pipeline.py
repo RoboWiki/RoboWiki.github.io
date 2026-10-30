@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import os
 import pathlib
+import re
 import subprocess
 import sys
 
@@ -123,6 +124,27 @@ def test_part_slug_is_stable_and_ascii():
     assert c != a
 
 
+# ── 表格链接 ────────────────────────────────────────────────────────────
+def test_table_builders_take_explicit_href():
+    """actuator_table / generic_table 的链接来源是参数，不是模块级全局。
+
+    旧实现 mdl() 自己查全局 HREF —— 构建顺序一换（先渲表后填表），
+    型号列就静默退化成纯文本，没有任何报错。显式传参把这种错误变成 TypeError。
+    """
+    from pipeline.build_site import actuator_table, generic_table
+    items = [{
+        "id": "v-m1", "vendor": "V", "model": "M1", "category": "actuator",
+        "subtype": "qdd", "source_tier": "A", "verified": True, "price_cny": None,
+        "specs": {"tau_peak_Nm": 10},
+    }]
+    bare = actuator_table(items)
+    assert "**M1**" in bare, "型号名总得在"
+    assert "](" not in bare, "没传 href 时不该出现链接"
+    linked = actuator_table(items, {"v-m1": "/parts/actuator/v-m1"})
+    assert "[**M1**](/parts/actuator/v-m1)" in linked
+    g = generic_table(items, "imu", {"v-m1": "/parts/imu/v-m1"})
+    assert "[**M1**](/parts/imu/v-m1)" in g
+
 # ── build_site 回归 ───────────────────────────────────────────────────────
 @pytest.fixture(scope="module")
 def built():
@@ -155,23 +177,95 @@ def test_part_pages_generated(built):
     assert len(pages) >= 40, f"只生成了 {len(pages)} 个型号页"
 
 
-def test_no_dead_internal_links(built):
-    """站内链接指向不存在的页面 = 构建后 404。这里扫 md 里的绝对路径。"""
-    import re
-    exists = set()
+# ── 死链 ────────────────────────────────────────────────────────────────
+# 为什么要三套正则：
+#   1. markdown 链接 ](...)      —— 手写页与生成表格
+#   2. HTML 里的 href="..."      —— 型号页的 <a class="hc" href="/parts/...">、
+#      资料表、build_home / build_competitions 拼出的卡片，以前完全没人扫
+#   3. Vue 模板里的静态 href     —— :to / 动态绑定管不了，但写死的
+#      href="/xxx" 与 to="/xxx" 一旦改了路由就是纯 404
+_MD_LINK = re.compile(r"\]\((/[^)\s#]+)")
+_HTML_HREF = re.compile(r"""href=["'](/[^"'#]+)["']""")
+# 单引号 or 双引号包着的站内绝对路径；查询串在断言前统一剥掉
+_STATIC_EXT = (".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg", ".pdf",
+               ".json", ".css", ".js", ".ico", ".woff", ".woff2", ".mp4")
+
+
+def _page_paths(built: pathlib.Path) -> set[str]:
+    """站点上"存在"的页面路径集合：每个 .md 贡献无后缀与 index 两种形态。"""
+    exists: set[str] = set()
     for p in built.rglob("*.md"):
+        if ".vitepress" in p.parts:
+            continue
         rel = p.relative_to(built).as_posix()
-        exists.add("/" + rel[:-3])          # 去掉 .md
-        exists.add("/" + rel)
-    bad = []
+        no_ext = "/" + rel[:-3]                      # /parts/actuator/dji
+        exists.add(no_ext)
+        if rel.endswith("/index.md"):
+            exists.add("/" + rel[:-len("/index.md")])  # /parts/actuator
+        if rel == "index.md":
+            exists.add("/")
+    return exists
+
+
+def _is_page_link(link: str) -> bool:
+    """只校验站内**页面**链接。
+
+    排除：查询串（/catalog?category=imu 指向同一页）、静态资源
+    （/parts/xxx.jpg 由 public/ 提供）、以及 /api /console 这类
+    不走文档站路由的前缀 —— 它们的存在性由后端测试管。
+    """
+    path = link.split("?", 1)[0].rstrip("/") or "/"
+    if path.startswith(("/api", "/console")):
+        return False
+    if path.lower().endswith(_STATIC_EXT):
+        return False
+    return True
+
+
+def _check_link(exists: set[str], link: str) -> bool:
+    path = link.split("?", 1)[0].rstrip("/") or "/"
+    return path in exists
+
+
+def test_no_dead_internal_links(built):
+    """生成的 .md 里所有站内页面链接（markdown 链接 + HTML href）都必须有落点。
+
+    旧版只扫 `](...)` 且只看 /parts /learn /api /console 前缀，
+    型号页 hero 卡、首页入口卡、竞赛页卡片里的 href="/xxx" 一个都没测。
+    """
+    exists = _page_paths(built)
+    bad: list[str] = []
     for p in built.rglob("*.md"):
-        for m in re.finditer(r"\]\((/[^)#\s]+)", p.read_text(encoding="utf-8")):
-            link = m.group(1).rstrip("/")
-            # 图片等静态资源不算站内页面链接（整机详情页会嵌 /parts/xxx.jpg）
-            if link.lower().endswith((".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg", ".pdf")):
+        if ".vitepress" in p.parts:
+            continue
+        text = p.read_text(encoding="utf-8")
+        links = [m.group(1) for m in _MD_LINK.finditer(text)]
+        links += [m.group(1) for m in _HTML_HREF.finditer(text)]
+        for link in links:
+            if not _is_page_link(link):
                 continue
-            if link.startswith(("/api", "/console", "/parts/", "/learn")) and link not in exists:
-                # /parts/<品类>/<slug> 与页面对应；允许带 .html
-                if link + ".md" not in exists and link + "/index.md" not in exists:
-                    bad.append(f"{p.name} -> {link}")
-    assert not bad, "死链：" + "; ".join(bad[:8])
+            if not _check_link(exists, link):
+                bad.append(f"{p.relative_to(built).as_posix()} -> {link}")
+    assert not bad, "死链：" + "; ".join(bad[:10])
+
+
+def test_no_dead_links_in_vue_components():
+    """Vue 组件里写死的站内 href/to 路径，必须是文档站里真实存在的页面。
+
+    :to / 动态绑定管不了（值在运行时），但模板里写死的字符串能管。
+    这份清单的路径若改名，组件就得跟着改 —— 测试就是那条保险丝。
+    """
+    comp_dir = ROOT / "wiki" / "docs" / ".vitepress" / "components"
+    if not comp_dir.exists():
+        pytest.skip("没有组件目录")
+    exists = _page_paths(ROOT / "wiki" / "docs")
+    bad: list[str] = []
+    vue_href = re.compile(r"""(?:href|to)=["'](/[^"'#{}:]+)["']""")
+    for f in comp_dir.glob("*.vue"):
+        for m in vue_href.finditer(f.read_text(encoding="utf-8")):
+            link = m.group(1)
+            if not _is_page_link(link):
+                continue
+            if not _check_link(exists, link):
+                bad.append(f"{f.name} -> {link}")
+    assert not bad, "组件里的死链：" + "; ".join(bad[:10])

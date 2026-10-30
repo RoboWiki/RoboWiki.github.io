@@ -87,7 +87,7 @@ titleTemplate: false
       <a class="rw-home-entry" href="/robots">
         <b>整机库 · 21 台</b>
         <p>比方案与生态：几自由度、带不带算力、有没有开源描述与训练工程。</p>
-        <span>11 台标了「生态 ×N」，点进去看每个环节是谁</span>
+        <span>12 台标了「生态 ×N」，点进去看每个环节是谁</span>
       </a>
       <a class="rw-home-entry" href="/software">
         <b>软件库 · 22 个</b>
@@ -95,9 +95,9 @@ titleTemplate: false
         <span>读不到的许可标「未核对」，不猜</span>
       </a>
       <a class="rw-home-entry" href="/learn/">
-        <b>使用指南</b>
-        <p>这个站怎么读：来源等级怎么看、为什么有的是「—」、评分与筛选怎么用。</p>
-        <span>不写教程套路，只讲清数据的用法与边界</span>
+        <b>学习</b>
+        <p>怎么用这个站、怎么读参数口径，也有从入门到选型的学习路线。</p>
+        <span>先讲数据的用法与边界，再讲怎么动手</span>
       </a>
       <a class="rw-home-entry" href="/suppliers">
         <b>加工与采购 · 149 家</b>

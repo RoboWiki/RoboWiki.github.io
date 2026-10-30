@@ -114,7 +114,10 @@ export default defineConfig({
     },
   },
   head: [
+    // 现代浏览器优先 PNG，老的回退 ico；apple-touch-icon 给 iOS 主屏
+    ['link', { rel: 'icon', type: 'image/png', href: '/icon-192.png' }],
     ['link', { rel: 'icon', href: '/favicon.ico' }],
+    ['link', { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' }],
     ['meta', { name: 'theme-color', content: '#0078d4' }],
   ],
 

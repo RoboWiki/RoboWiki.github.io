@@ -96,7 +96,7 @@ const people = computed(() => snap.value?.contributors ?? [])
 .cw-list { border: 1px solid var(--vp-c-divider); border-radius: 14px; padding: 1rem 1.1rem 1.2rem; }
 .cw-list header h2 { font-size: 0.95rem; font-weight: 700; margin: 0 0 0.25rem; border: none; padding: 0; color: var(--vp-c-text-1); }
 .cw-list header p { margin: 0 0 0.9rem; font-size: 0.76rem; color: var(--vp-c-text-3); }
-.cw-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.55rem; }
+.cw-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.55rem; }
 .cw-card { display: flex; align-items: center; gap: 0.7rem; padding: 0.6rem 0.7rem;
   border: 1px solid var(--vp-c-divider); border-radius: 10px; background: var(--vp-c-bg);
   transition: border-color 0.15s, background 0.15s; }

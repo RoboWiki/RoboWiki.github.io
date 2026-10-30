@@ -88,7 +88,7 @@ const NAV = [
   { key: 'admin', to: '/admin', label: '后台' },
 ]
 const EXTERNAL = [
-  { href: '/catalog', label: '机器人部件库 ↗' },
+  { href: '/catalog', label: '部件库 ↗' },
   { href: '/semantics', label: '参数口径 ↗' },
 ]
 

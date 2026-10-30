@@ -161,11 +161,11 @@ html.dark .part-photo { background: #f4f4f4; }
 .pm-note { color: var(--vp-c-text-3); font-size: 0.72rem; line-height: 1.6; }
 
 /* 判据着色：warn 琥珀、bad 红。颜色只用来标「该停下来看」，不做装饰。 */
-.pm-warn .pm-v { color: #a06a00; }
-.pm-bad .pm-v { color: #c02b2b; }
+.pm-warn .pm-v { color: var(--rw-accent-1); }
+.pm-bad .pm-v { color: var(--rw-danger); }
 .pm-na .pm-v { color: var(--vp-c-text-3); font-weight: 400; }
-html.dark .pm-warn .pm-v { color: #e0b159; }
-html.dark .pm-bad .pm-v { color: #f48771; }
+html.dark .pm-warn .pm-v { color: var(--rw-accent-1); }
+html.dark .pm-bad .pm-v { color: var(--rw-danger); }
 
 @media (max-width: 720px) {
   .pm-row { grid-template-columns: 1fr; gap: 0.15rem; }
@@ -206,8 +206,8 @@ html.dark .pm-bad .pm-v { color: #f48771; }
   background:
     linear-gradient(to right, var(--vp-c-bg) 30%, transparent) local,
     linear-gradient(to right, transparent, var(--vp-c-bg) 70%) local,
-    linear-gradient(to right, rgba(0,0,0,0.10), transparent 18px) scroll,
-    linear-gradient(to left, rgba(0,0,0,0.10), transparent 18px) scroll;
+    linear-gradient(to right, rgba(127,127,127,0.22), transparent 18px) scroll,
+    linear-gradient(to left, rgba(127,127,127,0.22), transparent 18px) scroll;
   background-repeat: no-repeat;
   background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
   background-position: 0 0, 100% 0, 0 0, 100% 0;

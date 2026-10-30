@@ -83,9 +83,9 @@ function onSearch(e: Event) {
 
     <div class="ex-bar">
       <input class="ex-search" type="search" :placeholder="searchPlaceholder || '搜索'"
-             :value="q" @input="onSearch" />
+             :value="q" @input="onSearch" aria-label="搜索列表" />
       <slot name="bar" />
-      <select v-if="sorts && sorts.length" class="ex-sel"
+      <select v-if="sorts && sorts.length" class="ex-sel" aria-label="排序方式"
               :value="sortKey" @change="emit('update:sortKey', ($event.target as HTMLSelectElement).value)">
         <option v-for="s in sorts" :key="s.k" :value="s.k">{{ s.label }}</option>
       </select>
@@ -104,9 +104,9 @@ function onSearch(e: Event) {
     </div>
     <slot name="facets-extra" />
 
-    <div class="ex-grid">
+    <div class="ex-grid" aria-live="polite">
       <slot />
     </div>
-    <p v-if="!count" class="ex-empty">{{ emptyText }}</p>
+    <p v-if="!count" class="ex-empty" role="status">{{ emptyText }}</p>
   </div>
 </template>

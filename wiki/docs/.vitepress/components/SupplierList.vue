@@ -110,7 +110,7 @@ const rows = computed(() => {
         </dl>
         <p v-if="hasNote(s)" class="ex-sub" :class="{ 'note-open': expanded === s.id }"
            style="border-left:2px solid var(--vp-c-divider); padding-left:0.55rem; line-height:1.75; cursor:pointer"
-           @click="expanded = expanded === s.id ? null : s.id">
+           role="button" tabindex="0" :aria-expanded="expanded === s.id" @click="expanded = expanded === s.id ? null : s.id" @keydown.enter.prevent="expanded = expanded === s.id ? null : s.id" @keydown.space.prevent="expanded = expanded === s.id ? null : s.id">
           {{ s.notes }}
         </p>
         <div class="ex-foot">

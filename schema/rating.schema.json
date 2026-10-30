@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/RoboWiki/RoboWiki.github.io/schema/rating.schema.json",
   "title": "评分（一对一的票）",
-  "description": "由 [评分] issue 聚合而来，也用于 POST /api/ratings 的入参。v2 增加四维分数与使用工况。",
+  "description": "由 [评分] issue 聚合而来，也用于 POST /api/ratings 的入参。v2 增加维度分数与使用工况；dims 含五个键（spec_trust / build / docs / value / compat），部件类别决定实际用到哪些。",
   "type": "object",
   "required": ["score"],
   "additionalProperties": false,
@@ -21,7 +21,8 @@
         "spec_trust": { "type": "integer", "minimum": 1, "maximum": 5, "description": "参数可信度：手册数字与实际是否对得上" },
         "build": { "type": "integer", "minimum": 1, "maximum": 5, "description": "做工：外壳、端子、背隙、装配一致性" },
         "docs": { "type": "integer", "minimum": 1, "maximum": 5, "description": "文档与支持：手册、SDK、固件、厂家回复" },
-        "value": { "type": "integer", "minimum": 1, "maximum": 5, "description": "性价比：同等能力下贵不贵" }
+        "value": { "type": "integer", "minimum": 1, "maximum": 5, "description": "性价比：同等能力下贵不贵" },
+        "compat": { "type": "integer", "minimum": 1, "maximum": 5, "description": "兼容与生态：驱动、固件、社区资料好不好接（主控板类）" }
       }
     },
     "own_hardware": {
