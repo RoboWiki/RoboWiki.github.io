@@ -35,6 +35,12 @@ MODULES = [
         why="机械水平决定性能上限。这四篇都是现成的实战材料，直接搬过来比自己写强。",
     ),
     dict(
+        key="pm", name="项目管理", href="/competitions/pm",
+        state="待补",
+        what="里程碑与冻结点、接口表先行、评审机制、并行与依赖、赛季节奏、复盘。",
+        why="技术都对还是输，通常是流程问题：接口没定死、评审没做，最后一周全在返工。",
+    ),
+    dict(
         key="hardware", name="硬件", href="/competitions/hardware",
         state="待补",
         what="电源树与上下电时序、电机驱动与保护、传感器接口与接地、"
@@ -45,12 +51,16 @@ MODULES = [
 
 
 def build(out_dir: pathlib.Path, root: pathlib.Path) -> None:
-    mech = root / "wiki/docs/competitions/mechanical"
-    n_mech = len(list(mech.glob("*.md"))) - (1 if (mech / "index.md").exists() else 0)
+    comp = root / "wiki/docs/competitions"
+    counts = {}
+    for key in ("mechanical", "ec", "pm", "hardware"):
+        d = comp / key
+        n = len([f for f in d.glob("*.md") if f.name != "index.md"]) if d.exists() else 0
+        counts[key] = n
 
     cards = []
     for m in MODULES:
-        n = n_mech if m["key"] == "mechanical" else 0
+        n = counts.get(m["key"], 0)
         state = f"{n} 篇" if n else m["state"]
         cls = "comp-mod on" if n else "comp-mod"
         cards.append(f"""  <a class="{cls}" href="{m['href']}">
@@ -63,28 +73,29 @@ def build(out_dir: pathlib.Path, root: pathlib.Path) -> None:
 <div class="comp">
   <header class="comp-hero">
     <div class="comp-kicker">竞赛与实战</div>
-    <h1>三门手艺：电控、机械、硬件。</h1>
+    <h1>四块内容：电控、机械、项目管理、硬件。</h1>
     <p>
       竞赛页面不重复收录部件和整机 —— 那在<a href="/catalog">部件库</a>与
       <a href="/robots">整机库</a>里。这里只放<b>打比赛才会用到的做法</b>：
-      怎么加工得出来、传动怎么选、结构按什么顺序设计、以及（将来）电控与硬件怎么不翻车。
-      没有一手材料的模块就明说「待补」，不拿 AI 凑篇幅。
+      怎么加工得出来、传动怎么选、结构按什么顺序设计、项目怎么排期、
+      以及（将来）电控与硬件怎么不翻车。没有一手材料的模块就明说「待补」，不拿 AI 凑篇幅。
     </p>
   </header>
 
   <section class="comp-block">
-    <h2>三个模块</h2>
+    <h2>四个模块</h2>
     <div class="comp-mods">
 """ + "\n".join(cards) + """
     </div>
   </section>
 
   <section class="comp-block comp-honest">
-    <h2>为什么只有机械有内容</h2>
+    <h2>为什么有些模块还是空的</h2>
     <p>
-      机械那四篇是有作者的实战材料（铨洲智造平台的 CNC 活动打样指南、哈工大竞技机器人队的三篇），
-      我们做的是<b>移植 + 标注来源</b>，不是重写。电控与硬件暂时没有同等级的一手材料 ——
-      与其编一份「入门指南」，不如空着，等有队伍愿意供稿。
+      有内容的三块都是有作者的实战材料，我们做的是<b>移植 + 标注来源</b>，不是重写：
+      机械四篇（铨洲智造平台 CNC 指南 + 哈工大竞技机器人队三篇）、
+      电控一篇（How To Begin v2.0）、项目管理一篇（RoboParty RP1 白皮书）。
+      硬件暂时没有同等级的一手材料 —— 与其编一份「设计规范」，不如空着。
     </p>
     <div class="comp-links">
       <a href="https://github.com/RoboWiki/RoboWiki.github.io/issues/new?template=article.yml&labels=article"
@@ -126,4 +137,5 @@ def build(out_dir: pathlib.Path, root: pathlib.Path) -> None:
 </style>
 """
     (out_dir / "competitions.md").write_text(md, encoding="utf-8")
-    print(f"  竞赛 -> competitions.md（机械 {n_mech} 篇 / 电控与硬件待补）")
+    print("  竞赛 -> competitions.md（" + " / ".join(f"{k} {v} 篇" for k, v in counts.items() if v)
+          + " / 其余待补）")

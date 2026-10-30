@@ -8,20 +8,20 @@ outline: false
 <div class="comp">
   <header class="comp-hero">
     <div class="comp-kicker">竞赛与实战</div>
-    <h1>三门手艺：电控、机械、硬件。</h1>
+    <h1>四块内容：电控、机械、项目管理、硬件。</h1>
     <p>
       竞赛页面不重复收录部件和整机 —— 那在<a href="/catalog">部件库</a>与
       <a href="/robots">整机库</a>里。这里只放<b>打比赛才会用到的做法</b>：
-      怎么加工得出来、传动怎么选、结构按什么顺序设计、以及（将来）电控与硬件怎么不翻车。
-      没有一手材料的模块就明说「待补」，不拿 AI 凑篇幅。
+      怎么加工得出来、传动怎么选、结构按什么顺序设计、项目怎么排期、
+      以及（将来）电控与硬件怎么不翻车。没有一手材料的模块就明说「待补」，不拿 AI 凑篇幅。
     </p>
   </header>
 
   <section class="comp-block">
-    <h2>三个模块</h2>
+    <h2>四个模块</h2>
     <div class="comp-mods">
-  <a class="comp-mod" href="/competitions/ec">
-    <div class="comp-mod-head"><b>电控</b><em>待补</em></div>
+  <a class="comp-mod on" href="/competitions/ec">
+    <div class="comp-mod-head"><b>电控</b><em>1 篇</em></div>
     <p>主控选型与实时性、CAN 总线与频率预算、电机驱动器配置、状态估计与整车控制状态机、赛场调试与日志回放。</p>
     <span>这一块最缺的是「别人踩过的坑」：同样的 CAN 负载，为什么有的队稳定有的队掉线。</span>
   </a>
@@ -29,6 +29,11 @@ outline: false
     <div class="comp-mod-head"><b>机械</b><em>4 篇</em></div>
     <p>加工可行性（CNC 能做什么）、传动形式怎么选、结构设计的顺序、功率限制下的轻量化。</p>
     <span>机械水平决定性能上限。这四篇都是现成的实战材料，直接搬过来比自己写强。</span>
+  </a>
+  <a class="comp-mod on" href="/competitions/pm">
+    <div class="comp-mod-head"><b>项目管理</b><em>1 篇</em></div>
+    <p>里程碑与冻结点、接口表先行、评审机制、并行与依赖、赛季节奏、复盘。</p>
+    <span>技术都对还是输，通常是流程问题：接口没定死、评审没做，最后一周全在返工。</span>
   </a>
   <a class="comp-mod" href="/competitions/hardware">
     <div class="comp-mod-head"><b>硬件</b><em>待补</em></div>
@@ -39,11 +44,12 @@ outline: false
   </section>
 
   <section class="comp-block comp-honest">
-    <h2>为什么只有机械有内容</h2>
+    <h2>为什么有些模块还是空的</h2>
     <p>
-      机械那四篇是有作者的实战材料（铨洲智造平台的 CNC 活动打样指南、哈工大竞技机器人队的三篇），
-      我们做的是<b>移植 + 标注来源</b>，不是重写。电控与硬件暂时没有同等级的一手材料 ——
-      与其编一份「入门指南」，不如空着，等有队伍愿意供稿。
+      有内容的三块都是有作者的实战材料，我们做的是<b>移植 + 标注来源</b>，不是重写：
+      机械四篇（铨洲智造平台 CNC 指南 + 哈工大竞技机器人队三篇）、
+      电控一篇（How To Begin v2.0）、项目管理一篇（RoboParty RP1 白皮书）。
+      硬件暂时没有同等级的一手材料 —— 与其编一份「设计规范」，不如空着。
     </p>
     <div class="comp-links">
       <a href="https://github.com/RoboWiki/RoboWiki.github.io/issues/new?template=article.yml&labels=article"
