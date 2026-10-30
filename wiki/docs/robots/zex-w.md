@@ -23,7 +23,13 @@ title: ZEX-W
 <em>生态来自本地参考库的项目索引（3 个项目 / 角色由我们按项目定位标注）。
 只说明「哪些环节有现成开源实现」，不代表这些项目都能直接跑在这台机器上。</em>
 
-<div class="rb-roles"><span class="rb-role"><b>训练</b>1</span> <span class="rb-role"><b>工具/资料</b>1</span></div>
+<div class="rb-roles"><span class="rb-role"><b>官方项目</b>1</span> <span class="rb-role"><b>训练</b>1</span> <span class="rb-role"><b>工具/资料</b>1</span></div>
+
+**官方项目**（1 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/zeitvex/RC_WheelLeg" target="_blank" rel="noopener">RC_WheelLeg</a> | ZEX-W 本体仓库：机械 / 硬件 / 固件 / mjlab 训练 / sim2sim / ROS 2 双线部署 / BOM | 197 |
 
 **训练**（1 个）
 
