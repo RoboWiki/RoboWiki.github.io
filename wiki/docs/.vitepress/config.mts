@@ -54,6 +54,9 @@ const zhTheme = {
     linkText: '去首页',
   },
   docPageLink: { text: '在部件库里按任意列排序' },
+  socialLinks: [
+    { icon: 'github', link: 'https://github.com/RoboWiki/RoboWiki.github.io', ariaLabel: 'GitHub 仓库：RoboWiki' },
+  ],
   footer: {
     message: '数据带来源 · 口径可追溯 · 不卖零件不收佣金 · GPL-3.0 · <a href="/method">方法与来源</a> · <a href="/notice">免责声明与许可</a>',
     copyright: 'RoboWiki · 机器人开发的开放资料底稿',
@@ -61,6 +64,10 @@ const zhTheme = {
 }
 
 const enTheme = {
+  socialLinks: [
+    { icon: 'github', link: 'https://github.com/RoboWiki/RoboWiki.github.io',
+      ariaLabel: 'GitHub repository: RoboWiki' },
+  ],
   // 英文区是子集：只放已有英文页面的入口，避免导航指向 404。
   // （robots / software / submit / method / competitions 目前只有中文版。）
   nav: [
