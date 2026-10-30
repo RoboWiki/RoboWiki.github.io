@@ -327,11 +327,16 @@ def main() -> None:
     seen_slug: dict[str, str] = {}
     slugs: dict[str, str] = {}
     # 精选白名单：data/featured.json（人工维护，见 tools/mark_featured.py）
+    #
+    # 语义是「默认全收录，人工剔除」：featured.json 的 note 写明「现在是全量，
+    # 之后逐个删」。所以这里对 ids 与全部部件求并集 —— 新收录的部件即使还没人
+    # 把它加进 featured.json，也会自动进精选视图，不会在默认页「隐形」。
+    # 后期要剔除某件，从 ids 里删掉即可（并集不影响剔除：删了就只剩「不在精选」）。
     try:
         _feat = json.loads((ROOT / "data" / "featured.json").read_text(encoding="utf-8"))
     except Exception:
         _feat = {"ids": []}
-    featured_ids = list(_feat.get("ids") or [])
+    featured_ids = sorted(set(_feat.get("ids") or []) | {r["id"] for r in rows})
     featured_set = set(featured_ids)
 
     for r in rows:
