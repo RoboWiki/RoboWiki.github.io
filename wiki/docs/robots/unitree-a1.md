@@ -15,6 +15,25 @@ title: A1
 | 自由度 | 12 |
 | 整机质量 (kg) | 12.45 |
 
+## 开源生态
+
+<em>生态来自本地参考库的项目索引（5 个项目 / 角色由我们按项目定位标注）。
+只说明「哪些环节有现成开源实现」，不代表这些项目都能直接跑在这台机器上。</em>
+
+<div class="rb-roles"><span class="rb-role"><b>官方项目</b>1</span> <span class="rb-role"><b>官方描述/资产</b>1</span> <span class="rb-role"><b>官方 SDK</b>2</span> <span class="rb-role"><b>控制/MPC</b>1</span></div>
+
+**官方项目**（1 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/leggedrobotics/legged_gym" target="_blank" rel="noopener">leggedrobotics/legged_gym</a> | A1 官方仓库（驱动 / SDK / 例程） | 0 |
+
+**官方描述/资产**（1 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/unitreerobotics/unitree_ros/tree/master/robots/a1_description" target="_blank" rel="noopener">unitreerobotics/unitree_ros</a> | A1 的 URDF / MJCF 描述文件 | 0 |
+
 ## 链接
 
 - URDF：<https://github.com/unitreerobotics/unitree_ros/tree/master/robots/a1_description>

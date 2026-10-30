@@ -19,6 +19,32 @@ title: Solo 12
 | 传感器 | Lord Microstrain 3DM-CX5-25 IMU |
 | 官方文档 | https://github.com/open-dynamic-robot-initiative/open-dynamic-robot-initiative.github.io/wiki |
 
+## 开源生态
+
+<em>生态来自本地参考库的项目索引（4 个项目 / 角色由我们按项目定位标注）。
+只说明「哪些环节有现成开源实现」，不代表这些项目都能直接跑在这台机器上。</em>
+
+<div class="rb-roles"><span class="rb-role"><b>官方项目</b>2</span> <span class="rb-role"><b>官方描述/资产</b>1</span> <span class="rb-role"><b>工具/资料</b>1</span></div>
+
+**官方项目**（2 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/open-dynamic-robot-initiative/robot_interfaces_solo" target="_blank" rel="noopener">open-dynamic-robot-initiative/robot_interfaces_solo</a> | Solo 12 官方仓库（驱动 / SDK / 例程） | 0 |
+| <a href="https://github.com/open-dynamic-robot-initiative/robot_properties_solo" target="_blank" rel="noopener">open-dynamic-robot-initiative/robot_properties_solo</a> | Solo 12 官方仓库（驱动 / SDK / 例程） | 0 |
+
+**官方描述/资产**（1 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/open-dynamic-robot-initiative/robot_properties_solo/tree/master/src/robot_properties_solo/resources/xacro" target="_blank" rel="noopener">open-dynamic-robot-initiative/robot_properties_solo</a> | Solo 12 的 URDF / MJCF 描述文件 | 0 |
+
+**工具/资料**（1 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/open-dynamic-robot-initiative/open-dynamic-robot-initiative.github.io/wiki" target="_blank" rel="noopener">官方文档</a> | Solo 12 厂商文档页 | 0 |
+
 ## 链接
 
 - 官方文档：<https://github.com/open-dynamic-robot-initiative/open-dynamic-robot-initiative.github.io/wiki>

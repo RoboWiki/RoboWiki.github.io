@@ -21,6 +21,33 @@ H1 共 19 自由度：单腿 5（髋 3 + 膝 1 + 踝 1）、单臂 4（可扩展
 | 传感器 | 3D 激光雷达（Livox MID-360）、深度相机（Intel RealSense D435i） |
 | 官方文档 | https://support.unitree.com/main/zh |
 
+## 开源生态
+
+<em>生态来自本地参考库的项目索引（5 个项目 / 角色由我们按项目定位标注）。
+只说明「哪些环节有现成开源实现」，不代表这些项目都能直接跑在这台机器上。</em>
+
+<div class="rb-roles"><span class="rb-role"><b>官方项目</b>2</span> <span class="rb-role"><b>官方描述/资产</b>2</span> <span class="rb-role"><b>工具/资料</b>1</span></div>
+
+**官方项目**（2 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/unitreerobotics/unitree_rl_gym" target="_blank" rel="noopener">unitreerobotics/unitree_rl_gym</a> | H1 官方仓库（驱动 / SDK / 例程） | 0 |
+| <a href="https://github.com/unitreerobotics/unitree_sdk2" target="_blank" rel="noopener">unitreerobotics/unitree_sdk2</a> | H1 官方仓库（驱动 / SDK / 例程） | 0 |
+
+**官方描述/资产**（2 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/unitreerobotics/unitree_rl_gym/tree/main/resources/robots/h1/urdf" target="_blank" rel="noopener">unitreerobotics/unitree_rl_gym</a> | H1 的 URDF / MJCF 描述文件 | 0 |
+| <a href="https://github.com/unitreerobotics/unitree_ros/tree/master/robots/h1_description" target="_blank" rel="noopener">unitreerobotics/unitree_ros</a> | H1 的 URDF / MJCF 描述文件 | 0 |
+
+**工具/资料**（1 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://support.unitree.com/main/zh" target="_blank" rel="noopener">官方文档</a> | H1 厂商文档页 | 0 |
+
 ## 链接
 
 - 官方文档：<https://support.unitree.com/main/zh>

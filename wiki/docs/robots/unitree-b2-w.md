@@ -16,10 +16,16 @@ B2 的轮足版：腿末端换成轮子，平地和坡道效率比纯足式高�
 
 ## 开源生态
 
-<em>生态来自本地参考库的项目索引（9 个项目 / 角色由我们按项目定位标注）。
+<em>生态来自本地参考库的项目索引（10 个项目 / 角色由我们按项目定位标注）。
 只说明「哪些环节有现成开源实现」，不代表这些项目都能直接跑在这台机器上。</em>
 
-<div class="rb-roles"><span class="rb-role"><b>官方描述/资产</b>3</span> <span class="rb-role"><b>仿真</b>1</span> <span class="rb-role"><b>训练</b>5</span></div>
+<div class="rb-roles"><span class="rb-role"><b>官方项目</b>1</span> <span class="rb-role"><b>官方描述/资产</b>3</span> <span class="rb-role"><b>仿真</b>1</span> <span class="rb-role"><b>训练</b>5</span></div>
+
+**官方项目**（1 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/unitreerobotics/unitree_ros" target="_blank" rel="noopener">unitreerobotics/unitree_ros</a> | B2-W 官方仓库（驱动 / SDK / 例程） | 0 |
 
 **官方描述/资产**（2 个）
 

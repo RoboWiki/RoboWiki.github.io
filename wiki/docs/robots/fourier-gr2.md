@@ -18,6 +18,26 @@ GR-2 为傅利叶第二代通用人形：53 自由度、单臂负载 3 kg、行�
 | 续航 (h) | 2 |
 | 官方 PDF | https://www.fftai.com/pdf/a38248c9edb2fe61a88efa1f05718607.pdf |
 
+## 开源生态
+
+<em>生态来自本地参考库的项目索引（3 个项目 / 角色由我们按项目定位标注）。
+只说明「哪些环节有现成开源实现」，不代表这些项目都能直接跑在这台机器上。</em>
+
+<div class="rb-roles"><span class="rb-role"><b>官方项目</b>2</span> <span class="rb-role"><b>官方描述/资产</b>1</span></div>
+
+**官方项目**（2 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/FFTAI/Wiki-GRx-Deploy" target="_blank" rel="noopener">FFTAI/Wiki-GRx-Deploy</a> | GR-2 官方仓库（驱动 / SDK / 例程） | 0 |
+| <a href="https://github.com/FFTAI/Wiki-GRx-Models" target="_blank" rel="noopener">FFTAI/Wiki-GRx-Models</a> | GR-2 官方仓库（驱动 / SDK / 例程） | 0 |
+
+**官方描述/资产**（1 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/FFTAI/Wiki-GRx-Models/tree/master/GRX/GR2/GR2v3.0.1/urdf" target="_blank" rel="noopener">FFTAI/Wiki-GRx-Models</a> | GR-2 的 URDF / MJCF 描述文件 | 0 |
+
 ## 链接
 
 - 官方 PDF：<https://www.fftai.com/pdf/a38248c9edb2fe61a88efa1f05718607.pdf>

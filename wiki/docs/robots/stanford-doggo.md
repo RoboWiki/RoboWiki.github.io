@@ -17,6 +17,26 @@ title: Doggo
 | 尺寸 (mm) | 420×200×140（机身） |
 | 算力平台 | Teensy 3.5 + 4× ODrive |
 
+## 开源生态
+
+<em>生态来自本地参考库的项目索引（3 个项目 / 角色由我们按项目定位标注）。
+只说明「哪些环节有现成开源实现」，不代表这些项目都能直接跑在这台机器上。</em>
+
+<div class="rb-roles"><span class="rb-role"><b>官方项目</b>2</span> <span class="rb-role"><b>官方描述/资产</b>1</span></div>
+
+**官方项目**（2 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/Nate711/Doggo" target="_blank" rel="noopener">Nate711/Doggo</a> | Doggo 官方仓库（驱动 / SDK / 例程） | 0 |
+| <a href="https://github.com/Nate711/StanfordDoggoProject" target="_blank" rel="noopener">Nate711/StanfordDoggoProject</a> | Doggo 官方仓库（驱动 / SDK / 例程） | 0 |
+
+**官方描述/资产**（1 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/RajPShinde/Doggo_Description/tree/master/urdf" target="_blank" rel="noopener">RajPShinde/Doggo_Description</a> | Doggo 的 URDF / MJCF 描述文件 | 0 |
+
 ## 链接
 
 - URDF：<https://github.com/RajPShinde/Doggo_Description/tree/master/urdf>

@@ -19,7 +19,7 @@ titleTemplate: false
       <a class="rw-home-btn ghost" href="/learn/">从零开始学</a>
     </div>
     <div class="rw-home-stats">
-      <div><b>242</b><span>在库部件</span></div>
+      <div><b>243</b><span>在库部件</span></div>
       <div><b>14</b><span>有数据的品类（共 14 类）</span></div>
       <div><b>84</b><span>A 级：逐项对过厂商手册</span></div>
       <div><b>21</b><span>整机（带 URDF / 仓库）</span></div>
@@ -80,14 +80,14 @@ titleTemplate: false
     <h2>六个入口</h2>
     <div class="rw-home-entries">
       <a class="rw-home-entry" href="/catalog">
-        <b>部件库 · 242 件</b>
+        <b>部件库 · 243 件</b>
         <p>比参数：按任意列排序、可对比、带来源等级与真实评分。</p>
         <span>A 级 84 件逐项对过手册</span>
       </a>
       <a class="rw-home-entry" href="/robots">
         <b>整机库 · 21 台</b>
         <p>比方案与生态：几自由度、带不带算力、有没有开源描述与训练工程。</p>
-        <span>12 台标了「生态 ×N」，点进去看每个环节是谁</span>
+        <span>20 台标了「生态 ×N」，点进去看每个环节是谁</span>
       </a>
       <a class="rw-home-entry" href="/software">
         <b>软件库 · 22 个</b>
@@ -174,7 +174,7 @@ titleTemplate: false
       <a class="rw-home-cat" href="/catalog?category=sensor"><b>传感器</b><span>64</span><em>NTC / 温湿度 / 温度 / 压力 / 光 / ToF / 触摸</em></a>
       <a class="rw-home-cat" href="/catalog?category=chip"><b>硬件芯片</b><span>59</span><em>电源 / 基准 / 电池管理 / 开关</em></a>
       <a class="rw-home-cat" href="/catalog?category=actuator"><b>关节电机</b><span>46</span><em>选型主战场</em></a>
-      <a class="rw-home-cat" href="/catalog?category=imu"><b>IMU</b><span>26</span><em>姿态与振动</em></a>
+      <a class="rw-home-cat" href="/catalog?category=imu"><b>IMU</b><span>27</span><em>姿态与振动</em></a>
       <a class="rw-home-cat" href="/catalog?category=controller_high"><b>上位机</b><span>9</span><em>推理与感知</em></a>
       <a class="rw-home-cat" href="/catalog?category=lidar"><b>激光雷达</b><span>9</span><em>地形与建图</em></a>
       <a class="rw-home-cat" href="/catalog?category=camera"><b>深度相机</b><span>9</span><em>视觉感知</em></a>

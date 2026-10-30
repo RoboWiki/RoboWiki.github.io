@@ -1005,6 +1005,11 @@
    "category": "imu",
    "model": "MTi-3"
   },
+  "sens-yesense-yis320": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "YIS320"
+  },
   "software:amp": {
    "added": "2026-10-31",
    "category": "software",

@@ -26,6 +26,32 @@ title: ROBOTO 01（RP1）
 | 传感器 | 可换头部：运控 / 交互 / 数采 / 感知头；感知头为 Intel D435i 深度相机 + 3D 激光雷达，其余头配单目或双目 RGB 相机 |
 | 官方文档 | https://roboparty.com/documents/roboto-01 |
 
+## 开源生态
+
+<em>生态来自本地参考库的项目索引（4 个项目 / 角色由我们按项目定位标注）。
+只说明「哪些环节有现成开源实现」，不代表这些项目都能直接跑在这台机器上。</em>
+
+<div class="rb-roles"><span class="rb-role"><b>官方项目</b>2</span> <span class="rb-role"><b>官方描述/资产</b>1</span> <span class="rb-role"><b>工具/资料</b>1</span></div>
+
+**官方项目**（2 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/Roboparty/RP1_description" target="_blank" rel="noopener">Roboparty/RP1_description</a> | ROBOTO 01（RP1） 官方仓库（驱动 / SDK / 例程） | 0 |
+| <a href="https://github.com/Roboparty/RP1" target="_blank" rel="noopener">Roboparty/RP1</a> | ROBOTO 01（RP1） 官方仓库（驱动 / SDK / 例程） | 0 |
+
+**官方描述/资产**（1 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/Roboparty/RP1_description/tree/master/urdf" target="_blank" rel="noopener">Roboparty/RP1_description</a> | ROBOTO 01（RP1） 的 URDF / MJCF 描述文件 | 0 |
+
+**工具/资料**（1 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://roboparty.com/documents/roboto-01" target="_blank" rel="noopener">官方文档</a> | ROBOTO 01（RP1） 厂商文档页 | 0 |
+
 ## 链接
 
 - 官方文档：<https://roboparty.com/documents/roboto-01>

@@ -54,40 +54,40 @@ outline: false
         <span>人形 · 23 自由度</span>
         <em>URDF 2 套 · 仓库 2 个</em>
       </a>
+      <a class="comp-card" href="/robots/unitree-h1">
+        <b>宇树 H1</b>
+        <span>人形 · 19 自由度</span>
+        <em>URDF 2 套 · 仓库 2 个</em>
+      </a>
+      <a class="comp-card" href="/robots/berkeley-humanoid-lite">
+        <b>Berkeley Humanoid Lite</b>
+        <span>人形 · 22 自由度</span>
+        <em>URDF 1 套 · 仓库 2 个</em>
+      </a>
+      <a class="comp-card" href="/robots/fourier-gr2">
+        <b>傅利叶 GR-2</b>
+        <span>人形 · 53 自由度</span>
+        <em>URDF 1 套 · 仓库 2 个</em>
+      </a>
+      <a class="comp-card" href="/robots/odri-solo12">
+        <b>ODRI Solo 12</b>
+        <span>四足 · 12 自由度</span>
+        <em>URDF 1 套 · 仓库 2 个</em>
+      </a>
       <a class="comp-card" href="/robots/pollen-microduck">
         <b>Pollen Robotics Microduck</b>
         <span>双足 · 14 自由度</span>
         <em>URDF 1 套 · 仓库 2 个</em>
       </a>
-      <a class="comp-card" href="/robots/unitree-go2-edu">
-        <b>宇树 Go2 EDU</b>
-        <span>四足 · 12 自由度</span>
+      <a class="comp-card" href="/robots/roboparty-roboto01">
+        <b>RoboParty ROBOTO 01</b>
+        <span>人形 · 24 自由度</span>
         <em>URDF 1 套 · 仓库 2 个</em>
       </a>
-      <a class="comp-card" href="/robots/unitree-go2-w">
-        <b>宇树 Go2-W</b>
-        <span>四轮足 · 16 自由度</span>
+      <a class="comp-card" href="/robots/stanford-doggo">
+        <b>Stanford Doggo</b>
+        <span>四足 · 8 自由度</span>
         <em>URDF 1 套 · 仓库 2 个</em>
-      </a>
-      <a class="comp-card" href="/robots/unitree-b2">
-        <b>宇树 B2</b>
-        <span>四足 · 12 自由度</span>
-        <em>URDF 1 套 · 仓库 2 个</em>
-      </a>
-      <a class="comp-card" href="/robots/deeprobotics-lite3">
-        <b>DEEP Robotics Lite3</b>
-        <span>四足 · 12 自由度</span>
-        <em>URDF 1 套 · 仓库 1 个</em>
-      </a>
-      <a class="comp-card" href="/robots/unitree-go1">
-        <b>Unitree Go1</b>
-        <span>四足 · 12 自由度</span>
-        <em>URDF 1 套 · 仓库 1 个</em>
-      </a>
-      <a class="comp-card" href="/robots/unitree-a1">
-        <b>Unitree A1</b>
-        <span>四足 · 12 自由度</span>
-        <em>URDF 1 套 · 仓库 1 个</em>
       </a>
     </div>
     <p class="comp-note">全部 21 台整机在<a href="/robots">整机库</a>，可按「有无开源生态」筛选。</p>
