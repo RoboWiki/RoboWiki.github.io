@@ -23,7 +23,7 @@ titleTemplate: false
       <div><b>14</b><span>有数据的品类（共 14 类）</span></div>
       <div><b>84</b><span>A 级：逐项对过厂商手册</span></div>
       <div><b>21</b><span>整机（带 URDF / 仓库）</span></div>
-      <div><b>207</b><span>渠道库渠道</span></div>
+      <div><b>207</b><span>渠道库（加工 / 元件店铺）</span></div>
     </div>
   </section>
   <section class="rw-home-block">

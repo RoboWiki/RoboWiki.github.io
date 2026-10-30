@@ -119,7 +119,7 @@ titleTemplate: false
       <div><b>{c['cats_with_data']}</b><span>有数据的品类（共 {c['cats_total']} 类）</span></div>
       <div><b>{c['tier_a']}</b><span>A 级：逐项对过厂商手册</span></div>
       <div><b>{c['robots']}</b><span>整机（带 URDF / 仓库）</span></div>
-      <div><b>{c['suppliers']}</b><span>渠道库渠道</span></div>
+      <div><b>{c['suppliers']}</b><span>渠道库（加工 / 元件店铺）</span></div>
     </div>
   </section>
   <section class="rw-home-block">
