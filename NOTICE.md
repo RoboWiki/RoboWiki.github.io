@@ -10,7 +10,7 @@
 
 ## 许可证
 
-本仓库代码与整理成果按 **GNU General Public License v3.0** 发布，全文见 [`LICENSE`](LICENSE)。
+本仓库代码与整理成果按 **GNU General Public License v3.0** 发布，全文见 [`LICENSE`](https://github.com/RoboWiki/RoboWiki.github.io/blob/main/LICENSE)。
 
 GPL-3.0 本身**允许商业使用**。上面那句「仅用于非商业」说的是**这个站点的定位**——
 我们不做商业售卖、不收佣金、不卖数据——不是给许可证附加限制（GPL 第 7 条也不允许附加限制）。
@@ -41,4 +41,4 @@ RoboWiki. 机器人开发的开放资料底稿[DB/OL]. https://robowiki.github.i
 
 ---
 
-*本免责声明不构成法律意见；具体许可条款以 [`LICENSE`](LICENSE) 全文为准。*
+*本免责声明不构成法律意见；具体许可条款以 [`LICENSE`](https://github.com/RoboWiki/RoboWiki.github.io/blob/main/LICENSE) 全文为准。*

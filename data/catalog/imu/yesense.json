@@ -31,8 +31,8 @@
    "shock_g": 2000,
    "size_mm": "22.4 × 22.4 × 9",
    "weight_g": 7.7,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/imu-yesense-yis320.png",
+   "image_source": "用户提供的官方宣传图（元生创新 Yesense，DM_20261031010724_001.png，2026-10-31 收录）",
    "doc_url": "https://www.yesense.com/yis320",
    "doc_pdf": null,
    "repo_urls": [
