@@ -480,6 +480,7 @@ def main() -> None:
                     "categories": [
                         {"id": c["id"], "name": c.get("name", c["id"]),
                          "hint": c.get("hint", ""),
+                         "subtypes": c.get("subtypes") or {},
                          "keys": c.get("keys") or [],
                          "sorts": c.get("sorts") or []}
                         for c in (load_taxonomy().get("categories") or [])]},

@@ -262,8 +262,8 @@
    "iface": null,
    "compute": null,
    "sensors": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/unitree-go1.png",
+   "image_source": "ccc 分支（Dichen33 提交），2026-10-31 合并",
    "doc_url": null,
    "doc_pdf": null,
    "repo_urls": [
@@ -307,8 +307,8 @@
    "iface": null,
    "compute": null,
    "sensors": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/unitree-a1.png",
+   "image_source": "ccc 分支（Dichen33 提交），2026-10-31 合并",
    "doc_url": null,
    "doc_pdf": null,
    "repo_urls": [
@@ -352,8 +352,8 @@
    "iface": null,
    "compute": null,
    "sensors": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/unitree-b2-w.png",
+   "image_source": "ccc 分支（Dichen33 提交），2026-10-31 合并",
    "doc_url": null,
    "doc_pdf": null,
    "repo_urls": [

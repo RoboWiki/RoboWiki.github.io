@@ -30,8 +30,8 @@
    "iface": "CAN（16 × RS02 执行器）",
    "compute": "Jetson Orin Nano 8G",
    "sensors": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/zex-w.png",
+   "image_source": "ccc 分支（Dichen33 提交），2026-10-31 合并",
    "doc_url": "https://github.com/zeitvex/RC_WheelLeg#readme",
    "doc_pdf": null,
    "repo_urls": [

@@ -25,9 +25,10 @@
    "bot": false,
    "api_contributions": 2,
    "git_commits": 3,
-   "baseline": 20,
-   "contribution_total": 23,
-   "role": "创始贡献者"
+   "baseline": 27,
+   "contribution_total": 30,
+   "role": "创始贡献者",
+   "note": "含 ccc 分支 7 个提交（GitHub 默认分支统计不到，按初始贡献记）"
   },
   {
    "login": "Beni-537",

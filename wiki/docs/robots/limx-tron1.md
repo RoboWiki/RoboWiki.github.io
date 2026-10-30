@@ -4,7 +4,7 @@ title: TRON 1
 
 # 逐际动力 LimX Dynamics TRON 1
 
-
+![TRON 1](/parts/limx-tron1.png)
 
 **一台机器三种形态**（点足 PF / 双足 SF / 轮足 WF），腿可以换末端件。生态上按形态拆成三条工程线（limx_tron1_pf / _sf / _wf），各自带官方 SDK 与仿真；要评估「一套控制代码跨形态」的可行性，这是现成样本。
 

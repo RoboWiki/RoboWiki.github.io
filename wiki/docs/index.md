@@ -171,7 +171,7 @@ titleTemplate: false
   <section class="rw-home-block">
     <h2>按品类</h2>
     <div class="rw-home-cats">
-      <a class="rw-home-cat" href="/catalog?category=sensor"><b>传感器</b><span>64</span><em>NTC / 温湿度 / 温度 / 压力 / 光 / ToF / 触摸</em></a>
+      <a class="rw-home-cat" href="/catalog?category=sensor"><b>传感器</b><span>64</span><em>NTC / 温湿度 / 温度 / 压力 / 光照 / ToF / 力矩</em></a>
       <a class="rw-home-cat" href="/catalog?category=chip"><b>硬件芯片</b><span>59</span><em>电源 / 基准 / 电池管理 / 开关</em></a>
       <a class="rw-home-cat" href="/catalog?category=actuator"><b>关节电机</b><span>46</span><em>选型主战场</em></a>
       <a class="rw-home-cat" href="/catalog?category=imu"><b>IMU</b><span>27</span><em>姿态与振动</em></a>
