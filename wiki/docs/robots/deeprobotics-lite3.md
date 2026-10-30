@@ -26,8 +26,8 @@ title: Lite3
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
-| robot-descriptions-quadruped | 四足机型描述汇总（URDF/xacro/MJCF） | 180 |
-| rl_sar_zoo | RL-SAR 机型 zoo：URDF/MJCF 与策略集合 | 170 |
+| <a href="https://github.com/fiveages-sim/robot-descriptions-quadruped" target="_blank" rel="noopener">robot-descriptions-quadruped</a> | 四足机型描述汇总（URDF/xacro/MJCF） | 180 |
+| <a href="https://github.com/fan-ziqi/rl_sar_zoo" target="_blank" rel="noopener">rl_sar_zoo</a> | RL-SAR 机型 zoo：URDF/MJCF 与策略集合 | 170 |
 | robot_mujoco | 多机型 MuJoCo 资产与场景 | 80 |
 | <a href="https://github.com/DeepRoboticsLab/deep_robotics_model" target="_blank" rel="noopener">deep_robotics_model</a> | 云深处机型模型与描述文件 | 18 |
 
@@ -35,15 +35,15 @@ title: Lite3
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
-| sdk_deploy | 云深处 SDK 与部署代码 | 8006 |
+| <a href="https://github.com/DeepRoboticsLab/sdk_deploy" target="_blank" rel="noopener">sdk_deploy</a> | 云深处 SDK 与部署代码 | 8006 |
 
 **仿真**（3 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
-| MGDP | MGDP：通用深度感知四足运动控制（IsaacGym + Warp 深度传感器，跨机型迁移） | 573 |
+| <a href="https://github.com/arclab-hku/MGDP" target="_blank" rel="noopener">MGDP</a> | MGDP：通用深度感知四足运动控制（IsaacGym + Warp 深度传感器，跨机型迁移） | 573 |
 | <a href="https://github.com/fan-ziqi/robot_lab" target="_blank" rel="noopener">robot_lab</a> | robot_lab：IsaacLab 版多机型训练框架 | 369 |
-| m20_rl_isaacsim | M20 轮足 IsaacSim RL 工程 | 86 |
+| <a href="https://github.com/ThunderMaxwell/m20_rl_isaacsim" target="_blank" rel="noopener">m20_rl_isaacsim</a> | M20 轮足 IsaacSim RL 工程 | 86 |
 
 **训练**（7 个）
 
@@ -55,7 +55,7 @@ title: Lite3
 | <a href="https://github.com/fan-ziqi/rl_sar" target="_blank" rel="noopener">rl_sar</a> | RL-SAR：仿真到实机部署框架（多机型、含策略与 C++ 部署） | 170 |
 | fan_rlsar | RL-SAR 的个人分支（多机型实验） | 165 |
 | deep_rl | 云深处 RL 训练工程 | 133 |
-| rl_training | 云深处 RL 训练任务与配置 | 132 |
+| <a href="https://github.com/DeepRoboticsLab/rl_training" target="_blank" rel="noopener">rl_training</a> | 云深处 RL 训练任务与配置 | 132 |
 
 ## 链接
 

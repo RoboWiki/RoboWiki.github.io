@@ -37,7 +37,7 @@ title: Go2-W
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
-| rl_sar_zoo | RL-SAR 机型 zoo：URDF/MJCF 与策略集合 | 170 |
+| <a href="https://github.com/fan-ziqi/rl_sar_zoo" target="_blank" rel="noopener">rl_sar_zoo</a> | RL-SAR 机型 zoo：URDF/MJCF 与策略集合 | 170 |
 | robot_mujoco | 多机型 MuJoCo 资产与场景 | 80 |
 
 **仿真**（7 个）
@@ -46,10 +46,10 @@ title: Go2-W
 |---|---|---|
 | <a href="https://github.com/mujocolab/mjlab" target="_blank" rel="noopener">mjlab</a> | mjlab 1.6.0：MuJoCo Warp + PyTorch 的轻量 GPU 训练框架（manager-based MDP；G1 velocity/tracking 等任务；上游最新快照） | 410 |
 | mjlab_new | mjlab 新版：机型资产 + MuJoCo RL 任务 | 407 |
-| <a href="https://github.com/unitreerobotics/unitree_rl_mjlab" target="_blank" rel="noopener">unitree_rl_mjlab</a> | 宇树官方 mjlab 版 RL 工程：训练任务 + MuJoCo 部署（Go2/Go2W/G1） | 402 |
+| <a href="https://github.com/fan-ziqi/unitree_rl_mjlab" target="_blank" rel="noopener">unitree_rl_mjlab</a> | 宇树官方 mjlab 版 RL 工程：训练任务 + MuJoCo 部署（Go2/Go2W/G1） | 402 |
 | <a href="https://github.com/fan-ziqi/robot_lab" target="_blank" rel="noopener">robot_lab</a> | robot_lab：IsaacLab 版多机型训练框架 | 369 |
-| go2w_sim2sim | Go2W 轮足 sim2sim 部署工程（MuJoCo） | 148 |
-| HIMLoco-for-Go2W | HIMLoco for Go2W：Isaac Gym 训练 + MuJoCo 验证 | 58 |
+| <a href="https://github.com/Albusgive/go2w_sim2sim" target="_blank" rel="noopener">go2w_sim2sim</a> | Go2W 轮足 sim2sim 部署工程（MuJoCo） | 148 |
+| <a href="https://github.com/TrackinBIT/HIMLoco-for-Go2W" target="_blank" rel="noopener">HIMLoco-for-Go2W</a> | HIMLoco for Go2W：Isaac Gym 训练 + MuJoCo 验证 | 58 |
 | matrix_zsibot | ZsiBot MATRiX 仿真平台源码快照的实现类子集（UE5 + MuJoCo + CARLA）：传感器声明、自定义/拼接场景、多机器人端口、相机与渲染协议、实景扫描 3DGS→PLY→MuJoCo proxy 流水线、G1 材质桥 | 46 |
 
 **训练**（9 个）
@@ -57,13 +57,13 @@ title: Go2-W
 | 项目 | 说明 | 文件数 |
 |---|---|---|
 | unilab_new | 统一多机型 RL 实验框架（训练/评估/部署） | 1131 |
-| uni_rl | 多机型统一 RL 训练框架（宇树全系） | 781 |
+| <a href="https://github.com/Tencent-Hunyuan/UniRL" target="_blank" rel="noopener">uni_rl</a> | 多机型统一 RL 训练框架（宇树全系） | 781 |
 | <a href="https://github.com/Farama-Foundation/Gymnasium" target="_blank" rel="noopener">Gymnasium</a> | Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考 | 457 |
-| unitree_rl_mjlab_go2w | Go2W 专用 mjlab RL 工程（含 Go2/G1 资产） | 383 |
+| <a href="https://github.com/koki67/unitree_rl_mjlab_go2w" target="_blank" rel="noopener">unitree_rl_mjlab_go2w</a> | Go2W 专用 mjlab RL 工程（含 Go2/G1 资产） | 383 |
 | fan_robotlab | robot_lab 的个人分支（多机型实验） | 308 |
 | <a href="https://github.com/fan-ziqi/rl_sar" target="_blank" rel="noopener">rl_sar</a> | RL-SAR：仿真到实机部署框架（多机型、含策略与 C++ 部署） | 170 |
 | fan_rlsar | RL-SAR 的个人分支（多机型实验） | 165 |
-| LeggedSkillDeploy | 多机型技能部署包（策略 + 部署配置） | 158 |
+| <a href="https://github.com/haozhang04/LeggedSkillDeploy" target="_blank" rel="noopener">LeggedSkillDeploy</a> | 多机型技能部署包（策略 + 部署配置） | 158 |
 
 ## 链接
 

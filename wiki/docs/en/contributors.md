@@ -24,7 +24,7 @@ outline: false
 </div>
 <div class="ct">
   <div class="ct-head"><b>Dichen33</b><span class="ct-role">Founding contributor</span></div>
-  <p>15 whole-robot entries with URDF/repo links, a bulk expansion of high- and low-level controllers plus IMU/camera/LiDAR — 50 data rows in total — and the part-data collection guide. The remote-controller category came from his ccc branch: 5 transmitters and 2 CAN modules with 7 product photos, specs and notes, plus the grouped-card layout for part notes and the home-page category jump that preselects the category.</p>
+  <p>15 whole-robot entries with URDF/repo links, a bulk expansion of high- and low-level controllers plus IMU/camera/LiDAR — 50 data rows in total — and the part-data collection guide. The remote-controller category came from his ccc branch (5 transmitters + 2 CAN modules with 7 photos), together with the grouped-card layout for part notes and the home-page category preselect. He also added the software section's two groups: algorithms & methods (DreamWaQ, BeamDojo, AMP, PPO) and model architectures (MLP/MoE).</p>
   <a href="https://github.com/Dichen33" target="_blank" rel="noopener">GitHub</a>
 </div>
 <div class="ct">

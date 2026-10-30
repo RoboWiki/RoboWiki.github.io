@@ -36,21 +36,21 @@ title: 山猫 M20
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
-| robot-descriptions-quadruped | 四足机型描述汇总（URDF/xacro/MJCF） | 180 |
+| <a href="https://github.com/fiveages-sim/robot-descriptions-quadruped" target="_blank" rel="noopener">robot-descriptions-quadruped</a> | 四足机型描述汇总（URDF/xacro/MJCF） | 180 |
 | <a href="https://github.com/DeepRoboticsLab/deep_robotics_model" target="_blank" rel="noopener">deep_robotics_model</a> | 云深处机型模型与描述文件 | 18 |
 
 **官方 SDK**（1 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
-| sdk_deploy | 云深处 SDK 与部署代码 | 8006 |
+| <a href="https://github.com/DeepRoboticsLab/sdk_deploy" target="_blank" rel="noopener">sdk_deploy</a> | 云深处 SDK 与部署代码 | 8006 |
 
 **仿真**（2 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
 | <a href="https://github.com/fan-ziqi/robot_lab" target="_blank" rel="noopener">robot_lab</a> | robot_lab：IsaacLab 版多机型训练框架 | 369 |
-| m20_rl_isaacsim | M20 轮足 IsaacSim RL 工程 | 86 |
+| <a href="https://github.com/ThunderMaxwell/m20_rl_isaacsim" target="_blank" rel="noopener">m20_rl_isaacsim</a> | M20 轮足 IsaacSim RL 工程 | 86 |
 
 **训练**（8 个）
 
@@ -60,10 +60,10 @@ title: 山猫 M20
 | lain_job | LLoco 技能式 RL 任务与部署（多机型） | 962 |
 | <a href="https://github.com/Farama-Foundation/Gymnasium" target="_blank" rel="noopener">Gymnasium</a> | Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考 | 457 |
 | fan_robotlab | robot_lab 的个人分支（多机型实验） | 308 |
-| LeggedSkillDeploy | 多机型技能部署包（策略 + 部署配置） | 158 |
+| <a href="https://github.com/haozhang04/LeggedSkillDeploy" target="_blank" rel="noopener">LeggedSkillDeploy</a> | 多机型技能部署包（策略 + 部署配置） | 158 |
 | deep_rl | 云深处 RL 训练工程 | 133 |
-| rl_training | 云深处 RL 训练任务与配置 | 132 |
-| Dreamwaq | DreamWaQ 盲式运动控制实现 | 50 |
+| <a href="https://github.com/DeepRoboticsLab/rl_training" target="_blank" rel="noopener">rl_training</a> | 云深处 RL 训练任务与配置 | 132 |
+| <a href="https://github.com/yusongmin1/Dreamwaq" target="_blank" rel="noopener">Dreamwaq</a> | DreamWaQ 盲式运动控制实现 | 50 |
 
 ## 链接
 

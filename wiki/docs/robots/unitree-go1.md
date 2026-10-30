@@ -26,7 +26,7 @@ title: Go1
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
-| robot-descriptions-quadruped | 四足机型描述汇总（URDF/xacro/MJCF） | 180 |
+| <a href="https://github.com/fiveages-sim/robot-descriptions-quadruped" target="_blank" rel="noopener">robot-descriptions-quadruped</a> | 四足机型描述汇总（URDF/xacro/MJCF） | 180 |
 | robot_mujoco | 多机型 MuJoCo 资产与场景 | 80 |
 
 **官方 SDK**（2 个）
@@ -40,7 +40,7 @@ title: Go1
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
-| MGDP | MGDP：通用深度感知四足运动控制（IsaacGym + Warp 深度传感器，跨机型迁移） | 573 |
+| <a href="https://github.com/arclab-hku/MGDP" target="_blank" rel="noopener">MGDP</a> | MGDP：通用深度感知四足运动控制（IsaacGym + Warp 深度传感器，跨机型迁移） | 573 |
 | <a href="https://github.com/mujocolab/mjlab" target="_blank" rel="noopener">mjlab</a> | mjlab 1.6.0：MuJoCo Warp + PyTorch 的轻量 GPU 训练框架（manager-based MDP；G1 velocity/tracking 等任务；上游最新快照） | 410 |
 | mjlab_new | mjlab 新版：机型资产 + MuJoCo RL 任务 | 407 |
 | <a href="https://github.com/fan-ziqi/robot_lab" target="_blank" rel="noopener">robot_lab</a> | robot_lab：IsaacLab 版多机型训练框架 | 369 |
@@ -54,12 +54,12 @@ title: Go1
 |---|---|---|
 | unilab_new | 统一多机型 RL 实验框架（训练/评估/部署） | 1131 |
 | lain_job | LLoco 技能式 RL 任务与部署（多机型） | 962 |
-| uni_rl | 多机型统一 RL 训练框架（宇树全系） | 781 |
+| <a href="https://github.com/Tencent-Hunyuan/UniRL" target="_blank" rel="noopener">uni_rl</a> | 多机型统一 RL 训练框架（宇树全系） | 781 |
 | <a href="https://github.com/Farama-Foundation/Gymnasium" target="_blank" rel="noopener">Gymnasium</a> | Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考 | 457 |
-| mjswan | mjlab 可视化/仿真套件 | 379 |
+| <a href="https://github.com/ttktjmt/mjswan" target="_blank" rel="noopener">mjswan</a> | mjlab 可视化/仿真套件 | 379 |
 | fan_robotlab | robot_lab 的个人分支（多机型实验） | 308 |
 | gym_ex | legged_gym 系实验工程（多机型） | 306 |
-| LeggedGym-Ex | legged_gym 扩展版：多机型训练环境与任务 | 305 |
+| <a href="https://github.com/lupinjia/LeggedGym-Ex" target="_blank" rel="noopener">LeggedGym-Ex</a> | legged_gym 扩展版：多机型训练环境与任务 | 305 |
 
 **控制/MPC**（2 个）
 

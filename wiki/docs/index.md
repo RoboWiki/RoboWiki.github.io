@@ -22,7 +22,7 @@ titleTemplate: false
       <div><b>240</b><span>在库部件</span></div>
       <div><b>13</b><span>有数据的品类（共 14 类）</span></div>
       <div><b>84</b><span>A 级：逐项对过厂商手册</span></div>
-      <div><b>20</b><span>整机（带 URDF / 仓库）</span></div>
+      <div><b>21</b><span>整机（带 URDF / 仓库）</span></div>
       <div><b>149</b><span>加工与采购渠道</span></div>
     </div>
   </section>
@@ -55,7 +55,7 @@ titleTemplate: false
         <span>A 级 84 件逐项对过手册</span>
       </a>
       <a class="rw-home-entry" href="/robots">
-        <b>机器人整机 · 20 台</b>
+        <b>机器人整机 · 21 台</b>
         <p>比方案与生态：几自由度、带不带算力、有没有开源描述与训练工程。</p>
         <span>11 台标了「生态 ×N」，点进去看每个环节是谁</span>
       </a>

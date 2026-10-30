@@ -25,22 +25,22 @@ title: TRON 1
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
-| tron1-robot-description | TRON1 机型描述（URDF/xacro） | 98 |
+| <a href="https://github.com/limxdynamics/tron1-robot-description" target="_blank" rel="noopener">tron1-robot-description</a> | TRON1 机型描述（URDF/xacro） | 98 |
 
 **官方 SDK**（3 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
-| limxsdk-lowlevel | limxdynamics 官方低层 SDK（limxsdk：硬件接口/消息定义） | 90 |
-| tron1-rl-deploy-ros2 | limxdynamics TRON1 RL 部署（ROS2 controller + hw，含 gazebo sim 与 gym/lab 双关节序参数表） | 78 |
-| robot-joystick | limxdynamics 官方摇杆上位机（预编译，命令源参考） | 2 |
+| <a href="https://github.com/limxdynamics/limxsdk-lowlevel" target="_blank" rel="noopener">limxsdk-lowlevel</a> | limxdynamics 官方低层 SDK（limxsdk：硬件接口/消息定义） | 90 |
+| <a href="https://github.com/limxdynamics/tron1-rl-deploy-ros2" target="_blank" rel="noopener">tron1-rl-deploy-ros2</a> | limxdynamics TRON1 RL 部署（ROS2 controller + hw，含 gazebo sim 与 gym/lab 双关节序参数表） | 78 |
+| <a href="https://github.com/limxdynamics/robot-joystick" target="_blank" rel="noopener">robot-joystick</a> | limxdynamics 官方摇杆上位机（预编译，命令源参考） | 2 |
 
 **仿真**（2 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
 | <a href="https://github.com/facebookresearch/habitat-sim" target="_blank" rel="noopener">habitat-sim</a> | Meta habitat-sim 具身 AI 仿真引擎（C++：nav PathFinder/相机+鱼眼传感器栈/场景元数据）——H 组高级仿真、导航与传感器参考 | 746 |
-| tron1-rl-isaaclab | TRON1 IsaacLab RL 训练工程 | 79 |
+| <a href="https://github.com/limxdynamics/tron1-rl-isaaclab" target="_blank" rel="noopener">tron1-rl-isaaclab</a> | TRON1 IsaacLab RL 训练工程 | 79 |
 
 **训练**（4 个）
 
@@ -48,14 +48,14 @@ title: TRON 1
 |---|---|---|
 | <a href="https://github.com/Farama-Foundation/Gymnasium" target="_blank" rel="noopener">Gymnasium</a> | Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考 | 457 |
 | gym_ex | legged_gym 系实验工程（多机型） | 306 |
-| LeggedGym-Ex | legged_gym 扩展版：多机型训练环境与任务 | 305 |
-| tron1-rl-deploy-python | TRON1 Python 部署与策略文件 | 75 |
+| <a href="https://github.com/lupinjia/LeggedGym-Ex" target="_blank" rel="noopener">LeggedGym-Ex</a> | legged_gym 扩展版：多机型训练环境与任务 | 305 |
+| <a href="https://github.com/limxdynamics/tron1-rl-deploy-python" target="_blank" rel="noopener">tron1-rl-deploy-python</a> | TRON1 Python 部署与策略文件 | 75 |
 
 **部署**（1 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
-| tdt-nav-kit | TDT 二维栅格导航算法组件（A*/Kinodynamic A* 前端 + Minimum-Snap/OSQP 轨迹后端，C++）——H 组导航规划参考 | 18 |
+| <a href="https://github.com/T-DT-Algorithm-2026/tdt-nav-kit" target="_blank" rel="noopener">tdt-nav-kit</a> | TDT 二维栅格导航算法组件（A*/Kinodynamic A* 前端 + Minimum-Snap/OSQP 轨迹后端，C++）——H 组导航规划参考 | 18 |
 
 ## 链接
 
