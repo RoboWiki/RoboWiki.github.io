@@ -32,6 +32,7 @@ const zhTheme = {
         { text: '数据来源', link: '/sources' },
         { text: '贡献者', link: '/contributors' },
         { text: '转载规范', link: '/learn/reprint' },
+        { text: '免责声明与许可', link: '/notice' },
       ],
     },
     { text: '投稿', link: '/submit' },
@@ -54,7 +55,7 @@ const zhTheme = {
   },
   docPageLink: { text: '在部件库里按任意列排序' },
   footer: {
-    message: '数据带来源 · 口径可追溯 · 不卖零件不收佣金 · <a href="/method">方法与来源</a>',
+    message: '数据带来源 · 口径可追溯 · 不卖零件不收佣金 · GPL-3.0 · <a href="/method">方法与来源</a> · <a href="/notice">免责声明与许可</a>',
     copyright: 'RoboWiki · 机器人开发的开放资料底稿',
   },
 }

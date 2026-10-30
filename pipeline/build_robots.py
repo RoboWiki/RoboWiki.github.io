@@ -31,7 +31,7 @@ def _lic_note(lic: str | None) -> str:
     elif "NOASSERTION" in parts:
         head = "有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍"
     elif risky:
-        head = "传染性 copyleft —— 改动后要按同一许可开源"
+        head = "传染性 copyleft —— 改动后要按同一许可开源（本站自身也是 GPL-3.0）"
     else:
         head = ""
     tag = " · ".join(parts)

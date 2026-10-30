@@ -69,7 +69,7 @@ git（文件级，免费）+ part_edits/edits 目录（字段级，谁改的+依
 - **一套数据三出口**（Single Projection）：静态产物（全量 dump）/ REST API（查询）/ MCP（推理路径），字段映射提升为数据（schema/projections/registry），三出口读同一份内存对象不漂移。
 - **标准**：核心 schema 保持自定义（口径纪律是护城河），外挂 DCAT/schema.org Dataset（数据集元数据）+ QUDT 单位映射 + Frictionless Data Package（打包外壳）。
 - **AI 友好**：field-semantics 产物化（含 known_bias 防 AI 胡说）、单位后缀即 SI、实体关系可遍历（带 api_url/page_url/mcp_tool_hint）。
-- **可移植**：datapackage.json + dataset.jsonld + manifest.json + 内嵌 schema + LICENSE-DATA + 数据。「拿走即用」判据：只拿产物目录、不读 Python 就能正确解析全部数据。补 pipeline/dump.py 让「灌回去」对称。
+- **可移植**：datapackage.json + dataset.jsonld + manifest.json + 内嵌 schema + LICENSE（GPL-3.0） + 数据。「拿走即用」判据：只拿产物目录、不读 Python 就能正确解析全部数据。补 pipeline/dump.py 让「灌回去」对称。
 - **版本承诺**：schema/API/产物三个版本号分开管（semver），产物 meta 带 deprecations，破坏性变更 CI 检测+并行期双发。
 
 ## 8. 后期迁移策略（信号先于动作）

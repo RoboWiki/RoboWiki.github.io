@@ -44,8 +44,8 @@ title: Berkeley Humanoid Lite
 ## 链接
 
 - URDF：<https://github.com/HybridRobotics/Berkeley-Humanoid-Lite-Assets/blob/main/data/robots/berkeley_humanoid/berkeley_humanoid_lite/urdf/berkeley_humanoid_lite.urdf>
-- 仓库：<https://github.com/hybridrobotics/berkeley-humanoid-lite> —— 许可 CC-BY-SA-4.0 · MIT（⚠ 传染性 copyleft —— 改动后要按同一许可开源）
-- 仓库：<https://github.com/HybridRobotics/Berkeley-Humanoid-Lite-Assets> —— 许可 CC-BY-SA-4.0 · MIT（⚠ 传染性 copyleft —— 改动后要按同一许可开源）
+- 仓库：<https://github.com/hybridrobotics/berkeley-humanoid-lite> —— 许可 CC-BY-SA-4.0 · MIT（⚠ 传染性 copyleft —— 改动后要按同一许可开源（本站自身也是 GPL-3.0））
+- 仓库：<https://github.com/HybridRobotics/Berkeley-Humanoid-Lite-Assets> —— 许可 CC-BY-SA-4.0 · MIT（⚠ 传染性 copyleft —— 改动后要按同一许可开源（本站自身也是 GPL-3.0））
 
 ::: tip 进仿真（接口已留）
 「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，

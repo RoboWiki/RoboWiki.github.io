@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "机器人开发的开放资料底稿：可核对的参数、可追溯的来源、真实使用者的经验"
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "AGPL-3.0-or-later" }
+license = { text = "GPL-3.0-only" }
 authors = [{ name = "zeitvex" }]
 keywords = ["robotics", "actuator", "quadruped", "catalog", "open-data"]
 
