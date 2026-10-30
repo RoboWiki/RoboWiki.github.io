@@ -55,7 +55,7 @@ title: Lite3
 ## 链接
 
 - URDF：<https://github.com/DeepRoboticsLab/deep_robotics_model>
-- 仓库：<https://github.com/DeepRoboticsLab/deep_robotics_model>
+- 仓库：<https://github.com/DeepRoboticsLab/deep_robotics_model> —— 许可 BSD-3-Clause
 
 ::: tip 进仿真（接口已留）
 「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，

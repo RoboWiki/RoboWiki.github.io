@@ -301,6 +301,28 @@ title: {title}
 """
 
 
+#: 许可提示：只给「需要注意的」加 ⚠ —— 宽松许可不必制造噪音
+_RISK = ("NO-LICENSE", "NOASSERTION", "AGPL", "GPL", "LGPL", "CC-BY-SA")
+
+
+def _lic_note(lic: str | None) -> str:
+    """把 repo_license 渲染成一句人能读的话（空串表示不需要提示）。"""
+    if not lic:
+        return ""
+    parts = [x.strip() for x in str(lic).split(",") if x.strip()]
+    if not parts:
+        return ""
+    if "NO-LICENSE" in parts:
+        head = "仓库里没有 LICENSE 文件 —— 默认保留所有权利，转载资产或商用前先问作者"
+    elif "NOASSERTION" in parts:
+        head = "有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍"
+    elif any(any(k in x for k in _RISK) for x in parts):
+        head = "传染性 copyleft —— 改动后要按同一许可开源"
+    else:
+        head = ""
+    return " · ".join(parts) + (f"（⚠ {head}）" if head else "")
+
+
 def main() -> None:
     rows = load()
     OUT.mkdir(parents=True, exist_ok=True)
@@ -733,7 +755,9 @@ def main() -> None:
             if str(u) in seen_urls:
                 continue
             seen_urls.add(str(u))
-            rows.append(("官方仓库 / SDK", str(u), "驱动、例程与协议实现"))
+            _lic = _lic_note(s.get("repo_license"))
+            rows.append(("官方仓库 / SDK", str(u),
+                         "驱动、例程与协议实现" + (f" · 许可 {_lic}" if _lic else "")))
         if s.get("image_source"):
             rows.append(("产品图出处", "", str(s["image_source"])))
         if r.get("origin"):

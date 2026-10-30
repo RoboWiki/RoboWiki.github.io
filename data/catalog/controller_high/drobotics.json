@@ -46,7 +46,7 @@
    "ram_options": [
     4
    ],
-   "repo_license": null
+   "repo_license": "NO-LICENSE,Apache-2.0"
   },
   "notes": "4GB 版；板载无 eMMC，系统跑 microSD；5V/3A Type-C 供电；2× MIPI CSI 2-lane、千兆网口、Wi-Fi 2.4/5GHz + BT4.2；无原生 CAN。价格：微雪 4GB 基础套件 ¥449（含配件包，2026-10）；教育/竞赛渠道曾见 ¥379。5 TOPS 为 BPU INT8 标称，与 Jetson 稀疏 INT8 不可直接横比。 本站目前只核到 4 GB 这一档；同型号其它内存版本参数待补，价格也不同。",
   "origin": "D-Robotics 官网 RDK X3 规格 + 微雪 4GB 商品页价格核对（2026-10-28）",
@@ -99,7 +99,7 @@
     "https://github.com/D-Robotics/rdk_model_zoo",
     "https://github.com/D-Robotics/hobot_dnn"
    ],
-   "repo_license": null
+   "repo_license": "NO-LICENSE,Apache-2.0"
   },
   "vendor_cn": null,
   "subtype_label": "单板计算机"

@@ -20,8 +20,8 @@ title: Doggo
 ## 链接
 
 - URDF：<https://github.com/RajPShinde/Doggo_Description/tree/master/urdf>
-- 仓库：<https://github.com/Nate711/StanfordDoggoProject>
-- 仓库：<https://github.com/Nate711/Doggo>
+- 仓库：<https://github.com/Nate711/StanfordDoggoProject> —— 许可 NO-LICENSE · MIT（⚠ 仓库里没有 LICENSE 文件 —— 默认保留所有权利，转载资产或商用前先问作者）
+- 仓库：<https://github.com/Nate711/Doggo> —— 许可 NO-LICENSE · MIT（⚠ 仓库里没有 LICENSE 文件 —— 默认保留所有权利，转载资产或商用前先问作者）
 
 ::: tip 进仿真（接口已留）
 「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，

@@ -44,7 +44,7 @@ B2 的轮足版：腿末端换成轮子，平地和坡道效率比纯足式高�
 
 ## 链接
 
-- 仓库：<https://github.com/unitreerobotics/unitree_ros>
+- 仓库：<https://github.com/unitreerobotics/unitree_ros> —— 许可 BSD-3-Clause
 
 ::: tip 进仿真（接口已留）
 「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，

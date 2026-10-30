@@ -134,7 +134,7 @@
    "power_peak_w": null,
    "rgb_fov": null,
    "rgb_resolution": null,
-   "repo_license": null
+   "repo_license": "BSD-3-Clause"
   },
   "vendor_cn": "宇树",
   "subtype_label": "固态"

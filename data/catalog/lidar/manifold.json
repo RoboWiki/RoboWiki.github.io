@@ -67,7 +67,7 @@
    "tau_rated_Nm": null,
    "imu_rate_hz": null,
    "gear": null,
-   "repo_license": null
+   "repo_license": "Apache-2.0"
   },
   "subtype_label": "固态"
  }

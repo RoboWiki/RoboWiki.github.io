@@ -26,8 +26,8 @@ H1 共 19 自由度：单腿 5（髋 3 + 膝 1 + 踝 1）、单臂 4（可扩展
 - 官方文档：<https://support.unitree.com/main/zh>
 - URDF：<https://github.com/unitreerobotics/unitree_ros/tree/master/robots/h1_description>
 - URDF：<https://github.com/unitreerobotics/unitree_rl_gym/tree/main/resources/robots/h1/urdf>
-- 仓库：<https://github.com/unitreerobotics/unitree_sdk2>
-- 仓库：<https://github.com/unitreerobotics/unitree_rl_gym>
+- 仓库：<https://github.com/unitreerobotics/unitree_sdk2> —— 许可 BSD-3-Clause
+- 仓库：<https://github.com/unitreerobotics/unitree_rl_gym> —— 许可 BSD-3-Clause
 
 ::: tip 进仿真（接口已留）
 「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，

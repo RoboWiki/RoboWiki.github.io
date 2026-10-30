@@ -33,7 +33,7 @@
    "repo_urls": [
     "https://github.com/xsens/xsens_mti_ros_node"
    ],
-   "repo_license": null
+   "repo_license": "NO-LICENSE"
   },
   "notes": "MTi-1 系列中的 AHRS 型号；陀螺 ±2000 °/s、加速度 ±16 g、磁力 ±8 G；输出频率最高 1 kHz；滚转/俯仰 0.5° RMS，MTi-3 航向 2° RMS；2.8–3.6 V、<100 mW、0.6 g、12.1×12.1×2.55 mm。官网只提供 MTi-3 DK 套件图，未提供独立模组产品图，image_url 留空；价格需向 Movella/Xsens 或代理商询价。",
   "origin": "Xsens MTi 1-Series 产品页规格表 + xsens_mti_ros_node 官方仓库核对（2026-10-28）"

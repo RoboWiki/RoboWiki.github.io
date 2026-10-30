@@ -50,7 +50,7 @@
    "uart": null,
    "doc_pdf": null,
    "torque_mode": null,
-   "repo_license": null
+   "repo_license": "NO-LICENSE"
   },
   "vendor_cn": "大疆创新",
   "subtype_label": "主控板"
@@ -106,7 +106,7 @@
    "repo_urls": [
     "https://github.com/RoboMaster/Development-Board-C-Examples"
    ],
-   "repo_license": null
+   "repo_license": "NOASSERTION"
   },
   "vendor_cn": "大疆创新",
   "subtype_label": "主控板"

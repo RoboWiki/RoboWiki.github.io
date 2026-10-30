@@ -18,7 +18,7 @@ title: A1
 ## 链接
 
 - URDF：<https://github.com/unitreerobotics/unitree_ros/tree/master/robots/a1_description>
-- 仓库：<https://github.com/leggedrobotics/legged_gym>
+- 仓库：<https://github.com/leggedrobotics/legged_gym> —— 许可 NOASSERTION（⚠ 有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍）
 
 ::: tip 进仿真（接口已留）
 「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，

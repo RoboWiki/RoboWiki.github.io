@@ -41,7 +41,7 @@
    "repo_urls": [
     "https://github.com/RoboSense-LiDAR/rslidar_sdk"
    ],
-   "repo_license": null
+   "repo_license": "NOASSERTION"
   },
   "notes": "半球形 FOV（360°×90°），30 m@10%、最远 60 m，盲区 0.1 m；96 线，单回波 856,320 pts/s、双回波 1,712,640 pts/s；100 Mbps 以太网 UDP，内置 IMU；9–32 V、<8 W、φ60×63 mm、<240 g。官方页写 1 cm@1σ，产品手册典型值 1.5 cm@1σ——【来源冲突】。官方未公开定价，渠道约 ¥4078（2026-10）；Airy Lite 海外 €600。",
   "origin": "RoboSense 官网 Airy 产品页 + 产品手册规格页核对（2026-10-28）"

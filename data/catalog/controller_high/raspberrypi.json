@@ -46,7 +46,7 @@
    "ram_options": [
     8
    ],
-   "repo_license": null
+   "repo_license": "NOASSERTION,CC-BY-SA-4.0"
   },
   "notes": "8GB 版；BCM2711 4×Cortex-A72@1.8GHz、VideoCore VI、LPDDR4-3200（on-die ECC）；2× micro-HDMI（4Kp60）、2× USB3 + 2× USB2、GbE、PoE+（需 HAT）、2-lane MIPI CSI + 2-lane MIPI DSI、40-pin GPIO；无原生 CAN、无外露 PCIe；5V/3A USB-C 或 GPIO 供电；85×56mm、46g。价格：官方 8GB 定价 $165（2026-10 Product Brief，受内存涨价影响已较首发上调）；国内渠道约 ¥641–682（2026-10）。 本站目前只核到 8 GB 这一档；同型号其它内存版本参数待补，价格也不同。",
   "origin": "Raspberry Pi 4 Model B Product Brief（2026-10）+ 官网产品页核对（2026-10-28）",
@@ -99,7 +99,7 @@
    "ram_options": [
     8
    ],
-   "repo_license": null
+   "repo_license": "NOASSERTION,CC-BY-SA-4.0"
   },
   "notes": "8GB 版；板载无 eMMC，系统跑 microSD；5V/5A USB-C 供电（官方 27W PSU 另购）；2× 4-lane MIPI（CSI/DSI 可互换）、PCIe 2.0 x1；无原生 CAN，需 SPI/CAN 扩展。价格：官方 8GB $190（2026-10 核实），国内渠道约 ¥1600；官网当前同时主推 16GB $305。 本站目前只核到 8 GB 这一档；同型号其它内存版本参数待补，价格也不同。",
   "origin": "Raspberry Pi 官网产品页 + Raspberry Pi 5 Product Brief PDF 核对（2026-10-28）",

@@ -39,7 +39,7 @@
     "https://github.com/IntelRealSense/librealsense"
    ],
    "imu": null,
-   "repo_license": null
+   "repo_license": "Apache-2.0"
   },
   "vendor_cn": "RealSense（原 Intel）",
   "subtype_label": "双目"
@@ -84,7 +84,7 @@
     "https://github.com/IntelRealSense/librealsense"
    ],
    "power_w": null,
-   "repo_license": null
+   "repo_license": "Apache-2.0"
   },
   "vendor_cn": "RealSense（原 Intel）",
   "subtype_label": "双目"
@@ -129,7 +129,7 @@
     "https://github.com/IntelRealSense/librealsense"
    ],
    "power_w": null,
-   "repo_license": null
+   "repo_license": "Apache-2.0"
   },
   "vendor_cn": "RealSense（原 Intel）",
   "subtype_label": "双目"

@@ -23,8 +23,8 @@ title: Solo 12
 
 - 官方文档：<https://github.com/open-dynamic-robot-initiative/open-dynamic-robot-initiative.github.io/wiki>
 - URDF：<https://github.com/open-dynamic-robot-initiative/robot_properties_solo/tree/master/src/robot_properties_solo/resources/xacro>
-- 仓库：<https://github.com/open-dynamic-robot-initiative/robot_properties_solo>
-- 仓库：<https://github.com/open-dynamic-robot-initiative/robot_interfaces_solo>
+- 仓库：<https://github.com/open-dynamic-robot-initiative/robot_properties_solo> —— 许可 BSD-3-Clause
+- 仓库：<https://github.com/open-dynamic-robot-initiative/robot_interfaces_solo> —— 许可 BSD-3-Clause
 
 ::: tip 进仿真（接口已留）
 「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，

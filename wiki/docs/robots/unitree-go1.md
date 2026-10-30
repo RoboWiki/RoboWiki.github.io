@@ -51,7 +51,7 @@ title: Go1
 ## 链接
 
 - URDF：<https://github.com/unitreerobotics/unitree_ros/tree/master/robots/go1_description>
-- 仓库：<https://github.com/unitreerobotics/unitree_ros>
+- 仓库：<https://github.com/unitreerobotics/unitree_ros> —— 许可 BSD-3-Clause
 
 ::: tip 进仿真（接口已留）
 「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，

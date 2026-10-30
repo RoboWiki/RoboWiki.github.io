@@ -34,7 +34,7 @@ title: ZEX-W
 ## 链接
 
 - 官方文档：<https://github.com/zeitvex/RC_WheelLeg#readme>
-- 仓库：<https://github.com/zeitvex/RC_WheelLeg>
+- 仓库：<https://github.com/zeitvex/RC_WheelLeg> —— 许可 MIT
 
 ::: tip 进仿真（接口已留）
 「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，

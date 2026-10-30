@@ -13,6 +13,31 @@ from __future__ import annotations
 import json
 import pathlib
 
+
+#: 许可提示：只给「需要注意的」加 ⚠ —— 宽松许可不必制造噪音
+_RISK = ("NO-LICENSE", "NOASSERTION", "AGPL", "GPL", "LGPL", "CC-BY-SA")
+
+
+def _lic_note(lic: str | None) -> str:
+    """把 repo_license 渲染成一句人能读的话。"""
+    if not lic:
+        return ""
+    parts = [x.strip() for x in str(lic).split(",") if x.strip()]
+    if not parts:
+        return ""
+    risky = [p for p in parts if any(k in p for k in _RISK)]
+    if "NO-LICENSE" in parts:
+        head = "仓库里没有 LICENSE 文件 —— 默认保留所有权利，转载资产或商用前先问作者"
+    elif "NOASSERTION" in parts:
+        head = "有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍"
+    elif risky:
+        head = "传染性 copyleft —— 改动后要按同一许可开源"
+    else:
+        head = ""
+    tag = " · ".join(parts)
+    return f"{tag}" + (f"（⚠ {head}）" if head else "")
+
+
 LABEL = {
     "dof": "自由度", "mass_kg": "整机质量 (kg)", "payload_kg": "负载 (kg)",
     "speed_max_mps": "最高速度 (m/s)", "size_mm": "尺寸 (mm)",
@@ -192,8 +217,9 @@ outline: false
             links.append(f"- 官方 PDF：<{s['doc_pdf']}>")
         for u in urdf:
             links.append(f"- URDF：<{u}>")
+        lic = _lic_note(s.get("repo_license"))
         for u in repo:
-            links.append(f"- 仓库：<{u}>")
+            links.append(f"- 仓库：<{u}>" + (f" —— 许可 {lic}" if lic else ""))
         (ddir / f"{r['_slug']}.md").write_text(f"""---
 title: {r['model']}
 ---

@@ -30,8 +30,8 @@ title: ROBOTO 01（RP1）
 
 - 官方文档：<https://roboparty.com/documents/roboto-01>
 - URDF：<https://github.com/Roboparty/RP1_description/tree/master/urdf>
-- 仓库：<https://github.com/Roboparty/RP1>
-- 仓库：<https://github.com/Roboparty/RP1_description>
+- 仓库：<https://github.com/Roboparty/RP1> —— 许可 NO-LICENSE · GPL-3.0（⚠ 仓库里没有 LICENSE 文件 —— 默认保留所有权利，转载资产或商用前先问作者）
+- 仓库：<https://github.com/Roboparty/RP1_description> —— 许可 NO-LICENSE · GPL-3.0（⚠ 仓库里没有 LICENSE 文件 —— 默认保留所有权利，转载资产或商用前先问作者）
 
 ::: tip 进仿真（接口已留）
 「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，

@@ -39,7 +39,7 @@
    ],
    "urdf_urls": [],
    "ecosystem_id": "zex-w",
-   "repo_license": null
+   "repo_license": "MIT"
   }
  }
 ]

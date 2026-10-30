@@ -51,7 +51,7 @@
    "repo_urls": [
     "https://github.com/OpenDogeRobotics/OpenDoge_hardware"
    ],
-   "repo_license": null
+   "repo_license": "NO-LICENSE"
   },
   "subtype_label": "六轴模组"
  }

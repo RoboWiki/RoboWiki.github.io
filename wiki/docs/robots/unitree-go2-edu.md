@@ -108,8 +108,8 @@ Go2 家族有 AIR / PRO / X / EDU 四个版本，官网 2026-10-28 售价分别�
 
 - 官方文档：<https://support.unitree.com/main/zh>
 - URDF：<https://github.com/unitreerobotics/unitree_ros/tree/master/robots/go2_description>
-- 仓库：<https://github.com/unitreerobotics/unitree_sdk2>
-- 仓库：<https://github.com/unitreerobotics/unitree_ros2>
+- 仓库：<https://github.com/unitreerobotics/unitree_sdk2> —— 许可 BSD-3-Clause
+- 仓库：<https://github.com/unitreerobotics/unitree_ros2> —— 许可 BSD-3-Clause
 
 ::: tip 进仿真（接口已留）
 「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，

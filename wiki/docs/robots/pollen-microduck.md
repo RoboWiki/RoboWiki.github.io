@@ -50,8 +50,8 @@ Pollen Robotics 的小型开源双足：14 自由度（每腿 5 + 颈部 1 + 头
 ## 链接
 
 - URDF：<https://github.com/pollen-robotics/microduck_rl/tree/main/src/mjlab_microduck/robot/microduck>
-- 仓库：<https://github.com/pollen-robotics/microduck>
-- 仓库：<https://github.com/pollen-robotics/microduck_rl>
+- 仓库：<https://github.com/pollen-robotics/microduck> —— 许可 Apache-2.0
+- 仓库：<https://github.com/pollen-robotics/microduck_rl> —— 许可 Apache-2.0
 
 ::: tip 进仿真（接口已留）
 「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，

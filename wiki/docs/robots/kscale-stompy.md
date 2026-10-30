@@ -19,8 +19,8 @@ YC 时期公布的参数：4 英尺（约 1.22 m）高，准直驱关节 6:1–8
 
 ## 链接
 
-- 仓库：<https://github.com/kscalelabs/gym-stompy>
-- 仓库：<https://github.com/kscalelabs/ksim_wasm>
+- 仓库：<https://github.com/kscalelabs/gym-stompy> —— 许可 MIT
+- 仓库：<https://github.com/kscalelabs/ksim_wasm> —— 许可 MIT
 
 ::: tip 进仿真（接口已留）
 「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，
