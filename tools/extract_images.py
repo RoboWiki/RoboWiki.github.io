@@ -12,7 +12,7 @@
   - 剩下的里面取面积最大的、长宽比接近 1 的 → 产品图
 
 输出：
-  frontend/public/parts/<safe-slug>.<ext>   图片
+  console/public/parts/<safe-slug>.<ext>   图片
   data/part_images.json                     {part_id: "/parts/xxx.jpg"}
 """
 from __future__ import annotations

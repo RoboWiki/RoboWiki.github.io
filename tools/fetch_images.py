@@ -6,7 +6,7 @@
   PDF   下载后用版面几何挑产品照（同 extract_images.py 的判据）
 
 产物：
-  frontend/public/parts/<safe>.<ext>
+  console/public/parts/<safe>.<ext>
   data/part_images_fetched.json   {part_id: "/parts/xxx.jpg"}
   data/fetch_report.json          每个域名的成功/失败统计，便于排查
 

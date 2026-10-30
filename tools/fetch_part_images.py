@@ -3,7 +3,7 @@
 与 tools/fetch_images.py 的区别：
     那个是针对早期 motors.json + PDF 的采集器；这个只做一件事 ——
     对 data/catalog 里 image_url 为空的零件，抓它的 url 页面上的 og:image
-    （没有就取页面里最大的 <img>），存成 frontend/public/parts/<id>.jpg 并登记。
+    （没有就取页面里最大的 <img>），存成 console/public/parts/<id>.jpg 并登记。
 
 为什么先用 og:image：
     厂商产品页的 og:image 至少是「这一页的主图」。它有时是整机渲染图而不是

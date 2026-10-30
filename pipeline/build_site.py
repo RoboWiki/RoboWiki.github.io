@@ -454,9 +454,9 @@ def main() -> None:
         encoding="utf-8")
     print(f"  静态目录 {len(digest)} 条 / {(pub / 'catalog.json').stat().st_size // 1024} KB")
 
-    # 产品图：从 frontend/public/parts 复制到文档站的 public。
+    # 产品图：从 console/public/parts 复制到文档站的 public。
     # 两站要能各自独立部署，所以不能靠相对路径引用另一棵树。
-    src_img = ROOT / "frontend" / "public" / "parts"
+    src_img = ROOT / "console" / "public" / "parts"
     dst_img = pub / "parts"
     copied = 0
     if src_img.exists():

@@ -113,7 +113,7 @@ API 共用的同一份契约。
 
 ## 4. 加图片
 
-图片放在 `frontend/public/parts/<厂商>-<型号>.jpg`（白底、产品本体）。
+图片放在 `console/public/parts/<厂商>-<型号>.jpg`（白底、产品本体）。
 
 ```bash
 python tools/normalize_images.py    # 统一白底 + 裁掉多余留白

@@ -1,6 +1,6 @@
 # RoboWiki
 
-**机器人信息的公共底稿 + 真实使用者的评价。不卖零件，不收佣金。**
+**机器人开发的开放资料底稿：可核对的参数 · 可追溯的来源 · 真实使用者的经验。**
 
 线上：<https://robowiki.github.io/>
 
@@ -26,19 +26,19 @@
    带使用工况（用了多久、什么负载、什么批量）与样本量。
    1 条 5 分和 20 条 5 分不是一个确定程度，页面上会直说。
 
-另外有一个「学习路线」栏目：成体系的教程与文章，讲清「怎么选、怎么搭、怎么进仿真」。
-
 ## 站点结构
 
-导航按「任务」收敛成 6 个一级入口（多视角评审结论，决策记录见 `docs/ARCH-DECISION-2026-10-ia.md`）：
+导航按「高频直达」平铺（命名与多视角评审的决策记录见 `docs/ARCH-DECISION-2026-10-ia.md`）：
 
 ```
 首页            这个站是什么 + 按需求走（六个任务入口）+ 当前有多少东西
-资源库 ▾        机器人部件 240 个 · 机器人整机 21 台 · 机器人软件 22 个
-学习与竞赛 ▾    学习路线（怎么用这个站）+ 竞赛与实战（组织层，回链资源库，不平行建库）
-加工与采购      149 家，比「活找谁做」（质量 / 交期 / 价格档 / 发票）
-贡献者          谁做了什么，按「初始贡献 + GitHub 叠加」计数
-关于 ▾          使用指南 · 方法与来源 · 数据来源 · 转载规范
+部件库          240 个部件，按任意列排序、可对比，带来源等级与真实评分
+整机库          21 台整机，比方案与生态（自由度 / 负载 / 开源项目数）
+软件库          22 个，比「该用哪个」：引擎 / 训练 / 中间件 / 数学，带许可与版本
+学习            这个站怎么读 + 四篇实操文章（选型 / 电控 / 开源项目怎么读）
+竞赛            竞赛与实战（组织层：执行器速查 + 生态整机，全部回链资源库）
+加工采购        149 家，比「活找谁做」（质量 / 交期 / 价格档 / 发票）
+关于 ▾          方法与来源 · 数据来源 · 贡献者 · 转载规范
 投稿            补数据、写评价、写实测、写文章，全是 GitHub 表单
 ```
 
@@ -65,8 +65,8 @@ git clone https://github.com/RoboWiki/RoboWiki.github.io
 cd RoboWiki.github.io
 
 python -m pipeline all            # 校验数据 + 生成站点内容
-python -m pytest                  # 构建链 + API 测试（99 条）
-cd wiki && npm i && npm run dev    # 本地起站：127.0.0.1:5174
+python -m pytest                  # 构建链 + API 测试
+cd wiki && npm i && npm run dev    # 本地起站（VitePress 默认 5173）
 ```
 
 改一个型号的参数 = 改一个 JSON，然后跑 `python -m pipeline validate`。
@@ -75,14 +75,15 @@ cd wiki && npm i && npm run dev    # 本地起站：127.0.0.1:5174
 ## 目录
 
 ```
+wiki/       VitePress 站点（主体，纯静态）
 backend/    FastAPI + SQLModel（可选：评论区与后台，静态部署不需要）
-frontend/   React 控制台（可选）
-wiki/       VitePress 文档站（主体，纯静态）
-data/       唯一事实源：catalog/ robots/ suppliers.json taxonomy.json learn.json featured.json
+console/    React 控制台（可选，挂在后端 /console/）
+data/       唯一事实源：catalog/ robots/ suppliers.json taxonomy.json learn.json
 pipeline/   数据闸门 → 页面生成 → 快照导出
 schema/     JSON Schema（部件、报价、评分、评价）
-docs/       架构说明、参数口径、历史归档
-tools/      抓取与导入脚本（图片、贡献者、PDF 封面）
+docs/       架构说明、参数口径、决策记录、历史归档
+tools/      抓取与导入脚本（一次性迁移用，见 tools/README，谨慎跑）
+inbox/      产品图暂存区（认领后进 console/public/parts）
 ```
 
 **`data/` 是唯一事实源**：`wiki/docs/` 下的页面全部由它生成，不手改。
@@ -95,10 +96,10 @@ tools/      抓取与导入脚本（图片、贡献者、PDF 封面）
 |---|---|
 | 纠参数 / 补数据 | 投稿页有表单，或直接改 `data/catalog/<品类>/<厂商>.json` 提 PR |
 | 写评价（含四维打分） | 部件页的「写评价」→ GitHub issue 表单。一人一件一票，改主意就编辑原 issue |
-| 写文章 / 教程 | 学习路线栏目 + 投稿页；转载规范见「分享与转载」 |
+| 写文章 / 教程 | 学习栏目 + 投稿页；转载规范见「分享与转载」 |
 
-贡献者页按「**初始贡献 + GitHub 叠加**」计数：发生在默认分支之外的工作（例如只在某个分支
-提交过的资料整理）GitHub API 统计不到，所以不会因为「没有 PR」就被记成 0。
+贡献者页按「**初始贡献 + GitHub 叠加**」计数：发生在默认分支之外的工作
+GitHub API 统计不到，所以不会因为「没有 PR」就被记成 0。
 
 ## 不做什么
 

@@ -8,9 +8,9 @@ titleTemplate: false
 <div class="rw-home">
   <section class="rw-home-hero">
     <div class="rw-home-kicker">RoboWiki</div>
-    <h1>机器人信息的公共底稿。</h1>
+    <h1>机器人开发的开放资料底稿。</h1>
     <p class="rw-home-lead">
-      参数带来源、整机带 URDF、评价来自真正用过的人。
+      可核对的参数、可追溯的来源、真实使用者的经验。
       不卖零件、不收佣金、没有推荐位 —— 所以判定不必讨好谁。
     </p>
     <div class="rw-home-cta">
@@ -80,17 +80,17 @@ titleTemplate: false
     <h2>六个入口</h2>
     <div class="rw-home-entries">
       <a class="rw-home-entry" href="/catalog">
-        <b>机器人部件 · 240 件</b>
+        <b>部件库 · 240 件</b>
         <p>比参数：按任意列排序、可对比、带来源等级与真实评分。</p>
         <span>A 级 84 件逐项对过手册</span>
       </a>
       <a class="rw-home-entry" href="/robots">
-        <b>机器人整机 · 21 台</b>
+        <b>整机库 · 21 台</b>
         <p>比方案与生态：几自由度、带不带算力、有没有开源描述与训练工程。</p>
         <span>11 台标了「生态 ×N」，点进去看每个环节是谁</span>
       </a>
       <a class="rw-home-entry" href="/software">
-        <b>机器人软件 · 22 个</b>
+        <b>软件库 · 22 个</b>
         <p>引擎、训练框架、算法与方法、模型架构、中间件、数学库 —— 按分组给许可与版本。</p>
         <span>读不到的许可标「未核对」，不猜</span>
       </a>

@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitepress'
 import sidebar from './sidebar.json' with { type: 'json' }
 
-// RoboWiki —— 机器人部件选择社区。
+// RoboWiki —— 机器人开发的开放资料底稿。
 // 一页两件事：左边官方参数（带来源与口径），右边真实使用者的评分与评价。
 //
 // 中英双语：root = 中文，/en/ = English。
@@ -19,9 +19,9 @@ const zhTheme = {
   // 「关于」仍折叠：方法/来源/贡献者/转载属信任层，需要全局可达、但不抢一级叙事位。
   nav: [
     { text: '首页', link: '/' },
-    { text: '部件', link: '/catalog' },
-    { text: '整机', link: '/robots' },
-    { text: '软件', link: '/software' },
+    { text: '部件库', link: '/catalog' },
+    { text: '整机库', link: '/robots' },
+    { text: '软件库', link: '/software' },
     { text: '学习', link: '/learn/' },
     { text: '竞赛', link: '/competitions' },
     { text: '加工采购', link: '/suppliers' },
@@ -55,7 +55,7 @@ const zhTheme = {
   docPageLink: { text: '在部件库里按任意列排序' },
   footer: {
     message: '数据带来源 · 口径可追溯 · 不卖零件不收佣金 · <a href="/method">方法与来源</a>',
-    copyright: 'RoboWiki · 机器人信息的公共底稿',
+    copyright: 'RoboWiki · 机器人开发的开放资料底稿',
   },
 }
 
@@ -88,7 +88,7 @@ const enTheme = {
   docPageLink: { text: 'Sort by any column in the parts library' },
   footer: {
     message: 'Every number sourced · semantics traceable · we do not sell parts',
-    copyright: 'RoboWiki · a robot parts selection community',
+    copyright: 'RoboWiki · an open knowledge base for robot builders',
   },
 }
 
@@ -96,7 +96,7 @@ export default defineConfig({
   title: 'RoboWiki',
   // 标签页统一成「页面 · RoboWiki」；首页只有 RoboWiki，不重复
   titleTemplate: ':title · RoboWiki',
-  description: '机器人部件选择社区：官方参数 + 真实使用者的评分与评价',
+  description: 'RoboWiki —— 机器人开发的开放资料底稿：可核对的参数、可追溯的来源、真实使用者的经验。',
   // 仓库是 organization pages（RoboWiki.github.io）→ 站点在域名根，base 用 /。
   base: process.env.WIKI_BASE || '/',
   appearance: true,

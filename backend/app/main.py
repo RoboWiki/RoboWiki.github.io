@@ -63,7 +63,7 @@ def health():
 # 注册顺序即优先级：/api → /console → /（wiki）→ 兜底。
 # 挂 "/" 的 StaticFiles 必须最后，否则它会把前面全部吃掉。
 _WIKI_DIST = ROOT / "wiki" / "docs" / ".vitepress" / "dist"
-_SPA_DIST = ROOT / "frontend" / "dist"
+_SPA_DIST = ROOT / "console" / "dist"
 
 from fastapi import HTTPException  # noqa: E402
 from fastapi.responses import FileResponse, RedirectResponse  # noqa: E402

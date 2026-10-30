@@ -59,7 +59,7 @@ def build(out: pathlib.Path, root: pathlib.Path) -> None:
     groups = data["groups"]
 
     md = """---
-title: 机器人软件
+title: 软件库
 layout: page
 sidebar: false
 outline: false

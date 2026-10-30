@@ -165,7 +165,7 @@ def build(root: pathlib.Path, out: pathlib.Path, pub: pathlib.Path) -> None:
 
     # 索引页：页头由 ExplorerShell 提供，markdown 只留组件
     (out / "robots.md").write_text("""---
-title: 机器人整机
+title: 整机库
 layout: page
 sidebar: false
 outline: false
