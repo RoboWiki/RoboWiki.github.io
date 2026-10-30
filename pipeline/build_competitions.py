@@ -17,7 +17,7 @@ from __future__ import annotations
 
 import pathlib
 
-FRONT = "---\ntitle: 竞赛与实战\nlayout: page\nsidebar: false\noutline: false\n---\n"
+FRONT = "---\ntitle: 实战资料\nlayout: page\nsidebar: false\noutline: false\n---\n"
 
 MODULES = [
     dict(
@@ -72,7 +72,7 @@ def build(out_dir: pathlib.Path, root: pathlib.Path) -> None:
     md = FRONT + """
 <div class="comp">
   <header class="comp-hero">
-    <div class="comp-kicker">竞赛与实战</div>
+    <div class="comp-kicker">实战资料</div>
     <h1>四块内容：电控、机械、项目管理、硬件。</h1>
     <p>
       竞赛页面不重复收录部件和整机 —— 那在<a href="/catalog">部件库</a>与

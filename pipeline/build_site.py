@@ -1506,9 +1506,9 @@ html.dark .rl-th {{ color: #e0b159; }}
                        "count": len(sups), "suppliers": sups},
                    ensure_ascii=False, separators=(",", ":")),
         encoding="utf-8")
-    # 加工与采购（原「供应商」）：页头由 ExplorerShell 提供
+    # 渠道库（原「供应商」）：页头由 ExplorerShell 提供
     (OUT / "suppliers.md").write_text("""---
-title: 加工与采购
+title: 渠道库
 layout: page
 sidebar: false
 outline: false

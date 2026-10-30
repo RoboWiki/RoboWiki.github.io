@@ -19,23 +19,22 @@ const zhTheme = {
   // 「关于」仍折叠：方法/来源/贡献者/转载属信任层，需要全局可达、但不抢一级叙事位。
   nav: [
     { text: '首页', link: '/' },
+    { text: '指南', link: '/learn/' },
     { text: '部件库', link: '/catalog' },
     { text: '整机库', link: '/robots' },
     { text: '软件库', link: '/software' },
-    { text: '学习', link: '/learn/' },
-    { text: '竞赛', link: '/competitions' },
-    { text: '加工采购', link: '/suppliers' },
+    { text: '渠道库', link: '/suppliers' },
+    { text: '实战资料', link: '/competitions' },
     {
       text: '关于',
       items: [
-        { text: '方法与来源', link: '/method' },
-        { text: '数据来源', link: '/sources' },
         { text: '贡献者', link: '/contributors' },
+        { text: '方法与来源', link: '/method' },
         { text: '转载规范', link: '/learn/reprint' },
         { text: '免责声明与许可', link: '/notice' },
+        { text: '投稿', link: '/submit' },
       ],
     },
-    { text: '投稿', link: '/submit' },
   ],
   sidebar,
   outline: { label: '本页', level: [2, 3] },
@@ -72,11 +71,16 @@ const enTheme = {
   // （robots / software / submit / method / competitions 目前只有中文版。）
   nav: [
     { text: 'Home', link: '/en/' },
+    { text: 'Guide', link: '/en/learn/' },
     { text: 'Parts', link: '/en/catalog' },
     { text: 'Suppliers', link: '/en/suppliers' },
-    { text: 'Learn', link: '/en/learn/' },
-    { text: 'Sources', link: '/en/sources' },
-    { text: 'Contributors', link: '/en/contributors' },
+    {
+      text: 'About',
+      items: [
+        { text: 'Method & sources', link: '/en/method' },
+        { text: 'Contributors', link: '/en/contributors' },
+      ],
+    },
   ],
   outline: { label: 'On this page', level: [2, 3] },
   docFooter: { prev: 'Previous', next: 'Next' },
@@ -132,5 +136,20 @@ export default defineConfig({
   themeConfig: {
     // 品牌标：不再叫「文档」—— 这是个社区，不是一个说明书
     siteTitle: 'RoboWiki',
+    // 站内搜索：local = 构建期生成本地索引，浏览器内检索，不需要后端也不需要 Algolia。
+    // 243 部件 / 21 整机 / 207 渠道 + 全部文章，靠点导航找不到时这是唯一入口。
+    search: {
+      provider: 'local',
+      options: {
+        translations: {
+          button: { buttonText: '搜索', buttonAriaLabel: '搜索' },
+          modal: {
+            noResultsText: '没有找到结果',
+            resetButtonTitle: '清空',
+            footer: { selectText: '选择', navigateText: '切换', closeText: '关闭' },
+          },
+        },
+      },
+    },
   },
 })

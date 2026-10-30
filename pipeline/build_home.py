@@ -119,7 +119,7 @@ titleTemplate: false
       <div><b>{c['cats_with_data']}</b><span>有数据的品类（共 {c['cats_total']} 类）</span></div>
       <div><b>{c['tier_a']}</b><span>A 级：逐项对过厂商手册</span></div>
       <div><b>{c['robots']}</b><span>整机（带 URDF / 仓库）</span></div>
-      <div><b>{c['suppliers']}</b><span>加工与采购渠道</span></div>
+      <div><b>{c['suppliers']}</b><span>渠道库渠道</span></div>
     </div>
   </section>
   <section class="rw-home-block">
@@ -196,7 +196,7 @@ titleTemplate: false
         <span>先讲数据的用法与边界，再讲怎么动手</span>
       </a>
       <a class="rw-home-entry" href="/suppliers">
-        <b>加工与采购 · {c['suppliers']} 家</b>
+        <b>渠道库 · {c['suppliers']} 家</b>
         <p>比「活找谁做」：质量、交期、价格档、能不能开票。</p>
         <span>来自社区实战反馈，不是厂商自述</span>
       </a>
@@ -275,7 +275,7 @@ titleTemplate: false
   </section>
   <section class="rw-home-foot">
     <a href="/method">方法与来源</a>
-    <a href="/competitions">竞赛与实战</a>
+    <a href="/competitions">实战资料</a>
     <a href="/submit">投稿：补数据 / 写评价 / 写文章</a>
     <a href="/learn/reprint">转载规范</a>
     <a href="/contributors">贡献者</a>
