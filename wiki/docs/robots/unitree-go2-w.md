@@ -6,7 +6,15 @@ title: Go2-W
 
 ![Go2-W](/parts/unitree-go2-w.png)
 
-四轮足版本：16 个关节电机、7 寸充气胎，轮步复合。官网标称最大攀爬落差「<70 cm」、爬坡 35°；因官方只给上限而非具体值，climb_height_mm 留空。载荷 ≈8 kg（极限 ~12 kg），续航 1.5–3 h（15000 mAh）。官网未公开售价，price_cny 留空。 官方模型只有 MuJoCo MJCF（unitree_mujoco/unitree_robots/go2w），未单独发布 URDF。
+## 简介
+
+<div class="rb-intro">
+<p>四轮足版本：16 个关节电机、7 寸充气胎，轮步复合。</p>
+<p>官网标称最大攀爬落差「&lt;70 cm」、爬坡 35°；因官方只给上限而非具体值，climb_height_mm 留空。</p>
+<p>载荷 ≈8 kg（极限 ~12 kg），续航 1.5–3 h（15000 mAh）。</p>
+<p>官网未公开售价，price_cny 留空。</p>
+<p>官方模型只有 MuJoCo MJCF（unitree_mujoco/unitree_robots/go2w），未单独发布 URDF。</p>
+</div>
 
 ## 关键参数
 

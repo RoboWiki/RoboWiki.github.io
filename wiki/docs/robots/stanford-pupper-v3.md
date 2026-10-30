@@ -6,7 +6,13 @@ title: Pupper v3
 
 ![Pupper v3](/parts/stanford-pupper.jpg)
 
-12 自由度（每腿 3 个 GIM4305 减速电机，10:1），整机约 3 kg。关节约 3.5 N·m 峰值 / 1.0 N·m 连续（风冷），空载约 30 rad/s；控制器为 Raspberry Pi 5（8 GB），配 BNO086 IMU、IMX296 222° 鱼眼相机、4 英寸 LCD 与 3 W 扬声器，BOM 约 US$2,000。官方仓库没有提供 URDF，urdf_urls 留空；负载、速度、电池与续航官方文档未给，均留空。
+## 简介
+
+<div class="rb-intro">
+<p>12 自由度（每腿 3 个 GIM4305 减速电机，10:1），整机约 3 kg。</p>
+<p>关节约 3.5 N·m 峰值 / 1.0 N·m 连续（风冷），空载约 30 rad/s；控制器为 Raspberry Pi 5（8 GB），配 BNO086 IMU、IMX296 222° 鱼眼相机、4 英寸 LCD 与 3 W 扬声器，BOM 约 US$2,000。</p>
+<p>官方仓库没有提供 URDF，urdf_urls 留空；负载、速度、电池与续航官方文档未给，均留空。</p>
+</div>
 
 ## 关键参数
 

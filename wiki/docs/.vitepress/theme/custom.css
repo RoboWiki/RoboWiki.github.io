@@ -253,7 +253,14 @@ html.dark .vp-doc div[class*='language-'] {
   margin: 0 0 0.6rem; border: none; padding: 0; color: var(--vp-c-text-1); }
 .cat-head p { margin: 0; font-size: 0.86rem; line-height: 1.85; color: var(--vp-c-text-2); max-width: 74ch; }
 
-/* ── 整机详情页：开源生态段（build_robots.py 生成）────────────────── */
+/* ── 整机详情页：简介与开源生态段（build_robots.py 生成）──────────── */
+.rb-intro { max-width: 56ch; margin: 1rem 0 2.2rem; }
+.rb-intro p {
+  margin: 0 0 0.8rem; font-size: 0.95rem; line-height: 1.95;
+  letter-spacing: 0.01em; color: var(--vp-c-text-2);
+}
+.rb-intro p:last-child { margin-bottom: 0; }
+.rb-intro strong { color: var(--vp-c-text-1); font-weight: 600; }
 .rb-roles { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.9rem 0 1.4rem; }
 .rb-role {
   display: inline-flex; align-items: baseline; gap: 0.3rem;

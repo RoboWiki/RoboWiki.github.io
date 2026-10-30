@@ -6,7 +6,13 @@ title: ZEX-W
 
 ![ZEX-W](/parts/zex-w.png)
 
-山东华宇工学院 HYNova 战队的 16DOF 串联轮足，Robocon 仿生足式障碍赛全国一等奖第 7 名；机械、硬件、固件、训练、部署与 BOM 全量开源，是「一支新队伍从零到最后一场比赛」的完整样本。轮腿每条腿 3 个关节 + 1 个驱动轮，16 个 RS02 执行器；控制线是 RL 训练（mjlab）→ MuJoCo sim2sim → Python 与 ROS 2/C++ 双线真机部署，机上跑 Jetson Orin Nano 8G。整机质量 18.04 kg 取自新版 MJCF 的惯性质量合计；仓库里 config.py 的解析常量仍是历史值 12.3 kg（旧版模型），做 MPC 类计算前要按目标机械状态重新核。
+## 简介
+
+<div class="rb-intro">
+<p>山东华宇工学院 HYNova 战队的 16DOF 串联轮足，Robocon 仿生足式障碍赛全国一等奖第 7 名；机械、硬件、固件、训练、部署与 BOM 全量开源，是「一支新队伍从零到最后一场比赛」的完整样本。</p>
+<p>轮腿每条腿 3 个关节 + 1 个驱动轮，16 个 RS02 执行器；控制线是 RL 训练（mjlab）→ MuJoCo sim2sim → Python 与 ROS 2/C++ 双线真机部署，机上跑 Jetson Orin Nano 8G。</p>
+<p>整机质量 18.04 kg 取自新版 MJCF 的惯性质量合计；仓库里 config.py 的解析常量仍是历史值 12.3 kg（旧版模型），做 MPC 类计算前要按目标机械状态重新核。</p>
+</div>
 
 ## 关键参数
 
