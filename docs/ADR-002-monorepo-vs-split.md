@@ -93,3 +93,12 @@ Kant 的 4 条硬约束是真的，裁定：**不拆仓，但必须满足下列�
 
 **结论不变**：仍不物理拆仓。但这四件做完，`data/` 已经具备「随时能干净拆出去」的条件 ——
 拆的那天不需要重编号、不需要重讲口径、也不需要重新决定许可怎么记。
+
+### 配套文档（P0 期间产出）
+
+| 文档 | 说什么 |
+|---|---|
+| `docs/CI-LAYERS.md` | pr-gate 的分层判据：纯数据 PR 跑什么、改 pipeline 跑什么、算不出分层时退回全量 |
+| `docs/DATA-VERSIONING.md` | 数据快照怎么发（本地脚本 / workflow_dispatch / data-v* tag）、下游怎么校验与记录 |
+| `docs/ID-POLICY.md` | 永久 ID 规则：命名、改名三步、删除三步、哪些实体不该有 id |
+| `schema/semantics.README.md` | 口径单一事实源的契约与 version 升级规则 |

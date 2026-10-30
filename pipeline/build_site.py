@@ -1617,10 +1617,109 @@ outline: false
 
 """
 
-    # 汇总成 /method：参数口径 + 数据来源 + 评分规则，一页讲完
+    # ── 数据治理与版本（method 页收尾）────────────────────────────────
+    # 这一节只回答「这个数你怎么自己核」，不谈立场：口径版本、ID 条数、
+    # 图出处与仓库许可的覆盖率，全部构建时现读现算 —— 写死的数字第二天就是假话。
+    def gov_section(parts: list[dict]) -> str:
+        def _sp(r: dict) -> dict:
+            return r.get("specs") or {}
+
+        def _stat(rows: list[dict]) -> tuple[int, int, int, int]:
+            """(有图, 写了出处, 引了仓库, 写了许可) —— 四个都可以逐条数回去。"""
+            img = sum(1 for r in rows if _sp(r).get("image_url"))
+            src = sum(1 for r in rows if _sp(r).get("image_source"))
+            rep = sum(1 for r in rows if _sp(r).get("repo_urls"))
+            lic = sum(1 for r in rows
+                      if _sp(r).get("repo_urls") and _sp(r).get("repo_license"))
+            return img, src, rep, lic
+
+        # 口径版本：与 /api/semantics、MCP 同源
+        try:
+            _semver = json.loads(
+                (ROOT / "schema" / "semantics.json").read_text(encoding="utf-8")
+            ).get("version")
+        except Exception:
+            _semver = None
+        # 永久 ID：注册表只追加，removed 即 tombstone
+        try:
+            _ids = json.loads(
+                (ROOT / "data" / "_id_registry.json").read_text(encoding="utf-8")
+            ).get("ids") or {}
+        except Exception:
+            _ids = {}
+        _tomb = sum(1 for m in _ids.values() if (m or {}).get("removed"))
+
+        # 整机与部件一样有图和仓库字段，覆盖率要一起数，否则表格是半个事实
+        _robots: list[dict] = []
+        for _f in sorted((ROOT / "data" / "robots").glob("*.json")):
+            try:
+                _robots += json.loads(_f.read_text(encoding="utf-8"))
+            except Exception:
+                pass
+        p_img, p_src, p_rep, p_lic = _stat(parts)
+        r_img, r_src, r_rep, r_lic = _stat(_robots)
+        n_img, n_src, n_rep, n_lic = (p_img + r_img, p_src + r_src,
+                                      p_rep + r_rep, p_lic + r_lic)
+        _scope = f"（部件 `{p_img}` + 整机 `{r_img}`）"
+        if not n_img:
+            img_txt = "暂无条目写 `image_url`"
+        elif n_src == n_img:
+            img_txt = f"有图 `{n_img}` 条{_scope}，全部写了 `image_source`"
+        else:
+            img_txt = (f"有图 `{n_img}` 条{_scope}，"
+                       f"写了 `image_source` 的 `{n_src}` 条")
+        if not n_rep:
+            repo_txt = "暂无条目引用仓库"
+        else:
+            repo_txt = (f"引用仓库 `{n_rep}` 条"
+                        f"（部件 `{p_rep}` + 整机 `{r_rep}`），"
+                        f"许可证已核 `{n_lic}` 条")
+        ver_txt = f"`{_semver}`" if _semver else "读不到（未核）"
+
+        return f"""
+## 数据治理与版本
+
+页面上的数能不能核，取决于四件可查的东西：口径文件、ID 注册表、数据快照、出处字段。
+下表的数字在构建时从仓库文件现读，不是手写的。
+
+| 项 | 现在是什么 |
+|---|---|
+| 口径版本 | {ver_txt}（`schema/semantics.json` 的 `version`） |
+| 永久 ID | `{len(_ids)}` 条已登记，`{_tomb}` 条 tombstone（`data/_id_registry.json`） |
+| 图片出处 | {img_txt} |
+| 仓库许可 | {repo_txt} |
+
+**口径版本。** 静态站、`/api/semantics`、MCP 读的是同一份 `schema/semantics.json`。
+改口径（字段定义、单位换算、红线阈值）就升 `version`；页面上任何数字的含义，
+以那一版为准。拿旧版本的数据配新口径来读，会读出错的值。
+
+**实体与 ID。** `data/_id_registry.json` 是永久 ID 注册表，只追加。
+id 一经登记**不改名、不复用**：改名要把旧 id 留作 alias，删除要在注册表里
+留 tombstone（`removed`）。原因不抽象 —— 评分唯一键、外部引用、型号页 URL
+全挂在 id 上，改一个名字会同时断三处。
+
+**数据快照。** `data/` + `schema/` 打成 tar.gz 发到
+[GitHub Releases](https://github.com/RoboWiki/RoboWiki.github.io/releases)，
+tag 形如 `data-YYYY.MM.DD`。每次发布带三个附件：
+
+- `robowiki-data-<tag>.tar.gz` —— `data/` 与 `schema/` 的只读快照
+- `MANIFEST.json` —— 条数、`ids` 数量、`semantics_version`、生成时间
+- `SHA256SUMS.txt` —— 上面那个 tar.gz 的 SHA-256
+
+打 `data-v*` tag，或在 Actions 里手动触发 `Data release` 生成。发布前先跑
+`python -m pipeline validate`，不通过就不发 —— 快照发出去就是对外承诺了一个版本。
+
+**出处与许可。** 有图必须写 `image_source`（厂商 PDF 的哪一页、商城条目号、
+采集日期）；引用了仓库必须写 `repo_license`，读不到许可证就写 `null`
+表示「未核」，不猜一个填上。这两条是 `python -m pipeline validate` 的硬检查，
+不是文风偏好 —— 上表「许可证已核 `{n_lic}` 条」正是现状：宁可标未核，也不编。
+"""
+
+    # 汇总成 /method：参数口径 + 数据来源 + 评分规则 + 数据治理，一页讲完
     (OUT / "method.md").write_text(
         "---\ntitle: 方法与来源\n---\n\n"
-        + _body(_sem) + "\n\n---\n\n" + _body(_src) + "\n" + IMAGE_RIGHTS + RATING_METHOD,
+        + _body(_sem) + "\n\n---\n\n" + _body(_src) + "\n" + IMAGE_RIGHTS
+        + RATING_METHOD + gov_section(rows),
         encoding="utf-8")
 
     print("  方法与来源 -> method.md")

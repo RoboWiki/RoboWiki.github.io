@@ -8,7 +8,7 @@
 - [ ] 修参数 / 补字段
 - [ ] 价格或优惠（`data/offers/<厂商>.json`）
 - [ ] 图片
-- [ ] 口径定义（`backend/app/api/routes/semantics.py`）
+- [ ] 口径定义（`schema/semantics.json`，规则见 `schema/semantics.README.md`）
 - [ ] 站点 / 代码
 
 ## 数据来源（改数据必填）

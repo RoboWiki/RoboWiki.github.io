@@ -55,3 +55,8 @@ ui-*.png
 
 # 浏览器调试产物
 .playwright-cli/
+
+# 数据快照导出产物（tools/export_data.py）：tar.gz / MANIFEST 属发布物，
+# 走 GitHub Release 分发，不进仓库历史。规则见 docs/DATA-VERSIONING.md
+dist/
+.tmp-data-export/

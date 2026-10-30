@@ -29,28 +29,79 @@ INERTIA_BASIS = {"rotor", "output"}
 # 数值字段白名单：出现没见过的小写驼峰/拼写错误时报警，防止词表漂移
 
 # ── 永久 ID（数据要被外部按版本引用，id 就不能改名/复用）───────────
+# 命名空间：部件/整机是裸 id；软件、供应商、协议各自带前缀。
+# protocol 里的 dji-c610 与 catalog 里的 dji-c610 是两个实体，不加前缀会撞成同一条。
 ID_RE = re.compile(r"^[a-z0-9][a-z0-9\-]{1,63}$")
+ID_NAMESPACES = ("software:", "supplier:", "protocol:")
 
 
 def check_id_registry(root: Path, rows: list[dict]) -> list[str]:
-    """① 当前 id 都在注册表 ② 老 id 没消失 ③ 新 id 必须 ASCII"""
+    """① 当前 id 都在注册表 ② 老 id 没消失（改名留 alias_of、删除留 removed）
+    ③ 命名与格式 ④ alias / tombstone 条目自身完整
+
+    口径与 tools/id_registry.py:check() 必须一致：那边是操作入口，这边是数据闸门。
+    """
     reg_path = root / "data" / "_id_registry.json"
     if not reg_path.exists():
         return ["ID 注册表不存在：data/_id_registry.json（跑 tools/id_registry.py）"]
     reg = json.loads(reg_path.read_text(encoding="utf-8"))
     known = reg.get("ids") or {}
-    cur = {r["id"] for r in rows if r.get("id")}
+    cur_list = [r["id"] for r in rows if r.get("id")]
+    cur = set(cur_list)
     out: list[str] = []
+
+    # 同一个 id 被两个来源产出，说明少了命名空间前缀
+    for rid in sorted({i for i in cur_list if cur_list.count(i) > 1}):
+        out.append(f"{rid}: 同一个 id 出现多次 —— 不同来源的实体要加命名空间前缀")
+
+    # ① 数据里的 id 都登记过
     for rid in sorted(cur - set(known)):
         out.append(f"{rid}: id 不在注册表里（新增实体要跑 tools/id_registry.py 登记）")
+
+    # ② 注册表里的 id 不能消失：改名 → alias_of，删除 → removed
     for rid in sorted(set(known) - cur):
-        if not known[rid].get("removed"):
-            out.append(f"{rid}: 注册表里有、数据里没有 —— 改名或删除要留 tombstone")
+        meta = known[rid] or {}
+        if meta.get("removed") or meta.get("alias_of"):
+            continue
+        out.append(f"{rid}: 注册表里有、数据里没有 —— 改名用 --alias，删除用 --tombstone")
+
+    # ③ 命名与格式
     for rid in sorted(cur):
         meta = known.get(rid) or {}
-        plain = rid.split(":", 1)[-1]  # software:xxx 的冒号是命名空间，不是 id 的一部分
-        if not meta.get("legacy") and not ID_RE.match(plain):
-            out.append(f"{rid}: id 必须是 ASCII（小写字母/数字/连字符）；中文 id 只允许历史遗留")
+        plain = rid.split(":", 1)[-1]  # software:/supplier:/protocol: 是命名空间，不是 id 本体
+        if not ID_RE.match(plain) and not meta.get("legacy"):
+            if plain.isascii():
+                out.append(f"{rid}: id 只允许小写字母/数字/连字符（2–64 字符），不要版本号后缀")
+            else:
+                out.append(f"{rid}: 非 ASCII id 只有历史遗留可以（标 legacy: true）")
+        if ":" in rid and not rid.startswith(ID_NAMESPACES):
+            out.append(f"{rid}: 未知的命名空间前缀（只认 {', '.join(ID_NAMESPACES)}）")
+
+    # ④ 出口条目不能半残：alias 指向要落在现存 id 上，tombstone 要有时间与原因
+    for rid, meta in sorted(known.items()):
+        meta = meta or {}
+        tgt = meta.get("alias_of")
+        if meta.get("removed"):
+            if rid in cur:
+                out.append(f"{rid}: 标了 removed 但数据里还在 —— tombstone 只给已删除的实体")
+            if not meta.get("removed_at"):
+                out.append(f"{rid}: removed 缺 removed_at")
+            if not meta.get("removed_reason"):
+                out.append(f"{rid}: removed 缺 removed_reason")
+            if tgt:
+                out.append(f"{rid}: removed 与 alias_of 不能并存 —— 改名留 alias，删除留 tombstone")
+        if tgt:
+            if tgt == rid:
+                out.append(f"{rid}: alias_of 指向自己")
+            elif tgt not in known:
+                out.append(f"{rid}: alias_of 指向没登记的 id（{tgt}）")
+            else:
+                tmeta = known[tgt] or {}
+                if tmeta.get("alias_of"):
+                    out.append(f"{rid}: alias_of 成了链（{tgt} 也在改名）—— 直接指最终 id")
+                elif tgt not in cur and not tmeta.get("removed"):
+                    # 目标是 tombstone 是合法结局：先改名、后删除，旧 id 的查询落到墓碑上
+                    out.append(f"{rid}: alias_of 的目标 {tgt} 不在当前数据里（改名没改完？）")
     return out
 
 
@@ -122,11 +173,24 @@ UI_KEYS = {
     "battery": {"capacity_mah", "voltage_V", "image_url"},
 }
 
-# 阈值（来自 RoboParts《关节参数虚标怎么辨别》的物理红线）
-TD_REVIEW = 120.0      # 额定扭矩密度 > 120 N·m/kg 需复核
-TD_ABSURD = 200.0      # 峰值扭矩密度 > 200 N·m/kg 几乎不可信
-PR_REVIEW = 3.0        # 峰值/额定 > 3 需给持续时间
-PR_ABSURD = 5.0        # > 5 基本是瞬时堵转值
+# 红线的**数值**只有一份：schema/semantics.json 的 RL-01 / RL-02
+# （文案和阈值都在那儿，静态站口径页、/api/semantics、MCP 也都读同一份）。
+# 这里只取数不复制 —— 别在代码里再写一遍 120 / 200 / 3 / 5。
+_SEMANTICS_FILE = ROOT / "schema" / "semantics.json"
+if not _SEMANTICS_FILE.is_file():
+    raise RuntimeError(
+        f"缺参数口径事实源：{_SEMANTICS_FILE}\n"
+        "  校验阈值来自该 JSON 的 red_lines（RL-01 扭矩密度、RL-02 峰值/额定），"
+        "见 schema/semantics.README.md。"
+    )
+_RED_LINES_BY_ID = {
+    _item["id"]: _item
+    for _item in json.loads(_SEMANTICS_FILE.read_text(encoding="utf-8"))["red_lines"]
+}
+TD_REVIEW = float(_RED_LINES_BY_ID["RL-01"]["review_above"])    # 峰值扭矩密度需复核
+TD_ABSURD = float(_RED_LINES_BY_ID["RL-01"]["absurd_above"])    # 峰值扭矩密度几乎不可信
+PR_REVIEW = float(_RED_LINES_BY_ID["RL-02"]["review_above"])    # 峰值/额定需给持续时间
+PR_ABSURD = float(_RED_LINES_BY_ID["RL-02"]["absurd_above"])    # 基本是瞬时堵转值
 
 # 物理量程闸门：超出去几乎一定是单位/解析错误，不是产品差异
 # （这些边界就是被 μ/µ 两个码点坑过一次之后加的）
@@ -377,7 +441,20 @@ def main() -> int:
     if _sw.exists():
         for _it in json.loads(_sw.read_text(encoding="utf-8")).get("items", []):
             all_rows.append({"id": f"software:{_it['id']}", "model": _it.get("name")})
-    errors.extend(check_id_registry(ROOT, all_rows))
+    # 供应商与协议也有稳定 id（sup-xxxxxxxx / dji-c620 这类），一并纳入注册表口径。
+    # contributors.json / learn.json 没有 id 字段（见 docs/ID-POLICY.md「哪些实体不带 id」）。
+    id_rows = list(all_rows)
+    _sp = ROOT / "data" / "suppliers.json"
+    if _sp.exists():
+        for _it in json.loads(_sp.read_text(encoding="utf-8")):
+            if _it.get("id"):
+                id_rows.append({"id": f"supplier:{_it['id']}"})
+    _pr = ROOT / "data" / "protocols.json"
+    if _pr.exists():
+        for _it in json.loads(_pr.read_text(encoding="utf-8")).get("protocols", []):
+            if _it.get("id"):
+                id_rows.append({"id": f"protocol:{_it['id']}"})
+    errors.extend(check_id_registry(ROOT, id_rows))
     warns.extend(check_asset_provenance(all_rows))
 
     print(f"检查了 {len(seen_ids)} 个实体 / {len(rows_by_subtype)} 个 subtype")

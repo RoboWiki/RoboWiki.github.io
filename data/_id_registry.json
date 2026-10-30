@@ -905,6 +905,31 @@
    "category": "camera",
    "model": "Gemini 336"
   },
+  "protocol:dji-c610": {
+   "added": "2026-10-31",
+   "category": "protocol",
+   "model": "DJI RoboMaster C610"
+  },
+  "protocol:dji-c620": {
+   "added": "2026-10-31",
+   "category": "protocol",
+   "model": "DJI RoboMaster C620"
+  },
+  "protocol:dji-gm6020": {
+   "added": "2026-10-31",
+   "category": "protocol",
+   "model": "DJI RoboMaster GM6020 内置"
+  },
+  "protocol:dm-1to4": {
+   "added": "2026-10-31",
+   "category": "protocol",
+   "model": "达妙 DM 一拖四固件"
+  },
+  "protocol:dm-mit": {
+   "added": "2026-10-31",
+   "category": "protocol",
+   "model": "达妙 DM 内置（MIT 模式）"
+  },
   "radiolink-at9s-pro": {
    "added": "2026-10-31",
    "category": "remote_controller",
@@ -1194,6 +1219,751 @@
    "added": "2026-10-31",
    "category": "robot",
    "model": "ZEX-W"
+  },
+  "supplier:sup-01ed8dd3": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "zpcac旗舰店"
+  },
+  "supplier:sup-0545f0aa": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "武汉旋锋科技导电滑环"
+  },
+  "supplier:sup-063084d9": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "巨鲸金属材料商行"
+  },
+  "supplier:sup-066ac1e1": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "碳维观止"
+  },
+  "supplier:sup-07e3f6ae": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "坚威旗舰店"
+  },
+  "supplier:sup-09eb729e": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "浙江丽水精密轴承"
+  },
+  "supplier:sup-0d3a26b5": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "名品数控"
+  },
+  "supplier:sup-0e5184ca": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "上海腾胜轴承机械"
+  },
+  "supplier:sup-0f262c14": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "华明威电机"
+  },
+  "supplier:sup-0fa10806": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "贝朗科技"
+  },
+  "supplier:sup-103dcbc9": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "碳维观止"
+  },
+  "supplier:sup-10501c19": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "奥士特官方企业店"
+  },
+  "supplier:sup-12562cd3": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "天弘铝业"
+  },
+  "supplier:sup-12d86183": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "华诚五金专营"
+  },
+  "supplier:sup-13a21e2d": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "腾嘉昌精密机械"
+  },
+  "supplier:sup-163049e2": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "铝合金型材生产厂"
+  },
+  "supplier:sup-18a8f9d2": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "大沿轴承"
+  },
+  "supplier:sup-1970eb1a": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "zklzk旗舰店"
+  },
+  "supplier:sup-1b908d19": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "杰安德气动"
+  },
+  "supplier:sup-1dc8f1ee": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "亿达绝缘材料"
+  },
+  "supplier:sup-221472d8": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "亿昌泰3D企业店"
+  },
+  "supplier:sup-24b5c3dd": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "锐和精密五金"
+  },
+  "supplier:sup-250d4fa9": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "望成金属"
+  },
+  "supplier:sup-254dcbed": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "上海特惠轴承"
+  },
+  "supplier:sup-2e467077": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "S-Parts 旗舰店"
+  },
+  "supplier:sup-2f0e2055": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "TUBE途比润滑油脂"
+  },
+  "supplier:sup-325fadef": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "天成精密"
+  },
+  "supplier:sup-36d3610b": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "新宏能(深圳)科技有限公司"
+  },
+  "supplier:sup-38818be6": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "上海工业焊割厂"
+  },
+  "supplier:sup-3a5c9aa9": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "固万基旗舰店"
+  },
+  "supplier:sup-3e09328f": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "专业机械加工定制"
+  },
+  "supplier:sup-3e1efdad": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "合金侠"
+  },
+  "supplier:sup-421ea526": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "AIRTAC"
+  },
+  "supplier:sup-427996ee": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "沪豪旗舰店"
+  },
+  "supplier:sup-469505a9": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "博卡碳纤维科技"
+  },
+  "supplier:sup-47ae4d89": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "佰瑞特旗舰店"
+  },
+  "supplier:sup-48cab52d": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "天赫五金"
+  },
+  "supplier:sup-48f718bc": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "维其精密旗舰店"
+  },
+  "supplier:sup-49aeaab2": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "冠临旗舰店"
+  },
+  "supplier:sup-4d3b4482": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "常州晨阳轴承"
+  },
+  "supplier:sup-50d6b23d": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "旭集五金专营店"
+  },
+  "supplier:sup-50e991d6": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "上海金盛聚氨酯"
+  },
+  "supplier:sup-561b0325": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "泛亚精工"
+  },
+  "supplier:sup-574ba9e2": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "成都机械加工"
+  },
+  "supplier:sup-59037903": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳聚氨酯包胶"
+  },
+  "supplier:sup-5c134f20": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "全向轮和机械加工"
+  },
+  "supplier:sup-5d847e8b": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "电子爱好者之家元器件"
+  },
+  "supplier:sup-5e0c4763": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "新大明金属制品"
+  },
+  "supplier:sup-5f34fdb8": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "鲁泰旗舰店"
+  },
+  "supplier:sup-5ff13b4e": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "辰昇传动机械"
+  },
+  "supplier:sup-6101e1f3": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "正源电子科技"
+  },
+  "supplier:sup-640356d8": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "亿昌泰3D企业店"
+  },
+  "supplier:sup-643dc7d8": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "乾裕顺玩具专营店"
+  },
+  "supplier:sup-6476b139": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "宁波正大轴承五金"
+  },
+  "supplier:sup-64ee1cf8": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "西南金属"
+  },
+  "supplier:sup-65c3bbb5": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "美坚龙金属制品"
+  },
+  "supplier:sup-668de8b4": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳市鼎玉丰科技001"
+  },
+  "supplier:sup-6879bb70": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "分享五金加工厂"
+  },
+  "supplier:sup-6aa0ed17": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "东莞市天仁金属"
+  },
+  "supplier:sup-6ee93e06": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "温州乐清编码器"
+  },
+  "supplier:sup-7095c023": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "hrb旗舰店"
+  },
+  "supplier:sup-71233f13": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "UENPO旗舰店"
+  },
+  "supplier:sup-728fe792": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "红锣旗舰店"
+  },
+  "supplier:sup-77c8d441": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "昌盛碳钎维"
+  },
+  "supplier:sup-77f23e3c": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "昆山绿循化工"
+  },
+  "supplier:sup-7d382cd8": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳市正源达塑胶材料"
+  },
+  "supplier:sup-7f7de5db": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳市优信电子科技有限公司"
+  },
+  "supplier:sup-80cb86fb": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "锐迈数控刀具"
+  },
+  "supplier:sup-80d9b6c3": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "三源轴承"
+  },
+  "supplier:sup-80eef11f": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "荣域华府旗舰店"
+  },
+  "supplier:sup-8220586a": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "达久晟电机"
+  },
+  "supplier:sup-83345e38": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "优卓电子批发"
+  },
+  "supplier:sup-835cf286": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "南方建材装饰"
+  },
+  "supplier:sup-83c3e5cb": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "广发传动配件"
+  },
+  "supplier:sup-859d4893": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "欧帝卡斯旗舰店"
+  },
+  "supplier:sup-873c25dc": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "东莞鑫源金属材料"
+  },
+  "supplier:sup-87b38a48": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "尧朝铝业"
+  },
+  "supplier:sup-87cf0619": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "柯盾五金专营店"
+  },
+  "supplier:sup-8accb861": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "沐协实业"
+  },
+  "supplier:sup-8da16306": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "极工精器数控刀具"
+  },
+  "supplier:sup-8e137f1c": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "德是宝旗舰店"
+  },
+  "supplier:sup-91674613": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "线切割加工叶工"
+  },
+  "supplier:sup-945256f3": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "同胜电线电缆"
+  },
+  "supplier:sup-95110a6e": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "晋辉五金"
+  },
+  "supplier:sup-96f7f795": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "澳宏旗舰店"
+  },
+  "supplier:sup-9cb8b124": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "哈长伟碳纤维板精加工"
+  },
+  "supplier:sup-a132ee22": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "Muse Lab"
+  },
+  "supplier:sup-a238982a": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "莹轩风筝荣盛店"
+  },
+  "supplier:sup-a25ba081": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "乐邦气动元件 原耐格斯"
+  },
+  "supplier:sup-a2637980": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "碳索纤生"
+  },
+  "supplier:sup-a2a7cba6": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "精聚五金商城"
+  },
+  "supplier:sup-a3c4ef02": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "星骏模型配件批发与零售"
+  },
+  "supplier:sup-a5a341d1": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "温州创艺弹簧厂"
+  },
+  "supplier:sup-a5e13283": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "精密微型轴承"
+  },
+  "supplier:sup-a5e51c13": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "鑫利碳纤维"
+  },
+  "supplier:sup-a7f00c65": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "安邦五金旗舰店"
+  },
+  "supplier:sup-a7f82830": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "华臻机械工厂店"
+  },
+  "supplier:sup-ab67826b": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "沪豪旗舰店"
+  },
+  "supplier:sup-adfb86a6": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "vrkantv旗舰店"
+  },
+  "supplier:sup-b24492c9": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "汉莎模型"
+  },
+  "supplier:sup-b2f71f8c": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "pny五金旗舰店"
+  },
+  "supplier:sup-b39ddf82": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "品正轴承店"
+  },
+  "supplier:sup-b4123b6f": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "化工产品小店"
+  },
+  "supplier:sup-b4542d58": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "辽宁中科新材科"
+  },
+  "supplier:sup-b7b2784d": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "新空间旗舰店"
+  },
+  "supplier:sup-b95b0834": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "红妆机械"
+  },
+  "supplier:sup-bd4a922d": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "信达数控刀具"
+  },
+  "supplier:sup-bde23ada": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "斌斌板材加工"
+  },
+  "supplier:sup-bfe59dab": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "博卡碳纤维科技"
+  },
+  "supplier:sup-c5c37bd5": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "BAYAMAN企业店"
+  },
+  "supplier:sup-c6754fac": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "自动化配件精密模具配件"
+  },
+  "supplier:sup-c6a81d32": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "光明五金城"
+  },
+  "supplier:sup-cab8cc16": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "岑置五金专营店"
+  },
+  "supplier:sup-cae41edc": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳市荣光五金模具"
+  },
+  "supplier:sup-cc12b271": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "振心金属"
+  },
+  "supplier:sup-cd156799": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳义胜电子网店"
+  },
+  "supplier:sup-cd8b7756": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "台湾KSS凯士士配线器"
+  },
+  "supplier:sup-cdc844c8": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "123明天会更好"
+  },
+  "supplier:sup-ceb0f46c": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "勇创金属制品材料"
+  },
+  "supplier:sup-cf0c3286": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "鸿康明五金旗舰店"
+  },
+  "supplier:sup-cfe29001": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "正时铝箱"
+  },
+  "supplier:sup-d03efc14": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "telesky旗舰店"
+  },
+  "supplier:sup-d06dd5fa": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "WL精密轴承"
+  },
+  "supplier:sup-d18be6a0": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "河北多点碳纤维"
+  },
+  "supplier:sup-d73960cf": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "朗思明旗舰店"
+  },
+  "supplier:sup-da5d2486": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "易伶模型店"
+  },
+  "supplier:sup-da9fb8b4": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "恒科电子电器"
+  },
+  "supplier:sup-dd84b297": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "世界级电子胶(灌封胶,密封胶,散热膏）"
+  },
+  "supplier:sup-df5c1408": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "贝利五金旗舰店"
+  },
+  "supplier:sup-df95e386": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "安盛绝缘材料厂"
+  },
+  "supplier:sup-dfbf0d57": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "皇冠五金原材料厂"
+  },
+  "supplier:sup-e42743d8": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "立创商城"
+  },
+  "supplier:sup-e483fd1d": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "蓝冰丝杠"
+  },
+  "supplier:sup-e48b3179": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "霖溪科技"
+  },
+  "supplier:sup-e6e93c6e": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "XEV旗舰店"
+  },
+  "supplier:sup-e8f88fa4": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "芯板坊"
+  },
+  "supplier:sup-eaf5c416": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "en"
+  },
+  "supplier:sup-ed0ec746": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "晋辉五金官方网店"
+  },
+  "supplier:sup-ee67c466": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "莱泽气动"
+  },
+  "supplier:sup-eef03d04": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "全合成润滑脂"
+  },
+  "supplier:sup-efc62500": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "上海顺宜塑胶厂家直销"
+  },
+  "supplier:sup-f158f4c7": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳聚氨酯包胶"
+  },
+  "supplier:sup-f278c77a": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "力祥同步带轮"
+  },
+  "supplier:sup-f3322b83": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "mzg工具旗舰店"
+  },
+  "supplier:sup-f7d5affa": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "巨兽大型激光切割"
+  },
+  "supplier:sup-fbd650ad": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "上海桐文橡塑"
+  },
+  "supplier:sup-fc60f189": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "坤宏五金轴承商贸2"
+  },
+  "supplier:sup-fdbb7b4c": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "橡果塑胶"
+  },
+  "supplier:sup-fe17c57a": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "进口防静电材料"
   },
   "unitree-go-m8010-6": {
    "added": "2026-10-31",

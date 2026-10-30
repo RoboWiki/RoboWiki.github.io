@@ -4,10 +4,25 @@ name: PR 门禁
 # 单位写错（g 当 kg）、口径写错（额定当峰值）、图片传错（整机图当电机图）——
 # 这些肉眼 review 极容易漏，机器一跑就红。
 #
-# 三道关，按代价从低到高：
-#   1. pipeline validate —— 必填、不变量、物理量程、键集
-#   2. pytest           —— 构建链 + API 行为
-#   3. 站点构建          —— 死链、生成脚本崩溃
+# ── 按路径分层（ADR-002 D2「CI 按路径分层」）────────────────────────────────
+# 问题：纯数据 PR（只改 data/*.json）以前也要跑 pytest 全量 + VitePress 构建，
+#       一次 2~3 分钟；而 95% 的 PR 都是数据 PR —— 机器时间全花在「没改的东西」上。
+# 做法：先算这次 PR 动了哪几层（changes job），再只跑该层该跑的检查。
+#       算不出来（非 PR 事件、取不到 base、改了根目录配置）→ 全量兜底（宁可慢，不可漏）。
+#
+# 分层判据（flag 由 changes job 输出，完整表见 docs/CI-LAYERS.md）：
+#   data      data/**  schema/**               → 数据闸门 + 数据测试（不跑 VitePress）
+#   pipeline  pipeline/** tools/** tests/**    → 数据闸门 + pytest 全量（含 backend/tests）
+#   site      wiki/** frontend/**              → 数据闸门 + 生成 + VitePress 构建
+#   console   console/**                       → 数据闸门 + 选型台构建（tsc + vite）
+#   backend   backend/**                       → 数据闸门 + 后端 pytest + import 冒烟
+#   full      以上都不匹配的一切（含 docs/**、.github/**、根目录配置）→ 全部跑
+#
+# 数据闸门（validate）刻意保持「每个 PR 都跑」：它是唯一的必过关，
+# 成本只有十几秒，不跟分层赌。分层省的是 pytest 全量与前端构建。
+#
+# 稳定入口是汇总 job `pr-gate`：分支保护只需要勾这一个检查，
+# 以后增删分层 job 都不必再去改仓库设置。
 #
 # 注意：validate 不加 --strict。库里有 20+ 个「真话式警告」
 # （只公布额定扭矩、峰值/额定 >3 等），那是数据现状不是错误。
@@ -26,6 +41,150 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # ── 第零关：算分层 ────────────────────────────────────────────────────────
+  # 只做一件事：把「这次 PR 动了哪几层」变成 6 个布尔输出。
+  # 不用 dorny/paths-filter：仓库现在没有任何第三方 action 依赖，
+  # 一段 python 就够，且「算不出来 → 全量」这条兜底只有自己写才控制得住。
+  changes:
+    name: 变更分层
+    runs-on: ubuntu-latest
+    outputs:
+      full: ${{ steps.classify.outputs.full }}
+      data: ${{ steps.classify.outputs.data }}
+      pipeline: ${{ steps.classify.outputs.pipeline }}
+      site: ${{ steps.classify.outputs.site }}
+      console: ${{ steps.classify.outputs.console }}
+      backend: ${{ steps.classify.outputs.backend }}
+      layers: ${{ steps.classify.outputs.layers }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # 要跟 base 求 merge-base，浅克隆拿不到共同祖先
+          fetch-depth: 0
+
+      - name: 判定本次 PR 落在哪一层
+        id: classify
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          python3 - <<'PY'
+          import os
+          import subprocess
+
+          # ── 判据表：路径前缀 → 需要跑的层 ─────────────────────────────────
+          # 只有这里和 docs/CI-LAYERS.md 的表格是「真相」，两边要一起改。
+          LAYERS = [
+              ("data/", ["data"]),
+              ("schema/", ["data"]),       # schema 是数据契约，改它等同于改数据
+              ("pipeline/", ["pipeline"]),
+              ("tools/", ["pipeline"]),
+              ("tests/", ["pipeline"]),
+              ("wiki/", ["site"]),
+              ("frontend/", ["site"]),
+              ("console/", ["console"]),
+              ("backend/", ["backend"]),
+          ]
+          KEYS = ["data", "pipeline", "site", "console", "backend"]
+
+
+          def changed_files():
+              """本次 PR 改动的路径列表；拿不到就返回 None（→ 全量兜底）。"""
+              if os.environ.get("EVENT_NAME") != "pull_request":
+                  print("非 pull_request 事件（手动触发等）→ 没有可比对的 base")
+                  return None
+              base = (os.environ.get("BASE_SHA") or "").strip()
+              if not base:
+                  print("取不到 base sha")
+                  return None
+              # checkout 已是 fetch-depth: 0，fork PR 的 base 仍可能缺失，补一次
+              subprocess.run(["git", "fetch", "--no-tags", "--depth=1", "origin", base],
+                             capture_output=True, check=False)
+              diff = subprocess.run(
+                  ["git", "diff", "--name-only", "--no-renames", f"{base}...HEAD"],
+                  capture_output=True, text=True)
+              if diff.returncode != 0:
+                  print("git diff 失败：" + diff.stderr.strip()[:400])
+                  return None
+              return [line.strip() for line in diff.stdout.splitlines() if line.strip()]
+
+
+          def classify(files):
+              flags = dict.fromkeys(KEYS, False)
+              unmapped = []
+              for path in files:
+                  for prefix, keys in LAYERS:
+                      if path.startswith(prefix):
+                          for key in keys:
+                              flags[key] = True
+                          break
+                  else:
+                      unmapped.append(path)
+              return flags, unmapped
+
+
+          files = changed_files()
+          reason = ""
+          if files is None:
+              files = []
+              reason = "没有可比对的 diff（非 PR 事件 / 取不到 base / git 报错）"
+          elif not files:
+              reason = "diff 为空（异常情况）"
+
+          if reason:
+              flags = dict.fromkeys(KEYS, True)
+              unmapped = []
+          else:
+              flags, unmapped = classify(files)
+              if unmapped:
+                  flags = dict.fromkeys(KEYS, True)
+                  reason = "有路径没归到任何层 → 全量兜底"
+
+          full = bool(reason)
+
+          print(f"改动 {len(files)} 个文件")
+          for path in files[:60]:
+              print("  " + path)
+          if len(files) > 60:
+              print(f"  ...（共 {len(files)} 个）")
+          if unmapped:
+              print("未归层路径（触发全量）：")
+              for path in unmapped[:20]:
+                  print("  " + path)
+          if reason:
+              print("兜底原因：" + reason)
+
+          if full:
+              layers = "full（" + reason + "）"
+          else:
+              layers = ",".join([k for k in KEYS if flags[k]]) or "无（空 diff）"
+
+          summary = [
+              "### PR 门禁分层",
+              "",
+              f"- 改动文件：{len(files)}",
+              f"- 命中层：`{layers}`",
+              f"- 全量兜底：`{'true' if full else 'false'}`",
+          ]
+          if reason:
+              summary.append(f"- 原因：{reason}")
+          step_summary = os.environ.get("GITHUB_STEP_SUMMARY")
+          if step_summary:
+              with open(step_summary, "a", encoding="utf-8") as fh:
+                  fh.write("\n".join(summary) + "\n")
+
+          out = os.environ.get("GITHUB_OUTPUT")
+          lines = [f"full={'true' if full else 'false'}"]
+          lines += [f"{k}={'true' if flags[k] else 'false'}" for k in KEYS]
+          lines.append("layers=" + layers)
+          text = "\n".join(lines)
+          print(text)
+          if out:
+              with open(out, "a", encoding="utf-8") as fh:
+                  fh.write(text + "\n")
+          PY
+
+  # ── 第一关：数据闸门（必跑，不看分层）─────────────────────────────────────
   validate:
     name: 数据闸门
     runs-on: ubuntu-latest
@@ -56,8 +215,33 @@ jobs:
           sys.exit(1 if bad else 0)
           PY
 
+  # ── data 层：只跑跟数据有关的测试（不装后端、不跑前端）───────────────────
+  # 为什么是这两个文件：它们全部只读 data/ 与 schema/，
+  # 覆盖「id 未登记 / 已登记 id 消失 / 图片没出处 / 品类与 schema enum 不一致」这些
+  # 数据 PR 真会踩的坑；test_pipeline.py 会 subprocess 跑整个 build_site，属于 pipeline 层。
+  test_data:
+    name: 数据测试
+    needs: [changes]
+    if: needs.changes.outputs.full == 'true' || needs.changes.outputs.data == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install "pydantic>=2.9" pytest
+      - name: 数据治理 + 品类注册表
+        run: |
+          python -m pytest tests/test_data_governance.py tests/test_taxonomy.py
+      - name: 永久 ID 注册表
+        run: python tools/id_registry.py --check
+
+  # ── pipeline 层：全量 pytest（pyproject 的 testpaths 含 backend/tests）─────
+  # pipeline/ 一改，构建链和 API 都可能被带到，所以这里是「宁可慢」的那一档。
   test:
     name: 测试
+    needs: [changes]
+    if: needs.changes.outputs.full == 'true' || needs.changes.outputs.pipeline == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -70,23 +254,145 @@ jobs:
       - name: pipeline + backend
         run: python -m pytest
 
+  # ── backend 层：只动后端时跑后端那一条测试线 + import 冒烟 ────────────────
+  # 改 pipeline 的 PR 不重复跑这里：那边 `python -m pytest` 的 testpaths 已经含 backend/tests。
+  backend:
+    name: 后端冒烟
+    needs: [changes]
+    if: needs.changes.outputs.full == 'true' || needs.changes.outputs.backend == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          pip install "pydantic>=2.9" pytest httpx
+          pip install -r backend/requirements.txt
+      - name: import 冒烟（应用能否装配起来）
+        working-directory: backend
+        run: python -c "import app, app.main; print('backend import ok:', app.main.app.title)"
+      - name: 后端测试
+        run: python -m pytest backend/tests
+
+  # ── 站点层：生成器 + VitePress ───────────────────────────────────────────
+  # 纯数据改动只跑生成器（python，十几秒）：新增一条数据把一个值写错时，
+  # 先崩的通常是 build_site 而不是 VitePress。
+  # 死链风险的兜底：删 id / 改名会被 test_data_governance 的「注册表里的 id 消失了」
+  # 和 test_taxonomy 的「精选清单里有不存在的部件」提前拦下，所以数据 PR 不跑前端构建。
   build:
     name: 站点构建
+    needs: [changes]
+    if: >-
+      needs.changes.outputs.full == 'true' || needs.changes.outputs.data == 'true' ||
+      needs.changes.outputs.pipeline == 'true' || needs.changes.outputs.site == 'true'
+    runs-on: ubuntu-latest
+    env:
+      # 站点层才装 node 依赖 / 跑 vitepress；数据层只跑生成器
+      DO_SITE: ${{ needs.changes.outputs.full == 'true' || needs.changes.outputs.pipeline == 'true' || needs.changes.outputs.site == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        if: env.DO_SITE == 'true'
+        with:
+          node-version: '20'
+      - run: pip install "pydantic>=2.9"
+      - name: 生成内容
+        run: python -m pipeline build
+      - name: 安装站点依赖
+        if: env.DO_SITE == 'true'
+        run: cd wiki && (npm ci || npm install)
+      - name: VitePress 构建（死链会让这里红）
+        if: env.DO_SITE == 'true'
+        env:
+          WIKI_BASE: /
+        run: cd wiki && npx vitepress build docs
+
+  # ── console 层：React 选型台 ─────────────────────────────────────────────
+  # 以前 console/ 在 PR 阶段没有任何检查（只在本地 build 过），这里补上同一套命令。
+  console:
+    name: 选型台构建
+    needs: [changes]
+    if: needs.changes.outputs.full == 'true' || needs.changes.outputs.console == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - run: |
-          pip install "pydantic>=2.9"
-          cd wiki && (npm ci || npm install)
-      - name: 生成内容并构建（死链会让这里红）
+      - name: 安装依赖
+        run: cd console && (npm ci || npm install)
+      - name: 类型检查 + 打包
+        run: cd console && npm run build
+
+  # ── 汇总：分支保护的稳定入口 ─────────────────────────────────────────────
+  # 只做一件事：任何一个需要跑的 job 没成功，这里就红。
+  # skipped 视为「这一层没被触发」= 通过；「输出缺失」不能当跳过放行。
+  gate:
+    name: pr-gate
+    needs: [changes, validate, test_data, test, backend, build, console]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: 汇总
         env:
-          WIKI_BASE: /
+          LAYERS: ${{ needs.changes.outputs.layers }}
+          FULL: ${{ needs.changes.outputs.full }}
+          DATA: ${{ needs.changes.outputs.data }}
+          PIPELINE: ${{ needs.changes.outputs.pipeline }}
+          SITE: ${{ needs.changes.outputs.site }}
+          CONSOLE: ${{ needs.changes.outputs.console }}
+          BACKEND: ${{ needs.changes.outputs.backend }}
+          R_CHANGES: ${{ needs.changes.result }}
+          R_VALIDATE: ${{ needs.validate.result }}
+          R_TEST_DATA: ${{ needs.test_data.result }}
+          R_TEST: ${{ needs.test.result }}
+          R_BACKEND: ${{ needs.backend.result }}
+          R_BUILD: ${{ needs.build.result }}
+          R_CONSOLE: ${{ needs.console.result }}
         run: |
-          python -m pipeline build
-          cd wiki && npx vitepress build docs
+          set -u
+          fail=0
+          echo "分层：full=$FULL data=$DATA pipeline=$PIPELINE site=$SITE console=$CONSOLE backend=$BACKEND"
+          echo "命中：$LAYERS"
+
+          # 分层算不出来时这里会是空串。空串绝不能当「全跳过」，必须显式失败。
+          for pair in "full:$FULL" "data:$DATA" "pipeline:$PIPELINE" \
+                      "site:$SITE" "console:$CONSOLE" "backend:$BACKEND"; do
+            key=${pair%%:*}
+            value=${pair#*:}
+            if [ "$value" != "true" ] && [ "$value" != "false" ]; then
+              echo "::error::分层输出 $key 缺失或非法（'$value'）——按失败处理"
+              fail=1
+            fi
+          done
+
+          printf '%-12s %s\n' "job" "结果"
+          while IFS='|' read -r job result; do
+            [ -z "$job" ] && continue
+            printf '%-12s %s\n' "$job" "$result"
+            case "$result" in
+              success|skipped) ;;
+              *)
+                echo "::error::$job 的结果是 $result"
+                fail=1
+                ;;
+            esac
+          done <<EOF
+          changes|$R_CHANGES
+          validate|$R_VALIDATE
+          test_data|$R_TEST_DATA
+          test|$R_TEST
+          backend|$R_BACKEND
+          build|$R_BUILD
+          console|$R_CONSOLE
+          EOF
+
+          if [ "$fail" -ne 0 ]; then
+            echo "PR 门禁：不通过"
+            exit 1
+          fi
+          echo "PR 门禁：通过"

@@ -376,3 +376,40 @@ html.dark .rl-th { color: #e0b159; }
 - **可被关闭**：明显刷分或与工况不符的 issue，维护者可以直接 close，聚合时自动排除
 - **不做加权**：不按「谁更专业」调权重 —— 那是黑箱。只用「装过机 / 没装过」这一个可核对的区分
 
+
+## 数据治理与版本
+
+页面上的数能不能核，取决于四件可查的东西：口径文件、ID 注册表、数据快照、出处字段。
+下表的数字在构建时从仓库文件现读，不是手写的。
+
+| 项 | 现在是什么 |
+|---|---|
+| 口径版本 | `1.0.0`（`schema/semantics.json` 的 `version`） |
+| 永久 ID | `439` 条已登记，`0` 条 tombstone（`data/_id_registry.json`） |
+| 图片出处 | 有图 `242` 条（部件 `227` + 整机 `15`），全部写了 `image_source` |
+| 仓库许可 | 引用仓库 `50` 条（部件 `31` + 整机 `19`），许可证已核 `0` 条 |
+
+**口径版本。** 静态站、`/api/semantics`、MCP 读的是同一份 `schema/semantics.json`。
+改口径（字段定义、单位换算、红线阈值）就升 `version`；页面上任何数字的含义，
+以那一版为准。拿旧版本的数据配新口径来读，会读出错的值。
+
+**实体与 ID。** `data/_id_registry.json` 是永久 ID 注册表，只追加。
+id 一经登记**不改名、不复用**：改名要把旧 id 留作 alias，删除要在注册表里
+留 tombstone（`removed`）。原因不抽象 —— 评分唯一键、外部引用、型号页 URL
+全挂在 id 上，改一个名字会同时断三处。
+
+**数据快照。** `data/` + `schema/` 打成 tar.gz 发到
+[GitHub Releases](https://github.com/RoboWiki/RoboWiki.github.io/releases)，
+tag 形如 `data-YYYY.MM.DD`。每次发布带三个附件：
+
+- `robowiki-data-<tag>.tar.gz` —— `data/` 与 `schema/` 的只读快照
+- `MANIFEST.json` —— 条数、`ids` 数量、`semantics_version`、生成时间
+- `SHA256SUMS.txt` —— 上面那个 tar.gz 的 SHA-256
+
+打 `data-v*` tag，或在 Actions 里手动触发 `Data release` 生成。发布前先跑
+`python -m pipeline validate`，不通过就不发 —— 快照发出去就是对外承诺了一个版本。
+
+**出处与许可。** 有图必须写 `image_source`（厂商 PDF 的哪一页、商城条目号、
+采集日期）；引用了仓库必须写 `repo_license`，读不到许可证就写 `null`
+表示「未核」，不猜一个填上。这两条是 `python -m pipeline validate` 的硬检查，
+不是文风偏好 —— 上表「许可证已核 `0` 条」正是现状：宁可标未核，也不编。

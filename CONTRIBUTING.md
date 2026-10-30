@@ -105,9 +105,11 @@ API 共用的同一份契约。
 
 ## 3. 改参数口径（字段含义）
 
-改 **`backend/app/api/routes/semantics.py`** 里的 `FIELD_SEMANTICS` / `RED_LINES`。
-文档站的「参数口径」页和 MCP 工具都从这里读，改一处、两边同时生效 ——
-**不要**在 markdown 里手写字段说明。
+改 **`schema/semantics.json`**（唯一事实源，字段约定与 version 升级规则见
+[`schema/semantics.README.md`](schema/semantics.README.md)）。
+文档站的「参数口径」页（`pipeline/build_site.py`）、`GET /api/semantics`、
+MCP 工具都读这一份，改一处、三边同时生效 ——
+**不要**在后端模块或 markdown 里再写一份字段说明。
 
 ---
 
