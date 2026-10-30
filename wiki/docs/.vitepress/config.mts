@@ -14,31 +14,23 @@ const zhTheme = {
   //   学习路线与竞赛都是「帮我做出东西」的内容 → 收进「学习与竞赛」
   //   方法与来源是信任底座，必须全局可达，但不占一级入口的叙事位 → 收进「关于」
   //   投稿是全站动作，不是一个内容页 → 放导航最右，视觉上像按钮
+  // 导航全平铺：资源库三项（部件/整机/软件）是全站最高频目的地，
+  // 折叠进「资源库」下拉等于给第一名入口加一次悬停 —— 发现性比分组美观重要。
+  // 「关于」仍折叠：方法/来源/贡献者/转载属信任层，需要全局可达、但不抢一级叙事位。
   nav: [
     { text: '首页', link: '/' },
-    {
-      text: '资源库',
-      items: [
-        { text: '机器人部件', link: '/catalog' },
-        { text: '机器人整机', link: '/robots' },
-        { text: '机器人软件', link: '/software' },
-      ],
-    },
-    {
-      text: '学习与竞赛',
-      items: [
-        { text: '学习路线', link: '/learn/' },
-        { text: '竞赛与实战', link: '/competitions' },
-      ],
-    },
-    { text: '加工与采购', link: '/suppliers' },
-    { text: '贡献者', link: '/contributors' },
+    { text: '部件', link: '/catalog' },
+    { text: '整机', link: '/robots' },
+    { text: '软件', link: '/software' },
+    { text: '学习', link: '/learn/' },
+    { text: '竞赛', link: '/competitions' },
+    { text: '加工采购', link: '/suppliers' },
     {
       text: '关于',
       items: [
-        { text: '使用指南', link: '/learn/' },
         { text: '方法与来源', link: '/method' },
         { text: '数据来源', link: '/sources' },
+        { text: '贡献者', link: '/contributors' },
         { text: '转载规范', link: '/learn/reprint' },
       ],
     },
@@ -72,15 +64,10 @@ const enTheme = {
   // （robots / software / submit / method / competitions 目前只有中文版。）
   nav: [
     { text: 'Home', link: '/en/' },
-    {
-      text: 'Library',
-      items: [
-        { text: 'Parts', link: '/en/catalog' },
-        { text: 'Suppliers', link: '/en/suppliers' },
-      ],
-    },
-    { text: 'Learning path', link: '/en/learn/' },
-    { text: 'Sources & method', link: '/en/sources' },
+    { text: 'Parts', link: '/en/catalog' },
+    { text: 'Suppliers', link: '/en/suppliers' },
+    { text: 'Learn', link: '/en/learn/' },
+    { text: 'Sources', link: '/en/sources' },
     { text: 'Contributors', link: '/en/contributors' },
   ],
   outline: { label: 'On this page', level: [2, 3] },
