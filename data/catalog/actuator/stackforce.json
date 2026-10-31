@@ -29,7 +29,9 @@
    "mass_kg": 0.392,
    "r_phase_ohm": 0.48,
    "l_phase_uh": 368,
-   "iface": "CAN 2.0 1 Mbps / CANFD 5 Mbps（MIT 协议）"
+   "iface": "CAN 2.0 1 Mbps / CANFD 5 Mbps（MIT 协议）",
+   "doc_pdf": "https://files.seeedstudio.com/products/stackforce/%E6%96%B0%E7%89%886010%E5%85%B3%E8%8A%82%E7%94%B5%E6%9C%BA%E7%94%A8%E6%88%B7%E6%96%87%E6%A1%A3V1.1.pdf",
+   "doc_url": "https://wiki.seeedstudio.com/cn/stackforce_series/"
   }
  },
  {
@@ -62,7 +64,8 @@
    "mass_kg": 0.395,
    "r_phase_ohm": 0.439,
    "l_phase_uh": 403,
-   "iface": "CAN 2.0 1 Mbps / CANFD 5 Mbps（MIT 协议）"
+   "iface": "CAN 2.0 1 Mbps / CANFD 5 Mbps（MIT 协议）",
+   "doc_url": "https://wiki.seeedstudio.com/cn/stackforce_series/"
   }
  }
 ]

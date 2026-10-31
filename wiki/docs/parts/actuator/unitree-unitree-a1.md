@@ -101,6 +101,7 @@ title: 宇树 Unitree Unitree A1
 | 峰值电流 (A) | 40 |
 | 编码器 | 电机侧单圈绝对 15 bit |
 | 通信 | 高速 RS-485，4.8 MBd，8N1，控制 1 kHz |
+| 官方文档 | https://www.unitree.com/a1/motor/ |
 
 ## 优惠与获取条件
 

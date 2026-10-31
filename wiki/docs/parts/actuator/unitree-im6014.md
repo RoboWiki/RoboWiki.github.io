@@ -97,6 +97,7 @@ title: 宇树 Unitree IM6014
 | 编码器 | 双编（转子侧 + 输出侧），单圈绝对 15 bit |
 | 通信 | RS-485，6 Mbps / 4 Mbps，8N1，总线轮询 10 kHz |
 | 工作温度 | -20~50 ℃ |
+| 官方文档 | https://www.unitree.com/mobile/IM6014/ |
 
 ## 优惠与获取条件
 

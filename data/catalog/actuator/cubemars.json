@@ -18,7 +18,8 @@
    "tau_basis": "rated",
    "gear": 6,
    "mass_kg": 0.485,
-   "voltage_V": 48
+   "voltage_V": 48,
+   "doc_url": "https://www.cubemars.com/cn/product/ak80-6-kv100-robotic-actuator.html"
   },
   "id": "cubemars-ak80-6"
  }

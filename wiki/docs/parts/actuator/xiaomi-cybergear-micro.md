@@ -94,6 +94,7 @@ title: 小米 Xiaomi CyberGear Micro
 | 外径 (mm) | 58 |
 | 编码器 | 14 bit 单圈绝对 |
 | 通信 | CAN 1 Mbps 扩展帧 |
+| 官方文档 | https://www.mi.com/ |
 
 ## 优惠与获取条件
 

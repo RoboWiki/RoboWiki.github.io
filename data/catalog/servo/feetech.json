@@ -41,7 +41,8 @@
    "bearing": "滚珠轴承",
    "size_mm": "45.2 × 24.7 × 35",
    "connector_wire": "15 cm",
-   "limit_angle": "无机械限位（360°）"
+   "limit_angle": "无机械限位（360°）",
+   "doc_url": "https://wiki.seeedstudio.com/cn/feetech_servo/"
   }
  },
  {
@@ -86,7 +87,8 @@
    "bearing": "滚珠轴承",
    "size_mm": "45.2 × 24.7 × 35",
    "connector_wire": "15 cm",
-   "limit_angle": "无机械限位（360°）"
+   "limit_angle": "无机械限位（360°）",
+   "doc_url": "https://wiki.seeedstudio.com/cn/feetech_servo/"
   }
  },
  {
@@ -131,7 +133,8 @@
    "bearing": "滚珠轴承",
    "size_mm": "45.2 × 24.7 × 35",
    "connector_wire": "15 cm",
-   "limit_angle": "无机械限位（360°）"
+   "limit_angle": "无机械限位（360°）",
+   "doc_url": "https://wiki.seeedstudio.com/cn/feetech_servo/"
   }
  },
  {

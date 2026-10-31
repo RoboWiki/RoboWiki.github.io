@@ -25,7 +25,8 @@
    "l_phase_uh": 130,
    "pole_pairs": 13,
    "voltage_V": 24,
-   "encoder": "双编 ABS-17 bit（输入）/ 17–18 bit（输出）"
+   "encoder": "双编 ABS-17 bit（输入）/ 17–18 bit（输出）",
+   "doc_url": "https://www.myactuator.com/"
   },
   "id": "myactuator-x2-7"
  },
@@ -55,7 +56,8 @@
    "l_phase_uh": 140,
    "pole_pairs": 13,
    "voltage_V": 24,
-   "encoder": "双编 ABS-17 bit（输入）/ 17–18 bit（输出）"
+   "encoder": "双编 ABS-17 bit（输入）/ 17–18 bit（输出）",
+   "doc_url": "https://www.myactuator.com/"
   },
   "id": "myactuator-x4-10"
  },
@@ -85,7 +87,8 @@
    "l_phase_uh": 170,
    "pole_pairs": 13,
    "voltage_V": 24,
-   "encoder": "双编 ABS-17 bit（输入）/ 17–18 bit（输出）"
+   "encoder": "双编 ABS-17 bit（输入）/ 17–18 bit（输出）",
+   "doc_url": "https://www.myactuator.com/"
   },
   "id": "myactuator-x4-36"
  },
@@ -115,7 +118,8 @@
    "l_phase_uh": 310,
    "pole_pairs": 10,
    "voltage_V": 48,
-   "encoder": "双编 ABS-17 bit（输入）/ 17–18 bit（输出）"
+   "encoder": "双编 ABS-17 bit（输入）/ 17–18 bit（输出）",
+   "doc_url": "https://www.myactuator.com/"
   },
   "id": "myactuator-x8-120"
  },
@@ -145,7 +149,8 @@
    "l_phase_uh": 50,
    "pole_pairs": 20,
    "voltage_V": 48,
-   "encoder": "双编 ABS-17 bit（输入）/ 17–18 bit（输出）"
+   "encoder": "双编 ABS-17 bit（输入）/ 17–18 bit（输出）",
+   "doc_url": "https://www.myactuator.com/"
   },
   "id": "myactuator-x12-320"
  },
@@ -175,7 +180,8 @@
    "l_phase_uh": 140,
    "pole_pairs": 20,
    "voltage_V": 72,
-   "encoder": "双编 ABS-17 bit（输入）/ 17–18 bit（输出）"
+   "encoder": "双编 ABS-17 bit（输入）/ 17–18 bit（输出）",
+   "doc_url": "https://www.myactuator.com/"
   },
   "id": "myactuator-x15-450"
  }

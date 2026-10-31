@@ -20,7 +20,8 @@
    "tau_rated_Nm": 6,
    "tau_basis": "rated",
    "od_mm": 50,
-   "l_mm": 47.4
+   "l_mm": 47.4,
+   "doc_url": "https://www.hightorquerobotics.com/product?id=75"
   }
  },
  {
@@ -44,7 +45,8 @@
    "tau_peak_Nm": 21,
    "tau_basis": "peak",
    "od_mm": 50,
-   "l_mm": 47.4
+   "l_mm": 47.4,
+   "doc_url": "https://www.hightorquerobotics.com/product?id=482"
   }
  },
  {
@@ -68,7 +70,8 @@
    "tau_rated_Nm": 10,
    "tau_basis": "rated",
    "od_mm": 60,
-   "l_mm": 56
+   "l_mm": 56,
+   "doc_url": "https://www.hightorquerobotics.com/product?id=326"
   }
  },
  {
@@ -92,7 +95,8 @@
    "tau_peak_Nm": 60,
    "tau_basis": "peak",
    "od_mm": 75,
-   "l_mm": 56
+   "l_mm": 56,
+   "doc_url": "https://www.hightorquerobotics.com/product?id=489"
   }
  },
  {
@@ -120,7 +124,8 @@
    "speed_rated_rpm": 40,
    "power_w": 84,
    "od_mm": 140.5,
-   "l_mm": 36.9
+   "l_mm": 36.9,
+   "doc_url": "https://www.hightorquerobotics.com/product?id=505"
   }
  },
  {
@@ -148,7 +153,8 @@
    "speed_rated_rpm": 50,
    "power_w": 52,
    "od_mm": 115,
-   "l_mm": 37
+   "l_mm": 37,
+   "doc_url": "https://www.hightorquerobotics.com/product?id=501"
   }
  },
  {
@@ -172,7 +178,8 @@
    "tau_rated_Nm": 4,
    "tau_basis": "rated",
    "od_mm": 50,
-   "l_mm": 53
+   "l_mm": 53,
+   "doc_url": "https://www.hightorquerobotics.com/product?id=772"
   }
  },
  {
@@ -196,7 +203,8 @@
    "tau_rated_Nm": 2,
    "tau_basis": "rated",
    "od_mm": 44,
-   "l_mm": 44.9
+   "l_mm": 44.9,
+   "doc_url": "https://www.hightorquerobotics.com/product?id=771"
   }
  },
  {
@@ -220,7 +228,8 @@
    "tau_rated_Nm": 4,
    "tau_basis": "rated",
    "od_mm": 75,
-   "l_mm": 35
+   "l_mm": 35,
+   "doc_url": "https://www.hightorquerobotics.com/product?id=76"
   }
  }
 ]

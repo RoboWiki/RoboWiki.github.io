@@ -107,6 +107,7 @@ title: 灵足 RobStride RS06
 | 编码器 | 2pcs |
 | 通信 | CAN |
 | 内置驱动 | 1 |
+| 官方文档 | https://www.robstride.com/ |
 
 ## 优惠与获取条件
 

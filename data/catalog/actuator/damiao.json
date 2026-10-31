@@ -7,7 +7,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-D5730 -1EC",
   "title": "达妙 DM-D5730 -1EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -44,7 +44,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-D5730-1EC-User_Manual-1-1.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-D5730-1EC-User_Manual-1-1.pdf",
+   "doc_url": null
   },
   "notes": "48.0 V 版本；直驱电机；额定 0.65 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -59,7 +60,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-D5730 -1EE",
   "title": "达妙 DM-D5730 -1EE",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -96,7 +97,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=121"
   },
   "notes": "48.0 V 版本；直驱电机；额定 0.65 N·m；源文勘误：无",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -111,7 +113,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J10010-2EC",
   "title": "达妙 DM-J10010-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -148,7 +150,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-J10010-2EC_User_Manual-1.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-J10010-2EC_User_Manual-1.pdf",
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=107"
   },
   "notes": "48.0 V 版本；关节电机；额定 40.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -163,7 +166,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J10010L-2EC",
   "title": "达妙 DM-J10010L-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -200,7 +203,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-J10010L-2EC-User_Manual-1-1.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-J10010L-2EC-User_Manual-1-1.pdf",
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=106"
   },
   "notes": "48.0 V 版本；关节电机；额定 40.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -215,7 +219,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J10422P-2EC",
   "title": "达妙 DM-J10422P-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -252,7 +256,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO_DM-J10422P-2EC_motor_User_Manual_V1.0.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO_DM-J10422P-2EC_motor_User_Manual_V1.0.pdf",
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=126"
   },
   "notes": "48.0 V 版本；关节电机；额定 100.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -267,7 +272,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J3507-2EC",
   "title": "达妙 DM-J3507-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -304,7 +309,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-J3507-2EC-V1.0_User_Manual.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-J3507-2EC-V1.0_User_Manual.pdf",
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=118"
   },
   "notes": "48.0 V 版本；关节电机；额定 0.8 N·m；源文勘误：无 | 低压版 24 V：460.0 rpm 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -319,7 +325,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J4310-2EC V1.1",
   "title": "达妙 DM-J4310-2EC V1.1",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -356,7 +362,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-J4310-2EC_V1.1-User_Manual-1-1.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-J4310-2EC_V1.1-User_Manual-1-1.pdf",
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=125"
   },
   "notes": "48.0 V 版本；关节电机；额定 3.0 N·m；源文勘误：无 | 低压版 24 V：200.0 rpm",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -371,7 +378,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J4310-2EC V1.2",
   "title": "达妙 DM-J4310-2EC V1.2",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -408,7 +415,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-J4310-2EC_V1.2_User_Manual_V1.2.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-J4310-2EC_V1.2_User_Manual_V1.2.pdf",
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=125"
   },
   "notes": "48.0 V 版本；关节电机；额定 3.5 N·m；源文勘误：无 | 低压版 24 V：200.0 rpm 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -423,7 +431,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J4310M-2EC",
   "title": "达妙 DM-J4310M-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -460,7 +468,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=148"
   },
   "notes": "24.0 V 版本；关节电机；额定 5.2 N·m；源文勘误：无",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -475,7 +484,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J4310P-2EC",
   "title": "达妙 DM-J4310P-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -512,7 +521,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-J4310P-2EC_User_Manual-1.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-J4310P-2EC_User_Manual-1.pdf",
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=109"
   },
   "notes": "48.0 V 版本；关节电机；额定 3.5 N·m；源文勘误：无 | 低压版 24 V：200.0 rpm 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -527,7 +537,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J4340-2EC",
   "title": "达妙 DM-J4340-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -564,7 +574,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-J4340-2EC-User_Manual-1-1.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-J4340-2EC-User_Manual-1-1.pdf",
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=135"
   },
   "notes": "48.0 V 版本；关节电机；额定 9.0 N·m；源文勘误：无 | 低压版 24 V：52.5 rpm 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -579,7 +590,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J4340-2EC V1.1",
   "title": "达妙 DM-J4340-2EC V1.1",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -616,7 +627,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-J4340-2EC_V1.1_User_Manual_V1.1.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-J4340-2EC_V1.1_User_Manual_V1.1.pdf",
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=135"
   },
   "notes": "48.0 V 版本；关节电机；额定 12.0 N·m；源文勘误：无 | 低压版 24 V：56.0 rpm 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -631,7 +643,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J4340P-2EC",
   "title": "达妙 DM-J4340P-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -668,7 +680,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-J4340P-2EC-User_Manual-1-1.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-J4340P-2EC-User_Manual-1-1.pdf",
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=134"
   },
   "notes": "48.0 V 版本；关节电机；额定 9.0 N·m；源文勘误：无 | 低压版 24 V：52.5 rpm",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -683,7 +696,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J4340P-2EC V1.1",
   "title": "达妙 DM-J4340P-2EC V1.1",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -720,7 +733,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-J4340P-2EC_V1.1_User_Manual_V1.1.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-J4340P-2EC_V1.1_User_Manual_V1.1.pdf",
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=134"
   },
   "notes": "48.0 V 版本；关节电机；额定 12.0 N·m；源文勘误：无 | 低压版 24 V：56.0 rpm",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -735,7 +749,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J6006-2EC",
   "title": "达妙 DM-J6006-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -772,7 +786,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-J6006-2EC-User_Manual-1-1.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-J6006-2EC-User_Manual-1-1.pdf",
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=102"
   },
   "notes": "48.0 V 版本；关节电机；额定 4.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -787,7 +802,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J6216L-2EC",
   "title": "达妙 DM-J6216L-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -824,7 +839,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=143"
   },
   "notes": "48.0 V 版本；关节电机；额定 10.0 N·m；源文勘误：无",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -839,7 +855,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J6216P-2EC",
   "title": "达妙 DM-J6216P-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -876,7 +892,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=144"
   },
   "notes": "48.0 V 版本；关节电机；额定 10.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -891,7 +908,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J6248P-2EC",
   "title": "达妙 DM-J6248P-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -928,7 +945,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAODM-J6248P-2EC_User_Manual-1.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAODM-J6248P-2EC_User_Manual-1.pdf",
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=110"
   },
   "notes": "48.0 V 版本；关节电机；额定 30.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -943,7 +961,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J8006-2EC V1.1",
   "title": "达妙 DM-J8006-2EC V1.1",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -980,7 +998,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-J8006-2EC-User_Manual-1-1.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-J8006-2EC-User_Manual-1-1.pdf",
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=103"
   },
   "notes": "48.0 V 版本；关节电机；额定 8.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -995,7 +1014,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J8009-2EC",
   "title": "达妙 DM-J8009-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -1032,7 +1051,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-J8009-2EC-User_Manual-1-1.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-J8009-2EC-User_Manual-1-1.pdf",
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=104"
   },
   "notes": "48.0 V 版本；关节电机；额定 20.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 【来源冲突】库内相电感 80 µH / 相电阻 0.145 Ω 与 J8009P 同值；aifitlab 手册分列 J8009 = 61 µH / 0.09 Ω、J8009P = 80 µH / 0.145 Ω，疑本行套用了 P 版电参数，待原厂最新选型表确认后再改数值。",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -1047,7 +1067,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J8009P-2EC",
   "title": "达妙 DM-J8009P-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -1084,7 +1104,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-J8009P-2EC-User_Manual-1-1.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-J8009P-2EC-User_Manual-1-1.pdf",
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=137"
   },
   "notes": "48.0 V 版本；关节电机；额定 20.0 N·m；源文勘误：无",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -1099,7 +1120,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J8009P-2EC V1.1",
   "title": "达妙 DM-J8009P-2EC V1.1",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -1136,7 +1157,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-J8009P-2EC_Gear_Motor_User_Manual_V1.1.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-J8009P-2EC_Gear_Motor_User_Manual_V1.1.pdf",
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=137"
   },
   "notes": "48.0 V 版本；关节电机；额定 20.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -1151,7 +1173,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-J8520P-2EC",
   "title": "达妙 DM-J8520P-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -1188,7 +1210,8 @@
    "temp_range": null,
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=142"
   },
   "notes": "48.0 V 版本；关节电机；额定 50.0 N·m；源文勘误：无",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -1203,7 +1226,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-JH11-101-2EC",
   "title": "达妙 DM-JH11-101-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -1237,7 +1260,8 @@
    "ip": null,
    "image_url": null,
    "image_source": null,
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=120"
   },
   "notes": "48.0 V 版本；谐波关节电机；额定 4.8 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是达妙人形整机宣传图，不是 JH11 关节模组，需厂商型号页原图",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -1252,7 +1276,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-JH11-51-2EC",
   "title": "达妙 DM-JH11-51-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -1286,7 +1310,8 @@
    "ip": null,
    "image_url": null,
    "image_source": null,
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=120"
   },
   "notes": "48.0 V 版本；谐波关节电机；额定 3.2 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是达妙人形整机宣传图，不是 JH11 关节模组，需厂商型号页原图",
   "origin": "达妙 2026 产品选型表 2026-10-23",
@@ -1301,7 +1326,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-JH14-101-2EC",
   "title": "达妙 DM-JH14-101-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -1335,7 +1360,8 @@
    "ip": null,
    "image_url": null,
    "image_source": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-JH14-51_101-2EC_Gear_Motor_User_Manual_V1.0.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-JH14-51_101-2EC_Gear_Motor_User_Manual_V1.0.pdf",
+   "doc_url": null
   },
   "notes": "48.0 V 版本；谐波关节电机；额定 7.8 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是达妙人形整机宣传图，不是 JH14 关节模组，需厂商型号页原图",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -1350,7 +1376,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-JH14-51-2EC",
   "title": "达妙 DM-JH14-51-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -1384,7 +1410,8 @@
    "ip": null,
    "image_url": null,
    "image_source": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-JH14-51_101-2EC_Gear_Motor_User_Manual_V1.0.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-JH14-51_101-2EC_Gear_Motor_User_Manual_V1.0.pdf",
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=127"
   },
   "notes": "48.0 V 版本；谐波关节电机；额定 5.4 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是达妙人形整机宣传图，不是 JH14 关节模组，需厂商型号页原图",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -1399,7 +1426,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-JH17-101-2EC",
   "title": "达妙 DM-JH17-101-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -1433,7 +1460,8 @@
    "ip": null,
    "image_url": null,
    "image_source": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-JH17-51_101-2EC_Gear_Motor_User_Manual_V1.0.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-JH17-51_101-2EC_Gear_Motor_User_Manual_V1.0.pdf",
+   "doc_url": null
   },
   "notes": "48.0 V 版本；谐波关节电机；额定 24.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是达妙人形整机宣传图，不是 JH17 关节模组，需厂商型号页原图",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -1448,7 +1476,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-JH17-51-2EC",
   "title": "达妙 DM-JH17-51-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -1482,7 +1510,8 @@
    "ip": null,
    "image_url": null,
    "image_source": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-JH17-51_101-2EC_Gear_Motor_User_Manual_V1.0.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-JH17-51_101-2EC_Gear_Motor_User_Manual_V1.0.pdf",
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=128"
   },
   "notes": "48.0 V 版本；谐波关节电机；额定 16.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是达妙人形整机宣传图，不是 JH17 关节模组，需厂商型号页原图",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
@@ -1497,7 +1526,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-JH20-101-2EC",
   "title": "达妙 DM-JH20-101-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -1531,9 +1560,10 @@
    "ip": null,
    "image_url": null,
    "image_source": null,
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "http://www.damiaokeji.com/index.php?c=category&id=34"
   },
-  "notes": "48.0 V 版本；谐波关节电机；额定 32.0 N·m；源文勘误：无 产品图待补：抓到的是达妙人形整机宣传图，不是 JH20 关节模组，需厂商型号页原图",
+  "notes": "48.0 V 版本；谐波关节电机；额定 32.0 N·m；源文勘误：无 产品图待补：抓到的是达妙人形整机宣传图，不是 JH20 关节模组，需厂商型号页原图 【达妙官网谐波分类页只列 JH11/JH14/JH17，未单列 JH20；来源取分类页，待官网补页后替换。】",
   "origin": "达妙 2026 产品选型表 2026-10-23",
   "search": "达妙 dm dm-jh20-101-2ec 深圳市达妙科技 can、canfd",
   "subtype_label": "谐波减速"
@@ -1546,7 +1576,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-JH20-51-2EC",
   "title": "达妙 DM-JH20-51-2EC",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "A",
   "verified": 1,
   "last_checked": "2026-10-27",
@@ -1580,9 +1610,10 @@
    "ip": null,
    "image_url": null,
    "image_source": null,
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "http://www.damiaokeji.com/index.php?c=category&id=34"
   },
-  "notes": "48.0 V 版本；谐波关节电机；额定 32.0 N·m；源文勘误：无 产品图待补：抓到的是达妙人形整机宣传图，不是 JH20 关节模组，需厂商型号页原图",
+  "notes": "48.0 V 版本；谐波关节电机；额定 32.0 N·m；源文勘误：无 产品图待补：抓到的是达妙人形整机宣传图，不是 JH20 关节模组，需厂商型号页原图 【达妙官网谐波分类页只列 JH11/JH14/JH17，未单列 JH20；来源取分类页，待官网补页后替换。】",
   "origin": "达妙 2026 产品选型表 2026-10-23",
   "search": "达妙 dm dm-jh20-51-2ec 深圳市达妙科技 can、canfd",
   "subtype_label": "谐波减速"
@@ -1594,7 +1625,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-G6220",
   "title": "达妙 DM-G6220 空心轴直驱电机",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "B",
   "verified": 0,
   "last_checked": "2026-10-31",
@@ -1610,7 +1641,8 @@
    "pole_pairs": 14,
    "l_phase_uh": 2900,
    "r_phase_ohm": 3.5,
-   "mass_kg": 0.4935
+   "mass_kg": 0.4935,
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=119"
   },
   "id": "damiao-dm-g6220"
  },
@@ -1621,7 +1653,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-H6215",
   "title": "达妙 DM-H6215 直驱电机",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "B",
   "verified": 0,
   "last_checked": "2026-10-31",
@@ -1637,7 +1669,8 @@
    "pole_pairs": 14,
    "l_phase_uh": 2000,
    "r_phase_ohm": 2.5,
-   "mass_kg": 0.36
+   "mass_kg": 0.36,
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=115"
   },
   "id": "damiao-dm-h6215"
  },
@@ -1648,7 +1681,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-H65-1EC",
   "title": "达妙 DM-H65-1EC 关节电机",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "B",
   "verified": 0,
   "last_checked": "2026-10-31",
@@ -1662,7 +1695,8 @@
    "speed_noload_rpm": 120,
    "pole_pairs": 15,
    "mass_kg": 3.15,
-   "encoder": "17 bit 单圈绝对"
+   "encoder": "17 bit 单圈绝对",
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=116"
   },
   "id": "damiao-dm-h65-1ec"
  },
@@ -1673,7 +1707,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-S2325-1EC",
   "title": "达妙 DM-S2325-1EC 小型关节电机",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "B",
   "verified": 0,
   "last_checked": "2026-10-31",
@@ -1688,7 +1722,8 @@
    "pole_pairs": 7,
    "l_phase_uh": 75,
    "r_phase_ohm": 0.2915,
-   "mass_kg": 0.1722
+   "mass_kg": 0.1722,
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=123"
   },
   "id": "damiao-dm-s2325-1ec"
  },
@@ -1699,7 +1734,7 @@
   "vendor_cn": "达妙科技",
   "model": "DM-S3519-1EC",
   "title": "达妙 DM-S3519-1EC 小型关节电机",
-  "url": "https://www.hightorque.cn/",
+  "url": "http://www.damiaokeji.com/",
   "source_tier": "B",
   "verified": 0,
   "last_checked": "2026-10-31",
@@ -1714,7 +1749,8 @@
    "pole_pairs": 7,
    "l_phase_uh": 55,
    "r_phase_ohm": 0.2,
-   "mass_kg": 0.396
+   "mass_kg": 0.396,
+   "doc_url": "http://www.damiaokeji.com/index.php?c=show&id=122"
   },
   "id": "damiao-dm-s3519-1ec"
  }

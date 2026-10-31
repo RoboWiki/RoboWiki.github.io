@@ -41,7 +41,8 @@
    "ip": null,
    "image_url": "/parts/robstride-el05.jpg",
    "image_source": "灵足官网产品图（robstride.com 导航菜单图，透明底）",
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "https://www.robstride.com/"
   },
   "notes": "",
   "origin": "灵足官方资料库 灵足时代EL系列产品规格介绍(2026.09.22).pdf（https://github.com/RobStride/Product_Information）",
@@ -90,7 +91,8 @@
    "ip": null,
    "image_url": "/parts/robstride-rs00.jpg",
    "image_source": "灵足官网产品图（robstride.com 导航菜单图，透明底）",
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "https://www.robstride.com/"
   },
   "notes": "",
   "origin": "灵足官方资料库 灵足时代RS系列产品规格介绍(2026.010.09).pdf（https://github.com/RobStride/Product_Information）",
@@ -139,7 +141,8 @@
    "ip": null,
    "image_url": "/parts/robstride-rs01.jpg",
    "image_source": "灵足官网产品图（robstride.com 导航菜单图，透明底）",
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "https://www.robstride.com/"
   },
   "notes": " 【来源冲突】手册给 空载转速 275 → 手册 315±10%，库内暂不改（两份手册数值彼此雷同，疑官方表复制粘贴）；来源：wiki.aifitlab（aifitlab 手册英文机翻镜像，2026-10-31 抓取）；待原厂中文手册复核",
   "origin": "灵足官方资料库 灵足时代RS系列产品规格介绍(2026.010.09).pdf（https://github.com/RobStride/Product_Information）",
@@ -188,7 +191,8 @@
    "ip": null,
    "image_url": "/parts/robstride-rs02.jpg",
    "image_source": "灵足官网产品图（robstride.com 导航菜单图，透明底）",
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "https://www.robstride.com/"
   },
   "notes": " 【来源冲突】手册给 空载 360 → 410±10%；质量 0.405 → 0.380 kg；额定扭矩 7 → 6 N·m，库内暂不改（两份手册数值彼此雷同，疑官方表复制粘贴）；来源：wiki.aifitlab（aifitlab 手册英文机翻镜像，2026-10-31 抓取）；待原厂中文手册复核",
   "origin": "灵足官方资料库 灵足时代RS系列产品规格介绍(2026.010.09).pdf（https://github.com/RobStride/Product_Information）",
@@ -237,7 +241,8 @@
    "ip": null,
    "image_url": "/parts/robstride-rs03.jpg",
    "image_source": "灵足官网产品图（robstride.com 导航菜单图，透明底）",
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "https://www.robstride.com/"
   },
   "notes": " 【来源冲突】手册给 空载 195 → 200±10%；额定扭矩 21 → 20 N·m，库内暂不改（两份手册数值彼此雷同，疑官方表复制粘贴）；来源：wiki.aifitlab（aifitlab 手册英文机翻镜像，2026-10-31 抓取）；待原厂中文手册复核",
   "origin": "灵足官方资料库 灵足时代RS系列产品规格介绍(2026.010.09).pdf（https://github.com/RobStride/Product_Information）",
@@ -286,7 +291,8 @@
    "ip": null,
    "image_url": "/parts/robstride-rs04.jpg",
    "image_source": "灵足官网产品图（robstride.com 导航菜单图，透明底）",
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "https://www.robstride.com/"
   },
   "notes": "",
   "origin": "灵足官方资料库 灵足时代RS系列产品规格介绍(2026.010.09).pdf（https://github.com/RobStride/Product_Information）",
@@ -335,7 +341,8 @@
    "ip": null,
    "image_url": "/parts/robstride-rs05.jpg",
    "image_source": "灵足官网产品图（robstride.com 导航菜单图，透明底）",
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "https://www.robstride.com/"
   },
   "notes": " 【来源冲突】手册给 额定扭矩 1.8 → 1.6 N·m，库内暂不改（两份手册数值彼此雷同，疑官方表复制粘贴）；来源：wiki.aifitlab（aifitlab 手册英文机翻镜像，2026-10-31 抓取）；待原厂中文手册复核",
   "origin": "灵足官方资料库 灵足时代RS系列产品规格介绍(2026.010.09).pdf（https://github.com/RobStride/Product_Information）",
@@ -384,7 +391,8 @@
    "ip": null,
    "image_url": "/parts/robstride-rs06.jpg",
    "image_source": "灵足官网产品图（robstride.com 导航菜单图，透明底）",
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "https://www.robstride.com/"
   },
   "notes": "",
   "origin": "灵足官方资料库 灵足时代RS系列产品规格介绍(2026.010.09).pdf（https://github.com/RobStride/Product_Information）",
@@ -433,7 +441,8 @@
    "ip": null,
    "image_url": "/parts/robstride-rs10.jpg",
    "image_source": "灵足官网产品图（robstride.com 导航菜单图，透明底）",
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "https://www.robstride.com/"
   },
   "notes": "",
   "origin": "灵足官方资料库 灵足时代RS系列产品规格介绍(2026.010.09).pdf（https://github.com/RobStride/Product_Information）",

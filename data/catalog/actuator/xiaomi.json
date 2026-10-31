@@ -26,7 +26,8 @@
    "voltage_range_V": "16~28",
    "od_mm": 58,
    "encoder": "14 bit 单圈绝对",
-   "comm": "CAN 1 Mbps 扩展帧"
+   "comm": "CAN 1 Mbps 扩展帧",
+   "doc_url": "https://www.mi.com/"
   },
   "id": "xiaomi-cybergear-micro"
  }

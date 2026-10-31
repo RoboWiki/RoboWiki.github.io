@@ -27,7 +27,8 @@
    "tau_rated_Nm": null,
    "gear": null,
    "armature_kgm2": null,
-   "kt_Nm_per_A": null
+   "kt_Nm_per_A": null,
+   "doc_url": "https://www.orbbec.com/products/stereo-vision/gemini-330-series/"
   },
   "vendor_cn": null,
   "subtype_label": "双目"
@@ -101,7 +102,8 @@
    "iface": "USB 3.0 Type-C",
    "depth_range_m": null,
    "fps": null,
-   "fov": null
+   "fov": null,
+   "doc_url": "https://www.orbbec.com/products/stereo-vision/gemini-330-series/"
   },
   "vendor_cn": null,
   "subtype_label": "结构光"

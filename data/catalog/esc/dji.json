@@ -32,7 +32,8 @@
    "gear": null,
    "armature_kgm2": null,
    "kt_Nm_per_A": null,
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/RoboMaster_C620_Brushless_Motor_Controller_User_Manual.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/RoboMaster_C620_Brushless_Motor_Controller_User_Manual.pdf",
+   "doc_url": null
   },
   "subtype_label": "CAN 控制"
  },
@@ -69,7 +70,8 @@
    "gear": null,
    "armature_kgm2": null,
    "kt_Nm_per_A": null,
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "https://www.robomaster.com/zh-CN/products/components/general/C610"
   },
   "subtype_label": "CAN 控制"
  },

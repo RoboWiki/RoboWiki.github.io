@@ -93,6 +93,7 @@ title: 脉塔 MyActuator X4-36
 | 相电感 (µH) | 170 |
 | 极对数 | 13 |
 | 编码器 | 双编 ABS-17 bit（输入）/ 17–18 bit（输出） |
+| 官方文档 | https://www.myactuator.com/ |
 
 ## 优惠与获取条件
 

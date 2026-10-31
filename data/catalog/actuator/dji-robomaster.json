@@ -44,7 +44,8 @@
    "i_stall_A": null,
    "temp_range": "0–55 ℃",
    "dims": null,
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "https://www.robomaster.com/zh-CN/products/components/general/GM6020"
   },
   "notes": "直驱云台电机，**没有减速箱**，1.2 N·m 即输出端。空心轴内径 18 mm，空载调速 0–320 rpm。低速大力矩是它的强项，拿它当腿关节会嫌慢。",
   "origin": "《RoboMaster GM6020 直流无刷电机使用说明》(2023-10-13) 规格页",
@@ -95,7 +96,8 @@
    "i_stall_A": 27.3,
    "temp_range": "0–55 ℃",
    "dims": null,
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "https://www.robomaster.com/zh-CN/products/components/general/M2006"
   },
   "notes": "带 36:1 行星减速的小关节电机，配 C610。手册的 1 N·m / 416 rpm 本身就是**输出端**数值，与本站口径一致，未做换算。官方只给额定（最大连续），没有独立峰值；堵转 27.3 A 那条是配 Z650 电调的数据，别混用。",
   "origin": "《RM M2006 P36 直流无刷减速电机使用说明》规格页（搭配 C610 数据）",
@@ -146,7 +148,8 @@
    "i_stall_A": null,
    "temp_range": "0–50 ℃",
    "dims": null,
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "https://www.robomaster.com/zh-CN/products/components/general/M3508"
   },
   "notes": "RM 生态最经典的关节电机，配 C620 电调。**本站扭矩一律指输出端（含减速箱）**：额定 3.07 N·m / 峰值 6.34 N·m。手册给的是电机端 0.16 / 0.33 N·m，乘减速比 19.203209（协议值 3591/187）得到。转速同理：电机端 9085 rpm -> 输出端 473 rpm。",
   "origin": "《RoboMaster M3508 直流无刷减速电机使用说明》规格页（搭配 C620 数据）",

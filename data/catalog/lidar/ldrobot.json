@@ -23,7 +23,8 @@
    "voltage_V": 5,
    "ip": "IP65",
    "size_mm": "38.6×38.6×33.5",
-   "accuracy": "±15 mm @0.03–2 m"
+   "accuracy": "±15 mm @0.03–2 m",
+   "doc_url": "https://www.waveshare.net/wiki/DTOF_LIDAR_STL27L"
   }
  },
  {
@@ -51,7 +52,8 @@
    "power_w": 0.9,
    "size_mm": "38.6×38.6×33.5",
    "accuracy": "10 mm @0.3–12 m",
-   "ip": "IP54"
+   "ip": "IP54",
+   "doc_url": "https://www.waveshare.net/wiki/DTOF_LIDAR_LD19"
   }
  }
 ]

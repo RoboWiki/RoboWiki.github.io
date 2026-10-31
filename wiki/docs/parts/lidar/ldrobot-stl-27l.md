@@ -72,6 +72,7 @@ title: 乐动 LDROBOT STL-27L
 | 防护等级 | IP65 |
 | size_mm | 38.6×38.6×33.5 |
 | 精度 | ±15 mm @0.03–2 m |
+| 官方文档 | https://www.waveshare.net/wiki/DTOF_LIDAR_STL27L |
 
 ## 优惠与获取条件
 
@@ -88,7 +89,7 @@ title: 乐动 LDROBOT STL-27L
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.ldrobot.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>微雪 Wiki / 商城（2026-10-31）；型号属乐动 LDROBOT</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E5%8A%A8+LDROBOT+STL-27L+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=STL-27L&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E5%8A%A8+LDROBOT+STL-27L+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/lidar/ldrobot.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/ldrobot.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.ldrobot.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.waveshare.net/wiki/DTOF_LIDAR_STL27L" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td class="rs-plain">收录说明</td><td>微雪 Wiki / 商城（2026-10-31）；型号属乐动 LDROBOT</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E5%8A%A8+LDROBOT+STL-27L+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=STL-27L&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E5%8A%A8+LDROBOT+STL-27L+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/lidar/ldrobot.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/ldrobot.json</td></tr></tbody></table>
 
 ## 备注
 
