@@ -55,5 +55,40 @@
    "ip": "IP54",
    "doc_url": "https://www.waveshare.net/wiki/DTOF_LIDAR_LD19"
   }
+ },
+ {
+  "id": "sens-ldrobot-ld14",
+  "category": "lidar",
+  "subtype": "mechanical",
+  "vendor": "乐动 LDROBOT",
+  "vendor_cn": "乐动",
+  "model": "LD14",
+  "title": "乐动 LD14 三角测距雷达",
+  "url": "https://www.waveshare.net/wiki/Triangulation_LiDAR_LD14",
+  "source_tier": "B",
+  "verified": 0,
+  "last_checked": "2026-10-31",
+  "price_cny": null,
+  "origin": "微雪 Wiki《Triangulation LiDAR LD14》产品参数表（2026-10-31 抓取）；型号属乐动 LDROBOT",
+  "notes": "三角测量法，非 DTOF；量程 0.15–8 m、采样 2300 Hz、扫描 6 Hz、角分辨率 ≤1°。精度分三段：5 mm(<1 m) / 1.5%(1–6 m) / 2%(6–8 m)，已写进 accuracy。微雪商城另有 LD14P（0.1–8 m、4000 Hz），是不同型号，未合并。",
+  "specs": {
+   "range_m": 8,
+   "range_note": "0.15–8 m（三角测距，无反射率分档）",
+   "points_per_s": 2300,
+   "fps": 6,
+   "iface": "UART 115200",
+   "voltage_V": 5,
+   "power_w": 1.3,
+   "size_mm": "96.3×59.8×38.8",
+   "accuracy": "5 mm(<1 m)；1.5% 实际距离(1–6 m)；2%(6–8 m)",
+   "temp_range_C": "-10~40",
+   "fov": "360°",
+   "image_url": null,
+   "image_source": null,
+   "doc_url": "https://www.waveshare.net/wiki/Triangulation_LiDAR_LD14",
+   "doc_pdf": null,
+   "repo_urls": null,
+   "repo_license": null
+  }
  }
 ]

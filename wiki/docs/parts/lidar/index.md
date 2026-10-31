@@ -5,7 +5,7 @@ title: 激光雷达
 
 # 激光雷达
 
-地形与建图，共 **12** 件。
+地形与建图，共 **13** 件。
 
 | 型号 | 子类 | 接口 | 关键参数 | 价格 ¥ | 来源 |
 |---|---|---|---|---|---|
@@ -19,6 +19,7 @@ title: 激光雷达
 | [**RPLIDAR S2**](/parts/lidar/slamtec-rplidar-s2) | 激光雷达 | UART（1 Mbps） | range_m=30、fps=10、iface=UART（1 Mbps） | 2,500 | `A✓` |
 | [**STL-27L**](/parts/lidar/ldrobot-stl-27l) | mechanical | UART | range_m=25、fps=13、iface=UART | — | `B` |
 | [**LD19**](/parts/lidar/ldrobot-ld19) | mechanical | UART 230400 | range_m=12、fps=10、iface=UART 230400 | — | `B` |
+| [**LD14**](/parts/lidar/ldrobot-ld14) | mechanical | UART 115200 | range_m=8、fps=6、iface=UART 115200 | — | `B` |
 | [**L1**](/parts/lidar/unitree-l1) | 固态 | TTL UART 2 Mbps | range_m=20、fps=11、iface=TTL UART 2 Mbps | — | `A✓` |
 | [**L2**](/parts/lidar/unitree-l2) | 固态 | ENET UDP + TTL UART 4 Mbps | range_m=30、fps=5.55、iface=ENET UDP + TTL UART 4 Mbps | 1,799 | `A✓` |
 

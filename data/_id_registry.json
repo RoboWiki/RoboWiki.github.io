@@ -30,10 +30,100 @@
    "category": "controller_high",
    "model": "Raspberry Pi 5"
   },
+  "cubemars-ak10-9-v2-0-kv60": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "AK10-9 V2.0 KV60"
+  },
+  "cubemars-ak10-9-v3-0-kv60": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "AK10-9 V3.0 KV60"
+  },
+  "cubemars-ak40-10-kv170": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "AK40-10 KV170"
+  },
+  "cubemars-ak40-10-v3-0-kv170": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "AK40-10 V3.0 KV170"
+  },
+  "cubemars-ak45-10-kv75": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "AK45-10 KV75"
+  },
+  "cubemars-ak45-10-v3-0-kv75": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "AK45-10 V3.0 KV75"
+  },
+  "cubemars-ak45-36-kv80": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "AK45-36 KV80"
+  },
+  "cubemars-ak45-36-v3-0-kv80": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "AK45-36 V3.0 KV80"
+  },
+  "cubemars-ak60-39-v3-0-kv80": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "AK60-39 V3.0 KV80"
+  },
+  "cubemars-ak60-6-v1-1-kv140": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "AK60-6 V1.1 KV140"
+  },
+  "cubemars-ak60-6-v3-0-kv80": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "AK60-6 V3.0 KV80"
+  },
+  "cubemars-ak70-10": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "AK70-10"
+  },
+  "cubemars-ak70-9-v3-0-kv60": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "AK70-9 V3.0 KV60"
+  },
   "cubemars-ak80-6": {
    "added": "2026-10-31",
    "category": "actuator",
    "model": "AK80-6"
+  },
+  "cubemars-ak80-64-kv80": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "AK80-64 KV80"
+  },
+  "cubemars-ak80-8-kv60": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "AK80-8 KV60"
+  },
+  "cubemars-ak80-9-v3-0-kv100": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "AK80-9 V3.0 KV100"
+  },
+  "cubemars-akh70-16-v1-0-kv41": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "AKH70-16 V1.0 KV41"
+  },
+  "cubemars-akh70-48-v1-0-kv41": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "AKH70-48 V1.0 KV41"
   },
   "damiao-dm-g6220": {
    "added": "2026-10-31",
@@ -1082,6 +1172,11 @@
    "added": "2026-10-31",
    "category": "imu",
    "model": "HI12M0"
+  },
+  "sens-ldrobot-ld14": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "LD14"
   },
   "sens-ldrobot-ld19": {
    "added": "2026-10-31",

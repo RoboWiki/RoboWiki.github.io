@@ -13,7 +13,7 @@
   "last_checked": "2026-10-31",
   "price_cny": null,
   "origin": "High Torque Robotics 官网产品页（hightorquerobotics.com/product，2026-10-31）",
-  "notes": "官网产品表只给外形/重量/减速比/扭矩（部分给转速）；缺 堵转/峰值扭矩、转速、功率、电压、极对数、编码器，故标 B，不按 A 级键集补空值。系列：HTDW。",
+  "notes": "官网产品表只给外形/重量/减速比/扭矩（部分给转速）；缺 堵转/峰值扭矩、转速、功率、电压、极对数、编码器，故标 B，不按 A 级键集补空值。系列：HTDW。 【峰值 24.0 N·m 取自官方产品页：https://www.hightorquerobotics.com/product?id=75】 【撤值】官网单页里那段「额定 12Nm / 峰值 24Nm / 机械容许 36Nm / IP54」在多张不同型号页面完全相同，且与产品列表页的额定值冲突，判定为模板文本，不予采用。",
   "specs": {
    "gear": 36,
    "mass_kg": 0.323,
@@ -21,7 +21,8 @@
    "tau_basis": "rated",
    "od_mm": 50,
    "l_mm": 47.4,
-   "doc_url": "https://www.hightorquerobotics.com/product?id=75"
+   "doc_url": "https://www.hightorquerobotics.com/product?id=75",
+   "tau_peak_Nm": null
   }
  },
  {
@@ -63,7 +64,7 @@
   "last_checked": "2026-10-31",
   "price_cny": null,
   "origin": "High Torque Robotics 官网产品页（hightorquerobotics.com/product，2026-10-31）",
-  "notes": "官网产品表只给外形/重量/减速比/扭矩（部分给转速）；缺 堵转/峰值扭矩、转速、功率、电压、极对数、编码器，故标 B，不按 A 级键集补空值。系列：HTDW。 同系列 HTDW-6036-02-CNE 官网仅列空载转速、无扭矩，未收录。",
+  "notes": "官网产品表只给外形/重量/减速比/扭矩（部分给转速）；缺 堵转/峰值扭矩、转速、功率、电压、极对数、编码器，故标 B，不按 A 级键集补空值。系列：HTDW。 同系列 HTDW-6036-02-CNE 官网仅列空载转速、无扭矩，未收录。 【峰值 24.0 N·m 取自官方产品页：https://www.hightorquerobotics.com/product?id=326】 【撤值】官网单页里那段「额定 12Nm / 峰值 24Nm / 机械容许 36Nm / IP54」在多张不同型号页面完全相同，且与产品列表页的额定值冲突，判定为模板文本，不予采用。",
   "specs": {
    "gear": 36,
    "mass_kg": 0.565,
@@ -71,7 +72,8 @@
    "tau_basis": "rated",
    "od_mm": 60,
    "l_mm": 56,
-   "doc_url": "https://www.hightorquerobotics.com/product?id=326"
+   "doc_url": "https://www.hightorquerobotics.com/product?id=326",
+   "tau_peak_Nm": null
   }
  },
  {
@@ -171,7 +173,7 @@
   "last_checked": "2026-10-31",
   "price_cny": null,
   "origin": "High Torque Robotics 官网产品页（hightorquerobotics.com/product，2026-10-31）",
-  "notes": "官网产品表只给外形/重量/减速比/扭矩（部分给转速）；缺 堵转/峰值扭矩、转速、功率、电压、极对数、编码器，故标 B，不按 A 级键集补空值。系列：HTCP。",
+  "notes": "官网产品表只给外形/重量/减速比/扭矩（部分给转速）；缺 堵转/峰值扭矩、转速、功率、电压、极对数、编码器，故标 B，不按 A 级键集补空值。系列：HTCP。 【峰值 24.0 N·m 取自官方产品页：https://www.hightorquerobotics.com/product?id=772】 【撤值】官网单页里那段「额定 12Nm / 峰值 24Nm / 机械容许 36Nm / IP54」在多张不同型号页面完全相同，且与产品列表页的额定值冲突，判定为模板文本，不予采用。",
   "specs": {
    "gear": 31,
    "mass_kg": 0.385,
@@ -179,7 +181,8 @@
    "tau_basis": "rated",
    "od_mm": 50,
    "l_mm": 53,
-   "doc_url": "https://www.hightorquerobotics.com/product?id=772"
+   "doc_url": "https://www.hightorquerobotics.com/product?id=772",
+   "tau_peak_Nm": null
   }
  },
  {
@@ -196,7 +199,7 @@
   "last_checked": "2026-10-31",
   "price_cny": null,
   "origin": "High Torque Robotics 官网产品页（hightorquerobotics.com/product，2026-10-31）",
-  "notes": "官网产品表只给外形/重量/减速比/扭矩（部分给转速）；缺 堵转/峰值扭矩、转速、功率、电压、极对数、编码器，故标 B，不按 A 级键集补空值。系列：HTCP。",
+  "notes": "官网产品表只给外形/重量/减速比/扭矩（部分给转速）；缺 堵转/峰值扭矩、转速、功率、电压、极对数、编码器，故标 B，不按 A 级键集补空值。系列：HTCP。 【峰值 24.0 N·m 取自官方产品页：https://www.hightorquerobotics.com/product?id=771】 【撤值】官网单页里那段「额定 12Nm / 峰值 24Nm / 机械容许 36Nm / IP54」在多张不同型号页面完全相同，且与产品列表页的额定值冲突，判定为模板文本，不予采用。",
   "specs": {
    "gear": 31,
    "mass_kg": 0.237,
@@ -204,7 +207,8 @@
    "tau_basis": "rated",
    "od_mm": 44,
    "l_mm": 44.9,
-   "doc_url": "https://www.hightorquerobotics.com/product?id=771"
+   "doc_url": "https://www.hightorquerobotics.com/product?id=771",
+   "tau_peak_Nm": null
   }
  },
  {
@@ -221,7 +225,7 @@
   "last_checked": "2026-10-31",
   "price_cny": null,
   "origin": "High Torque Robotics 官网产品页（hightorquerobotics.com/product，2026-10-31）",
-  "notes": "官网产品表只给外形/重量/减速比/扭矩（部分给转速）；缺 堵转/峰值扭矩、转速、功率、电压、极对数、编码器，故标 B，不按 A 级键集补空值。系列：HTPW。",
+  "notes": "官网产品表只给外形/重量/减速比/扭矩（部分给转速）；缺 堵转/峰值扭矩、转速、功率、电压、极对数、编码器，故标 B，不按 A 级键集补空值。系列：HTPW。 【峰值 24.0 N·m 取自官方产品页：https://www.hightorquerobotics.com/product?id=76】 【撤值】官网单页里那段「额定 12Nm / 峰值 24Nm / 机械容许 36Nm / IP54」在多张不同型号页面完全相同，且与产品列表页的额定值冲突，判定为模板文本，不予采用。",
   "specs": {
    "gear": 7,
    "mass_kg": 0.39,
@@ -229,7 +233,8 @@
    "tau_basis": "rated",
    "od_mm": 75,
    "l_mm": 35,
-   "doc_url": "https://www.hightorquerobotics.com/product?id=76"
+   "doc_url": "https://www.hightorquerobotics.com/product?id=76",
+   "tau_peak_Nm": null
   }
  }
 ]
