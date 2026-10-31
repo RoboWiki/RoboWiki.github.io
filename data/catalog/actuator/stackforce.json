@@ -29,7 +29,9 @@
    "mass_kg": 0.392,
    "r_phase_ohm": 0.48,
    "l_phase_uh": 368,
-   "iface": "CAN 2.0 1 Mbps / CANFD 5 Mbps（MIT 协议）"
+   "iface": "CAN 2.0 1 Mbps / CANFD 5 Mbps（MIT 协议）",
+   "image_url": "/parts/stackforce-6010.jpg",
+   "image_source": "Seeed Studio 官方产品页图（seeedstudio.com；原厂页无产品图）"
   }
  },
  {
@@ -46,7 +48,7 @@
   "last_checked": "2026-10-31",
   "price_cny": null,
   "origin": "Seeed wiki zh-CN《Stackforce 系列电机》+ 厂商 PDF《新版6010关节电机用户文档V1.1》（2026-10-31）；原厂官网规格页未取到",
-  "notes": "8:1、MIT 协议、CAN 2.0 1 Mbps 或 CANFD 5 Mbps、双磁编；缺极对数与编码器位数。厂商中文名未核实，vendor_cn 留空。",
+  "notes": "8:1、MIT 协议、CAN 2.0 1 Mbps 或 CANFD 5 Mbps、双磁编；缺极对数与编码器位数。厂商中文名未核实，vendor_cn 留空。资料链接为 Seeed Wiki 系列页（含 6010/8108 参数表与接线）；该页 8108 用户手册链接已失效（404），未收录。",
   "specs": {
    "gear": 8,
    "voltage_V": 24,
@@ -62,7 +64,10 @@
    "mass_kg": 0.395,
    "r_phase_ohm": 0.439,
    "l_phase_uh": 403,
-   "iface": "CAN 2.0 1 Mbps / CANFD 5 Mbps（MIT 协议）"
+   "iface": "CAN 2.0 1 Mbps / CANFD 5 Mbps（MIT 协议）",
+   "image_url": "/parts/stackforce-8108.jpg",
+   "image_source": "Seeed Wiki《Stackforce 系列电机》产品图（wiki.seeedstudio.com/cn/stackforce_series/；6010/8108 同系列外观，官方未按型号区分）",
+   "doc_url": "https://wiki.seeedstudio.com/cn/stackforce_series/"
   }
  }
 ]

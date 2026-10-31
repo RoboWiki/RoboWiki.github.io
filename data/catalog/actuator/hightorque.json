@@ -20,7 +20,9 @@
    "tau_rated_Nm": 6,
    "tau_basis": "rated",
    "od_mm": 50,
-   "l_mm": 47.4
+   "l_mm": 47.4,
+   "image_url": "/parts/hightorque-htdw-5036-02-dne.jpg",
+   "image_source": "高擎官网产品图（hightorquerobotics.com）"
   }
  },
  {
@@ -44,7 +46,9 @@
    "tau_peak_Nm": 21,
    "tau_basis": "peak",
    "od_mm": 50,
-   "l_mm": 47.4
+   "l_mm": 47.4,
+   "image_url": "/parts/hightorque-htdw-5036-02-cne.jpg",
+   "image_source": "高擎官网产品图（hightorquerobotics.com）"
   }
  },
  {
@@ -68,7 +72,9 @@
    "tau_rated_Nm": 10,
    "tau_basis": "rated",
    "od_mm": 60,
-   "l_mm": 56
+   "l_mm": 56,
+   "image_url": "/parts/hightorque-htdw-6036-02-dne.jpg",
+   "image_source": "高擎官网产品图（hightorquerobotics.com）"
   }
  },
  {
@@ -92,7 +98,9 @@
    "tau_peak_Nm": 60,
    "tau_basis": "peak",
    "od_mm": 75,
-   "l_mm": 56
+   "l_mm": 56,
+   "image_url": "/parts/hightorque-htdw-7535-02-cne.jpg",
+   "image_source": "高擎官网产品图（hightorquerobotics.com）"
   }
  },
  {
@@ -120,7 +128,9 @@
    "speed_rated_rpm": 40,
    "power_w": 84,
    "od_mm": 140.5,
-   "l_mm": 36.9
+   "l_mm": 36.9,
+   "image_url": "/parts/hightorque-htpu-7033-04-cne.jpg",
+   "image_source": "高擎官网产品图（hightorquerobotics.com）"
   }
  },
  {
@@ -148,7 +158,9 @@
    "speed_rated_rpm": 50,
    "power_w": 52,
    "od_mm": 115,
-   "l_mm": 37
+   "l_mm": 37,
+   "image_url": "/parts/hightorque-htpu-6035-04-cne.jpg",
+   "image_source": "高擎官网产品图（hightorquerobotics.com）"
   }
  },
  {
@@ -172,7 +184,9 @@
    "tau_rated_Nm": 4,
    "tau_basis": "rated",
    "od_mm": 50,
-   "l_mm": 53
+   "l_mm": 53,
+   "image_url": "/parts/hightorque-htcp-5031-06-cyc.jpg",
+   "image_source": "高擎官网产品图（hightorquerobotics.com）"
   }
  },
  {
@@ -196,7 +210,9 @@
    "tau_rated_Nm": 2,
    "tau_basis": "rated",
    "od_mm": 44,
-   "l_mm": 44.9
+   "l_mm": 44.9,
+   "image_url": "/parts/hightorque-htcp-4531-06-cyc.jpg",
+   "image_source": "高擎官网产品图（hightorquerobotics.com）"
   }
  },
  {
@@ -220,7 +236,9 @@
    "tau_rated_Nm": 4,
    "tau_basis": "rated",
    "od_mm": 75,
-   "l_mm": 35
+   "l_mm": 35,
+   "image_url": "/parts/hightorque-htpw-7507-02-dne.jpg",
+   "image_source": "高擎官网产品图（hightorquerobotics.com）"
   }
  }
 ]

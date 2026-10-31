@@ -7,7 +7,8 @@ title: STACKFORCE 8108
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/stackforce-8108.jpg" alt="8108" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
@@ -97,6 +98,7 @@ title: STACKFORCE 8108
 | 相电阻 (Ω) | 0.439 |
 | 相电感 (µH) | 403 |
 | 接口 | CAN 2.0 1 Mbps / CANFD 5 Mbps（MIT 协议） |
+| 官方文档 | https://wiki.seeedstudio.com/cn/stackforce_series/ |
 
 ## 优惠与获取条件
 
@@ -113,11 +115,11 @@ title: STACKFORCE 8108
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://github.com/Seeed-Projects/Stackforce-Motor-SDK" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>Seeed wiki zh-CN《Stackforce 系列电机》+ 厂商 PDF《新版6010关节电机用户文档V1.1》（2026-10-31）；原厂官网规格页未取到</td></tr><tr><td><a href="https://www.google.com/search?q=STACKFORCE+8108+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=8108&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=STACKFORCE+8108+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/actuator/stackforce.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/stackforce.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://github.com/Seeed-Projects/Stackforce-Motor-SDK" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://wiki.seeedstudio.com/cn/stackforce_series/" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td class="rs-plain">产品图出处</td><td>Seeed Wiki《Stackforce 系列电机》产品图（wiki.seeedstudio.com/cn/stackforce_series/；6010/8108 同系列外观，官方未按型号区分）</td></tr><tr><td class="rs-plain">收录说明</td><td>Seeed wiki zh-CN《Stackforce 系列电机》+ 厂商 PDF《新版6010关节电机用户文档V1.1》（2026-10-31）；原厂官网规格页未取到</td></tr><tr><td><a href="https://www.google.com/search?q=STACKFORCE+8108+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=8108&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=STACKFORCE+8108+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/actuator/stackforce.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/stackforce.json</td></tr></tbody></table>
 
 ## 备注
 
-8:1、MIT 协议、CAN 2.0 1 Mbps 或 CANFD 5 Mbps、双磁编；缺极对数与编码器位数。厂商中文名未核实，vendor_cn 留空。
+8:1、MIT 协议、CAN 2.0 1 Mbps 或 CANFD 5 Mbps、双磁编；缺极对数与编码器位数。厂商中文名未核实，vendor_cn 留空。资料链接为 Seeed Wiki 系列页（含 6010/8108 参数表与接线）；该页 8108 用户手册链接已失效（404），未收录。
 
 
 

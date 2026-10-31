@@ -18,7 +18,9 @@
    "tau_basis": "rated",
    "gear": 6,
    "mass_kg": 0.485,
-   "voltage_V": 48
+   "voltage_V": 48,
+   "image_url": "/parts/cubemars-ak80-6.jpg",
+   "image_source": "CubeMars 官方产品图（cubemars.com，AK80-6 KV100）"
   },
   "id": "cubemars-ak80-6"
  }

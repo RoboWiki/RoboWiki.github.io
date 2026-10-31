@@ -1235,11 +1235,12 @@
    "comm": "CAN、CANFD",
    "driver_integrated": true,
    "ip": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/dm-dm-jh11-101-2ec.jpg",
+   "image_source": "达妙官网产品图（damiaokeji.com，机身标注 DM-JH11-101-2EC）",
+   "doc_url": null,
    "doc_pdf": null
   },
-  "notes": "48.0 V 版本；谐波关节电机；额定 4.8 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是达妙人形整机宣传图，不是 JH11 关节模组，需厂商型号页原图",
+  "notes": "48.0 V 版本；谐波关节电机；额定 4.8 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23",
   "search": "达妙 dm dm-jh11-101-2ec 深圳市达妙科技 can、canfd",
   "subtype_label": "谐波减速"
@@ -1284,11 +1285,12 @@
    "comm": "CAN、CANFD",
    "driver_integrated": true,
    "ip": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/dm-dm-jh11-51-2ec.jpg",
+   "image_source": "达妙官网产品图（damiaokeji.com，机身标注 DM-JH11-51-2EC）",
+   "doc_url": null,
    "doc_pdf": null
   },
-  "notes": "48.0 V 版本；谐波关节电机；额定 3.2 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是达妙人形整机宣传图，不是 JH11 关节模组，需厂商型号页原图",
+  "notes": "48.0 V 版本；谐波关节电机；额定 3.2 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23",
   "search": "达妙 dm dm-jh11-51-2ec 深圳市达妙科技 can、canfd",
   "subtype_label": "谐波减速"
@@ -1333,11 +1335,12 @@
    "comm": "CAN、CANFD",
    "driver_integrated": true,
    "ip": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/dm-dm-jh14-101-2ec.jpg",
+   "image_source": "达妙官网 JH14 系列产品图（damiaokeji.com；51/101 外形一致，官方未按减速比区分）",
+   "doc_url": null,
    "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-JH14-51_101-2EC_Gear_Motor_User_Manual_V1.0.pdf"
   },
-  "notes": "48.0 V 版本；谐波关节电机；额定 7.8 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是达妙人形整机宣传图，不是 JH14 关节模组，需厂商型号页原图",
+  "notes": "48.0 V 版本；谐波关节电机；额定 7.8 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
   "search": "达妙 dm dm-jh14-101-2ec 深圳市达妙科技 can、canfd",
   "subtype_label": "谐波减速"
@@ -1382,11 +1385,12 @@
    "comm": "CAN、CANFD",
    "driver_integrated": true,
    "ip": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/dm-dm-jh14-51-2ec.jpg",
+   "image_source": "达妙官网 JH14 系列产品图（damiaokeji.com；51/101 外形一致，官方未按减速比区分）",
+   "doc_url": null,
    "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-JH14-51_101-2EC_Gear_Motor_User_Manual_V1.0.pdf"
   },
-  "notes": "48.0 V 版本；谐波关节电机；额定 5.4 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是达妙人形整机宣传图，不是 JH14 关节模组，需厂商型号页原图",
+  "notes": "48.0 V 版本；谐波关节电机；额定 5.4 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
   "search": "达妙 dm dm-jh14-51-2ec 深圳市达妙科技 can、canfd",
   "subtype_label": "谐波减速"
@@ -1431,11 +1435,12 @@
    "comm": "CAN、CANFD",
    "driver_integrated": true,
    "ip": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/dm-dm-jh17-101-2ec.jpg",
+   "image_source": "达妙官网 JH17 系列产品图（damiaokeji.com；51/101 外形一致，官方未按减速比区分）",
+   "doc_url": null,
    "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-JH17-51_101-2EC_Gear_Motor_User_Manual_V1.0.pdf"
   },
-  "notes": "48.0 V 版本；谐波关节电机；额定 24.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是达妙人形整机宣传图，不是 JH17 关节模组，需厂商型号页原图",
+  "notes": "48.0 V 版本；谐波关节电机；额定 24.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
   "search": "达妙 dm dm-jh17-101-2ec 深圳市达妙科技 can、canfd",
   "subtype_label": "谐波减速"
@@ -1480,11 +1485,12 @@
    "comm": "CAN、CANFD",
    "driver_integrated": true,
    "ip": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/dm-dm-jh17-51-2ec.jpg",
+   "image_source": "达妙官网 JH17 系列产品图（damiaokeji.com；51/101 外形一致，官方未按减速比区分）",
+   "doc_url": null,
    "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DM-JH17-51_101-2EC_Gear_Motor_User_Manual_V1.0.pdf"
   },
-  "notes": "48.0 V 版本；谐波关节电机；额定 16.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是达妙人形整机宣传图，不是 JH17 关节模组，需厂商型号页原图",
+  "notes": "48.0 V 版本；谐波关节电机；额定 16.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。",
   "origin": "达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
   "search": "达妙 dm dm-jh17-51-2ec 深圳市达妙科技 can、canfd",
   "subtype_label": "谐波减速"
@@ -1500,7 +1506,7 @@
   "url": "https://www.hightorque.cn/",
   "source_tier": "A",
   "verified": 1,
-  "last_checked": "2026-10-27",
+  "last_checked": "2026-10-31",
   "price_cny": null,
   "specs": {
    "tau_peak_Nm": 102.0,
@@ -1529,12 +1535,13 @@
    "comm": "CAN、CANFD",
    "driver_integrated": true,
    "ip": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/dm-dm-jh20-101-2ec.jpg",
+   "image_source": "达妙 DM-JH20-51/101-2EC 用户手册 V1.0（Gitee kit-miao/DM-JH20-51_101-2EC 说明书 PDF，2026-10-22）封面产品图",
+   "doc_url": "https://gitee.com/kit-miao/DM-JH20-51_101-2EC",
    "doc_pdf": null
   },
-  "notes": "48.0 V 版本；谐波关节电机；额定 32.0 N·m；源文勘误：无 产品图待补：抓到的是达妙人形整机宣传图，不是 JH20 关节模组，需厂商型号页原图",
-  "origin": "达妙 2026 产品选型表 2026-10-23",
+  "notes": "48.0 V 版本；谐波关节电机；额定 32.0 N·m；产品图与资料来自达妙 DM-JH20-51/101-2EC 资料仓库（Gitee kit-miao，用户手册 V1.0，2026-10-22）。",
+  "origin": "达妙 2026 产品选型表 2026-10-23 + Gitee DM-JH20-51_101-2EC 资料仓库（2026-10-31）",
   "search": "达妙 dm dm-jh20-101-2ec 深圳市达妙科技 can、canfd",
   "subtype_label": "谐波减速"
  },
@@ -1549,7 +1556,7 @@
   "url": "https://www.hightorque.cn/",
   "source_tier": "A",
   "verified": 1,
-  "last_checked": "2026-10-27",
+  "last_checked": "2026-10-31",
   "price_cny": null,
   "specs": {
    "tau_peak_Nm": 69.0,
@@ -1578,12 +1585,13 @@
    "comm": "CAN、CANFD",
    "driver_integrated": true,
    "ip": null,
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/dm-dm-jh20-51-2ec.jpg",
+   "image_source": "达妙 DM-JH20-51/101-2EC 用户手册 V1.0（Gitee kit-miao/DM-JH20-51_101-2EC 说明书 PDF，2026-10-22）封面产品图",
+   "doc_url": "https://gitee.com/kit-miao/DM-JH20-51_101-2EC",
    "doc_pdf": null
   },
-  "notes": "48.0 V 版本；谐波关节电机；额定 32.0 N·m；源文勘误：无 产品图待补：抓到的是达妙人形整机宣传图，不是 JH20 关节模组，需厂商型号页原图",
-  "origin": "达妙 2026 产品选型表 2026-10-23",
+  "notes": "48.0 V 版本；谐波关节电机；额定 32.0 N·m；产品图与资料来自达妙 DM-JH20-51/101-2EC 资料仓库（Gitee kit-miao，用户手册 V1.0，2026-10-22）。",
+  "origin": "达妙 2026 产品选型表 2026-10-23 + Gitee DM-JH20-51_101-2EC 资料仓库（2026-10-31）",
   "search": "达妙 dm dm-jh20-51-2ec 深圳市达妙科技 can、canfd",
   "subtype_label": "谐波减速"
  },
@@ -1610,7 +1618,9 @@
    "pole_pairs": 14,
    "l_phase_uh": 2900,
    "r_phase_ohm": 3.5,
-   "mass_kg": 0.4935
+   "mass_kg": 0.4935,
+   "image_url": "/parts/dm-dm-g6220.jpg",
+   "image_source": "达妙官网产品图（damiaokeji.com 产品页 id=119）"
   },
   "id": "damiao-dm-g6220"
  },
@@ -1637,7 +1647,9 @@
    "pole_pairs": 14,
    "l_phase_uh": 2000,
    "r_phase_ohm": 2.5,
-   "mass_kg": 0.36
+   "mass_kg": 0.36,
+   "image_url": "/parts/dm-dm-h6215.jpg",
+   "image_source": "达妙官网产品图（damiaokeji.com 产品页 id=115）"
   },
   "id": "damiao-dm-h6215"
  },
@@ -1662,7 +1674,9 @@
    "speed_noload_rpm": 120,
    "pole_pairs": 15,
    "mass_kg": 3.15,
-   "encoder": "17 bit 单圈绝对"
+   "encoder": "17 bit 单圈绝对",
+   "image_url": "/parts/dm-dm-h65-1ec.jpg",
+   "image_source": "达妙官网产品图（damiaokeji.com 产品页 id=116）"
   },
   "id": "damiao-dm-h65-1ec"
  },
@@ -1688,7 +1702,9 @@
    "pole_pairs": 7,
    "l_phase_uh": 75,
    "r_phase_ohm": 0.2915,
-   "mass_kg": 0.1722
+   "mass_kg": 0.1722,
+   "image_url": "/parts/dm-dm-s2325-1ec.jpg",
+   "image_source": "达妙官网产品图（damiaokeji.com 产品页 id=123）"
   },
   "id": "damiao-dm-s2325-1ec"
  },
@@ -1714,7 +1730,9 @@
    "pole_pairs": 7,
    "l_phase_uh": 55,
    "r_phase_ohm": 0.2,
-   "mass_kg": 0.396
+   "mass_kg": 0.396,
+   "image_url": "/parts/dm-dm-s3519-1ec.jpg",
+   "image_source": "达妙官网产品图（damiaokeji.com 产品页 id=122）"
   },
   "id": "damiao-dm-s3519-1ec"
  }
