@@ -3,8 +3,8 @@
   "source_tier": "A",
   "verified": true,
   "last_checked": "2026-10-28",
-  "price_cny": null,
-  "notes": "圆形 70.4° 视场、最近 0.05 m —— 近距离覆盖比 Mid-360 强，但没有 360° 水平环视。供电 DC 10–15 V，注意别接 24 V。 【补齐参数来源：wiki.aifitlab Livox 手册；与官网规格页交叉核对】",
+  "price_cny": 5999.0,
+  "notes": "圆形 70.4° 视场、最近 0.05 m —— 近距离覆盖比 Mid-360 强，但没有 360° 水平环视。供电 DC 10–15 V，注意别接 24 V。 【补齐参数来源：wiki.aifitlab Livox 手册；与官网规格页交叉核对】 【价格 5999 元，官方渠道在售，2026-10-31 核实】",
   "origin": "Livox《Mid-70 快速入门》；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
   "specs": {
    "range_m": 90,

@@ -160,6 +160,59 @@
    "category": "servo",
    "model": "ST-3250-C001"
   },
+  "hightorque-htcp-4531-06-cyc": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "HTCP-4531-06-CYC"
+  },
+  "hightorque-htcp-5031-06-cyc": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "HTCP-5031-06-CYC"
+  },
+  "hightorque-htdw-5036-02-cne": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "HTDW-5036-02-CNE"
+  },
+  "hightorque-htdw-5036-02-dne": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "HTDW-5036-02-DNE"
+  },
+  "hightorque-htdw-6036-02-cne": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "HTDW-6036-02-CNE",
+   "removed": true,
+   "removed_at": "2026-10-31",
+   "removed_reason": "官网仅列空载转速、无任何扭矩值，无法参与扭矩比较，未收录"
+  },
+  "hightorque-htdw-6036-02-dne": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "HTDW-6036-02-DNE"
+  },
+  "hightorque-htdw-7535-02-cne": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "HTDW-7535-02-CNE"
+  },
+  "hightorque-htpu-6035-04-cne": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "HTPU-6035-04-CNE"
+  },
+  "hightorque-htpu-7033-04-cne": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "HTPU-7033-04-CNE"
+  },
+  "hightorque-htpw-7507-02-dne": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "HTPW-7507-02-DNE"
+  },
   "intel-d405": {
    "added": "2026-10-31",
    "category": "camera",
@@ -1025,6 +1078,16 @@
    "category": "imu",
    "model": "HI12M0"
   },
+  "sens-ldrobot-ld19": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "LD19"
+  },
+  "sens-ldrobot-stl27l": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "STL-27L"
+  },
   "sens-livox-hap": {
    "added": "2026-10-31",
    "category": "lidar",
@@ -1184,6 +1247,16 @@
    "added": "2026-10-31",
    "category": "software",
    "model": "Unitree SDK2 / unitree_ros2"
+  },
+  "stackforce-6010": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "6010"
+  },
+  "stackforce-8108": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "8108"
   },
   "struct-berkeley-humanoid-lite": {
    "added": "2026-10-31",

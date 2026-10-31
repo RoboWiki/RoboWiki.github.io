@@ -14,7 +14,7 @@ title: Livox Mid-70
       <span class="part-tag">激光雷达</span>
       <span class="part-tag soft">固态</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
-      <span class="part-tag muted">无公开报价</span>
+      <span class="part-tag">¥5,999</span>
     </div>
 
 <div class="part-split">
@@ -99,7 +99,7 @@ title: Livox Mid-70
 
 ## 备注
 
-<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>圆形 70.4° 视场、最近 0.05 m —— 近距离覆盖比 Mid-360 强，但没有 360° 水平环视</li><li>供电 DC 10–15 V</li><li>【补齐参数来源：wiki.aifitlab Livox 手册</li><li>与官网规格页交叉核对】</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>别接 24 V</li></ul></div></div>
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>圆形 70.4° 视场、最近 0.05 m —— 近距离覆盖比 Mid-360 强，但没有 360° 水平环视</li><li>供电 DC 10–15 V</li><li>【补齐参数来源：wiki.aifitlab Livox 手册</li><li>与官网规格页交叉核对】 【价格 <span class="pn-money">5999 元</span>，官方渠道在售，2026-10-31 核实】</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>别接 24 V</li></ul></div></div>
 
 
 

@@ -1327,6 +1327,18 @@
   "小米 Xiaomi": {
    "slug": "xiaomi",
    "cn": "小米"
+  },
+  "High Torque Robotics 高擎动力": {
+   "slug": "hightorque",
+   "cn": "高擎动力"
+  },
+  "STACKFORCE": {
+   "slug": "stackforce",
+   "cn": ""
+  },
+  "乐动 LDROBOT": {
+   "slug": "ldrobot",
+   "cn": "乐动"
   }
  }
 }
