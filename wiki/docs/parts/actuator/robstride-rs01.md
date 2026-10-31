@@ -34,8 +34,8 @@ title: 灵足 RobStride RS01
 
 <div class="part-src">
 来源：<a href="https://www.robstride.com/">https://www.robstride.com/</a><br/>
-收录：灵足官方资料库 灵足时代RS系列产品规格介绍(2026.010.09).pdf（https://github.com/RobStride/Product_Information）<br/>
-核对：2026-10-01
+收录：灵足时代 RS/EL 系列产品规格介绍（2026.010.09 / 2026.09.22）+ 各型号用户手册（260713 / 261013）<br/>
+核对：2026-10-31
 </div>
 
 </div>
@@ -48,9 +48,6 @@ title: 灵足 RobStride RS01
   </div>
 </div>
 
-::: warning 来源冲突
-这份数据的来源之间有分歧，未经覆盖，写在下方「备注」里。
-:::
 
 ## 使用建议
 
@@ -60,7 +57,7 @@ title: 灵足 RobStride RS01
 :::
 
 - **仿真里填哪个字段** —— MJCF/URDF 的 armature 字段填 **4.20e-03**（这是折算到输出端的等效惯量，与电机本体转子惯量差 N² 倍）。不要当转子惯量再乘 N² —— 会差 60.062 倍。
-- **腿尖速度上限** —— 空载 275 rpm ≈ 28.8 rad/s。腿长 0.4 m 时理论腿尖上限 ≈ 11.5 m/s；实际打 6 折再定目标速度。
+- **腿尖速度上限** —— 空载 315 rpm ≈ 33.0 rad/s。腿长 0.4 m 时理论腿尖上限 ≈ 13.2 m/s；实际打 6 折再定目标速度。
 - **峰值与额定的用法** —— 峰值/额定 = 2.4，这个比值正常。连续按 7 N·m、瞬时按 17 N·m 设计即可。
 - **准直驱要配好电流环** —— 减速比只有 7.75，力矩靠电流直接给。电流环带宽低于 8 kHz 时，触地冲击会明显传到腿上。
 - **算你需要多大扭矩** —— 静态站立（两腿支撑）单关节需求 ≈ 整机质量 × 9.81 × 腿长 / 4。例：20 kg、腿长 0.4 m → 约 20 N·m 保持扭矩，再乘 1.5–2 的安全系数才是你该选的额定值。
@@ -72,7 +69,7 @@ title: 灵足 RobStride RS01
 <div class="pm-table">
 <div class="pm-row"><span class="pm-k">扭矩密度</span><span class="pm-v">45 N·m/kg</span><span class="pm-note">>120 需复核，>200 不可信（受磁钢与散热限制）</span></div>
 <div class="pm-row"><span class="pm-k">峰值/额定比</span><span class="pm-v">2.4</span><span class="pm-note">>3 须给持续时间与初始温度，>5 基本等同堵转</span></div>
-<div class="pm-row"><span class="pm-k">空载角速度 ω</span><span class="pm-v">28.8 rad/s</span><span class="pm-note">× 腿长 = 腿尖速度上限</span></div>
+<div class="pm-row"><span class="pm-k">空载角速度 ω</span><span class="pm-v">33.0 rad/s</span><span class="pm-note">× 腿长 = 腿尖速度上限</span></div>
 <div class="pm-row"><span class="pm-k">反射惯量占比</span><span class="pm-v">3%</span><span class="pm-note">假设单腿 2.0 kg、腿长 0.5 m 绕髋摆；占比越高腿越「黏」</span></div>
 </div>
 
@@ -90,7 +87,7 @@ title: 灵足 RobStride RS01
 
 | 型号 | 峰值 τ N·m | 质量 kg | 减速比 |
 |---|---|---|---|
-| [RS02](/parts/actuator/robstride-rs02) | 17 | 0.405 | 7.75 |
+| [RS02](/parts/actuator/robstride-rs02) | 17 | 0.38 | 7.75 |
 
 ## 全部参数
 
@@ -103,13 +100,13 @@ title: 灵足 RobStride RS01
 | 转子惯量 (kg·m²) | 4.20e-03 |
 | 额定电压 (V) | 36 |
 | 扭矩口径 | peak |
-| 空载转速 (rpm) | 275 |
+| 空载转速 (rpm) | 315 |
 | 额定转速 (rpm) | 100 |
 | 外径 (mm) | 79 |
 | 长度 (mm) | 45.5 |
 | 转子惯量 (kg·m²) | 6.99e-05 |
 | 惯量口径 | output |
-| 电压范围 | 15-48V |
+| 电压范围 | 24-48V |
 | 转矩常数 (N·m/A) | 1.22 |
 | 相电阻 (Ω) | 0.55 |
 | 相电感 (µH) | 486 |
@@ -119,6 +116,7 @@ title: 灵足 RobStride RS01
 | 编码器 | 1 pc |
 | 通信 | CAN |
 | 内置驱动 | 1 |
+| 官方手册 (PDF) | https://raw.githubusercontent.com/RobStride/Product_Information/main/Product%20Literature/CAN2.0/RS01/RS01User%20Manual260713.pdf |
 
 ## 优惠与获取条件
 
@@ -144,11 +142,11 @@ title: 灵足 RobStride RS01
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.robstride.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>灵足官网产品图（robstride.com 导航菜单图，透明底）</td></tr><tr><td class="rs-plain">收录说明</td><td>灵足官方资料库 灵足时代RS系列产品规格介绍(2026.010.09).pdf（https://github.com/RobStride/Product_Information）</td></tr><tr><td><a href="https://www.google.com/search?q=%E7%81%B5%E8%B6%B3+RobStride+RS01+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=RS01&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E7%81%B5%E8%B6%B3+RobStride+RS01+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/actuator/lingzu-robstride.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/lingzu-robstride.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.robstride.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://raw.githubusercontent.com/RobStride/Product_Information/main/Product%20Literature/CAN2.0/RS01/RS01User%20Manual260713.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>灵足官网产品图（robstride.com 导航菜单图，透明底）</td></tr><tr><td class="rs-plain">收录说明</td><td>灵足时代 RS/EL 系列产品规格介绍（2026.010.09 / 2026.09.22）+ 各型号用户手册（260713 / 261013）</td></tr><tr><td><a href="https://www.google.com/search?q=%E7%81%B5%E8%B6%B3+RobStride+RS01+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=RS01&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E7%81%B5%E8%B6%B3+RobStride+RS01+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/actuator/lingzu-robstride.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/lingzu-robstride.json</td></tr></tbody></table>
 
 ## 备注
 
- 【来源冲突】手册给 空载转速 275 → 手册 315±10%，库内暂不改（两份手册数值彼此雷同，疑官方表复制粘贴）；来源：wiki.aifitlab（aifitlab 手册英文机翻镜像，2026-10-31 抓取）；待原厂中文手册复核
+CAN 2.0 版本；官方手册（260713）给空载 315 rpm、电压范围 24–48 V，已按官方口径修正；旧值 275 rpm / 15–48 V 来自第三方镜像，不再采用。价格为历史记录参考价（2026-10-31 未复核）。
 
 
 

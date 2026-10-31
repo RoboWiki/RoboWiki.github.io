@@ -15,7 +15,7 @@ title: 大疆 DJI C610
       <span class="part-tag">电调</span>
       <span class="part-tag soft">CAN 控制</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
-      <span class="part-tag muted">无公开报价</span>
+      <span class="part-tag">¥159</span>
     </div>
 
 <div class="part-split">
@@ -30,12 +30,12 @@ title: 大疆 DJI C610
 | 额定电压 (V) | 24 |
 | 通信 | CAN 1 Mbps |
 | 控制频率 (kHz) | — |
-| 质量 (kg) | 0.021 |
+| 质量 (kg) | 0.017 |
 
 <div class="part-src">
-来源：<a href="https://www.robomaster.com/zh-CN/products/components/general/">https://www.robomaster.com/zh-CN/products/components/general/</a><br/>
-收录：《RoboMaster C610 无刷电机调速器使用说明》规格参数页<br/>
-核对：2026-10-28
+来源：<a href="https://www.robomaster.com/zh-CN/products/components/general/M2006">https://www.robomaster.com/zh-CN/products/components/general/M2006</a><br/>
+收录：《RM C610 无刷电机调速器使用说明（发布版）》产品规格页；官方商城价<br/>
+核对：2026-10-31
 </div>
 
 </div>
@@ -69,9 +69,10 @@ title: 大疆 DJI C610
 | 额定电压 (V) | 24 |
 | 通信 | CAN 1 Mbps |
 | 控制频率 (kHz) | — |
-| 质量 (kg) | 0.021 |
-| 尺寸 | 48.8×22.0×8.3 mm |
+| 质量 (kg) | 0.017 |
+| 尺寸 | 50×22×7.3 mm |
 | 工作温度 | 0–55 ℃ |
+| 官方手册 (PDF) | https://rm-static.djicdn.com/tem/RM%20C610%E6%97%A0%E5%88%B7%E7%94%B5%E6%9C%BA%E8%B0%83%E9%80%9F%E5%99%A8%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%20%E5%8F%91%E5%B8%83%E7%89%88.pdf |
 
 ## 优惠与获取条件
 
@@ -88,11 +89,11 @@ title: 大疆 DJI C610
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.robomaster.com/zh-CN/products/components/general/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商官方 PDF（RoboMaster__C610_无刷电机调速器使用说明.pdf 首页产品图）</td></tr><tr><td class="rs-plain">收录说明</td><td>《RoboMaster C610 无刷电机调速器使用说明》规格参数页</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+C610+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=C610&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+C610+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/esc/dji.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/esc/dji.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.robomaster.com/zh-CN/products/components/general/M2006" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://rm-static.djicdn.com/tem/RM%20C610%E6%97%A0%E5%88%B7%E7%94%B5%E6%9C%BA%E8%B0%83%E9%80%9F%E5%99%A8%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%20%E5%8F%91%E5%B8%83%E7%89%88.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商官方 PDF（RoboMaster__C610_无刷电机调速器使用说明.pdf 首页产品图）</td></tr><tr><td class="rs-plain">收录说明</td><td>《RM C610 无刷电机调速器使用说明（发布版）》产品规格页；官方商城价</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+C610+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=C610&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+C610+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/esc/dji.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/esc/dji.json</td></tr></tbody></table>
 
 ## 备注
 
-M2006 的官方配套电调：CAN 1 Mbps、持续 10 A、21 g。比 C620 更小更轻，配 M2006 带云台/小关节刚好，带 M3508 会先于电机过热。
+M2006 的官方配套电调：CAN 1 Mbps、持续 10 A、17 g。比 C620 更小更轻，配 M2006 带云台/小关节刚好，带 M3508 会先于电机过热。
 
 
 

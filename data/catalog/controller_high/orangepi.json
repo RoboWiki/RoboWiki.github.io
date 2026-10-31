@@ -7,10 +7,10 @@
   "vendor_cn": "香橙派",
   "model": "Orange Pi 5 Plus",
   "title": "香橙派 Orange Pi 5 Plus",
-  "url": "http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/details/Orange-Pi-5-Plus.html",
+  "url": "http://www.orangepi.org/orangepiwiki/index.php/Orange_Pi_5_Plus",
   "source_tier": "A",
   "verified": 1,
-  "last_checked": "2026-10-28",
+  "last_checked": "2026-10-31",
   "price_cny": 795,
   "specs": {
    "soc": "Rockchip RK3588",
@@ -37,7 +37,7 @@
    "weight_g": 86.5,
    "image_url": "/parts/orangepi-5-plus-8gb.jpg",
    "image_source": "ccc 分支（Dichen33 提交）",
-   "doc_url": "http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/details/Orange-Pi-5-Plus.html",
+   "doc_url": "http://www.orangepi.org/orangepiwiki/index.php/Orange_Pi_5_Plus",
    "doc_pdf": null,
    "repo_urls": [
     "https://github.com/orangepi-xunlong/orangepi-build",

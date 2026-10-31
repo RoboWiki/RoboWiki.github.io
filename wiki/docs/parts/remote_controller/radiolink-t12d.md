@@ -14,7 +14,7 @@ title: 乐迪 RadioLink T12D
     <div class="part-tags">
       <span class="part-tag">遥控器</span>
       <span class="part-tag soft">板控</span>
-      <span class="part-tag tierB">来源 B</span>
+      <span class="part-tag tierB">来源 B ✓ 已核对</span>
       <span class="part-tag muted">无公开报价</span>
     </div>
 
@@ -30,12 +30,12 @@ title: 乐迪 RadioLink T12D
 | 遥控距离 (m) | 4,000 |
 | 输出协议 | PWM / SBUS / PPM / CRSF |
 | 电池 | 7.4–18 V（2S–4S 锂电 / 18650 / 8×AA） |
-| 重量 (g) | — |
+| 重量 (g) | 536 |
 
 <div class="part-src">
 来源：<a href="https://www.radiolink.com.cn/cn/t12d">https://www.radiolink.com.cn/cn/t12d</a><br/>
-收录：乐迪官网 T12D 产品页（2026-10-29 采集）<br/>
-核对：2026-10-29
+收录：乐迪官网产品页 + 在线说明书（2026-10-31 核对）<br/>
+核对：2026-10-31
 </div>
 
 </div>
@@ -72,9 +72,11 @@ title: 乐迪 RadioLink T12D
 | 遥控距离 (m) | 4,000 |
 | 输出协议 | PWM / SBUS / PPM / CRSF |
 | 电池 | 7.4–18 V（2S–4S 锂电 / 18650 / 8×AA） |
-| 重量 (g) | — |
-| 官方文档 | https://www.radiolink.com.cn/cn/t12d |
+| 重量 (g) | 536 |
+| 官方文档 | https://www.radiolink.com.cn/cn/t12d_manual |
+| 官方手册 (PDF) | https://www.radiolink.com.cn/download/e2715362be415689343e14f8f51e9e53.pdf |
 | repo_urls | — |
+| size_mm | 174.3×206.9×106.9 |
 
 ## 优惠与获取条件
 
@@ -91,11 +93,11 @@ title: 乐迪 RadioLink T12D
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.radiolink.com.cn/cn/t12d" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>乐迪官网 T12D 产品页产品图（2026-10-29 下载）</td></tr><tr><td class="rs-plain">收录说明</td><td>乐迪官网 T12D 产品页（2026-10-29 采集）</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E8%BF%AA+RadioLink+T12D+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=T12D&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E8%BF%AA+RadioLink+T12D+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/remote_controller/radiolink.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/remote_controller/radiolink.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.radiolink.com.cn/cn/t12d" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.radiolink.com.cn/cn/t12d_manual" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://www.radiolink.com.cn/download/e2715362be415689343e14f8f51e9e53.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>乐迪官网 T12D 产品页产品图（2026-10-29 下载）</td></tr><tr><td class="rs-plain">收录说明</td><td>乐迪官网产品页 + 在线说明书（2026-10-31 核对）</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E8%BF%AA+RadioLink+T12D+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=T12D&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E8%BF%AA+RadioLink+T12D+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/remote_controller/radiolink.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/remote_controller/radiolink.json</td></tr></tbody></table>
 
 ## 备注
 
-<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>12 通道板控，2.4 GHz 主频段，另可外接 915 MHz 高频头</li><li>官方标称空中稳定距离 4000 m</li><li>4096 级全比例通道，2.8 寸 320×240 LCD，7.4–18 V 宽压输入（2S–4S 锂电 / 18650 / 8 节 5 号电池），标配 16 通道 R12F 接收机并支持 CRSF 回传接收机</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>截至 2026-10-29 官方页面未标价，未找到可核对的公开报价</li></ul></div></div>
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>12 通道板控，2.4 GHz 主频段，另可外接 915 MHz 高频头</li><li>官方标称空中稳定距离 4000 m</li><li>4096 级全比例通道，2.8 寸 320×240 LCD，7.4–18 V 宽压输入（2S–4S 锂电 / 18650 / 8 节 5 号电池），标配 16 通道 R12F 接收机并支持 CRSF 回传接收机</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>截至 2026-10-29 官方页面未标价，未找到可核对的公开报价</li></ul></div><div class="pn-block pn-scope"><div class="pn-label">收录说明</div><ul class="pn-list"><li>官方在线说明书与中文 PDF 已收录（doc_url / doc_pdf）</li></ul></div></div>
 
 
 

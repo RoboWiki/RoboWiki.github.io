@@ -29,9 +29,9 @@ title: Sensirion(瑞士盛思锐) SHT40-AD1B-R3
 | 库存 | 6024 |
 
 <div class="part-src">
-来源：<a href="https://item.szlcsc.com/2848306.html">https://item.szlcsc.com/2848306.html</a><br/>
+来源：<a href="https://sensirion.com/products/catalog/SHT40">https://sensirion.com/products/catalog/SHT40</a><br/>
 收录：立创商城搜索页（2026-10-29）<br/>
-核对：2026-10-29
+核对：2026-10-31
 </div>
 
 </div>
@@ -92,11 +92,11 @@ title: Sensirion(瑞士盛思锐) SHT40-AD1B-R3
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://item.szlcsc.com/2848306.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://atta.szlcsc.com/upload/public/pdf/source/20210720/C2848306_34971E33C77B50764797513792751601.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>立创商城商品图（C2848306，2026-10-29 采集）</td></tr><tr><td class="rs-plain">收录说明</td><td>立创商城搜索页（2026-10-29）</td></tr><tr><td><a href="https://www.google.com/search?q=Sensirion%28%E7%91%9E%E5%A3%AB%E7%9B%9B%E6%80%9D%E9%94%90%29+SHT40-AD1B-R3+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=SHT40-AD1B-R3&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Sensirion%28%E7%91%9E%E5%A3%AB%E7%9B%9B%E6%80%9D%E9%94%90%29+SHT40-AD1B-R3+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/sensor/sensirion.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/sensor/sensirion.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://sensirion.com/products/catalog/SHT40" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://atta.szlcsc.com/upload/public/pdf/source/20210720/C2848306_34971E33C77B50764797513792751601.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>立创商城商品图（C2848306，2026-10-29 采集）</td></tr><tr><td class="rs-plain">收录说明</td><td>立创商城搜索页（2026-10-29）</td></tr><tr><td><a href="https://www.google.com/search?q=Sensirion%28%E7%91%9E%E5%A3%AB%E7%9B%9B%E6%80%9D%E9%94%90%29+SHT40-AD1B-R3+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=SHT40-AD1B-R3&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Sensirion%28%E7%91%9E%E5%A3%AB%E7%9B%9B%E6%80%9D%E9%94%90%29+SHT40-AD1B-R3+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/sensor/sensirion.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/sensor/sensirion.json</td></tr></tbody></table>
 
 ## 备注
 
-同封装另一卷装规格；带内部加热器三档，可抗凝露/恶劣环境。
+同封装另一卷装规格；带内部加热器三档，可抗凝露/恶劣环境；链接为厂商产品页，价格为立创商城参考价（2026-10-31）。
 
 
 
