@@ -13,7 +13,7 @@
   "last_checked": "2026-10-29",
   "price_cny": null,
   "origin": "飞特官网产品页参数表（2026-10-29 逐项读取）",
-  "notes": "官网页面型号写 ST-3250-C001，本体丝印是 STS3250 —— 同一款，型号按官网记录、丝印写在这里，避免搜型号的人对不上。空心杯 + 全铝壳，是这三款里唯一能拉 4.2 A 堵转的。",
+  "notes": "官网页面型号写 ST-3250-C001，本体丝印是 STS3250 —— 同一款，型号按官网记录、丝印写在这里，避免搜型号的人对不上。空心杯 + 全铝壳，是这三款里唯一能拉 4.2 A 堵转的。 同系列官方规格书：ST-3215-C044（7.4V 1:191）、ST-3215-C046（7.4V 1:147）、ST-3215-C047（12V 1:345），见 https://wiki.seeedstudio.com/cn/feetech_servo/",
   "specs": {
    "stall_torque_Nm": 4.903,
    "rated_torque_Nm": 1.569,
@@ -58,7 +58,7 @@
   "last_checked": "2026-10-29",
   "price_cny": null,
   "origin": "飞特官网产品页参数表（2026-10-29 逐项读取）",
-  "notes": "三款里唯一的塑料壳（PA+GF），也是最轻的一款（55 g）。电压范围最宽（4–14 V），适合电池电压波动大的小车。本体丝印 STS3215-12V。",
+  "notes": "三款里唯一的塑料壳（PA+GF），也是最轻的一款（55 g）。电压范围最宽（4–14 V），适合电池电压波动大的小车。本体丝印 STS3215-12V。 同系列官方规格书：ST-3215-C044（7.4V 1:191）、ST-3215-C046（7.4V 1:147）、ST-3215-C047（12V 1:345），见 https://wiki.seeedstudio.com/cn/feetech_servo/",
   "specs": {
    "stall_torque_Nm": 2.942,
    "rated_torque_Nm": 0.981,
@@ -103,7 +103,7 @@
   "last_checked": "2026-10-29",
   "price_cny": null,
   "origin": "飞特官网产品页参数表（2026-10-29 逐项读取）",
-  "notes": "和 ST-3215 同扭矩同速度，但外壳换成全铝、重量从 55 g 涨到 70.5 g —— 多出来的 15 g 买的是散热与刚性。本体丝印 STS3235。",
+  "notes": "和 ST-3215 同扭矩同速度，但外壳换成全铝、重量从 55 g 涨到 70.5 g —— 多出来的 15 g 买的是散热与刚性。本体丝印 STS3235。 同系列官方规格书：ST-3215-C044（7.4V 1:191）、ST-3215-C046（7.4V 1:147）、ST-3215-C047（12V 1:345），见 https://wiki.seeedstudio.com/cn/feetech_servo/",
   "specs": {
    "stall_torque_Nm": 2.942,
    "rated_torque_Nm": 0.981,
@@ -132,6 +132,48 @@
    "size_mm": "45.2 × 24.7 × 35",
    "connector_wire": "15 cm",
    "limit_angle": "无机械限位（360°）"
+  }
+ },
+ {
+  "id": "feetech-sts3215-7v4",
+  "category": "servo",
+  "subtype": "serial",
+  "vendor": "Feetech 飞特",
+  "vendor_cn": "飞特",
+  "model": "STS3215（7.4V 19 kg·cm）",
+  "title": "飞特 STS3215 7.4V 19 kg·cm 串行舵机",
+  "url": "https://www.feetech.cn/74v-19-kgcm-plastic-case-metal-tooth-magnetic-code-double-axis-ttl-series-steering-gear",
+  "source_tier": "A",
+  "verified": 1,
+  "last_checked": "2026-10-31",
+  "price_cny": null,
+  "origin": "飞特官方规格书《STS3215 产品规格书 A/1，2023-06-23》（Seeed 文档中心镜像的官网 PDF）；产品页 feetech.cn（本机不可达，链接仅供读者核对）",
+  "notes": "塑料壳 + 金属齿 + 磁编码双轴 TTL 串行舵机。7.4 V 下降压版 6 V 也支持：6 V 时堵转 16.5 kg·cm / 0.238 s/60°，7.4 V 时 19.5 kg·cm / 0.192 s/60°。同系列另有 ST-3215-C044（7.4V 1:191）、C046（7.4V 1:147）、C047（12V 1:345），参数不同，不混为一行。图片取自飞特官网产品页（1.jpg），经图片代理取回后转 PNG。",
+  "specs": {
+   "stall_torque_Nm": 1.912,
+   "rated_torque_Nm": 0.49,
+   "torque_raw": "19.5 kg·cm 堵转 / 5 kg·cm 额定 @7.4 V（6 V 为 16.5 / 4）",
+   "voltage_V": 7.4,
+   "voltage_range": "4–7.4 V",
+   "speed_rpm": 52,
+   "speed_raw": "0.192 s/60°（52 RPM）@7.4 V；0.238 s/60°（42 RPM）@6 V",
+   "i_stall_A": 2.5,
+   "i_rated_mA": 650,
+   "i_noload_mA": 150,
+   "i_idle_mA": 21,
+   "kt_Nm_per_A": 0.765,
+   "weight_g": 55,
+   "gear": null,
+   "encoder": "12 bit 磁编码，360°，精度 ≤0.5°",
+   "iface": "TTL 半双工异步串行（数字包）",
+   "bearing": "滚珠轴承",
+   "case": "PA+GF 塑料壳 + 金属齿",
+   "image_url": "/parts/feetech-sts3215-7v4.png",
+   "image_source": "飞特官网产品页图（1.jpg，2026-10-31 经图片代理取回并转 PNG）",
+   "doc_url": "https://www.feetech.cn/74v-19-kgcm-plastic-case-metal-tooth-magnetic-code-double-axis-ttl-series-steering-gear",
+   "doc_pdf": "https://files.seeedstudio.com/products/Feetech/108090023_STS3215-C001_Datasheet.pdf",
+   "repo_urls": null,
+   "repo_license": null
   }
  }
 ]

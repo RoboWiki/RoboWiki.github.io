@@ -160,6 +160,11 @@
    "category": "servo",
    "model": "ST-3250-C001"
   },
+  "feetech-sts3215-7v4": {
+   "added": "2026-10-31",
+   "category": "servo",
+   "model": "STS3215（7.4V 19 kg·cm）"
+  },
   "hightorque-htcp-4531-06-cyc": {
    "added": "2026-10-31",
    "category": "actuator",

@@ -19,9 +19,9 @@ titleTemplate: false
       <a class="rw-home-btn ghost" href="/learn/">从零开始学</a>
     </div>
     <div class="rw-home-stats">
-      <div><b>270</b><span>在库部件</span></div>
+      <div><b>271</b><span>在库部件</span></div>
       <div><b>14</b><span>有数据的品类（共 14 类）</span></div>
-      <div><b>83</b><span>A 级：逐项对过厂商手册</span></div>
+      <div><b>84</b><span>A 级：逐项对过厂商手册</span></div>
       <div><b>21</b><span>整机（带 URDF / 仓库）</span></div>
       <div><b>207</b><span>渠道库（加工 / 元件店铺）</span></div>
     </div>
@@ -80,9 +80,9 @@ titleTemplate: false
     <h2>六个入口</h2>
     <div class="rw-home-entries">
       <a class="rw-home-entry" href="/catalog">
-        <b>部件库 · 270 件</b>
+        <b>部件库 · 271 件</b>
         <p>比参数：按任意列排序、可对比、带来源等级与真实评分。</p>
-        <span>A 级 83 件逐项对过手册</span>
+        <span>A 级 84 件逐项对过手册</span>
       </a>
       <a class="rw-home-entry" href="/robots">
         <b>整机库 · 21 台</b>
@@ -178,8 +178,8 @@ titleTemplate: false
       <a class="rw-home-cat" href="/catalog?category=lidar"><b>激光雷达</b><span>12</span><em>地形与建图</em></a>
       <a class="rw-home-cat" href="/catalog?category=controller_high"><b>上位机</b><span>9</span><em>推理与感知</em></a>
       <a class="rw-home-cat" href="/catalog?category=camera"><b>深度相机</b><span>9</span><em>视觉感知</em></a>
+      <a class="rw-home-cat" href="/catalog?category=servo"><b>舵机</b><span>4</span><em>串行总线 / PWM</em></a>
       <a class="rw-home-cat" href="/catalog?category=remote_controller"><b>遥控器</b><span>4</span><em>手柄 / 板控 / 遥操作</em></a>
-      <a class="rw-home-cat" href="/catalog?category=servo"><b>舵机</b><span>3</span><em>串行总线 / PWM</em></a>
       <a class="rw-home-cat" href="/catalog?category=controller_low"><b>下位机</b><span>3</span><em>力矩闭环</em></a>
       <a class="rw-home-cat" href="/catalog?category=esc"><b>电调</b><span>3</span><em>驱动器 / 调速器</em></a>
       <a class="rw-home-cat" href="/catalog?category=module"><b>其余模块</b><span>3</span><em>CAN 通信 / 力触觉 / 编码器</em></a>
