@@ -29,7 +29,9 @@
    "l_mm": 38.5,
    "encoder": "单编",
    "tau_basis": "peak",
-   "doc_url": "https://www.cubemars.com/cn/product/ak80-6-kv100-robotic-actuator.html"
+   "doc_url": "https://www.cubemars.com/cn/product/ak80-6-kv100-robotic-actuator.html",
+   "image_url": "/parts/cubemars-ak80-6.jpg",
+   "image_source": "CubeMars 官方产品图（cubemars.com，AK80-6 KV100）"
   }
  },
  {

@@ -22,7 +22,7 @@ titleTemplate: false
       <div><b>290</b><span>在库部件</span></div>
       <div><b>14</b><span>有数据的品类（共 14 类）</span></div>
       <div><b>84</b><span>A 级：逐项对过厂商手册</span></div>
-      <div><b>21</b><span>整机（带 URDF / 仓库）</span></div>
+      <div><b>21</b><span>整机（19 台带 URDF / 仓库）</span></div>
       <div><b>207</b><span>渠道库（加工 / 元件店铺）</span></div>
     </div>
   </section>
@@ -39,7 +39,7 @@ titleTemplate: false
         <span>带 URDF / 仓库的整机，能不能复现一眼看清</span>
       </a>
       <a class="rw-home-task" href="/catalog?category=actuator">
-        <b>我想选电机 / 传感器</b>
+        <b>我想选电机 / 执行器</b>
         <span>按任意列排序，官方口径 + 真实评分并排看</span>
       </a>
       <a class="rw-home-task" href="/suppliers">
@@ -62,7 +62,7 @@ titleTemplate: false
       <div>
         <b>① 把信息整理成能核对的</b>
         <p>每个部件一页：左边官方参数（带来源等级与口径），右边真实使用者的评分。
-        每个数字都能追回一手来源；查不到就写 <code>null</code>，不用「约」「大概」糊过去。</p>
+        A 级数字能追回厂商手册，B 级标公开网页来源；查不到就写 <code>null</code>，不用「约」「大概」糊过去。</p>
       </div>
       <div>
         <b>② 维护开源生态的可用性</b>
@@ -95,7 +95,7 @@ titleTemplate: false
         <span>读不到的许可标「未核对」，不猜</span>
       </a>
       <a class="rw-home-entry" href="/learn/">
-        <b>学习</b>
+        <b>指南 · 学习</b>
         <p>怎么用这个站、怎么读参数口径，也有从入门到选型的学习路线。</p>
         <span>先讲数据的用法与边界，再讲怎么动手</span>
       </a>
@@ -129,7 +129,7 @@ titleTemplate: false
           <li>查不到就写 <code>null</code>，<b>不省略 key</b> —— 省略会让人以为「这项没有」，
               <code>null</code> 才表示「厂商没公布」</li>
           <li>不用额定值代替峰值，不用同系列的值代填</li>
-          <li>同一品类里 A 级字段的键集必须完全一致，缺的补 <code>null</code></li>
+          <li>同一品类/子类里 A 级字段的键集必须完全一致，缺的补 <code>null</code></li>
         </ul>
       </div>
       <div>
@@ -184,7 +184,7 @@ titleTemplate: false
       <a class="rw-home-cat" href="/catalog?category=esc"><b>电调</b><span>3</span><em>驱动器 / 调速器</em></a>
       <a class="rw-home-cat" href="/catalog?category=module"><b>其余模块</b><span>3</span><em>CAN 通信 / 力触觉 / 编码器</em></a>
       <a class="rw-home-cat" href="/catalog?category=battery"><b>电池</b><span>2</span><em>智能电池 / 动力电池</em></a>
-      <a class="rw-home-cat" href="/catalog?category=wiring"><b>线束</b><span>2</span><em>待收录</em></a>
+      <a class="rw-home-cat" href="/catalog?category=wiring"><b>线束</b><span>2</span><em>成品线束 / 端子线</em></a>
     </div>
     <p class="rw-home-note">
       「待收录」不是漏了 —— 是没有可信来源。宁可空着，也不拿论文里的典型值充数。

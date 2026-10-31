@@ -2,8 +2,8 @@
  {
   "id": "struct-zex-w",
   "category": "robot",
-  "subtype": "wheeled",
-  "subtype_label": "轮足",
+  "subtype": "wheeled_quadruped",
+  "subtype_label": "四轮足",
   "vendor": "zex",
   "vendor_cn": "ZEX（个人项目）",
   "model": "ZEX-W",
@@ -31,7 +31,7 @@
    "compute": "Jetson Orin Nano 8G",
    "sensors": null,
    "image_url": "/parts/zex-w.png",
-   "image_source": "ccc 分支（Dichen33 提交），2026-10-31 合并",
+   "image_source": "仓库 README 资产 https://github.com/zeitvex/RC_WheelLeg（2026-10-30 下载）",
    "doc_url": "https://github.com/zeitvex/RC_WheelLeg#readme",
    "doc_pdf": null,
    "repo_urls": [

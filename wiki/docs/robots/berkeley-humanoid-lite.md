@@ -6,7 +6,13 @@ title: Berkeley Humanoid Lite
 
 ![Berkeley Humanoid Lite](/parts/berkeley-humanoid-lite.jpg)
 
-官方开源人形：整机约 16 kg、高 0.8 m、22 自由度（按官方 URDF 关节数），3D 打印摆线针轮执行器，BOM 低于 US$5,000。算力为 Intel N95 迷你主机，6S LiPo 供电续航约 30 min。官网未公布负载、速度、电池容量与对外接口的精确值，相应字段留空；机械 CAD、URDF 与训练资产全部开源。
+## 简介
+
+<div class="rb-intro">
+<p>官方开源人形：整机约 16 kg、高 0.8 m、22 自由度（按官方 URDF 关节数），3D 打印摆线针轮执行器，BOM 低于 US$5,000。</p>
+<p>算力为 Intel N95 迷你主机，6S LiPo 供电续航约 30 min。</p>
+<p>官网未公布负载、速度、电池容量与对外接口的精确值，相应字段留空；机械 CAD、URDF 与训练资产全部开源。</p>
+</div>
 
 ## 关键参数
 

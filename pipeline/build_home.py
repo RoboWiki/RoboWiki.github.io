@@ -51,6 +51,7 @@ def _counts(root: pathlib.Path) -> dict:
         rows += json.loads(f.read_text(encoding="utf-8"))
     robots = 0
     robots_with_eco = 0
+    robots_with_links = 0
     eco_ids = _eco_ids(root)
     for f in (root / "data" / "robots").glob("*.json"):
         data = json.loads(f.read_text(encoding="utf-8"))
@@ -58,6 +59,10 @@ def _counts(root: pathlib.Path) -> dict:
         robots_with_eco += sum(
             1 for r in data
             if ((r.get("specs") or {}).get("ecosystem_id") or "") in eco_ids)
+        robots_with_links += sum(
+            1 for r in data
+            if ((r.get("specs") or {}).get("urdf_urls")
+                or (r.get("specs") or {}).get("repo_urls")))
     try:
         sups = len(json.loads((root / "data" / "suppliers.json").read_text(encoding="utf-8")))
     except Exception:
@@ -71,6 +76,7 @@ def _counts(root: pathlib.Path) -> dict:
         "tier_a": sum(1 for r in rows if r.get("source_tier") == "A"),
         "robots": robots,
         "robots_with_eco": robots_with_eco,
+        "robots_with_links": robots_with_links,
         "software": _count_software(root),
         "suppliers": sups,
         "cat_rows": sorted(
@@ -118,7 +124,7 @@ titleTemplate: false
       <div><b>{c['parts']}</b><span>在库部件</span></div>
       <div><b>{c['cats_with_data']}</b><span>有数据的品类（共 {c['cats_total']} 类）</span></div>
       <div><b>{c['tier_a']}</b><span>A 级：逐项对过厂商手册</span></div>
-      <div><b>{c['robots']}</b><span>整机（带 URDF / 仓库）</span></div>
+      <div><b>{c['robots']}</b><span>整机（{c['robots_with_links']} 台带 URDF / 仓库）</span></div>
       <div><b>{c['suppliers']}</b><span>渠道库（加工 / 元件店铺）</span></div>
     </div>
   </section>
@@ -135,7 +141,7 @@ titleTemplate: false
         <span>带 URDF / 仓库的整机，能不能复现一眼看清</span>
       </a>
       <a class="rw-home-task" href="/catalog?category=actuator">
-        <b>我想选电机 / 传感器</b>
+        <b>我想选电机 / 执行器</b>
         <span>按任意列排序，官方口径 + 真实评分并排看</span>
       </a>
       <a class="rw-home-task" href="/suppliers">
@@ -158,7 +164,7 @@ titleTemplate: false
       <div>
         <b>① 把信息整理成能核对的</b>
         <p>每个部件一页：左边官方参数（带来源等级与口径），右边真实使用者的评分。
-        每个数字都能追回一手来源；查不到就写 <code>null</code>，不用「约」「大概」糊过去。</p>
+        A 级数字能追回厂商手册，B 级标公开网页来源；查不到就写 <code>null</code>，不用「约」「大概」糊过去。</p>
       </div>
       <div>
         <b>② 维护开源生态的可用性</b>
@@ -191,7 +197,7 @@ titleTemplate: false
         <span>读不到的许可标「未核对」，不猜</span>
       </a>
       <a class="rw-home-entry" href="/learn/">
-        <b>学习</b>
+        <b>指南 · 学习</b>
         <p>怎么用这个站、怎么读参数口径，也有从入门到选型的学习路线。</p>
         <span>先讲数据的用法与边界，再讲怎么动手</span>
       </a>
@@ -225,7 +231,7 @@ titleTemplate: false
           <li>查不到就写 <code>null</code>，<b>不省略 key</b> —— 省略会让人以为「这项没有」，
               <code>null</code> 才表示「厂商没公布」</li>
           <li>不用额定值代替峰值，不用同系列的值代填</li>
-          <li>同一品类里 A 级字段的键集必须完全一致，缺的补 <code>null</code></li>
+          <li>同一品类/子类里 A 级字段的键集必须完全一致，缺的补 <code>null</code></li>
         </ul>
       </div>
       <div>

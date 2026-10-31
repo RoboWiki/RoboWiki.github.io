@@ -7,7 +7,8 @@ title: 乐动 LDROBOT LD19
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/ldrobot-ld19.png" alt="LD19" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
@@ -90,7 +91,7 @@ title: 乐动 LDROBOT LD19
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.ldrobot.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.waveshare.net/wiki/DTOF_LIDAR_LD19" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td class="rs-plain">收录说明</td><td>微雪 Wiki / 商城（2026-10-31）；型号属乐动 LDROBOT</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E5%8A%A8+LDROBOT+LD19+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=LD19&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E5%8A%A8+LDROBOT+LD19+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/lidar/ldrobot.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/ldrobot.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.ldrobot.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.waveshare.net/wiki/DTOF_LIDAR_LD19" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td class="rs-plain">产品图出处</td><td>乐动雷达官网历史产品图（Wayback 2025-04-30 快照）</td></tr><tr><td class="rs-plain">收录说明</td><td>微雪 Wiki / 商城（2026-10-31）；型号属乐动 LDROBOT</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E5%8A%A8+LDROBOT+LD19+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=LD19&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E5%8A%A8+LDROBOT+LD19+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/lidar/ldrobot.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/ldrobot.json</td></tr></tbody></table>
 
 ## 备注
 

@@ -6,7 +6,12 @@ title: Lite3
 
 ![Lite3](/parts/deeprobotics-lite3.png)
 
-云深处面向科研/教育的小四足，**官方描述仓 deep_robotics_model 是国内少见的规范 URDF 集合**（Lite3 / X30 / M20 一套）。训练侧有 rl_training、sdk_deploy、m20_rl_isaacsim 等配套工程，属于「官方给描述、社区补训练」的形态。
+## 简介
+
+<div class="rb-intro">
+<p>云深处面向科研/教育的小四足，<strong>官方描述仓 deep_robotics_model 是国内少见的规范 URDF 集合</strong>（Lite3 / X30 / M20 一套）。</p>
+<p>训练侧有 rl_training、sdk_deploy、m20_rl_isaacsim 等配套工程，属于「官方给描述、社区补训练」的形态。</p>
+</div>
 
 ## 关键参数
 

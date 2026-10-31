@@ -5,21 +5,30 @@
  * 卡片只放「和选型有关」的四项：自由度 / 质量 / 负载 / 续航；
  * URDF、仓库这类链接计数放到底部一行 —— 想进仿真的自然会去找。
  */
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import ExplorerShell from './ExplorerShell.vue'
 
 interface Robot {
   id: string; model: string; vendor: string; vendor_cn?: string
-  subtype?: string; _slug: string
+  subtype?: string; subtype_label?: string; _slug: string
   specs?: Record<string, any>
 }
 
 const SUB: Record<string, string> = {
   quadruped: '四足', humanoid: '人形', biped: '双足',
-  wheeled: '轮式', wheeled_quadruped: '轮足',
-  wheeled_quadruped_inward_knee: '轮足（内膝）',
+  wheeled_quadruped: '四轮足',
+  wheeled_quadruped_inward_knee: '四轮足·内膝肘',
+  infantry: '步兵', sentry: '哨兵', hero: '英雄', engineer: '工程',
   arm: '机械臂', other: '其他',
 }
+
+const SUB_ORDER = [
+  'quadruped', 'humanoid', 'wheeled_quadruped',
+  'wheeled_quadruped_inward_knee', 'biped',
+  'infantry', 'sentry', 'hero', 'engineer', 'arm', 'other',
+]
+/** 这四个兵种先留入口；还没有整机数据时也显示，点了给空列表与投稿提示。 */
+const ALWAYS_SUBS = new Set(['infantry', 'sentry', 'hero', 'engineer'])
 
 const all = ref<Robot[]>([])
 const q = ref('')
@@ -28,8 +37,27 @@ const active = ref<Record<string, string>>({})
 
 onMounted(async () => {
   const r = await fetch(`${import.meta.env.BASE_URL}robots.json`)
-  if (r.ok) all.value = (await r.json()).robots || []
+  if (!r.ok) return
+  all.value = (await r.json()).robots || []
+  // 预选必须放在挂载后：构建时 SSR 的 DOM 里没有带种类的 chip，
+  // 水合阶段设置的选中态补不上 class，直接刷新就会看起来没选中。
+  const wanted = new URLSearchParams(window.location.search).get('subtype')?.trim() || ''
+  if (!wanted) return
+  const ok = facets.value.some((f) => f.group === 'sub' && f.value === wanted)
+  if (ok) active.value = { ...active.value, sub: wanted }
+  else syncSubtypeUrl('')
 })
+
+/** 种类进 URL：从竞赛页点过来时能落到同一栏，刷新也不丢。 */
+function syncSubtypeUrl(v: string) {
+  if (typeof window === 'undefined') return
+  const url = new URL(window.location.href)
+  if (v) url.searchParams.set('subtype', v)
+  else url.searchParams.delete('subtype')
+  history.replaceState(history.state, '', url)
+}
+
+watch(() => active.value.sub, (v) => syncSubtypeUrl(v || ''))
 
 function imgUrl(p?: string | null): string {
   if (!p) return ''
@@ -43,7 +71,11 @@ const facets = computed(() => {
     const k = x.subtype || 'other'
     m.set(k, (m.get(k) || 0) + 1)
   }
-  const sub = [...m.entries()].map(([v, n]) => ({ group: 'sub', value: v, label: SUB[v] || v, count: n }))
+  const order = [...SUB_ORDER]
+  for (const v of m.keys()) if (!order.includes(v)) order.push(v)
+  const sub = order
+    .filter((v) => m.has(v) || ALWAYS_SUBS.has(v))
+    .map((v) => ({ group: 'sub', value: v, label: SUB[v] || v, count: m.get(v) || 0 }))
   const withEco = all.value.filter((x) => eco(x) > 0).length
   sub.push({ group: 'eco', value: 'yes', label: '有开源生态', count: withEco })
   sub.push({ group: 'eco', value: 'no', label: '未收录', count: all.value.length - withEco })
@@ -52,16 +84,20 @@ const facets = computed(() => {
 
 const num = (v: any) => (typeof v === 'number' ? v : -Infinity)
 
+function matchesSub(x: Robot, sub: string): boolean {
+  return (x.subtype || 'other') === sub
+}
+
 const rows = computed(() => {
   const kw = q.value.trim().toLowerCase()
   const sub = active.value.sub
   let out = all.value.filter((x) => {
-    if (sub && (x.subtype || 'other') !== sub) return false
+    if (sub && !matchesSub(x, sub)) return false
     const ecoSel = active.value.eco
     if (ecoSel === 'yes' && eco(x) <= 0) return false
     if (ecoSel === 'no' && eco(x) > 0) return false
     if (!kw) return true
-    return [x.model, x.vendor, x.vendor_cn, x.subtype]
+    return [x.model, x.vendor, x.vendor_cn, x.subtype_label, x.subtype]
       .filter(Boolean).join(' ').toLowerCase().includes(kw)
   })
   out = [...out].sort((a, b) => {
@@ -111,6 +147,7 @@ const repo = (x: Robot) => (x.specs?.repo_urls as string[] | undefined)?.length 
     v-model:active="active"
     :count="rows.length"
     count-unit="台"
+    empty-text="没有匹配的整机；这类还没收录时，欢迎补型号或复现记录。"
     @update:q="q = $event"
   >
     <template #note>
@@ -125,7 +162,7 @@ const repo = (x: Robot) => (x.specs?.repo_urls as string[] | undefined)?.length 
       <div class="ex-body">
         <div class="ex-title">
           <a :href="`./robots/${x._slug}.html`">{{ x.model }}</a>
-          <em class="ex-tag">{{ SUB[x.subtype || 'other'] || x.subtype }}</em>
+          <em class="ex-tag">{{ x.subtype_label || SUB[x.subtype || 'other'] || x.subtype }}</em>
         </div>
         <p class="ex-sub">{{ x.vendor_cn || x.vendor }}</p>
         <p v-if="pitch(x)" class="ex-desc">{{ pitch(x) }}</p>

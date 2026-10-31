@@ -11,7 +11,7 @@
   "url": "https://www.xsens.com/products/sensor-modules/xsens-mti-1-series",
   "source_tier": "A",
   "verified": 1,
-  "last_checked": "2026-10-28",
+  "last_checked": "2026-10-31",
   "price_cny": null,
   "specs": {
    "gyro_range_dps": 2000,
@@ -26,16 +26,16 @@
    "size_mm": "12.1×12.1×2.55",
    "weight_g": 0.6,
    "resolution": null,
-   "image_url": null,
-   "image_source": null,
-   "doc_url": "https://www.xsens.com/products/sensor-modules/xsens-mti-1-series",
+   "image_url": "/parts/xsens-mti-3.jpg",
+   "image_source": "Movella 官方商城 MTi-3 AHRS 开发套件产品图（shop.movella.com，2026-10-31）；立创商城 MTI-3-0I-DK 商品页同收录",
+   "doc_url": "https://shop.movella.com/product-lines/sensor-modules/products/mti-3-ahrs-development-kit",
    "doc_pdf": null,
    "repo_urls": [
     "https://github.com/xsens/xsens_mti_ros_node"
    ],
    "repo_license": "NO-LICENSE"
   },
-  "notes": "MTi-1 系列中的 AHRS 型号；陀螺 ±2000 °/s、加速度 ±16 g、磁力 ±8 G；输出频率最高 1 kHz；滚转/俯仰 0.5° RMS，MTi-3 航向 2° RMS；2.8–3.6 V、<100 mW、0.6 g、12.1×12.1×2.55 mm。官网只提供 MTi-3 DK 套件图，未提供独立模组产品图，image_url 留空；价格需向 Movella/Xsens 或代理商询价。",
-  "origin": "Xsens MTi 1-Series 产品页规格表 + xsens_mti_ros_node 官方仓库核对（2026-10-28）"
+  "notes": "MTi-1 系列中的 AHRS 型号；陀螺 ±2000 °/s、加速度 ±16 g、磁力 ±8 G；输出频率最高 1 kHz；滚转/俯仰 0.5° RMS，MTi-3 航向 2° RMS；2.8–3.6 V、<100 mW、0.6 g、12.1×12.1×2.55 mm。官方只提供 MTi-3 DK 开发套件图，未提供独立模组产品图，故用套件图；立创商城 MTI-3-0I-DK 套件 ¥2972.84（2026-10-31 抓取，无现货），为套件价，非裸模组价。",
+  "origin": "Xsens MTi 1-Series 产品页规格表 + Movella 商城 MTi-3 DK 产品页 + 立创商城 MTI-3-0I-DK 商品页核对（2026-10-31）"
  }
 ]

@@ -27,7 +27,9 @@
    "od_mm": 58,
    "encoder": "14 bit 单圈绝对",
    "comm": "CAN 1 Mbps 扩展帧",
-   "doc_url": "https://www.mi.com/"
+   "doc_url": "https://www.mi.com/",
+   "image_url": "/parts/xiaomi-cybergear-micro.jpg",
+   "image_source": "小米官网产品图（mi.com/cyber-gear）"
   },
   "id": "xiaomi-cybergear-micro"
  }

@@ -20,8 +20,8 @@ const CATS = [
   { value: 'imu', label: 'IMU', hint: '姿态与振动' },
   { value: 'lidar', label: '激光雷达', hint: '地形与建图' },
   { value: 'camera', label: '深度相机', hint: '视觉感知' },
-  { value: 'battery', label: '电池', hint: '待收录' },
-  { value: 'wiring', label: '线束', hint: '待收录' },
+  { value: 'battery', label: '电池', hint: '智能电池 / 动力电池' },
+  { value: 'wiring', label: '线束', hint: '成品线束 / 端子线' },
   { value: 'module', label: '其余模块', hint: 'CAN 通信 / 力触觉 / 编码器' },
 ]
 

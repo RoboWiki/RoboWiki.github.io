@@ -13,7 +13,7 @@ title: EVERLIGHT(亿光) ALS-PT19-315C/L177/TR8
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">传感器</span>
-      <span class="part-tag soft">光敏 / 环境光</span>
+      <span class="part-tag soft">光照传感器</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥0.6768</span>
     </div>

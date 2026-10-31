@@ -13,7 +13,7 @@ title: Goertek(歌尔) SPA06-003
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">传感器</span>
-      <span class="part-tag soft">压力 / 气压</span>
+      <span class="part-tag soft">压力 / 气压传感器</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥4.53</span>
     </div>

@@ -6,7 +6,13 @@ title: Doggo
 
 ![Doggo](/parts/stanford-doggo.jpg)
 
-8 个电机（每腿 2 个）、整机不足 5 kg（按 5 记），BOM 低于 US$3,000，控制器为 Teensy 3.5 + 4× ODrive；腿部五杆机构含被动连杆。社区 URDF（RajPShinde/Doggo_Description）有 20 个可动关节，不能当作驱动自由度。项目官网 doggo.stanford.edu 已无法访问，参数以官方 GitHub 仓库为准；官方未公布负载、速度、电池与续航，均留空。
+## 简介
+
+<div class="rb-intro">
+<p>8 个电机（每腿 2 个）、整机不足 5 kg（按 5 记），BOM 低于 US$3,000，控制器为 Teensy 3.5 + 4× ODrive；腿部五杆机构含被动连杆。</p>
+<p>社区 URDF（RajPShinde/Doggo_Description）有 20 个可动关节，不能当作驱动自由度。</p>
+<p>项目官网 doggo.stanford.edu 已无法访问，参数以官方 GitHub 仓库为准；官方未公布负载、速度、电池与续航，均留空。</p>
+</div>
 
 ## 关键参数
 

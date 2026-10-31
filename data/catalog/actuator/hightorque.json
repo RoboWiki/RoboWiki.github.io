@@ -22,7 +22,9 @@
    "od_mm": 50,
    "l_mm": 47.4,
    "doc_url": "https://www.hightorquerobotics.com/product?id=75",
-   "tau_peak_Nm": null
+   "tau_peak_Nm": null,
+   "image_url": "/parts/hightorque-htdw-5036-02-dne.jpg",
+   "image_source": "高擎官网产品图（hightorquerobotics.com）"
   }
  },
  {
@@ -47,7 +49,9 @@
    "tau_basis": "peak",
    "od_mm": 50,
    "l_mm": 47.4,
-   "doc_url": "https://www.hightorquerobotics.com/product?id=482"
+   "doc_url": "https://www.hightorquerobotics.com/product?id=482",
+   "image_url": "/parts/hightorque-htdw-5036-02-cne.jpg",
+   "image_source": "高擎官网产品图（hightorquerobotics.com）"
   }
  },
  {
@@ -73,7 +77,9 @@
    "od_mm": 60,
    "l_mm": 56,
    "doc_url": "https://www.hightorquerobotics.com/product?id=326",
-   "tau_peak_Nm": null
+   "tau_peak_Nm": null,
+   "image_url": "/parts/hightorque-htdw-6036-02-dne.jpg",
+   "image_source": "高擎官网产品图（hightorquerobotics.com）"
   }
  },
  {
@@ -98,7 +104,9 @@
    "tau_basis": "peak",
    "od_mm": 75,
    "l_mm": 56,
-   "doc_url": "https://www.hightorquerobotics.com/product?id=489"
+   "doc_url": "https://www.hightorquerobotics.com/product?id=489",
+   "image_url": "/parts/hightorque-htdw-7535-02-cne.jpg",
+   "image_source": "高擎官网产品图（hightorquerobotics.com）"
   }
  },
  {
@@ -127,7 +135,9 @@
    "power_w": 84,
    "od_mm": 140.5,
    "l_mm": 36.9,
-   "doc_url": "https://www.hightorquerobotics.com/product?id=505"
+   "doc_url": "https://www.hightorquerobotics.com/product?id=505",
+   "image_url": "/parts/hightorque-htpu-7033-04-cne.jpg",
+   "image_source": "高擎官网产品图（hightorquerobotics.com）"
   }
  },
  {
@@ -156,7 +166,9 @@
    "power_w": 52,
    "od_mm": 115,
    "l_mm": 37,
-   "doc_url": "https://www.hightorquerobotics.com/product?id=501"
+   "doc_url": "https://www.hightorquerobotics.com/product?id=501",
+   "image_url": "/parts/hightorque-htpu-6035-04-cne.jpg",
+   "image_source": "高擎官网产品图（hightorquerobotics.com）"
   }
  },
  {
@@ -182,7 +194,9 @@
    "od_mm": 50,
    "l_mm": 53,
    "doc_url": "https://www.hightorquerobotics.com/product?id=772",
-   "tau_peak_Nm": null
+   "tau_peak_Nm": null,
+   "image_url": "/parts/hightorque-htcp-5031-06-cyc.jpg",
+   "image_source": "高擎官网产品图（hightorquerobotics.com）"
   }
  },
  {
@@ -208,7 +222,9 @@
    "od_mm": 44,
    "l_mm": 44.9,
    "doc_url": "https://www.hightorquerobotics.com/product?id=771",
-   "tau_peak_Nm": null
+   "tau_peak_Nm": null,
+   "image_url": "/parts/hightorque-htcp-4531-06-cyc.jpg",
+   "image_source": "高擎官网产品图（hightorquerobotics.com）"
   }
  },
  {
@@ -234,7 +250,9 @@
    "od_mm": 75,
    "l_mm": 35,
    "doc_url": "https://www.hightorquerobotics.com/product?id=76",
-   "tau_peak_Nm": null
+   "tau_peak_Nm": null,
+   "image_url": "/parts/hightorque-htpw-7507-02-dne.jpg",
+   "image_source": "高擎官网产品图（hightorquerobotics.com）"
   }
  }
 ]

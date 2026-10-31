@@ -13,7 +13,7 @@ title: Sensirion(瑞士盛思锐) SHT40-AD1B-R2
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">传感器</span>
-      <span class="part-tag soft">温湿度</span>
+      <span class="part-tag soft">温湿度传感器</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥10.7</span>
     </div>

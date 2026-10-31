@@ -13,7 +13,7 @@ title: UMW DS18B20(UMW)
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">传感器</span>
-      <span class="part-tag soft">温度</span>
+      <span class="part-tag soft">温度传感器</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥3.55</span>
     </div>

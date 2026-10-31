@@ -13,7 +13,7 @@ title: hanxia(韩下) HX 0805-C2
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">传感器</span>
-      <span class="part-tag soft">振动</span>
+      <span class="part-tag soft">振动传感器</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥0.5362</span>
     </div>

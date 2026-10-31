@@ -6,7 +6,12 @@ title: Go1
 
 ![Go1](/parts/unitree-go1.png)
 
-宇树入门四足，**生态最老最全的一代**：官方 URDF/ROS 包、大量 legged_gym 分支与 AMP/MPC 工程都拿它当基准。缺点是硬件已停产，新项目多以 Go2 为起点；它的价值在「拿来对照写法」—— 训练代码的默认机型常年是它。
+## 简介
+
+<div class="rb-intro">
+<p>宇树入门四足，<strong>生态最老最全的一代</strong>：官方 URDF/ROS 包、大量 legged_gym 分支与 AMP/MPC 工程都拿它当基准。</p>
+<p>缺点是硬件已停产，新项目多以 Go2 为起点；它的价值在「拿来对照写法」—— 训练代码的默认机型常年是它。</p>
+</div>
 
 ## 关键参数
 

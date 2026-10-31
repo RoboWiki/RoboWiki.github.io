@@ -10,8 +10,10 @@ URDF：ccc 分支带来的最实用字段。按你的要求**先留接口不接�
 """
 from __future__ import annotations
 
+import html
 import json
 import pathlib
+import re
 
 
 #: 许可提示：只给「需要注意的」加 ⚠ —— 宽松许可不必制造噪音
@@ -107,8 +109,11 @@ def _eco_block(eco: dict | None) -> str:
 """
 
 
-SUBTYPE = {"quadruped": "四足", "humanoid": "人形", "wheeled": "轮式",
-           "biped": "双足", "arm": "机械臂", "other": "其他"}
+SUBTYPE = {"quadruped": "四足", "humanoid": "人形", "biped": "双足",
+           "wheeled_quadruped": "四轮足",
+           "wheeled_quadruped_inward_knee": "四轮足·内膝肘",
+           "infantry": "步兵", "sentry": "哨兵",
+           "hero": "英雄", "engineer": "工程", "arm": "机械臂", "other": "其他"}
 
 
 def _fmt(v) -> str:
@@ -119,6 +124,18 @@ def _fmt(v) -> str:
     if isinstance(v, list):
         return "、".join(str(x) for x in v) if v else "—"
     return str(v)
+
+
+def _notes_block(text: str | None) -> str:
+    """整机简介：一句一段，避免长段文字挤成一团；保留 **粗体**。"""
+    if not text:
+        return "—"
+    chunks = [c.strip() for c in re.split(r"(?<=[。！？])|\n+", text) if c.strip()]
+    body = []
+    for c in chunks:
+        c = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", html.escape(c))
+        body.append(f"<p>{c}</p>")
+    return '<div class="rb-intro">\n' + "\n".join(body) + "\n</div>"
 
 
 def _cards(rows: list[dict]) -> str:
@@ -228,7 +245,9 @@ title: {r['model']}
 
 {('![%s](%s)' % (r['model'], s['image_url'])) if s.get('image_url') else ''}
 
-{r.get('notes') or '—'}
+## 简介
+
+{_notes_block(r.get('notes'))}
 
 ## 关键参数
 

@@ -7,7 +7,8 @@ title: 达妙 DAMIAO DM-JH20-101-2EC
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/dm-dm-jh20-101-2ec.jpg" alt="DM-JH20-101-2EC" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
@@ -33,8 +34,8 @@ title: 达妙 DAMIAO DM-JH20-101-2EC
 
 <div class="part-src">
 来源：<a href="http://www.damiaokeji.com/">http://www.damiaokeji.com/</a><br/>
-收录：达妙 2026 产品选型表 2026-10-23<br/>
-核对：2026-10-27
+收录：达妙 2026 产品选型表 2026-10-23 + Gitee DM-JH20-51_101-2EC 资料仓库（2026-10-31）<br/>
+核对：2026-10-31
 </div>
 
 </div>
@@ -133,11 +134,11 @@ title: 达妙 DAMIAO DM-JH20-101-2EC
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="http://www.damiaokeji.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="http://www.damiaokeji.com/index.php?c=category&id=34" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td class="rs-plain">收录说明</td><td>达妙 2026 产品选型表 2026-10-23</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-JH20-101-2EC+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=DM-JH20-101-2EC&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-JH20-101-2EC+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/actuator/damiao.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/damiao.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="http://www.damiaokeji.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="http://www.damiaokeji.com/index.php?c=category&id=34" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td class="rs-plain">产品图出处</td><td>达妙 DM-JH20-51/101-2EC 用户手册 V1.0（Gitee kit-miao/DM-JH20-51_101-2EC 说明书 PDF，2026-10-22）封面产品图</td></tr><tr><td class="rs-plain">收录说明</td><td>达妙 2026 产品选型表 2026-10-23 + Gitee DM-JH20-51_101-2EC 资料仓库（2026-10-31）</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-JH20-101-2EC+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=DM-JH20-101-2EC&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-JH20-101-2EC+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/actuator/damiao.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/damiao.json</td></tr></tbody></table>
 
 ## 备注
 
-48.0 V 版本；谐波关节电机；额定 32.0 N·m；源文勘误：无 产品图待补：抓到的是达妙人形整机宣传图，不是 JH20 关节模组，需厂商型号页原图 【达妙官网谐波分类页只列 JH11/JH14/JH17，未单列 JH20；来源取分类页，待官网补页后替换。】
+48.0 V 版本；谐波关节电机；额定 32.0 N·m；源文勘误：无。产品图与资料来自达妙 DM-JH20-51/101-2EC 资料仓库（Gitee kit-miao，用户手册 V1.0，2026-10-22；https://gitee.com/kit-miao/DM-JH20-51_101-2EC）。【达妙官网谐波分类页只列 JH11/JH14/JH17，未单列 JH20；来源取分类页 + Gitee 资料仓库，待官网补页后替换。】
 
 
 

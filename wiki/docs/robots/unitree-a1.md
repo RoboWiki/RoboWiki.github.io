@@ -6,7 +6,12 @@ title: A1
 
 ![A1](/parts/unitree-a1.png)
 
-更早的一代四足，**是 legged_gym / rsl_rl 原始论文里那台机器**。现在几乎只作为「历史基准」出现在训练工程里：看某个 reward 或观测项最初为什么这么写，回到 A1 的配置最快。
+## 简介
+
+<div class="rb-intro">
+<p>更早的一代四足，<strong>是 legged_gym / rsl_rl 原始论文里那台机器</strong>。</p>
+<p>现在几乎只作为「历史基准」出现在训练工程里：看某个 reward 或观测项最初为什么这么写，回到 A1 的配置最快。</p>
+</div>
 
 ## 关键参数
 

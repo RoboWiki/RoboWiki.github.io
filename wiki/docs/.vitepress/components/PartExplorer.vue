@@ -63,9 +63,9 @@ const en = computed(() => props.lang === 'en')
 /** 只翻界面壳；型号与参数值保持原文。 */
 const L = computed(() => en.value
   ? { featured: 'Featured', search: 'Search model / brand / type', compare: 'Compare', all: 'All params',
-      none: 'No photo yet', count: 'items', sort: 'Sort by' }
+      none: 'No photo yet', count: 'items', sort: 'Sort by', vendor: 'Vendor', type: 'Type' }
   : { featured: '精选', search: '搜型号 / 品牌 / 类型', compare: '对比', all: '全部参数',
-      none: '暂无产品图', count: '件', sort: '按' })
+      none: '暂无产品图', count: '件', sort: '按', vendor: '厂商', type: '类型' })
 
 const all = ref<Part[]>([])
 const loading = ref(true)
@@ -176,6 +176,15 @@ function syncCategoryUrl() {
 
 const catCount = (v: string) => all.value.filter(p => p.category === v).length
 
+/** 空列表提示分两种：真没收录，还是收了但筛没了。混成一句会让人以为数据丢了。 */
+const emptyText = computed(() => {
+  const typeEmpty = cat.value === 'sensor' && !!sensorType.value
+    && !all.value.some(p => p.category === 'sensor' && p.subtype === sensorType.value)
+  return typeEmpty || !catCount(cat.value)
+    ? '这一类还没有收录 —— 没有可信来源，宁缺不编'
+    : '没有符合条件的部件'
+})
+
 /** 当前品类的元数据：卡片显示哪些参数、能按什么排序，都来自这里。 */
 const meta = computed(() => CATS.value.find(c => c.v === cat.value))
 const catName = computed(() => meta.value?.t || '部件')
@@ -195,15 +204,6 @@ const sensorTypes = computed(() => {
   }))
   const filled = items.filter(x => x.count).sort((a, b) => b.count - a.count)
   return [...filled, ...items.filter(x => !x.count)]
-})
-
-/** 空列表分两种：真没收录，还是收了但筛没了。混成一句会让人以为数据丢了。 */
-const emptyText = computed(() => {
-  const typeEmpty = cat.value === 'sensor' && !!sensorType.value
-    && !all.value.some(p => p.category === 'sensor' && p.subtype === sensorType.value)
-  return typeEmpty || !catCount(cat.value)
-    ? '这一类还没有收录 —— 没有可信来源，宁缺不编'
-    : '没有符合条件的部件'
 })
 
 /** 排序取值器：specs 里的键、或内置的 price / rating。
@@ -343,6 +343,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
           {{ order === 'desc' ? '↓ 降序' : '↑ 升序' }}
         </button>
         <span class="pd-sep" />
+        <span class="pd-lab">{{ cat === 'sensor' ? L.type : L.vendor }}</span>
         <template v-if="cat === 'sensor'">
           <button v-for="t in sensorTypes" :key="t.v"
                   :class="['pd-chip', 'sm', sensorType === t.v ? 'on' : '', t.count ? '' : 'empty']"
@@ -518,6 +519,10 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
 .pd-chip.empty { border-style: dashed; color: var(--vp-c-text-3); }
 .pd-n { margin-left: 0.35rem; opacity: 0.6; font-variant-numeric: tabular-nums; }
 .pd-sep { width: 1px; height: 18px; background: var(--vp-c-divider); margin: 0 0.25rem; }
+.pd-lab {
+  font-size: 0.72rem; color: var(--vp-c-text-3); letter-spacing: 0.04em;
+  margin: 0 0.1rem 0 0.25rem;
+}
 .pd-count { margin-left: auto; font-size: 0.78rem; color: var(--vp-c-text-3); }
 
 /* 卡片网格：固定 4 列。auto-fill 在宽屏会排到 6 列，卡片被压得太窄 ——

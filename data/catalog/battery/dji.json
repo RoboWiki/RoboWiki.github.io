@@ -24,8 +24,9 @@
    "v_charge_V": null,
    "mass_g": null,
    "iface": "DJI 智能电池专用接口（电量/寿命/温度通讯）",
-   "image_url": null,
-   "doc_url": "https://www.dji.com/cn/inspire-1"
+   "image_url": "/parts/dji-tb47.jpg",
+   "doc_url": "https://www.dji.com/cn/inspire-1",
+   "image_source": "DJI 官方商城产品图（store.dji.com）"
   },
   "subtype_label": "智能电池"
  },
@@ -54,8 +55,9 @@
    "v_charge_V": null,
    "mass_g": null,
    "iface": "DJI 智能电池专用接口（电量/寿命/温度通讯）",
-   "image_url": null,
-   "doc_url": "https://www.dji.com/cn/inspire-1"
+   "image_url": "/parts/dji-tb48.jpg",
+   "doc_url": "https://www.dji.com/cn/inspire-1",
+   "image_source": "DJI 官方商城产品图（store.dji.com）"
   },
   "subtype_label": "智能电池"
  }

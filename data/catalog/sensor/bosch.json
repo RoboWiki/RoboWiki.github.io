@@ -63,7 +63,7 @@
    "image_source": "立创商城商品图（C92489，2026-10-29 采集）",
    "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20230217/9358ECB1DA7C52D8F39392648E599102.pdf"
   },
-  "subtype_label": "温湿度"
+  "subtype_label": "温湿度传感器"
  },
  {
   "category": "sensor",
@@ -137,7 +137,7 @@
    "image_source": "立创商城商品图（C5362283，2026-10-29 采集）",
    "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20260509/355242B3485D3CAFFD32CBB97F99F51E.pdf"
   },
-  "subtype_label": "压力 / 气压"
+  "subtype_label": "压力 / 气压传感器"
  },
  {
   "category": "sensor",
@@ -210,7 +210,7 @@
    "image_source": "立创商城商品图（C22391138，2026-10-29 采集）",
    "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20240724/E2D6053E980096703E6C36C0338E6FAD.pdf"
   },
-  "subtype_label": "压力 / 气压"
+  "subtype_label": "压力 / 气压传感器"
  },
  {
   "category": "sensor",
@@ -275,6 +275,6 @@
    "image_source": "立创商城商品图（C779278，2026-10-29 采集）",
    "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20211019/91C230A1D32F1E776DA878FFB43C8B15.pdf"
   },
-  "subtype_label": "压力 / 气压"
+  "subtype_label": "压力 / 气压传感器"
  }
 ]

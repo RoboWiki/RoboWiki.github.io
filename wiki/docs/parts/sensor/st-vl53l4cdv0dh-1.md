@@ -13,7 +13,7 @@ title: ST VL53L4CDV0DH/1
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">传感器</span>
-      <span class="part-tag soft">ToF 测距</span>
+      <span class="part-tag soft">ToF 测距传感器</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥19.5</span>
     </div>

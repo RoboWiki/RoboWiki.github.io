@@ -13,7 +13,7 @@ title: 广州奥松 AHT20-F
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">传感器</span>
-      <span class="part-tag soft">温湿度</span>
+      <span class="part-tag soft">温湿度传感器</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥5</span>
     </div>
