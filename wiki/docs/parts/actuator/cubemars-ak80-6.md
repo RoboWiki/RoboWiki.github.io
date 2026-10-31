@@ -14,7 +14,7 @@ title: CubeMars AK80-6
       <span class="part-tag">关节电机</span>
       <span class="part-tag soft">planetary</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag muted">无公开报价</span>
+      <span class="part-tag">¥3,288</span>
     </div>
 
 <div class="part-split">
@@ -104,7 +104,7 @@ title: CubeMars AK80-6
 
 ## 备注
 
-6:1、485 g。峰值扭矩与转速需原厂表，未填。来源：CubeMars 官网（cubemars.com/cn）AK80-6 产品页 + aifitlab 商品页手册；参数待补全
+6:1、485 g。峰值扭矩与转速需原厂表，未填。来源：CubeMars 官网（cubemars.com/cn）AK80-6 产品页 + aifitlab 商品页手册；参数待补全 【价格 3288 元，官方渠道在售，2026-10-31 核实】
 
 
 

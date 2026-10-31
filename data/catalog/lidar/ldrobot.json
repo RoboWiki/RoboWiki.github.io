@@ -1,0 +1,57 @@
+[
+ {
+  "id": "sens-ldrobot-stl27l",
+  "category": "lidar",
+  "subtype": "mechanical",
+  "vendor": "乐动 LDROBOT",
+  "vendor_cn": "乐动",
+  "model": "STL-27L",
+  "title": "乐动 STL-27L",
+  "url": "https://www.ldrobot.com/",
+  "source_tier": "B",
+  "verified": 0,
+  "last_checked": "2026-10-31",
+  "price_cny": null,
+  "origin": "微雪 Wiki / 商城（2026-10-31）；型号属乐动 LDROBOT",
+  "notes": "单线 DTOF；量程按反射率分档（80% 白靶 25 m / 4% 黑靶 10 m）。微雪商城在售（SKU 24782），渠道价未公开，price 留空。",
+  "specs": {
+   "range_m": 25,
+   "range_note": "0.03–25 m @80% 白靶；0.03–10 m @4% 黑靶",
+   "points_per_s": 21600,
+   "fps": 13,
+   "iface": "UART",
+   "voltage_V": 5,
+   "ip": "IP65",
+   "size_mm": "38.6×38.6×33.5",
+   "accuracy": "±15 mm @0.03–2 m"
+  }
+ },
+ {
+  "id": "sens-ldrobot-ld19",
+  "category": "lidar",
+  "subtype": "mechanical",
+  "vendor": "乐动 LDROBOT",
+  "vendor_cn": "乐动",
+  "model": "LD19",
+  "title": "乐动 LD19",
+  "url": "https://www.ldrobot.com/",
+  "source_tier": "B",
+  "verified": 0,
+  "last_checked": "2026-10-31",
+  "price_cny": null,
+  "origin": "微雪 Wiki / 商城（2026-10-31）；型号属乐动 LDROBOT",
+  "notes": "⚠️ 已停产：微雪商城原文「本产品已停产下架，推荐选购抗强光升级替代方案」。仍收录 —— 赛季里二手/库存渠道常见，价格与在售价不可比，price 留空。",
+  "specs": {
+   "range_m": 12,
+   "range_note": "0.02–12 m @80% 白靶",
+   "points_per_s": 4500,
+   "fps": 10,
+   "iface": "UART 230400",
+   "voltage_V": 5,
+   "power_w": 0.9,
+   "size_mm": "38.6×38.6×33.5",
+   "accuracy": "10 mm @0.3–12 m",
+   "ip": "IP54"
+  }
+ }
+]
