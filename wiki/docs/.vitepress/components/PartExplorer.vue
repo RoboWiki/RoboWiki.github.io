@@ -314,7 +314,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
         有优惠条件、有资料链接、能按任意列排序。
       </p>
       <div class="ex-note">
-        <b>★ 精选</b> 默认全收录（当前 {{ featuredIds.size }} 件）；关掉仍可看全部。
+        <b>★ 精选</b> 默认全收录；关掉仍可看全部。
         <b>每一行参数都标了来源等级</b>：A 级逐项对过厂商手册，缺的值写 —，不猜。
       </div>
     </header>
