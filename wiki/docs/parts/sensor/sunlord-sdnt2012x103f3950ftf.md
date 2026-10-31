@@ -29,9 +29,9 @@ title: Sunlord(顺络) SDNT2012X103F3950FTF
 | 库存 | 56K+ |
 
 <div class="part-src">
-来源：<a href="https://item.szlcsc.com/95968.html">https://item.szlcsc.com/95968.html</a><br/>
+来源：<a href="https://item.szlcsc.com/97172.html">https://item.szlcsc.com/97172.html</a><br/>
 收录：立创商城搜索页（2026-10-29）<br/>
-核对：2026-10-29
+核对：2026-10-31
 </div>
 
 </div>
@@ -92,11 +92,11 @@ title: Sunlord(顺络) SDNT2012X103F3950FTF
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://item.szlcsc.com/95968.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://atta.szlcsc.com/upload/public/pdf/source/20250613/843D00CF2C300AE0276A3364ED88CCAD.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>立创商城商品图（C95968，2026-10-29 采集）</td></tr><tr><td class="rs-plain">收录说明</td><td>立创商城搜索页（2026-10-29）</td></tr><tr><td><a href="https://www.google.com/search?q=Sunlord%28%E9%A1%BA%E7%BB%9C%29+SDNT2012X103F3950FTF+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=SDNT2012X103F3950FTF&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Sunlord%28%E9%A1%BA%E7%BB%9C%29+SDNT2012X103F3950FTF+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/sensor/sunlord.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/sensor/sunlord.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://item.szlcsc.com/97172.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://atta.szlcsc.com/upload/public/pdf/source/20250613/843D00CF2C300AE0276A3364ED88CCAD.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>立创商城商品图（C95968，2026-10-29 采集）</td></tr><tr><td class="rs-plain">收录说明</td><td>立创商城搜索页（2026-10-29）</td></tr><tr><td><a href="https://www.google.com/search?q=Sunlord%28%E9%A1%BA%E7%BB%9C%29+SDNT2012X103F3950FTF+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=SDNT2012X103F3950FTF&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Sunlord%28%E9%A1%BA%E7%BB%9C%29+SDNT2012X103F3950FTF+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/sensor/sunlord.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/sensor/sunlord.json</td></tr></tbody></table>
 
 ## 备注
 
-0805 封装，功率 200mW（比 0603 大一档）。
+0805 封装，功率 200mW（比 0603 大一档）；链接为立创商品页，价格为立创商城参考价（2026-10-31）。
 
 
 

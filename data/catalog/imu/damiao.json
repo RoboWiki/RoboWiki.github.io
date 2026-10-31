@@ -7,13 +7,13 @@
   "vendor_cn": "达妙科技",
   "model": "DM-IMU-L1",
   "title": "达妙 DM-IMU-L1 六轴惯性测量单元",
-  "url": "https://www.damiaokeji.com/",
+  "url": "https://gitee.com/kit-miao/dm-imu",
   "source_tier": "A",
   "verified": true,
-  "last_checked": "2026-10-28",
+  "last_checked": "2026-10-31",
   "price_cny": 59,
-  "origin": "《DM-IMU-L1 六轴惯性测量单元使用说明书 V1.3》(2026-09-22) 技术参数表",
-  "notes": "国内少见的**带温控**的六轴 IMU：内置姿态解算（四元数 / ZYX 欧拉角），CAN、RS485、USB-C 三接口共用同一输出周期。温控默认关闭，目标 50 ℃ —— 开启后设备会等温度进入 ±0.5 ℃ 并稳定 10 秒才出数据，这个门控对做零偏标定的人是好事，对要「上电即出数」的人是坏消息。旧版硬件（V10）加热只认 4.5–6.0 V 供电，直接上 24 V 加热不会开。 六轴 IMU 模组，内置 Bosch BMI088（三轴陀螺 + 三轴加速度计），板载加热恒温控制与 EKF 四元数姿态解算，主控 200 MHz。姿态指标（校准后、室温 25 °C 一小时零漂）：横滚 0.02°、俯仰 0.064°、航向 12.686°，量程分别为 ±180°/±90°/±180°。加速度计 ±6 g、零偏 20 mg、非线性 ±0.5 %FS、带宽 230 Hz；陀螺 ±2000 °/s、零偏 ±1 °/s、非线性 ±0.05 %FS、带宽 116 Hz；加速度/角速度原始指标来自 BMI088 数据手册，模组只做校准不做滤波。输出频率 100–1000 Hz 可调；CAN 默认 1 Mbps，可配 1M/500k/400k/250k/200k/100k/50k/25k；RS485 最高 4 Mbps；USB 为虚拟串口。输入 5–28 V，24 V 稳态 0.47 W、升温阶段 2.5 W，5 V 约 0.34 W。说明书未标注工作温度范围与噪声密度，故留空。价格来源：达妙科技企业店淘宝商品页（2026-10-28，标价 ¥59，活动价可能变化）；商品页需登录查看，公开列表页可核对标题与价格。",
+  "origin": "《DM-IMU-L1 六轴惯性测量单元使用说明书 V1.3》(2026-09-22) 技术参数表（官方 Gitee 仓库 kit-miao/dm-imu）",
+  "notes": "国内少见的**带温控**的六轴 IMU：内置姿态解算（四元数 / ZYX 欧拉角），CAN、RS485、USB-C 三接口共用同一输出周期。温控默认关闭，目标 50 ℃ —— 开启后设备会等温度进入 ±0.5 ℃ 并稳定 10 秒才出数据，这个门控对做零偏标定的人是好事，对要「上电即出数」的人是坏消息。旧版硬件（V10）加热只认 4.5–6.0 V 供电，直接上 24 V 加热不会开。 六轴 IMU 模组，内置 Bosch BMI088（三轴陀螺 + 三轴加速度计），板载加热恒温控制与 EKF 四元数姿态解算，主控 200 MHz。姿态指标（校准后、室温 25 °C 一小时零漂）：横滚 0.02°、俯仰 0.064°、航向 12.686°，量程分别为 ±180°/±90°/±180°。加速度计 ±6 g、零偏 20 mg、非线性 ±0.5 %FS、带宽 230 Hz；陀螺 ±2000 °/s、零偏 ±1 °/s、非线性 ±0.05 %FS、带宽 116 Hz；加速度/角速度原始指标来自 BMI088 数据手册，模组只做校准不做滤波。输出频率 100–1000 Hz 可调；CAN 默认 1 Mbps，可配 1M/500k/400k/250k/200k/100k/50k/25k；RS485 最高 4 Mbps；USB 为虚拟串口。输入 5–28 V，24 V 稳态 0.47 W、升温阶段 2.5 W，5 V 约 0.34 W。说明书未标注工作温度范围与噪声密度，故留空。价格来源：达妙科技企业店淘宝商品页（2026-10-28，标价 ¥59，活动价可能变化）；商品页需登录查看，公开列表页可核对标题与价格。 官方 Gitee 仓库（kit-miao/dm-imu）已公开 V1.3 说明书（2026-09-22），本页参数按该版本核对。",
   "notes_en": "TODO",
   "specs": {
    "image_url": "/parts/damiao-dm-imu-l1.jpg",
@@ -46,8 +46,8 @@
    "size_mm": "36×26×9",
    "weight_g": 11.5,
    "resolution": "16-bit（BMI088）",
-   "doc_url": "https://github.com/OpenDogeRobotics/OpenDoge_hardware/tree/main/datasheets/dm-imu",
-   "doc_pdf": "https://cdn.jsdelivr.net/gh/OpenDogeRobotics/OpenDoge_hardware@main/datasheets/dm-imu/%E8%BE%BE%E5%A6%99%E7%A7%91%E6%8A%80DM-IMU-L1%E5%85%AD%E8%BD%B4IMU%E6%A8%A1%E5%9D%97%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E4%B9%A6V1.2.pdf",
+   "doc_url": "https://gitee.com/kit-miao/dm-imu",
+   "doc_pdf": "https://gitee.com/kit-miao/dm-imu/raw/master/%E8%AF%B4%E6%98%8E%E4%B9%A6/DM-IMU-L1%20%E5%85%AD%E8%BD%B4%E6%83%AF%E6%80%A7%E6%B5%8B%E9%87%8F%E5%8D%95%E5%85%83%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E4%B9%A6%20V1.3%202026-09-22.pdf",
    "repo_urls": [
     "https://github.com/OpenDogeRobotics/OpenDoge_hardware"
    ],

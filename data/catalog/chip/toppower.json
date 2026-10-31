@@ -7,13 +7,13 @@
   "vendor_cn": "TOPPOWER(南京拓微)",
   "model": "TP4056-42-ESOP8",
   "title": "TOPPOWER(南京拓微) TP4056-42-ESOP8",
-  "url": "https://item.szlcsc.com/16581.html",
+  "url": "https://www.lcsc.com/product-detail/C16581.html",
   "source_tier": "B",
   "verified": false,
-  "last_checked": "2026-10-29",
+  "last_checked": "2026-10-31",
   "price_cny": 1.1326,
   "origin": "立创商城搜索页（2026-10-29）",
-  "notes": "锂电充电芯片——「42」表示满电电压 4.2 V。",
+  "notes": "锂电充电芯片——「42」表示满电电压 4.2 V。厂商官网只提供产品页、无 PDF 数据手册直链（立创提供的是 ZIP 压缩包），故不挂 PDF 手册，参数按立创商品页与厂商产品页核对到 2026-10-31。",
   "specs": {
    "package": "ESOP-8",
    "category_cn": "电池管理",
@@ -72,7 +72,7 @@
    "v_float": "4.2V",
    "image_url": "/parts/jlc-c16581.jpg",
    "image_source": "立创商城商品图（C16581，2026-10-29 采集）",
-   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250728/836857281CD61AD1A124FBD97E522988.zip"
+   "doc_pdf": null
   },
   "subtype_label": "电池管理"
  }

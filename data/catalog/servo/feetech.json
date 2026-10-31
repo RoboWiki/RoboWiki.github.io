@@ -10,10 +10,10 @@
   "url": "https://www.feetech.cn/562636",
   "source_tier": "A",
   "verified": true,
-  "last_checked": "2026-10-29",
+  "last_checked": "2026-10-31",
   "price_cny": null,
-  "origin": "飞特官网产品页参数表（2026-10-29 逐项读取）",
-  "notes": "官网页面型号写 ST-3250-C001，本体丝印是 STS3250 —— 同一款，型号按官网记录、丝印写在这里，避免搜型号的人对不上。空心杯 + 全铝壳，是这三款里唯一能拉 4.2 A 堵转的。 同系列官方规格书：ST-3215-C044（7.4V 1:191）、ST-3215-C046（7.4V 1:147）、ST-3215-C047（12V 1:345），见 https://wiki.seeedstudio.com/cn/feetech_servo/",
+  "origin": "飞特官网产品页参数表（2026-10-31 逐项核对）",
+  "notes": "官网页面型号写 ST-3250-C001，本体丝印是 STS3250 —— 同一款，型号按官网记录、丝印写在这里，避免搜型号的人对不上。空心杯 + 全铝壳，是这三款里唯一能拉 4.2 A 堵转的。 官方产品页附同名 PDF 规格书（doc_pdf 直链）。",
   "specs": {
    "stall_torque_Nm": 4.903,
    "rated_torque_Nm": 1.569,
@@ -42,7 +42,8 @@
    "size_mm": "45.2 × 24.7 × 35",
    "connector_wire": "15 cm",
    "limit_angle": "无机械限位（360°）",
-   "doc_url": "https://wiki.seeedstudio.com/cn/feetech_servo/"
+   "doc_url": "https://wiki.seeedstudio.com/cn/feetech_servo/",
+   "doc_pdf": "https://www.feetech.cn/Data/feetechrc/upload/file/20260622/6391772424007467984928587.pdf"
   }
  },
  {
@@ -53,13 +54,13 @@
   "vendor_cn": "深圳飞特模型",
   "model": "ST-3215-C018",
   "title": "飞特 FEETECH ST-3215-C018",
-  "url": "https://www.feetech.cn/525603",
+  "url": "https://www.feetech.cn/525603/",
   "source_tier": "A",
   "verified": true,
-  "last_checked": "2026-10-29",
+  "last_checked": "2026-10-31",
   "price_cny": null,
-  "origin": "飞特官网产品页参数表（2026-10-29 逐项读取）",
-  "notes": "三款里唯一的塑料壳（PA+GF），也是最轻的一款（55 g）。电压范围最宽（4–14 V），适合电池电压波动大的小车。本体丝印 STS3215-12V。 同系列官方规格书：ST-3215-C044（7.4V 1:191）、ST-3215-C046（7.4V 1:147）、ST-3215-C047（12V 1:345），见 https://wiki.seeedstudio.com/cn/feetech_servo/",
+  "origin": "飞特官网产品页参数表（2026-10-31 逐项核对）",
+  "notes": "三款里唯一的塑料壳（PA+GF），也是最轻的一款（55 g）。电压范围最宽（4–14 V），适合电池电压波动大的小车。本体丝印 STS3215-12V。 官方产品页附同名 PDF 规格书（doc_pdf 直链）。",
   "specs": {
    "stall_torque_Nm": 2.942,
    "rated_torque_Nm": 0.981,
@@ -88,7 +89,8 @@
    "size_mm": "45.2 × 24.7 × 35",
    "connector_wire": "15 cm",
    "limit_angle": "无机械限位（360°）",
-   "doc_url": "https://wiki.seeedstudio.com/cn/feetech_servo/"
+   "doc_url": "https://wiki.seeedstudio.com/cn/feetech_servo/",
+   "doc_pdf": "https://www.feetech.cn/Data/feetechrc/upload/file/20260622/6391772519923113075854851.pdf"
   }
  },
  {
@@ -102,10 +104,10 @@
   "url": "https://www.feetech.cn/12v-30kg-metal-shell-metal-tooth-iron-core-motor-magnetic-coding-double-shaft-ttl-series-steering-gear",
   "source_tier": "A",
   "verified": true,
-  "last_checked": "2026-10-29",
+  "last_checked": "2026-10-31",
   "price_cny": null,
-  "origin": "飞特官网产品页参数表（2026-10-29 逐项读取）",
-  "notes": "和 ST-3215 同扭矩同速度，但外壳换成全铝、重量从 55 g 涨到 70.5 g —— 多出来的 15 g 买的是散热与刚性。本体丝印 STS3235。 同系列官方规格书：ST-3215-C044（7.4V 1:191）、ST-3215-C046（7.4V 1:147）、ST-3215-C047（12V 1:345），见 https://wiki.seeedstudio.com/cn/feetech_servo/",
+  "origin": "飞特官网产品页参数表（2026-10-31 逐项核对）",
+  "notes": "和 ST-3215 同扭矩同速度，但外壳换成全铝、重量从 55 g 涨到 70.5 g —— 多出来的 15 g 买的是散热与刚性。本体丝印 STS3235。 官方产品页附同名 PDF 规格书（doc_pdf 直链）。",
   "specs": {
    "stall_torque_Nm": 2.942,
    "rated_torque_Nm": 0.981,
@@ -134,7 +136,8 @@
    "size_mm": "45.2 × 24.7 × 35",
    "connector_wire": "15 cm",
    "limit_angle": "无机械限位（360°）",
-   "doc_url": "https://wiki.seeedstudio.com/cn/feetech_servo/"
+   "doc_url": "https://wiki.seeedstudio.com/cn/feetech_servo/",
+   "doc_pdf": "https://www.feetech.cn/Data/feetechrc/upload/file/20260622/6391772428699665192763255.pdf"
   }
  },
  {

@@ -21,7 +21,7 @@ titleTemplate: false
     <div class="rw-home-stats">
       <div><b>311</b><span>在库部件</span></div>
       <div><b>14</b><span>有数据的品类（共 14 类）</span></div>
-      <div><b>95</b><span>A 级：逐项对过厂商手册</span></div>
+      <div><b>104</b><span>A 级：逐项对过厂商手册</span></div>
       <div><b>21</b><span>整机（19 台带 URDF / 仓库）</span></div>
       <div><b>207</b><span>渠道库（加工 / 元件店铺）</span></div>
     </div>
@@ -82,7 +82,7 @@ titleTemplate: false
       <a class="rw-home-entry" href="/catalog">
         <b>部件库 · 311 件</b>
         <p>比参数：按任意列排序、可对比、带来源等级与真实评分。</p>
-        <span>A 级 95 件逐项对过手册</span>
+        <span>A 级 104 件逐项对过手册</span>
       </a>
       <a class="rw-home-entry" href="/robots">
         <b>整机库 · 21 台</b>

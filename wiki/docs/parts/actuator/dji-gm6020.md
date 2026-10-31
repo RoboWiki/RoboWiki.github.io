@@ -33,9 +33,9 @@ title: 大疆 DJI GM6020
 | 额定电压 (V) | 24 |
 
 <div class="part-src">
-来源：<a href="https://github.com/ZJU-HelloWorld/Wiki">https://github.com/ZJU-HelloWorld/Wiki</a><br/>
-收录：《RoboMaster GM6020 直流无刷电机使用说明》(2023-10-13) 规格页<br/>
-核对：2026-10-28
+来源：<a href="https://www.robomaster.com/zh-CN/products/components/general/gm6020">https://www.robomaster.com/zh-CN/products/components/general/gm6020</a><br/>
+收录：《RoboMaster GM6020 直流无刷电机使用说明》(2023-10-13) 特征参数页；官方产品页<br/>
+核对：2026-10-31
 </div>
 
 </div>
@@ -98,8 +98,11 @@ title: 大疆 DJI GM6020
 | 额定电流 (A) | 1.62 |
 | 编码器 | 13 bit 绝对值 |
 | 通信 | CAN |
-| 内置驱动 | 0 |
+| 内置驱动 | 1 |
+| i_stall_A | 0.9 |
 | 工作温度 | 0–55 ℃ |
+| 尺寸 | Ø66.7×45 mm，空心轴内径 18 mm |
+| 官方手册 (PDF) | https://rm-static.djicdn.com/tem/17348/RoboMaster%20GM6020%E7%9B%B4%E6%B5%81%E6%97%A0%E5%88%B7%E7%94%B5%E6%9C%BA%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E20231013.pdf |
 | 官方文档 | https://www.robomaster.com/zh-CN/products/components/general/GM6020 |
 
 ## 优惠与获取条件
@@ -117,11 +120,11 @@ title: 大疆 DJI GM6020
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://github.com/ZJU-HelloWorld/Wiki" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.robomaster.com/zh-CN/products/components/general/GM6020" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商官方产品图（RoboMaster 商城产品照）</td></tr><tr><td class="rs-plain">收录说明</td><td>《RoboMaster GM6020 直流无刷电机使用说明》(2023-10-13) 规格页</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+GM6020+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=GM6020&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+GM6020+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/actuator/dji-robomaster.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/dji-robomaster.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.robomaster.com/zh-CN/products/components/general/gm6020" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.robomaster.com/zh-CN/products/components/general/GM6020" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://rm-static.djicdn.com/tem/17348/RoboMaster%20GM6020%E7%9B%B4%E6%B5%81%E6%97%A0%E5%88%B7%E7%94%B5%E6%9C%BA%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E20231013.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商官方产品图（RoboMaster 商城产品照）</td></tr><tr><td class="rs-plain">收录说明</td><td>《RoboMaster GM6020 直流无刷电机使用说明》(2023-10-13) 特征参数页；官方产品页</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+GM6020+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=GM6020&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+GM6020+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/actuator/dji-robomaster.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/dji-robomaster.json</td></tr></tbody></table>
 
 ## 备注
 
-直驱云台电机，**没有减速箱**，1.2 N·m 即输出端。空心轴内径 18 mm，空载调速 0–320 rpm。低速大力矩是它的强项，拿它当腿关节会嫌慢。 【官方口径】大疆产品页只给「额定扭矩（最大持续扭矩）」与「1 N·m 下最大转速」，没有峰值/堵转扭矩；tau_peak 保持 null 是如实记录，不是漏填。来源：robomaster.com 官方组件页，2026-10-31 核对。
+直驱云台电机，**驱动器与电机一体**（FOC，支持 CAN / PWM），**没有减速箱**，1.2 N·m 即输出端。空心轴内径 18 mm，空载 320 rpm、额定 132 rpm；持续堵转 0.86 N·m / 0.90 A，13 位绝对值编码器（0–8191）。低速大力矩是它的强项，拿它当腿关节会嫌慢。
 
 
 

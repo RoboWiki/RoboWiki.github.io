@@ -14,7 +14,7 @@ title: 奥比中光 Orbbec Gemini 305
     <div class="part-tags">
       <span class="part-tag">深度相机</span>
       <span class="part-tag soft">双目</span>
-      <span class="part-tag tierB">来源 B</span>
+      <span class="part-tag tierB">来源 B ✓ 已核对</span>
       <span class="part-tag muted">无公开报价</span>
     </div>
 
@@ -25,17 +25,17 @@ title: 奥比中光 Orbbec Gemini 305
 
 | 字段 | 值 |
 |---|---|
-| 深度量程 (m) | — |
-| 视场 | H 88° × V 65° × D 98° |
+| 深度量程 (m) | 0.04–1.0 |
+| 视场 | 深度 H 88°×V 65°；彩色 H 94°×V 68° |
 | 帧率 (fps) | 60 |
 | 接口 | USB 3.0 Type-C |
-| 质量 (kg) | — |
-| 额定电压 (V) | — |
+| 质量 (kg) | 0.068 |
+| 额定电压 (V) | 5 |
 
 <div class="part-src">
 来源：<a href="https://www.orbbec.com.cn/xin/products/gemini-305/">https://www.orbbec.com.cn/xin/products/gemini-305/</a><br/>
-收录：奥比中光官网 Gemini 305 产品页<br/>
-核对：2026-10-28
+收录：奥比中光官网 Gemini 305 产品页与产品规格书 V1.0（2026-10-31 核对）<br/>
+核对：2026-10-31
 </div>
 
 </div>
@@ -64,14 +64,22 @@ title: 奥比中光 Orbbec Gemini 305
 
 | 字段 | 值 |
 |---|---|
-| 深度量程 (m) | — |
-| 视场 | H 88° × V 65° × D 98° |
+| 深度量程 (m) | 0.04–1.0 |
+| 视场 | 深度 H 88°×V 65°；彩色 H 94°×V 68° |
 | 帧率 (fps) | 60 |
 | 接口 | USB 3.0 Type-C |
-| 质量 (kg) | — |
-| 额定电压 (V) | — |
-| 分辨率 | 1280×800 |
-| 官方文档 | https://www.orbbec.com/products/stereo-vision/gemini-330-series/ |
+| 质量 (kg) | 0.068 |
+| 额定电压 (V) | 5 |
+| 分辨率 | 深度 1280×800@30 / 848×480@60；彩色 1280×800@60 |
+| 官方文档 | https://www.orbbec.com.cn/index/Product/info.html?cate=38&id=82 |
+| weight_g | 68 |
+| power_w | 2 |
+| size_mm | 42×42×23 |
+| 工作温度 | -10~45 |
+| 防护等级 | IP54 |
+| 官方手册 (PDF) | https://www.orbbec.com.cn/xin/wp-content/uploads/2026/09/Orbbec-Gemini-305%E4%BA%A7%E5%93%81%E8%A7%84%E6%A0%BC%E4%B9%A6.pdf |
+| repo_urls | https://github.com/orbbec/OrbbecSDK_v2 |
+| repo_license | NOASSERTION |
 
 ## 优惠与获取条件
 
@@ -88,11 +96,11 @@ title: 奥比中光 Orbbec Gemini 305
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.orbbec.com.cn/xin/products/gemini-305/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.orbbec.com/products/stereo-vision/gemini-330-series/" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td class="rs-plain">产品图出处</td><td>奥比中光官网产品图</td></tr><tr><td class="rs-plain">收录说明</td><td>奥比中光官网 Gemini 305 产品页</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A5%A5%E6%AF%94%E4%B8%AD%E5%85%89+Orbbec+Gemini+305+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Gemini+305&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A5%A5%E6%AF%94%E4%B8%AD%E5%85%89+Orbbec+Gemini+305+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/camera/orbbec.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/camera/orbbec.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.orbbec.com.cn/xin/products/gemini-305/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.orbbec.com.cn/index/Product/info.html?cate=38&id=82" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://www.orbbec.com.cn/xin/wp-content/uploads/2026/09/Orbbec-Gemini-305%E4%BA%A7%E5%93%81%E8%A7%84%E6%A0%BC%E4%B9%A6.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://github.com/orbbec/OrbbecSDK_v2" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NOASSERTION（⚠ 有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍）</td></tr><tr><td class="rs-plain">产品图出处</td><td>奥比中光官网产品图</td></tr><tr><td class="rs-plain">收录说明</td><td>奥比中光官网 Gemini 305 产品页与产品规格书 V1.0（2026-10-31 核对）</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A5%A5%E6%AF%94%E4%B8%AD%E5%85%89+Orbbec+Gemini+305+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Gemini+305&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A5%A5%E6%AF%94%E4%B8%AD%E5%85%89+Orbbec+Gemini+305+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/camera/orbbec.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/camera/orbbec.json</td></tr></tbody></table>
 
 ## 备注
 
-<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>官方定位「轻量近距」：全局曝光双目 + 深度/彩色解耦设计，适合桌面级抓取与近距避障</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>远距场景别选它 —— 这是近距件</li></ul></div></div>
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>官方定位「轻量近距」：18 mm 基线双目、全局快门，深度/彩色解耦，理想工作距离 7–50 cm、工作范围 4–100 cm+</li><li>深度 1280×800@30 fps 或 848×480@60 fps，彩色 1280×800@60 fps</li><li>DC 5 V ≥700 mA、平均功耗 &lt;2 W、IP54、-10~45℃，适合桌面抓取与近距避障</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>远距场景别选它</li></ul></div></div>
 
 
 

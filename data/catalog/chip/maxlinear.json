@@ -7,10 +7,10 @@
   "vendor_cn": "MaxLinear(迈凌)",
   "model": "SPX3819M5-L-3-3/TR",
   "title": "MaxLinear(迈凌) SPX3819M5-L-3-3/TR",
-  "url": "https://item.szlcsc.com/9055.html",
+  "url": "https://www.lcsc.com/product-detail/C9055.html",
   "source_tier": "B",
   "verified": false,
-  "last_checked": "2026-10-29",
+  "last_checked": "2026-10-31",
   "price_cny": 1.6833,
   "origin": "立创商城搜索页（2026-10-29）",
   "notes": "低压差低噪声正压调节器；带反向电池保护、限流、热关断，可当低功率电压基准用。",
@@ -72,7 +72,7 @@
    "polarity": "正极",
    "image_url": "/parts/jlc-c9055.jpg",
    "image_source": "立创商城商品图（C9055，2026-10-29 采集）",
-   "doc_pdf": "https://atta.szlcsc.com/upload/public/pdf/source/20250227/C964CA2778B94B6C074905A2423CAFD3.zip"
+   "doc_pdf": "https://www.maxlinear.com/ds/spx3819.pdf"
   },
   "subtype_label": "线性稳压 LDO"
  }

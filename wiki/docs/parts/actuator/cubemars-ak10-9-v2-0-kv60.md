@@ -82,7 +82,7 @@ title: CubeMars AK10-9 V2.0 KV60
 
 | 型号 | 峰值 τ N·m | 质量 kg | 减速比 |
 |---|---|---|---|
-| [AK80-6 KV100](/parts/actuator/cubemars-ak80-6-kv100) | 12 | 0.485 | 6 |
+| [AK80-6](/parts/actuator/cubemars-ak80-6) | 12 | 0.485 | 6 |
 | [AK10-9 V3.0 KV60](/parts/actuator/cubemars-ak10-9-v3-0-kv60) | 53 | 0.94 | 9 |
 | [AK80-9 V3.0 KV100](/parts/actuator/cubemars-ak80-9-v3-0-kv100) | 22 | 0.49 | 9 |
 | [AK80-8 KV60](/parts/actuator/cubemars-ak80-8-kv60) | 25 | 0.575 | 8 |

@@ -34,8 +34,8 @@ title: 灵足 RobStride RS00
 
 <div class="part-src">
 来源：<a href="https://www.robstride.com/">https://www.robstride.com/</a><br/>
-收录：灵足官方资料库 灵足时代RS系列产品规格介绍(2026.010.09).pdf（https://github.com/RobStride/Product_Information）<br/>
-核对：2026-10-01
+收录：灵足时代 RS/EL 系列产品规格介绍（2026.010.09 / 2026.09.22）+ 各型号用户手册（260713 / 261013）<br/>
+核对：2026-10-31
 </div>
 
 </div>
@@ -97,7 +97,7 @@ title: 灵足 RobStride RS00
 | 长度 (mm) | 51 |
 | 转子惯量 (kg·m²) | 1.00e-05 |
 | 惯量口径 | output |
-| 电压范围 | 15-60V |
+| 电压范围 | 24-60V |
 | 转矩常数 (N·m/A) | 1.48 |
 | 相电阻 (Ω) | 1.5 |
 | 相电感 (µH) | 750 |
@@ -107,6 +107,7 @@ title: 灵足 RobStride RS00
 | 编码器 | 2 pcs |
 | 通信 | CAN |
 | 内置驱动 | 1 |
+| 官方手册 (PDF) | https://raw.githubusercontent.com/RobStride/Product_Information/main/Product%20Literature/CAN2.0/RS00/RS00User%20Manual260713.pdf |
 | 官方文档 | https://www.robstride.com/ |
 
 ## 优惠与获取条件
@@ -133,11 +134,11 @@ title: 灵足 RobStride RS00
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.robstride.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>灵足官网产品图（robstride.com 导航菜单图，透明底）</td></tr><tr><td class="rs-plain">收录说明</td><td>灵足官方资料库 灵足时代RS系列产品规格介绍(2026.010.09).pdf（https://github.com/RobStride/Product_Information）</td></tr><tr><td><a href="https://www.google.com/search?q=%E7%81%B5%E8%B6%B3+RobStride+RS00+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=RS00&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E7%81%B5%E8%B6%B3+RobStride+RS00+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/actuator/lingzu-robstride.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/lingzu-robstride.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.robstride.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://raw.githubusercontent.com/RobStride/Product_Information/main/Product%20Literature/CAN2.0/RS00/RS00User%20Manual260713.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>灵足官网产品图（robstride.com 导航菜单图，透明底）</td></tr><tr><td class="rs-plain">收录说明</td><td>灵足时代 RS/EL 系列产品规格介绍（2026.010.09 / 2026.09.22）+ 各型号用户手册（260713 / 261013）</td></tr><tr><td><a href="https://www.google.com/search?q=%E7%81%B5%E8%B6%B3+RobStride+RS00+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=RS00&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E7%81%B5%E8%B6%B3+RobStride+RS00+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/actuator/lingzu-robstride.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/lingzu-robstride.json</td></tr></tbody></table>
 
 ## 备注
 
-—
+CAN 2.0 版本；按 RS00 用户手册（260713）与 RS 系列规格表（2026.010.09）核对，电压范围按官方表 24–60 V。价格为历史记录参考价（2026-10-31 未复核），以厂商报价为准。
 
 
 

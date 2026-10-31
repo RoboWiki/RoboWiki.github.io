@@ -31,8 +31,8 @@ title: 大疆 DJI TB48
 
 <div class="part-src">
 来源：<a href="https://www.dji.com/cn/inspire-1">https://www.dji.com/cn/inspire-1</a><br/>
-收录：大疆官网 Inspire 1 规格页 + RoboMaster 社区《DJI 智能电池 TB47/TB48 使用手册 V2.4》（石恪，2024.6）<br/>
-核对：2026-10-30
+收录：大疆官网 Inspire 1 规格页；RoboMaster 社区《DJI 智能电池 TB47/TB48 使用手册 V2.4》与官方圆桌《如何规范使用空中机器人电池》<br/>
+核对：2026-10-31
 </div>
 
 </div>
@@ -65,10 +65,12 @@ title: 大疆 DJI TB48
 | 额定电压 (V) | 22.8 |
 | 额定放电倍率 (C) | 5 |
 | 电芯 | LiHV 6S 高压版（智能电池） |
-| 能量 (Wh) | 129.9 |
+| 能量 (Wh) | 129.96 |
 | 额定放电电流 (A) | 22.5 |
+| 充电截止电压 (V) | 26.1 |
+| 质量 (g) | 670 |
 | 接口 | DJI 智能电池专用接口（电量/寿命/温度通讯） |
-| 官方文档 | https://www.dji.com/cn/inspire-1 |
+| 官方文档 | https://www.dji.com/cn/support/product/inspire-1 |
 
 ## 优惠与获取条件
 
@@ -85,11 +87,11 @@ title: 大疆 DJI TB48
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.dji.com/cn/inspire-1" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>DJI 官方商城产品图（store.dji.com）</td></tr><tr><td class="rs-plain">收录说明</td><td>大疆官网 Inspire 1 规格页 + RoboMaster 社区《DJI 智能电池 TB47/TB48 使用手册 V2.4》（石恪，2024.6）</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+TB48+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=TB48&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+TB48+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/battery/dji.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/battery/dji.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.dji.com/cn/inspire-1" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.dji.com/cn/support/product/inspire-1" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td class="rs-plain">产品图出处</td><td>DJI 官方商城产品图（store.dji.com）</td></tr><tr><td class="rs-plain">收录说明</td><td>大疆官网 Inspire 1 规格页；RoboMaster 社区《DJI 智能电池 TB47/TB48 使用手册 V2.4》与官方圆桌《如何规范使用空中机器人电池》</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+TB48+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=TB48&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+TB48+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/battery/dji.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/battery/dji.json</td></tr></tbody></table>
 
 ## 备注
 
-<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>TB47 的大容量版（悟 Inspire 1 选配）</li><li>6S <strong>高压版锂聚合物（LiHV）</strong>，标称电压 22.8 V 高于 TB47 的 22.2 V</li><li>容量 5700 mAh / 约 129.9 Wh</li><li><strong>额定放电同为 5C（约 22.5 A）</strong></li><li>TB48（悟 1）与 TB48D（经纬 M100）、TB48S（经纬 M600）外壳/适配不同，混用需谨慎</li><li>高压版电芯对充电器截止电压有要求，用非匹配充电器可能充不满或触发保护</li><li>能量、质量、充电截止电压为推算/二手来源，未经官方逐项核对，故整级标 B</li></ul></div></div>
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>TB47 的大容量版（悟 Inspire 1 选配）</li><li>6S 高压版锂聚合物（LiHV），标称 22.8 V</li><li>官方规格：5700 mAh / 129.96 Wh / 670 g</li><li>-10~40 ℃</li><li>最大充电功率 180 W</li><li>官方圆桌给出：最大持续放电 22.5 A（约 4C，不是 5C）、脉冲 40 A ≤3 s、放电截止 18 V、充电截止 26.1 V</li><li>高压电芯对充电器截止电压有要求，用非匹配充电器可能充不满或触发保护</li><li>TB48（悟 1）与 TB48D（M100）、TB48S（M600）外壳/适配不同，混用需谨慎</li></ul></div></div>
 
 
 
