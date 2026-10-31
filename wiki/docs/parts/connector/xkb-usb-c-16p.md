@@ -7,7 +7,8 @@ title: XKB 星坤 USB-C 16P 母座
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/xkb-usb-c-16p.jpg" alt="USB-C 16P 母座" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
@@ -26,9 +27,9 @@ title: XKB 星坤 USB-C 16P 母座
 |---|---|
 | 位数 (P) | 16 |
 | 间距 (mm) | — |
-| 标称电流 (A) | — |
+| 标称电流 (A) | 3 |
 | 电压等级 (V) | — |
-| 安装方式 | SMT 沉板/贴板 |
+| 安装方式 | SMT 卧贴 |
 | 系列 / 接口 | USB-C 16P |
 
 <div class="part-src">
@@ -71,13 +72,15 @@ title: XKB 星坤 USB-C 16P 母座
 |---|---|
 | 位数 (P) | 16 |
 | 间距 (mm) | — |
-| 标称电流 (A) | — |
+| 标称电流 (A) | 3 |
 | 电压等级 (V) | — |
-| 安装方式 | SMT 沉板/贴板 |
+| 安装方式 | SMT 卧贴 |
 | 系列 / 接口 | USB-C 16P |
 | 可选位数 | 16 |
-| 电流口径 | 商品页未给测试条件；16P 只保留 USB 2.0，别按全功能 USB-C 用 |
+| 电流口径 | Sekorm 应用文章：最大 3 A；立创商品页标 5 A / 插拔 1 万次，口径不同，按 3 A 留余量 |
+| 插拔寿命 (次) | 10,000 |
 | 锁扣 | USB-C 插拔 |
+| 立创编号 | C319148 |
 
 ## 优惠与获取条件
 
@@ -94,7 +97,7 @@ title: XKB 星坤 USB-C 16P 母座
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td class="rs-plain">收录说明</td><td>立创商城/厂商公开页（未逐项核对）</td></tr><tr><td><a href="https://www.google.com/search?q=XKB+%E6%98%9F%E5%9D%A4+USB-C+16P+%E6%AF%8D%E5%BA%A7+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=USB-C+16P+%E6%AF%8D%E5%BA%A7&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=XKB+%E6%98%9F%E5%9D%A4+USB-C+16P+%E6%AF%8D%E5%BA%A7+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/connector/xkb.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/connector/xkb.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td class="rs-plain">产品图出处</td><td>电子发烧友 U262-161N-4BVC11 产品图（XKB 星坤，2026-10-31）</td></tr><tr><td class="rs-plain">收录说明</td><td>立创商城/厂商公开页（未逐项核对）</td></tr><tr><td><a href="https://www.google.com/search?q=XKB+%E6%98%9F%E5%9D%A4+USB-C+16P+%E6%AF%8D%E5%BA%A7+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=USB-C+16P+%E6%AF%8D%E5%BA%A7&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=XKB+%E6%98%9F%E5%9D%A4+USB-C+16P+%E6%AF%8D%E5%BA%A7+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/connector/xkb.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/connector/xkb.json</td></tr></tbody></table>
 
 ## 备注
 

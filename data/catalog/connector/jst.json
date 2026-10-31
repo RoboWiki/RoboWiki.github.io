@@ -47,8 +47,8 @@
    "lcsc_part": "C189895",
    "doc_url": null,
    "doc_pdf": "https://www.jst-mfg.com/product/pdf/eng/eGH.pdf",
-   "image_url": null,
-   "image_source": null
+   "image_url": "/parts/jst-gh-1p25.png",
+   "image_source": "JST 官方 GH 规格书 PDF 产品图（eGH.pdf，2026-10-31）"
   },
   "category": "connector",
   "subtype": "wire_to_board",
@@ -108,8 +108,8 @@
    "lcsc_part": null,
    "doc_url": null,
    "doc_pdf": "https://www.jst-mfg.com/product/pdf/eng/eSH.pdf",
-   "image_url": null,
-   "image_source": null
+   "image_url": "/parts/jst-sh-1p0.png",
+   "image_source": "JST 官方 SH 规格书 PDF 产品图（eSH.pdf，2026-10-31）"
   },
   "category": "connector",
   "subtype": "wire_to_board",
@@ -170,8 +170,8 @@
    "lcsc_part": null,
    "doc_url": null,
    "doc_pdf": "https://www.jst-mfg.com/product/pdf/eng/eXH.pdf",
-   "image_url": null,
-   "image_source": null
+   "image_url": "/parts/jst-xh-2p5.png",
+   "image_source": "JST 官方 XH 规格书 PDF 产品图（eXH.pdf，2026-10-31）"
   },
   "category": "connector",
   "subtype": "wire_to_board",
@@ -232,8 +232,8 @@
    "lcsc_part": null,
    "doc_url": null,
    "doc_pdf": "https://www.jst-mfg.com/product/pdf/eng/ePH.pdf",
-   "image_url": null,
-   "image_source": null
+   "image_url": "/parts/jst-ph-2p0.png",
+   "image_source": "JST 官方 PH 规格书 PDF 产品图（ePH.pdf，2026-10-31）"
   },
   "category": "connector",
   "subtype": "wire_to_board",
@@ -291,8 +291,8 @@
    "lcsc_part": null,
    "doc_url": null,
    "doc_pdf": "https://www.jst-mfg.com/product/pdf/eng/eZH.pdf",
-   "image_url": null,
-   "image_source": null
+   "image_url": "/parts/jst-zh-1p5.png",
+   "image_source": "JST 官方 ZH 规格书 PDF 产品图（eZH.pdf，2026-10-31）"
   },
   "category": "connector",
   "subtype": "wire_to_board",

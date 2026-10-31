@@ -34,8 +34,8 @@
    "lcsc_part": "C99102",
    "doc_url": "https://www.china-amass.com/",
    "doc_pdf": "https://www.china-amass.com/public/upload/20260207/7fa24f5a6f35ec66c7a115c07a34ab06.pdf",
-   "image_url": null,
-   "image_source": null
+   "image_url": "/parts/amass-xt30.png",
+   "image_source": "Amass 官方 XT 样册 p.9 产品图（2026-02-07 PDF）"
   },
   "category": "connector",
   "subtype": "power",
@@ -82,8 +82,8 @@
    "lcsc_part": "C98732",
    "doc_url": "https://www.china-amass.com/",
    "doc_pdf": "https://www.china-amass.com/public/upload/20260207/7fa24f5a6f35ec66c7a115c07a34ab06.pdf",
-   "image_url": null,
-   "image_source": null
+   "image_url": "/parts/amass-xt60.png",
+   "image_source": "Amass 官方 XT 样册 p.15 产品图（2026-02-07 PDF）"
   },
   "category": "connector",
   "subtype": "power",
@@ -130,8 +130,8 @@
    "lcsc_part": null,
    "doc_url": "https://www.china-amass.com/",
    "doc_pdf": "https://www.china-amass.com/public/upload/20260207/7fa24f5a6f35ec66c7a115c07a34ab06.pdf",
-   "image_url": null,
-   "image_source": null
+   "image_url": "/parts/amass-xt90.png",
+   "image_source": "Amass 官方 XT 样册 p.23 产品图（2026-02-07 PDF）"
   },
   "category": "connector",
   "subtype": "power",
@@ -178,8 +178,8 @@
    "lcsc_part": null,
    "doc_url": "https://www.china-amass.com/",
    "doc_pdf": "https://www.china-amass.com/public/upload/20260207/7fa24f5a6f35ec66c7a115c07a34ab06.pdf",
-   "image_url": null,
-   "image_source": null
+   "image_url": "/parts/amass-mr30.png",
+   "image_source": "Amass 官方 XT 样册 p.11 产品图（2026-02-07 PDF）"
   },
   "category": "connector",
   "subtype": "power",
@@ -226,8 +226,8 @@
    "lcsc_part": "C19268029",
    "doc_url": "https://www.china-amass.com/download/",
    "doc_pdf": "/docs/amass/xt30-2p2.pdf",
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/amass-xt30-2p2.png",
+   "image_source": "Amass XT30PB(2+2)-M 产品规格书 PDF 产品图（用户提供，2026-10-31）",
    "power_positions": 2,
    "signal_positions": 2,
    "signal_current_rated_A": 1,
@@ -279,8 +279,8 @@
    "lcsc_part": "C3598460",
    "doc_url": "https://www.china-amass.com/biao/292.html",
    "doc_pdf": "https://www.china-amass.com/public/upload/20260207/7fa24f5a6f35ec66c7a115c07a34ab06.pdf",
-   "image_url": null,
-   "image_source": null,
+   "image_url": "/parts/amass-xt90-2p2.png",
+   "image_source": "Amass 官方 XT 样册 p.25 产品图（2026-02-07 PDF）",
    "power_positions": 2,
    "signal_positions": 2,
    "signal_current_rated_A": 1,

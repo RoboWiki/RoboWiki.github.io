@@ -7,14 +7,15 @@ title: XUNPU 讯普 FPC-05F-24PH20 0.5 mm 24P
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/xunpu-fpc-05-24p.jpg" alt="FPC-05F-24PH20 0.5 mm 24P" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">连接器</span>
       <span class="part-tag soft">FFC / FPC</span>
       <span class="part-tag tierB">来源 B</span>
-      <span class="part-tag muted">无公开报价</span>
+      <span class="part-tag">¥0.59</span>
     </div>
 
 <div class="part-split">
@@ -26,14 +27,14 @@ title: XUNPU 讯普 FPC-05F-24PH20 0.5 mm 24P
 |---|---|
 | 位数 (P) | 24 |
 | 间距 (mm) | 0.5 |
-| 标称电流 (A) | — |
-| 电压等级 (V) | — |
+| 标称电流 (A) | 0.5 |
+| 电压等级 (V) | 50 |
 | 安装方式 | SMT 卧贴/立贴 |
 | 系列 / 接口 | FFC/FPC 0.5 mm 24P |
 
 <div class="part-src">
 来源：<a href="#">—</a><br/>
-收录：立创商城/厂商公开页（未逐项核对）<br/>
+收录：立创商城 C2856805（5+ 价，2026-10-31）<br/>
 核对：2026-10-31
 </div>
 
@@ -71,13 +72,14 @@ title: XUNPU 讯普 FPC-05F-24PH20 0.5 mm 24P
 |---|---|
 | 位数 (P) | 24 |
 | 间距 (mm) | 0.5 |
-| 标称电流 (A) | — |
-| 电压等级 (V) | — |
+| 标称电流 (A) | 0.5 |
+| 电压等级 (V) | 50 |
 | 安装方式 | SMT 卧贴/立贴 |
 | 系列 / 接口 | FFC/FPC 0.5 mm 24P |
 | 可选位数 | 4、6、8、10、12、16、20、24、30 |
-| 电流口径 | 商品页未给电流测试条件；0.5 mm FFC 的载流取决于线宽/铜厚，不能按触点数推 |
-| 锁扣 | 翻盖/抽屉式（ZIF） |
+| 电流口径 | 立创商品页：500 mA / 50 V，工作温度 -25~+85℃ |
+| 工作温度 | -25~+85 |
+| 锁扣 | 翻盖式，下接 |
 | 立创编号 | C2856805 |
 
 ## 优惠与获取条件
@@ -95,7 +97,7 @@ title: XUNPU 讯普 FPC-05F-24PH20 0.5 mm 24P
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td class="rs-plain">收录说明</td><td>立创商城/厂商公开页（未逐项核对）</td></tr><tr><td><a href="https://www.google.com/search?q=XUNPU+%E8%AE%AF%E6%99%AE+FPC-05F-24PH20+0.5+mm+24P+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=FPC-05F-24PH20+0.5+mm+24P&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=XUNPU+%E8%AE%AF%E6%99%AE+FPC-05F-24PH20+0.5+mm+24P+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/connector/xunpu.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/connector/xunpu.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td class="rs-plain">产品图出处</td><td>立创商城商品图（C2856805，2026-10-31）</td></tr><tr><td class="rs-plain">收录说明</td><td>立创商城 C2856805（5+ 价，2026-10-31）</td></tr><tr><td><a href="https://www.google.com/search?q=XUNPU+%E8%AE%AF%E6%99%AE+FPC-05F-24PH20+0.5+mm+24P+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=FPC-05F-24PH20+0.5+mm+24P&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=XUNPU+%E8%AE%AF%E6%99%AE+FPC-05F-24PH20+0.5+mm+24P+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/connector/xunpu.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/connector/xunpu.json</td></tr></tbody></table>
 
 ## 备注
 
