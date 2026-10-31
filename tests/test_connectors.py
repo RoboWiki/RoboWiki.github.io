@@ -18,8 +18,7 @@ from pipeline.load import load_parts, load_taxonomy  # noqa: E402
 
 EXPECTED_IDS = {
     # 既有成品线束
-    "feetech-5264-cable", "damiao-motor-cable",
-    # JST 线对板
+    "feetech-5264-cable",     # JST 线对板
     "jst-gh-1p25", "jst-sh-1p0", "jst-xh-2p5", "jst-ph-2p0", "jst-zh-1p5",
     # Amass 大电流 + 电源/信号混合
     "amass-xt30", "amass-xt60", "amass-xt90", "amass-mr30",

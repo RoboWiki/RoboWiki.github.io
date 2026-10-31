@@ -208,7 +208,10 @@
   "damiao-motor-cable": {
    "added": "2026-10-31",
    "category": "connector",
-   "model": "电机连接线（XT30 2+2 / CAN / GH1.25）"
+   "model": "电机连接线（XT30 2+2 / CAN / GH1.25）",
+   "removed": true,
+   "removed_at": "2026-10-31",
+   "removed_reason": "用户要求删除：无独立产品图，且整套线可由 XT30(2+2)/CAN/GH1.25 自行配线"
   },
   "damiao-usb2canfd": {
    "added": "2026-10-31",
