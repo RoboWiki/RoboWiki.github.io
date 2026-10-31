@@ -71,7 +71,7 @@ title: Livox Mid-360
 | 接口 | 以太网 / PTP 同步 |
 | 质量 (kg) | 0.265 |
 | absolute | ≤2 cm @10 m |
-| temp_range_C | -20~55 |
+| 工作温度 | -20~55 |
 | size_mm | 65×65×60 |
 | weight_g | 265 |
 | power_w | 6.5 |

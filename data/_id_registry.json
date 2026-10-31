@@ -1,5 +1,50 @@
 {
  "ids": {
+  "amass-mr30": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "MR30"
+  },
+  "amass-xt30": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "XT30"
+  },
+  "amass-xt30-2p2": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "XT30(2+2)"
+  },
+  "amass-xt60": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "XT60"
+  },
+  "amass-xt90": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "XT90"
+  },
+  "amass-xt90-2p2": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "XT90(2+2)"
+  },
+  "cjt-a2541-8p": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "A2541 2.54 mm 排针/排母 8P"
+  },
+  "cjt-db9": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "DB9 串口连接器"
+  },
+  "cjt-rj45": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "RJ45 8P8C 网口"
+  },
   "cont-drobotics-rdk-x3-4gb": {
    "added": "2026-10-31",
    "category": "controller_high",
@@ -162,7 +207,7 @@
   },
   "damiao-motor-cable": {
    "added": "2026-10-31",
-   "category": "wiring",
+   "category": "connector",
    "model": "电机连接线"
   },
   "damiao-usb2canfd": {
@@ -174,6 +219,16 @@
    "added": "2026-10-31",
    "category": "module",
    "model": "DM-USB2CANFD Dual"
+  },
+  "degson-2edg-381-2p": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "2EDG 3.81 mm 插拔端子 2P"
+  },
+  "degson-2edg-508-2p": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "2EDG 5.08 mm 插拔端子 2P"
   },
   "dji-c610": {
    "added": "2026-10-31",
@@ -232,7 +287,7 @@
   },
   "feetech-5264-cable": {
    "added": "2026-10-31",
-   "category": "wiring",
+   "category": "connector",
    "model": "5264 端子线"
   },
   "feetech-st-3215-c018": {
@@ -1042,6 +1097,41 @@
    "added": "2026-10-31",
    "category": "sensor",
    "model": "TMP102AIDRLR"
+  },
+  "jst-gh-1p25": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "GH 1.25 mm 线对板"
+  },
+  "jst-ph-2p0": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "PH 2.0 mm 线对板"
+  },
+  "jst-sh-1p0": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "SH 1.0 mm 线对板"
+  },
+  "jst-xh-2p5": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "XH 2.5 mm 线对板"
+  },
+  "jst-zh-1p5": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "ZH 1.5 mm 线对板"
+  },
+  "kinghelm-bnc": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "BNC 射频连接器"
+  },
+  "kinghelm-sma": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "SMA 射频连接器"
   },
   "lingzu-robstride-usb-can-hub": {
    "added": "2026-10-31",
@@ -2528,10 +2618,30 @@
    "category": "actuator",
    "model": "Unitree A1"
   },
+  "weipu-gx12": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "GX12 航空插"
+  },
   "xiaomi-cybergear-micro": {
    "added": "2026-10-31",
    "category": "actuator",
    "model": "CyberGear Micro"
+  },
+  "xkb-dc-5521": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "DC 5.5×2.1 电源座"
+  },
+  "xkb-usb-c-16p": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "USB-C 16P 母座"
+  },
+  "xunpu-fpc-05-24p": {
+   "added": "2026-10-31",
+   "category": "connector",
+   "model": "FPC-05F-24PH20 0.5 mm 24P"
   },
   "灵足-robstride-el05": {
    "added": "2026-10-31",

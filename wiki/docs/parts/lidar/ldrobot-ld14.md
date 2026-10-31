@@ -73,7 +73,7 @@ title: 乐动 LDROBOT LD14
 | power_w | 1.3 |
 | size_mm | 96.3×59.8×38.8 |
 | 精度 | 5 mm(<1 m)；1.5% 实际距离(1–6 m)；2%(6–8 m) |
-| temp_range_C | -10~40 |
+| 工作温度 | -10~40 |
 | 官方文档 | https://www.waveshare.net/wiki/Triangulation_LiDAR_LD14 |
 
 ## 优惠与获取条件

@@ -1,0 +1,62 @@
+[
+ {
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-31",
+  "price_cny": null,
+  "notes": "0.5 mm FFC 有同向/反向、上接/下接、加强板厚度之分；插反或厚度不对会接触不良。24P 只是代表位数，按排线实际规格买座子。",
+  "origin": "立创商城/厂商公开页（未逐项核对）",
+  "specs": {
+   "positions": 24,
+   "positions_options": [
+    4,
+    6,
+    8,
+    10,
+    12,
+    16,
+    20,
+    24,
+    30
+   ],
+   "pitch_mm": 0.5,
+   "current_rated_A": null,
+   "voltage_rated_V": null,
+   "current_basis": "商品页未给电流测试条件；0.5 mm FFC 的载流取决于线宽/铜厚，不能按触点数推",
+   "contact_resistance_mohm": null,
+   "insulation_resistance_mohm": null,
+   "withstand_voltage_V": null,
+   "mating_cycles": null,
+   "temp_range_C": null,
+   "wire_awg": null,
+   "mount_type": "SMT 卧贴/立贴",
+   "lock_type": "翻盖/抽屉式（ZIF）",
+   "ip": null,
+   "iface": "FFC/FPC 0.5 mm 24P",
+   "use_cases": [
+    "摄像头/显示屏排线",
+    "薄型设备内部连接",
+    "主板到副板",
+    "打印头/扫描模组"
+   ],
+   "lcsc_part": "C2856805",
+   "doc_url": null,
+   "doc_pdf": null,
+   "image_url": null,
+   "image_source": null,
+   "impedance_ohm": null,
+   "freq_max_ghz": null,
+   "length_m": null,
+   "awg": null
+  },
+  "category": "connector",
+  "subtype": "ffc",
+  "subtype_label": "FFC / FPC",
+  "id": "xunpu-fpc-05-24p",
+  "vendor": "XUNPU 讯普",
+  "vendor_cn": "讯普",
+  "model": "FPC-05F-24PH20 0.5 mm 24P",
+  "title": "XUNPU FFC/FPC 0.5 mm 24P 连接器",
+  "url": null
+ }
+]

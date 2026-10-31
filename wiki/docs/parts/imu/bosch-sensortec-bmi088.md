@@ -73,7 +73,7 @@ title: Bosch Sensortec BMI088
 | noise | 0.014 °/s/√Hz；175 µg/√Hz |
 | 电压范围 | 2.4–3.6 |
 | power_w | 0.017 |
-| temp_range_C | -40~85 |
+| 工作温度 | -40~85 |
 | size_mm | 3×4.5×0.95 |
 | 分辨率 | 16-bit |
 | 官方文档 | https://www.bosch-sensortec.com/products/motion-sensors/imus/bmi088/ |

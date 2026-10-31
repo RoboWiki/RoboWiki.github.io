@@ -11,8 +11,8 @@ title: Feetech 飞特 5264 端子线
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
-      <span class="part-tag">线束</span>
-      <span class="part-tag soft">cable</span>
+      <span class="part-tag">连接器</span>
+      <span class="part-tag soft">成品线束</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
     </div>
@@ -24,18 +24,23 @@ title: Feetech 飞特 5264 端子线
 
 | 字段 | 值 |
 |---|---|
-| 接口 | 5264 3P |
+| 位数 (P) | 3 |
+| 间距 (mm) | — |
+| 标称电流 (A) | — |
+| 电压等级 (V) | — |
+| 安装方式 | 线端（成品线束） |
+| 系列 / 接口 | 5264 3P |
 
 <div class="part-src">
 来源：<a href="https://www.feetech.cn/">https://www.feetech.cn/</a><br/>
 收录：aifitlab 商城 SKU（海外平台，价格仅参考）<br/>
-核对：2026-10-28
+核对：2026-10-31
 </div>
 
 </div>
 
 <div class="part-comm">
-<PartRating part-id="feetech-5264-cable" :dims='["value", "build", "docs"]' />
+<PartRating part-id="feetech-5264-cable" :dims='["value", "build", "docs", "spec_trust"]' />
 </div>
 
 </div>
@@ -54,11 +59,24 @@ title: Feetech 飞特 5264 端子线
 
 
 
+## 适用场景
+
+- 飞特 STS/ST 系列舵机串联总线
+- 小型人形/机械臂舵机供电与通信
+- 舵机延长线
 ## 全部参数
 
 | 字段 | 值 |
 |---|---|
-| 接口 | 5264 3P |
+| 位数 (P) | 3 |
+| 间距 (mm) | — |
+| 标称电流 (A) | — |
+| 电压等级 (V) | — |
+| 安装方式 | 线端（成品线束） |
+| 系列 / 接口 | 5264 3P |
+| 可选位数 | 3 |
+| 电流口径 | 成品线束，按舵机总线电流设计；厂商未给独立测试条件 |
+| 锁扣 | 卡扣（5264 端子） |
 
 ## 优惠与获取条件
 
@@ -75,7 +93,7 @@ title: Feetech 飞特 5264 端子线
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.feetech.cn/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>aifitlab 商城 SKU（海外平台，价格仅参考）</td></tr><tr><td><a href="https://www.google.com/search?q=Feetech+%E9%A3%9E%E7%89%B9+5264+%E7%AB%AF%E5%AD%90%E7%BA%BF+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=5264+%E7%AB%AF%E5%AD%90%E7%BA%BF&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Feetech+%E9%A3%9E%E7%89%B9+5264+%E7%AB%AF%E5%AD%90%E7%BA%BF+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/wiring/cables.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/wiring/cables.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.feetech.cn/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>aifitlab 商城 SKU（海外平台，价格仅参考）</td></tr><tr><td><a href="https://www.google.com/search?q=Feetech+%E9%A3%9E%E7%89%B9+5264+%E7%AB%AF%E5%AD%90%E7%BA%BF+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=5264+%E7%AB%AF%E5%AD%90%E7%BA%BF&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Feetech+%E9%A3%9E%E7%89%B9+5264+%E7%AB%AF%E5%AD%90%E7%BA%BF+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/connector/feetech.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/connector/feetech.json</td></tr></tbody></table>
 
 ## 备注
 

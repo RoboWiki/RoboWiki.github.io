@@ -188,6 +188,21 @@ const emptyText = computed(() => {
 /** 当前品类的元数据：卡片显示哪些参数、能按什么排序，都来自这里。 */
 const meta = computed(() => CATS.value.find(c => c.v === cat.value))
 const catName = computed(() => meta.value?.t || '部件')
+
+/** 抽屉里给非核心键补中文标签；核心键的标签来自 taxonomy 的 keys。 */
+const EXTRA_LABELS: Record<string, string> = {
+  current_basis: '电流口径', contact_resistance_mohm: '接触电阻 (mΩ)',
+  insulation_resistance_mohm: '绝缘电阻 (MΩ)', withstand_voltage_V: '耐电压 (V)',
+  mating_cycles: '插拔寿命 (次)', temp_range_C: '温度范围', wire_awg: '适用线规',
+  lock_type: '锁扣', power_positions: '电源位数', signal_positions: '信号位数',
+  signal_current_rated_A: '信号针电流 (A)', contact_layout: '触点布局',
+  instantaneous_current_A: '瞬时电流 (A)', impedance_ohm: '阻抗 (Ω)',
+  freq_max_ghz: '最高频率 (GHz)', length_m: '长度 (m)', awg: '线规',
+  positions_options: '可选位数',
+}
+function labelFor(k: string): string {
+  return meta.value?.keys.find(x => x.k === k)?.label || EXTRA_LABELS[k] || k
+}
 const sortOpts = computed(() =>
   (meta.value?.sorts?.length ? meta.value.sorts : FALLBACK_SORTS))
 const vendors = computed(() =>
@@ -411,6 +426,11 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
                   <rect x="7" y="7" width="10" height="10" rx="1.5" />
                   <path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4" />
                 </template>
+                <template v-else-if="p.category === 'connector'">
+                  <rect x="3" y="8" width="7" height="8" rx="1" />
+                  <path d="M10 10h4M10 14h4M14 8v8" />
+                  <rect x="17" y="9.5" width="3" height="5" rx="0.6" />
+                </template>
                 <template v-else-if="p.category === 'actuator'">
                   <circle cx="12" cy="12" r="6.5" /><circle cx="12" cy="12" r="2" />
                 </template>
@@ -471,7 +491,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
           </div>
           <table class="pd-specs">
             <tr v-for="(v, k) in detail.specs" :key="k">
-              <td class="pd-k">{{ k }}</td>
+              <td class="pd-k">{{ labelFor(k) }}</td>
               <td>{{ num(v) }}</td>
             </tr>
           </table>

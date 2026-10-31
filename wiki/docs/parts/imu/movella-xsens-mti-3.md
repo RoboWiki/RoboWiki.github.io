@@ -73,7 +73,7 @@ title: Movella Xsens MTi-3
 | noise | 0.003 °/s/√Hz；70 µg/√Hz |
 | 电压范围 | 2.8–3.6 |
 | power_w | 0.1 |
-| temp_range_C | -40~85 |
+| 工作温度 | -40~85 |
 | size_mm | 12.1×12.1×2.55 |
 | weight_g | 0.6 |
 | 官方文档 | https://shop.movella.com/product-lines/sensor-modules/products/mti-3-ahrs-development-kit |

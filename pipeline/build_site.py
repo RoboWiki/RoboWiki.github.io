@@ -24,7 +24,7 @@ DATA = ROOT / "data"
 OUT = ROOT / "wiki" / "docs"
 
 #: 品类。顺序即展示顺序 —— 关节电机是重点，放最前。
-#: 机械结构 / 电池 / 线束 没有收录：不是漏了，是没有可信来源，宁缺不编。
+#: 机械结构 / 电池 没有收录：不是漏了，是没有可信来源，宁缺不编。
 from .load import cat_labels as _cat_labels
 from .meta import meta as _artifact_meta
 from .build_home import build as build_home
@@ -80,8 +80,16 @@ def num(v, digits: int = 3) -> str:
     return f"{round(float(v), digits):g}"
 
 
+def _price_cell(v) -> str:
+    """品类表里的价格：保留小数，避免 ¥0.86 被 int() 截成 0。"""
+    if v is None:
+        return "—"
+    s = f"{float(v):,.2f}".rstrip("0").rstrip(".")
+    return s or "0"
+
+
 #: 这些品类的备注保持原样：关节电机页面是模板，其余几个也不在这次调整范围内。
-NOTE_PLAIN_CATEGORIES = {"actuator", "chip", "wiring", "esc", "sensor", "servo"}
+NOTE_PLAIN_CATEGORIES = {"actuator", "chip", "connector", "esc", "sensor", "servo"}
 
 _NOTE_SCOPE = re.compile(
     r"本站(?:目前只核到|这一条对应|只核到)|产品图待补|规格待补|未提取到|暂留空|"
@@ -237,7 +245,7 @@ def actuator_table(items: list[dict], href: dict[str, str] | None = None) -> str
             f"| {mdl(p, (href or {}).get(p['id']))} | {num(s.get('tau_peak_Nm'))} | {num(s.get('tau_rated_Nm'))} "
             f"| {num(s.get('gear'))} | {num(s.get('speed_noload_rpm'))} | {num(s.get('mass_kg'))} "
             f"| {num(s.get('armature_kgm2'))} | "
-            f"{'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
+            f"{_price_cell(p.get('price_cny'))} "
             f"| {tier_badge(p['source_tier'], p['verified'])} |")
     return "\n".join(lines)
 
@@ -249,7 +257,7 @@ def generic_table(items: list[dict], cat: str, href: dict[str, str] | None = Non
             s = p["specs"]
             return (f"| {mdl(p, (href or {}).get(p['id']))} | {s.get('soc') or '—'} | {s.get('cuda_cores') or '—'} "
                     f"| {num(s.get('npu_tops'))} | {num(s.get('ram_gb'))} | {num(s.get('power_max_w'))} "
-                    f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
+                    f"| {_price_cell(p.get('price_cny'))} "
                     f"| {tier_badge(p['source_tier'], p['verified'])} |")
     elif cat == "controller_low":
         head = "| 型号 | MCU | FOC 轴数 | CAN | 电流环 kHz | 最高 V | 价格 ¥ | 来源 |\n|---|---|---|---|---|---|---|---|"
@@ -258,7 +266,7 @@ def generic_table(items: list[dict], cat: str, href: dict[str, str] | None = Non
             return (f"| {mdl(p, (href or {}).get(p['id']))} | {s.get('mcu') or '—'} | {s.get('foc_axes') or '—'} "
                     f"| {(str(s.get('can') or '—')) + (' FD' if s.get('canfd') else '')} "
                     f"| {num(s.get('current_loop_khz'))} | {num(s.get('voltage_max_V'))} "
-                    f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
+                    f"| {_price_cell(p.get('price_cny'))} "
                     f"| {tier_badge(p['source_tier'], p['verified'])} |")
     elif cat == "remote_controller":
         head = ("| 型号 | 子类 | 通道 | 频段 GHz | 遥控距离 m | 输出协议 | 价格 ¥ | 来源 |\n"
@@ -268,7 +276,7 @@ def generic_table(items: list[dict], cat: str, href: dict[str, str] | None = Non
             return (f"| {mdl(p, (href or {}).get(p['id']))} | {p.get('subtype_label') or p['subtype']} "
                     f"| {num(s.get('channels'))} | {num(s.get('frequency_ghz'))} "
                     f"| {num(s.get('control_range_m'))} | {s.get('protocol') or '—'} "
-                    f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
+                    f"| {_price_cell(p.get('price_cny'))} "
                     f"| {tier_badge(p['source_tier'], p['verified'])} |")
     elif cat == "module":
         head = ("| 型号 | 子类 | CAN 路数 | CAN FD | 速率 Mbps | 接口 | 价格 ¥ | 来源 |\n"
@@ -279,7 +287,36 @@ def generic_table(items: list[dict], cat: str, href: dict[str, str] | None = Non
             return (f"| {mdl(p, (href or {}).get(p['id']))} | {p.get('subtype_label') or p['subtype']} "
                     f"| {num(s.get('can'))} | {fd} | {num(s.get('can_speed_mbps'))} "
                     f"| {s.get('iface') or '—'} "
-                    f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
+                    f"| {_price_cell(p.get('price_cny'))} "
+                    f"| {tier_badge(p['source_tier'], p['verified'])} |")
+    elif cat == "connector":
+        head = ("| 型号 | 子类 | 系列 | 关键参数 | 价格 ¥ | 来源 |\n"
+                "|---|---|---|---|---|---|")
+        def row(p):
+            s = p["specs"]
+            parts = []
+            if s.get("contact_layout"):
+                parts.append(str(s["contact_layout"]))
+            elif s.get("positions"):
+                parts.append(f"{num(s.get('positions'))}P")
+            if s.get("pitch_mm"):
+                parts.append(f"{num(s.get('pitch_mm'))} mm")
+            if s.get("current_rated_A"):
+                parts.append(f"{num(s.get('current_rated_A'))} A")
+            if s.get("voltage_rated_V"):
+                parts.append(f"{num(s.get('voltage_rated_V'))} V")
+            if s.get("impedance_ohm"):
+                parts.append(f"{num(s.get('impedance_ohm'))} Ω")
+            if s.get("freq_max_ghz"):
+                parts.append(f"{num(s.get('freq_max_ghz'))} GHz")
+            if s.get("length_m"):
+                parts.append(f"{num(s.get('length_m'))} m")
+            if s.get("awg"):
+                parts.append(str(s["awg"]))
+            kv = "、".join(parts) or (s.get("iface") or "—")
+            return (f"| {mdl(p, (href or {}).get(p['id']))} | {p.get('subtype_label') or p['subtype']} "
+                    f"| {s.get('iface') or '—'} | {kv} "
+                    f"| {_price_cell(p.get('price_cny'))} "
                     f"| {tier_badge(p['source_tier'], p['verified'])} |")
     else:
         head = "| 型号 | 子类 | 接口 | 关键参数 | 价格 ¥ | 来源 |\n|---|---|---|---|---|---|"
@@ -289,7 +326,7 @@ def generic_table(items: list[dict], cat: str, href: dict[str, str] | None = Non
             kv = "、".join(f"{k}={num(s[k])}" for k in keys if s.get(k))
             return (f"| {mdl(p, (href or {}).get(p['id']))} | {p.get('subtype_label') or p['subtype']} "
                     f"| {s.get('iface') or '—'} | {kv or '—'} "
-                    f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
+                    f"| {_price_cell(p.get('price_cny'))} "
                     f"| {tier_badge(p['source_tier'], p['verified'])} |")
     return "\n".join([head] + [row(p) for p in sorted(items, key=lambda r: r["vendor"])])
 
@@ -557,7 +594,7 @@ def main() -> None:
         "gyro_bw_hz": "陀螺带宽 (Hz)", "accel_range_g": "加计量程 (g)",
         "accel_range_opts": "加计量程档位", "accel_bw": "加计带宽",
         "sampling_hz": "内部采样率 (Hz)", "attitude": "姿态输出",
-        "temp_control": "温控", "temp_range": "工作温度", "dims": "尺寸",
+        "temp_control": "温控", "temp_range": "工作温度", "temp_range_C": "工作温度", "dims": "尺寸",
         "mount_orientations": "安装方向数", "hw_versions": "硬件版本",
         "firmware": "适用固件", "odr_note": "输出周期说明",
         "depth_range_m": "深度量程 (m)", "fov": "视场", "resolution": "分辨率",
@@ -610,6 +647,19 @@ def main() -> None:
         "tags": "标签",
         "fetched_at": "采集日期",
         "doc_pdf": "官方手册 (PDF)",
+        # 连接器
+        "positions": "位数 (P)", "positions_options": "可选位数",
+        "pitch_mm": "间距 (mm)", "voltage_rated_V": "电压等级 (V)",
+        "current_basis": "电流口径",
+        "contact_resistance_mohm": "接触电阻 (mΩ)",
+        "insulation_resistance_mohm": "绝缘电阻 (MΩ)",
+        "withstand_voltage_V": "耐电压 (V)", "mating_cycles": "插拔寿命 (次)",
+        "wire_awg": "适用线规", "mount_type": "安装方式", "lock_type": "锁扣",
+        "power_positions": "电源位数", "signal_positions": "信号位数",
+        "signal_current_rated_A": "信号针电流 (A)", "contact_layout": "触点布局",
+        "instantaneous_current_A": "瞬时电流 (A)", "use_cases": "适用场景",
+        "impedance_ohm": "阻抗 (Ω)", "freq_max_ghz": "最高频率 (GHz)",
+        "length_m": "长度 (m)", "awg": "线规",
     }
 
     _TAX_BY_CAT = {c["id"]: [k["k"] for k in (c.get("keys") or [])]
@@ -640,6 +690,11 @@ def main() -> None:
             "weight_g": "重量 (g)",
             "protocol": "输出协议",
         },
+        "connector": {
+            "current_rated_A": "标称电流 (A)",
+            "voltage_rated_V": "电压等级 (V)",
+            "iface": "系列 / 接口",
+        },
     }
 
     def spec_rows(specs: dict, cat_key_list: list[str] | None = None,
@@ -662,13 +717,13 @@ def main() -> None:
         out = []
         for k in keys:
             v = specs.get(k)
-            if k in ("image_url", "image_source"):
+            if k in ("image_url", "image_source", "use_cases"):
                 continue
             seen.add(k)
             label = overrides.get(k) or SPEC_LABEL.get(k, k)
             out.append(f"| {label} | {cell(v)} |")
         for k, v in specs.items():
-            if k in seen or k in ("image_url", "image_source"):
+            if k in seen or k in ("image_url", "image_source", "use_cases"):
                 continue
             if v is None:
                 continue
@@ -960,6 +1015,8 @@ def main() -> None:
 '''
 
         advice_md = "\n".join(f"- **{t}** —— {b}" for t, b in advice(r))
+        _uc = s.get("use_cases") or []
+        use_cases_md = ("## 适用场景\n\n" + "\n".join(f"- {x}" for x in _uc) + "\n") if _uc else ""
 
         # 优惠：卡片上只显示「原价 + 优惠价」两个数，**条件全部写在这里**。
         # 关键：优惠不是人人都能用（学生证、参赛证明、限购台数），
@@ -1123,7 +1180,7 @@ def main() -> None:
 
 {metric_md}
 {var_md}
-## 全部参数
+{use_cases_md}## 全部参数
 
 | 字段 | 值 |
 |---|---|
@@ -1222,7 +1279,7 @@ def main() -> None:
 
 {generic_table(items, c, HREF)}
 
-{"> 来源等级见行末徽章：`A` = 逐项核对过官方手册，`B` = 公开网页。采购前请回原厂页面确认。" if c in ("remote_controller", "module") else "> 这些行是 `B` 级（来自公开文档/官网，未逐项核对），采购前请回原厂页面确认。"}
+{"> 来源等级见行末徽章：`A` = 逐项核对过官方手册，`B` = 公开网页。采购前请回原厂页面确认。" if c in ("remote_controller", "module", "connector") else "> 这些行是 `B` 级（来自公开文档/官网，未逐项核对），采购前请回原厂页面确认。"}
 """, encoding="utf-8")
 
 
@@ -1274,6 +1331,13 @@ def main() -> None:
         ("电气", ["voltage_V", "voltage_range_V", "kt_Nm_per_A", "r_phase_ohm",
                 "l_phase_uh", "pole_pairs", "i_peak_A", "i_rated_A"]),
         ("接口与防护", ["encoder", "comm", "driver_integrated", "ip"]),
+        ("连接器", ["positions", "positions_options", "pitch_mm", "power_positions",
+                 "signal_positions", "contact_layout", "current_rated_A", "current_basis",
+                 "signal_current_rated_A", "instantaneous_current_A", "voltage_rated_V",
+                 "withstand_voltage_V", "contact_resistance_mohm",
+                 "insulation_resistance_mohm", "mating_cycles", "temp_range_C",
+                 "wire_awg", "mount_type", "lock_type", "use_cases",
+                 "impedance_ohm", "freq_max_ghz"]),
     ]
     field_groups = []
     seen_fields = set()
@@ -1609,9 +1673,9 @@ outline: false
 
 | 品类 | 额外维度 | 为什么是它 |
 |---|---|---|
-| 关节电机 / 舵机 / 芯片 / 传感器 / IMU / 雷达 / 相机 / 电调 / 电池 | 参数可信度 | 这类件的核心风险是「标称的数字和实际不一样」 |
+| 关节电机 / 舵机 / 芯片 / 传感器 / IMU / 雷达 / 相机 / 电调 / 电池 / 连接器 | 参数可信度 | 这类件的核心风险是「标称的数字和实际不一样」 |
 | 上位机 / 下位机 | 兼容与生态 | 这类件的核心风险是「买回来接不上、驱动难写」 |
-| 线束 / 结构 | 无 | 只有通用三维 —— 硬塞维度只会让人乱填 |
+| 结构 | 无 | 只有通用三维 —— 硬塞维度只会让人乱填 |
 
 维度定义在 `data/taxonomy.json` 的 `rating_dims` 里，加品类时顺手声明即可，
 组件不用改。

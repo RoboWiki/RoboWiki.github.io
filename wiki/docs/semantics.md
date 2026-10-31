@@ -120,13 +120,101 @@ outline: false
   <div class="fd-head"><code>inertia_basis</code><b>惯量口径</b></div>
   <p>rotor=电机侧；output=厂商已折算到输出侧（等于 N²·J）</p>
   <p class="fd-miss"><span>缺了意味着</span>口径不明，armature 无法确定</p>
+</div></div><h3>连接器</h3><div class="fd-grid"><div class="fd">
+  <div class="fd-head"><code>positions</code><b>位数</b></div>
+  <p>触点数。2+2 混合连接器填总触点数，电源/信号拆分见 power_positions / signal_positions</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布；不要用型号里的数字猜</p>
+</div><div class="fd">
+  <div class="fd-head"><code>positions_options</code><b>可选位数</b></div>
+  <p>同一系列可选的触点数；代表位数写在 positions</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布可选位数；不代表只有代表位数</p>
+</div><div class="fd">
+  <div class="fd-head"><code>pitch_mm</code><b>间距</b></div>
+  <p>相邻触点中心距；小间距省空间，但线规和电流通常更小</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布或不适用；不要按外形估算</p>
+</div><div class="fd">
+  <div class="fd-head"><code>power_positions</code><b>电源位数</b></div>
+  <p>混合连接器的电源触点数</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布</p>
+</div><div class="fd">
+  <div class="fd-head"><code>signal_positions</code><b>信号位数</b></div>
+  <p>混合连接器的信号触点数</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布</p>
+</div><div class="fd">
+  <div class="fd-head"><code>contact_layout</code><b>触点布局</b></div>
+  <p>触点布局，例如 2 电源 + 2 信号（2+2）</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布</p>
+</div><div class="fd">
+  <div class="fd-head"><code>current_rated_A</code><b>标称电流</b></div>
+  <p>连接器每触点标称持续电流；按品类，电池为额定放电电流。必须配 current_basis 说明测试条件</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布；不要按型号名（XT60/XT90）猜电流</p>
+</div><div class="fd">
+  <div class="fd-head"><code>current_basis</code><b>电流口径</b></div>
+  <p>电流值的标准与测试条件：UL 额定 / MAX / 温升试验，以及线规和温升</p>
+  <p class="fd-miss"><span>缺了意味着</span>口径不明，不应跨厂商比较</p>
+</div><div class="fd">
+  <div class="fd-head"><code>signal_current_rated_A</code><b>信号针电流</b></div>
+  <p>信号针标称电流；通常远小于电源针，不能当第二路电源</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布；不要按电源针电流代替</p>
+</div><div class="fd">
+  <div class="fd-head"><code>instantaneous_current_A</code><b>瞬时电流</b></div>
+  <p>短时/瞬时电流；持续时间和温升条件写在 current_basis</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布；不要当连续电流</p>
+</div><div class="fd">
+  <div class="fd-head"><code>voltage_rated_V</code><b>电压等级</b></div>
+  <p>厂商标称的电压等级/最大工作电压；与 withstand_voltage_V（耐压试验）区分</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布；不要拿耐压试验值当工作电压</p>
+</div><div class="fd">
+  <div class="fd-head"><code>withstand_voltage_V</code><b>耐电压</b></div>
+  <p>介质耐压试验电压（通常 1 分钟无击穿）；不是工作电压</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布；不要与 voltage_rated_V 混用</p>
+</div><div class="fd">
+  <div class="fd-head"><code>contact_resistance_mohm</code><b>接触电阻</b></div>
+  <p>触点初始接触电阻；越低越好</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布；不要用 0 代替</p>
+</div><div class="fd">
+  <div class="fd-head"><code>insulation_resistance_mohm</code><b>绝缘电阻</b></div>
+  <p>触点与外壳之间的绝缘电阻</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布</p>
+</div><div class="fd">
+  <div class="fd-head"><code>mating_cycles</code><b>插拔寿命</b></div>
+  <p>厂商给出的插拔寿命</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布；不要假设无限次</p>
+</div><div class="fd">
+  <div class="fd-head"><code>wire_awg</code><b>适用线规</b></div>
+  <p>适用导线范围；电流额定值与线规强相关</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布；不要按外形估线规</p>
+</div><div class="fd">
+  <div class="fd-head"><code>mount_type</code><b>安装方式</b></div>
+  <p>线端 / 板端 / 直插 / 弯插 / 面板等</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布</p>
+</div><div class="fd">
+  <div class="fd-head"><code>lock_type</code><b>锁扣方式</b></div>
+  <p>摩擦锁 / 卡扣 / 螺纹 / 卡口</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布</p>
+</div><div class="fd">
+  <div class="fd-head"><code>use_cases</code><b>适用场景</b></div>
+  <p>编辑整理的适用场景，不是厂商规格；不参与数值比较</p>
+  <p class="fd-miss"><span>缺了意味着</span>没有场景说明；不要从型号猜</p>
+</div><div class="fd">
+  <div class="fd-head"><code>impedance_ohm</code><b>阻抗</b></div>
+  <p>射频连接器的特性阻抗（50 / 75 Ω 等）</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布</p>
+</div><div class="fd">
+  <div class="fd-head"><code>freq_max_ghz</code><b>最高频率</b></div>
+  <p>射频连接器的最高工作频率</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布</p>
 </div></div><h3>其他</h3><div class="fd-grid"><div class="fd"><div class="fd-head"><code>frictionloss_Nm</code><b>库仑摩擦</b></div>
   <p>几乎无厂商公布。留空比填一个估计值诚实</p>
   <p class="fd-miss"><span>缺了意味着</span>未公布，仿真中该项应标为「假设值 0」而非「实测 0」</p></div><div class="fd"><div class="fd-head"><code>source_tier</code><b>来源等级</b></div>
   <p>A=官方 datasheet 逐项核对；B=厂商页面或广泛引用，未逐项复核；C=二手来源</p>
   <p class="fd-miss"><span>缺了意味着</span>来源不明</p></div><div class="fd"><div class="fd-head"><code>price_cny</code><b>参考价</b></div>
   <p>挂牌或公开报价，不含运费税费，不是实时价</p>
-  <p class="fd-miss"><span>缺了意味着</span>无公开报价；不等于买不到</p></div></div>
+  <p class="fd-miss"><span>缺了意味着</span>无公开报价；不等于买不到</p></div><div class="fd"><div class="fd-head"><code>length_m</code><b>长度</b></div>
+  <p>成品线束长度</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布</p></div><div class="fd"><div class="fd-head"><code>awg</code><b>线规</b></div>
+  <p>成品线束线规</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布</p></div></div>
   </section>
 
   <section>

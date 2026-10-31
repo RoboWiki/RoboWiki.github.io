@@ -35,7 +35,7 @@
     "lidar",
     "camera",
     "battery",
-    "wiring",
+    "connector",
     "module",
     "chip"
    ]
@@ -338,6 +338,120 @@
       "null"
      ],
      "description": "引用仓库的许可（MIT/Apache-2.0/BSD-3-Clause/…）。读不到写 null，表示未核，不猜。"
+    },
+    "positions": {
+     "type": ["number", "null"],
+     "minimum": 1,
+     "maximum": 100,
+     "description": "触点数。2+2 混合连接器填总触点数，电源/信号拆分见 power_positions / signal_positions。"
+    },
+    "positions_options": {
+     "type": ["array", "null"],
+     "items": {"type": "integer", "minimum": 1},
+     "description": "同一系列可选触点数；代表位数写在 positions。"
+    },
+    "pitch_mm": {
+     "type": ["number", "null"],
+     "exclusiveMinimum": 0,
+     "description": "相邻触点中心距（mm）；RF/混合连接器可能不适用。"
+    },
+    "current_rated_A": {
+     "type": ["number", "null"],
+     "minimum": 0,
+     "description": "连接器每触点标称电流；必须配 current_basis 说明测试条件。"
+    },
+    "voltage_rated_V": {
+     "type": ["number", "null"],
+     "minimum": 0,
+     "description": "厂商标称的电压等级；与 withstand_voltage_V（耐压试验）区分。"
+    },
+    "current_basis": {
+     "type": ["string", "null"],
+     "description": "电流口径：UL 额定 / MAX / 温升试验值，以及线规、温升条件。"
+    },
+    "contact_resistance_mohm": {
+     "type": ["number", "null"],
+     "minimum": 0,
+     "description": "接触电阻（mΩ）。"
+    },
+    "insulation_resistance_mohm": {
+     "type": ["number", "null"],
+     "minimum": 0,
+     "description": "绝缘电阻（MΩ）。"
+    },
+    "withstand_voltage_V": {
+     "type": ["number", "null"],
+     "minimum": 0,
+     "description": "介质耐压试验电压（V），不是工作电压。"
+    },
+    "mating_cycles": {
+     "type": ["integer", "null"],
+     "minimum": 0,
+     "description": "插拔寿命（次）。"
+    },
+    "temp_range_C": {
+     "type": ["string", "null"],
+     "description": "工作温度范围，例如 -40~+105。"
+    },
+    "wire_awg": {
+     "type": ["string", "null"],
+     "description": "适用线规范围，例如 AWG 30–26。"
+    },
+    "mount_type": {
+     "type": ["string", "null"],
+     "description": "线端 / 板端 / 直插 / 弯插 / 面板等安装方式。"
+    },
+    "lock_type": {
+     "type": ["string", "null"],
+     "description": "锁扣方式：摩擦锁 / 卡扣 / 螺纹 / 卡口。"
+    },
+    "power_positions": {
+     "type": ["integer", "null"],
+     "minimum": 0,
+     "description": "混合连接器的电源触点数。"
+    },
+    "signal_positions": {
+     "type": ["integer", "null"],
+     "minimum": 0,
+     "description": "混合连接器的信号触点数。"
+    },
+    "signal_current_rated_A": {
+     "type": ["number", "null"],
+     "minimum": 0,
+     "description": "信号针标称电流（A）。"
+    },
+    "contact_layout": {
+     "type": ["string", "null"],
+     "description": "触点布局，例如 2 电源 + 2 信号（2+2）。"
+    },
+    "instantaneous_current_A": {
+     "type": ["number", "null"],
+     "minimum": 0,
+     "description": "短时/瞬时电流（A）；持续时间和温升条件写在 current_basis。"
+    },
+    "use_cases": {
+     "type": ["array", "null"],
+     "items": {"type": "string"},
+     "description": "编辑整理的适用场景，不是厂商规格；不参与数值比较。"
+    },
+    "impedance_ohm": {
+     "type": ["number", "null"],
+     "minimum": 0,
+     "description": "射频连接器特性阻抗（Ω）。"
+    },
+    "freq_max_ghz": {
+     "type": ["number", "null"],
+     "minimum": 0,
+     "description": "射频连接器最高工作频率（GHz）。"
+    },
+    "length_m": {
+     "type": ["number", "null"],
+     "minimum": 0,
+     "description": "成品线束长度（m）。"
+    },
+    "awg": {
+     "type": ["string", "null"],
+     "description": "成品线束线规。"
     }
    }
   }

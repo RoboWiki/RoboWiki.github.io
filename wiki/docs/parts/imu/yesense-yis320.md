@@ -76,7 +76,7 @@ title: 元生创新 Yesense YIS320
 | bias_instability | 陀螺 5 °/h · 加速度 0.035 mg（Allan 1σ @25℃） |
 | 姿态输出 | 横滚/俯仰 静 0.05° / 动 0.2°；航向 无参考 0.2°、磁 1°；静态漂移 0.1°/h |
 | power_w | 0.19 |
-| temp_range_C | -40 ~ +85 |
+| 工作温度 | -40 ~ +85 |
 | shock_g | 2,000 |
 | size_mm | 22.4 × 22.4 × 9 |
 | weight_g | 7.7 |

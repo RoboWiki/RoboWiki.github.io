@@ -26,7 +26,7 @@
 | `test_data` | `tests/test_data_governance.py`（5 条）+ `tests/test_taxonomy.py`（7 条） | **本地实测 2.1 秒 / 12 条** |
 | `build` | 只跑 `python -m pipeline build`（生成器），不跑 VitePress | 十几秒 |
 
-> 量级说明：`test_data` 的 2.1 秒是本地实测（`python -m pytest tests/test_data_governance.py tests/test_taxonomy.py`）；其余是 job 组成推算。作为对照，`tests/` 全部 = 47 条用例，`backend/tests/` 另有 80 个 `test_` 函数，`python -m pytest` 会把这两条线一起跑。
+> 量级说明：`test_data` 的 2.1 秒是本地实测（`python -m pytest tests/test_data_governance.py tests/test_taxonomy.py`）；其余是 job 组成推算。作为对照，`tests/` 全部 = 53 条用例，`backend/tests/` 另有 80 个 `test_` 函数，`python -m pytest` 会把这两条线一起跑。
 
 ## 判据表（路径 → 命中层 → 跑什么）
 
@@ -62,7 +62,7 @@
 | `console` | **跳过** | `console=false` |
 | `gate` | 跑 | 7 个 job 全 success/skipped → **通过** |
 
-对照改动前的同一次 PR：`测试` 会装 `backend/requirements.txt` 跑 47+80 条用例，`站点构建` 会 `npm ci` 再 `vitepress build`。现在这两块整体消失。
+对照改动前的同一次 PR：`测试` 会装 `backend/requirements.txt` 跑 53+80 条用例，`站点构建` 会 `npm ci` 再 `vitepress build`。现在这两块整体消失。
 
 ## 每个 job 的明细
 

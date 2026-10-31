@@ -74,7 +74,7 @@ title: 奥比中光 Orbbec Gemini 335
 | 质量 (kg) | — |
 | 额定电压 (V) | 5 |
 | 分辨率 | 深度 1280×800；RGB 1920×1080 |
-| temp_range_C | -10~45 |
+| 工作温度 | -10~45 |
 | size_mm | 90×25×30 |
 | weight_g | 97 |
 | power_w | 3 |

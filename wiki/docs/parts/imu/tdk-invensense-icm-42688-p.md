@@ -73,7 +73,7 @@ title: TDK InvenSense ICM-42688-P
 | noise | 2.8 mdps/√Hz；70 µg/√Hz |
 | 电压范围 | 1.71–3.6 |
 | power_w | 3.00e-03 |
-| temp_range_C | -40~85 |
+| 工作温度 | -40~85 |
 | size_mm | 2.5×3×0.91 |
 | 分辨率 | 16-bit |
 | 官方文档 | https://invensense.tdk.com/products/motion-tracking/6-axis/icm-42688-p/ |

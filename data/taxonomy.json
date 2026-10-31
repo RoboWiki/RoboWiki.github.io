@@ -714,18 +714,66 @@
    ]
   },
   {
-   "id": "wiring",
-   "name": "线束",
-   "hint": "成品线束 / 端子线",
-   "subtypes": {},
+   "id": "connector",
+   "name": "连接器",
+   "hint": "板端 / 线端 / 大电流",
+   "subtypes": {
+    "wire_to_board": "线对板",
+    "power": "大电流",
+    "power_signal": "电源+信号混合",
+    "board": "板对板 / 排针",
+    "ffc": "FFC / FPC",
+    "terminal": "接线端子",
+    "data": "数据接口",
+    "rf": "射频同轴",
+    "industrial": "航空插",
+    "cable": "成品线束"
+   },
    "keys": [
     {
+     "k": "positions",
+     "label": "位数",
+     "unit": " P"
+    },
+    {
+     "k": "pitch_mm",
+     "label": "间距",
+     "unit": " mm"
+    },
+    {
+     "k": "current_rated_A",
+     "label": "标称电流",
+     "unit": " A"
+    },
+    {
+     "k": "voltage_rated_V",
+     "label": "电压等级",
+     "unit": " V"
+    },
+    {
+     "k": "mount_type",
+     "label": "安装",
+     "unit": ""
+    },
+    {
      "k": "iface",
-     "label": "接口",
+     "label": "系列 / 接口",
      "unit": ""
     }
    ],
    "sorts": [
+    {
+     "k": "current_rated_A",
+     "label": "标称电流"
+    },
+    {
+     "k": "pitch_mm",
+     "label": "间距"
+    },
+    {
+     "k": "positions",
+     "label": "位数"
+    },
     {
      "k": "price",
      "label": "价格"
@@ -738,7 +786,8 @@
    "rating_dims": [
     "value",
     "build",
-    "docs"
+    "docs",
+    "spec_trust"
    ]
   },
   {
@@ -1339,6 +1388,38 @@
   "乐动 LDROBOT": {
    "slug": "ldrobot",
    "cn": "乐动"
+  },
+  "JST": {
+   "slug": "jst",
+   "cn": "JST"
+  },
+  "Amass 艾迈斯": {
+   "slug": "amass",
+   "cn": "艾迈斯"
+  },
+  "CJT 长江连接器": {
+   "slug": "cjt",
+   "cn": "长江连接器"
+  },
+  "Degson 高正": {
+   "slug": "degson",
+   "cn": "高正"
+  },
+  "XKB 星坤": {
+   "slug": "xkb",
+   "cn": "星坤"
+  },
+  "XUNPU 讯普": {
+   "slug": "xunpu",
+   "cn": "讯普"
+  },
+  "Kinghelm 金航标": {
+   "slug": "kinghelm",
+   "cn": "金航标"
+  },
+  "WEIPU 威浦": {
+   "slug": "weipu",
+   "cn": "威浦"
   }
  }
 }

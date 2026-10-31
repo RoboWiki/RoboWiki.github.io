@@ -1,0 +1,51 @@
+[
+ {
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-31",
+  "price_cny": null,
+  "notes": "达妙 DM 系列电机配套线（CAN + 电源），DIY 时容易买错端子型号，建议按电机侧接口型号买原厂线。 【通用线材，厂商未发布独立规格书；来源仅到渠道页，不硬凑手册。】",
+  "origin": "aifitlab 商城 SKU（海外平台，价格仅参考）",
+  "specs": {
+   "positions": null,
+   "positions_options": null,
+   "pitch_mm": null,
+   "current_rated_A": null,
+   "voltage_rated_V": null,
+   "current_basis": "成品线束，按电机侧接口定义；厂商未给独立测试条件",
+   "contact_resistance_mohm": null,
+   "insulation_resistance_mohm": null,
+   "withstand_voltage_V": null,
+   "mating_cycles": null,
+   "temp_range_C": null,
+   "wire_awg": null,
+   "mount_type": "线端（成品线束）",
+   "lock_type": null,
+   "ip": null,
+   "iface": "CAN / 电源",
+   "use_cases": [
+    "DM 系列关节电机 CAN + 电源",
+    "四足/机械臂电机布线",
+    "按电机侧接口买原厂线"
+   ],
+   "lcsc_part": null,
+   "doc_url": null,
+   "doc_pdf": null,
+   "image_url": null,
+   "image_source": null,
+   "impedance_ohm": null,
+   "freq_max_ghz": null,
+   "length_m": null,
+   "awg": null
+  },
+  "category": "connector",
+  "subtype": "cable",
+  "subtype_label": "成品线束",
+  "id": "damiao-motor-cable",
+  "vendor": "达妙 DAMIAO",
+  "vendor_cn": "达妙",
+  "model": "电机连接线",
+  "title": "达妙电机连接线（CAN/电源）",
+  "url": "https://www.damiaokeji.com/"
+ }
+]

@@ -73,7 +73,7 @@ title: Intel RealSense D455
 | 板载 IMU | 1 |
 | 分辨率 | 深度 1280×720；RGB 1280×800 |
 | absolute | <2% @4 m |
-| temp_range_C | 0~35 |
+| 工作温度 | 0~35 |
 | size_mm | 124×26×29 |
 | weight_g | 116 |
 | 官方文档 | https://www.realsenseai.com/cn/products/d455/ |

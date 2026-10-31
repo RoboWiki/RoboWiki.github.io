@@ -71,7 +71,7 @@ title: WitMotion 维特智能 WT901
 | 库存 | — |
 | ODR (Hz) | 200 |
 | noise | 0.028–0.07 °/s-rms；0.75–1 mg-rms（带宽 100 Hz） |
-| temp_range_C | -40~85 |
+| 工作温度 | -40~85 |
 | 分辨率 | 0.061 °/s/LSB；0.0005 g/LSB |
 | 官方文档 | https://www.wit-motion.com/Module/84.html |
 | 官方手册 (PDF) | https://cdn.shopify.com/s/files/1/0673/6848/5000/files/WitMotion-WT9011DCL_Manual.pdf |

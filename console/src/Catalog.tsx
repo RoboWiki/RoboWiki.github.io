@@ -9,7 +9,7 @@ import { PartDrawer } from './ui'
 import { useAuth } from './App'
 
 //: 品类。顺序即展示顺序 —— 关节电机是当前重点，放最前。
-//: 机械结构 / 电池 / 线束 目前没有收录：不是漏了，是没有可信来源，
+//: 机械结构 / 电池 目前没有收录：不是漏了，是没有可信来源，
 //: 宁可显示「未收录」也不编数（见 README 的口径纪律）。
 const CATS = [
   { value: 'actuator', label: '关节电机', hint: '选型主战场' },
@@ -21,7 +21,7 @@ const CATS = [
   { value: 'lidar', label: '激光雷达', hint: '地形与建图' },
   { value: 'camera', label: '深度相机', hint: '视觉感知' },
   { value: 'battery', label: '电池', hint: '智能电池 / 动力电池' },
-  { value: 'wiring', label: '线束', hint: '成品线束 / 端子线' },
+  { value: 'connector', label: '连接器', hint: '板端 / 线端 / 大电流' },
   { value: 'module', label: '其余模块', hint: 'CAN 通信 / 力触觉 / 编码器' },
 ]
 
@@ -88,6 +88,15 @@ function tableColumns(cat: string) {
       { title: 'CAN', width: 70, align: 'right' as const, render: (_: any, r: Part) => `${r.specs.can ?? '—'}${r.specs.canfd ? ' FD' : ''}` },
       { title: '电流环', width: 90, align: 'right' as const, render: (_: any, r: Part) => r.specs.current_loop_khz ? `${r.specs.current_loop_khz} kHz` : '—' },
       { title: '最高 V', width: 86, align: 'right' as const, render: (_: any, r: Part) => r.specs.voltage_max_V ?? '—' },
+      { title: '价', width: 84, align: 'right' as const, render: (_: any, r: Part) => r.price_cny ? `¥${r.price_cny}` : '—' },
+    ]
+  }
+  if (cat === 'connector') {
+    return [...base,
+      { title: '位数', width: 70, align: 'right' as const, render: (_: any, r: Part) => r.specs.positions ?? '—' },
+      { title: '间距 mm', width: 90, align: 'right' as const, render: (_: any, r: Part) => r.specs.pitch_mm ?? '—' },
+      { title: '标称 A', width: 86, align: 'right' as const, render: (_: any, r: Part) => r.specs.current_rated_A ?? '—' },
+      { title: '电压 V', width: 86, align: 'right' as const, render: (_: any, r: Part) => r.specs.voltage_rated_V ?? '—' },
       { title: '价', width: 84, align: 'right' as const, render: (_: any, r: Part) => r.price_cny ? `¥${r.price_cny}` : '—' },
     ]
   }

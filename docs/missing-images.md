@@ -1,34 +1,56 @@
 # 缺图清单
 
-共 **21 个**零件没有产品图。清单以 `data/catalog/**` 为准逐条核对——不是没找，是不拿错图、同系列图或整机宣传图凑数。
+共 **43 个**零件没有产品图。清单以 `data/catalog/**` 为准逐条核对——不是没找，是不拿错图、同系列图或整机宣传图凑数。
 
 > 补图方式：丢进 `inbox/`，文件名用零件 id 或型号，然后 `python tools/import_from_inbox.py`。
 
-## 当前缺图（21）
+## 当前缺图（43）
 
 | 品类 | 零件 id | 型号 | 待补原因 |
 |---|---|---|---|
 | actuator | `cubemars-ak70-10` | AK70-10 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
-| actuator | `cubemars-ak10-9-v3-0-kv60` | AK10-9 V3.0 KV60 | 同上 |
-| actuator | `cubemars-ak10-9-v2-0-kv60` | AK10-9 V2.0 KV60 | 同上 |
-| actuator | `cubemars-ak80-9-v3-0-kv100` | AK80-9 V3.0 KV100 | 同上 |
-| actuator | `cubemars-ak80-8-kv60` | AK80-8 KV60 | 同上 |
-| actuator | `cubemars-ak45-10-v3-0-kv75` | AK45-10 V3.0 KV75 | 同上 |
-| actuator | `cubemars-ak45-36-v3-0-kv80` | AK45-36 V3.0 KV80 | 同上 |
-| actuator | `cubemars-ak40-10-v3-0-kv170` | AK40-10 V3.0 KV170 | 同上 |
-| actuator | `cubemars-ak80-64-kv80` | AK80-64 KV80 | 同上 |
-| actuator | `cubemars-ak70-9-v3-0-kv60` | AK70-9 V3.0 KV60 | 同上 |
-| actuator | `cubemars-akh70-48-v1-0-kv41` | AKH70-48 V1.0 KV41 | 同上 |
-| actuator | `cubemars-ak60-39-v3-0-kv80` | AK60-39 V3.0 KV80 | 同上 |
-| actuator | `cubemars-ak60-6-v3-0-kv80` | AK60-6 V3.0 KV80 | 同上 |
-| actuator | `cubemars-ak60-6-v1-1-kv140` | AK60-6 V1.1 KV140 | 同上 |
-| actuator | `cubemars-ak45-36-kv80` | AK45-36 KV80 | 同上 |
-| actuator | `cubemars-ak45-10-kv75` | AK45-10 KV75 | 同上 |
-| actuator | `cubemars-ak40-10-kv170` | AK40-10 KV170 | 同上 |
-| actuator | `cubemars-akh70-16-v1-0-kv41` | AKH70-16 V1.0 KV41 | 同上 |
+| actuator | `cubemars-ak10-9-v3-0-kv60` | AK10-9 V3.0 KV60 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
+| actuator | `cubemars-ak10-9-v2-0-kv60` | AK10-9 V2.0 KV60 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
+| actuator | `cubemars-ak80-9-v3-0-kv100` | AK80-9 V3.0 KV100 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
+| actuator | `cubemars-ak80-8-kv60` | AK80-8 KV60 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
+| actuator | `cubemars-ak45-10-v3-0-kv75` | AK45-10 V3.0 KV75 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
+| actuator | `cubemars-ak45-36-v3-0-kv80` | AK45-36 V3.0 KV80 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
+| actuator | `cubemars-ak40-10-v3-0-kv170` | AK40-10 V3.0 KV170 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
+| actuator | `cubemars-ak80-64-kv80` | AK80-64 KV80 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
+| actuator | `cubemars-ak70-9-v3-0-kv60` | AK70-9 V3.0 KV60 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
+| actuator | `cubemars-akh70-48-v1-0-kv41` | AKH70-48 V1.0 KV41 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
+| actuator | `cubemars-ak60-39-v3-0-kv80` | AK60-39 V3.0 KV80 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
+| actuator | `cubemars-ak60-6-v3-0-kv80` | AK60-6 V3.0 KV80 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
+| actuator | `cubemars-ak60-6-v1-1-kv140` | AK60-6 V1.1 KV140 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
+| actuator | `cubemars-ak45-36-kv80` | AK45-36 KV80 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
+| actuator | `cubemars-ak45-10-kv75` | AK45-10 KV75 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
+| actuator | `cubemars-ak40-10-kv170` | AK40-10 KV170 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
+| actuator | `cubemars-akh70-16-v1-0-kv41` | AKH70-16 V1.0 KV41 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
 | lidar | `sens-ldrobot-ld14` | LD14 | 乐动 LD14 官方产品页/商城图待核；LD19 已用 Wayback 快照补图，STL-27L 用官网图 |
-| wiring | `feetech-5264-cable` | 5264 端子线 | 通用线材，厂商未发布独立产品图；来源仅到渠道页 |
-| wiring | `damiao-motor-cable` | 电机连接线 | 通用线材/电机配套线，厂商未发布独立产品图；来源仅到渠道页 |
+| connector | `jst-gh-1p25` | GH 1.25 mm 线对板 | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `jst-ph-2p0` | PH 2.0 mm 线对板 | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `jst-sh-1p0` | SH 1.0 mm 线对板 | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `jst-xh-2p5` | XH 2.5 mm 线对板 | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `jst-zh-1p5` | ZH 1.5 mm 线对板 | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `amass-mr30` | MR30 | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `amass-xt30` | XT30 | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `amass-xt60` | XT60 | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `amass-xt90` | XT90 | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `xkb-dc-5521` | DC 5.5×2.1 电源座 | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `amass-xt30-2p2` | XT30(2+2) | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `amass-xt90-2p2` | XT90(2+2) | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `cjt-a2541-8p` | A2541 2.54 mm 排针/排母 8P | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `xunpu-fpc-05-24p` | FPC-05F-24PH20 0.5 mm 24P | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `degson-2edg-381-2p` | 2EDG 3.81 mm 插拔端子 2P | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `degson-2edg-508-2p` | 2EDG 5.08 mm 插拔端子 2P | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `cjt-db9` | DB9 串口连接器 | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `cjt-rj45` | RJ45 8P8C 网口 | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `xkb-usb-c-16p` | USB-C 16P 母座 | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `kinghelm-bnc` | BNC 射频连接器 | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `kinghelm-sma` | SMA 射频连接器 | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `weipu-gx12` | GX12 航空插 | 新收录，官方产品图/商品图待补；先按官方规格书或立创商品页补，不拿同系列图代替 |
+| connector | `damiao-motor-cable` | 电机连接线 | 通用线材/电机配套线，厂商未发布独立产品图；来源仅到渠道页 |
+| connector | `feetech-5264-cable` | 5264 端子线 | 通用线材，厂商未发布独立产品图；来源仅到渠道页 |
 
 ## 已补图记录
 
@@ -37,4 +59,4 @@
 
 ## 怎么补
 
-剩下的主要是 CubeMars 新增的 18 款：官方产品页按型号有图，用浏览器打开型号页，截产品图那块，丢进 `inbox/` 即可；不要用同系列图或整机图代替。LD14 与两条成品线束继续等官方图或渠道实拍。
+剩下的主要是 CubeMars 新增的 18 款和连接器 24 条：CubeMars 官方产品页按型号有图；连接器优先用厂商规格书或立创商品图，不要用同系列图或整机图代替。LD14 与两条成品线束继续等官方图或渠道实拍。

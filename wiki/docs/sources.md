@@ -34,6 +34,10 @@ title: 数据来源
 | <a href="https://www.orbbec.com.cn/index/Product/index.html?cate=38&ptoduct_cate=1&industry=15&page=2" target="_blank" rel="noopener">奥比中光 产品页（Gemini 系列）</a> | 官网产品页 | 深度相机 | Gemini 系列的深度量程、视场、接口与 SDK（比首页更具体） |
 | <a href="https://www.realsenseai.com/cn/stereo-depth-cameras/" target="_blank" rel="noopener">RealSense 国内代理（realsenseai.com）</a> | 国内代理 | 深度相机 | D400 系列在国内的规格页与产品图；Intel 官网对本站 TLS 拦截，这里可达 |
 | <a href="https://store.dji.com/cn/shop/robomasters?from=robomaster_online" target="_blank" rel="noopener">大疆商城 RoboMaster 专区</a> | 官方商城 | 下位机 / 电机 | 开发板、电机、配件在售型号与官方产品图（价格随时变，不录） |
+| <a href="https://www.jst-mfg.com/" target="_blank" rel="noopener">JST 日本压着端子</a> | 官网 | 连接器 | GH / SH / XH / PH / ZH 系列的间距、额定电流/电压、接触电阻、耐压与线规规格书 |
+| <a href="https://www.china-amass.com/" target="_blank" rel="noopener">Amass 艾迈斯</a> | 官网 | 连接器 | XT30 / XT60 / XT90 / MR30 与 XT30(2+2) / XT90(2+2) 的 MAX 电流、耐压、插拔寿命与资料下载 |
+| <a href="https://www.szlcsc.com/" target="_blank" rel="noopener">立创商城</a> | 元器件商城 | 连接器 / 电源芯片 | 商品页的价格、库存与封装；B 级参数来源，不作为 A 级手册 |
+| <a href="https://www.cnblogs.com/WIRO/p/20986829" target="_blank" rel="noopener">WIRO 连接器选型博客</a> | 技术博客 | 连接器 | 常见连接器类型与适用场景的选型综述；C 级参考，不用于数值 |
 
 ## 项目与归档
 

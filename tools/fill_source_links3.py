@@ -86,7 +86,7 @@ def main() -> None:
                 tgt = url if url.startswith("https://www.unitree.com") else CAND["unitree_support"]
             if not tgt and model == "CyberGear Micro":
                 tgt = "https://www.mi.com/"
-            if not tgt and r["category"] == "wiring":
+            if not tgt and r["category"] == "connector":
                 r["notes"] = (r.get("notes") or "").rstrip() + \
                     " 【通用线材，厂商未发布独立规格书；来源仅到渠道页，不硬凑手册。】"
                 note_only.append(model)

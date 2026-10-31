@@ -75,7 +75,7 @@ title: RoboSense Airy
 | 分辨率 | 0.4°×0.947° |
 | channel | 96 |
 | absolute | 1 cm @1σ |
-| temp_range_C | -40~60 |
+| 工作温度 | -40~60 |
 | size_mm | φ60×63 |
 | weight_g | 240 |
 | power_w | 8 |

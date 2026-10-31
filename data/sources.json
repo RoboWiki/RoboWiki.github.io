@@ -110,5 +110,33 @@
   "kind": "官方商城",
   "covers": "下位机 / 电机",
   "what": "开发板、电机、配件在售型号与官方产品图（价格随时变，不录）"
+ },
+ {
+  "name": "JST 日本压着端子",
+  "url": "https://www.jst-mfg.com/",
+  "kind": "官网",
+  "covers": "连接器",
+  "what": "GH / SH / XH / PH / ZH 系列的间距、额定电流/电压、接触电阻、耐压与线规规格书"
+ },
+ {
+  "name": "Amass 艾迈斯",
+  "url": "https://www.china-amass.com/",
+  "kind": "官网",
+  "covers": "连接器",
+  "what": "XT30 / XT60 / XT90 / MR30 与 XT30(2+2) / XT90(2+2) 的 MAX 电流、耐压、插拔寿命与资料下载"
+ },
+ {
+  "name": "立创商城",
+  "url": "https://www.szlcsc.com/",
+  "kind": "元器件商城",
+  "covers": "连接器 / 电源芯片",
+  "what": "商品页的价格、库存与封装；B 级参数来源，不作为 A 级手册"
+ },
+ {
+  "name": "WIRO 连接器选型博客",
+  "url": "https://www.cnblogs.com/WIRO/p/20986829",
+  "kind": "技术博客",
+  "covers": "连接器",
+  "what": "常见连接器类型与适用场景的选型综述；C 级参考，不用于数值"
  }
 ]

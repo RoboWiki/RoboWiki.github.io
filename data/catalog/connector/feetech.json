@@ -1,0 +1,53 @@
+[
+ {
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-31",
+  "price_cny": null,
+  "notes": "飞特舵机的标准 3P 端子线，做串行总线串联时的基础件。国内淘宝同规格 2–5 元一根，商城 3 USD 只能当量级参考。 【通用线材，厂商未发布独立规格书；来源仅到渠道页，不硬凑手册。】",
+  "origin": "aifitlab 商城 SKU（海外平台，价格仅参考）",
+  "specs": {
+   "positions": 3,
+   "positions_options": [
+    3
+   ],
+   "pitch_mm": null,
+   "current_rated_A": null,
+   "voltage_rated_V": null,
+   "current_basis": "成品线束，按舵机总线电流设计；厂商未给独立测试条件",
+   "contact_resistance_mohm": null,
+   "insulation_resistance_mohm": null,
+   "withstand_voltage_V": null,
+   "mating_cycles": null,
+   "temp_range_C": null,
+   "wire_awg": null,
+   "mount_type": "线端（成品线束）",
+   "lock_type": "卡扣（5264 端子）",
+   "ip": null,
+   "iface": "5264 3P",
+   "use_cases": [
+    "飞特 STS/ST 系列舵机串联总线",
+    "小型人形/机械臂舵机供电与通信",
+    "舵机延长线"
+   ],
+   "lcsc_part": null,
+   "doc_url": null,
+   "doc_pdf": null,
+   "image_url": null,
+   "image_source": null,
+   "impedance_ohm": null,
+   "freq_max_ghz": null,
+   "length_m": null,
+   "awg": null
+  },
+  "category": "connector",
+  "subtype": "cable",
+  "subtype_label": "成品线束",
+  "id": "feetech-5264-cable",
+  "vendor": "Feetech 飞特",
+  "vendor_cn": "飞特",
+  "model": "5264 端子线",
+  "title": "飞特 5264 端子线（舵机延长线）",
+  "url": "https://www.feetech.cn/"
+ }
+]
