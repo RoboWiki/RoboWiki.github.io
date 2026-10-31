@@ -5,7 +5,11 @@ title: 达妙 DAMIAO
 
 # 达妙 DAMIAO
 
-共 **31** 型。数据等级 `A` 表示来自厂商手册/规格书且已逐项核对过。
+共 **36** 型。数据等级 `A` 表示来自厂商手册/规格书且已逐项核对过。
+
+::: warning 来源冲突
+库内相电感 80 µH / 相电阻 0.145 Ω 与 J8009P 同值；aifitlab 手册分列 J8009 = 61 µH / 0.09 Ω、J8009P = 80 µH / 0.145 Ω，疑本行套用了 P 版电参数，待原厂最新选型表确认后再改数值。
+:::
 
 | 型号 | 峰值 τ N·m | 额定 τ N·m | 减速比 | 空载 rpm | 质量 kg | 转子惯量 kg·m² | 价格 ¥ | 来源 |
 |---|---|---|---|---|---|---|---|---|
@@ -28,6 +32,7 @@ title: 达妙 DAMIAO
 | [**DM-J4340-2EC**](/parts/actuator/damiao-dm-j4340-2ec) | 27 | 9 | 40 | 100 | 0.362 | 0.032 | 899 | `A✓` |
 | [**DM-J4340P-2EC**](/parts/actuator/damiao-dm-j4340p-2ec) | 27 | 9 | 40 | 100 | 0.381 | 0.032 | — | `A✓` |
 | [**DM-JH17-51-2EC**](/parts/actuator/damiao-dm-jh17-51-2ec) | 24 | 16 | 51 | 60 | 0.985 | 0.244 | 1,689 | `A✓` |
+| [**DM-H65-1EC**](/parts/actuator/damiao-dm-h65-1ec) | 21.5 | 6 | — | 120 | 3.15 | — | — | `B` |
 | [**DM-J8006-2EC V1.1**](/parts/actuator/damiao-dm-j8006-2ec-v1-1) | 20 | 8 | 6 | 392.8 | 0.559 | 4.14e-03 | 999 | `A✓` |
 | [**DM-J4310M-2EC**](/parts/actuator/damiao-dm-j4310m-2ec) | 18 | 5.2 | 10 | 232 | 0.37 | 2.16e-03 | — | `A✓` |
 | [**DM-JH14-51-2EC**](/parts/actuator/damiao-dm-jh14-51-2ec) | 18 | 5.4 | 51 | 60 | 0.775 | 0.156 | 1,499 | `A✓` |
@@ -36,8 +41,12 @@ title: 达妙 DAMIAO
 | [**DM-J6006-2EC**](/parts/actuator/damiao-dm-j6006-2ec) | 11 | 4 | 6 | 408 | 0.335 | 2.09e-03 | 799 | `A✓` |
 | [**DM-JH11-101-2EC**](/parts/actuator/damiao-dm-jh11-101-2ec) | 10.5 | 4.8 | 101 | 30 | 0.345 | 0.064 | 1,299 | `A✓` |
 | [**DM-JH11-51-2EC**](/parts/actuator/damiao-dm-jh11-51-2ec) | 7.8 | 3.2 | 51 | 60 | 0.345 | 0.016 | 1,299 | `A✓` |
+| [**DM-S3519-1EC**](/parts/actuator/damiao-dm-s3519-1ec) | 7.8 | 3.5 | — | 395 | 0.396 | — | — | `B` |
 | [**DM-J4310-2EC V1.1**](/parts/actuator/damiao-dm-j4310-2ec-v1-1) | 7 | 3 | 10 | 400 | 0.306 | 1.80e-03 | — | `A✓` |
+| [**DM-S2325-1EC**](/parts/actuator/damiao-dm-s2325-1ec) | 5 | 1.35 | — | 380 | 0.172 | — | — | `B` |
 | [**DM-J3507-2EC**](/parts/actuator/damiao-dm-j3507-2ec) | 3 | 0.8 | 7 | 910 | 0.15 | 4.26e-04 | 550 | `A✓` |
+| [**DM-G6220**](/parts/actuator/damiao-dm-g6220) | 2.7 | 1.3 | 1 | 110 | 0.493 | — | — | `B` |
+| [**DM-H6215**](/parts/actuator/damiao-dm-h6215) | 2 | 1 | 1 | 120 | 0.36 | — | — | `B` |
 | [**DM-D5730 -1EC**](/parts/actuator/damiao-dm-d5730-1ec) | 1.9 | 0.65 | 1 | 1,500 | 0.628 | 6.00e-05 | 399 | `A✓` |
 | [**DM-D5730 -1EE**](/parts/actuator/damiao-dm-d5730-1ee) | 1.9 | 0.65 | 1 | 1,500 | 0.628 | 6.00e-05 | — | `A✓` |
 

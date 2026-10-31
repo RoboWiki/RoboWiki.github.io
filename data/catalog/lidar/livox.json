@@ -27,7 +27,7 @@
    "points_per_s": 452000,
    "channel": 144,
    "bits": null,
-   "absolute": null,
+   "absolute": "≤2 cm @20 m (1σ)",
    "temp_range_C": "-40~85",
    "size_mm": "105×131.6×65",
    "weight_g": 1120,
@@ -43,7 +43,7 @@
    ],
    "repo_license": "NOASSERTION"
   },
-  "notes": "车规级长距型号：150 m@10%，120°×25°，144 线等效，452,000 pts/s、10 Hz；TX 版为 100Base-TX，T1 版为 100Base-T1（车载以太网），下单前确认版本。12 W、9–18 V、1120 g、-40~85°C、IP67。DJI 商城 ¥7999（2026-10）。比 Mid-360 重 4 倍多，四足上要算安装位置与配重。",
+  "notes": "车规级长距型号：150 m@10%，120°×25°，144 线等效，452,000 pts/s、10 Hz；TX 版为 100Base-TX，T1 版为 100Base-T1（车载以太网），下单前确认版本。12 W、9–18 V、1120 g、-40~85°C、IP67。DJI 商城 ¥7999（2026-10）。比 Mid-360 重 4 倍多，四足上要算安装位置与配重。 【IP67 仅在接上电源 + 车载以太网两根线时成立，否则 IP54；来源：Livox 手册】",
   "origin": "Livox 官网 HAP 规格页 + HAP(T1) 用户手册核对（2026-10-28）"
  },
  {
@@ -116,5 +116,28 @@
   },
   "vendor_cn": "览沃",
   "subtype_label": "固态"
+ },
+ {
+  "id": "livox-mid-360s",
+  "category": "lidar",
+  "subtype": "solid",
+  "vendor": "Livox",
+  "vendor_cn": "览沃科技",
+  "model": "Mid-360S",
+  "title": "Livox Mid-360S",
+  "url": "https://www.livoxtech.com/cn/mid-360s",
+  "source_tier": "B",
+  "verified": 0,
+  "last_checked": "2026-10-31",
+  "price_cny": null,
+  "origin": "wiki.openelab（英文手册镜像，2026-10-31）确认型号存在；参数待核",
+  "notes": "Mid-360 的后续型号，官方有独立用户手册与 Release Notes；本次只确认型号与文档存在，规格参数未逐项录入，避免猜值。",
+  "specs": {
+   "doc_url": "https://www.livoxtech.com/cn/mid-360s",
+   "image_url": null,
+   "image_source": null,
+   "repo_urls": null,
+   "repo_license": null
+  }
  }
 ]

@@ -12,7 +12,7 @@
   "verified": true,
   "last_checked": "2026-10-28",
   "price_cny": null,
-  "origin": "《RoboMaster C620 无刷电机调速器使用说明》规格参数页",
+  "origin": "《RoboMaster C620 无刷电机调速器使用说明》规格参数页；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
   "notes": "M3508 的官方配套电调：CAN 1 Mbps、持续 20 A。**它没有反电动势吸收能力** —— 刹车瞬间母线电压会抬升，需要在输入端加吸收模块，否则可能烧电调。",
   "specs": {
    "current_cont_A": 20,
@@ -31,7 +31,8 @@
    "tau_rated_Nm": null,
    "gear": null,
    "armature_kgm2": null,
-   "kt_Nm_per_A": null
+   "kt_Nm_per_A": null,
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/RoboMaster_C620_Brushless_Motor_Controller_User_Manual.pdf"
   },
   "subtype_label": "CAN 控制"
  },
@@ -67,7 +68,8 @@
    "tau_rated_Nm": null,
    "gear": null,
    "armature_kgm2": null,
-   "kt_Nm_per_A": null
+   "kt_Nm_per_A": null,
+   "doc_pdf": null
   },
   "subtype_label": "CAN 控制"
  },
@@ -84,7 +86,7 @@
   "verified": true,
   "last_checked": "2026-10-28",
   "price_cny": null,
-  "origin": "《RoboMaster C615 无刷电机调速器使用说明》规格参数页",
+  "origin": "《RoboMaster C615 无刷电机调速器使用说明》规格参数页；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
   "notes": "面向航模/小型动力套件（Snail 2305 等）的 PWM 电调：持续 15 A、峰值 20 A(3 s)、默认输出 16 kHz（可调到 48 kHz）。支持 3S–6S LiPo，工作温度只有 -10~40 ℃，别塞进密闭高温舱。",
   "specs": {
    "current_cont_A": 15,
@@ -103,7 +105,8 @@
    "tau_rated_Nm": null,
    "gear": null,
    "armature_kgm2": null,
-   "kt_Nm_per_A": null
+   "kt_Nm_per_A": null,
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/RoboMaster_C615_Brushless_DC_Motor_Speed_Controller_User_Guide.pdf"
   },
   "subtype_label": "PWM 控制"
  }

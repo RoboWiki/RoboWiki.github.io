@@ -75,10 +75,12 @@ title: RoboSense Airy
 | 分辨率 | 0.4°×0.947° |
 | channel | 96 |
 | absolute | 1 cm @1σ |
+| temp_range_C | -40~60 |
 | size_mm | φ60×63 |
 | weight_g | 240 |
 | power_w | 8 |
 | 额定电压 (V) | 12 |
+| 防护等级 | IP67 / IP6K9K |
 | 官方文档 | https://www.robosense.ai/rslidar/Airy |
 | repo_urls | https://github.com/RoboSense-LiDAR/rslidar_sdk |
 | repo_license | NOASSERTION |
@@ -102,7 +104,7 @@ title: RoboSense Airy
 
 ## 备注
 
-<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>半球形 FOV（360°×90°），30 m@10%、最远 60 m，盲区 0.1 m</li><li>96 线，单回波 856,320 pts/s、双回波 1,712,640 pts/s</li><li>100 Mbps 以太网 UDP，内置 IMU</li><li>9–32 V、&lt;8 W、φ60×63 mm、&lt;240 g</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>官方未公开定价，渠道约 <span class="pn-money">¥4078</span>（2026-10）</li><li>Airy Lite 海外 <span class="pn-money">€600</span></li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>官方页写 1 cm@1σ，产品手册典型值 1.5 cm@1σ——【来源冲突】</li></ul></div></div>
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>半球形 FOV（360°×90°），30 m@10%、最远 60 m，盲区 0.1 m</li><li>96 线，单回波 856,320 pts/s、双回波 1,712,640 pts/s</li><li>100 Mbps 以太网 UDP，内置 IMU</li><li>9–32 V、&lt;8 W、φ60×63 mm、&lt;240 g</li><li>官网另有 1 cm 说法，以手册为准】</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>官方未公开定价，渠道约 <span class="pn-money">¥4078</span>（2026-10）</li><li>Airy Lite 海外 <span class="pn-money">€600</span></li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>官方页写 1 cm@1σ，产品手册典型值 1.5 cm@1σ——【来源冲突】</li><li>【精度口径按手册 1.5 cm@1σ</li></ul></div></div>
 
 
 

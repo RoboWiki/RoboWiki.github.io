@@ -80,7 +80,7 @@
   "verified": true,
   "last_checked": "2026-10-28",
   "price_cny": 1799,
-  "origin": "《Unitree 4D LiDAR L2 用户手册》参数规格页",
+  "origin": "《Unitree 4D LiDAR L2 用户手册》参数规格页；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
   "notes": "L2 是 L1 的升级：点频 128000 点/秒（L1 的 3 倍）、最大量程 30 m，并且**多了以太网**（ENET UDP + TTL UART 4 Mbps），组网不必再拖串口线。负角度模式可把竖直视场从 90° 扩到 96°。供电要 12 V / 1 A，别直接接 24 V。 非重复扫描，360°×96°，30 m@90%、盲区 0.05 m；有效点频 64,000 pts/s（采样 128,000 pts/s），精度 2 cm；内置 3 轴 IMU，官方提供只用 L2 + IMU 的 Point-LIO 开源 SLAM 方案。10 W（低温自加热峰值 13 W）、12 V、230 g。官网 ¥1799（2026-10），海外 $419。性价比高，但垂直 96° 加上非重复扫描意味着近距离点云比机械式稀，建图算法要适配。",
   "specs": {
    "image_url": "/parts/unitree-l2.jpg",
@@ -123,7 +123,7 @@
     "https://github.com/unitreerobotics/unilidar_sdk2"
    ],
    "ip": null,
-   "doc_pdf": null,
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/Unitree_4D_LiDAR_L2_User_Manual.pdf",
    "range_min_m": null,
    "fps_note": null,
    "slam_accuracy": null,

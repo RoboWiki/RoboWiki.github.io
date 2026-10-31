@@ -16,6 +16,10 @@
        "link": "/parts/actuator/"
       },
       {
+       "text": "CubeMars",
+       "link": "/parts/actuator/cubemars"
+      },
+      {
        "text": "大疆 DJI",
        "link": "/parts/actuator/dji"
       },
@@ -24,8 +28,16 @@
        "link": "/parts/actuator/unitree"
       },
       {
+       "text": "小米 Xiaomi",
+       "link": "/parts/actuator/xiaomi"
+      },
+      {
        "text": "灵足 RobStride",
        "link": "/parts/actuator/robstride"
+      },
+      {
+       "text": "脉塔 MyActuator",
+       "link": "/parts/actuator/myactuator"
       },
       {
        "text": "达妙 DAMIAO",

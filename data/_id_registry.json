@@ -30,6 +30,26 @@
    "category": "controller_high",
    "model": "Raspberry Pi 5"
   },
+  "cubemars-ak80-6": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "AK80-6"
+  },
+  "damiao-dm-g6220": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "DM-G6220"
+  },
+  "damiao-dm-h6215": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "DM-H6215"
+  },
+  "damiao-dm-h65-1ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "DM-H65-1EC"
+  },
   "damiao-dm-imu-l1": {
    "added": "2026-10-31",
    "category": "imu",
@@ -39,6 +59,16 @@
    "added": "2026-10-31",
    "category": "controller_low",
    "model": "DM-MC-Board02"
+  },
+  "damiao-dm-s2325-1ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "DM-S2325-1EC"
+  },
+  "damiao-dm-s3519-1ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "DM-S3519-1EC"
   },
   "damiao-motor-cable": {
    "added": "2026-10-31",
@@ -875,10 +905,45 @@
    "category": "lidar",
    "model": "Mid-360"
   },
+  "livox-mid-360s": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "Mid-360S"
+  },
   "livox-mid-70": {
    "added": "2026-10-31",
    "category": "lidar",
    "model": "Mid-70"
+  },
+  "myactuator-x12-320": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "X12-320"
+  },
+  "myactuator-x15-450": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "X15-450"
+  },
+  "myactuator-x2-7": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "X2-7"
+  },
+  "myactuator-x4-10": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "X4-10"
+  },
+  "myactuator-x4-36": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "X4-36"
+  },
+  "myactuator-x8-120": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "X8-120"
   },
   "nvidia-orin-nano-8gb": {
    "added": "2026-10-31",
@@ -2289,6 +2354,11 @@
    "added": "2026-10-31",
    "category": "actuator",
    "model": "Unitree A1"
+  },
+  "xiaomi-cybergear-micro": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "CyberGear Micro"
   },
   "灵足-robstride-el05": {
    "added": "2026-10-31",

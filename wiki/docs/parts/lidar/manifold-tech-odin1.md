@@ -34,7 +34,7 @@ title: Manifold Tech Odin1
 
 <div class="part-src">
 来源：<a href="https://manifoldtechltd.github.io/wiki/odin_series/odin1/14.%20Technical%20Specifications_.html">https://manifoldtechltd.github.io/wiki/odin_series/odin1/14.%20Technical%20Specifications_.html</a><br/>
-收录：厂商官方 Wiki《Odin1 用户手册》14. 技术参数（2026-10-29 逐表读取）<br/>
+收录：厂商官方 Wiki《Odin1 用户手册》14. 技术参数（2026-10-29 逐表读取）；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对<br/>
 核对：2026-10-29
 </div>
 
@@ -92,6 +92,7 @@ title: Manifold Tech Odin1
 | temp_range_C | -20 ~ 55 ℃（存储 -25 ~ 60 ℃） |
 | output | 真彩 SLAM 点云 / 原始点云 / 原始 RGB / 高频 IMU / 位姿 |
 | 官方文档 | https://manifoldtechltd.github.io/wiki/odin_series/odin1/14.%20Technical%20Specifications_.html |
+| 官方手册 (PDF) | https://cdn.shopify.com/s/files/1/0673/6848/5000/files/Odin1_User_Manual.pdf |
 | repo_urls | https://github.com/manifoldsdk/odin_ros_driver、https://github.com/ManifoldTechLtd/Odin-Nav-Stack |
 | repo_license | Apache-2.0 |
 
@@ -110,7 +111,7 @@ title: Manifold Tech Odin1
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://manifoldtechltd.github.io/wiki/odin_series/odin1/14.%20Technical%20Specifications_.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://github.com/manifoldsdk/odin_ros_driver" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 Apache-2.0</td></tr><tr><td><a href="https://github.com/ManifoldTechLtd/Odin-Nav-Stack" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 Apache-2.0</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商官方 Wiki 产品图（manifoldtechltd.github.io/wiki/odin_series/odin1）</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商官方 Wiki《Odin1 用户手册》14. 技术参数（2026-10-29 逐表读取）</td></tr><tr><td><a href="https://www.google.com/search?q=Manifold+Tech+Odin1+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Odin1&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Manifold+Tech+Odin1+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/lidar/manifold.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/manifold.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://manifoldtechltd.github.io/wiki/odin_series/odin1/14.%20Technical%20Specifications_.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://cdn.shopify.com/s/files/1/0673/6848/5000/files/Odin1_User_Manual.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://github.com/manifoldsdk/odin_ros_driver" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 Apache-2.0</td></tr><tr><td><a href="https://github.com/ManifoldTechLtd/Odin-Nav-Stack" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 Apache-2.0</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商官方 Wiki 产品图（manifoldtechltd.github.io/wiki/odin_series/odin1）</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商官方 Wiki《Odin1 用户手册》14. 技术参数（2026-10-29 逐表读取）；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对</td></tr><tr><td><a href="https://www.google.com/search?q=Manifold+Tech+Odin1+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Odin1&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Manifold+Tech+Odin1+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/lidar/manifold.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/manifold.json</td></tr></tbody></table>
 
 ## 备注
 

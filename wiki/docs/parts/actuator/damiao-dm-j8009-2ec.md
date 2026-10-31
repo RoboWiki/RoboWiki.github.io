@@ -34,7 +34,7 @@ title: 达妙 DAMIAO DM-J8009-2EC
 
 <div class="part-src">
 来源：<a href="https://www.hightorque.cn/">https://www.hightorque.cn/</a><br/>
-收录：达妙 2026 产品选型表 2026-10-23<br/>
+收录：达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对<br/>
 核对：2026-10-27
 </div>
 
@@ -48,6 +48,9 @@ title: 达妙 DAMIAO DM-J8009-2EC
   </div>
 </div>
 
+::: warning 来源冲突
+这份数据的来源之间有分歧，未经覆盖，写在下方「备注」里。
+:::
 
 ## 使用建议
 
@@ -117,6 +120,7 @@ title: 达妙 DAMIAO DM-J8009-2EC
 | 编码器 | 磁编，双编 |
 | 通信 | CAN、CANFD |
 | 内置驱动 | 1 |
+| 官方手册 (PDF) | https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-J8009-2EC-User_Manual-1-1.pdf |
 
 ## 优惠与获取条件
 
@@ -142,11 +146,11 @@ title: 达妙 DAMIAO DM-J8009-2EC
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.hightorque.cn/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商资料</td></tr><tr><td class="rs-plain">收录说明</td><td>达妙 2026 产品选型表 2026-10-23</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-J8009-2EC+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=DM-J8009-2EC&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-J8009-2EC+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/actuator/damiao.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/damiao.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.hightorque.cn/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://cdn.shopify.com/s/files/1/0673/6848/5000/files/DAMIAO-DM-J8009-2EC-User_Manual-1-1.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商资料</td></tr><tr><td class="rs-plain">收录说明</td><td>达妙 2026 产品选型表 2026-10-23；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-J8009-2EC+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=DM-J8009-2EC&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-J8009-2EC+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/actuator/damiao.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/damiao.json</td></tr></tbody></table>
 
 ## 备注
 
-48.0 V 版本；关节电机；额定 20.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。
+48.0 V 版本；关节电机；额定 20.0 N·m；源文勘误：无 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 【来源冲突】库内相电感 80 µH / 相电阻 0.145 Ω 与 J8009P 同值；aifitlab 手册分列 J8009 = 61 µH / 0.09 Ω、J8009P = 80 µH / 0.145 Ω，疑本行套用了 P 版电参数，待原厂最新选型表确认后再改数值。
 
 
 

@@ -12,7 +12,7 @@
   "verified": true,
   "last_checked": "2026-10-29",
   "price_cny": null,
-  "origin": "厂商官方 Wiki《Odin1 用户手册》14. 技术参数（2026-10-29 逐表读取）",
+  "origin": "厂商官方 Wiki《Odin1 用户手册》14. 技术参数（2026-10-29 逐表读取）；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
   "notes": "不是纯激光雷达：一颗 940 nm 深度模组（240×180、0.2–70 m、最高 70 万点/秒、120°×90°）+ 一颗 1600×1296 全局曝光 RGB + IMU，片上带 SLAM（±5 cm + 1%），直接输出真彩点云、位姿与高频 IMU。选型提醒：它是**一体式方案**，省掉相机-雷达标定与时间同步；代价是视场固定 120°×90°、且深度分辨率只有 240×180，做精细物体识别不够用。IP66、280 g、额定 11 W。价格未公开，需向厂商询价。",
   "specs": {
    "depth_resolution": "240 × 180",
@@ -43,7 +43,7 @@
    "iface": "以太网（航空插头）；SDK 支持 ROS1 / ROS2",
    "output": "真彩 SLAM 点云 / 原始点云 / 原始 RGB / 高频 IMU / 位姿",
    "doc_url": "https://manifoldtechltd.github.io/wiki/odin_series/odin1/14.%20Technical%20Specifications_.html",
-   "doc_pdf": null,
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/Odin1_User_Manual.pdf",
    "repo_urls": [
     "https://github.com/manifoldsdk/odin_ros_driver",
     "https://github.com/ManifoldTechLtd/Odin-Nav-Stack"

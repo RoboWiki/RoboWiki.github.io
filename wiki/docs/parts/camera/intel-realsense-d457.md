@@ -34,7 +34,7 @@ title: Intel RealSense D457
 
 <div class="part-src">
 来源：<a href="https://www.realsenseai.com/cn/stereo-depth-cameras/">https://www.realsenseai.com/cn/stereo-depth-cameras/</a><br/>
-收录：Intel RealSense 国内代理 realsenseai.com（官方页面）<br/>
+收录：Intel RealSense 国内代理 realsenseai.com（官方页面）；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对<br/>
 核对：2026-10-28
 </div>
 
@@ -71,6 +71,7 @@ title: Intel RealSense D457
 | 质量 (kg) | — |
 | 额定电压 (V) | — |
 | 防护等级 | IP65 |
+| 官方手册 (PDF) | https://cdn.shopify.com/s/files/1/0673/6848/5000/files/RealSense-D457-Datasheet-Aug_2025.pdf |
 
 ## 优惠与获取条件
 
@@ -87,7 +88,7 @@ title: Intel RealSense D457
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.realsenseai.com/cn/stereo-depth-cameras/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商官方产品图（用户提供链接）</td></tr><tr><td class="rs-plain">收录说明</td><td>Intel RealSense 国内代理 realsenseai.com（官方页面）</td></tr><tr><td><a href="https://www.google.com/search?q=Intel+RealSense+D457+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=D457&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Intel+RealSense+D457+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/camera/intel-realsense.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/camera/intel-realsense.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.realsenseai.com/cn/stereo-depth-cameras/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://cdn.shopify.com/s/files/1/0673/6848/5000/files/RealSense-D457-Datasheet-Aug_2025.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商官方产品图（用户提供链接）</td></tr><tr><td class="rs-plain">收录说明</td><td>Intel RealSense 国内代理 realsenseai.com（官方页面）；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对</td></tr><tr><td><a href="https://www.google.com/search?q=Intel+RealSense+D457+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=D457&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Intel+RealSense+D457+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/camera/intel-realsense.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/camera/intel-realsense.json</td></tr></tbody></table>
 
 ## 备注
 

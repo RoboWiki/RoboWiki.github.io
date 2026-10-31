@@ -71,6 +71,7 @@ title: Livox HAP
 | 质量 (kg) | — |
 | 分辨率 | 0.18°×0.23° |
 | channel | 144 |
+| absolute | ≤2 cm @20 m (1σ) |
 | temp_range_C | -40~85 |
 | size_mm | 105×131.6×65 |
 | weight_g | 1,120 |
@@ -101,7 +102,7 @@ title: Livox HAP
 
 ## 备注
 
-<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>车规级长距型号：150 m@10%，120°×25°，144 线等效，452,000 pts/s、10 Hz</li><li>12 W、9–18 V、1120 g、-40~85°C、IP67</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>DJI 商城 <span class="pn-money">¥7999</span>（2026-10）</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>TX 版为 100Base-TX，T1 版为 100Base-T1（车载以太网），下单前确认版本</li><li>比 Mid-360 重 4 倍多，四足上要算安装位置与配重</li></ul></div></div>
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>车规级长距型号：150 m@10%，120°×25°，144 线等效，452,000 pts/s、10 Hz</li><li>12 W、9–18 V、1120 g、-40~85°C、IP67</li><li>【IP67 仅在接上电源 + 车载以太网两根线时成立，否则 IP54</li><li>来源：Livox 手册】</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>DJI 商城 <span class="pn-money">¥7999</span>（2026-10）</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>TX 版为 100Base-TX，T1 版为 100Base-T1（车载以太网），下单前确认版本</li><li>比 Mid-360 重 4 倍多，四足上要算安装位置与配重</li></ul></div></div>
 
 
 

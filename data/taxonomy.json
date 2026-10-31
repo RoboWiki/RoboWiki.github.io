@@ -1315,6 +1315,18 @@
   "元生创新 Yesense": {
    "slug": "yesense",
    "cn": "元感 Yesense"
+  },
+  "脉塔 MyActuator": {
+   "slug": "myactuator",
+   "cn": "脉塔智能"
+  },
+  "CubeMars": {
+   "slug": "cubemars",
+   "cn": "CubeMars"
+  },
+  "小米 Xiaomi": {
+   "slug": "xiaomi",
+   "cn": "小米"
   }
  }
 }

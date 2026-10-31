@@ -14,7 +14,7 @@ title: 奥比中光 Orbbec Gemini 335
     <div class="part-tags">
       <span class="part-tag">深度相机</span>
       <span class="part-tag soft">结构光</span>
-      <span class="part-tag tierA">来源 A ✓ 已核对</span>
+      <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥1,950</span>
     </div>
 
@@ -34,7 +34,7 @@ title: 奥比中光 Orbbec Gemini 335
 
 <div class="part-src">
 来源：<a href="https://orbbec.com.cn/product_detail/6.html">https://orbbec.com.cn/product_detail/6.html</a><br/>
-收录：Seeed wiki 集成指南（非规格书）<br/>
+收录：Seeed wiki 集成指南（非规格书）；原标 A 但来源是 Seeed 集成指南（非规格书），2026-10-31 降为 B<br/>
 核对：2026-10-28
 </div>
 
@@ -98,7 +98,7 @@ title: 奥比中光 Orbbec Gemini 335
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://orbbec.com.cn/product_detail/6.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.orbbec.com/products/3d-cameras/gemini-335/" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://github.com/orbbec/OrbbecSDK_v2" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NOASSERTION（⚠ 有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍）</td></tr><tr><td class="rs-plain">产品图出处</td><td>奥比中光官网产品图</td></tr><tr><td class="rs-plain">收录说明</td><td>Seeed wiki 集成指南（非规格书）</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A5%A5%E6%AF%94%E4%B8%AD%E5%85%89+Orbbec+Gemini+335+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Gemini+335&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A5%A5%E6%AF%94%E4%B8%AD%E5%85%89+Orbbec+Gemini+335+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/camera/orbbec.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/camera/orbbec.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://orbbec.com.cn/product_detail/6.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.orbbec.com/products/3d-cameras/gemini-335/" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://github.com/orbbec/OrbbecSDK_v2" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NOASSERTION（⚠ 有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍）</td></tr><tr><td class="rs-plain">产品图出处</td><td>奥比中光官网产品图</td></tr><tr><td class="rs-plain">收录说明</td><td>Seeed wiki 集成指南（非规格书）；原标 A 但来源是 Seeed 集成指南（非规格书），2026-10-31 降为 B</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A5%A5%E6%AF%94%E4%B8%AD%E5%85%89+Orbbec+Gemini+335+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Gemini+335&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A5%A5%E6%AF%94%E4%B8%AD%E5%85%89+Orbbec+Gemini+335+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/camera/orbbec.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/camera/orbbec.json</td></tr></tbody></table>
 
 ## 备注
 
