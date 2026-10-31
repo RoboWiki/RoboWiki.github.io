@@ -1,13 +1,14 @@
 ---
-title: CJT 长江连接器 DB9 串口连接器
+title: Ckmtw 灿科盟 D-DMR009PF-D002 DB9 9P 母座
 ---
 
 
-# CJT 长江连接器 DB9 串口连接器
+# Ckmtw 灿科盟 D-DMR009PF-D002 DB9 9P 母座
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/cjt-db9.jpg" alt="D-DMR009PF-D002 DB9 9P 母座" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
@@ -28,12 +29,12 @@ title: CJT 长江连接器 DB9 串口连接器
 | 间距 (mm) | 2.77 |
 | 标称电流 (A) | 3 |
 | 电压等级 (V) | — |
-| 安装方式 | THT 弯针/直针 |
-| 系列 / 接口 | DB9 |
+| 安装方式 | THT 弯插 |
+| 系列 / 接口 | DB9 9P 母座 |
 
 <div class="part-src">
-来源：<a href="#">—</a><br/>
-收录：立创商城/厂商公开页（未逐项核对）<br/>
+来源：<a href="https://item.szlcsc.com/153213.html">https://item.szlcsc.com/153213.html</a><br/>
+收录：立创商城 C141882（Ckmtw，2026-10-31）<br/>
 核对：2026-10-31
 </div>
 
@@ -73,12 +74,14 @@ title: CJT 长江连接器 DB9 串口连接器
 | 间距 (mm) | 2.77 |
 | 标称电流 (A) | 3 |
 | 电压等级 (V) | — |
-| 安装方式 | THT 弯针/直针 |
-| 系列 / 接口 | DB9 |
+| 安装方式 | THT 弯插 |
+| 系列 / 接口 | DB9 9P 母座 |
 | 可选位数 | 9 |
-| 电流口径 | 立创商品页 C141882（Ckmtw，同规格 DB9 9P 母座）：信号脚 3 A；CJT 具体料号待核 |
+| 电流口径 | 立创商品页：信号脚 3 A；未给电压/温升条件 |
 | 工作温度 | -45~+85 |
 | 锁扣 | 螺丝锁紧 |
+| 立创编号 | C141882 |
+| 官方文档 | https://item.szlcsc.com/153213.html |
 
 ## 优惠与获取条件
 
@@ -95,11 +98,11 @@ title: CJT 长江连接器 DB9 串口连接器
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td class="rs-plain">收录说明</td><td>立创商城/厂商公开页（未逐项核对）</td></tr><tr><td><a href="https://www.google.com/search?q=CJT+%E9%95%BF%E6%B1%9F%E8%BF%9E%E6%8E%A5%E5%99%A8+DB9+%E4%B8%B2%E5%8F%A3%E8%BF%9E%E6%8E%A5%E5%99%A8+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=DB9+%E4%B8%B2%E5%8F%A3%E8%BF%9E%E6%8E%A5%E5%99%A8&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=CJT+%E9%95%BF%E6%B1%9F%E8%BF%9E%E6%8E%A5%E5%99%A8+DB9+%E4%B8%B2%E5%8F%A3%E8%BF%9E%E6%8E%A5%E5%99%A8+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/connector/cjt.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/connector/cjt.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://item.szlcsc.com/153213.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>立创商城商品图（C141882，Ckmtw，2026-10-31）</td></tr><tr><td class="rs-plain">收录说明</td><td>立创商城 C141882（Ckmtw，2026-10-31）</td></tr><tr><td><a href="https://www.google.com/search?q=Ckmtw+%E7%81%BF%E7%A7%91%E7%9B%9F+D-DMR009PF-D002+DB9+9P+%E6%AF%8D%E5%BA%A7+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=D-DMR009PF-D002+DB9+9P+%E6%AF%8D%E5%BA%A7&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Ckmtw+%E7%81%BF%E7%A7%91%E7%9B%9F+D-DMR009PF-D002+DB9+9P+%E6%AF%8D%E5%BA%A7+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/connector/cjt.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/connector/cjt.json</td></tr></tbody></table>
 
 ## 备注
 
-DB9 只是外壳，RS232 与 RS485 的引脚定义不同；先看设备手册，不要按线色猜。
+代表型号 Ckmtw C141882；DB9 只是外壳，RS232/RS485 引脚定义不同，先看设备手册。
 
 
 

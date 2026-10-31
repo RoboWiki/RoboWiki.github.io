@@ -1420,6 +1420,26 @@
   "WEIPU 威浦": {
    "slug": "weipu",
    "cn": "威浦"
+  },
+  "Ckmtw 灿科盟": {
+   "slug": "ckmtw",
+   "cn": "灿科盟"
+  },
+  "JTL 景泰隆": {
+   "slug": "jtl",
+   "cn": "景泰隆"
+  },
+  "HANRUN 汉仁": {
+   "slug": "hanrun",
+   "cn": "汉仁"
+  },
+  "电蜂优选 Elecbee": {
+   "slug": "elecbee",
+   "cn": "电蜂优选"
+  },
+  "伟利达 WLD": {
+   "slug": "weilida",
+   "cn": "伟利达"
   }
  }
 }

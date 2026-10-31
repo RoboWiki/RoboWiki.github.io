@@ -1,10 +1,10 @@
 # 缺图清单
 
-共 **27 个**零件没有产品图。清单以 `data/catalog/**` 为准逐条核对——不是没找，是不拿错图、同系列图或整机宣传图凑数。
+共 **20 个**零件没有产品图。清单以 `data/catalog/**` 为准逐条核对——不是没找，是不拿错图、同系列图或整机宣传图凑数。
 
 > 补图方式：丢进 `inbox/`，文件名用零件 id 或型号，然后 `python tools/import_from_inbox.py`。
 
-## 当前缺图（27）
+## 当前缺图（20）
 
 | 品类 | 零件 id | 型号 | 待补原因 |
 |---|---|---|---|
@@ -26,22 +26,15 @@
 | actuator | `cubemars-ak45-10-kv75` | AK45-10 KV75 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
 | actuator | `cubemars-ak40-10-kv170` | AK40-10 KV170 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
 | actuator | `cubemars-akh70-16-v1-0-kv41` | AKH70-16 V1.0 KV41 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
+| connector | `damiao-motor-cable` | 电机连接线（XT30 2+2 / CAN / GH1.25） | 厂商未提供独立产品图；手册已给出 XT30(2+2)/CAN/GH1.25 接口定义，不拿其他线束图代替 |
 | lidar | `sens-ldrobot-ld14` | LD14 | 乐动 LD14 官方产品页/商城图待核；LD19 已用 Wayback 快照补图，STL-27L 用官网图 |
-| connector | `xkb-dc-5521` | DC 5.5×2.1 电源座 | XKB 5.5×2.1 具体料号/官方图待核；同规格其他品牌图未采用（避免张冠李戴） |
-| connector | `cjt-db9` | DB9 串口连接器 | CJT 具体料号/官方图待核；立创有 Ckmtw 同规格图，但品牌不一致，未采用 |
-| connector | `cjt-rj45` | RJ45 8P8C 网口 | CJT 具体料号/官方图待核 |
-| connector | `kinghelm-bnc` | BNC 射频连接器 | Kinghelm 具体料号/官方图待核 |
-| connector | `kinghelm-sma` | SMA 射频连接器 | Kinghelm 具体料号/官方图待核 |
-| connector | `weipu-gx12` | GX12 航空插 | WEIPU 具体料号/官方图待核 |
-| connector | `damiao-motor-cable` | 电机连接线 | 通用线材/电机配套线，厂商未发布独立产品图；来源仅到渠道页 |
-| connector | `feetech-5264-cable` | 5264 端子线 | 通用线材，厂商未发布独立产品图；来源仅到渠道页 |
 
 ## 已补图记录
 
-- **2026-10-31（连接器补图）**：补 16 张产品图——JST GH/SH/XH/PH/ZH 5 张、Amass XT30/60/90/MR30/XT30(2+2)/XT90(2+2) 6 张（官方规格书/样册），以及立创/厂商的 A2541 排针、FPC-05F-24P、Degson 3.81/5.08 插拔端子、XKB USB-C 16P 5 张。
+- **2026-10-31（连接器补图）**：补 23 张产品图——JST GH/SH/XH/PH/ZH 5 张、Amass XT30/60/90/MR30/XT30(2+2)/XT90(2+2) 6 张（官方规格书/样册），A2541 排针、FPC-05F-24P、Degson 3.81/5.08、XKB USB-C 5 张（立创/厂商），以及 DB9(Ckmtw)、DC 5.5×2.1(景泰隆)、RJ45(HANRUN)、SMA/BNC(Kinghelm)、GX12-2P(Elecbee)、5264 端子线(伟利达) 7 张。
 - **2026-10-31（合并 ccc 分支）**：补 42 张产品图（覆盖 40 个部件）——达妙 JH/S 系列、高擎 9 款、脉塔 6 款、Stackforce 2 款、小米 CyberGear、大疆 TB47/TB48、Movella MTi-3、乐动 LD19/STL27L、Livox Mid-360S/Mid-70、RoboSense Airy Lite。缺图从 61 降到 21。
 - **2026-10-28**：Intel D435i / D455 / D405 / D457、奥比中光 Gemini 305 / 335 / 336、达妙 H7 与 DM-MC-Board02、大疆 RM A/C 板、灵足 RS10、宇树 L1 / L2（线稿图）。
 
 ## 怎么补
 
-剩下的主要是 CubeMars 新增的 18 款和连接器 8 条（DC、DB9、RJ45、SMA、BNC、GX12 与两条成品线束）：CubeMars 官方产品页按型号有图；连接器优先用厂商规格书或立创商品图，找不到同品牌图就留空，不拿同规格其他品牌图代替。
+剩下的主要是 CubeMars 新增的 18 款和达妙电机线：CubeMars 官方产品页按型号有图；达妙线需要厂商独立产品图或清晰的套装实拍，不能拿单根 XT30/GH 线冒充整套。

@@ -1,13 +1,14 @@
 ---
-title: Kinghelm 金航标 SMA 射频连接器
+title: Kinghelm 金航标 KH-SMA-KE-Z SMA 内孔正脚
 ---
 
 
-# Kinghelm 金航标 SMA 射频连接器
+# Kinghelm 金航标 KH-SMA-KE-Z SMA 内孔正脚
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/kinghelm-sma.jpg" alt="KH-SMA-KE-Z SMA 内孔正脚" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
@@ -28,12 +29,12 @@ title: Kinghelm 金航标 SMA 射频连接器
 | 间距 (mm) | — |
 | 标称电流 (A) | — |
 | 电压等级 (V) | — |
-| 安装方式 | THT / 面板 / 线端 |
-| 系列 / 接口 | SMA |
+| 安装方式 | THT 正脚立式 |
+| 系列 / 接口 | SMA 内孔 |
 
 <div class="part-src">
-来源：<a href="https://www.kinghelm.net/">https://www.kinghelm.net/</a><br/>
-收录：立创商城/厂商公开页（未逐项核对）<br/>
+来源：<a href="https://item.szlcsc.com/516666.html">https://item.szlcsc.com/516666.html</a><br/>
+收录：立创商城 C504007（Kinghelm，2026-10-31）<br/>
 核对：2026-10-31
 </div>
 
@@ -73,11 +74,13 @@ title: Kinghelm 金航标 SMA 射频连接器
 | 间距 (mm) | — |
 | 标称电流 (A) | — |
 | 电压等级 (V) | — |
-| 安装方式 | THT / 面板 / 线端 |
-| 系列 / 接口 | SMA |
+| 安装方式 | THT 正脚立式 |
+| 系列 / 接口 | SMA 内孔 |
 | 可选位数 | 1 |
-| 电流口径 | 商品页未给测试条件；阻抗 50 Ω，频率按具体型号 |
+| 电流口径 | 立创商品页未给载流条件；射频连接器按阻抗/频率选 |
 | 锁扣 | 螺纹 |
+| 立创编号 | C504007 |
+| 官方文档 | https://item.szlcsc.com/516666.html |
 | 阻抗 (Ω) | 50 |
 | 最高频率 (GHz) | 6 |
 
@@ -96,11 +99,11 @@ title: Kinghelm 金航标 SMA 射频连接器
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.kinghelm.net/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>立创商城/厂商公开页（未逐项核对）</td></tr><tr><td><a href="https://www.google.com/search?q=Kinghelm+%E9%87%91%E8%88%AA%E6%A0%87+SMA+%E5%B0%84%E9%A2%91%E8%BF%9E%E6%8E%A5%E5%99%A8+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=SMA+%E5%B0%84%E9%A2%91%E8%BF%9E%E6%8E%A5%E5%99%A8&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Kinghelm+%E9%87%91%E8%88%AA%E6%A0%87+SMA+%E5%B0%84%E9%A2%91%E8%BF%9E%E6%8E%A5%E5%99%A8+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/connector/kinghelm.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/connector/kinghelm.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://item.szlcsc.com/516666.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>立创商城商品图（C504007，Kinghelm，2026-10-31）</td></tr><tr><td class="rs-plain">收录说明</td><td>立创商城 C504007（Kinghelm，2026-10-31）</td></tr><tr><td><a href="https://www.google.com/search?q=Kinghelm+%E9%87%91%E8%88%AA%E6%A0%87+KH-SMA-KE-Z+SMA+%E5%86%85%E5%AD%94%E6%AD%A3%E8%84%9A+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=KH-SMA-KE-Z+SMA+%E5%86%85%E5%AD%94%E6%AD%A3%E8%84%9A&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Kinghelm+%E9%87%91%E8%88%AA%E6%A0%87+KH-SMA-KE-Z+SMA+%E5%86%85%E5%AD%94%E6%AD%A3%E8%84%9A+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/connector/kinghelm.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/connector/kinghelm.json</td></tr></tbody></table>
 
 ## 备注
 
-SMA 有公母/内针/内孔，50 Ω 与 75 Ω 不混用；拧紧力矩不要过大。
+SMA 内孔正脚，50Ω/6GHz；公母/内针内孔别混，拧紧力矩不要过大。
 
 
 
