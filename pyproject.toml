@@ -1,10 +1,10 @@
 [project]
 name = "robowiki"
 version = "0.1.0"
-description = "机器人部件选择社区：官方参数 + 真实使用者的评分与评价"
+description = "机器人开发的开放资料底稿：可核对的参数、可追溯的来源、真实使用者的经验"
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "MIT" }
+license = { text = "GPL-3.0-only" }
 authors = [{ name = "zeitvex" }]
 keywords = ["robotics", "actuator", "quadruped", "catalog", "open-data"]
 
@@ -32,7 +32,7 @@ Repository = "https://github.com/RoboWiki/RoboWiki.github.io"
 Issues = "https://github.com/RoboWiki/RoboWiki.github.io/issues"
 
 [project.scripts]
-roboselect = "pipeline.__main__:main"
+robowiki = "pipeline.__main__:main"
 
 [tool.pytest.ini_options]
 # 两条测试线：pipeline（构建链）与 backend（API）。

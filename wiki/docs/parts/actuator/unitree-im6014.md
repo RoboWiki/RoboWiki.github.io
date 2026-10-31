@@ -30,7 +30,7 @@ title: 宇树 Unitree IM6014
 | 减速比 | 12.667 |
 | 质量 (kg) | 0.535 |
 | 转子惯量 (kg·m²) | — |
-| 额定电压 (V) | — |
+| 额定电压 (V) | 24 |
 
 <div class="part-src">
 来源：<a href="https://www.unitree.com/mobile/IM6014/">https://www.unitree.com/mobile/IM6014/</a><br/>
@@ -87,11 +87,16 @@ title: 宇树 Unitree IM6014
 | 减速比 | 12.667 |
 | 质量 (kg) | 0.535 |
 | 转子惯量 (kg·m²) | — |
-| 额定电压 (V) | — |
+| 额定电压 (V) | 24 |
 | 扭矩口径 | peak |
 | 空载转速 (rpm) | 517.6 |
 | 外径 (mm) | 65 |
 | 长度 (mm) | 60 |
+| 电压范围 | 24~75 |
+| 峰值电流 (A) | 40 |
+| 编码器 | 双编（转子侧 + 输出侧），单圈绝对 15 bit |
+| 通信 | RS-485，6 Mbps / 4 Mbps，8N1，总线轮询 10 kHz |
+| 工作温度 | -20~50 ℃ |
 
 ## 优惠与获取条件
 
@@ -127,7 +132,7 @@ title: 宇树 Unitree IM6014
 
 ## 备注
 
-G1 arm motor, model N6014B-12.6. Unitree publishes max torque 34.4 N.m (opposing the rotation; 31.7 N.m with it), 535 g, phi65 x 60, gear 3:38 = 12.667:1 and max no-load speed 54.2 rad/s at 60 V. That 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是宇树四足整机宣传图，不是 IM6014 电机，需厂商型号页原图
+G1 arm motor, model N6014B-12.6. Unitree publishes max torque 34.4 N.m (opposing the rotation; 31.7 N.m with it), 535 g, phi65 x 60, gear 3:38 = 12.667:1 and max no-load speed 54.2 rad/s at 60 V. That 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是宇树四足整机宣传图，不是 IM6014 电机，需厂商型号页原图 【wiki.aifitlab（aifitlab 手册英文机翻镜像，2026-10-31 抓取）；待原厂中文手册复核】
 
 
 

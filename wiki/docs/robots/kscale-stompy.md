@@ -23,10 +23,24 @@ title: Stompy
 | 续航 (h) | >1 h |
 | 电压 (V) | 48 |
 
+## 开源生态
+
+<em>生态来自本地参考库的项目索引（2 个项目 / 角色由我们按项目定位标注）。
+只说明「哪些环节有现成开源实现」，不代表这些项目都能直接跑在这台机器上。</em>
+
+<div class="rb-roles"><span class="rb-role"><b>官方项目</b>2</span></div>
+
+**官方项目**（2 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/kscalelabs/ksim_wasm" target="_blank" rel="noopener">kscalelabs/ksim_wasm</a> | Stompy 官方仓库（驱动 / SDK / 例程） | 0 |
+| <a href="https://github.com/kscalelabs/gym-stompy" target="_blank" rel="noopener">kscalelabs/gym-stompy</a> | Stompy 官方仓库（驱动 / SDK / 例程） | 0 |
+
 ## 链接
 
-- 仓库：<https://github.com/kscalelabs/gym-stompy>
-- 仓库：<https://github.com/kscalelabs/ksim_wasm>
+- 仓库：<https://github.com/kscalelabs/gym-stompy> —— 许可 MIT
+- 仓库：<https://github.com/kscalelabs/ksim_wasm> —— 许可 MIT
 
 ::: tip 进仿真（接口已留）
 「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，

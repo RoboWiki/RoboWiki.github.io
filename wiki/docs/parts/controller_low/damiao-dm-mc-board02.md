@@ -85,7 +85,7 @@ title: 达妙 DAMIAO DM-MC-Board02
 | weight_g | 19.5 |
 | 最高电压 (V) | 24 |
 | size_mm | 56×40 |
-| doc_url | https://gitee.com/kit-miao/dm-mc02 |
+| 官方文档 | https://gitee.com/kit-miao/dm-mc02 |
 | repo_urls | https://gitee.com/kit-miao/dm-mc02 |
 
 ## 优惠与获取条件

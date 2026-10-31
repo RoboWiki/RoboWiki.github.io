@@ -673,16 +673,30 @@
   {
    "id": "battery",
    "name": "电池",
-   "hint": "待收录",
+   "hint": "智能电池 / 动力电池",
    "subtypes": {},
    "keys": [
     {
-     "k": "iface",
-     "label": "接口",
-     "unit": ""
+     "k": "capacity_mah",
+     "label": "容量",
+     "unit": "mAh"
+    },
+    {
+     "k": "voltage_V",
+     "label": "电压",
+     "unit": "V"
+    },
+    {
+     "k": "discharge_rate_c",
+     "label": "放电倍率",
+     "unit": "C"
     }
    ],
    "sorts": [
+    {
+     "k": "capacity_mah",
+     "label": "容量"
+    },
     {
      "k": "price",
      "label": "价格"
@@ -1297,6 +1311,22 @@
   "达妙": {
    "slug": "v74599",
    "cn": "达妙"
+  },
+  "元生创新 Yesense": {
+   "slug": "yesense",
+   "cn": "元感 Yesense"
+  },
+  "脉塔 MyActuator": {
+   "slug": "myactuator",
+   "cn": "脉塔智能"
+  },
+  "CubeMars": {
+   "slug": "cubemars",
+   "cn": "CubeMars"
+  },
+  "小米 Xiaomi": {
+   "slug": "xiaomi",
+   "cn": "小米"
   }
  }
 }

@@ -29,12 +29,13 @@
    "image_url": "/parts/witmotion-wt901.png",
    "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://www.wit-motion.com/Module/84.html",
-   "doc_pdf": null,
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/WitMotion-WT9011DCL_Manual.pdf",
    "repo_urls": [
     "https://github.com/WITMOTION/WitStandardProtocol_JY901"
-   ]
+   ],
+   "repo_license": "NO-LICENSE"
   },
   "notes": "9 轴（陀螺 + 加速度 + 磁力计），陀螺 ±2000 °/s、加速度 ±16 g、磁力 ±2 Gauss；输出速率 0.2–200 Hz；UART 4800–230400 bps，硬件 I²C 400 kHz；倾斜精度 0.2°，9 轴航向 0.1°（需磁校准）。官网规格表未列供电电压、尺寸和重量，未填；价格随渠道波动，官网未公开单价。WT901 与 JY901S 协议同源，但外形与接口版本多，下单前确认后缀。",
-  "origin": "WitMotion WT901 产品页 + WitStandardProtocol_JY901 官方示例仓库核对（2026-10-28）"
+  "origin": "WitMotion WT901 产品页 + WitStandardProtocol_JY901 官方示例仓库核对（2026-10-28）；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对"
  }
 ]

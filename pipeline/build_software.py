@@ -48,18 +48,13 @@ def _pick_html() -> str:
 
 
 
-def _chip(text: str, cls: str = "") -> str:
-    c = f' class="sw-chip {cls}".strip()' if False else f' class="sw-chip {cls}"'.replace("  ", " ")
-    return f"<span{c}>{text}</span>"
-
-
 def build(out: pathlib.Path, root: pathlib.Path) -> None:
     data = json.loads((root / "data" / "software.json").read_text(encoding="utf-8"))
     items = data["items"]
     groups = data["groups"]
 
     md = """---
-title: 机器人软件
+title: 软件库
 layout: page
 sidebar: false
 outline: false

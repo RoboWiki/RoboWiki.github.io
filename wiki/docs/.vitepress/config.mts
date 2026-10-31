@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitepress'
 import sidebar from './sidebar.json' with { type: 'json' }
 
-// RoboWiki —— 机器人部件选择社区。
+// RoboWiki —— 机器人开发的开放资料底稿。
 // 一页两件事：左边官方参数（带来源与口径），右边真实使用者的评分与评价。
 //
 // 中英双语：root = 中文，/en/ = English。
@@ -19,22 +19,22 @@ const zhTheme = {
   // 「关于」仍折叠：方法/来源/贡献者/转载属信任层，需要全局可达、但不抢一级叙事位。
   nav: [
     { text: '首页', link: '/' },
-    { text: '部件', link: '/catalog' },
-    { text: '整机', link: '/robots' },
-    { text: '软件', link: '/software' },
-    { text: '学习', link: '/learn/' },
-    { text: '竞赛', link: '/competitions' },
-    { text: '加工采购', link: '/suppliers' },
+    { text: '指南', link: '/learn/' },
+    { text: '部件库', link: '/catalog' },
+    { text: '整机库', link: '/robots' },
+    { text: '软件库', link: '/software' },
+    { text: '渠道库', link: '/suppliers' },
+    { text: '实战资料', link: '/competitions' },
     {
       text: '关于',
       items: [
-        { text: '方法与来源', link: '/method' },
-        { text: '数据来源', link: '/sources' },
         { text: '贡献者', link: '/contributors' },
+        { text: '方法与来源', link: '/method' },
         { text: '转载规范', link: '/learn/reprint' },
+        { text: '免责声明与许可', link: '/notice' },
+        { text: '投稿', link: '/submit' },
       ],
     },
-    { text: '投稿', link: '/submit' },
   ],
   sidebar,
   outline: { label: '本页', level: [2, 3] },
@@ -53,22 +53,34 @@ const zhTheme = {
     linkText: '去首页',
   },
   docPageLink: { text: '在部件库里按任意列排序' },
+  socialLinks: [
+    { icon: 'github', link: 'https://github.com/RoboWiki/RoboWiki.github.io', ariaLabel: 'GitHub 仓库：RoboWiki' },
+  ],
   footer: {
-    message: '数据带来源 · 口径可追溯 · 不卖零件不收佣金 · <a href="/method">方法与来源</a>',
-    copyright: 'RoboWiki · 机器人信息的公共底稿',
+    message: '数据带来源 · 口径可追溯 · 不卖零件不收佣金 · GPL-3.0 · <a href="/method">方法与来源</a> · <a href="/notice">免责声明与许可</a>',
+    copyright: 'RoboWiki · 机器人开发的开放资料底稿',
   },
 }
 
 const enTheme = {
+  socialLinks: [
+    { icon: 'github', link: 'https://github.com/RoboWiki/RoboWiki.github.io',
+      ariaLabel: 'GitHub repository: RoboWiki' },
+  ],
   // 英文区是子集：只放已有英文页面的入口，避免导航指向 404。
   // （robots / software / submit / method / competitions 目前只有中文版。）
   nav: [
     { text: 'Home', link: '/en/' },
+    { text: 'Guide', link: '/en/learn/' },
     { text: 'Parts', link: '/en/catalog' },
     { text: 'Suppliers', link: '/en/suppliers' },
-    { text: 'Learn', link: '/en/learn/' },
-    { text: 'Sources', link: '/en/sources' },
-    { text: 'Contributors', link: '/en/contributors' },
+    {
+      text: 'About',
+      items: [
+        { text: 'Method & sources', link: '/en/method' },
+        { text: 'Contributors', link: '/en/contributors' },
+      ],
+    },
   ],
   outline: { label: 'On this page', level: [2, 3] },
   docFooter: { prev: 'Previous', next: 'Next' },
@@ -88,7 +100,7 @@ const enTheme = {
   docPageLink: { text: 'Sort by any column in the parts library' },
   footer: {
     message: 'Every number sourced · semantics traceable · we do not sell parts',
-    copyright: 'RoboWiki · a robot parts selection community',
+    copyright: 'RoboWiki · an open knowledge base for robot builders',
   },
 }
 
@@ -96,7 +108,7 @@ export default defineConfig({
   title: 'RoboWiki',
   // 标签页统一成「页面 · RoboWiki」；首页只有 RoboWiki，不重复
   titleTemplate: ':title · RoboWiki',
-  description: '机器人部件选择社区：官方参数 + 真实使用者的评分与评价',
+  description: 'RoboWiki —— 机器人开发的开放资料底稿：可核对的参数、可追溯的来源、真实使用者的经验。',
   // 仓库是 organization pages（RoboWiki.github.io）→ 站点在域名根，base 用 /。
   base: process.env.WIKI_BASE || '/',
   appearance: true,
@@ -114,12 +126,30 @@ export default defineConfig({
     },
   },
   head: [
+    // 现代浏览器优先 PNG，老的回退 ico；apple-touch-icon 给 iOS 主屏
+    ['link', { rel: 'icon', type: 'image/png', href: '/icon-192.png' }],
     ['link', { rel: 'icon', href: '/favicon.ico' }],
+    ['link', { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' }],
     ['meta', { name: 'theme-color', content: '#0078d4' }],
   ],
 
   themeConfig: {
     // 品牌标：不再叫「文档」—— 这是个社区，不是一个说明书
     siteTitle: 'RoboWiki',
+    // 站内搜索：local = 构建期生成本地索引，浏览器内检索，不需要后端也不需要 Algolia。
+    // 243 部件 / 21 整机 / 207 渠道 + 全部文章，靠点导航找不到时这是唯一入口。
+    search: {
+      provider: 'local',
+      options: {
+        translations: {
+          button: { buttonText: '搜索', buttonAriaLabel: '搜索' },
+          modal: {
+            noResultsText: '没有找到结果',
+            resetButtonTitle: '清空',
+            footer: { selectText: '选择', navigateText: '切换', closeText: '关闭' },
+          },
+        },
+      },
+    },
   },
 })

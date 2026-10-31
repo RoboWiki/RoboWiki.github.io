@@ -76,7 +76,7 @@ title: Bosch Sensortec BMI088
 | temp_range_C | -40~85 |
 | size_mm | 3×4.5×0.95 |
 | 分辨率 | 16-bit |
-| doc_url | https://www.bosch-sensortec.com/products/motion-sensors/imus/bmi088/ |
+| 官方文档 | https://www.bosch-sensortec.com/products/motion-sensors/imus/bmi088/ |
 | 官方手册 (PDF) | https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi088-ds001.pdf |
 | repo_urls | — |
 

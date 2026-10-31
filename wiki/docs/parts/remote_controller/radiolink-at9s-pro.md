@@ -73,7 +73,7 @@ title: 乐迪 RadioLink AT9S Pro
 | 输出协议 | SBUS / PPM / PWM / CRSF |
 | 电池 | 7.4–18 V（2S–4S 锂电 / 8×AA） |
 | 重量 (g) | — |
-| doc_url | https://www.radiolink.com.cn/cn/at9spro |
+| 官方文档 | https://www.radiolink.com.cn/cn/at9spro |
 | repo_urls | — |
 
 ## 优惠与获取条件

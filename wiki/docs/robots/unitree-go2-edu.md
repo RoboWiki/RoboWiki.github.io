@@ -36,17 +36,25 @@ title: Go2 EDU
 
 ## 开源生态
 
-<em>生态来自本地参考库的项目索引（56 个项目 / 角色由我们按项目定位标注）。
+<em>生态来自本地参考库的项目索引（60 个项目 / 角色由我们按项目定位标注）。
 只说明「哪些环节有现成开源实现」，不代表这些项目都能直接跑在这台机器上。</em>
 
-<div class="rb-roles"><span class="rb-role"><b>官方描述/资产</b>3</span> <span class="rb-role"><b>官方 SDK</b>5</span> <span class="rb-role"><b>仿真</b>17</span> <span class="rb-role"><b>训练</b>23</span> <span class="rb-role"><b>部署</b>1</span> <span class="rb-role"><b>导航</b>3</span> <span class="rb-role"><b>控制/MPC</b>2</span> <span class="rb-role"><b>工具/资料</b>2</span></div>
+<div class="rb-roles"><span class="rb-role"><b>官方项目</b>2</span> <span class="rb-role"><b>官方描述/资产</b>4</span> <span class="rb-role"><b>官方 SDK</b>5</span> <span class="rb-role"><b>仿真</b>17</span> <span class="rb-role"><b>训练</b>23</span> <span class="rb-role"><b>部署</b>1</span> <span class="rb-role"><b>导航</b>3</span> <span class="rb-role"><b>控制/MPC</b>2</span> <span class="rb-role"><b>工具/资料</b>3</span></div>
 
-**官方描述/资产**（2 个）
+**官方项目**（2 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/unitreerobotics/unitree_ros2" target="_blank" rel="noopener">unitreerobotics/unitree_ros2</a> | Go2 EDU 官方仓库（驱动 / SDK / 例程） | 0 |
+| <a href="https://github.com/unitreerobotics/unitree_sdk2" target="_blank" rel="noopener">unitreerobotics/unitree_sdk2</a> | Go2 EDU 官方仓库（驱动 / SDK / 例程） | 0 |
+
+**官方描述/资产**（3 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
 | <a href="https://github.com/fiveages-sim/robot-descriptions-quadruped" target="_blank" rel="noopener">robot-descriptions-quadruped</a> | 四足机型描述汇总（URDF/xacro/MJCF） | 180 |
 | <a href="https://github.com/fan-ziqi/rl_sar_zoo" target="_blank" rel="noopener">rl_sar_zoo</a> | RL-SAR 机型 zoo：URDF/MJCF 与策略集合 | 170 |
+| <a href="https://github.com/unitreerobotics/unitree_ros/tree/master/robots/go2_description" target="_blank" rel="noopener">unitreerobotics/unitree_ros</a> | Go2 EDU 的 URDF / MJCF 描述文件 | 0 |
 
 **官方 SDK**（4 个）
 
@@ -104,19 +112,20 @@ title: Go2 EDU
 | <a href="https://github.com/dfki-ric-underactuated-lab/dfki-quad" target="_blank" rel="noopener">dfki-quad</a> | DFKI Quadruped：MPC/WBC/步态序列器与 Go2 仿真控制栈（BSD-3） | 623 |
 | <a href="https://github.com/Amap-Robotics/Quad-Imaginarium" target="_blank" rel="noopener">Quad-Imaginarium</a> | GaoLii/Quad-Imaginarium（arXiv 2606.28237）：7488 段语言标注四足动作、18.5h@24fps、19 维状态；数据集待论文接收后发布（本快照仅 README） | 2 |
 
-**工具/资料**（2 个）
+**工具/资料**（3 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
 | <a href="https://github.com/mod6-fds/26Raicom" target="_blank" rel="noopener">26Raicom</a> | 2026 睿抗（RAICOM）多模态巡检赛道全国一等奖代码：8 阶段全流程——PID 黑线循迹 + 白线触发前跳、三路 TOF 迷宫五阶段状态机、IMU 俯仰闭环上/下台阶、D1 七自由度机械臂 DLS 逆运动学抓取（D435i 红圆 +  | 287 |
 | <a href="https://github.com/yusongmin1/go2_flip_TO" target="_blank" rel="noopener">go2_flip_TO</a> | Go2 空翻动作数据采集：SE(3) 全身轨迹优化生成参考动作 | 96 |
+| <a href="https://support.unitree.com/main/zh" target="_blank" rel="noopener">官方文档</a> | Go2 EDU 厂商文档页 | 0 |
 
 ## 链接
 
 - 官方文档：<https://support.unitree.com/main/zh>
 - URDF：<https://github.com/unitreerobotics/unitree_ros/tree/master/robots/go2_description>
-- 仓库：<https://github.com/unitreerobotics/unitree_sdk2>
-- 仓库：<https://github.com/unitreerobotics/unitree_ros2>
+- 仓库：<https://github.com/unitreerobotics/unitree_sdk2> —— 许可 BSD-3-Clause
+- 仓库：<https://github.com/unitreerobotics/unitree_ros2> —— 许可 BSD-3-Clause
 
 ::: tip 进仿真（接口已留）
 「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，

@@ -1,0 +1,25 @@
+[
+ {
+  "category": "actuator",
+  "subtype": "planetary",
+  "vendor": "CubeMars",
+  "vendor_cn": "CubeMars",
+  "model": "AK80-6",
+  "title": "CubeMars AK80-6 关节模组（KV100）",
+  "url": "https://www.cubemars.com/cn/",
+  "source_tier": "B",
+  "verified": 0,
+  "last_checked": "2026-10-31",
+  "price_cny": null,
+  "origin": "CubeMars 官网（cubemars.com/cn）AK80-6 产品页 + aifitlab 商品页手册；参数待补全",
+  "notes": "6:1、485 g。峰值扭矩与转速需原厂表，未填。来源：CubeMars 官网（cubemars.com/cn）AK80-6 产品页 + aifitlab 商品页手册；参数待补全",
+  "specs": {
+   "tau_rated_Nm": 6,
+   "tau_basis": "rated",
+   "gear": 6,
+   "mass_kg": 0.485,
+   "voltage_V": 48
+  },
+  "id": "cubemars-ak80-6"
+ }
+]

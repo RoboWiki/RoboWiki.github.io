@@ -22,16 +22,23 @@ title: Go1
 
 ## 开源生态
 
-<em>生态来自本地参考库的项目索引（26 个项目 / 角色由我们按项目定位标注）。
+<em>生态来自本地参考库的项目索引（28 个项目 / 角色由我们按项目定位标注）。
 只说明「哪些环节有现成开源实现」，不代表这些项目都能直接跑在这台机器上。</em>
 
-<div class="rb-roles"><span class="rb-role"><b>官方描述/资产</b>2</span> <span class="rb-role"><b>官方 SDK</b>2</span> <span class="rb-role"><b>仿真</b>7</span> <span class="rb-role"><b>训练</b>12</span> <span class="rb-role"><b>控制/MPC</b>2</span> <span class="rb-role"><b>工具/资料</b>1</span></div>
+<div class="rb-roles"><span class="rb-role"><b>官方项目</b>1</span> <span class="rb-role"><b>官方描述/资产</b>3</span> <span class="rb-role"><b>官方 SDK</b>2</span> <span class="rb-role"><b>仿真</b>7</span> <span class="rb-role"><b>训练</b>12</span> <span class="rb-role"><b>控制/MPC</b>2</span> <span class="rb-role"><b>工具/资料</b>1</span></div>
 
-**官方描述/资产**（1 个）
+**官方项目**（1 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/unitreerobotics/unitree_ros" target="_blank" rel="noopener">unitreerobotics/unitree_ros</a> | Go1 官方仓库（驱动 / SDK / 例程） | 0 |
+
+**官方描述/资产**（2 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
 | <a href="https://github.com/fiveages-sim/robot-descriptions-quadruped" target="_blank" rel="noopener">robot-descriptions-quadruped</a> | 四足机型描述汇总（URDF/xacro/MJCF） | 180 |
+| <a href="https://github.com/unitreerobotics/unitree_ros/tree/master/robots/go1_description" target="_blank" rel="noopener">unitreerobotics/unitree_ros</a> | Go1 的 URDF / MJCF 描述文件 | 0 |
 
 **仿真**（5 个）
 
@@ -56,7 +63,7 @@ title: Go1
 ## 链接
 
 - URDF：<https://github.com/unitreerobotics/unitree_ros/tree/master/robots/go1_description>
-- 仓库：<https://github.com/unitreerobotics/unitree_ros>
+- 仓库：<https://github.com/unitreerobotics/unitree_ros> —— 许可 BSD-3-Clause
 
 ::: tip 进仿真（接口已留）
 「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，

@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/RoboWiki/RoboWiki.github.io/schema/robot.schema.json",
+  "title": "整机机器人（data/robots/<厂商>.json 中的一条）",
+  "description": "ADR-005 P1。公共字段约束 $ref 自 base.schema.json；现有数据用 category（而非 kind）标注实体类型、且无 license/sources 字段，故不 allOf 继承 base 的整体 required，先按现有数据放宽，迁移到命名空间 id + kind 后再对齐。",
+  "type": "object",
+  "required": [
+    "id",
+    "category",
+    "subtype",
+    "vendor",
+    "model",
+    "title",
+    "url",
+    "source_tier",
+    "verified",
+    "last_checked",
+    "origin",
+    "specs"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "$ref": "base.schema.json#/properties/id" },
+    "title": { "$ref": "base.schema.json#/properties/title" },
+    "source_tier": { "$ref": "base.schema.json#/properties/source_tier" },
+    "verified": { "$ref": "base.schema.json#/properties/verified" },
+    "last_checked": { "$ref": "base.schema.json#/properties/last_checked" },
+    "origin": { "$ref": "base.schema.json#/properties/origin" },
+    "url": { "$ref": "base.schema.json#/properties/url" },
+    "sources": { "$ref": "base.schema.json#/properties/sources" },
+    "license": { "$ref": "base.schema.json#/properties/license" },
+    "notes": { "$ref": "base.schema.json#/properties/notes" },
+    "category": {
+      "const": "robot",
+      "description": "实体大类。现有数据用 category 而非 base 的 kind，迁移后统一为 kind。"
+    },
+    "subtype": {
+      "type": "string",
+      "description": "构型细分，如 humanoid / quadruped / wheeled_quadruped_inward_knee。受控词表见 data/taxonomy.json。"
+    },
+    "subtype_label": { "type": "string", "description": "subtype 的中文展示名。" },
+    "vendor": { "type": "string", "minLength": 1 },
+    "vendor_cn": { "type": ["string", "null"], "description": "厂商中文名。" },
+    "model": { "type": "string", "minLength": 1 },
+    "price_cny": { "type": ["integer", "null"], "description": "人民币参考价；未公开为 null，不要在 notes 里塞别代产品的价格冒充。" },
+    "specs": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "dof": { "type": ["integer", "null"], "description": "自由度。按官方 URDF/参数表口径，未公布留 null。" },
+        "mass_kg": { "type": ["number", "null"] },
+        "payload_kg": { "type": ["number", "null"] },
+        "speed_max_mps": { "type": ["number", "null"] },
+        "size_mm": { "type": ["string", "null"] },
+        "climb_height_mm": { "type": ["number", "null"] },
+        "climb_angle_deg": { "type": ["number", "null"] },
+        "battery": { "type": ["string", "null"] },
+        "endurance_h": { "type": ["number", "string", "null"], "description": "续航。存在「空载/负载」两个口径时用字符串描述。" },
+        "voltage_V": { "type": ["number", "null"] },
+        "voltage_range_V": { "type": ["string", "null"] },
+        "iface": { "type": ["string", "null"], "description": "对外接口。" },
+        "compute": { "type": ["string", "null"], "description": "机载算力。" },
+        "sensors": { "type": ["string", "null"] },
+        "image_url": { "type": ["string", "null"] },
+        "image_source": { "type": ["string", "null"] },
+        "doc_url": { "type": ["string", "null"] },
+        "doc_pdf": { "type": ["string", "null"] },
+        "repo_urls": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "官方/社区代码仓库。没有则为空数组。"
+        },
+        "urdf_urls": {
+          "type": ["array", "null"],
+          "items": { "type": "string" },
+          "description": "URDF/模型描述文件链接。"
+        },
+        "ecosystem_id": {
+          "type": "string",
+          "description": "关联 data/robot_ecosystem.json 的生态条目 id。"
+        }
+      }
+    }
+  }
+}

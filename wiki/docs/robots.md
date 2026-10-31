@@ -1,5 +1,5 @@
 ---
-title: 机器人整机
+title: 整机库
 layout: page
 sidebar: false
 outline: false

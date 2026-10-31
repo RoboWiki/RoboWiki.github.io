@@ -5,7 +5,7 @@ robowiki.db
 robowiki.db-wal
 robowiki.db-shm
 node_modules/
-frontend/dist/
+console/dist/
 .venv/
 .env
 
@@ -22,21 +22,21 @@ audit-*.png
 
 # 厂商原始 PDF / 抓取缓存（40 MB）：可由 docs/ref-zju-wiki.md §5 复现，不入库
 data/raw/
-frontend/public/parts/*.pdf
+console/public/parts/*.pdf
 
 # VitePress 文档站：内容由 pipeline/build_site.py 生成，产物不入库
 wiki/node_modules/
 wiki/docs/.vitepress/dist/
 wiki/docs/.vitepress/cache/
 
-# 文档站的产品图由 pipeline/build_site.py 从 frontend/public/parts 同步
+# 文档站的产品图由 pipeline/build_site.py 从 console/public/parts 同步
 wiki/docs/public/parts/
 wiki/docs/public/catalog.json
 # 派生的归档 JSONL（10.4 MB）：可由 tools/inventory_archive.py + normalize_archive.py
 # 从本地归档重建，不入库。词表与报告留着小，方便直接读。
 data/_inventory/*.jsonl
 
-# inbox 是丢图的暂存区：图片认领后进 frontend/public/parts，暂存区只留说明
+# inbox 是丢图的暂存区：图片认领后进 console/public/parts，暂存区只留说明
 inbox/*
 !inbox/README.md
 
@@ -55,3 +55,8 @@ ui-*.png
 
 # 浏览器调试产物
 .playwright-cli/
+
+# 数据快照导出产物（tools/export_data.py）：tar.gz / MANIFEST 属发布物，
+# 走 GitHub Release 分发，不进仓库历史。规则见 docs/DATA-VERSIONING.md
+dist/
+.tmp-data-export/

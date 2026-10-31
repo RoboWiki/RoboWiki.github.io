@@ -1,4 +1,4 @@
-# RoboSelect —— 常用命令
+# RoboWiki —— 常用命令
 #
 # 一条命令跑完构建链：validate + build
 # 外部贡献者最常用的三条：make validate / make build / make test

@@ -1,0 +1,2606 @@
+{
+ "ids": {
+  "cont-drobotics-rdk-x3-4gb": {
+   "added": "2026-10-31",
+   "category": "controller_high",
+   "model": "RDK X3"
+  },
+  "cont-nvidia-jetson-agx-orin-64gb": {
+   "added": "2026-10-31",
+   "category": "controller_high",
+   "model": "Jetson AGX Orin Developer Kit"
+  },
+  "cont-orange-pi-5-plus-8gb": {
+   "added": "2026-10-31",
+   "category": "controller_high",
+   "model": "Orange Pi 5 Plus"
+  },
+  "cont-radxa-rock-5b-8gb": {
+   "added": "2026-10-31",
+   "category": "controller_high",
+   "model": "ROCK 5B"
+  },
+  "cont-raspberrypi-rpi-4-8gb": {
+   "added": "2026-10-31",
+   "category": "controller_high",
+   "model": "Raspberry Pi 4 Model B"
+  },
+  "cont-raspberrypi-rpi-5-8gb": {
+   "added": "2026-10-31",
+   "category": "controller_high",
+   "model": "Raspberry Pi 5"
+  },
+  "cubemars-ak80-6": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "AK80-6"
+  },
+  "damiao-dm-g6220": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "DM-G6220"
+  },
+  "damiao-dm-h6215": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "DM-H6215"
+  },
+  "damiao-dm-h65-1ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "DM-H65-1EC"
+  },
+  "damiao-dm-imu-l1": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "DM-IMU-L1"
+  },
+  "damiao-dm-mc-board02": {
+   "added": "2026-10-31",
+   "category": "controller_low",
+   "model": "DM-MC-Board02"
+  },
+  "damiao-dm-s2325-1ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "DM-S2325-1EC"
+  },
+  "damiao-dm-s3519-1ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "DM-S3519-1EC"
+  },
+  "damiao-motor-cable": {
+   "added": "2026-10-31",
+   "category": "wiring",
+   "model": "电机连接线"
+  },
+  "damiao-usb2canfd": {
+   "added": "2026-10-31",
+   "category": "module",
+   "model": "DM-USB2CANFD"
+  },
+  "damiao-usb2canfd-dual": {
+   "added": "2026-10-31",
+   "category": "module",
+   "model": "DM-USB2CANFD Dual"
+  },
+  "dji-c610": {
+   "added": "2026-10-31",
+   "category": "esc",
+   "model": "C610"
+  },
+  "dji-c615": {
+   "added": "2026-10-31",
+   "category": "esc",
+   "model": "C615"
+  },
+  "dji-c620": {
+   "added": "2026-10-31",
+   "category": "esc",
+   "model": "C620"
+  },
+  "dji-rm-board-a": {
+   "added": "2026-10-31",
+   "category": "controller_low",
+   "model": "RoboMaster 开发板 A 型"
+  },
+  "dji-rm-board-c": {
+   "added": "2026-10-31",
+   "category": "controller_low",
+   "model": "RoboMaster 开发板 C 型"
+  },
+  "dji-robomaster-gm6020": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "GM6020"
+  },
+  "dji-robomaster-m2006-p36": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "M2006 P36"
+  },
+  "dji-robomaster-m3508-p19": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "M3508 P19"
+  },
+  "dji-tb47": {
+   "added": "2026-10-31",
+   "category": "battery",
+   "model": "TB47"
+  },
+  "dji-tb48": {
+   "added": "2026-10-31",
+   "category": "battery",
+   "model": "TB48"
+  },
+  "drobotics-rdk-x5": {
+   "added": "2026-10-31",
+   "category": "controller_high",
+   "model": "RDK X5"
+  },
+  "feetech-5264-cable": {
+   "added": "2026-10-31",
+   "category": "wiring",
+   "model": "5264 端子线"
+  },
+  "feetech-st-3215-c018": {
+   "added": "2026-10-31",
+   "category": "servo",
+   "model": "ST-3215-C018"
+  },
+  "feetech-st-3235-c001": {
+   "added": "2026-10-31",
+   "category": "servo",
+   "model": "ST-3235-C001"
+  },
+  "feetech-st-3250-c001": {
+   "added": "2026-10-31",
+   "category": "servo",
+   "model": "ST-3250-C001"
+  },
+  "intel-d405": {
+   "added": "2026-10-31",
+   "category": "camera",
+   "model": "D405"
+  },
+  "intel-d435i": {
+   "added": "2026-10-31",
+   "category": "camera",
+   "model": "D435i"
+  },
+  "intel-d455": {
+   "added": "2026-10-31",
+   "category": "camera",
+   "model": "D455"
+  },
+  "intel-d457": {
+   "added": "2026-10-31",
+   "category": "camera",
+   "model": "D457"
+  },
+  "jlc-c10081": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "GL5528(10-20)"
+  },
+  "jlc-c110926": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "LIS2DH12TR"
+  },
+  "jlc-c11299": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "GL5506（4-7K）"
+  },
+  "jlc-c11334": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "REF3025AIDBZR"
+  },
+  "jlc-c11341": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "REF5025AIDR"
+  },
+  "jlc-c114425": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS5450DDAR"
+  },
+  "jlc-c116592": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS563201DDCR"
+  },
+  "jlc-c117051": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "DHT11"
+  },
+  "jlc-c126672": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "LSM6DSLTR"
+  },
+  "jlc-c127949": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "MCP9700AT-E/TT"
+  },
+  "jlc-c13564": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NCP18XH103F03RB"
+  },
+  "jlc-c13879": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "MF52A103F3950 (A1)"
+  },
+  "jlc-c141836": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TLV62569DBVR"
+  },
+  "jlc-c14289": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "HT7533-1"
+  },
+  "jlc-c146233": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "ALS-PT19-315C/L177/TR8"
+  },
+  "jlc-c15134": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "LIS3DHTR"
+  },
+  "jlc-c15639": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "MS561101BA03-50"
+  },
+  "jlc-c15651": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "RT9193-33GB"
+  },
+  "jlc-c162670": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NCU18XH103F6SRB"
+  },
+  "jlc-c16581": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TP4056-42-ESOP8"
+  },
+  "jlc-c189624": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "LIS2DW12TR"
+  },
+  "jlc-c191884": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS54202DDCR"
+  },
+  "jlc-c19274408": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "SC7A20HTR"
+  },
+  "jlc-c2071056": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AP63205WU-7"
+  },
+  "jlc-c209893": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "B57332V5103F360"
+  },
+  "jlc-c209959": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NTCG103JF103FT1"
+  },
+  "jlc-c21706": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "CJ7805 3%"
+  },
+  "jlc-c22391138": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "BMP580"
+  },
+  "jlc-c22428347": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "TMP119AIYBGR"
+  },
+  "jlc-c22459454": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "ICM-45686"
+  },
+  "jlc-c23380830": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AP2112K-3.3TRG1"
+  },
+  "jlc-c23892": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TL431AIDBZR"
+  },
+  "jlc-c24112": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "MPU-6050"
+  },
+  "jlc-c2655100": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "LSM6DSOTR"
+  },
+  "jlc-c2655101": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "ISM330DHCXTR"
+  },
+  "jlc-c2682616": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "MAX17048G+T10"
+  },
+  "jlc-c2687423": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "SHT30-DIS-B10KS"
+  },
+  "jlc-c2757850": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "AHT20"
+  },
+  "jlc-c279936": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "SDNT1608X103F3950FTF"
+  },
+  "jlc-c2836813": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "BMI270"
+  },
+  "jlc-c2848306": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "SHT40-AD1B-R3"
+  },
+  "jlc-c2862740": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS7A2033PDBVR"
+  },
+  "jlc-c2887190": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "QMA6100P"
+  },
+  "jlc-c2889048": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "CMFA 103F3435"
+  },
+  "jlc-c2892547": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "KNTC0603/10KF3950"
+  },
+  "jlc-c2892549": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "KNTC0805/10KF3950"
+  },
+  "jlc-c28927": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "TMP112AIDRLR"
+  },
+  "jlc-c2909890": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "SHT40-AD1B-R2"
+  },
+  "jlc-c3000141": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "MT52B103F3950F01000"
+  },
+  "jlc-c3012622": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "AHT20-F"
+  },
+  "jlc-c3021082": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "QMI8658A"
+  },
+  "jlc-c30589048": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "SPA06-003"
+  },
+  "jlc-c3113": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "CJ431"
+  },
+  "jlc-c311983": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS54302DDCR"
+  },
+  "jlc-c316397": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "SDNT1608X103F3380FTF"
+  },
+  "jlc-c3178291": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "VL53L4CDV0DH/1"
+  },
+  "jlc-c31966": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS54560DDAR"
+  },
+  "jlc-c3232508": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "DPS368XTSA1"
+  },
+  "jlc-c3235557": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS2116DRLR"
+  },
+  "jlc-c3288646": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "ICM-42670-P"
+  },
+  "jlc-c332361": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "5D-9"
+  },
+  "jlc-c333993": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NCU15XH103F6SRC"
+  },
+  "jlc-c338606": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "CMFA103J3950HANT"
+  },
+  "jlc-c347222": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AMS1117-3.3"
+  },
+  "jlc-c347223": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AMS1117-5.0"
+  },
+  "jlc-c347256": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AMS1117-3.3S"
+  },
+  "jlc-c347258": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "78L05"
+  },
+  "jlc-c347278": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "78M05"
+  },
+  "jlc-c347376": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "XC6206P332MR"
+  },
+  "jlc-c347421": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "LM2596S-5.0(UMW)"
+  },
+  "jlc-c36658": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "REF3033AIDBZR"
+  },
+  "jlc-c376006": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "DS18B20(UMW)"
+  },
+  "jlc-c3790": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NTC 10D-9"
+  },
+  "jlc-c38423": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "REF3030AIDBZR"
+  },
+  "jlc-c394024": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "MF52D 103F3950-100"
+  },
+  "jlc-c404027": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TLV75533PDBVR"
+  },
+  "jlc-c406719": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NTCG163JF103FT1S"
+  },
+  "jlc-c42371121": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "HX 0805-C2"
+  },
+  "jlc-c42422127": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "TTP223-BA6-TD"
+  },
+  "jlc-c42441843": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "MT9700-N"
+  },
+  "jlc-c47773": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "RT9013-33GB"
+  },
+  "jlc-c477928": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "LM5164DDAR"
+  },
+  "jlc-c479074": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "SY8089A1AAC"
+  },
+  "jlc-c481766": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "LSM6DSOXTR"
+  },
+  "jlc-c485517": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TLV75733PDBVR"
+  },
+  "jlc-c49247665": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "HNTC0603-103F3450FA"
+  },
+  "jlc-c49247666": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "HNTC0603-103F3950FB"
+  },
+  "jlc-c49247668": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "HNTC0603-104F3950FB"
+  },
+  "jlc-c49247679": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "HNTC0603-104F4250FB"
+  },
+  "jlc-c49247682": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "HNTC0402-103F3950FB"
+  },
+  "jlc-c51118": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AP2112K-3.3TRG1"
+  },
+  "jlc-c5120796": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AMS1117-3.3V"
+  },
+  "jlc-c51597": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "CMFB103F3950FANT"
+  },
+  "jlc-c51901042": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "FHT30-TR"
+  },
+  "jlc-c5205141": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AMS1117-3.3V"
+  },
+  "jlc-c524806": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS54360BDDAR"
+  },
+  "jlc-c525660": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "SDNT1608X103F3435FTF"
+  },
+  "jlc-c5267406": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "LSM6DSV16XTR"
+  },
+  "jlc-c5362283": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "BMP581"
+  },
+  "jlc-c53820": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NTC10D-11"
+  },
+  "jlc-c54308212": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "ICM-42688-P(TOKMAS)"
+  },
+  "jlc-c5446": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "XC6206P332MR-G"
+  },
+  "jlc-c5451632": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "DS18B20"
+  },
+  "jlc-c55136": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "SY6280AAC"
+  },
+  "jlc-c58069": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "L78M05ABDT-TR"
+  },
+  "jlc-c61063": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "XL1509-5.0E1"
+  },
+  "jlc-c6186": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AMS1117-3.3"
+  },
+  "jlc-c6187": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AMS1117-5.0"
+  },
+  "jlc-c695836": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "DS18B20U(UMW)"
+  },
+  "jlc-c699536": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "TMP117AIDRVR"
+  },
+  "jlc-c71136": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "78L05G-AB3-R"
+  },
+  "jlc-c725790": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TP4056"
+  },
+  "jlc-c725791": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TP4057"
+  },
+  "jlc-c726001": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "ICM-20948"
+  },
+  "jlc-c77130": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NCP15WF104F03RC"
+  },
+  "jlc-c77131": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NCP15XH103F03RC"
+  },
+  "jlc-c7719": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS3823-33DBVR"
+  },
+  "jlc-c779278": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "BMP388"
+  },
+  "jlc-c780769": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "AP63203WU-7"
+  },
+  "jlc-c784817": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "LSM6DSRTR"
+  },
+  "jlc-c78960": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "BH1750FVI-TR"
+  },
+  "jlc-c78989": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "SY8113BADC"
+  },
+  "jlc-c80670": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "LP5907MFX-3.3/NOPB"
+  },
+  "jlc-c82227": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "HDC1080DMBR"
+  },
+  "jlc-c82942": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "ME6211C33M5G-N"
+  },
+  "jlc-c84036": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "MF52A103F3435 (A1)"
+  },
+  "jlc-c84817": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "MT3608"
+  },
+  "jlc-c89358": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "MT2492"
+  },
+  "jlc-c9055": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "SPX3819M5-L-3-3/TR"
+  },
+  "jlc-c9179": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NTC 5D-11"
+  },
+  "jlc-c919169": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "SDNT1608X104F3950FTF"
+  },
+  "jlc-c919459": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS61023DRLR"
+  },
+  "jlc-c92489": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "BME280"
+  },
+  "jlc-c93216": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "BNO055"
+  },
+  "jlc-c95939": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "SDNT1005X103F3950FTF"
+  },
+  "jlc-c95968": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "SDNT2012X103F3950FTF"
+  },
+  "jlc-c963380": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TL431"
+  },
+  "jlc-c967633": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "LSM6DS3TR-C"
+  },
+  "jlc-c9753": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "DS18B20+"
+  },
+  "jlc-c98098": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "NCP03XH103F05RL"
+  },
+  "jlc-c9864": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS5430DDAR"
+  },
+  "jlc-c9865": {
+   "added": "2026-10-31",
+   "category": "chip",
+   "model": "TPS54331DR"
+  },
+  "jlc-c99269": {
+   "added": "2026-10-31",
+   "category": "sensor",
+   "model": "TMP102AIDRLR"
+  },
+  "lingzu-robstride-usb-can-hub": {
+   "added": "2026-10-31",
+   "category": "module",
+   "model": "USB-CAN HUB"
+  },
+  "livox-mid-360": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "Mid-360"
+  },
+  "livox-mid-360s": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "Mid-360S"
+  },
+  "livox-mid-70": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "Mid-70"
+  },
+  "myactuator-x12-320": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "X12-320"
+  },
+  "myactuator-x15-450": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "X15-450"
+  },
+  "myactuator-x2-7": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "X2-7"
+  },
+  "myactuator-x4-10": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "X4-10"
+  },
+  "myactuator-x4-36": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "X4-36"
+  },
+  "myactuator-x8-120": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "X8-120"
+  },
+  "nvidia-orin-nano-8gb": {
+   "added": "2026-10-31",
+   "category": "controller_high",
+   "model": "Jetson Orin Nano"
+  },
+  "nvidia-orin-nx-16gb": {
+   "added": "2026-10-31",
+   "category": "controller_high",
+   "model": "Jetson Orin NX"
+  },
+  "orbbec-gemini-305": {
+   "added": "2026-10-31",
+   "category": "camera",
+   "model": "Gemini 305"
+  },
+  "orbbec-gemini-335": {
+   "added": "2026-10-31",
+   "category": "camera",
+   "model": "Gemini 335"
+  },
+  "orbbec-gemini-336": {
+   "added": "2026-10-31",
+   "category": "camera",
+   "model": "Gemini 336"
+  },
+  "protocol:dji-c610": {
+   "added": "2026-10-31",
+   "category": "protocol",
+   "model": "DJI RoboMaster C610"
+  },
+  "protocol:dji-c620": {
+   "added": "2026-10-31",
+   "category": "protocol",
+   "model": "DJI RoboMaster C620"
+  },
+  "protocol:dji-gm6020": {
+   "added": "2026-10-31",
+   "category": "protocol",
+   "model": "DJI RoboMaster GM6020 内置"
+  },
+  "protocol:dm-1to4": {
+   "added": "2026-10-31",
+   "category": "protocol",
+   "model": "达妙 DM 一拖四固件"
+  },
+  "protocol:dm-mit": {
+   "added": "2026-10-31",
+   "category": "protocol",
+   "model": "达妙 DM 内置（MIT 模式）"
+  },
+  "radiolink-at9s-pro": {
+   "added": "2026-10-31",
+   "category": "remote_controller",
+   "model": "AT9S Pro"
+  },
+  "radiolink-t12d": {
+   "added": "2026-10-31",
+   "category": "remote_controller",
+   "model": "T12D"
+  },
+  "radiolink-t8s": {
+   "added": "2026-10-31",
+   "category": "remote_controller",
+   "model": "T8S"
+  },
+  "robosense-airy-lite": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "Airy Lite"
+  },
+  "sens-bosch-bmi088": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "BMI088"
+  },
+  "sens-hipnuc-hi12m0": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "HI12M0"
+  },
+  "sens-livox-hap": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "HAP"
+  },
+  "sens-luxonis-oak-d-pro": {
+   "added": "2026-10-31",
+   "category": "camera",
+   "model": "OAK-D Pro"
+  },
+  "sens-manifold-odin1": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "Odin1"
+  },
+  "sens-robosense-airy": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "Airy"
+  },
+  "sens-slamtec-rplidar-s2": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "RPLIDAR S2"
+  },
+  "sens-stereolabs-zed-2i": {
+   "added": "2026-10-31",
+   "category": "camera",
+   "model": "ZED 2i"
+  },
+  "sens-tdk-icm-42688-p": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "ICM-42688-P"
+  },
+  "sens-witmotion-wt901": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "WT901"
+  },
+  "sens-xsens-mti-3": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "MTi-3"
+  },
+  "sens-yesense-yis320": {
+   "added": "2026-10-31",
+   "category": "imu",
+   "model": "YIS320"
+  },
+  "software:amp": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "AMP（对抗运动先验）"
+  },
+  "software:beamdojo": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "BeamDojo"
+  },
+  "software:dreamwaq": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "DreamWaQ"
+  },
+  "software:dreamwaqpp": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "DreamWaQ++"
+  },
+  "software:genesis": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "Genesis"
+  },
+  "software:gmr": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "GMR"
+  },
+  "software:isaac-lab": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "Isaac Lab"
+  },
+  "software:legged-gym": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "legged_gym + rsl_rl"
+  },
+  "software:lerobot": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "LeRobot"
+  },
+  "software:mjlab": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "mjlab"
+  },
+  "software:mlp": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "MLP（多层感知机）"
+  },
+  "software:moe": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "MoE（混合专家）"
+  },
+  "software:mujoco": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "MuJoCo"
+  },
+  "software:mujoco-menagerie": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "MuJoCo Menagerie"
+  },
+  "software:mujoco-playground": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "MuJoCo Playground"
+  },
+  "software:pinocchio": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "Pinocchio"
+  },
+  "software:ppo": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "PPO（近端策略优化）"
+  },
+  "software:rl-sar": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "RL-SAR"
+  },
+  "software:robot-lab": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "robot_lab"
+  },
+  "software:ros2": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "ROS 2"
+  },
+  "software:unilab": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "UniLab"
+  },
+  "software:unitree-sdk2": {
+   "added": "2026-10-31",
+   "category": "software",
+   "model": "Unitree SDK2 / unitree_ros2"
+  },
+  "struct-berkeley-humanoid-lite": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Berkeley Humanoid Lite"
+  },
+  "struct-deeprobotics-lite3": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Lite3"
+  },
+  "struct-deeprobotics-lynx-m20": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "山猫 M20"
+  },
+  "struct-fourier-gr2": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "GR-2"
+  },
+  "struct-kscale-stompy": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Stompy"
+  },
+  "struct-limx-tron1": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "TRON 1"
+  },
+  "struct-odri-solo12": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Solo 12"
+  },
+  "struct-pollen-microduck": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Microduck"
+  },
+  "struct-roboparty-roboto01": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "ROBOTO 01（RP1）"
+  },
+  "struct-stanford-doggo": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Doggo"
+  },
+  "struct-stanford-pupper-v3": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Pupper v3"
+  },
+  "struct-unitree-a1": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "A1"
+  },
+  "struct-unitree-b2": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "B2"
+  },
+  "struct-unitree-b2-w": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "B2-W"
+  },
+  "struct-unitree-g1": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "G1"
+  },
+  "struct-unitree-go1": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Go1"
+  },
+  "struct-unitree-go2-edu": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Go2 EDU"
+  },
+  "struct-unitree-go2-w": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Go2-W"
+  },
+  "struct-unitree-h1": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "H1"
+  },
+  "struct-yobotics-y30": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "Y30"
+  },
+  "struct-zex-w": {
+   "added": "2026-10-31",
+   "category": "robot",
+   "model": "ZEX-W"
+  },
+  "supplier:sup-01ac9086": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "贤合信电子"
+  },
+  "supplier:sup-01ed8dd3": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "zpcac旗舰店"
+  },
+  "supplier:sup-0545f0aa": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "武汉旋锋科技导电滑环"
+  },
+  "supplier:sup-063084d9": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "巨鲸金属材料商行"
+  },
+  "supplier:sup-06443f7f": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳市创典科技企业店"
+  },
+  "supplier:sup-066ac1e1": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "碳维观止"
+  },
+  "supplier:sup-07e3f6ae": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "坚威旗舰店"
+  },
+  "supplier:sup-09eb729e": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "浙江丽水精密轴承"
+  },
+  "supplier:sup-0d3a26b5": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "名品数控"
+  },
+  "supplier:sup-0dc7446a": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "优翔电子"
+  },
+  "supplier:sup-0e5184ca": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "上海腾胜轴承机械"
+  },
+  "supplier:sup-0f262c14": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "华明威电机"
+  },
+  "supplier:sup-0fa10806": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "贝朗科技"
+  },
+  "supplier:sup-103dcbc9": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "碳维观止"
+  },
+  "supplier:sup-10501c19": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "奥士特官方企业店"
+  },
+  "supplier:sup-12562cd3": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "天弘铝业"
+  },
+  "supplier:sup-12d86183": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "华诚五金专营"
+  },
+  "supplier:sup-132de8f3": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳市华源芯电子有限公司"
+  },
+  "supplier:sup-13a21e2d": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "腾嘉昌精密机械"
+  },
+  "supplier:sup-163049e2": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "铝合金型材生产厂"
+  },
+  "supplier:sup-18a8f9d2": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "大沿轴承"
+  },
+  "supplier:sup-18ed2bb5": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "唯美电子"
+  },
+  "supplier:sup-1970eb1a": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "zklzk旗舰店"
+  },
+  "supplier:sup-1b908d19": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "杰安德气动"
+  },
+  "supplier:sup-1dc8f1ee": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "亿达绝缘材料"
+  },
+  "supplier:sup-1fceb4cb": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳市伟诚鑫电子有限公司"
+  },
+  "supplier:sup-20177976": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "上迈科技"
+  },
+  "supplier:sup-221472d8": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "亿昌泰3D企业店"
+  },
+  "supplier:sup-24b5c3dd": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "锐和精密五金"
+  },
+  "supplier:sup-250d4fa9": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "望成金属"
+  },
+  "supplier:sup-254dcbed": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "上海特惠轴承"
+  },
+  "supplier:sup-2b0b8f72": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "三贤电子商行"
+  },
+  "supplier:sup-2e467077": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "S-Parts 旗舰店"
+  },
+  "supplier:sup-2f0e2055": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "TUBE途比润滑油脂"
+  },
+  "supplier:sup-31936681": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "WMTEC威铭"
+  },
+  "supplier:sup-325fadef": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "天成精密"
+  },
+  "supplier:sup-346fe614": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳市亨源电子商行"
+  },
+  "supplier:sup-36d3610b": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "新宏能(深圳)科技有限公司"
+  },
+  "supplier:sup-38818be6": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "上海工业焊割厂"
+  },
+  "supplier:sup-3a5c9aa9": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "固万基旗舰店"
+  },
+  "supplier:sup-3e09328f": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "专业机械加工定制"
+  },
+  "supplier:sup-3e1efdad": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "合金侠"
+  },
+  "supplier:sup-3ebd5543": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深名扬电子模块批发保护板温度计数显表"
+  },
+  "supplier:sup-413b45ad": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "翻倍倍"
+  },
+  "supplier:sup-421ea526": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "AIRTAC"
+  },
+  "supplier:sup-427996ee": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "沪豪旗舰店"
+  },
+  "supplier:sup-469505a9": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "博卡碳纤维科技"
+  },
+  "supplier:sup-47ae4d89": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "佰瑞特旗舰店"
+  },
+  "supplier:sup-48cab52d": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "天赫五金"
+  },
+  "supplier:sup-48f718bc": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "维其精密旗舰店"
+  },
+  "supplier:sup-49aeaab2": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "冠临旗舰店"
+  },
+  "supplier:sup-49b8080b": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "安富世纪威尔健专卖店"
+  },
+  "supplier:sup-4d3b4482": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "常州晨阳轴承"
+  },
+  "supplier:sup-4dd4d2d8": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "四裕电子企业店"
+  },
+  "supplier:sup-4e951bca": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "XINGSF兴盛发电子官方店"
+  },
+  "supplier:sup-50d6b23d": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "旭集五金专营店"
+  },
+  "supplier:sup-50e991d6": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "上海金盛聚氨酯"
+  },
+  "supplier:sup-52597a64": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "反客科技"
+  },
+  "supplier:sup-557bc686": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "奇伟达电子"
+  },
+  "supplier:sup-561b0325": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "泛亚精工"
+  },
+  "supplier:sup-574ba9e2": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "成都机械加工"
+  },
+  "supplier:sup-59037903": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳聚氨酯包胶"
+  },
+  "supplier:sup-5c134f20": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "全向轮和机械加工"
+  },
+  "supplier:sup-5d847e8b": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "电子爱好者之家元器件"
+  },
+  "supplier:sup-5e0c4763": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "新大明金属制品"
+  },
+  "supplier:sup-5f34fdb8": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "鲁泰旗舰店"
+  },
+  "supplier:sup-5ff13b4e": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "辰昇传动机械"
+  },
+  "supplier:sup-6101e1f3": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "正源电子科技"
+  },
+  "supplier:sup-640356d8": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "亿昌泰3D企业店"
+  },
+  "supplier:sup-643dc7d8": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "乾裕顺玩具专营店"
+  },
+  "supplier:sup-6476b139": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "宁波正大轴承五金"
+  },
+  "supplier:sup-64ee1cf8": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "西南金属"
+  },
+  "supplier:sup-65c3bbb5": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "美坚龙金属制品"
+  },
+  "supplier:sup-668de8b4": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳市鼎玉丰科技001"
+  },
+  "supplier:sup-680a39e3": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳市义胜电子网店"
+  },
+  "supplier:sup-6879bb70": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "分享五金加工厂"
+  },
+  "supplier:sup-6aa0ed17": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "东莞市天仁金属"
+  },
+  "supplier:sup-6af84bd5": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "DIY外设"
+  },
+  "supplier:sup-6ee93e06": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "温州乐清编码器"
+  },
+  "supplier:sup-7095c023": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "hrb旗舰店"
+  },
+  "supplier:sup-71233f13": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "UENPO旗舰店"
+  },
+  "supplier:sup-7264df31": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "少爷电子"
+  },
+  "supplier:sup-728fe792": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "红锣旗舰店"
+  },
+  "supplier:sup-7420a4e5": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "灿维尔电子"
+  },
+  "supplier:sup-7510e769": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "酷米仕科技官方店"
+  },
+  "supplier:sup-77c8d441": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "昌盛碳钎维"
+  },
+  "supplier:sup-77f23e3c": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "昆山绿循化工"
+  },
+  "supplier:sup-78cff4a8": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "宏讯丰电子"
+  },
+  "supplier:sup-7d382cd8": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳市正源达塑胶材料"
+  },
+  "supplier:sup-7f7de5db": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳市优信电子科技有限公司"
+  },
+  "supplier:sup-80cb86fb": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "锐迈数控刀具"
+  },
+  "supplier:sup-80d9b6c3": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "三源轴承"
+  },
+  "supplier:sup-80eef11f": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "荣域华府旗舰店"
+  },
+  "supplier:sup-8220586a": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "达久晟电机"
+  },
+  "supplier:sup-83345e38": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "优卓电子批发"
+  },
+  "supplier:sup-835cf286": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "南方建材装饰"
+  },
+  "supplier:sup-836a50f5": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "Joland乔兰多"
+  },
+  "supplier:sup-83c3e5cb": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "广发传动配件"
+  },
+  "supplier:sup-84b49e41": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "（深圳）汕头华扬电子"
+  },
+  "supplier:sup-859d4893": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "欧帝卡斯旗舰店"
+  },
+  "supplier:sup-873c25dc": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "东莞鑫源金属材料"
+  },
+  "supplier:sup-87b38a48": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "尧朝铝业"
+  },
+  "supplier:sup-87cf0619": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "柯盾五金专营店"
+  },
+  "supplier:sup-8accb861": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "沐协实业"
+  },
+  "supplier:sup-8da16306": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "极工精器数控刀具"
+  },
+  "supplier:sup-8e137f1c": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "德是宝旗舰店"
+  },
+  "supplier:sup-90218db2": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳市坤烽芯城科技"
+  },
+  "supplier:sup-91674613": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "线切割加工叶工"
+  },
+  "supplier:sup-945256f3": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "同胜电线电缆"
+  },
+  "supplier:sup-95110a6e": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "晋辉五金"
+  },
+  "supplier:sup-96f7f795": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "澳宏旗舰店"
+  },
+  "supplier:sup-97530f14": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "卡邦利旗舰店"
+  },
+  "supplier:sup-98bb393a": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "科天微数码专营店"
+  },
+  "supplier:sup-9cb8b124": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "哈长伟碳纤维板精加工"
+  },
+  "supplier:sup-9d95431f": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳立辉电子"
+  },
+  "supplier:sup-9d9dbc1f": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "蚂蚁比特旗舰店"
+  },
+  "supplier:sup-9f11a8da": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "联科达电子"
+  },
+  "supplier:sup-a0688c32": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "广州得信电子"
+  },
+  "supplier:sup-a132ee22": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "Muse Lab"
+  },
+  "supplier:sup-a234c5fc": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "欧必诺电子科技有限公司"
+  },
+  "supplier:sup-a238982a": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "莹轩风筝荣盛店"
+  },
+  "supplier:sup-a25ba081": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "乐邦气动元件 原耐格斯"
+  },
+  "supplier:sup-a2637980": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "碳索纤生"
+  },
+  "supplier:sup-a2a7cba6": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "精聚五金商城"
+  },
+  "supplier:sup-a2a8dcd4": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "铨胜电子"
+  },
+  "supplier:sup-a3c4ef02": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "星骏模型配件批发与零售"
+  },
+  "supplier:sup-a5a341d1": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "温州创艺弹簧厂"
+  },
+  "supplier:sup-a5e13283": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "精密微型轴承"
+  },
+  "supplier:sup-a5e51c13": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "鑫利碳纤维"
+  },
+  "supplier:sup-a7f00c65": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "安邦五金旗舰店"
+  },
+  "supplier:sup-a7f82830": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "华臻机械工厂店"
+  },
+  "supplier:sup-a8a1076c": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳妙泽电子"
+  },
+  "supplier:sup-ab67826b": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "沪豪旗舰店"
+  },
+  "supplier:sup-adfb86a6": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "vrkantv旗舰店"
+  },
+  "supplier:sup-b24492c9": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "汉莎模型"
+  },
+  "supplier:sup-b2f71f8c": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "pny五金旗舰店"
+  },
+  "supplier:sup-b39ddf82": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "品正轴承店"
+  },
+  "supplier:sup-b4123b6f": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "化工产品小店"
+  },
+  "supplier:sup-b4542d58": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "辽宁中科新材科"
+  },
+  "supplier:sup-b52f9829": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "创客风暴"
+  },
+  "supplier:sup-b612159c": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳天微科技有限公司"
+  },
+  "supplier:sup-b7696ff6": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "总店三极管专家 三极管之家"
+  },
+  "supplier:sup-b7b2784d": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "新空间旗舰店"
+  },
+  "supplier:sup-b95b0834": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "红妆机械"
+  },
+  "supplier:sup-ba1d6696": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "奕盛电子"
+  },
+  "supplier:sup-bd4a922d": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "信达数控刀具"
+  },
+  "supplier:sup-bd6619eb": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "古翊旗舰店"
+  },
+  "supplier:sup-bde23ada": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "斌斌板材加工"
+  },
+  "supplier:sup-be4b4eab": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "信泰微电子电子元器件"
+  },
+  "supplier:sup-bfe59dab": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "博卡碳纤维科技"
+  },
+  "supplier:sup-c5c37bd5": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "BAYAMAN企业店"
+  },
+  "supplier:sup-c6754fac": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "自动化配件精密模具配件"
+  },
+  "supplier:sup-c6a81d32": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "光明五金城"
+  },
+  "supplier:sup-c76f43f5": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "美时龙旗舰店"
+  },
+  "supplier:sup-cab8cc16": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "岑置五金专营店"
+  },
+  "supplier:sup-caba8741": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "华北芯城"
+  },
+  "supplier:sup-cae41edc": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳市荣光五金模具"
+  },
+  "supplier:sup-cb9a97ce": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳沃乐康科技有限公司"
+  },
+  "supplier:sup-cc12b271": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "振心金属"
+  },
+  "supplier:sup-cd156799": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳义胜电子网店"
+  },
+  "supplier:sup-cd8b7756": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "台湾KSS凯士士配线器"
+  },
+  "supplier:sup-cdc844c8": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "123明天会更好"
+  },
+  "supplier:sup-ceb0f46c": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "勇创金属制品材料"
+  },
+  "supplier:sup-cf0c3286": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "鸿康明五金旗舰店"
+  },
+  "supplier:sup-cfe29001": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "正时铝箱"
+  },
+  "supplier:sup-d03efc14": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "telesky旗舰店"
+  },
+  "supplier:sup-d06dd5fa": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "WL精密轴承"
+  },
+  "supplier:sup-d1890447": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "d[s199559529]"
+  },
+  "supplier:sup-d18be6a0": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "河北多点碳纤维"
+  },
+  "supplier:sup-d509515f": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "宝销电子"
+  },
+  "supplier:sup-d5183ecc": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "『普源RIGOL』特卖店"
+  },
+  "supplier:sup-d73960cf": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "朗思明旗舰店"
+  },
+  "supplier:sup-da5d2486": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "易伶模型店"
+  },
+  "supplier:sup-da9fb8b4": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "恒科电子电器"
+  },
+  "supplier:sup-dcbc3b15": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "火星星数码"
+  },
+  "supplier:sup-dd84b297": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "世界级电子胶(灌封胶,密封胶,散热膏）"
+  },
+  "supplier:sup-df5c1408": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "贝利五金旗舰店"
+  },
+  "supplier:sup-df95e386": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "安盛绝缘材料厂"
+  },
+  "supplier:sup-dfbf0d57": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "皇冠五金原材料厂"
+  },
+  "supplier:sup-e42743d8": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "立创商城"
+  },
+  "supplier:sup-e483fd1d": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "蓝冰丝杠"
+  },
+  "supplier:sup-e48b3179": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "霖溪科技"
+  },
+  "supplier:sup-e6e93c6e": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "XEV旗舰店"
+  },
+  "supplier:sup-e8f88fa4": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "芯板坊"
+  },
+  "supplier:sup-ea6a4902": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "华富联电子"
+  },
+  "supplier:sup-eaf5c416": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "en"
+  },
+  "supplier:sup-ebb59a85": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "华富联电子商行"
+  },
+  "supplier:sup-ecdfadda": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "欧贝顿旗舰店"
+  },
+  "supplier:sup-ed0ec746": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "晋辉五金官方网店"
+  },
+  "supplier:sup-ee67c466": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "莱泽气动"
+  },
+  "supplier:sup-eef03d04": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "全合成润滑脂"
+  },
+  "supplier:sup-efab0116": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳市锦悦电子科技"
+  },
+  "supplier:sup-efc62500": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "上海顺宜塑胶厂家直销"
+  },
+  "supplier:sup-f158f4c7": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳聚氨酯包胶"
+  },
+  "supplier:sup-f1bc57d4": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "元宇电子商店 批发和零售"
+  },
+  "supplier:sup-f278c77a": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "力祥同步带轮"
+  },
+  "supplier:sup-f30f6bcf": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "诺瑞尔企业店"
+  },
+  "supplier:sup-f3322b83": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "mzg工具旗舰店"
+  },
+  "supplier:sup-f5b2581d": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "risym旗舰店"
+  },
+  "supplier:sup-f7d5affa": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "巨兽大型激光切割"
+  },
+  "supplier:sup-fa89fc2c": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "高芯达电子企业"
+  },
+  "supplier:sup-fbd650ad": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "上海桐文橡塑"
+  },
+  "supplier:sup-fc60f189": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "坤宏五金轴承商贸2"
+  },
+  "supplier:sup-fd6d3a83": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳市金维利电子"
+  },
+  "supplier:sup-fdbb7b4c": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "橡果塑胶"
+  },
+  "supplier:sup-fe17c57a": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "进口防静电材料"
+  },
+  "supplier:sup-ff0b54e5": {
+   "added": "2026-10-31",
+   "category": "supplier",
+   "model": "深圳市康胜世纪电子企"
+  },
+  "unitree-go-m8010-6": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "GO-M8010-6"
+  },
+  "unitree-im6014": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "IM6014"
+  },
+  "unitree-l1": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "L1"
+  },
+  "unitree-l2": {
+   "added": "2026-10-31",
+   "category": "lidar",
+   "model": "L2"
+  },
+  "unitree-r3": {
+   "added": "2026-10-31",
+   "category": "remote_controller",
+   "model": "R3"
+  },
+  "unitree-unitree-a1": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "Unitree A1"
+  },
+  "xiaomi-cybergear-micro": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "model": "CyberGear Micro"
+  },
+  "灵足-robstride-el05": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "EL05"
+  },
+  "灵足-robstride-rs00": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "RS00"
+  },
+  "灵足-robstride-rs01": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "RS01"
+  },
+  "灵足-robstride-rs02": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "RS02"
+  },
+  "灵足-robstride-rs03": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "RS03"
+  },
+  "灵足-robstride-rs04": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "RS04"
+  },
+  "灵足-robstride-rs05": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "RS05"
+  },
+  "灵足-robstride-rs06": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "RS06"
+  },
+  "灵足-robstride-rs10": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "RS10"
+  },
+  "达妙-dm-dm-d5730-1ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-D5730 -1EC"
+  },
+  "达妙-dm-dm-d5730-1ee": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-D5730 -1EE"
+  },
+  "达妙-dm-dm-j10010-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J10010-2EC"
+  },
+  "达妙-dm-dm-j10010l-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J10010L-2EC"
+  },
+  "达妙-dm-dm-j10422p-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J10422P-2EC"
+  },
+  "达妙-dm-dm-j3507-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J3507-2EC"
+  },
+  "达妙-dm-dm-j4310-2ec-v1-1": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J4310-2EC V1.1"
+  },
+  "达妙-dm-dm-j4310-2ec-v1-2": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J4310-2EC V1.2"
+  },
+  "达妙-dm-dm-j4310m-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J4310M-2EC"
+  },
+  "达妙-dm-dm-j4310p-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J4310P-2EC"
+  },
+  "达妙-dm-dm-j4340-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J4340-2EC"
+  },
+  "达妙-dm-dm-j4340-2ec-v1-1": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J4340-2EC V1.1"
+  },
+  "达妙-dm-dm-j4340p-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J4340P-2EC"
+  },
+  "达妙-dm-dm-j4340p-2ec-v1-1": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J4340P-2EC V1.1"
+  },
+  "达妙-dm-dm-j6006-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J6006-2EC"
+  },
+  "达妙-dm-dm-j6216l-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J6216L-2EC"
+  },
+  "达妙-dm-dm-j6216p-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J6216P-2EC"
+  },
+  "达妙-dm-dm-j6248p-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J6248P-2EC"
+  },
+  "达妙-dm-dm-j8006-2ec-v1-1": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J8006-2EC V1.1"
+  },
+  "达妙-dm-dm-j8009-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J8009-2EC"
+  },
+  "达妙-dm-dm-j8009p-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J8009P-2EC"
+  },
+  "达妙-dm-dm-j8009p-2ec-v1-1": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J8009P-2EC V1.1"
+  },
+  "达妙-dm-dm-j8520p-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-J8520P-2EC"
+  },
+  "达妙-dm-dm-jh11-101-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-JH11-101-2EC"
+  },
+  "达妙-dm-dm-jh11-51-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-JH11-51-2EC"
+  },
+  "达妙-dm-dm-jh14-101-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-JH14-101-2EC"
+  },
+  "达妙-dm-dm-jh14-51-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-JH14-51-2EC"
+  },
+  "达妙-dm-dm-jh17-101-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-JH17-101-2EC"
+  },
+  "达妙-dm-dm-jh17-51-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-JH17-51-2EC"
+  },
+  "达妙-dm-dm-jh20-101-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-JH20-101-2EC"
+  },
+  "达妙-dm-dm-jh20-51-2ec": {
+   "added": "2026-10-31",
+   "category": "actuator",
+   "legacy": true,
+   "model": "DM-JH20-51-2EC"
+  }
+ },
+ "note": "永久 ID 注册表：只追加，不删除、不复用。改名保留旧 id 作 alias。",
+ "version": 1
+}

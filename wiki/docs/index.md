@@ -8,9 +8,9 @@ titleTemplate: false
 <div class="rw-home">
   <section class="rw-home-hero">
     <div class="rw-home-kicker">RoboWiki</div>
-    <h1>机器人信息的公共底稿。</h1>
+    <h1>机器人开发的开放资料底稿。</h1>
     <p class="rw-home-lead">
-      参数带来源、整机带 URDF、评价来自真正用过的人。
+      可核对的参数、可追溯的来源、真实使用者的经验。
       不卖零件、不收佣金、没有推荐位 —— 所以判定不必讨好谁。
     </p>
     <div class="rw-home-cta">
@@ -19,11 +19,11 @@ titleTemplate: false
       <a class="rw-home-btn ghost" href="/learn/">从零开始学</a>
     </div>
     <div class="rw-home-stats">
-      <div><b>240</b><span>在库部件</span></div>
-      <div><b>13</b><span>有数据的品类（共 14 类）</span></div>
-      <div><b>84</b><span>A 级：逐项对过厂商手册</span></div>
+      <div><b>257</b><span>在库部件</span></div>
+      <div><b>14</b><span>有数据的品类（共 14 类）</span></div>
+      <div><b>83</b><span>A 级：逐项对过厂商手册</span></div>
       <div><b>21</b><span>整机（带 URDF / 仓库）</span></div>
-      <div><b>149</b><span>加工与采购渠道</span></div>
+      <div><b>207</b><span>渠道库（加工 / 元件店铺）</span></div>
     </div>
   </section>
   <section class="rw-home-block">
@@ -80,27 +80,27 @@ titleTemplate: false
     <h2>六个入口</h2>
     <div class="rw-home-entries">
       <a class="rw-home-entry" href="/catalog">
-        <b>机器人部件 · 240 件</b>
+        <b>部件库 · 257 件</b>
         <p>比参数：按任意列排序、可对比、带来源等级与真实评分。</p>
-        <span>A 级 84 件逐项对过手册</span>
+        <span>A 级 83 件逐项对过手册</span>
       </a>
       <a class="rw-home-entry" href="/robots">
-        <b>机器人整机 · 21 台</b>
+        <b>整机库 · 21 台</b>
         <p>比方案与生态：几自由度、带不带算力、有没有开源描述与训练工程。</p>
-        <span>11 台标了「生态 ×N」，点进去看每个环节是谁</span>
+        <span>20 台标了「生态 ×N」，点进去看每个环节是谁</span>
       </a>
       <a class="rw-home-entry" href="/software">
-        <b>机器人软件 · 22 个</b>
+        <b>软件库 · 22 个</b>
         <p>引擎、训练框架、算法与方法、模型架构、中间件、数学库 —— 按分组给许可与版本。</p>
         <span>读不到的许可标「未核对」，不猜</span>
       </a>
       <a class="rw-home-entry" href="/learn/">
-        <b>使用指南</b>
-        <p>这个站怎么读：来源等级怎么看、为什么有的是「—」、评分与筛选怎么用。</p>
-        <span>不写教程套路，只讲清数据的用法与边界</span>
+        <b>学习</b>
+        <p>怎么用这个站、怎么读参数口径，也有从入门到选型的学习路线。</p>
+        <span>先讲数据的用法与边界，再讲怎么动手</span>
       </a>
       <a class="rw-home-entry" href="/suppliers">
-        <b>加工与采购 · 149 家</b>
+        <b>渠道库 · 207 家</b>
         <p>比「活找谁做」：质量、交期、价格档、能不能开票。</p>
         <span>来自社区实战反馈，不是厂商自述</span>
       </a>
@@ -172,19 +172,19 @@ titleTemplate: false
     <h2>按品类</h2>
     <div class="rw-home-cats">
       <a class="rw-home-cat" href="/catalog?category=sensor"><b>传感器</b><span>64</span><em>NTC / 温湿度 / 温度 / 压力 / 光照 / ToF / 力矩</em></a>
+      <a class="rw-home-cat" href="/catalog?category=actuator"><b>关节电机</b><span>59</span><em>选型主战场</em></a>
       <a class="rw-home-cat" href="/catalog?category=chip"><b>硬件芯片</b><span>59</span><em>电源 / 基准 / 电池管理 / 开关</em></a>
-      <a class="rw-home-cat" href="/catalog?category=actuator"><b>关节电机</b><span>46</span><em>选型主战场</em></a>
-      <a class="rw-home-cat" href="/catalog?category=imu"><b>IMU</b><span>26</span><em>姿态与振动</em></a>
+      <a class="rw-home-cat" href="/catalog?category=imu"><b>IMU</b><span>27</span><em>姿态与振动</em></a>
+      <a class="rw-home-cat" href="/catalog?category=lidar"><b>激光雷达</b><span>10</span><em>地形与建图</em></a>
       <a class="rw-home-cat" href="/catalog?category=controller_high"><b>上位机</b><span>9</span><em>推理与感知</em></a>
-      <a class="rw-home-cat" href="/catalog?category=lidar"><b>激光雷达</b><span>9</span><em>地形与建图</em></a>
       <a class="rw-home-cat" href="/catalog?category=camera"><b>深度相机</b><span>9</span><em>视觉感知</em></a>
       <a class="rw-home-cat" href="/catalog?category=remote_controller"><b>遥控器</b><span>4</span><em>手柄 / 板控 / 遥操作</em></a>
       <a class="rw-home-cat" href="/catalog?category=servo"><b>舵机</b><span>3</span><em>串行总线 / PWM</em></a>
       <a class="rw-home-cat" href="/catalog?category=controller_low"><b>下位机</b><span>3</span><em>力矩闭环</em></a>
       <a class="rw-home-cat" href="/catalog?category=esc"><b>电调</b><span>3</span><em>驱动器 / 调速器</em></a>
       <a class="rw-home-cat" href="/catalog?category=module"><b>其余模块</b><span>3</span><em>CAN 通信 / 力触觉 / 编码器</em></a>
+      <a class="rw-home-cat" href="/catalog?category=battery"><b>电池</b><span>2</span><em>智能电池 / 动力电池</em></a>
       <a class="rw-home-cat" href="/catalog?category=wiring"><b>线束</b><span>2</span><em>待收录</em></a>
-      <a class="rw-home-cat" href="/catalog?category=battery"><b>电池</b><span>待收录</span><em>待收录</em></a>
     </div>
     <p class="rw-home-note">
       「待收录」不是漏了 —— 是没有可信来源。宁可空着，也不拿论文里的典型值充数。
@@ -192,7 +192,7 @@ titleTemplate: false
   </section>
   <section class="rw-home-foot">
     <a href="/method">方法与来源</a>
-    <a href="/competitions">竞赛与实战</a>
+    <a href="/competitions">实战资料</a>
     <a href="/submit">投稿：补数据 / 写评价 / 写文章</a>
     <a href="/learn/reprint">转载规范</a>
     <a href="/contributors">贡献者</a>

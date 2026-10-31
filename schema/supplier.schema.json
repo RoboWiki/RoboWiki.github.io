@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/RoboWiki/RoboWiki.github.io/schema/supplier.schema.json",
+  "title": "供应商（data/suppliers.json 中的一条）",
+  "description": "ADR-005 P1。现有数据用 tier（而非 source_tier）标注来源等级、且无 verified/last_checked 字段，故本版 required 只收现有真实字段，公共字段定义 $ref 自 base.schema.json，待数据补齐后逐个迁入 required（tier→source_tier 一并改名）。",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "category",
+    "fine",
+    "kind",
+    "tier",
+    "origin"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "$ref": "base.schema.json#/properties/id" },
+    "source_tier": { "$ref": "base.schema.json#/properties/source_tier" },
+    "verified": { "$ref": "base.schema.json#/properties/verified" },
+    "last_checked": { "$ref": "base.schema.json#/properties/last_checked" },
+    "origin": { "$ref": "base.schema.json#/properties/origin" },
+    "url": { "$ref": "base.schema.json#/properties/url" },
+    "sources": { "$ref": "base.schema.json#/properties/sources" },
+    "license": { "$ref": "base.schema.json#/properties/license" },
+    "notes": { "$ref": "base.schema.json#/properties/notes" },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "供应商名，相当于 base 的 title。"
+    },
+    "category": { "type": "string", "minLength": 1, "description": "大类（中文），如 传感器 / 机械加工。" },
+    "fine": { "type": "string", "minLength": 1, "description": "细分类目（中文）。" },
+    "kind": {
+      "type": "string",
+      "description": "供应商形态（如 shop=网店 / factory=工厂）。注意：语义与 base.kind（实体大类）冲突，现有数据里供应商的 kind 指店铺形态，迁移时改名 shop_kind，让位给实体 kind=supplier。"
+    },
+    "tier": {
+      "enum": ["A", "B", "C"],
+      "description": "来源等级，语义同 base.source_tier；迁移时改名为 source_tier。"
+    },
+    "process": { "type": ["string", "null"], "description": "主营工艺/产品线。" },
+    "quality": { "type": ["string", "null"], "description": "质量口碑（自由文本，来自社区反馈）。" },
+    "punctual": { "type": ["string", "null"], "description": "交期口碑。" },
+    "price_level": { "type": ["string", "null"], "description": "价格水平（自由文本）。" },
+    "invoice": { "type": ["string", "null"], "description": "开票情况，如「普票3%」。" }
+  }
+}

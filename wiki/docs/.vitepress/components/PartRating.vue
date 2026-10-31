@@ -220,8 +220,8 @@ onMounted(load)
   border: 1px solid var(--vp-c-divider); border-radius: 999px; padding: 0 6px;
 }
 .rt-warn {
-  font-size: 0.66rem; color: #b45309;
-  border: 1px solid #f59e0b; border-radius: 999px; padding: 0 6px;
+  font-size: 0.66rem; color: var(--rw-accent-1);
+  border: 1px solid var(--rw-accent-2); border-radius: 999px; padding: 0 6px;
 }
 
 .rt-sum {

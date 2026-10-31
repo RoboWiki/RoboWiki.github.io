@@ -5,7 +5,7 @@ title: IMU
 
 # IMU
 
-姿态与振动，共 **26** 件。
+姿态与振动，共 **27** 件。
 
 | 型号 | 子类 | 接口 | 关键参数 | 价格 ¥ | 来源 |
 |---|---|---|---|---|---|
@@ -33,6 +33,7 @@ title: IMU
 | [**MPU-6050**](/parts/imu/tdk-invensense-mpu-6050) | IMU 芯片 | — | — | 131 | `B` |
 | [**ICM-42688-P(TOKMAS)**](/parts/imu/tokmas-icm-42688-p-tokmas) | IMU 芯片 | — | — | 16 | `B` |
 | [**WT901**](/parts/imu/witmotion-wt901) | IMU 模组 | UART、I²C | odr_hz=200、iface=UART、I²C | — | `A✓` |
+| [**YIS320**](/parts/imu/yesense-yis320) | IMU 模组 | UART / USB | odr_hz=400、iface=UART / USB | — | `B` |
 | [**HI12M0**](/parts/imu/hipnuc-hi12m0) | IMU 模组 | UART(TTL)、CAN | odr_hz=1,000、iface=UART(TTL)、CAN | — | `A✓` |
 | [**DM-IMU-L1**](/parts/imu/damiao-dm-imu-l1) | 六轴模组 | USB-C / CAN / RS485 | odr_hz=1,000、iface=USB-C / CAN / RS485 | 59 | `A✓` |
 

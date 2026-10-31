@@ -1,0 +1,33 @@
+[
+ {
+  "category": "actuator",
+  "subtype": "qdd",
+  "vendor": "小米 Xiaomi",
+  "vendor_cn": "小米",
+  "model": "CyberGear Micro",
+  "title": "小米 CyberGear 微电机（关节模组）",
+  "url": "https://www.mi.com/",
+  "source_tier": "B",
+  "verified": 0,
+  "last_checked": "2026-10-31",
+  "price_cny": null,
+  "origin": "wiki.aifitlab 小米 CyberGear Micro 手册（英文机翻镜像）；待原厂复核",
+  "notes": "4/12 N·m、296/240 rpm；相电感官网给 187–339 µH（区间，未入字段）。来源：wiki.aifitlab 小米 CyberGear Micro 手册（英文机翻镜像）；待原厂复核",
+  "specs": {
+   "tau_peak_Nm": 12,
+   "tau_rated_Nm": 4,
+   "tau_basis": "peak",
+   "speed_noload_rpm": 296,
+   "speed_rated_rpm": 240,
+   "pole_pairs": 14,
+   "kt_Nm_per_A": 0.87,
+   "r_phase_ohm": 0.45,
+   "mass_kg": 0.317,
+   "voltage_range_V": "16~28",
+   "od_mm": 58,
+   "encoder": "14 bit 单圈绝对",
+   "comm": "CAN 1 Mbps 扩展帧"
+  },
+  "id": "xiaomi-cybergear-micro"
+ }
+]

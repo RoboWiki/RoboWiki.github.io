@@ -26,10 +26,10 @@ title: ZEX-W
 
 ## 开源生态
 
-<em>生态来自本地参考库的项目索引（1 个项目 / 角色由我们按项目定位标注）。
+<em>生态来自本地参考库的项目索引（2 个项目 / 角色由我们按项目定位标注）。
 只说明「哪些环节有现成开源实现」，不代表这些项目都能直接跑在这台机器上。</em>
 
-<div class="rb-roles"><span class="rb-role"><b>官方项目</b>1</span></div>
+<div class="rb-roles"><span class="rb-role"><b>官方项目</b>1</span> <span class="rb-role"><b>工具/资料</b>1</span></div>
 
 **官方项目**（1 个）
 
@@ -37,10 +37,16 @@ title: ZEX-W
 |---|---|---|
 | <a href="https://github.com/zeitvex/RC_WheelLeg" target="_blank" rel="noopener">RC_WheelLeg</a> | ZEX-W 本体仓库：机械 / 硬件 / 固件 / mjlab 训练 / sim2sim / Python 与 ROS 2 双线部署 / BOM | 197 |
 
+**工具/资料**（1 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/zeitvex/RC_WheelLeg#readme" target="_blank" rel="noopener">官方文档</a> | ZEX-W 厂商文档页 | 0 |
+
 ## 链接
 
 - 官方文档：<https://github.com/zeitvex/RC_WheelLeg#readme>
-- 仓库：<https://github.com/zeitvex/RC_WheelLeg>
+- 仓库：<https://github.com/zeitvex/RC_WheelLeg> —— 许可 MIT
 
 ::: tip 进仿真（接口已留）
 「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，

@@ -38,7 +38,8 @@
    "repo_urls": [
     "https://github.com/IntelRealSense/librealsense"
    ],
-   "imu": null
+   "imu": null,
+   "repo_license": "Apache-2.0"
   },
   "vendor_cn": "RealSense（原 Intel）",
   "subtype_label": "双目"
@@ -82,7 +83,8 @@
    "repo_urls": [
     "https://github.com/IntelRealSense/librealsense"
    ],
-   "power_w": null
+   "power_w": null,
+   "repo_license": "Apache-2.0"
   },
   "vendor_cn": "RealSense（原 Intel）",
   "subtype_label": "双目"
@@ -126,7 +128,8 @@
    "repo_urls": [
     "https://github.com/IntelRealSense/librealsense"
    ],
-   "power_w": null
+   "power_w": null,
+   "repo_license": "Apache-2.0"
   },
   "vendor_cn": "RealSense（原 Intel）",
   "subtype_label": "双目"
@@ -143,7 +146,7 @@
   "verified": false,
   "last_checked": "2026-10-28",
   "price_cny": null,
-  "origin": "Intel RealSense 国内代理 realsenseai.com（官方页面）",
+  "origin": "Intel RealSense 国内代理 realsenseai.com（官方页面）；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对",
   "notes": "给**移动机器人**用的版本：GMSL2 + FAKRA 车规线束，能跑十几米长线，IP65 防护。代价是需要 GMSL 采集卡，Jetson 平台友好，PC 上要另配。",
   "specs": {
    "image_url": "/parts/intel-d457.png",
@@ -159,7 +162,8 @@
    "depth_range_m": "0.6–6",
    "fps": 30,
    "fov": "87°×58°",
-   "ip": "IP65"
+   "ip": "IP65",
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/RealSense-D457-Datasheet-Aug_2025.pdf"
   },
   "vendor_cn": null,
   "subtype_label": "双目"

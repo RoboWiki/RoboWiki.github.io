@@ -71,15 +71,17 @@ title: Livox HAP
 | 质量 (kg) | — |
 | 分辨率 | 0.18°×0.23° |
 | channel | 144 |
+| absolute | ≤2 cm @20 m (1σ) |
 | temp_range_C | -40~85 |
 | size_mm | 105×131.6×65 |
 | weight_g | 1,120 |
 | power_w | 12 |
 | 额定电压 (V) | 12 |
 | 防护等级 | IP67 |
-| doc_url | https://www.livoxtech.com/cn/hap/downloads |
+| 官方文档 | https://www.livoxtech.com/cn/hap/downloads |
 | 官方手册 (PDF) | https://dl.djicdn.com/downloads/Livox/HAP/HAP%28T1%29_User_Manual_V1.2_CHS.pdf |
 | repo_urls | https://github.com/Livox-SDK/livox_ros_driver2 |
+| repo_license | NOASSERTION |
 
 ## 优惠与获取条件
 
@@ -96,11 +98,11 @@ title: Livox HAP
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.livoxtech.com/cn/hap" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.livoxtech.com/cn/hap/downloads" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://dl.djicdn.com/downloads/Livox/HAP/HAP%28T1%29_User_Manual_V1.2_CHS.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://github.com/Livox-SDK/livox_ros_driver2" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>Livox 官网 HAP 规格页 + HAP(T1) 用户手册核对（2026-10-28）</td></tr><tr><td><a href="https://www.google.com/search?q=Livox+HAP+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=HAP&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Livox+HAP+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/lidar/livox.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/livox.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.livoxtech.com/cn/hap" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.livoxtech.com/cn/hap/downloads" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://dl.djicdn.com/downloads/Livox/HAP/HAP%28T1%29_User_Manual_V1.2_CHS.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://github.com/Livox-SDK/livox_ros_driver2" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NOASSERTION（⚠ 有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍）</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>Livox 官网 HAP 规格页 + HAP(T1) 用户手册核对（2026-10-28）</td></tr><tr><td><a href="https://www.google.com/search?q=Livox+HAP+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=HAP&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Livox+HAP+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/lidar/livox.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/livox.json</td></tr></tbody></table>
 
 ## 备注
 
-<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>车规级长距型号：150 m@10%，120°×25°，144 线等效，452,000 pts/s、10 Hz</li><li>12 W、9–18 V、1120 g、-40~85°C、IP67</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>DJI 商城 <span class="pn-money">¥7999</span>（2026-10）</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>TX 版为 100Base-TX，T1 版为 100Base-T1（车载以太网），下单前确认版本</li><li>比 Mid-360 重 4 倍多，四足上要算安装位置与配重</li></ul></div></div>
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>车规级长距型号：150 m@10%，120°×25°，144 线等效，452,000 pts/s、10 Hz</li><li>12 W、9–18 V、1120 g、-40~85°C、IP67</li><li>【IP67 仅在接上电源 + 车载以太网两根线时成立，否则 IP54</li><li>来源：Livox 手册】</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>DJI 商城 <span class="pn-money">¥7999</span>（2026-10）</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>TX 版为 100Base-TX，T1 版为 100Base-T1（车载以太网），下单前确认版本</li><li>比 Mid-360 重 4 倍多，四足上要算安装位置与配重</li></ul></div></div>
 
 
 

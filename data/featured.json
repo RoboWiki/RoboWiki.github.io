@@ -1,6 +1,6 @@
 {
  "note": "精选清单：只有出现在 ids 里的部件才会在「精选」视图展示。现在是全量（之后你逐个删）。用 tools/mark_featured.py 或直接改本文件。",
- "updated_at": "2026-10-29",
+ "updated_at": "2026-10-30",
  "ids": [
   "cont-drobotics-rdk-x3-4gb",
   "cont-nvidia-jetson-agx-orin-64gb",
@@ -241,6 +241,8 @@
   "unitree-r3",
   "damiao-usb2canfd-dual",
   "damiao-usb2canfd",
-  "lingzu-robstride-usb-can-hub"
+  "lingzu-robstride-usb-can-hub",
+  "dji-tb47",
+  "dji-tb48"
  ]
 }

@@ -73,7 +73,7 @@ title: 乐迪 RadioLink T8S
 | 输出协议 | SBUS / PPM / PWM |
 | 电池 | 内置 1S 1000 mAh 锂电池（3.7 V） |
 | 重量 (g) | — |
-| doc_url | https://www.radiolink.com.cn/cn/t8s |
+| 官方文档 | https://www.radiolink.com.cn/cn/t8s |
 | repo_urls | — |
 
 ## 优惠与获取条件

@@ -1,5 +1,5 @@
 ---
-title: 加工与采购
+title: 渠道库
 layout: page
 sidebar: false
 outline: false

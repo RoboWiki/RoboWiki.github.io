@@ -5,18 +5,40 @@
  "robots": {
   "unitree_go2": {
    "label": "宇树 Go2 四足",
-   "count": 56,
+   "count": 60,
    "roles": {
+    "官方描述/资产": 4,
+    "官方项目": 2,
     "训练": 23,
     "官方 SDK": 5,
     "仿真": 17,
     "控制/MPC": 2,
-    "工具/资料": 2,
+    "工具/资料": 3,
     "导航": 3,
-    "官方描述/资产": 3,
     "部署": 1
    },
    "projects": [
+    {
+     "name": "unitreerobotics/unitree_ros",
+     "role": "官方描述/资产",
+     "desc": "Go2 EDU 的 URDF / MJCF 描述文件",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_ros/tree/master/robots/go2_description"
+    },
+    {
+     "name": "unitreerobotics/unitree_ros2",
+     "role": "官方项目",
+     "desc": "Go2 EDU 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_ros2"
+    },
+    {
+     "name": "unitreerobotics/unitree_sdk2",
+     "role": "官方项目",
+     "desc": "Go2 EDU 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_sdk2"
+    },
     {
      "name": "legged_mpc_amp",
      "role": "训练",
@@ -408,20 +430,57 @@
      "desc": "GaoLii/Quad-Imaginarium（arXiv 2606.28237）：7488 段语言标注四足动作、18.5h@24fps、19 维状态；数据集待论文接收后发布（本快照仅 README）",
      "files": 2,
      "url": "https://github.com/Amap-Robotics/Quad-Imaginarium"
+    },
+    {
+     "name": "官方文档",
+     "role": "工具/资料",
+     "desc": "Go2 EDU 厂商文档页",
+     "files": 0,
+     "url": "https://support.unitree.com/main/zh"
     }
-   ]
+   ],
+   "note": "官方仓库 + 参考库项目（按 URL 去重）"
   },
   "unitree_g1": {
    "label": "unitree_g1",
-   "count": 41,
+   "count": 46,
    "roles": {
+    "官方描述/资产": 5,
+    "官方项目": 2,
     "官方 SDK": 1,
     "训练": 19,
-    "工具/资料": 8,
-    "官方描述/资产": 3,
+    "工具/资料": 9,
     "仿真": 10
    },
    "projects": [
+    {
+     "name": "unitreerobotics/unitree_rl_gym",
+     "role": "官方描述/资产",
+     "desc": "G1 的 URDF / MJCF 描述文件",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_rl_gym/tree/main/resources/robots/g1_description"
+    },
+    {
+     "name": "unitreerobotics/unitree_ros",
+     "role": "官方描述/资产",
+     "desc": "G1 的 URDF / MJCF 描述文件",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_ros/tree/master/robots/g1_description"
+    },
+    {
+     "name": "unitreerobotics/unitree_ros2",
+     "role": "官方项目",
+     "desc": "G1 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_ros2"
+    },
+    {
+     "name": "unitreerobotics/unitree_sdk2",
+     "role": "官方项目",
+     "desc": "G1 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_sdk2"
+    },
     {
      "name": "g1-mujoco-ros2-nav-sim-G1-MuJoCo-ROS2-",
      "role": "官方 SDK",
@@ -708,8 +767,16 @@
      "desc": "G1 回旋踢示例（mjlab）",
      "files": 8,
      "url": "https://github.com/mujocolab/g1_spinkick_example"
+    },
+    {
+     "name": "官方文档",
+     "role": "工具/资料",
+     "desc": "G1 厂商文档页",
+     "files": 0,
+     "url": "https://support.unitree.com/main/zh"
     }
-   ]
+   ],
+   "note": "官方仓库 + 参考库项目（按 URL 去重）"
   },
   "deeprobotics_m20": {
    "label": "云深处 M20 轮足",
@@ -816,16 +883,31 @@
   },
   "unitree_go1": {
    "label": "宇树 Go1 四足",
-   "count": 26,
+   "count": 28,
    "roles": {
+    "官方描述/资产": 3,
+    "官方项目": 1,
     "训练": 12,
     "工具/资料": 1,
     "仿真": 7,
     "控制/MPC": 2,
-    "官方描述/资产": 2,
     "官方 SDK": 2
    },
    "projects": [
+    {
+     "name": "unitreerobotics/unitree_ros",
+     "role": "官方描述/资产",
+     "desc": "Go1 的 URDF / MJCF 描述文件",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_ros/tree/master/robots/go1_description"
+    },
+    {
+     "name": "unitreerobotics/unitree_ros",
+     "role": "官方项目",
+     "desc": "Go1 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_ros"
+    },
     {
      "name": "unilab_new",
      "role": "训练",
@@ -1008,17 +1090,41 @@
      "files": 10,
      "url": "https://github.com/unitreerobotics/unitree_mujoco"
     }
-   ]
+   ],
+   "note": "官方仓库 + 参考库项目（按 URL 去重）"
   },
   "unitree_go2w": {
    "label": "宇树 Go2W 轮足",
-   "count": 18,
+   "count": 22,
    "roles": {
+    "官方描述/资产": 3,
+    "官方项目": 2,
     "训练": 9,
     "仿真": 7,
-    "官方描述/资产": 2
+    "工具/资料": 1
    },
    "projects": [
+    {
+     "name": "unitreerobotics/unitree_mujoco",
+     "role": "官方描述/资产",
+     "desc": "Go2-W 的 URDF / MJCF 描述文件",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_mujoco/tree/main/unitree_robots/go2w"
+    },
+    {
+     "name": "unitreerobotics/unitree_ros2",
+     "role": "官方项目",
+     "desc": "Go2-W 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_ros2"
+    },
+    {
+     "name": "unitreerobotics/unitree_sdk2",
+     "role": "官方项目",
+     "desc": "Go2-W 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_sdk2"
+    },
     {
      "name": "unilab_new",
      "role": "训练",
@@ -1144,18 +1250,49 @@
      "desc": "ZsiBot MATRiX 仿真平台源码快照的实现类子集（UE5 + MuJoCo + CARLA）：传感器声明、自定义/拼接场景、多机器人端口、相机与渲染协议、实景扫描 3DGS→PLY→MuJoCo proxy 流水线、G1 材质桥",
      "files": 46,
      "url": null
+    },
+    {
+     "name": "官方文档",
+     "role": "工具/资料",
+     "desc": "Go2-W 厂商文档页",
+     "files": 0,
+     "url": "https://support.unitree.com/main/zh"
     }
-   ]
+   ],
+   "note": "官方仓库 + 参考库项目（按 URL 去重）"
   },
   "unitree_b2": {
    "label": "宇树 B2 四足",
-   "count": 9,
+   "count": 13,
    "roles": {
+    "官方描述/资产": 4,
+    "官方项目": 2,
     "训练": 5,
     "仿真": 1,
-    "官方描述/资产": 3
+    "工具/资料": 1
    },
    "projects": [
+    {
+     "name": "unitreerobotics/unitree_ros",
+     "role": "官方描述/资产",
+     "desc": "B2 的 URDF / MJCF 描述文件",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_ros/tree/master/robots/b2_description"
+    },
+    {
+     "name": "unitreerobotics/unitree_ros",
+     "role": "官方项目",
+     "desc": "B2 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_ros"
+    },
+    {
+     "name": "unitreerobotics/unitree_sdk2",
+     "role": "官方项目",
+     "desc": "B2 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_sdk2"
+    },
     {
      "name": "uni_rl",
      "role": "训练",
@@ -1218,18 +1355,34 @@
      "desc": "多机型 MuJoCo 资产与场景",
      "files": 80,
      "url": null
+    },
+    {
+     "name": "官方文档",
+     "role": "工具/资料",
+     "desc": "B2 厂商文档页",
+     "files": 0,
+     "url": "https://support.unitree.com/main/zh"
     }
-   ]
+   ],
+   "note": "官方仓库 + 参考库项目（按 URL 去重）"
   },
   "unitree_b2w": {
    "label": "宇树 B2W 轮足",
-   "count": 9,
+   "count": 10,
    "roles": {
+    "官方项目": 1,
     "训练": 5,
     "仿真": 1,
     "官方描述/资产": 3
    },
    "projects": [
+    {
+     "name": "unitreerobotics/unitree_ros",
+     "role": "官方项目",
+     "desc": "B2-W 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_ros"
+    },
     {
      "name": "uni_rl",
      "role": "训练",
@@ -1293,7 +1446,8 @@
      "files": 80,
      "url": null
     }
-   ]
+   ],
+   "note": "官方仓库 + 参考库项目（按 URL 去重）"
   },
   "deeprobotics_lite3": {
    "label": "云深处 Lite3 四足",
@@ -1410,7 +1564,8 @@
      "files": 18,
      "url": "https://github.com/DeepRoboticsLab/deep_robotics_model"
     }
-   ]
+   ],
+   "note": "官方仓库 + 参考库项目（按 URL 去重）"
   },
   "limx_tron1_pf": {
    "label": "limx_tron1_pf",
@@ -1670,13 +1825,21 @@
   },
   "microduck": {
    "label": "microduck",
-   "count": 8,
+   "count": 9,
    "roles": {
+    "官方描述/资产": 1,
     "训练": 3,
     "工具/资料": 3,
     "仿真": 2
    },
    "projects": [
+    {
+     "name": "pollen-robotics/microduck_rl",
+     "role": "官方描述/资产",
+     "desc": "Microduck 的 URDF / MJCF 描述文件",
+     "files": 0,
+     "url": "https://github.com/pollen-robotics/microduck_rl/tree/main/src/mjlab_microduck/robot/microduck"
+    },
     {
      "name": "unilab_new",
      "role": "训练",
@@ -1733,7 +1896,8 @@
      "files": 26,
      "url": "https://github.com/microai-lab/microduck-studio"
     }
-   ]
+   ],
+   "note": "官方仓库 + 参考库项目（按 URL 去重）"
   },
   "wuji_hand": {
    "label": "wuji_hand",
@@ -1776,9 +1940,10 @@
   },
   "zex-w": {
    "label": "ZEX-W 轮足",
-   "count": 1,
+   "count": 2,
    "roles": {
-    "官方项目": 1
+    "官方项目": 1,
+    "工具/资料": 1
    },
    "projects": [
     {
@@ -1787,17 +1952,41 @@
      "desc": "ZEX-W 本体仓库：机械 / 硬件 / 固件 / mjlab 训练 / sim2sim / Python 与 ROS 2 双线部署 / BOM",
      "files": 197,
      "url": "https://github.com/zeitvex/RC_WheelLeg"
+    },
+    {
+     "name": "官方文档",
+     "role": "工具/资料",
+     "desc": "ZEX-W 厂商文档页",
+     "files": 0,
+     "url": "https://github.com/zeitvex/RC_WheelLeg#readme"
     }
-   ]
+   ],
+   "note": "官方仓库 + 参考库项目（按 URL 去重）"
   },
   "unitree_a1": {
    "label": "unitree_a1",
-   "count": 3,
+   "count": 5,
    "roles": {
+    "官方描述/资产": 1,
+    "官方项目": 1,
     "官方 SDK": 2,
     "控制/MPC": 1
    },
    "projects": [
+    {
+     "name": "unitreerobotics/unitree_ros",
+     "role": "官方描述/资产",
+     "desc": "A1 的 URDF / MJCF 描述文件",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_ros/tree/master/robots/a1_description"
+    },
+    {
+     "name": "leggedrobotics/legged_gym",
+     "role": "官方项目",
+     "desc": "A1 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/leggedrobotics/legged_gym"
+    },
     {
      "name": "legged_mpc_control",
      "role": "官方 SDK",
@@ -1819,12 +2008,14 @@
      "files": 50,
      "url": null
     }
-   ]
+   ],
+   "note": "官方仓库 + 参考库项目（按 URL 去重）"
   },
   "limx_tron1": {
    "label": "逐际动力 TRON 1（PF/SF/WF 三形态合并）",
-   "count": 11,
+   "count": 12,
    "roles": {
+    "官方项目": 1,
     "仿真": 2,
     "训练": 4,
     "官方描述/资产": 1,
@@ -1832,6 +2023,13 @@
     "部署": 1
    },
    "projects": [
+    {
+     "name": "limxdynamics",
+     "role": "官方项目",
+     "desc": "TRON 1 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/limxdynamics"
+    },
     {
      "name": "habitat-sim",
      "role": "仿真",
@@ -1909,7 +2107,280 @@
      "files": 2,
      "url": "https://github.com/limxdynamics/robot-joystick"
     }
-   ]
+   ],
+   "note": "官方仓库 + 参考库项目（按 URL 去重）"
+  },
+  "own:struct-berkeley-humanoid-lite": {
+   "label": "加州大学伯克利分校 Hybrid Robotics Berkeley Humanoid Lite",
+   "count": 3,
+   "roles": {
+    "官方描述/资产": 1,
+    "官方项目": 2
+   },
+   "projects": [
+    {
+     "name": "HybridRobotics/Berkeley-Humanoid-Lite-Assets",
+     "role": "官方描述/资产",
+     "desc": "Berkeley Humanoid Lite 的 URDF / MJCF 描述文件",
+     "files": 0,
+     "url": "https://github.com/HybridRobotics/Berkeley-Humanoid-Lite-Assets/blob/main/data/robots/berkeley_humanoid/berkeley_humanoid_lite/urdf/berkeley_humanoid_lite.urdf"
+    },
+    {
+     "name": "HybridRobotics/Berkeley-Humanoid-Lite-Assets",
+     "role": "官方项目",
+     "desc": "Berkeley Humanoid Lite 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/HybridRobotics/Berkeley-Humanoid-Lite-Assets"
+    },
+    {
+     "name": "hybridrobotics/berkeley-humanoid-lite",
+     "role": "官方项目",
+     "desc": "Berkeley Humanoid Lite 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/hybridrobotics/berkeley-humanoid-lite"
+    }
+   ],
+   "note": "官方仓库 + 参考库项目（按 URL 去重）"
+  },
+  "own:struct-fourier-gr2": {
+   "label": "上海傅利叶智能科技 GR-2",
+   "count": 3,
+   "roles": {
+    "官方描述/资产": 1,
+    "官方项目": 2
+   },
+   "projects": [
+    {
+     "name": "FFTAI/Wiki-GRx-Models",
+     "role": "官方描述/资产",
+     "desc": "GR-2 的 URDF / MJCF 描述文件",
+     "files": 0,
+     "url": "https://github.com/FFTAI/Wiki-GRx-Models/tree/master/GRX/GR2/GR2v3.0.1/urdf"
+    },
+    {
+     "name": "FFTAI/Wiki-GRx-Deploy",
+     "role": "官方项目",
+     "desc": "GR-2 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/FFTAI/Wiki-GRx-Deploy"
+    },
+    {
+     "name": "FFTAI/Wiki-GRx-Models",
+     "role": "官方项目",
+     "desc": "GR-2 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/FFTAI/Wiki-GRx-Models"
+    }
+   ],
+   "note": "官方仓库 + 参考库项目（按 URL 去重）"
+  },
+  "own:struct-kscale-stompy": {
+   "label": "K-Scale Labs Stompy",
+   "count": 2,
+   "roles": {
+    "官方项目": 2
+   },
+   "projects": [
+    {
+     "name": "kscalelabs/ksim_wasm",
+     "role": "官方项目",
+     "desc": "Stompy 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/kscalelabs/ksim_wasm"
+    },
+    {
+     "name": "kscalelabs/gym-stompy",
+     "role": "官方项目",
+     "desc": "Stompy 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/kscalelabs/gym-stompy"
+    }
+   ],
+   "note": "官方仓库 + 参考库项目（按 URL 去重）"
+  },
+  "own:struct-odri-solo12": {
+   "label": "Open Dynamic Robot Initiative Solo 12",
+   "count": 4,
+   "roles": {
+    "官方描述/资产": 1,
+    "官方项目": 2,
+    "工具/资料": 1
+   },
+   "projects": [
+    {
+     "name": "open-dynamic-robot-initiative/robot_properties_solo",
+     "role": "官方描述/资产",
+     "desc": "Solo 12 的 URDF / MJCF 描述文件",
+     "files": 0,
+     "url": "https://github.com/open-dynamic-robot-initiative/robot_properties_solo/tree/master/src/robot_properties_solo/resources/xacro"
+    },
+    {
+     "name": "open-dynamic-robot-initiative/robot_interfaces_solo",
+     "role": "官方项目",
+     "desc": "Solo 12 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/open-dynamic-robot-initiative/robot_interfaces_solo"
+    },
+    {
+     "name": "open-dynamic-robot-initiative/robot_properties_solo",
+     "role": "官方项目",
+     "desc": "Solo 12 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/open-dynamic-robot-initiative/robot_properties_solo"
+    },
+    {
+     "name": "官方文档",
+     "role": "工具/资料",
+     "desc": "Solo 12 厂商文档页",
+     "files": 0,
+     "url": "https://github.com/open-dynamic-robot-initiative/open-dynamic-robot-initiative.github.io/wiki"
+    }
+   ],
+   "note": "官方仓库 + 参考库项目（按 URL 去重）"
+  },
+  "own:struct-roboparty-roboto01": {
+   "label": "RoboParty ROBOTO 01（RP1）",
+   "count": 4,
+   "roles": {
+    "官方描述/资产": 1,
+    "官方项目": 2,
+    "工具/资料": 1
+   },
+   "projects": [
+    {
+     "name": "Roboparty/RP1_description",
+     "role": "官方描述/资产",
+     "desc": "ROBOTO 01（RP1） 的 URDF / MJCF 描述文件",
+     "files": 0,
+     "url": "https://github.com/Roboparty/RP1_description/tree/master/urdf"
+    },
+    {
+     "name": "Roboparty/RP1_description",
+     "role": "官方项目",
+     "desc": "ROBOTO 01（RP1） 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/Roboparty/RP1_description"
+    },
+    {
+     "name": "Roboparty/RP1",
+     "role": "官方项目",
+     "desc": "ROBOTO 01（RP1） 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/Roboparty/RP1"
+    },
+    {
+     "name": "官方文档",
+     "role": "工具/资料",
+     "desc": "ROBOTO 01（RP1） 厂商文档页",
+     "files": 0,
+     "url": "https://roboparty.com/documents/roboto-01"
+    }
+   ],
+   "note": "官方仓库 + 参考库项目（按 URL 去重）"
+  },
+  "own:struct-stanford-doggo": {
+   "label": "斯坦福学生机器人协会 Doggo",
+   "count": 3,
+   "roles": {
+    "官方描述/资产": 1,
+    "官方项目": 2
+   },
+   "projects": [
+    {
+     "name": "RajPShinde/Doggo_Description",
+     "role": "官方描述/资产",
+     "desc": "Doggo 的 URDF / MJCF 描述文件",
+     "files": 0,
+     "url": "https://github.com/RajPShinde/Doggo_Description/tree/master/urdf"
+    },
+    {
+     "name": "Nate711/Doggo",
+     "role": "官方项目",
+     "desc": "Doggo 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/Nate711/Doggo"
+    },
+    {
+     "name": "Nate711/StanfordDoggoProject",
+     "role": "官方项目",
+     "desc": "Doggo 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/Nate711/StanfordDoggoProject"
+    }
+   ],
+   "note": "官方仓库 + 参考库项目（按 URL 去重）"
+  },
+  "own:struct-stanford-pupper-v3": {
+   "label": "斯坦福学生机器人协会 Pupper v3",
+   "count": 2,
+   "roles": {
+    "官方项目": 1,
+    "工具/资料": 1
+   },
+   "projects": [
+    {
+     "name": "stanfordroboticsclub/StanfordQuadruped",
+     "role": "官方项目",
+     "desc": "Pupper v3 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/stanfordroboticsclub/StanfordQuadruped"
+    },
+    {
+     "name": "官方文档",
+     "role": "工具/资料",
+     "desc": "Pupper v3 厂商文档页",
+     "files": 0,
+     "url": "https://pupper.readthedocs.io/"
+    }
+   ],
+   "note": "官方仓库 + 参考库项目（按 URL 去重）"
+  },
+  "own:struct-unitree-h1": {
+   "label": "宇树科技 H1",
+   "count": 5,
+   "roles": {
+    "官方描述/资产": 2,
+    "官方项目": 2,
+    "工具/资料": 1
+   },
+   "projects": [
+    {
+     "name": "unitreerobotics/unitree_rl_gym",
+     "role": "官方描述/资产",
+     "desc": "H1 的 URDF / MJCF 描述文件",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_rl_gym/tree/main/resources/robots/h1/urdf"
+    },
+    {
+     "name": "unitreerobotics/unitree_ros",
+     "role": "官方描述/资产",
+     "desc": "H1 的 URDF / MJCF 描述文件",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_ros/tree/master/robots/h1_description"
+    },
+    {
+     "name": "unitreerobotics/unitree_rl_gym",
+     "role": "官方项目",
+     "desc": "H1 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_rl_gym"
+    },
+    {
+     "name": "unitreerobotics/unitree_sdk2",
+     "role": "官方项目",
+     "desc": "H1 官方仓库（驱动 / SDK / 例程）",
+     "files": 0,
+     "url": "https://github.com/unitreerobotics/unitree_sdk2"
+    },
+    {
+     "name": "官方文档",
+     "role": "工具/资料",
+     "desc": "H1 厂商文档页",
+     "files": 0,
+     "url": "https://support.unitree.com/main/zh"
+    }
+   ],
+   "note": "官方仓库 + 参考库项目（按 URL 去重）"
   }
  },
  "url_note": "链接取自本地克隆的 git remote；没有 remote 的按仓库名到 GitHub 搜索、只接受仓库名完全一致的命中，否则留空不猜。"

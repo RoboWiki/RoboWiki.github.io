@@ -80,7 +80,8 @@
    "urdf_urls": [
     "https://github.com/DeepRoboticsLab/deep_robotics_model"
    ],
-   "ecosystem_id": "deeprobotics_lite3"
+   "ecosystem_id": "deeprobotics_lite3",
+   "repo_license": "BSD-3-Clause"
   }
  }
 ]

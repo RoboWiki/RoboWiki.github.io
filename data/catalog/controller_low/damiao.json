@@ -50,7 +50,8 @@
    "doc_url": "https://gitee.com/kit-miao/dm-mc02",
    "repo_urls": [
     "https://gitee.com/kit-miao/dm-mc02"
-   ]
+   ],
+   "repo_license": null
   },
   "subtype_label": "主控板"
  }

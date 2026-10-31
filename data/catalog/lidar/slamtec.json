@@ -37,12 +37,13 @@
    "image_url": "/parts/slamtec-rplidar-s2.webp",
    "image_source": "ccc 分支（Dichen33 提交）",
    "doc_url": "https://www.slamtec.com/cn/s2",
-   "doc_pdf": null,
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/SLAMTEC_RPLIDAR_S2_Introduction_and_Datasheet.pdf",
    "repo_urls": [
     "https://github.com/Slamtec/rplidar_sdk"
-   ]
+   ],
+   "repo_license": "BSD-2-Clause"
   },
   "notes": "单线 DTOF，30 m@90% 白 / 10 m@10% 黑，盲区 0.05 m；32,000 采样/s、10 Hz、0.1125°、±30 mm；IP65，UART 1 Mbps，5 V/400 mA（约 2 W）。只给 2D 平面，做地形要配合俯仰机构或多线雷达。DFRobot ¥2500（2026-10）；同系列 S2L 约 ¥1900、S2P 量程 50 m、S2E 是以太网版约 ¥3000。",
-  "origin": "思岚科技官网 RPLIDAR S2 规格页 + DFRobot 商品页核对（2026-10-28）"
+  "origin": "思岚科技官网 RPLIDAR S2 规格页 + DFRobot 商品页核对（2026-10-28）；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对"
  }
 ]

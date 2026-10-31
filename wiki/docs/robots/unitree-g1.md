@@ -32,17 +32,26 @@ title: G1
 
 ## 开源生态
 
-<em>生态来自本地参考库的项目索引（41 个项目 / 角色由我们按项目定位标注）。
+<em>生态来自本地参考库的项目索引（46 个项目 / 角色由我们按项目定位标注）。
 只说明「哪些环节有现成开源实现」，不代表这些项目都能直接跑在这台机器上。</em>
 
-<div class="rb-roles"><span class="rb-role"><b>官方描述/资产</b>3</span> <span class="rb-role"><b>官方 SDK</b>1</span> <span class="rb-role"><b>仿真</b>10</span> <span class="rb-role"><b>训练</b>19</span> <span class="rb-role"><b>工具/资料</b>8</span></div>
+<div class="rb-roles"><span class="rb-role"><b>官方项目</b>2</span> <span class="rb-role"><b>官方描述/资产</b>5</span> <span class="rb-role"><b>官方 SDK</b>1</span> <span class="rb-role"><b>仿真</b>10</span> <span class="rb-role"><b>训练</b>19</span> <span class="rb-role"><b>工具/资料</b>9</span></div>
 
-**官方描述/资产**（2 个）
+**官方项目**（2 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/unitreerobotics/unitree_ros2" target="_blank" rel="noopener">unitreerobotics/unitree_ros2</a> | G1 官方仓库（驱动 / SDK / 例程） | 0 |
+| <a href="https://github.com/unitreerobotics/unitree_sdk2" target="_blank" rel="noopener">unitreerobotics/unitree_sdk2</a> | G1 官方仓库（驱动 / SDK / 例程） | 0 |
+
+**官方描述/资产**（4 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
 | <a href="https://github.com/ARISE-Initiative/robosuite" target="_blank" rel="noopener">robosuite_new</a> | robosuite：MuJoCo 操作仿真框架（arenas/robots/objects/tasks 模块化 MJCF 组合 + OSC 控制器 + 遥操作）——wuji 灵巧手操作任务与资源组合模型参考 | 535 |
 | <a href="https://github.com/fan-ziqi/rl_sar_zoo" target="_blank" rel="noopener">rl_sar_zoo</a> | RL-SAR 机型 zoo：URDF/MJCF 与策略集合 | 170 |
+| <a href="https://github.com/unitreerobotics/unitree_rl_gym/tree/main/resources/robots/g1_description" target="_blank" rel="noopener">unitreerobotics/unitree_rl_gym</a> | G1 的 URDF / MJCF 描述文件 | 0 |
+| <a href="https://github.com/unitreerobotics/unitree_ros/tree/master/robots/g1_description" target="_blank" rel="noopener">unitreerobotics/unitree_ros</a> | G1 的 URDF / MJCF 描述文件 | 0 |
 
 **官方 SDK**（1 个）
 
@@ -75,7 +84,7 @@ title: G1
 | <a href="https://github.com/Djttt/kaiwu-rl" target="_blank" rel="noopener">kaiwu_rl</a> | 开悟 RL 工程（Go2/G1） | 284 |
 | <a href="https://github.com/project-instinct/InstinctMJ" target="_blank" rel="noopener">InstinctMJ</a> | InstinctMJ：G1 人形 mjlab 工程 | 220 |
 
-**工具/资料**（7 个）
+**工具/资料**（8 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
@@ -86,14 +95,15 @@ title: G1
 | <a href="https://github.com/SUZ-tsinghua/smp" target="_blank" rel="noopener">smp</a> | SMP：冻结扩散模型作为可复用运动奖励（G1 自然动作） | 53 |
 | <a href="https://github.com/ansh1113/humanoid-motion-planning" target="_blank" rel="noopener">humanoid-motion-planning</a> | 人形运动规划算法 | 49 |
 | <a href="https://github.com/luckyrobots/g1-manipulation-challenge" target="_blank" rel="noopener">g1-manipulation-challenge</a> | G1 操作挑战赛工程 | 13 |
+| <a href="https://support.unitree.com/main/zh" target="_blank" rel="noopener">官方文档</a> | G1 厂商文档页 | 0 |
 
 ## 链接
 
 - 官方文档：<https://support.unitree.com/main/zh>
 - URDF：<https://github.com/unitreerobotics/unitree_ros/tree/master/robots/g1_description>
 - URDF：<https://github.com/unitreerobotics/unitree_rl_gym/tree/main/resources/robots/g1_description>
-- 仓库：<https://github.com/unitreerobotics/unitree_sdk2>
-- 仓库：<https://github.com/unitreerobotics/unitree_ros2>
+- 仓库：<https://github.com/unitreerobotics/unitree_sdk2> —— 许可 BSD-3-Clause
+- 仓库：<https://github.com/unitreerobotics/unitree_ros2> —— 许可 BSD-3-Clause
 
 ::: tip 进仿真（接口已留）
 「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，

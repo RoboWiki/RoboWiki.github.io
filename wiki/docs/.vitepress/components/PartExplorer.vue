@@ -194,7 +194,8 @@ const vendors = computed(() =>
   [...new Set(all.value.filter(p => p.category === cat.value).map(p => p.vendor))].sort())
 
 /** 传感器按**类型**筛选，不按厂商：同类传感器跨厂商横向比才有意义。
- *  0 计数的类型照样列出（虚线），让「以后该收什么」显式可见，而不是假装完整。 */
+ *  0 计数的类型照样列出（虚线），让「以后该收什么」显式可见，而不是假装完整。
+ *  做法来自 ccc 分支（Dichen33）。 */
 const sensorTypes = computed(() => {
   if (cat.value !== 'sensor') return []
   const items = Object.entries(meta.value?.subtypes || {}).map(([v, label]) => ({
@@ -325,7 +326,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
 
       <!-- 工具条 -->
       <div class="pd-row">
-        <input v-model="q" class="pd-input" :placeholder="L.search" />
+        <input v-model="q" class="pd-input" :placeholder="L.search" aria-label="搜索部件" />
       <button class="pd-chip pd-featured"
               :class="{ on: featuredOnly && hasCuration, off: !hasCuration }"
               :disabled="!hasCuration"
@@ -335,7 +336,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
         <span class="pd-n">{{ hasCuration ? featuredIds.size : '未筛选' }}</span>
       </button>
 
-        <select v-model="sort" class="pd-sel">
+        <select v-model="sort" class="pd-sel" aria-label="排序方式">
           <option v-for="s in sortOpts" :key="s.k" :value="s.k">按{{ s.label }}</option>
         </select>
         <button class="pd-btn" @click="order = order === 'desc' ? 'asc' : 'desc'">
@@ -385,7 +386,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
       </div>
 
       <!-- 卡片 -->
-      <div class="pd-grid">
+      <div class="pd-grid" aria-live="polite">
         <article v-for="p in rows" :key="p.id" class="card">
           <a class="card-img" :href="withBase('/parts/' + p.category + '/' + p.slug)">
             <img v-if="p.image" :src="withBase(p.image)" :alt="p.model" loading="lazy" />
@@ -441,7 +442,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
               </div>
               <div class="card-rate">
                 <template v-if="p.rating.avg != null">
-                  <span class="stars">★</span>{{ p.rating.avg.toFixed(1) }}
+                  <span class="stars" aria-hidden="true">★</span>{{ p.rating.avg.toFixed(1) }}
                   <span class="cnt">({{ p.rating.count }})</span>
                 </template>
                 <span v-else class="cnt">暂无评分</span>
@@ -456,17 +457,17 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
         </article>
       </div>
 
-      <p v-if="!rows.length" class="pd-muted" style="padding:2rem 0;text-align:center">
+      <p v-if="!rows.length" class="pd-muted" role="status" style="padding:2rem 0;text-align:center">
         {{ emptyText }}
       </p>
 
       <!-- 全部参数 -->
-      <div v-if="detail" class="pd-modal" @click.self="detail = null">
+      <div v-if="detail" class="pd-modal" role="dialog" aria-modal="true" :aria-label="detail.model + ' 全部参数'" @click.self="detail = null">
         <div class="pd-panel">
           <div class="pd-panel-head">
             <b>{{ detail.model }}</b>
             <span class="pd-muted">{{ detail.vendor }}</span>
-            <button class="pd-link" @click="detail = null">关闭</button>
+            <button class="pd-link" aria-label="关闭" @click="detail = null">关闭</button>
           </div>
           <table class="pd-specs">
             <tr v-for="(v, k) in detail.specs" :key="k">
@@ -574,7 +575,7 @@ html.dark .card-img img { mix-blend-mode: normal; background: #fff; border-radiu
 .card-tier.a { background: var(--vp-c-brand-soft); color: var(--vp-c-brand-1); }
 .card-promo {
   position: absolute; top: 6px; left: 6px; font-size: 0.62rem; font-weight: 700;
-  padding: 1px 5px; border-radius: 999px; background: #a06a00; color: #fff;
+  padding: 1px 5px; border-radius: 999px; background: var(--rw-accent-1); color: #fff;
 }
 
 .card-body { padding: 0.55rem 0.65rem 0.6rem; display: flex; flex-direction: column; gap: 0.28rem; }
@@ -602,16 +603,16 @@ html.dark .card-img img { mix-blend-mode: normal; background: #fff; border-radiu
 /* 原价：中性灰，尺寸略小。不做删除线 —— 优惠要资格，原价仍是真实价格 */
 .card-price .list { font-size: 0.8rem; color: var(--vp-c-text-2); }
 /* 优惠价：琥珀色，最醒目 */
-.card-price .promo { font-size: 0.9rem; font-weight: 700; color: #a06a00; }
-html.dark .card-price .promo { color: #e0b159; }
+.card-price .promo { font-size: 0.9rem; font-weight: 700; color: var(--rw-accent-1); }
+html.dark .card-price .promo { color: var(--rw-accent-1); }
 .card-price .hint {
-  font-size: 0.62rem; color: #a06a00; border: 1px solid currentColor;
+  font-size: 0.62rem; color: var(--rw-accent-1); border: 1px solid currentColor;
   border-radius: 999px; padding: 0 4px; opacity: 0.85;
 }
-html.dark .card-price .hint { color: #e0b159; }
+html.dark .card-price .hint { color: var(--rw-accent-1); }
 .card-rate { font-size: 0.76rem; color: var(--vp-c-text-1); font-variant-numeric: tabular-nums; }
-.card-rate .stars { color: #d97706; margin-right: 2px; }
-html.dark .card-rate .stars { color: #e0b159; }
+.card-rate .stars { color: var(--rw-accent-2); margin-right: 2px; }
+html.dark .card-rate .stars { color: var(--rw-accent-1); }
 .card-rate .cnt { font-size: 0.68rem; color: var(--vp-c-text-3); }
 
 .card-acts { display: flex; gap: 0.7rem; margin-top: 0.15rem; }
@@ -655,6 +656,6 @@ html.dark .card-rate .stars { color: #e0b159; }
 .pd-offer {
   margin: 0.6rem 0; font-size: 0.76rem; line-height: 1.7;
   color: var(--vp-c-text-2); padding: 0.5rem 0.6rem;
-  border-left: 3px solid #a06a00; background: var(--vp-c-bg-soft);
+  border-left: 3px solid var(--rw-accent-1); background: var(--vp-c-bg-soft);
 }
 </style>

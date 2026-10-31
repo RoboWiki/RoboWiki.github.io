@@ -25,6 +25,10 @@
   --vp-code-bg: #f0f0f0;
   --vp-code-color: #1f1f1f;
   --vp-code-block-bg: #f8f8f8;
+
+  --rw-accent-1: #a06a00;
+  --rw-accent-2: #d97706;
+  --rw-danger: #c02b2b;
 }
 
 /* 页面底用 #f3f3f3，内容区仍白 —— 和参考站一致的分层 */
@@ -134,6 +138,10 @@ html.dark {
   --vp-code-bg: #2d2d30;
   --vp-code-color: #cccccc;
   --vp-code-block-bg: #252526;
+
+  --rw-accent-1: #e0b159;
+  --rw-accent-2: #e0b159;
+  --rw-danger: #f48771;
 }
 
 html.dark body {
@@ -308,3 +316,160 @@ html.dark .vp-doc div[class*='language-'] {
 .sw-pick th { color: var(--vp-c-text-2); font-weight: 600; font-size: 0.82rem; }
 .sw-pick td:first-child { width: 38%; color: var(--vp-c-text-1); }
 .sw-pick td:last-child { color: var(--vp-c-text-2); }
+
+/* ════════════════════════════════════════════════════════════════════
+   阅读体验专项（阅读体验子智能体，2026-10-30）
+   目标：技术参数页 + 长文能「长时间读」——
+   行宽收敛、CJK 字体栈、代码/表格数字等宽、深色对比度、大纲与回顶可用性。
+   只新增与覆盖，不改上面的既有规则。
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. 字体栈：CJK 显式接管，避免 Windows 中文正文落进浏览器默认衬线 ──
+   数字/西文优先走 Inter（等宽数字 tabular-nums 品质好），
+   中文回退到「系统黑体」（雅黑/苹方/鸿蒙黑/思源黑），结尾才给宋体系衬线。 */
+:root {
+  --vp-font-family-base:
+    Inter, "Segoe UI", "Helvetica Neue", Arial,
+    "PingFang SC", "Hiragino Sans GB", "HarmonyOS Sans SC",
+    "Microsoft YaHei", "Source Han Sans SC", "Noto Sans CJK SC",
+    sans-serif;
+  --vp-font-family-mono:
+    "Cascadia Code", "JetBrains Mono", Consolas,
+    "SF Mono", Menlo, "Courier New",
+    "Microsoft YaHei", monospace;
+}
+
+/* ── 2. 正文行长与行高：中文长文理想 35–45 字/行 ─────────────────────
+   VitePress 默认 max-width:688px ≈ 43 个 16px 中文字，已在理想区上缘；
+   收到 640px ≈ 40 字，并把行高从 1.7 提到 1.8（CJK 方块字需要更大行间空气）。
+   仅对桌面带大纲的双栏布局生效；窄屏本来就没这么宽。 */
+@media (min-width: 1280px) {
+  .VPDoc.has-aside .content-container { max-width: 640px !important; }
+}
+
+.vp-doc p,
+.vp-doc li {
+  line-height: 1.8;
+  /* 等宽数字 + 常用连字：正文里混排型号/参数（M3508、19.2:1）不再忽胖忽瘦 */
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "liga" 1, "calt" 1;
+}
+
+/* 段落间距略收：行高加大后，默认 16px 段距会显得段落「漂」，
+   14px 让段落边界仍清晰、但不至于把一页内容拉得太长 */
+.vp-doc p { margin: 14px 0; }
+
+/* 中文引号/冒号后不留白错位：关掉 justify（中文两端对齐会让词间出现河流状空隙） */
+.vp-doc p, .vp-doc li { text-align: start; text-justify: none; }
+
+/* ── 3. 标题层级：h2/h3 字重与间距拉开，长文扫读时能「看见结构」 ── */
+.vp-doc h2 {
+  margin-top: 2.2rem;
+  letter-spacing: 0.01em;
+}
+.vp-doc h3 {
+  margin-top: 1.6rem;
+  font-weight: 600;
+}
+
+/* ── 4. 行内 code 与代码块 ─────────────────────────────────────────── */
+.vp-doc code {
+  border-radius: 4px;
+  padding: 0.15em 0.4em;      /* 默认贴边，中英文混排时挤在字上 */
+}
+
+.vp-doc div[class*="language-"] {
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.vp-doc div[class*="language-"] pre {
+  padding: 18px 0;
+  line-height: 1.75;          /* 默认 1.7 → 1.75，行号对齐不变 */
+}
+
+.vp-doc [class*="language-"] code {
+  font-size: 0.875rem;        /* 代码块 14px：默认 1em(=16) 在窄栏里横向滚动太频繁 */
+}
+
+/* 代码块内不能继承正文 tabular-nums 之外的 CJK 字体干扰 */
+.vp-doc div[class*="language-"] code {
+  font-variant-numeric: normal;
+}
+
+/* ── 5. 表格：参数表是本站第一公民 ─────────────────────────────────── */
+.vp-doc table {
+  margin: 20px 0;             /* 默认 16px 与代码块节奏对齐 */
+}
+
+/* 表格数字也走 Inter 的 tnum（上面 td 已设 tabular-nums，这里补特征开关，
+   保证 Cascadia/Consolas 之外的中文字体回退时数字仍等宽） */
+.vp-doc th, .vp-doc td {
+  font-feature-settings: "tnum" 1;
+  line-height: 1.6;
+}
+
+/* 窄屏：VitePress 默认 table{display:block;overflow-x:auto} 已能横向滚动，
+   补一个「可滚动」的视觉提示——右缘渐隐遮罩不好做（table 不是容器），
+   改用滚动条可见化 + 触摸惯性 */
+.vp-doc table {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.vp-doc table::-webkit-scrollbar { height: 6px; }
+.vp-doc table::-webkit-scrollbar-thumb {
+  background: var(--vp-c-divider);
+  border-radius: 3px;
+}
+
+/* ── 6. 深色模式对比度 ─────────────────────────────────────────────── */
+html.dark {
+  /* #cccccc 对 #1e1e1e 只有 11.4:1，但长时间读会发灰发飘；
+     提到 #d4d4d4（VS Code 编辑器默认前景色本体），对比 12.6:1，眼睛更稳 */
+  --vp-c-text-1: #d4d4d4;
+  --vp-c-text-2: #a8a8a8;
+}
+
+/* 深色下行内 code 边框太亮会「镶边感」，收敛一点 */
+html.dark .vp-doc code { border-color: #3a3a3a; }
+
+/* 深色表格斑马纹默认两行差太小，弱光下分不清；略加深 */
+html.dark .vp-doc tr:nth-child(2n) td { background: #222222; }
+
+/* ── 7. 大纲（本页目录）与长文导航 ────────────────────────────────── */
+/* 大纲条目默认 13px/1.8 行高，层级箭头太淡；
+   激活项加粗 + 品牌色，扫长文时一眼知道读到哪里 */
+.VPDocOutlineItem .outline-link {
+  font-size: 0.82rem;
+  line-height: 1.9;
+  color: var(--vp-c-text-2);
+  transition: color 0.15s ease;
+}
+.VPDocOutlineItem .outline-link.active {
+  color: var(--vp-c-brand-1);
+  font-weight: 600;
+}
+
+/* 「回到顶部」悬浮按钮：默认出现在右下，半透明 + 悬停实色，
+   长参数表/长文里单手回顶 */
+.VPLocalNavOutlineDropdown,
+.back-to-top { z-index: 30; }
+
+/* ── 8. 细节体验 ──────────────────────────────────────────────────── */
+/* 选中文字用品牌色淡底：复制参数值时看得见选了什么 */
+::selection {
+  background: rgba(0, 120, 212, 0.22);
+}
+html.dark ::selection {
+  background: rgba(55, 148, 255, 0.3);
+}
+
+/* 滚动行为平滑：点大纲/页内锚点跳转不再是「瞬移」，长文里不丢位置感 */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* 尊重系统减弱动态偏好 */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

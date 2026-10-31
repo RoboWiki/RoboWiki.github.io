@@ -9,7 +9,7 @@
     1 定位一句话 + 三个动作按钮 + 五个数字
     2 按需求走：六个任务入口（多方评审共识：新用户不按分类思考，按任务思考）
     3 这个站在做什么：三块（信息底稿 / 开源生态 / 真实评价）
-    4 六个资源入口（部件 / 整机 / 软件 / 指南 / 加工 / 贡献者）
+    4 六个资源入口（部件 / 整机 / 软件 / 学习 / 加工 / 贡献者）
     5 口径速查（A/B/C、null、扭矩端口径、评分规则、价格日期）
     6 按品类
     7 底部：方法与来源 / 投稿 / 转载规范 / 贡献者
@@ -33,13 +33,31 @@ def _count_software(root: pathlib.Path) -> int:
         return 0
 
 
+def _eco_ids(root: pathlib.Path) -> set:
+    """有开源生态条目的 ecosystem_id 集合（与 build_robots 的 _eco 同源）。"""
+    f = root / "data" / "robot_ecosystem.json"
+    if not f.exists():
+        return set()
+    try:
+        robots = json.loads(f.read_text(encoding="utf-8")).get("robots") or {}
+    except Exception:
+        return set()
+    return {k for k, v in robots.items() if (v or {}).get("count")}
+
+
 def _counts(root: pathlib.Path) -> dict:
     rows = []
     for f in (root / "data" / "catalog").glob("*/*.json"):
         rows += json.loads(f.read_text(encoding="utf-8"))
     robots = 0
+    robots_with_eco = 0
+    eco_ids = _eco_ids(root)
     for f in (root / "data" / "robots").glob("*.json"):
-        robots += len(json.loads(f.read_text(encoding="utf-8")))
+        data = json.loads(f.read_text(encoding="utf-8"))
+        robots += len(data)
+        robots_with_eco += sum(
+            1 for r in data
+            if ((r.get("specs") or {}).get("ecosystem_id") or "") in eco_ids)
     try:
         sups = len(json.loads((root / "data" / "suppliers.json").read_text(encoding="utf-8")))
     except Exception:
@@ -52,6 +70,7 @@ def _counts(root: pathlib.Path) -> dict:
         "cats_total": len(cats),
         "tier_a": sum(1 for r in rows if r.get("source_tier") == "A"),
         "robots": robots,
+        "robots_with_eco": robots_with_eco,
         "software": _count_software(root),
         "suppliers": sups,
         "cat_rows": sorted(
@@ -71,6 +90,10 @@ def build(out_dir: pathlib.Path, root: pathlib.Path) -> None:
         for cid, name, hint, n in c["cat_rows"]
     )
 
+    eco_n = c["robots_with_eco"]
+    eco_note = (f"{eco_n} 台标了「生态 ×N」，点进去看每个环节是谁"
+                if eco_n else "有开源生态的整机标「生态 ×N」，点进去看每个环节是谁")
+
     md = f'''---
 layout: page
 sidebar: false
@@ -81,9 +104,9 @@ titleTemplate: false
 <div class="rw-home">
   <section class="rw-home-hero">
     <div class="rw-home-kicker">RoboWiki</div>
-    <h1>机器人信息的公共底稿。</h1>
+    <h1>机器人开发的开放资料底稿。</h1>
     <p class="rw-home-lead">
-      参数带来源、整机带 URDF、评价来自真正用过的人。
+      可核对的参数、可追溯的来源、真实使用者的经验。
       不卖零件、不收佣金、没有推荐位 —— 所以判定不必讨好谁。
     </p>
     <div class="rw-home-cta">
@@ -96,7 +119,7 @@ titleTemplate: false
       <div><b>{c['cats_with_data']}</b><span>有数据的品类（共 {c['cats_total']} 类）</span></div>
       <div><b>{c['tier_a']}</b><span>A 级：逐项对过厂商手册</span></div>
       <div><b>{c['robots']}</b><span>整机（带 URDF / 仓库）</span></div>
-      <div><b>{c['suppliers']}</b><span>加工与采购渠道</span></div>
+      <div><b>{c['suppliers']}</b><span>渠道库（加工 / 元件店铺）</span></div>
     </div>
   </section>
   <section class="rw-home-block">
@@ -153,27 +176,27 @@ titleTemplate: false
     <h2>六个入口</h2>
     <div class="rw-home-entries">
       <a class="rw-home-entry" href="/catalog">
-        <b>机器人部件 · {c['parts']} 件</b>
+        <b>部件库 · {c['parts']} 件</b>
         <p>比参数：按任意列排序、可对比、带来源等级与真实评分。</p>
         <span>A 级 {c['tier_a']} 件逐项对过手册</span>
       </a>
       <a class="rw-home-entry" href="/robots">
-        <b>机器人整机 · {c['robots']} 台</b>
+        <b>整机库 · {c['robots']} 台</b>
         <p>比方案与生态：几自由度、带不带算力、有没有开源描述与训练工程。</p>
-        <span>11 台标了「生态 ×N」，点进去看每个环节是谁</span>
+        <span>{eco_note}</span>
       </a>
       <a class="rw-home-entry" href="/software">
-        <b>机器人软件 · {c['software']} 个</b>
+        <b>软件库 · {c['software']} 个</b>
         <p>引擎、训练框架、算法与方法、模型架构、中间件、数学库 —— 按分组给许可与版本。</p>
         <span>读不到的许可标「未核对」，不猜</span>
       </a>
       <a class="rw-home-entry" href="/learn/">
-        <b>使用指南</b>
-        <p>这个站怎么读：来源等级怎么看、为什么有的是「—」、评分与筛选怎么用。</p>
-        <span>不写教程套路，只讲清数据的用法与边界</span>
+        <b>学习</b>
+        <p>怎么用这个站、怎么读参数口径，也有从入门到选型的学习路线。</p>
+        <span>先讲数据的用法与边界，再讲怎么动手</span>
       </a>
       <a class="rw-home-entry" href="/suppliers">
-        <b>加工与采购 · {c['suppliers']} 家</b>
+        <b>渠道库 · {c['suppliers']} 家</b>
         <p>比「活找谁做」：质量、交期、价格档、能不能开票。</p>
         <span>来自社区实战反馈，不是厂商自述</span>
       </a>
@@ -252,7 +275,7 @@ titleTemplate: false
   </section>
   <section class="rw-home-foot">
     <a href="/method">方法与来源</a>
-    <a href="/competitions">竞赛与实战</a>
+    <a href="/competitions">实战资料</a>
     <a href="/submit">投稿：补数据 / 写评价 / 写文章</a>
     <a href="/learn/reprint">转载规范</a>
     <a href="/contributors">贡献者</a>

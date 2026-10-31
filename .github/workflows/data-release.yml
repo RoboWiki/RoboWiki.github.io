@@ -1,0 +1,64 @@
+name: Data release
+
+# 数据独立版本化（P0-③）：把 data/ 打成一个可被外部 pin 的发布物。
+# 目的：将来若真要拆成独立数据仓，下游已经可以按版本引用「某月的数据集」，
+# 而不是被迫跟站点的发布节奏走。
+#
+# 打包与清单**不在本文件里内联实现**：统一调 tools/export_data.py，
+# 本地 `python tools/export_data.py` 跑的是同一份代码，不会出现两份逻辑漂移。
+#
+# 触发：手动作业，或打 tag（data-v*）
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "发布标签（留空=本次运行的日期；打 tag 触发时自动取 tag 名）"
+        required: false
+  push:
+    tags:
+      - "data-v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: 校验数据（不通过就不发）
+        run: |
+          python3 -m pip install --quiet -e .
+          python3 -m pipeline validate
+
+      - name: 打包 data/ + schema/ 并生成 MANIFEST（统一走 tools/export_data.py）
+        run: |
+          TAG="${{ github.event.inputs.tag }}"
+          # tag 触发时 event.inputs.tag 是空的，取 ref 名，否则 Release 会挂到日期名上
+          if [ -z "$TAG" ] && [ "${GITHUB_REF_TYPE}" = "tag" ]; then TAG="${GITHUB_REF_NAME}"; fi
+          if [ -z "$TAG" ]; then TAG="data-$(date -u +%Y.%m.%d)"; fi
+          echo "TAG=$TAG" >> "$GITHUB_ENV"
+          python3 tools/export_data.py --out dist --tag "$TAG"
+          # 附件名由 tag 推导（tag 自带 data- 前缀时会剥掉），这里不重复拼一遍
+          ASSET="$(cd dist && ls robowiki-data-*.tar.gz | head -n1)"
+          echo "ASSET=$ASSET" >> "$GITHUB_ENV"
+          ls -lh dist
+          cat dist/MANIFEST.json dist/SHA256SUMS.txt
+
+      - name: 发布
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          name: "数据快照 ${{ env.TAG }}"
+          body: |
+            这是 `data/` + `schema/` 的只读快照，用于按版本引用数据。
+
+            - 附件：`${{ env.ASSET }}`、`SHA256SUMS.txt`、`MANIFEST.json`
+            - 校验：`sha256sum -c SHA256SUMS.txt`（Windows：`Get-FileHash <file> -Algorithm SHA256`）
+            - 口径：见 `schema/semantics.json` 的 `version` 与站点 `/method`；`MANIFEST.json` 记了该版本与条目数
+            - 说明：数据以 A/B/C 分级，A 级逐项核对过厂商手册；缺失一律 `null`，不填猜测值
+          files: |
+            dist/${{ env.ASSET }}
+            dist/SHA256SUMS.txt
+            dist/MANIFEST.json

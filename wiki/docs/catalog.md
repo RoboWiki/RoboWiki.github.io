@@ -1,5 +1,5 @@
 ---
-title: 机器人部件
+title: 部件库
 layout: page
 sidebar: false
 outline: false

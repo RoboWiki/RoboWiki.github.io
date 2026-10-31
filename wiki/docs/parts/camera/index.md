@@ -16,7 +16,7 @@ title: 深度相机
 | [**OAK-D Pro**](/parts/camera/luxonis-oak-d-pro) | 深度相机 | USB-C（USB2 / USB3） | depth_range_m=0.7–12、fps=120、iface=USB-C（USB2 / USB3） | 3,060 | `A✓` |
 | [**ZED 2i**](/parts/camera/stereolabs-zed-2i) | 深度相机 | USB-C 3.1 | depth_range_m=0.3–20、fps=30、iface=USB-C 3.1 | 3,570 | `A✓` |
 | [**Gemini 305**](/parts/camera/orbbec-gemini-305) | 双目 | USB 3.0 Type-C | fps=60、iface=USB 3.0 Type-C | — | `B` |
-| [**Gemini 335**](/parts/camera/orbbec-gemini-335) | 结构光 | USB 3.0 Type-C | depth_range_m=0.10–20、fps=30、iface=USB 3.0 Type-C | 1,950 | `A✓` |
+| [**Gemini 335**](/parts/camera/orbbec-gemini-335) | 结构光 | USB 3.0 Type-C | depth_range_m=0.10–20、fps=30、iface=USB 3.0 Type-C | 1,950 | `B` |
 | [**Gemini 336**](/parts/camera/orbbec-gemini-336) | 结构光 | USB 3.0 Type-C | iface=USB 3.0 Type-C | — | `B` |
 
 > 这些行是 `B` 级（来自公开文档/官网，未逐项核对），采购前请回原厂页面确认。

@@ -28,10 +28,10 @@ python -m pipeline all                # 重新生成站点
 
 ## 这个目录会进 git 吗
 
-不会。`inbox/` 是暂存区，认领后图片会进 `frontend/public/parts/` 并纳入版本管理。
+不会。`inbox/` 是暂存区，认领后图片会进 `console/public/parts/` 并纳入版本管理。
 暂存区留在本地，避免把「还没确认的图」也提交进去。
 
 ## 已经认领过的
 
-认领后文件名会被规范成 `<零件id>.jpg`，落在 `frontend/public/parts/`。
+认领后文件名会被规范成 `<零件id>.jpg`，落在 `console/public/parts/`。
 映射关系写在 `data/part_images.json`，谁都能查「这张图对应哪个零件」。

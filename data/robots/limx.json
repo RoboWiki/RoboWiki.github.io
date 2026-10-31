@@ -38,7 +38,8 @@
     "https://github.com/limxdynamics"
    ],
    "urdf_urls": null,
-   "ecosystem_id": "limx_tron1"
+   "ecosystem_id": "limx_tron1",
+   "repo_license": null
   }
  }
 ]

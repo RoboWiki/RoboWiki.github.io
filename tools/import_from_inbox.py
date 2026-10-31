@@ -12,7 +12,7 @@
     IM6014.jpg                        纯型号
 
 认领之后它会做三件事：
-    1. 拷成 frontend/public/parts/<id>.jpg|png（统一命名，避免中文与空格进 URL）
+    1. 拷成 console/public/parts/<id>.jpg|png（统一命名，避免中文与空格进 URL）
     2. 写进 data/part_images.json 映射
     3. 打印「没认领到的文件」与「仍然缺图的零件」
 

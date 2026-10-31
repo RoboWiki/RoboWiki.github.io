@@ -1,0 +1,44 @@
+[
+ {
+  "id": "sens-yesense-yis320",
+  "category": "imu",
+  "subtype": "imu_module",
+  "subtype_label": "IMU 模组",
+  "vendor": "元生创新 Yesense",
+  "vendor_cn": "元生创新 Yesense",
+  "model": "YIS320",
+  "title": "元生创新 Yesense YIS320 工业级姿态传感器",
+  "url": "https://www.yesense.com/yis320",
+  "source_tier": "B",
+  "verified": false,
+  "last_checked": "2026-10-31",
+  "price_cny": null,
+  "origin": "授权代理规格页（elmak.tech，逐项参数表）+ 官方产品目录标题（2026-10-31）；官方站对抓取返回 429，未经官方手册逐项核对",
+  "notes": "工业级姿态传感器：MEMS 陀螺 + 加速度计 + 磁力计，内置 YFusion® 融合与出厂标定，直接输出横滚/俯仰/航向与三轴原始量。封装 22.4×22.4×9 mm、7.7 g，5 V 供电 190 mW，UART/USB，出数率最高 400 Hz。典型用途写在官方应用清单里：无人机、移动机器人、四足与人形。横滚/俯仰静态 0.05°、动态 0.2°；航向无参考 0.2°、用磁力计 1°。注意：以上数值取自代理页，官方站抓取被 429 拦住 —— 做精度预算前请回官网 PDF 复核。",
+  "specs": {
+   "gyro_range_dps": "±2000",
+   "accel_range_g": "±16",
+   "mag_range_gauss": "±8",
+   "odr_hz": 400,
+   "odr_note": "可配置，最高 400 Hz",
+   "noise": "陀螺 0.015 °/s/√Hz · 加速度 100 μg/√Hz（带宽 50 Hz）",
+   "bias_instability": "陀螺 5 °/h · 加速度 0.035 mg（Allan 1σ @25℃）",
+   "attitude": "横滚/俯仰 静 0.05° / 动 0.2°；航向 无参考 0.2°、磁 1°；静态漂移 0.1°/h",
+   "iface": "UART / USB",
+   "voltage_V": 5.0,
+   "power_w": 0.19,
+   "temp_range_C": "-40 ~ +85",
+   "shock_g": 2000,
+   "size_mm": "22.4 × 22.4 × 9",
+   "weight_g": 7.7,
+   "image_url": "/parts/imu-yesense-yis320.png",
+   "image_source": "用户提供的官方宣传图（元生创新 Yesense，DM_20261031010724_001.png，2026-10-31 收录）",
+   "doc_url": "https://www.yesense.com/yis320",
+   "doc_pdf": null,
+   "repo_urls": [
+    "https://github.com/HViktorTsoi/yesense_ros_driver"
+   ],
+   "repo_license": "NOASSERTION"
+  }
+ }
+]

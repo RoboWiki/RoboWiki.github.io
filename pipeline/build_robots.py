@@ -1,4 +1,4 @@
-"""整机板块的页面生成（与部件库同级，但独立）。
+"""整机库板块的页面生成（与部件库同级，但独立）。
 
 为什么单开而不塞进 catalog：
     部件的选型逻辑是「比参数」（扭矩/惯量/接口），整机是「看方案」（几自由度、
@@ -14,6 +14,31 @@ import html
 import json
 import pathlib
 import re
+
+
+#: 许可提示：只给「需要注意的」加 ⚠ —— 宽松许可不必制造噪音
+_RISK = ("NO-LICENSE", "NOASSERTION", "AGPL", "GPL", "LGPL", "CC-BY-SA")
+
+
+def _lic_note(lic: str | None) -> str:
+    """把 repo_license 渲染成一句人能读的话。"""
+    if not lic:
+        return ""
+    parts = [x.strip() for x in str(lic).split(",") if x.strip()]
+    if not parts:
+        return ""
+    risky = [p for p in parts if any(k in p for k in _RISK)]
+    if "NO-LICENSE" in parts:
+        head = "仓库里没有 LICENSE 文件 —— 默认保留所有权利，转载资产或商用前先问作者"
+    elif "NOASSERTION" in parts:
+        head = "有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍"
+    elif risky:
+        head = "传染性 copyleft —— 改动后要按同一许可开源（本站自身也是 GPL-3.0）"
+    else:
+        head = ""
+    tag = " · ".join(parts)
+    return f"{tag}" + (f"（⚠ {head}）" if head else "")
+
 
 LABEL = {
     "dof": "自由度", "mass_kg": "整机质量 (kg)", "payload_kg": "负载 (kg)",
@@ -182,7 +207,7 @@ def build(root: pathlib.Path, out: pathlib.Path, pub: pathlib.Path) -> None:
 
     # 索引页：页头由 ExplorerShell 提供，markdown 只留组件
     (out / "robots.md").write_text("""---
-title: 机器人整机
+title: 整机库
 layout: page
 sidebar: false
 outline: false
@@ -209,8 +234,9 @@ outline: false
             links.append(f"- 官方 PDF：<{s['doc_pdf']}>")
         for u in urdf:
             links.append(f"- URDF：<{u}>")
+        lic = _lic_note(s.get("repo_license"))
         for u in repo:
-            links.append(f"- 仓库：<{u}>")
+            links.append(f"- 仓库：<{u}>" + (f" —— 许可 {lic}" if lic else ""))
         (ddir / f"{r['_slug']}.md").write_text(f"""---
 title: {r['model']}
 ---

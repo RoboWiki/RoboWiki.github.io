@@ -37,17 +37,25 @@ title: B2
 
 ## 开源生态
 
-<em>生态来自本地参考库的项目索引（9 个项目 / 角色由我们按项目定位标注）。
+<em>生态来自本地参考库的项目索引（13 个项目 / 角色由我们按项目定位标注）。
 只说明「哪些环节有现成开源实现」，不代表这些项目都能直接跑在这台机器上。</em>
 
-<div class="rb-roles"><span class="rb-role"><b>官方描述/资产</b>3</span> <span class="rb-role"><b>仿真</b>1</span> <span class="rb-role"><b>训练</b>5</span></div>
+<div class="rb-roles"><span class="rb-role"><b>官方项目</b>2</span> <span class="rb-role"><b>官方描述/资产</b>4</span> <span class="rb-role"><b>仿真</b>1</span> <span class="rb-role"><b>训练</b>5</span> <span class="rb-role"><b>工具/资料</b>1</span></div>
 
-**官方描述/资产**（2 个）
+**官方项目**（2 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/unitreerobotics/unitree_ros" target="_blank" rel="noopener">unitreerobotics/unitree_ros</a> | B2 官方仓库（驱动 / SDK / 例程） | 0 |
+| <a href="https://github.com/unitreerobotics/unitree_sdk2" target="_blank" rel="noopener">unitreerobotics/unitree_sdk2</a> | B2 官方仓库（驱动 / SDK / 例程） | 0 |
+
+**官方描述/资产**（3 个）
 
 | 项目 | 说明 | 文件数 |
 |---|---|---|
 | <a href="https://github.com/fiveages-sim/robot-descriptions-quadruped" target="_blank" rel="noopener">robot-descriptions-quadruped</a> | 四足机型描述汇总（URDF/xacro/MJCF） | 180 |
 | <a href="https://github.com/fan-ziqi/rl_sar_zoo" target="_blank" rel="noopener">rl_sar_zoo</a> | RL-SAR 机型 zoo：URDF/MJCF 与策略集合 | 170 |
+| <a href="https://github.com/unitreerobotics/unitree_ros/tree/master/robots/b2_description" target="_blank" rel="noopener">unitreerobotics/unitree_ros</a> | B2 的 URDF / MJCF 描述文件 | 0 |
 
 **仿真**（1 个）
 
@@ -63,12 +71,18 @@ title: B2
 | <a href="https://github.com/Farama-Foundation/Gymnasium" target="_blank" rel="noopener">Gymnasium</a> | Farama RL 环境标准 API（Env/Space/Wrapper/Vector）——训练适配器协议与环境接口设计参考 | 457 |
 | <a href="https://github.com/fan-ziqi/rl_sar" target="_blank" rel="noopener">rl_sar</a> | RL-SAR：仿真到实机部署框架（多机型、含策略与 C++ 部署） | 170 |
 
+**工具/资料**（1 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://support.unitree.com/main/zh" target="_blank" rel="noopener">官方文档</a> | B2 厂商文档页 | 0 |
+
 ## 链接
 
 - 官方文档：<https://support.unitree.com/main/zh>
 - URDF：<https://github.com/unitreerobotics/unitree_ros/tree/master/robots/b2_description>
-- 仓库：<https://github.com/unitreerobotics/unitree_sdk2>
-- 仓库：<https://github.com/unitreerobotics/unitree_ros>
+- 仓库：<https://github.com/unitreerobotics/unitree_sdk2> —— 许可 BSD-3-Clause
+- 仓库：<https://github.com/unitreerobotics/unitree_ros> —— 许可 BSD-3-Clause
 
 ::: tip 进仿真（接口已留）
 「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，

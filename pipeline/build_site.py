@@ -26,6 +26,7 @@ OUT = ROOT / "wiki" / "docs"
 #: 品类。顺序即展示顺序 —— 关节电机是重点，放最前。
 #: 机械结构 / 电池 / 线束 没有收录：不是漏了，是没有可信来源，宁缺不编。
 from .load import cat_labels as _cat_labels
+from .meta import meta as _artifact_meta
 from .build_home import build as build_home
 from .build_competitions import build as build_competitions
 from .build_robots import build as build_robots
@@ -215,16 +216,17 @@ def tier_badge(t: str, verified) -> str:
 
 
 
-#: id -> 型号页地址。main() 里填；表格渲染时用它把型号变成可点的链接。
+#: id -> 型号页地址。main() 每轮构建开头清空后填；表格渲染时用它把型号变成可点的链接。
+#: 留在模块级是因为填充方和消费方都在 main() 里 — mdl() 本身不查它，
+#: 表格渲染函数可以脱离模块状态单测。
 HREF: dict[str, str] = {}
 
 
-def mdl(p: dict) -> str:
+def mdl(p: dict, href: str | None = None) -> str:
     """型号单元格：有页面就链接，没有就纯文本。"""
-    href = HREF.get(p["id"])
     return f"[**{p['model']}**]({href})" if href else f"**{p['model']}**"
 
-def actuator_table(items: list[dict]) -> str:
+def actuator_table(items: list[dict], href: dict[str, str] | None = None) -> str:
     head = ("| 型号 | 峰值 τ N·m | 额定 τ N·m | 减速比 | 空载 rpm | 质量 kg "
             "| 转子惯量 kg·m² | 价格 ¥ | 来源 |\n"
             "|---|---|---|---|---|---|---|---|---|")
@@ -232,7 +234,7 @@ def actuator_table(items: list[dict]) -> str:
     for p in sorted(items, key=lambda r: -(r["specs"].get("tau_peak_Nm") or 0)):
         s = p["specs"]
         lines.append(
-            f"| {mdl(p)} | {num(s.get('tau_peak_Nm'))} | {num(s.get('tau_rated_Nm'))} "
+            f"| {mdl(p, (href or {}).get(p['id']))} | {num(s.get('tau_peak_Nm'))} | {num(s.get('tau_rated_Nm'))} "
             f"| {num(s.get('gear'))} | {num(s.get('speed_noload_rpm'))} | {num(s.get('mass_kg'))} "
             f"| {num(s.get('armature_kgm2'))} | "
             f"{'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
@@ -240,12 +242,12 @@ def actuator_table(items: list[dict]) -> str:
     return "\n".join(lines)
 
 
-def generic_table(items: list[dict], cat: str) -> str:
+def generic_table(items: list[dict], cat: str, href: dict[str, str] | None = None) -> str:
     if cat == "controller_high":
         head = "| 型号 | SoC | CUDA | NPU TOPS | 内存 GB | 峰值 W | 价格 ¥ | 来源 |\n|---|---|---|---|---|---|---|---|"
         def row(p):
             s = p["specs"]
-            return (f"| {mdl(p)} | {s.get('soc') or '—'} | {s.get('cuda_cores') or '—'} "
+            return (f"| {mdl(p, (href or {}).get(p['id']))} | {s.get('soc') or '—'} | {s.get('cuda_cores') or '—'} "
                     f"| {num(s.get('npu_tops'))} | {num(s.get('ram_gb'))} | {num(s.get('power_max_w'))} "
                     f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
                     f"| {tier_badge(p['source_tier'], p['verified'])} |")
@@ -253,7 +255,7 @@ def generic_table(items: list[dict], cat: str) -> str:
         head = "| 型号 | MCU | FOC 轴数 | CAN | 电流环 kHz | 最高 V | 价格 ¥ | 来源 |\n|---|---|---|---|---|---|---|---|"
         def row(p):
             s = p["specs"]
-            return (f"| {mdl(p)} | {s.get('mcu') or '—'} | {s.get('foc_axes') or '—'} "
+            return (f"| {mdl(p, (href or {}).get(p['id']))} | {s.get('mcu') or '—'} | {s.get('foc_axes') or '—'} "
                     f"| {(str(s.get('can') or '—')) + (' FD' if s.get('canfd') else '')} "
                     f"| {num(s.get('current_loop_khz'))} | {num(s.get('voltage_max_V'))} "
                     f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
@@ -263,7 +265,7 @@ def generic_table(items: list[dict], cat: str) -> str:
                 "|---|---|---|---|---|---|---|---|")
         def row(p):
             s = p["specs"]
-            return (f"| {mdl(p)} | {p.get('subtype_label') or p['subtype']} "
+            return (f"| {mdl(p, (href or {}).get(p['id']))} | {p.get('subtype_label') or p['subtype']} "
                     f"| {num(s.get('channels'))} | {num(s.get('frequency_ghz'))} "
                     f"| {num(s.get('control_range_m'))} | {s.get('protocol') or '—'} "
                     f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
@@ -274,7 +276,7 @@ def generic_table(items: list[dict], cat: str) -> str:
         def row(p):
             s = p["specs"]
             fd = "—" if s.get("canfd") is None else ("是" if s.get("canfd") else "否")
-            return (f"| {mdl(p)} | {p.get('subtype_label') or p['subtype']} "
+            return (f"| {mdl(p, (href or {}).get(p['id']))} | {p.get('subtype_label') or p['subtype']} "
                     f"| {num(s.get('can'))} | {fd} | {num(s.get('can_speed_mbps'))} "
                     f"| {s.get('iface') or '—'} "
                     f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
@@ -285,7 +287,7 @@ def generic_table(items: list[dict], cat: str) -> str:
             s = p["specs"]
             keys = ("bits", "depth_range_m", "range_m", "fps", "odr_hz", "iface")
             kv = "、".join(f"{k}={num(s[k])}" for k in keys if s.get(k))
-            return (f"| {mdl(p)} | {p.get('subtype_label') or p['subtype']} "
+            return (f"| {mdl(p, (href or {}).get(p['id']))} | {p.get('subtype_label') or p['subtype']} "
                     f"| {s.get('iface') or '—'} | {kv or '—'} "
                     f"| {'—' if p.get('price_cny') is None else format(int(p['price_cny']), ',')} "
                     f"| {tier_badge(p['source_tier'], p['verified'])} |")
@@ -297,6 +299,28 @@ title: {title}
 ---
 
 """
+
+
+#: 许可提示：只给「需要注意的」加 ⚠ —— 宽松许可不必制造噪音
+_RISK = ("NO-LICENSE", "NOASSERTION", "AGPL", "GPL", "LGPL", "CC-BY-SA")
+
+
+def _lic_note(lic: str | None) -> str:
+    """把 repo_license 渲染成一句人能读的话（空串表示不需要提示）。"""
+    if not lic:
+        return ""
+    parts = [x.strip() for x in str(lic).split(",") if x.strip()]
+    if not parts:
+        return ""
+    if "NO-LICENSE" in parts:
+        head = "仓库里没有 LICENSE 文件 —— 默认保留所有权利，转载资产或商用前先问作者"
+    elif "NOASSERTION" in parts:
+        head = "有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍"
+    elif any(any(k in x for k in _RISK) for x in parts):
+        head = "传染性 copyleft —— 改动后要按同一许可开源（本站自身也是 GPL-3.0）"
+    else:
+        head = ""
+    return " · ".join(parts) + (f"（⚠ {head}）" if head else "")
 
 
 def main() -> None:
@@ -321,22 +345,30 @@ def main() -> None:
         (OUT / "parts" / c).mkdir(parents=True, exist_ok=True)
 
     # ── 每个型号独立一页 ─────────────────────────────────────────────
-    # 为什么要铺开成 191 页：这样「AK80-9 V3 到底怎么样」才有能分享、能被搜到、
+    # 为什么要铺开成几百页：这样「AK80-9 V3 到底怎么样」才有能分享、能被搜到、
     # 能挂讨论的落点。厂商页只适合横向比，单型号的实测必须落在单型号页上。
     seen_slug: dict[str, str] = {}
     slugs: dict[str, str] = {}
     # 精选白名单：data/featured.json（人工维护，见 tools/mark_featured.py）
+    #
+    # 语义是「默认全收录，人工剔除」：featured.json 的 note 写明「现在是全量，
+    # 之后逐个删」。所以这里对 ids 与全部部件求并集 —— 新收录的部件即使还没人
+    # 把它加进 featured.json，也会自动进精选视图，不会在默认页「隐形」。
+    # 后期要剔除某件，从 ids 里删掉即可（并集不影响剔除：删了就只剩「不在精选」）。
     try:
         _feat = json.loads((ROOT / "data" / "featured.json").read_text(encoding="utf-8"))
     except Exception:
         _feat = {"ids": []}
-    featured_ids = list(_feat.get("ids") or [])
+    featured_ids = sorted(set(_feat.get("ids") or []) | {r["id"] for r in rows})
     featured_set = set(featured_ids)
 
     for r in rows:
         slugs[r["id"]] = part_slug(r["id"], r["vendor"], r["model"], seen_slug)
 
-    # 表格里的型号要能点进型号页
+    # 表格里的型号要能点进型号页。
+    # 先清空：HREF 是模块级容器，测试在同一进程里跑第二遍构建时
+    # 不能带着上一轮残留的 id -> 链接映射。
+    HREF.clear()
     for r in rows:
         HREF[r["id"]] = f'/parts/{r["category"]}/{slugs[r["id"]]}'
 
@@ -368,8 +400,8 @@ def main() -> None:
 
     offers: list[dict] = load_offers()
 
-    def offer_of(r: dict) -> dict | None:
-        """给一个零件找**当前最便宜且条件齐全**的优惠。
+    def offer_of(r: dict) -> list[dict]:
+        """一个零件当前可用的全部优惠（按有效价升序），没有则空列表。
 
         优先级：具体 part_id 的 > 厂商级的；有明确优惠价的 > 只有折扣比例的。
         折扣比例（如教育优惠 9 折）用原价折算成有效价，卡片才能显示一个数。
@@ -440,7 +472,8 @@ def main() -> None:
     pub = OUT / "public"
     pub.mkdir(parents=True, exist_ok=True)
     (pub / "catalog.json").write_text(
-        json.dumps({"count": len(digest), "parts": digest,
+        json.dumps({"meta": _artifact_meta(len(digest)),
+                    "count": len(digest), "parts": digest,
                     # 品类表随产物一起发：前端不再硬编码品类名，
                     # 加品类 / 改名只动 data/taxonomy.json
                     "featured": {"ids": featured_ids, "updated_at": _feat.get("updated_at")},
@@ -455,9 +488,9 @@ def main() -> None:
         encoding="utf-8")
     print(f"  静态目录 {len(digest)} 条 / {(pub / 'catalog.json').stat().st_size // 1024} KB")
 
-    # 产品图：从 frontend/public/parts 复制到文档站的 public。
+    # 产品图：从 console/public/parts 复制到文档站的 public。
     # 两站要能各自独立部署，所以不能靠相对路径引用另一棵树。
-    src_img = ROOT / "frontend" / "public" / "parts"
+    src_img = ROOT / "console" / "public" / "parts"
     dst_img = pub / "parts"
     copied = 0
     if src_img.exists():
@@ -482,7 +515,8 @@ def main() -> None:
         print(f"  评分快照 -> public/ratings.json（{n} 个零件有分）")
     else:
         (pub / "ratings.json").write_text(
-            json.dumps({"total_ratings": 0, "parts": {}, "snapshot": True},
+            json.dumps({"meta": _artifact_meta(0),
+                            "total_ratings": 0, "parts": {}, "snapshot": True},
                        ensure_ascii=False), encoding="utf-8")
         print("  评分快照：无，写空表")
 
@@ -497,7 +531,7 @@ def main() -> None:
             txt = txt.rstrip("0").rstrip(".")
         return "¥" + txt
 
-    # ── 生成 191 个型号页 ─────────────────────────────────────────────
+    # ── 每个型号一页（数量随目录走，不写死） ──────────────────────────
     SPEC_LABEL = {
         "tau_peak_Nm": "峰值扭矩 (N·m)", "tau_rated_Nm": "额定扭矩 (N·m)",
         "tau_basis": "扭矩口径", "speed_noload_rpm": "空载转速 (rpm)",
@@ -555,6 +589,11 @@ def main() -> None:
         "battery_type": "电池类型",
         "cells": "电池节数",
         "switch_type": "类型",
+        # 电池
+        "capacity_mah": "容量 (mAh)", "energy_wh": "能量 (Wh)",
+        "discharge_rate_c": "额定放电倍率 (C)", "current_rated_A": "额定放电电流 (A)",
+        "v_charge_V": "充电截止电压 (V)", "mass_g": "质量 (g)", "chem": "电芯",
+        "doc_url": "官方文档",
         "channels": "通道数",
         "logic": "输入控制逻辑",
         "features": "功能特性",
@@ -717,7 +756,9 @@ def main() -> None:
             if str(u) in seen_urls:
                 continue
             seen_urls.add(str(u))
-            rows.append(("官方仓库 / SDK", str(u), "驱动、例程与协议实现"))
+            _lic = _lic_note(s.get("repo_license"))
+            rows.append(("官方仓库 / SDK", str(u),
+                         "驱动、例程与协议实现" + (f" · 许可 {_lic}" if _lic else "")))
         if s.get("image_source"):
             rows.append(("产品图出处", "", str(s["image_source"])))
         if r.get("origin"):
@@ -864,8 +905,6 @@ def main() -> None:
         if not out:
             out.append(("暂无建议", "这个型号的关键参数还缺得多，先补齐再谈用法。"))
         return out
-
-    METRIC_CLASS = {"good": "pm-good", "warn": "pm-warn", "bad": "pm-bad", "na": "pm-na"}
 
     def variants(r: dict) -> list[dict]:
         """同机座变体：同厂商 + 同外径的其他型号。
@@ -1119,21 +1158,8 @@ def main() -> None:
     n_rated = sum(1 for r in rows if (r.get("specs") or {}).get("tau_rated_Nm"))
     vendors = sorted({r["vendor"] for r in rows if r["category"] == "actuator"})
 
-    # ── 首页：这是社区，不是说明书 ──────────────────────────────────────
-    n_rated_pct = round(n_rated / n_act * 100) if n_act else 0
-    n_arm_pct = round(n_arm / n_act * 100) if n_act else 0
-    cat_cards = "\n".join(
-        f'<a class="hc" href="/parts/{c}/"><b>{name}</b>'
-        f'<span>{sum(1 for r in rows if r["category"] == c) or "待收录"}</span>'
-        f'<em>{desc}</em></a>'
-        for c, name, desc in CATS)
-    try:
-        n_sup = len(json.loads((ROOT / "data" / "suppliers.json").read_text(encoding="utf-8")))
-    except Exception:
-        n_sup = 0
-    n_tier_a = sum(1 for r in rows if r.get("source_tier") == "A")
-
-    # 首页：结构在 pipeline/build_home.py（定位 + 三件事 + 入口 + 口径速查）
+    # ── 首页与竞赛页：结构在 pipeline/build_home.py / build_competitions.py ──
+    # 这里不再自己拼首页卡片（上一版算好的统计量从没被用上，已删）。
     build_home(OUT, ROOT)
     build_competitions(OUT, ROOT)
 
@@ -1161,9 +1187,9 @@ def main() -> None:
 
 ## 跨厂商速览（按峰值扭矩降序，前 40）
 
-{actuator_table(sorted(items, key=lambda r: -(r['specs'].get('tau_peak_Nm') or 0))[:40])}
+{actuator_table(sorted(items, key=lambda r: -(r['specs'].get('tau_peak_Nm') or 0))[:40], HREF)}
 
-> 完整 147 行在[选型台](/)按任意列排序。这里只放前 40，因为一张表读不完等于没读。
+> 完整表在[部件库](/catalog)按任意列排序。这里只放前 40，因为一张表读不完等于没读。
 """, encoding="utf-8")
 
             # 每家一页
@@ -1180,7 +1206,7 @@ def main() -> None:
 
 共 **{len(sub)}** 型。数据等级 `A` 表示来自厂商手册/规格书且已逐项核对过。
 {note}
-{actuator_table(sub)}
+{actuator_table(sub, HREF)}
 
 ## 这一页的讨论
 
@@ -1194,19 +1220,20 @@ def main() -> None:
 
 {desc}，共 **{len(items)}** 件。
 
-{generic_table(items, c)}
+{generic_table(items, c, HREF)}
 
 {"> 来源等级见行末徽章：`A` = 逐项核对过官方手册，`B` = 公开网页。采购前请回原厂页面确认。" if c in ("remote_controller", "module") else "> 这些行是 `B` 级（来自公开文档/官网，未逐项核对），采购前请回原厂页面确认。"}
 """, encoding="utf-8")
 
 
-    # ── 参数口径（直接 import 后端的常量，杜绝漂移）──────────────────
-    import sys
-    sys.path.insert(0, str(ROOT / "backend"))
-    from app.api.routes.semantics import (  # noqa: E402
-        COMPARABILITY, CONVERSIONS, FIELD_SEMANTICS, RED_LINES,
-        SUPPLIER_QUESTIONS, TRINARY,
-    )
+    # ── 参数口径：读 schema/semantics.json（唯一事实源，不再 import 后端）──
+    _sem = json.loads((ROOT / "schema" / "semantics.json").read_text(encoding="utf-8"))
+    COMPARABILITY = _sem["comparability"]
+    CONVERSIONS = _sem["conversions"]
+    FIELD_SEMANTICS = _sem["field_semantics"]
+    RED_LINES = _sem["red_lines"]
+    SUPPLIER_QUESTIONS = _sem["supplier_questions"]
+    TRINARY = _sem["trinary"]
 
     def rows3(items, cols):
         head = "| " + " | ".join(cols) + " |\n|" + "---|" * len(cols)
@@ -1217,11 +1244,8 @@ def main() -> None:
                     else "、".join(map(str, it[c]))) for c in cols) + " |")
         return head + "\n" + "\n".join(body)
 
-    field_rows = [{"field": k, **v} for k, v in FIELD_SEMANTICS.items()]
-    section_redlines = rows3(RED_LINES, ["id", "name", "why"])
     section_conv = rows3(CONVERSIONS, ["from", "to", "formula"])
     section_comp = rows3(COMPARABILITY, ["grade", "name", "condition"])
-    section_field = rows3(field_rows, ["field", "label", "meaning"])
     section_ask = "\n".join(f"{i}. {q}" for i, q in enumerate(SUPPLIER_QUESTIONS, 1))
 
     # 红线做成卡片：6 列表格在小屏上没法读，而这一节是最该被读完的
@@ -1460,7 +1484,8 @@ html.dark .rl-th {{ color: #e0b159; }}
     except Exception:
         learn = {"routes": [], "articles": []}
     (pub / "learn.json").write_text(
-        json.dumps(learn, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        json.dumps({"meta": _artifact_meta(len(learn.get("articles", []))), **learn},
+                       ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print(f"  学习路线 {len(learn.get('routes', []))} 条 / "
           f"{len(learn.get('articles', []))} 篇 -> public/learn.json")
 
@@ -1477,20 +1502,13 @@ html.dark .rl-th {{ color: #e0b159; }}
     except Exception:
         sups = []
     (pub / "suppliers.json").write_text(
-        json.dumps({"count": len(sups), "suppliers": sups},
+        json.dumps({"meta": _artifact_meta(len(sups)),
+                       "count": len(sups), "suppliers": sups},
                    ensure_ascii=False, separators=(",", ":")),
         encoding="utf-8")
-    # 加工与采购（原「供应商」）：页头由 ExplorerShell 提供
-    try:
-        sups = json.loads((ROOT / "data" / "suppliers.json").read_text(encoding="utf-8"))
-    except Exception:
-        sups = []
-    (pub / "suppliers.json").write_text(
-        json.dumps({"count": len(sups), "suppliers": sups},
-                   ensure_ascii=False, separators=(",", ":")),
-        encoding="utf-8")
+    # 渠道库（原「供应商」）：页头由 ExplorerShell 提供
     (OUT / "suppliers.md").write_text("""---
-title: 加工与采购
+title: 渠道库
 layout: page
 sidebar: false
 outline: false
@@ -1624,10 +1642,109 @@ outline: false
 
 """
 
-    # 汇总成 /method：参数口径 + 数据来源 + 评分规则，一页讲完
+    # ── 数据治理与版本（method 页收尾）────────────────────────────────
+    # 这一节只回答「这个数你怎么自己核」，不谈立场：口径版本、ID 条数、
+    # 图出处与仓库许可的覆盖率，全部构建时现读现算 —— 写死的数字第二天就是假话。
+    def gov_section(parts: list[dict]) -> str:
+        def _sp(r: dict) -> dict:
+            return r.get("specs") or {}
+
+        def _stat(rows: list[dict]) -> tuple[int, int, int, int]:
+            """(有图, 写了出处, 引了仓库, 写了许可) —— 四个都可以逐条数回去。"""
+            img = sum(1 for r in rows if _sp(r).get("image_url"))
+            src = sum(1 for r in rows if _sp(r).get("image_source"))
+            rep = sum(1 for r in rows if _sp(r).get("repo_urls"))
+            lic = sum(1 for r in rows
+                      if _sp(r).get("repo_urls") and _sp(r).get("repo_license"))
+            return img, src, rep, lic
+
+        # 口径版本：与 /api/semantics、MCP 同源
+        try:
+            _semver = json.loads(
+                (ROOT / "schema" / "semantics.json").read_text(encoding="utf-8")
+            ).get("version")
+        except Exception:
+            _semver = None
+        # 永久 ID：注册表只追加，removed 即 tombstone
+        try:
+            _ids = json.loads(
+                (ROOT / "data" / "_id_registry.json").read_text(encoding="utf-8")
+            ).get("ids") or {}
+        except Exception:
+            _ids = {}
+        _tomb = sum(1 for m in _ids.values() if (m or {}).get("removed"))
+
+        # 整机与部件一样有图和仓库字段，覆盖率要一起数，否则表格是半个事实
+        _robots: list[dict] = []
+        for _f in sorted((ROOT / "data" / "robots").glob("*.json")):
+            try:
+                _robots += json.loads(_f.read_text(encoding="utf-8"))
+            except Exception:
+                pass
+        p_img, p_src, p_rep, p_lic = _stat(parts)
+        r_img, r_src, r_rep, r_lic = _stat(_robots)
+        n_img, n_src, n_rep, n_lic = (p_img + r_img, p_src + r_src,
+                                      p_rep + r_rep, p_lic + r_lic)
+        _scope = f"（部件 `{p_img}` + 整机 `{r_img}`）"
+        if not n_img:
+            img_txt = "暂无条目写 `image_url`"
+        elif n_src == n_img:
+            img_txt = f"有图 `{n_img}` 条{_scope}，全部写了 `image_source`"
+        else:
+            img_txt = (f"有图 `{n_img}` 条{_scope}，"
+                       f"写了 `image_source` 的 `{n_src}` 条")
+        if not n_rep:
+            repo_txt = "暂无条目引用仓库"
+        else:
+            repo_txt = (f"引用仓库 `{n_rep}` 条"
+                        f"（部件 `{p_rep}` + 整机 `{r_rep}`），"
+                        f"许可证已核 `{n_lic}` 条")
+        ver_txt = f"`{_semver}`" if _semver else "读不到（未核）"
+
+        return f"""
+## 数据治理与版本
+
+页面上的数能不能核，取决于四件可查的东西：口径文件、ID 注册表、数据快照、出处字段。
+下表的数字在构建时从仓库文件现读，不是手写的。
+
+| 项 | 现在是什么 |
+|---|---|
+| 口径版本 | {ver_txt}（`schema/semantics.json` 的 `version`） |
+| 永久 ID | `{len(_ids)}` 条已登记，`{_tomb}` 条 tombstone（`data/_id_registry.json`） |
+| 图片出处 | {img_txt} |
+| 仓库许可 | {repo_txt} |
+
+**口径版本。** 静态站、`/api/semantics`、MCP 读的是同一份 `schema/semantics.json`。
+改口径（字段定义、单位换算、红线阈值）就升 `version`；页面上任何数字的含义，
+以那一版为准。拿旧版本的数据配新口径来读，会读出错的值。
+
+**实体与 ID。** `data/_id_registry.json` 是永久 ID 注册表，只追加。
+id 一经登记**不改名、不复用**：改名要把旧 id 留作 alias，删除要在注册表里
+留 tombstone（`removed`）。原因不抽象 —— 评分唯一键、外部引用、型号页 URL
+全挂在 id 上，改一个名字会同时断三处。
+
+**数据快照。** `data/` + `schema/` 打成 tar.gz 发到
+[GitHub Releases](https://github.com/RoboWiki/RoboWiki.github.io/releases)，
+tag 形如 `data-YYYY.MM.DD`。每次发布带三个附件：
+
+- `robowiki-data-<tag>.tar.gz` —— `data/` 与 `schema/` 的只读快照
+- `MANIFEST.json` —— 条数、`ids` 数量、`semantics_version`、生成时间
+- `SHA256SUMS.txt` —— 上面那个 tar.gz 的 SHA-256
+
+打 `data-v*` tag，或在 Actions 里手动触发 `Data release` 生成。发布前先跑
+`python -m pipeline validate`，不通过就不发 —— 快照发出去就是对外承诺了一个版本。
+
+**出处与许可。** 有图必须写 `image_source`（厂商 PDF 的哪一页、商城条目号、
+采集日期）；引用了仓库必须写 `repo_license`，读不到许可证就写 `null`
+表示「未核」，不猜一个填上。这两条是 `python -m pipeline validate` 的硬检查，
+不是文风偏好 —— 上表「许可证已核 `{n_lic}` 条」正是现状：宁可标未核，也不编。
+"""
+
+    # 汇总成 /method：参数口径 + 数据来源 + 评分规则 + 数据治理，一页讲完
     (OUT / "method.md").write_text(
         "---\ntitle: 方法与来源\n---\n\n"
-        + _body(_sem) + "\n\n---\n\n" + _body(_src) + "\n" + IMAGE_RIGHTS + RATING_METHOD,
+        + _body(_sem) + "\n\n---\n\n" + _body(_src) + "\n" + IMAGE_RIGHTS
+        + RATING_METHOD + gov_section(rows),
         encoding="utf-8")
 
     print("  方法与来源 -> method.md")
@@ -1649,10 +1766,6 @@ outline: false
             continue
         sidebar["/parts/"][0]["items"].append(
             {"text": name, "link": f"/parts/{c}/"})
-
-    sem = json.loads((DATA / ".." / "backend" / "app" / "api" / "routes" /
-                      "_semantics_cache.json").read_text(encoding="utf-8")) \
-        if (ROOT / "backend" / "app" / "api" / "routes" / "_semantics_cache.json").exists() else None
 
     (OUT / ".vitepress").mkdir(parents=True, exist_ok=True)
     (OUT / ".vitepress" / "sidebar.json").write_text(

@@ -27,10 +27,16 @@ title: Microduck
 
 ## 开源生态
 
-<em>生态来自本地参考库的项目索引（8 个项目 / 角色由我们按项目定位标注）。
+<em>生态来自本地参考库的项目索引（9 个项目 / 角色由我们按项目定位标注）。
 只说明「哪些环节有现成开源实现」，不代表这些项目都能直接跑在这台机器上。</em>
 
-<div class="rb-roles"><span class="rb-role"><b>仿真</b>2</span> <span class="rb-role"><b>训练</b>3</span> <span class="rb-role"><b>工具/资料</b>3</span></div>
+<div class="rb-roles"><span class="rb-role"><b>官方描述/资产</b>1</span> <span class="rb-role"><b>仿真</b>2</span> <span class="rb-role"><b>训练</b>3</span> <span class="rb-role"><b>工具/资料</b>3</span></div>
+
+**官方描述/资产**（1 个）
+
+| 项目 | 说明 | 文件数 |
+|---|---|---|
+| <a href="https://github.com/pollen-robotics/microduck_rl/tree/main/src/mjlab_microduck/robot/microduck" target="_blank" rel="noopener">pollen-robotics/microduck_rl</a> | Microduck 的 URDF / MJCF 描述文件 | 0 |
 
 **仿真**（2 个）
 
@@ -56,8 +62,8 @@ title: Microduck
 ## 链接
 
 - URDF：<https://github.com/pollen-robotics/microduck_rl/tree/main/src/mjlab_microduck/robot/microduck>
-- 仓库：<https://github.com/pollen-robotics/microduck>
-- 仓库：<https://github.com/pollen-robotics/microduck_rl>
+- 仓库：<https://github.com/pollen-robotics/microduck> —— 许可 Apache-2.0
+- 仓库：<https://github.com/pollen-robotics/microduck_rl> —— 许可 Apache-2.0
 
 ::: tip 进仿真（接口已留）
 「进仿真」按钮先留着接口，**暂未接入**。上面的 URDF 链接可以直接下载，
