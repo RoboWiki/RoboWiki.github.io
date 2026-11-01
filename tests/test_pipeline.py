@@ -177,6 +177,20 @@ def test_part_pages_generated(built):
     assert len(pages) >= 40, f"只生成了 {len(pages)} 个型号页"
 
 
+def test_semantics_tables_are_html(built):
+    """回归：口径页整体是 raw HTML 块，Markdown 表格在里面不会被渲染。
+
+    线上曾经把「单位换算」「可比性分级」显示成一串竖线：表格写在
+    <div class="sem"> 里，VitePress 不解析 HTML 块内的 Markdown；模板还在
+    首行留了 4 个空格缩进，脱离 HTML 块也会被当成代码块。改为生成 <table>。
+    """
+    for name in ("semantics.md", "method.md"):
+        text = (built / name).read_text(encoding="utf-8")
+        assert "<table>" in text, f"{name}: 表格没生成 HTML <table>"
+        for raw in ("| from | to | formula |", "| grade | name | condition |"):
+            assert raw not in text, f"{name}: 仍残留 Markdown 表格表头 {raw!r}"
+
+
 # ── 死链 ────────────────────────────────────────────────────────────────
 # 为什么要三套正则：
 #   1. markdown 链接 ](...)      —— 手写页与生成表格
