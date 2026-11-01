@@ -17,12 +17,37 @@ title: 机械
 
 ## 四篇
 
-| 材料 | 讲什么 | 什么时候读 |
-|---|---|---|
-| [铨的加工指南](/competitions/mechanical/cnc-guide) | CNC 活动打样的尺寸上限、孔与内腔最小尺寸、螺纹与倒角怎么画、哪些结构必被判 NG | **画图之前**。设计完才发现做不出来，是最贵的错误 |
-| [传动机构简述](/competitions/mechanical/transmission) | 齿轮、蜗轮蜗杆、同步带、链条、丝杠、连杆的适用边界（40 页） | 选传动形式时，想知道「这个工况下它会不会坏」 |
-| [结构设计的思维逻辑](/competitions/mechanical/design-thinking) | 功能分解 → 接口确定 → 标准件/非标件的取舍 | 方案阶段。先想清接口，再动手画件 |
-| [轻量化设计指南](/competitions/mechanical/lightweight) | 筋板与拓扑怎么布、孔系怎么删、减重的刚度陷阱 | 有功率限制、想把重量换成加速时 |
+<MaterialGrid :items="[
+  {
+    title: '铨的加工指南',
+    href: '/competitions/mechanical/cnc-guide',
+    tags: ['加工可行性'],
+    what: 'CNC 活动打样的尺寸上限、孔与内腔最小尺寸、螺纹与倒角怎么画、哪些结构必被判 NG。',
+    when: '画图之前。设计完才发现做不出来，是最贵的错误。',
+  },
+  {
+    title: '传动机构简述',
+    href: '/competitions/mechanical/transmission',
+    meta: '40 页',
+    tags: ['传动选型'],
+    what: '齿轮、蜗轮蜗杆、同步带、链条、丝杠、连杆的适用边界。',
+    when: '选传动形式时，想知道「这个工况下它会不会坏」。',
+  },
+  {
+    title: '结构设计的思维逻辑',
+    href: '/competitions/mechanical/design-thinking',
+    tags: ['结构设计'],
+    what: '功能分解 → 接口确定 → 标准件/非标件的取舍。',
+    when: '方案阶段。先想清接口，再动手画件。',
+  },
+  {
+    title: '轻量化设计指南',
+    href: '/competitions/mechanical/lightweight',
+    tags: ['轻量化'],
+    what: '筋板与拓扑怎么布、孔系怎么删、减重的刚度陷阱。',
+    when: '有功率限制、想把重量换成加速时。',
+  },
+]" />
 
 ## 一条顺序建议
 

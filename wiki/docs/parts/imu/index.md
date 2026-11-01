@@ -5,7 +5,24 @@ title: IMU
 
 # IMU
 
-姿态与振动，共 **27** 件。
+姿态与振动，共 **27** 件、**12** 家厂商。
+
+## 厂商
+
+- [Bosch Sensortec](/parts/imu/bosch) —— 3 型
+- [Movella Xsens](/parts/imu/xsens) —— 1 型
+- [QST(上海矽睿)](/parts/imu/qst) —— 2 型
+- [SILAN(士兰微)](/parts/imu/silan) —— 1 型
+- [ST](/parts/imu/st) —— 10 型
+- [TDK InvenSense](/parts/imu/tdk) —— 1 型
+- [TDK InvenSense(应美盛)](/parts/imu/tdk-invensense) —— 4 型
+- [Tokmas(托克马斯)](/parts/imu/tokmas) —— 1 型
+- [WitMotion 维特智能](/parts/imu/witmotion) —— 1 型
+- [元生创新 Yesense](/parts/imu/yesense) —— 1 型
+- [超核电子 HiPNUC](/parts/imu/hipnuc) —— 1 型
+- [达妙 DAMIAO](/parts/imu/damiao) —— 1 型
+
+## 全部型号
 
 | 型号 | 子类 | 接口 | 关键参数 | 价格 ¥ | 来源 |
 |---|---|---|---|---|---|
@@ -37,4 +54,4 @@ title: IMU
 | [**HI12M0**](/parts/imu/hipnuc-hi12m0) | IMU 模组 | UART(TTL)、CAN | odr_hz=1,000、iface=UART(TTL)、CAN | — | `A✓` |
 | [**DM-IMU-L1**](/parts/imu/damiao-dm-imu-l1) | 六轴模组 | USB-C / CAN / RS485 | odr_hz=1,000、iface=USB-C / CAN / RS485 | 59 | `A✓` |
 
-> 这些行是 `B` 级（来自公开文档/官网，未逐项核对），采购前请回原厂页面确认。
+> 来源等级见行末徽章：`A` = 逐项核对过官方手册，`B` = 公开网页，`C` = 转述线索。采购前请回原厂页面确认。

@@ -253,6 +253,31 @@
    "category": "esc",
    "model": "C620"
   },
+  "dji-rc-2": {
+   "added": "2026-11-01",
+   "category": "remote_controller",
+   "model": "RC 2"
+  },
+  "dji-rc-n1": {
+   "added": "2026-11-01",
+   "category": "remote_controller",
+   "model": "RC-N1"
+  },
+  "dji-rc-n3": {
+   "added": "2026-11-01",
+   "category": "remote_controller",
+   "model": "RC-N3"
+  },
+  "dji-rc-plus": {
+   "added": "2026-11-01",
+   "category": "remote_controller",
+   "model": "RC Plus"
+  },
+  "dji-rc-pro-2": {
+   "added": "2026-11-01",
+   "category": "remote_controller",
+   "model": "RC Pro 2"
+  },
   "dji-rm-board-a": {
    "added": "2026-10-31",
    "category": "controller_low",

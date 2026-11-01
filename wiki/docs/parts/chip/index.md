@@ -5,7 +5,32 @@ title: 硬件芯片
 
 # 硬件芯片
 
-电源 / 基准 / 电池管理 / 开关，共 **59** 件。
+电源 / 基准 / 电池管理 / 开关，共 **59** 件、**20** 家厂商。
+
+## 厂商
+
+- [ADI](/parts/chip/adi) —— 1 型
+- [Advanced Monolithic Systems](/parts/chip/advanced-monolithic-syst) —— 2 型
+- [CJ](/parts/chip/cj) —— 2 型
+- [DIODES](/parts/chip/diodes) —— 3 型
+- [HOLTEK](/parts/chip/holtek) —— 1 型
+- [JSMSEMI](/parts/chip/jsmsemi) —— 2 型
+- [MICRONE](/parts/chip/microne) —— 1 型
+- [MSKSEMI](/parts/chip/msksemi) —— 1 型
+- [MaxLinear](/parts/chip/maxlinear) —— 1 型
+- [RICHTEK](/parts/chip/richtek) —— 2 型
+- [ST](/parts/chip/st) —— 1 型
+- [Silergy](/parts/chip/silergy) —— 3 型
+- [TECH PUBLIC](/parts/chip/tech-public) —— 1 型
+- [TI](/parts/chip/ti) —— 22 型
+- [TOPPOWER](/parts/chip/toppower) —— 1 型
+- [TOREX](/parts/chip/torex) —— 1 型
+- [UMW](/parts/chip/umw) —— 9 型
+- [UTC](/parts/chip/utc) —— 1 型
+- [XLSEMI](/parts/chip/xlsemi) —— 1 型
+- [西安航天民芯](/parts/chip/xa-aerospace) —— 3 型
+
+## 全部型号
 
 | 型号 | 子类 | 接口 | 关键参数 | 价格 ¥ | 来源 |
 |---|---|---|---|---|---|
@@ -69,4 +94,4 @@ title: 硬件芯片
 | [**MT3608**](/parts/chip/mt3608) | DC-DC 开关电源 | — | — | 0.58 | `B` |
 | [**MT9700-N**](/parts/chip/mt9700-n) | 功率电子开关 | — | — | 0.35 | `B` |
 
-> 这些行是 `B` 级（来自公开文档/官网，未逐项核对），采购前请回原厂页面确认。
+> 来源等级见行末徽章：`A` = 逐项核对过官方手册，`B` = 公开网页，`C` = 转述线索。采购前请回原厂页面确认。

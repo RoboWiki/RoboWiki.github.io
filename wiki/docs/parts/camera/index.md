@@ -5,7 +5,16 @@ title: 深度相机
 
 # 深度相机
 
-视觉感知，共 **9** 件。
+视觉感知，共 **9** 件、**4** 家厂商。
+
+## 厂商
+
+- [Intel RealSense](/parts/camera/intel-realsense) —— 4 型
+- [Luxonis](/parts/camera/luxonis) —— 1 型
+- [Stereolabs](/parts/camera/stereolabs) —— 1 型
+- [奥比中光 Orbbec](/parts/camera/orbbec) —— 3 型
+
+## 全部型号
 
 | 型号 | 子类 | 接口 | 关键参数 | 价格 ¥ | 来源 |
 |---|---|---|---|---|---|
@@ -19,4 +28,4 @@ title: 深度相机
 | [**Gemini 335**](/parts/camera/orbbec-gemini-335) | 双目 | USB 3.0 Type-C | depth_range_m=0.10–20、fps=30、iface=USB 3.0 Type-C | 1,950 | `B✓` |
 | [**Gemini 336**](/parts/camera/orbbec-gemini-336) | 双目 | USB 3.0 Type-C | depth_range_m=0.10–20、fps=30、iface=USB 3.0 Type-C | — | `B✓` |
 
-> 这些行是 `B` 级（来自公开文档/官网，未逐项核对），采购前请回原厂页面确认。
+> 来源等级见行末徽章：`A` = 逐项核对过官方手册，`B` = 公开网页，`C` = 转述线索。采购前请回原厂页面确认。

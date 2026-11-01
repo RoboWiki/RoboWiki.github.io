@@ -55,55 +55,505 @@
     },
     {
      "text": "舵机",
-     "link": "/parts/servo/"
+     "collapsed": true,
+     "items": [
+      {
+       "text": "总览",
+       "link": "/parts/servo/"
+      },
+      {
+       "text": "Feetech 飞特",
+       "link": "/parts/servo/feetech"
+      }
+     ]
     },
     {
      "text": "上位机",
-     "link": "/parts/controller_high/"
+     "collapsed": true,
+     "items": [
+      {
+       "text": "总览",
+       "link": "/parts/controller_high/"
+      },
+      {
+       "text": "NVIDIA",
+       "link": "/parts/controller_high/nvidia"
+      },
+      {
+       "text": "OrangePi",
+       "link": "/parts/controller_high/orangepi"
+      },
+      {
+       "text": "地平线 D-Robotics",
+       "link": "/parts/controller_high/drobotics"
+      },
+      {
+       "text": "树莓派",
+       "link": "/parts/controller_high/raspberrypi"
+      },
+      {
+       "text": "瑞莎 Radxa",
+       "link": "/parts/controller_high/radxa"
+      }
+     ]
     },
     {
      "text": "下位机",
-     "link": "/parts/controller_low/"
+     "collapsed": true,
+     "items": [
+      {
+       "text": "总览",
+       "link": "/parts/controller_low/"
+      },
+      {
+       "text": "MIT Biomimetics Robotics Lab",
+       "link": "/parts/controller_low/mit-biomimetics"
+      },
+      {
+       "text": "ODrive Robotics",
+       "link": "/parts/controller_low/odrive"
+      },
+      {
+       "text": "PJRC",
+       "link": "/parts/controller_low/pjrc"
+      },
+      {
+       "text": "STMicroelectronics",
+       "link": "/parts/controller_low/st-2"
+      },
+      {
+       "text": "SimpleFOC Team",
+       "link": "/parts/controller_low/simplefoc"
+      },
+      {
+       "text": "VESC Labs",
+       "link": "/parts/controller_low/vesc"
+      },
+      {
+       "text": "mjbots",
+       "link": "/parts/controller_low/mjbots"
+      },
+      {
+       "text": "大疆 DJI",
+       "link": "/parts/controller_low/dji-robomaster"
+      },
+      {
+       "text": "灯哥开源 ToanTech",
+       "link": "/parts/controller_low/dengfoc"
+      },
+      {
+       "text": "达妙 DAMIAO",
+       "link": "/parts/controller_low/damiao"
+      }
+     ]
     },
     {
      "text": "遥控器",
-     "link": "/parts/remote_controller/"
+     "collapsed": true,
+     "items": [
+      {
+       "text": "总览",
+       "link": "/parts/remote_controller/"
+      },
+      {
+       "text": "乐迪 RadioLink",
+       "link": "/parts/remote_controller/radiolink"
+      },
+      {
+       "text": "大疆 DJI",
+       "link": "/parts/remote_controller/dji-robomaster"
+      },
+      {
+       "text": "宇树 Unitree",
+       "link": "/parts/remote_controller/unitree"
+      }
+     ]
     },
     {
      "text": "电调",
-     "link": "/parts/esc/"
+     "collapsed": true,
+     "items": [
+      {
+       "text": "总览",
+       "link": "/parts/esc/"
+      },
+      {
+       "text": "大疆 DJI",
+       "link": "/parts/esc/dji-robomaster"
+      }
+     ]
     },
     {
      "text": "IMU",
-     "link": "/parts/imu/"
+     "collapsed": true,
+     "items": [
+      {
+       "text": "总览",
+       "link": "/parts/imu/"
+      },
+      {
+       "text": "Bosch Sensortec",
+       "link": "/parts/imu/bosch"
+      },
+      {
+       "text": "Movella Xsens",
+       "link": "/parts/imu/xsens"
+      },
+      {
+       "text": "QST(上海矽睿)",
+       "link": "/parts/imu/qst"
+      },
+      {
+       "text": "SILAN(士兰微)",
+       "link": "/parts/imu/silan"
+      },
+      {
+       "text": "ST",
+       "link": "/parts/imu/st"
+      },
+      {
+       "text": "TDK InvenSense",
+       "link": "/parts/imu/tdk"
+      },
+      {
+       "text": "TDK InvenSense(应美盛)",
+       "link": "/parts/imu/tdk-invensense"
+      },
+      {
+       "text": "Tokmas(托克马斯)",
+       "link": "/parts/imu/tokmas"
+      },
+      {
+       "text": "WitMotion 维特智能",
+       "link": "/parts/imu/witmotion"
+      },
+      {
+       "text": "元生创新 Yesense",
+       "link": "/parts/imu/yesense"
+      },
+      {
+       "text": "超核电子 HiPNUC",
+       "link": "/parts/imu/hipnuc"
+      },
+      {
+       "text": "达妙 DAMIAO",
+       "link": "/parts/imu/damiao"
+      }
+     ]
     },
     {
      "text": "传感器",
-     "link": "/parts/sensor/"
+     "collapsed": true,
+     "items": [
+      {
+       "text": "总览",
+       "link": "/parts/sensor/"
+      },
+      {
+       "text": "NTC 热敏电阻",
+       "link": "/parts/sensor/ntc"
+      },
+      {
+       "text": "温湿度传感器",
+       "link": "/parts/sensor/temp_humid"
+      },
+      {
+       "text": "温度传感器",
+       "link": "/parts/sensor/temp"
+      },
+      {
+       "text": "压力 / 气压传感器",
+       "link": "/parts/sensor/pressure"
+      },
+      {
+       "text": "光照传感器",
+       "link": "/parts/sensor/light"
+      },
+      {
+       "text": "ToF 测距传感器",
+       "link": "/parts/sensor/tof"
+      },
+      {
+       "text": "触摸传感器",
+       "link": "/parts/sensor/touch"
+      },
+      {
+       "text": "振动传感器",
+       "link": "/parts/sensor/vibration"
+      },
+      {
+       "text": "位置 / 角度传感器",
+       "link": "/parts/sensor/position"
+      },
+      {
+       "text": "电流检测传感器",
+       "link": "/parts/sensor/current"
+      },
+      {
+       "text": "霍尔 / 磁传感器",
+       "link": "/parts/sensor/hall"
+      },
+      {
+       "text": "力矩传感器",
+       "link": "/parts/sensor/force_torque"
+      }
+     ]
     },
     {
      "text": "激光雷达",
-     "link": "/parts/lidar/"
+     "collapsed": true,
+     "items": [
+      {
+       "text": "总览",
+       "link": "/parts/lidar/"
+      },
+      {
+       "text": "Livox",
+       "link": "/parts/lidar/livox"
+      },
+      {
+       "text": "Manifold Tech",
+       "link": "/parts/lidar/manifold"
+      },
+      {
+       "text": "RoboSense",
+       "link": "/parts/lidar/robosense"
+      },
+      {
+       "text": "Slamtec",
+       "link": "/parts/lidar/slamtec"
+      },
+      {
+       "text": "乐动 LDROBOT",
+       "link": "/parts/lidar/ldrobot"
+      },
+      {
+       "text": "宇树 Unitree",
+       "link": "/parts/lidar/unitree"
+      }
+     ]
     },
     {
      "text": "深度相机",
-     "link": "/parts/camera/"
+     "collapsed": true,
+     "items": [
+      {
+       "text": "总览",
+       "link": "/parts/camera/"
+      },
+      {
+       "text": "Intel RealSense",
+       "link": "/parts/camera/intel-realsense"
+      },
+      {
+       "text": "Luxonis",
+       "link": "/parts/camera/luxonis"
+      },
+      {
+       "text": "Stereolabs",
+       "link": "/parts/camera/stereolabs"
+      },
+      {
+       "text": "奥比中光 Orbbec",
+       "link": "/parts/camera/orbbec"
+      }
+     ]
     },
     {
      "text": "电池",
-     "link": "/parts/battery/"
+     "collapsed": true,
+     "items": [
+      {
+       "text": "总览",
+       "link": "/parts/battery/"
+      },
+      {
+       "text": "大疆 DJI",
+       "link": "/parts/battery/dji-robomaster"
+      },
+      {
+       "text": "宇树 Unitree",
+       "link": "/parts/battery/unitree"
+      },
+      {
+       "text": "福来翔航模",
+       "link": "/parts/battery/fulaixiang"
+      },
+      {
+       "text": "飞起来Jumbo Power",
+       "link": "/parts/battery/feiqilai-jumbo-power"
+      },
+      {
+       "text": "飞飞模型",
+       "link": "/parts/battery/feifei"
+      }
+     ]
     },
     {
      "text": "连接器",
-     "link": "/parts/connector/"
+     "collapsed": true,
+     "items": [
+      {
+       "text": "总览",
+       "link": "/parts/connector/"
+      },
+      {
+       "text": "Amass 艾迈斯",
+       "link": "/parts/connector/amass"
+      },
+      {
+       "text": "CJT 长江连接器",
+       "link": "/parts/connector/cjt"
+      },
+      {
+       "text": "Ckmtw 灿科盟",
+       "link": "/parts/connector/ckmtw"
+      },
+      {
+       "text": "Degson 高正",
+       "link": "/parts/connector/degson"
+      },
+      {
+       "text": "HANRUN 汉仁",
+       "link": "/parts/connector/hanrun"
+      },
+      {
+       "text": "JST",
+       "link": "/parts/connector/jst"
+      },
+      {
+       "text": "JTL 景泰隆",
+       "link": "/parts/connector/jtl"
+      },
+      {
+       "text": "Kinghelm 金航标",
+       "link": "/parts/connector/kinghelm"
+      },
+      {
+       "text": "XKB 星坤",
+       "link": "/parts/connector/xkb"
+      },
+      {
+       "text": "XUNPU 讯普",
+       "link": "/parts/connector/xunpu"
+      },
+      {
+       "text": "伟利达 WLD",
+       "link": "/parts/connector/weilida"
+      },
+      {
+       "text": "电蜂优选 Elecbee",
+       "link": "/parts/connector/elecbee"
+      }
+     ]
     },
     {
      "text": "其余模块",
-     "link": "/parts/module/"
+     "collapsed": true,
+     "items": [
+      {
+       "text": "总览",
+       "link": "/parts/module/"
+      },
+      {
+       "text": "灵足 RobStride",
+       "link": "/parts/module/lingzu-robstride"
+      },
+      {
+       "text": "达妙 DAMIAO",
+       "link": "/parts/module/damiao"
+      }
+     ]
     },
     {
      "text": "硬件芯片",
-     "link": "/parts/chip/"
+     "collapsed": true,
+     "items": [
+      {
+       "text": "总览",
+       "link": "/parts/chip/"
+      },
+      {
+       "text": "ADI",
+       "link": "/parts/chip/adi"
+      },
+      {
+       "text": "Advanced Monolithic Systems",
+       "link": "/parts/chip/advanced-monolithic-syst"
+      },
+      {
+       "text": "CJ",
+       "link": "/parts/chip/cj"
+      },
+      {
+       "text": "DIODES",
+       "link": "/parts/chip/diodes"
+      },
+      {
+       "text": "HOLTEK",
+       "link": "/parts/chip/holtek"
+      },
+      {
+       "text": "JSMSEMI",
+       "link": "/parts/chip/jsmsemi"
+      },
+      {
+       "text": "MICRONE",
+       "link": "/parts/chip/microne"
+      },
+      {
+       "text": "MSKSEMI",
+       "link": "/parts/chip/msksemi"
+      },
+      {
+       "text": "MaxLinear",
+       "link": "/parts/chip/maxlinear"
+      },
+      {
+       "text": "RICHTEK",
+       "link": "/parts/chip/richtek"
+      },
+      {
+       "text": "ST",
+       "link": "/parts/chip/st"
+      },
+      {
+       "text": "Silergy",
+       "link": "/parts/chip/silergy"
+      },
+      {
+       "text": "TECH PUBLIC",
+       "link": "/parts/chip/tech-public"
+      },
+      {
+       "text": "TI",
+       "link": "/parts/chip/ti"
+      },
+      {
+       "text": "TOPPOWER",
+       "link": "/parts/chip/toppower"
+      },
+      {
+       "text": "TOREX",
+       "link": "/parts/chip/torex"
+      },
+      {
+       "text": "UMW",
+       "link": "/parts/chip/umw"
+      },
+      {
+       "text": "UTC",
+       "link": "/parts/chip/utc"
+      },
+      {
+       "text": "XLSEMI",
+       "link": "/parts/chip/xlsemi"
+      },
+      {
+       "text": "西安航天民芯",
+       "link": "/parts/chip/xa-aerospace"
+      }
+     ]
     }
    ]
   }

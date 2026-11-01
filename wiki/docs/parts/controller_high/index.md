@@ -5,7 +5,17 @@ title: 上位机
 
 # 上位机
 
-推理与感知，共 **9** 件。
+推理与感知，共 **9** 件、**5** 家厂商。
+
+## 厂商
+
+- [NVIDIA](/parts/controller_high/nvidia) —— 3 型
+- [OrangePi](/parts/controller_high/orangepi) —— 1 型
+- [地平线 D-Robotics](/parts/controller_high/drobotics) —— 2 型
+- [树莓派](/parts/controller_high/raspberrypi) —— 2 型
+- [瑞莎 Radxa](/parts/controller_high/radxa) —— 1 型
+
+## 全部型号
 
 | 型号 | SoC | CUDA | NPU TOPS | 内存 GB | 峰值 W | 价格 ¥ | 来源 |
 |---|---|---|---|---|---|---|---|
@@ -19,4 +29,4 @@ title: 上位机
 | [**Raspberry Pi 5**](/parts/controller_high/raspberry-pi-5) | Broadcom BCM2712 | — | — | 8 | — | 1,600 | `A✓` |
 | [**ROCK 5B**](/parts/controller_high/radxa-rock-5b) | Rockchip RK3588 | — | 6 | 8 | — | 884 | `A✓` |
 
-> 这些行是 `B` 级（来自公开文档/官网，未逐项核对），采购前请回原厂页面确认。
+> 来源等级见行末徽章：`A` = 逐项核对过官方手册，`B` = 公开网页，`C` = 转述线索。采购前请回原厂页面确认。

@@ -153,15 +153,76 @@ def built():
     return ROOT / "wiki" / "docs"
 
 
-def test_sidebar_lists_every_vendor(built):
-    """回归：口径页的循环变量曾覆盖全局 rows，侧边栏厂商全空。"""
-    from pipeline.load import load_parts
+def test_sidebar_groups_parts(built):
+    """回归：口径页的循环变量曾覆盖全局 rows，侧边栏分组全空。
+
+    每个有数据的品类都要有「总览 + 厂商」分组，不能只有关节电机分；
+    传感器按类型分，与部件库的类型筛选一致。
+    """
+    from pipeline.load import cat_labels, load_parts, load_taxonomy
     side = json.loads((built / ".vitepress" / "sidebar.json").read_text(encoding="utf-8"))
-    act = next(i for i in side["/parts/"][0]["items"] if i["text"] == "关节电机")
-    names = [x["text"] for x in act["items"]]
-    vendors = {r["vendor"] for r in load_parts() if r["category"] == "actuator"}
-    for v in vendors:
-        assert v in names, f"侧边栏缺厂商 {v}（共 {names}）"
+    top = {i["text"]: i for i in side["/parts/"][0]["items"]}
+    rows = load_parts()
+    sensor_types = next(
+        (c.get("subtypes") or {} for c in (load_taxonomy().get("categories") or [])
+         if c.get("id") == "sensor"), {})
+    for cid, name, _ in cat_labels():
+        items = [r for r in rows if r["category"] == cid]
+        if not items:
+            continue
+        item = top.get(name)
+        assert item and item.get("items"), f"侧边栏缺 {name} 的分组"
+        names = [x["text"] for x in item["items"]]
+        if cid == "sensor":
+            for label in sensor_types.values():
+                assert label in names, f"传感器侧边栏缺类型 {label}（共 {names}）"
+        else:
+            for v in {r["vendor"] for r in items}:
+                assert v in names, f"{name} 侧边栏缺厂商 {v}（共 {names}）"
+        assert item["collapsed"] == (cid != "actuator"), f"{name} 分组默认展开状态不对"
+
+
+def test_sensor_pages_grouped_by_type(built):
+    """传感器索引与侧边栏都按类型分，厂商不再作为第二层。"""
+    text = (built / "parts" / "sensor" / "index.md").read_text(encoding="utf-8")
+    assert "## 类型" in text
+    assert "## 厂商" not in text
+    side = json.loads((built / ".vitepress" / "sidebar.json").read_text(encoding="utf-8"))
+    sensor = next(i for i in side["/parts/"][0]["items"] if i["text"] == "传感器")
+    for item in sensor["items"][1:]:
+        page = (built / item["link"].lstrip("/")).with_suffix(".md")
+        assert page.exists(), f"侧边栏类型页不存在：{page}"
+
+
+def test_group_pages_show_product_gallery(built):
+    """分组页给有官方图的型号配缩略图，卡片仍链到型号页。
+
+    没图的型号不占位；只覆盖部分型号时，用一行文字说明数量差。
+    """
+    from pipeline.load import load_parts
+    rows = load_parts()
+
+    ht = [r for r in rows
+          if r["category"] == "actuator"
+          and r["vendor"] == "High Torque Robotics 高擎动力"]
+    page = (built / "parts" / "actuator" / "high-torque-robotics.md").read_text(encoding="utf-8")
+    assert "## 产品图" in page and 'class="part-gallery"' in page
+    assert page.count('class="part-gallery-card"') == len(ht)
+    assert 'href="/parts/actuator/high-torque-robotics-htdw-7535-02-cne"' in page
+
+    ntc = [r for r in rows if r["category"] == "sensor" and r["subtype"] == "ntc"]
+    ntc_page = (built / "parts" / "sensor" / "ntc.md").read_text(encoding="utf-8")
+    assert ntc_page.count('class="part-gallery-card"') == len(ntc)
+
+    cm = [r for r in rows if r["vendor"] == "CubeMars"]
+    n_img = sum(1 for r in cm if (r.get("specs") or {}).get("image_url"))
+    cm_page = (built / "parts" / "actuator" / "cubemars.md").read_text(encoding="utf-8")
+    assert f"{len(cm)} 型中 {n_img} 款有可核实的产品图" in cm_page
+
+    assert "part-gallery" not in (
+        built / "parts" / "battery" / "feifei.md").read_text(encoding="utf-8")
+    assert "part-gallery" not in (
+        built / "parts" / "sensor" / "force_torque.md").read_text(encoding="utf-8")
 
 
 def test_catalog_json_matches_part_count(built):

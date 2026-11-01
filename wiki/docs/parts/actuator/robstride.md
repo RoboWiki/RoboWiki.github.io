@@ -7,6 +7,20 @@ title: 灵足 RobStride
 
 共 **9** 型。数据等级 `A` 表示来自厂商手册/规格书且已逐项核对过。
 
+## 产品图
+
+<div class="part-gallery">
+<a class="part-gallery-card" href="/parts/actuator/robstride-rs04"><span class="part-gallery-img"><img src="/parts/robstride-rs04.jpg" alt="灵足 RobStride RS04" loading="lazy" decoding="async" /></span><span class="part-gallery-model">RS04</span><span class="part-gallery-meta">峰值 120 N·m · ¥1,199</span></a>
+<a class="part-gallery-card" href="/parts/actuator/robstride-rs03"><span class="part-gallery-img"><img src="/parts/robstride-rs03.jpg" alt="灵足 RobStride RS03" loading="lazy" decoding="async" /></span><span class="part-gallery-model">RS03</span><span class="part-gallery-meta">峰值 60 N·m · ¥999</span></a>
+<a class="part-gallery-card" href="/parts/actuator/robstride-rs10"><span class="part-gallery-img"><img src="/parts/robstride-rs10.jpg" alt="灵足 RobStride RS10" loading="lazy" decoding="async" /></span><span class="part-gallery-model">RS10</span><span class="part-gallery-meta">峰值 42 N·m · ¥859</span></a>
+<a class="part-gallery-card" href="/parts/actuator/robstride-rs06"><span class="part-gallery-img"><img src="/parts/robstride-rs06.jpg" alt="灵足 RobStride RS06" loading="lazy" decoding="async" /></span><span class="part-gallery-model">RS06</span><span class="part-gallery-meta">峰值 36 N·m · ¥849</span></a>
+<a class="part-gallery-card" href="/parts/actuator/robstride-rs01"><span class="part-gallery-img"><img src="/parts/robstride-rs01.jpg" alt="灵足 RobStride RS01" loading="lazy" decoding="async" /></span><span class="part-gallery-model">RS01</span><span class="part-gallery-meta">峰值 17 N·m · ¥599</span></a>
+<a class="part-gallery-card" href="/parts/actuator/robstride-rs02"><span class="part-gallery-img"><img src="/parts/robstride-rs02.jpg" alt="灵足 RobStride RS02" loading="lazy" decoding="async" /></span><span class="part-gallery-model">RS02</span><span class="part-gallery-meta">峰值 17 N·m · ¥699</span></a>
+<a class="part-gallery-card" href="/parts/actuator/robstride-rs00"><span class="part-gallery-img"><img src="/parts/robstride-rs00.jpg" alt="灵足 RobStride RS00" loading="lazy" decoding="async" /></span><span class="part-gallery-model">RS00</span><span class="part-gallery-meta">峰值 14 N·m · ¥598</span></a>
+<a class="part-gallery-card" href="/parts/actuator/robstride-el05"><span class="part-gallery-img"><img src="/parts/robstride-el05.jpg" alt="灵足 RobStride EL05" loading="lazy" decoding="async" /></span><span class="part-gallery-model">EL05</span><span class="part-gallery-meta">峰值 6 N·m · ¥299</span></a>
+<a class="part-gallery-card" href="/parts/actuator/robstride-rs05"><span class="part-gallery-img"><img src="/parts/robstride-rs05.jpg" alt="灵足 RobStride RS05" loading="lazy" decoding="async" /></span><span class="part-gallery-model">RS05</span><span class="part-gallery-meta">峰值 5.5 N·m · ¥499</span></a>
+</div>
+
 | 型号 | 峰值 τ N·m | 额定 τ N·m | 减速比 | 空载 rpm | 质量 kg | 转子惯量 kg·m² | 价格 ¥ | 来源 |
 |---|---|---|---|---|---|---|---|---|
 | [**RS04**](/parts/actuator/robstride-rs04) | 120 | 40 | 9 | 200 | 1.42 | 0.04 | 1,199 | `A✓` |
