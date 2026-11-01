@@ -104,6 +104,7 @@ title: 灵足 RobStride RS10
 | 通信 | CAN |
 | 内置驱动 | 1 |
 | 官方手册 (PDF) | https://raw.githubusercontent.com/RobStride/Product_Information/main/%E7%81%B5%E8%B6%B3%E6%97%B6%E4%BB%A3RS%E7%B3%BB%E5%88%97%E4%BA%A7%E5%93%81%E8%A7%84%E6%A0%BC%E4%BB%8B%E7%BB%8D%282026.010.09%29.pdf |
+| 官方文档 | https://www.robstride.com/ |
 
 ## 优惠与获取条件
 

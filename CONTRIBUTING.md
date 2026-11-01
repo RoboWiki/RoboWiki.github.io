@@ -14,7 +14,7 @@
 
 ```bash
 python -m pipeline all          # 校验数据 + 生成站点内容（含内存里的自检）
-python -m pytest                # 测试（127 个）
+python -m pytest                # 测试（133 个）
 python tools/id_registry.py --check   # 永久 ID 注册表一致性
 ```
 

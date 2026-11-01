@@ -41,7 +41,8 @@
    "ip": null,
    "image_url": "/parts/unitree-go-m8010-6.jpg",
    "image_source": "厂商资料抓取（unitree-go-m8010-6.jpg）",
-   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/GO-M8010-6_User_Manual.pdf"
+   "doc_pdf": "https://cdn.shopify.com/s/files/1/0673/6848/5000/files/GO-M8010-6_User_Manual.pdf",
+   "doc_url": null
   },
   "notes": "Go1 关节电机。官方页给最大扭矩 23.7 N·m（24 ℃ 实测）、最大转速 30 rad/s@24 V（≈286 rpm）、减速比 6.33:1、重量 530 g、尺寸 96.5×92.5×42.3 mm、最大相电流 40 A、扭矩常数 0.63895 N·m/A、RS-485 4 Mbps、控制频率 6000 Hz、15-bit 编码器、工作电压 12–30 VDC（推荐 24 V），内置 FOC；未公布额定扭矩与转子惯量。价格为历史记录参考价（2026-10-31 未复核）。手册 PDF 为经销商 CDN 镜像。",
   "origin": "Unitree 官网 GO 电机页 + GO-M8010-6 用户手册（2026-10-31 核对）",
@@ -93,7 +94,8 @@
    "temp_range": "-20~50 ℃",
    "dims": null,
    "i_stall_A": null,
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "https://www.unitree.com/mobile/IM6014/"
   },
   "notes": "G1 arm motor, model N6014B-12.6. Unitree publishes max torque 34.4 N.m (opposing the rotation; 31.7 N.m with it), 535 g, phi65 x 60, gear 3:38 = 12.667:1 and max no-load speed 54.2 rad/s at 60 V. That 价格来源：达妙/宇树天猫旗舰店商品页（2026-10-28 抓取，属活动价，可能随活动结束变化）。 产品图待补：抓到的是宇树四足整机宣传图，不是 IM6014 电机，需厂商型号页原图 【wiki.aifitlab（aifitlab 手册英文机翻镜像，2026-10-31 抓取）；待原厂中文手册复核】",
   "origin": "Draft actuator_catalog.json（114 行总体）",
@@ -142,7 +144,8 @@
    "ip": null,
    "image_url": "/parts/unitree-unitree-a1.jpg",
    "image_source": "厂商资料抓取（unitree-unitree-a1.jpg）",
-   "doc_pdf": null
+   "doc_pdf": null,
+   "doc_url": "https://www.unitree.com/a1/motor/"
   },
   "notes": "A1 整机关节电机。官网现行页给 605 g、最大瞬时扭矩 33.5 N·m、最大关节转速 21 rad/s（≈200 rpm）、工作电压 20–40 V、扭矩常数 0.9287 N·m/A、15-bit 编码器、RS-485 控制 1 kHz；官方未公布减速比与额定扭矩，减速比留空（社区有 6:1 与 1:9 两种说法，均无官方出处）。旧版 A1 说明书给尺寸 90×45 mm、最大电流 40 A、工作电压 12–30 V（推荐 24 V）、扭矩常数 0.8372 N·m/A，与现行官网页存在版本差异，以现行官网页为准。价格为历史记录参考价（2026-10-31 未复核）。",
   "origin": "Unitree 官网 A1 电机页 + 旧版 A1 说明书（2026-10-31 核对）",

@@ -72,7 +72,7 @@ title: Intel RealSense D405
 | 额定电压 (V) | 5 |
 | 分辨率 | 深度 1280×720；RGB 1280×720 |
 | absolute | ±2% @0.5 m |
-| temp_range_C | 0~35（环境） |
+| 工作温度 | 0~35（环境） |
 | size_mm | 42×42×23 |
 | weight_g | 58 |
 | power_w | 1.55 |

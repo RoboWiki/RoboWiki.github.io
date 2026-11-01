@@ -15,7 +15,7 @@ from ..deps import Db, MaybeUser
 router = APIRouter(tags=["catalog"])
 
 #: 品类。顺序即展示顺序：关节电机是重点，放最前。
-#: 机械结构 / 电池 / 线束 目前**没有收录** —— 不是漏了，是没有可信来源，
+#: 机械结构 / 电池 目前**没有收录** —— 不是漏了，是没有可信来源，
 #: 宁可空着也不编（见 README 的口径纪律）。
 def _labels_from_taxonomy() -> dict[str, str]:
     """品类中文名从 data/taxonomy.json 读 —— 与站点、schema 同一份注册表。
@@ -61,7 +61,7 @@ _FALLBACK_CATEGORY_LABELS = {
     "lidar": "激光雷达",
     "camera": "深度相机",
     "battery": "电池",
-    "wiring": "线束",
+    "connector": "连接器",
     "module": "其余模块",
     "chip": "硬件芯片",
 }
@@ -70,7 +70,7 @@ CATEGORY_LABELS = {**_FALLBACK_CATEGORY_LABELS, **_labels_from_taxonomy()}
 
 #: 还没有数据的品类：前端要显示「待补充」，不能当成 500 或空列表了事
 #: 目前确实没有可信来源的品类。归档导入后 lidar/camera/imu/module 已经有数据，
-#: 只剩这三类还是空的 —— 它们需要机械图纸/电芯规格书/线束表，商品页给不了。
+#: 只剩电池还是空的 —— 它需要电芯规格书，商品页给不了。
 EMPTY_CATEGORIES = {"battery"}
 SUBTYPE_LABELS = {
     "qdd": "准直驱 QDD", "planetary": "行星减速", "harmonic": "谐波减速",
@@ -79,6 +79,9 @@ SUBTYPE_LABELS = {
     "lidar": "激光雷达", "force": "力 / 触觉", "encoder": "编码器", "driver": "栅极驱动",
     "transceiver": "收发器", "memory": "存储", "power": "电源",
     "servo": "舵机", "radio": "板控", "gamepad": "手柄式",
+    "wire_to_board": "线对板", "power_signal": "电源+信号混合",
+    "board": "板对板 / 排针", "ffc": "FFC / FPC", "terminal": "接线端子",
+    "data": "数据接口", "rf": "射频同轴", "industrial": "航空插", "cable": "成品线束",
 }
 _SUBTYPES_BY_CATEGORY = _subtypes_from_taxonomy()
 

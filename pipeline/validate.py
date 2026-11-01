@@ -156,6 +156,13 @@ KNOWN_SPEC_KEYS = {
     "v_charge_V", "mass_g", "chem",
     # 电源类芯片（立创商城采集）
     "category_cn", "lcsc_part", "params", "price_tiers", "price_lead", "stock", "stock_lead", "lead_time", "jlc_library", "tags", "fetched_at", "voltage_in", "voltage_out", "current_out", "function_type", "output_type", "polarity", "freq", "chip_function", "charge_current", "v_float", "battery_type", "cells", "switch_type", "channels", "logic", "features", "coupon",
+    # 连接器
+    "positions", "positions_options", "pitch_mm", "voltage_rated_V",
+    "current_basis", "contact_resistance_mohm", "insulation_resistance_mohm",
+    "withstand_voltage_V", "mating_cycles", "wire_awg", "mount_type", "lock_type",
+    "power_positions", "signal_positions", "signal_current_rated_A",
+    "contact_layout", "instantaneous_current_A", "use_cases",
+    "impedance_ohm", "freq_max_ghz", "length_m", "awg",
 }
 
 #: UI 真正会读的键。B 级行字段参差，只要求这些键存在（值可为 null），
@@ -171,6 +178,8 @@ UI_KEYS = {
     "controller_low": {"image_url"},
     "chip": {"package", "image_url"},
     "battery": {"capacity_mah", "voltage_V", "image_url"},
+    "connector": {"positions", "pitch_mm", "current_rated_A", "voltage_rated_V",
+                  "mount_type", "iface", "use_cases", "image_url"},
 }
 
 # 红线的**数值**只有一份：schema/semantics.json 的 RL-01 / RL-02
@@ -218,6 +227,19 @@ PLAUSIBLE = {
     "control_range_m": (1.0, 100000.0),
     "can_speed_mbps": (0.01, 20.0),
     "weight_g": (0.1, 10000.0),
+    # 连接器
+    "positions": (1, 100),
+    "pitch_mm": (0.2, 30.0),
+    "current_rated_A": (0.05, 500.0),
+    "voltage_rated_V": (1.0, 2000.0),
+    "contact_resistance_mohm": (0.01, 1000.0),
+    "insulation_resistance_mohm": (0.1, 1e9),
+    "withstand_voltage_V": (50.0, 5000.0),
+    "mating_cycles": (1, 100000),
+    "signal_current_rated_A": (0.01, 50.0),
+    "instantaneous_current_A": (0.1, 1000.0),
+    "impedance_ohm": (10.0, 1000.0),
+    "freq_max_ghz": (0.01, 100.0),
 }
 
 

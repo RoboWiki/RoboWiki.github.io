@@ -26,6 +26,7 @@
    "pole_pairs": 13,
    "voltage_V": 24,
    "encoder": "双编 ABS-17 bit（输入）/ 17–18 bit（输出）",
+   "doc_url": "https://www.myactuator.com/",
    "image_url": "/parts/myactuator-x2-7.jpg",
    "image_source": "MyActuator 官网产品图（myactuator.com）"
   },
@@ -58,6 +59,7 @@
    "pole_pairs": 13,
    "voltage_V": 24,
    "encoder": "双编 ABS-17 bit（输入）/ 17–18 bit（输出）",
+   "doc_url": "https://www.myactuator.com/",
    "image_url": "/parts/myactuator-x4-10.jpg",
    "image_source": "MyActuator 官网产品图（myactuator.com）"
   },
@@ -90,6 +92,7 @@
    "pole_pairs": 13,
    "voltage_V": 24,
    "encoder": "双编 ABS-17 bit（输入）/ 17–18 bit（输出）",
+   "doc_url": "https://www.myactuator.com/",
    "image_url": "/parts/myactuator-x4-36.jpg",
    "image_source": "MyActuator 官网产品图（myactuator.com）"
   },
@@ -122,6 +125,7 @@
    "pole_pairs": 10,
    "voltage_V": 48,
    "encoder": "双编 ABS-17 bit（输入）/ 17–18 bit（输出）",
+   "doc_url": "https://www.myactuator.com/",
    "image_url": "/parts/myactuator-x8-120.jpg",
    "image_source": "MyActuator 官网产品图（myactuator.com）"
   },
@@ -154,6 +158,7 @@
    "pole_pairs": 20,
    "voltage_V": 48,
    "encoder": "双编 ABS-17 bit（输入）/ 17–18 bit（输出）",
+   "doc_url": "https://www.myactuator.com/",
    "image_url": "/parts/myactuator-x12-320.jpg",
    "image_source": "MyActuator 官网产品图（myactuator.com）"
   },
@@ -186,6 +191,7 @@
    "pole_pairs": 20,
    "voltage_V": 72,
    "encoder": "双编 ABS-17 bit（输入）/ 17–18 bit（输出）",
+   "doc_url": "https://www.myactuator.com/",
    "image_url": "/parts/myactuator-x15-450.jpg",
    "image_source": "MyActuator 官网产品图（myactuator.com）"
   },

@@ -108,6 +108,7 @@ title: 灵足 RobStride RS03
 | 通信 | CAN |
 | 内置驱动 | 1 |
 | 官方手册 (PDF) | https://raw.githubusercontent.com/RobStride/Product_Information/main/Product%20Literature/CAN2.0/RS03/RS03User%20Manual261013.pdf |
+| 官方文档 | https://www.robstride.com/ |
 
 ## 优惠与获取条件
 

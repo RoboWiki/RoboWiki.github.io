@@ -72,7 +72,7 @@ title: Livox HAP
 | 分辨率 | 0.18°×0.23° |
 | channel | 144 |
 | absolute | ≤2 cm @20 m (1σ) |
-| temp_range_C | -40~85 |
+| 工作温度 | -40~85 |
 | size_mm | 105×131.6×65 |
 | weight_g | 1,120 |
 | power_w | 12 |

@@ -72,7 +72,7 @@ title: Slamtec RPLIDAR S2
 | 分辨率 | 0.1125° |
 | channel | 1 |
 | absolute | ±30 mm |
-| temp_range_C | -10~50 |
+| 工作温度 | -10~50 |
 | size_mm | 77×77×38.5 |
 | weight_g | 190 |
 | power_w | 2 |

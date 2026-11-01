@@ -89,7 +89,7 @@ title: Manifold Tech Odin1
 | 防护等级 | IP66 |
 | 额定电压 (V) | 24 |
 | voltage_range | 9–24 V |
-| temp_range_C | -20 ~ 55 ℃（存储 -25 ~ 60 ℃） |
+| 工作温度 | -20 ~ 55 ℃（存储 -25 ~ 60 ℃） |
 | output | 真彩 SLAM 点云 / 原始点云 / 原始 RGB / 高频 IMU / 位姿 |
 | 官方文档 | https://manifoldtechltd.github.io/wiki/odin_series/odin1/14.%20Technical%20Specifications_.html |
 | 官方手册 (PDF) | https://cdn.shopify.com/s/files/1/0673/6848/5000/files/Odin1_User_Manual.pdf |

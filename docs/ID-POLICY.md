@@ -109,6 +109,8 @@ python tools/id_registry.py --check
 python -m pipeline validate
 ```
 
+（上面是示例输出；注册表只增不减，真实条数以 `tools/id_registry.py` 本次运行结果为准。）
+
 - **批量新增**：先把整个 PR 的数据写完，最后跑一次 `python tools/id_registry.py`，它会把所有新 id 一次列出来（超过 10 个折叠成「另有 N 个」），一次提交。不要边写边跑，注册表 diff 会变成噪音。
 - **不想写盘**：加 `--dry-run`，只打印会新增/会改什么。
 - **`--root`**：默认从脚本位置反推仓库根（CI 的 Ubuntu runner 上同样成立）；指向 fixture 目录可用于演示与测试。

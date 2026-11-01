@@ -66,6 +66,16 @@ const SPEC_CHIPS: Record<string, (p: Part) => { k: string; v: string }[]> = {
     if (s.connector) out.push({ k: '接头', v: String(s.connector).split('(')[0] })
     return out.slice(0, 4)
   },
+  connector: p => {
+    const s = p.specs
+    const out: { k: string; v: string }[] = []
+    if (s.positions) out.push({ k: '位数', v: `${s.positions}P` })
+    if (s.pitch_mm) out.push({ k: '间距', v: `${s.pitch_mm} mm` })
+    if (s.current_rated_A) out.push({ k: '标称', v: `${s.current_rated_A} A` })
+    if (s.voltage_rated_V) out.push({ k: '电压', v: `${s.voltage_rated_V} V` })
+    if (out.length < 3 && s.iface) out.push({ k: '系列', v: String(s.iface) })
+    return out.slice(0, 4)
+  },
 }
 
 function Tier({ tier, verified }: { tier: string; verified: boolean }) {

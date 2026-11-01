@@ -19,18 +19,23 @@ outline: false
     <p class="cd-sub">Not generated from git log: machines can count commits, but they cannot say who verified which datasheet.</p>
     <div class="ct-grid"><div class="ct">
   <div class="ct-head"><b>zeitvex</b><span class="ct-role">创始维护者</span></div>
-  <p>Builds and maintains the whole engineering side: the data gate and validation, per-category page generation, the parts explorer and comparison, the semantics page, suppliers and contributors; verified every A-tier spec for DAMIAO, RobStride, DJI and Unitree (torque normalised to the output side, missing values written as null) and turned traceability into machine-checked rules.</p>
+  <p>Builds and maintains the whole engineering side: the data gate and validation, per-category page generation, the parts explorer and comparison, the semantics page, suppliers and contributors; verified every A-tier spec for DAMIAO, RobStride, DJI and Unitree (torque normalised to the output side, missing values written as null) and turned traceability into machine-checked rules. Scaled the catalogue to 14 categories, 311 parts (104 A-tier), 21 robots, 22 software items and 207 suppliers; added official source links for 269 of 271 parts; brought in High Torque, STACKFORCE, LDROBOT, CubeMars, MyActuator and Feetech batches; merged the ccc branch's 42 product images and robot/sensor improvements, and corrected the homepage, README, missing-image report and architecture docs. Added the connector category (renamed from wiring, 23 entries: JST GH/SH/XH/PH/ZH, Amass XT30/60/90/MR30 and XT30(2+2)/XT90(2+2), plus headers, FFC/FPC, pluggable terminals, USB-C, DC jack, DB9, RJ45, SMA/BNC and GX12). Also added 23 connector product images (5 JST, 6 Amass, 5 from LCSC/Degson/XKB, and 7 DB9/DC/RJ45/SMA/BNC/GX12/5264).</p>
   <a href="https://github.com/zeitvex" target="_blank" rel="noopener">GitHub</a>
 </div>
 <div class="ct">
   <div class="ct-head"><b>Dichen33</b><span class="ct-role">Founding contributor</span></div>
-  <p>15 whole-robot entries with URDF/repo links, a bulk expansion of high- and low-level controllers plus IMU/camera/LiDAR — 50 data rows in total — and the part-data collection guide. The remote-controller category came from his ccc branch (5 transmitters + 2 CAN modules with 7 photos), together with the grouped-card layout for part notes and the home-page category preselect. He also added the software section's two groups: algorithms & methods (DreamWaQ, BeamDojo, AMP, PPO) and model architectures (MLP/MoE).</p>
+  <p>15 whole-robot entries with URDF/repo links, a bulk expansion of high- and low-level controllers plus IMU/camera/LiDAR — 50 data rows in total — and the part-data collection guide. The remote-controller category came from the ccc branch (5 transmitters + 2 CAN modules with 7 photos), together with the grouped-card layout for part notes and the home-page category preselect. He also added the software section's two groups: algorithms & methods (DreamWaQ, BeamDojo, AMP, PPO) and model architectures (MLP/MoE). Later filled 42 missing product images (40 parts) from official sources — DAMIAO JH/S, High Torque, MyActuator, Stackforce, Xiaomi, DJI TB47/TB48, Movella MTi-3, LDROBOT, Livox and RoboSense — bringing the site's missing-image count from 61 down to 21, with traceable documentation/store links for JH20, Stackforce 8108 and MTi-3. This round also rechecked 72 data files and 234 records: 216 links migrated or remapped (LCSC global product pages, vendor pages, official Gitee), 42 manual PDFs added, 14 third-party mirrors replaced, and 12 unlinkable URLs set to null; verified DAMIAO (36), High Torque (9, promoted to A-tier), Unitree GO-M8010-6/A1, Feetech ST-3215 and Sunlord parameters/links.</p>
   <a href="https://github.com/Dichen33" target="_blank" rel="noopener">GitHub</a>
 </div>
 <div class="ct">
   <div class="ct-head"><b>JadeCrane</b><span class="ct-role">Founding contributor</span></div>
   <p>Expanded the chip category from 14 to 18 parts (STM32H723 / TCAN334G / TMC2209 / AS5600), added official doc pages, datasheet PDFs and official repos for all 18 (each link verified), domestic 1+ prices for 17 of them with source and collection date, and 12 product photos. Also registered the doc_url / doc_pdf / repo_urls keys, clearing 20 false warnings (82 → 62).</p>
   <a href="https://github.com/Beni-537" target="_blank" rel="noopener">GitHub</a>
+</div>
+<div class="ct">
+  <div class="ct-head"><b>WUSI321</b><span class="ct-role">Founding contributor</span></div>
+  <p>Fixed the unit-conversion and comparability tables on /method and /semantics rendering as raw pipe-delimited text inside a VitePress raw-HTML block: the pipeline now generates HTML &lt;table&gt; elements from schema/semantics.json, the supplier questionnaire is emitted as &lt;ol&gt;, and a regression test (test_semantics_tables_are_html) guards the fix. Verified with pipeline build, VitePress build, validate and pytest. PR #5.</p>
+  <a href="https://github.com/wusi321" target="_blank" rel="noopener">GitHub</a><a href="https://github.com/RoboWiki/RoboWiki.github.io/pull/5" target="_blank" rel="noopener">PR #5</a>
 </div></div>
   </section>
 

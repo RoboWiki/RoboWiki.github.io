@@ -79,6 +79,19 @@ title: CubeMars AK80-6
 :::
 
 
+## 同机座变体（外径 98 mm）
+
+同一个机座上换绕组 / 换减速比出来的型号。**质量往往一样，扭矩可以差 50% 以上** ——
+多出来的扭矩是电流换的，不是尺寸换的，所以别按扭矩去估质量。
+
+| 型号 | 峰值 τ N·m | 质量 kg | 减速比 |
+|---|---|---|---|
+| [AK10-9 V3.0 KV60](/parts/actuator/cubemars-ak10-9-v3-0-kv60) | 53 | 0.94 | 9 |
+| [AK10-9 V2.0 KV60](/parts/actuator/cubemars-ak10-9-v2-0-kv60) | 48 | 0.96 | 9 |
+| [AK80-9 V3.0 KV100](/parts/actuator/cubemars-ak80-9-v3-0-kv100) | 22 | 0.49 | 9 |
+| [AK80-8 KV60](/parts/actuator/cubemars-ak80-8-kv60) | 25 | 0.575 | 8 |
+| [AK80-64 KV80](/parts/actuator/cubemars-ak80-64-kv80) | 120 | 0.85 | 64 |
+
 ## 全部参数
 
 | 字段 | 值 |
@@ -89,14 +102,16 @@ title: CubeMars AK80-6
 | 质量 (kg) | 0.485 |
 | 转子惯量 (kg·m²) | — |
 | 额定电压 (V) | 48 |
-| 扭矩口径 | peak |
-| 空载转速 (rpm) | 800 |
+| power_w | 340 |
+| 额定电流 (A) | 9.7 |
 | 额定转速 (rpm) | 603 |
+| 峰值电流 (A) | 20 |
+| 空载转速 (rpm) | 800 |
 | 外径 (mm) | 98 |
 | 长度 (mm) | 38.5 |
-| 峰值电流 (A) | 20 |
-| 额定电流 (A) | 9.7 |
 | 编码器 | 单编 14-bit 磁编 |
+| 扭矩口径 | peak |
+| 官方文档 | https://www.cubemars.com/cn/product/ak80-6-kv100-robotic-actuator.html |
 | 通信 | CAN / UART |
 | 内置驱动 | 1 |
 | 工作温度 | -20~50 ℃ |

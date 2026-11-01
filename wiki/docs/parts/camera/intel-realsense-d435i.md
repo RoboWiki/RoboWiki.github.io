@@ -73,7 +73,7 @@ title: Intel RealSense D435i
 | 板载 IMU | 1 |
 | 分辨率 | 深度 1280×720；RGB 1920×1080 |
 | absolute | <2% @2 m |
-| temp_range_C | 0~35 |
+| 工作温度 | 0~35 |
 | size_mm | 90×25×25 |
 | weight_g | 75 |
 | 官方文档 | https://www.realsenseai.com/cn/products/d435i/ |

@@ -71,7 +71,7 @@ title: Luxonis OAK-D Pro
 | 额定电压 (V) | 5 |
 | 分辨率 | 深度 1280×800；RGB 4056×3040 |
 | absolute | <2% @<4 m |
-| temp_range_C | -20~50 |
+| 工作温度 | -20~50 |
 | size_mm | 97×29.5×22.9 |
 | weight_g | 91 |
 | power_w | 3.5 |

@@ -73,7 +73,7 @@ title: 超核电子 HiPNUC HI12M0
 | noise | 零偏不稳定性 X 2.5 / Y 3.2 / Z 3 °/h（艾伦方差） |
 | 电压范围 | 3.2–5.5 |
 | power_w | 0.24 |
-| temp_range_C | -40~85 |
+| 工作温度 | -40~85 |
 | size_mm | 22×22×10（Molex 接口） |
 | 官方文档 | https://www.hipnuc.com/hi12.html |
 | repo_urls | https://github.com/hipnuc/products |

@@ -86,7 +86,7 @@ title: 宇树 Unitree L2
 | 额定电压 (V) | 12 |
 | power_note | 12 V / 1 A |
 | absolute | ±2 cm |
-| temp_range_C | -10~50 |
+| 工作温度 | -10~50 |
 | size_mm | 75×75×65 |
 | weight_g | 230 |
 | power_w | 10 |

@@ -75,7 +75,7 @@ title: 奥比中光 Orbbec Gemini 336
 | weight_g | 99 |
 | power_w | 3 |
 | size_mm | 90×25×30.7 |
-| temp_range_C | -10~45 |
+| 工作温度 | -10~45 |
 | 防护等级 | IP5X |
 | 板载 IMU | 6 轴（陀螺仪 + 加速度计，50–1000 Hz） |
 | 官方手册 (PDF) | https://orbbec-debian-repos-aws.s3.amazonaws.com/product/Gemini%20330%20series%20Datasheet-V1.8.pdf |

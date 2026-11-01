@@ -71,12 +71,12 @@ title: 奥比中光 Orbbec Gemini 305
 | 质量 (kg) | 0.068 |
 | 额定电压 (V) | 5 |
 | 分辨率 | 深度 1280×800@30 / 848×480@60；彩色 1280×800@60 |
+| 官方文档 | https://www.orbbec.com.cn/index/Product/info.html?cate=38&id=82 |
 | weight_g | 68 |
 | power_w | 2 |
 | size_mm | 42×42×23 |
-| temp_range_C | -10~45 |
+| 工作温度 | -10~45 |
 | 防护等级 | IP54 |
-| 官方文档 | https://www.orbbec.com.cn/index/Product/info.html?cate=38&id=82 |
 | 官方手册 (PDF) | https://www.orbbec.com.cn/xin/wp-content/uploads/2026/09/Orbbec-Gemini-305%E4%BA%A7%E5%93%81%E8%A7%84%E6%A0%BC%E4%B9%A6.pdf |
 | repo_urls | https://github.com/orbbec/OrbbecSDK_v2 |
 | repo_license | NOASSERTION |

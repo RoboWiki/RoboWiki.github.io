@@ -74,7 +74,7 @@ title: Livox Mid-70
 | voltage_range | DC 10–15 V |
 | absolute | ≤2 cm @20 m (1σ) |
 | 官方手册 (PDF) | https://cdn.shopify.com/s/files/1/0673/6848/5000/files/Livox_Mid-70_User_Manual.pdf |
-| temp_range_C | -20~65 |
+| 工作温度 | -20~65 |
 | power_w | 8 |
 | 防护等级 | IP67 |
 | 额定电压 (V) | 12 |

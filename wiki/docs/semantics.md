@@ -120,49 +120,119 @@ outline: false
   <div class="fd-head"><code>inertia_basis</code><b>惯量口径</b></div>
   <p>rotor=电机侧；output=厂商已折算到输出侧（等于 N²·J）</p>
   <p class="fd-miss"><span>缺了意味着</span>口径不明，armature 无法确定</p>
+</div></div><h3>连接器</h3><div class="fd-grid"><div class="fd">
+  <div class="fd-head"><code>positions</code><b>位数</b></div>
+  <p>触点数。2+2 混合连接器填总触点数，电源/信号拆分见 power_positions / signal_positions</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布；不要用型号里的数字猜</p>
+</div><div class="fd">
+  <div class="fd-head"><code>positions_options</code><b>可选位数</b></div>
+  <p>同一系列可选的触点数；代表位数写在 positions</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布可选位数；不代表只有代表位数</p>
+</div><div class="fd">
+  <div class="fd-head"><code>pitch_mm</code><b>间距</b></div>
+  <p>相邻触点中心距；小间距省空间，但线规和电流通常更小</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布或不适用；不要按外形估算</p>
+</div><div class="fd">
+  <div class="fd-head"><code>power_positions</code><b>电源位数</b></div>
+  <p>混合连接器的电源触点数</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布</p>
+</div><div class="fd">
+  <div class="fd-head"><code>signal_positions</code><b>信号位数</b></div>
+  <p>混合连接器的信号触点数</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布</p>
+</div><div class="fd">
+  <div class="fd-head"><code>contact_layout</code><b>触点布局</b></div>
+  <p>触点布局，例如 2 电源 + 2 信号（2+2）</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布</p>
+</div><div class="fd">
+  <div class="fd-head"><code>current_rated_A</code><b>标称电流</b></div>
+  <p>连接器每触点标称持续电流；按品类，电池为额定放电电流。必须配 current_basis 说明测试条件</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布；不要按型号名（XT60/XT90）猜电流</p>
+</div><div class="fd">
+  <div class="fd-head"><code>current_basis</code><b>电流口径</b></div>
+  <p>电流值的标准与测试条件：UL 额定 / MAX / 温升试验，以及线规和温升</p>
+  <p class="fd-miss"><span>缺了意味着</span>口径不明，不应跨厂商比较</p>
+</div><div class="fd">
+  <div class="fd-head"><code>signal_current_rated_A</code><b>信号针电流</b></div>
+  <p>信号针标称电流；通常远小于电源针，不能当第二路电源</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布；不要按电源针电流代替</p>
+</div><div class="fd">
+  <div class="fd-head"><code>instantaneous_current_A</code><b>瞬时电流</b></div>
+  <p>短时/瞬时电流；持续时间和温升条件写在 current_basis</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布；不要当连续电流</p>
+</div><div class="fd">
+  <div class="fd-head"><code>voltage_rated_V</code><b>电压等级</b></div>
+  <p>厂商标称的电压等级/最大工作电压；与 withstand_voltage_V（耐压试验）区分</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布；不要拿耐压试验值当工作电压</p>
+</div><div class="fd">
+  <div class="fd-head"><code>withstand_voltage_V</code><b>耐电压</b></div>
+  <p>介质耐压试验电压（通常 1 分钟无击穿）；不是工作电压</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布；不要与 voltage_rated_V 混用</p>
+</div><div class="fd">
+  <div class="fd-head"><code>contact_resistance_mohm</code><b>接触电阻</b></div>
+  <p>触点初始接触电阻；越低越好</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布；不要用 0 代替</p>
+</div><div class="fd">
+  <div class="fd-head"><code>insulation_resistance_mohm</code><b>绝缘电阻</b></div>
+  <p>触点与外壳之间的绝缘电阻</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布</p>
+</div><div class="fd">
+  <div class="fd-head"><code>mating_cycles</code><b>插拔寿命</b></div>
+  <p>厂商给出的插拔寿命</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布；不要假设无限次</p>
+</div><div class="fd">
+  <div class="fd-head"><code>wire_awg</code><b>适用线规</b></div>
+  <p>适用导线范围；电流额定值与线规强相关</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布；不要按外形估线规</p>
+</div><div class="fd">
+  <div class="fd-head"><code>mount_type</code><b>安装方式</b></div>
+  <p>线端 / 板端 / 直插 / 弯插 / 面板等</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布</p>
+</div><div class="fd">
+  <div class="fd-head"><code>lock_type</code><b>锁扣方式</b></div>
+  <p>摩擦锁 / 卡扣 / 螺纹 / 卡口</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布</p>
+</div><div class="fd">
+  <div class="fd-head"><code>use_cases</code><b>适用场景</b></div>
+  <p>编辑整理的适用场景，不是厂商规格；不参与数值比较</p>
+  <p class="fd-miss"><span>缺了意味着</span>没有场景说明；不要从型号猜</p>
+</div><div class="fd">
+  <div class="fd-head"><code>impedance_ohm</code><b>阻抗</b></div>
+  <p>射频连接器的特性阻抗（50 / 75 Ω 等）</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布</p>
+</div><div class="fd">
+  <div class="fd-head"><code>freq_max_ghz</code><b>最高频率</b></div>
+  <p>射频连接器的最高工作频率</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布</p>
 </div></div><h3>其他</h3><div class="fd-grid"><div class="fd"><div class="fd-head"><code>frictionloss_Nm</code><b>库仑摩擦</b></div>
   <p>几乎无厂商公布。留空比填一个估计值诚实</p>
   <p class="fd-miss"><span>缺了意味着</span>未公布，仿真中该项应标为「假设值 0」而非「实测 0」</p></div><div class="fd"><div class="fd-head"><code>source_tier</code><b>来源等级</b></div>
   <p>A=官方 datasheet 逐项核对；B=厂商页面或广泛引用，未逐项复核；C=二手来源</p>
   <p class="fd-miss"><span>缺了意味着</span>来源不明</p></div><div class="fd"><div class="fd-head"><code>price_cny</code><b>参考价</b></div>
   <p>挂牌或公开报价，不含运费税费，不是实时价</p>
-  <p class="fd-miss"><span>缺了意味着</span>无公开报价；不等于买不到</p></div></div>
+  <p class="fd-miss"><span>缺了意味着</span>无公开报价；不等于买不到</p></div><div class="fd"><div class="fd-head"><code>length_m</code><b>长度</b></div>
+  <p>成品线束长度</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布</p></div><div class="fd"><div class="fd-head"><code>awg</code><b>线规</b></div>
+  <p>成品线束线规</p>
+  <p class="fd-miss"><span>缺了意味着</span>未公布</p></div></div>
   </section>
 
   <section>
     <h2>单位换算</h2>
-    | from | to | formula |
-|---|---|---|
-| rpm | rad/s | rad_s = rpm * pi / 30 |
-| sec/60deg | rad/s | rad_s = (pi/3) / t_sec |
-| kgf·cm | N·m | Nm = kgf_cm * 0.0980665 |
-| arcmin | deg | deg = arcmin / 60 |
-| g·cm² | kg·m² | kgm2 = gcm2 * 1e-7 |
-| bit(单圈) | deg(量化步长) | deg_step = 360 / 2**bits |
+    <table><thead><tr><th>from</th><th>to</th><th>formula</th></tr></thead><tbody><tr><td>rpm</td><td>rad/s</td><td>rad_s = rpm * pi / 30</td></tr><tr><td>sec/60deg</td><td>rad/s</td><td>rad_s = (pi/3) / t_sec</td></tr><tr><td>kgf·cm</td><td>N·m</td><td>Nm = kgf_cm * 0.0980665</td></tr><tr><td>arcmin</td><td>deg</td><td>deg = arcmin / 60</td></tr><tr><td>g·cm²</td><td>kg·m²</td><td>kgm2 = gcm2 * 1e-7</td></tr><tr><td>bit(单圈)</td><td>deg(量化步长)</td><td>deg_step = 360 / 2**bits</td></tr></tbody></table>
     <p class="sem-note">转速的两种写法量纲互逆（<code>sec/60°</code> 与 <code>rpm</code>），
     按数值直接比会得到相反结论。</p>
   </section>
 
   <section>
     <h2>可比性分级</h2>
-    | grade | name | condition |
-|---|---|---|
-| A | 可直接比较 | 同一物理量 + 同一负载/温度/电压工况 + 同一测量端（输出端）+ 声明额定或峰值 |
-| B | 换算后可比 | 同一物理量，单位不同但换算关系确定，且工况声明一致 |
-| C | 仅同厂商内可比 | 有数值但缺工况声明；同厂商内部口径通常自洽 |
-| D | 不可比 | 定性描述、缺失、或物理量本身不同；放进对比表就是选型事故的起点 |
+    <table><thead><tr><th>grade</th><th>name</th><th>condition</th></tr></thead><tbody><tr><td>A</td><td>可直接比较</td><td>同一物理量 + 同一负载/温度/电压工况 + 同一测量端（输出端）+ 声明额定或峰值</td></tr><tr><td>B</td><td>换算后可比</td><td>同一物理量，单位不同但换算关系确定，且工况声明一致</td></tr><tr><td>C</td><td>仅同厂商内可比</td><td>有数值但缺工况声明；同厂商内部口径通常自洽</td></tr><tr><td>D</td><td>不可比</td><td>定性描述、缺失、或物理量本身不同；放进对比表就是选型事故的起点</td></tr></tbody></table>
   </section>
 
   <section>
     <h2>向供应商问询清单</h2>
     <p class="sem-note">可直接粘进技术协议或询价邮件。写不进合同的参数，验收时不具备约束力。</p>
-    1. 额定扭矩：同时索取母线电压、环境温度、连续运行时长、测量端（电机端/输出端）
-2. 峰值扭矩：同时索取允许持续时间、起始温度、循环占空比
-3. 背隙：同时索取测量加载扭矩、是减速器背隙还是整机回差
-4. 精度：区分重复定位精度与绝对定位精度，并注明测量温度
-5. 质量：确认是否含减速器、编码器、刹车、外壳、线缆
-6. IP 等级：确认是否覆盖出线口与输出轴动密封
-7. 写不进技术协议的参数，验收时不具备约束力
+    <ol><li>额定扭矩：同时索取母线电压、环境温度、连续运行时长、测量端（电机端/输出端）</li><li>峰值扭矩：同时索取允许持续时间、起始温度、循环占空比</li><li>背隙：同时索取测量加载扭矩、是减速器背隙还是整机回差</li><li>精度：区分重复定位精度与绝对定位精度，并注明测量温度</li><li>质量：确认是否含减速器、编码器、刹车、外壳、线缆</li><li>IP 等级：确认是否覆盖出线口与输出轴动密封</li><li>写不进技术协议的参数，验收时不具备约束力</li></ol>
   </section>
 </div>
 
