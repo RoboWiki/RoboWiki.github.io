@@ -1279,7 +1279,7 @@ def main() -> None:
 
 {generic_table(items, c, HREF)}
 
-{"> 来源等级见行末徽章：`A` = 逐项核对过官方手册，`B` = 公开网页。采购前请回原厂页面确认。" if c in ("remote_controller", "module", "connector") else "> 这些行是 `B` 级（来自公开文档/官网，未逐项核对），采购前请回原厂页面确认。"}
+{"> 来源等级见行末徽章：`A` = 逐项核对过官方手册，`B` = 公开网页。采购前请回原厂页面确认。" if c in ("remote_controller", "module", "connector", "battery") else "> 这些行是 `B` 级（来自公开文档/官网，未逐项核对），采购前请回原厂页面确认。"}
 """, encoding="utf-8")
 
 

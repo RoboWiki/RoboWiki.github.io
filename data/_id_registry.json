@@ -313,6 +313,21 @@
    "category": "servo",
    "model": "STS3215（7.4V 19 kg·cm）"
   },
+  "feifei-6s-222v-xt60": {
+   "added": "2026-11-01",
+   "category": "battery",
+   "model": "6S 22.2V XT60"
+  },
+  "feiqilai-jumbo-power-6s-21700": {
+   "added": "2026-11-01",
+   "category": "battery",
+   "model": "6S 平铺 21700"
+  },
+  "fulaixiang-6s4p-21700-20000": {
+   "added": "2026-11-01",
+   "category": "battery",
+   "model": "6S4P 21700 20000mAh（长条）"
+  },
   "hightorque-htcp-4531-06-cyc": {
    "added": "2026-10-31",
    "category": "actuator",
@@ -1156,6 +1171,11 @@
    "category": "lidar",
    "model": "Mid-70"
   },
+  "mjbots-moteus-r4-11": {
+   "added": "2026-11-01",
+   "category": "controller_low",
+   "model": "moteus r4.11"
+  },
   "myactuator-x12-320": {
    "added": "2026-10-31",
    "category": "actuator",
@@ -1196,6 +1216,11 @@
    "category": "controller_high",
    "model": "Jetson Orin NX"
   },
+  "odrive-s1": {
+   "added": "2026-11-01",
+   "category": "controller_low",
+   "model": "ODrive S1"
+  },
   "orbbec-gemini-305": {
    "added": "2026-10-31",
    "category": "camera",
@@ -1210,6 +1235,11 @@
    "added": "2026-10-31",
    "category": "camera",
    "model": "Gemini 336"
+  },
+  "pjrc-teensy-4-1": {
+   "added": "2026-11-01",
+   "category": "controller_low",
+   "model": "Teensy 4.1"
   },
   "protocol:dji-c610": {
    "added": "2026-10-31",
@@ -1440,6 +1470,11 @@
    "added": "2026-10-31",
    "category": "software",
    "model": "Unitree SDK2 / unitree_ros2"
+  },
+  "st-b-g431b-esc1": {
+   "added": "2026-11-01",
+   "category": "controller_low",
+   "model": "B-G431B-ESC1"
   },
   "stackforce-6010": {
    "added": "2026-10-31",
@@ -2590,6 +2625,16 @@
    "added": "2026-10-31",
    "category": "supplier",
    "model": "深圳市康胜世纪电子企"
+  },
+  "unitree-bt2-05": {
+   "added": "2026-11-01",
+   "category": "battery",
+   "model": "BT2-05"
+  },
+  "unitree-bt2-06": {
+   "added": "2026-11-01",
+   "category": "battery",
+   "model": "BT2-06"
   },
   "unitree-go-m8010-6": {
    "added": "2026-10-31",

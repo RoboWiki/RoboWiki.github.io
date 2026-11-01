@@ -961,6 +961,22 @@
    "slug": "nvidia",
    "cn": "英伟达"
   },
+  "PJRC": {
+   "slug": "pjrc",
+   "cn": "PJRC"
+  },
+  "飞飞模型": {
+   "slug": "feifei",
+   "cn": "飞飞模型"
+  },
+  "飞起来Jumbo Power": {
+   "slug": "feiqilai-jumbo-power",
+   "cn": "飞起来"
+  },
+  "福来翔航模": {
+   "slug": "fulaixiang",
+   "cn": "福来翔"
+  },
   "STMicroelectronics": {
    "slug": "st-2",
    "cn": "意法半导体"

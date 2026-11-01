@@ -1,0 +1,36 @@
+[
+ {
+  "category": "battery",
+  "subtype": "pack",
+  "id": "feifei-6s-222v-xt60",
+  "vendor": "飞飞模型",
+  "vendor_cn": "飞飞模型",
+  "model": "6S 22.2V XT60",
+  "title": "飞飞模型 6S 22.2V XT60 航模锂电池",
+  "url": null,
+  "source_tier": "C",
+  "verified": false,
+  "last_checked": "2026-11-01",
+  "price_cny": 218.22,
+  "origin": "用户提供的采购清单行（2026-11-01）：飞飞模型 航模锂电池 22.2V/6S XT60，1 件 218.22 元",
+  "notes": "仅确认商品名、6S/22.2V、XT60 与单价；未找到可公开访问的商品页，容量、能量、放电倍率、重量、尺寸和充电截止电压均未核实，相关字段留空。价格为采购清单记录，非官方指导价，可能随店铺活动变化。",
+  "specs": {
+   "chem": "航模锂电池（化学体系未注明）",
+   "capacity_mah": null,
+   "voltage_V": 22.2,
+   "energy_wh": null,
+   "discharge_rate_c": null,
+   "current_rated_A": null,
+   "v_charge_V": null,
+   "mass_g": null,
+   "iface": "XT60",
+   "dims": null,
+   "charge_current": null,
+   "battery_type": "航模动力电池",
+   "image_url": null,
+   "image_source": null,
+   "doc_url": null
+  },
+  "subtype_label": "航模动力电池"
+ }
+]

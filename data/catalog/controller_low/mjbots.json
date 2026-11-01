@@ -1,0 +1,49 @@
+[
+ {
+  "category": "controller_low",
+  "subtype": "driver",
+  "id": "mjbots-moteus-r4-11",
+  "vendor": "mjbots",
+  "vendor_cn": "mjbots",
+  "model": "moteus r4.11",
+  "title": "mjbots moteus r4.11 单轴伺服驱动器",
+  "url": "https://mjbots.com/products/moteus-r4-11",
+  "source_tier": "A",
+  "verified": true,
+  "last_checked": "2026-11-01",
+  "price_cny": null,
+  "specs": {
+   "mcu": "STM32G4（170 MHz，官方未注明具体型号）",
+   "clock_mhz": 170,
+   "flash_kb": null,
+   "ram_kb": null,
+   "foc_axes": 1,
+   "torque_mode": true,
+   "current_loop_khz": null,
+   "can": 1,
+   "canfd": true,
+   "can_speed_mbps": 5,
+   "voltage_in_V": 24,
+   "voltage_range_V": "10–44 V（≤10S）",
+   "voltage_max_V": 44,
+   "iface": "CAN-FD / UART / SPI",
+   "encoder": "板载磁编（绝对值，随附磁铁）",
+   "imu": null,
+   "mass_kg": 0.0142,
+   "dims": "46×53 mm",
+   "temp_range": "-40–85 ℃",
+   "image_url": "/parts/mjbots-moteus-r4-11.jpg",
+   "image_source": "mjbots 官方商店 moteus r4.11 产品页产品图（Shopify 原图）",
+   "doc_url": "https://mjbots.github.io/moteus/",
+   "doc_pdf": null,
+   "repo_urls": [
+    "https://github.com/mjbots/moteus"
+   ],
+   "repo_license": "Apache-2.0"
+  },
+  "notes": "单轴；10–44 V（≤10S）；峰值相电流 100 A，持续 12 A（无散热）/32 A（带散热），900 W @30 V；控制频率 15–30 kHz、PWM 15–60 kHz —— 官方未单列「电流环」频率，current_loop_khz 留空；板载绝对磁编；14.2 g、46×53 mm；工作温度 -40–85 ℃。价格：官方单件 $94（mjbots.com，2026-11-01，含 2 个 XT30、2 个 JST-PH3 插头与磁铁）；人民币价未公布。",
+  "origin": "mjbots moteus 官方文档 + GitHub README 规格表 + 官方商店产品页（2026-11-01）",
+  "search": "mjbots moteus r4.11 单轴 伺服 驱动器 can-fd bldc",
+  "subtype_label": "驱动板"
+ }
+]

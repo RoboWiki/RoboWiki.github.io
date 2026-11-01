@@ -1,0 +1,36 @@
+[
+ {
+  "category": "battery",
+  "subtype": "pack",
+  "id": "fulaixiang-6s4p-21700-20000",
+  "vendor": "福来翔航模",
+  "vendor_cn": "福来翔",
+  "model": "6S4P 21700 20000mAh（长条）",
+  "title": "福来翔 6S4P 21700 20000mAh 航模锂电池组",
+  "url": null,
+  "source_tier": "C",
+  "verified": false,
+  "last_checked": "2026-11-01",
+  "price_cny": null,
+  "origin": "用户提供的淘宝商品页截图（2026-10，福来翔航模）：21700 锂电池组 A 品 50XG/新能安 50PL 全极耳电芯 5000mAh；截图参数区为 6S4P 20000mAh 版本",
+  "notes": "6S4P（长条）版本；卖家标称 22.2 V / 444 Wh / 持续放电 320 A / 18 C / 电池组重 1700 g / 充电 1 C，尺寸约 150×86×66 mm（手工测量，以实物为准）；默认 XT60 插头，带平衡头，可联系客服改插头。电芯为 21700 A 品 5000 mAh（新能安 50XG/50PL 全极耳）。按 20 Ah 计算 18 C 对应 360 A，但页面同时标持续放电 320 A（约 16 C），两个口径不完全一致，按页面原文保留。充电截止电压未标注。截图显示店铺优惠后 ¥74.8 起、优惠前 ¥88 起，为链接内最低配置起价，不是 6S4P 20000mAh 版本价格；该版本成交价未确认，故 price_cny 留空。参数来自卖家商品页，未经厂商 datasheet 复核，且页面标注不支持 7 天无理由退货，购买前需确认版本。",
+  "specs": {
+   "chem": "锂离子 21700（新能安 50XG/50PL 全极耳，A 品）",
+   "capacity_mah": 20000,
+   "voltage_V": 22.2,
+   "energy_wh": 444,
+   "discharge_rate_c": 18,
+   "current_rated_A": 320,
+   "v_charge_V": null,
+   "mass_g": 1700,
+   "iface": "XT60（默认，可定制；带平衡头）",
+   "dims": "150×86×66 mm（长×宽×高，手工测量）",
+   "charge_current": "1 C",
+   "battery_type": "6S4P 21700 锂电池组（长条）",
+   "image_url": null,
+   "image_source": null,
+   "doc_url": null
+  },
+  "subtype_label": "航模动力电池"
+ }
+]
