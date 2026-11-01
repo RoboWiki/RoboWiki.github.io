@@ -22,7 +22,7 @@ outline: false
     <h2>五个模块</h2>
     <div class="comp-mods">
   <a class="comp-mod on" href="/competitions/ec">
-    <div class="comp-mod-head"><b>电控</b><em>4 篇</em></div>
+    <div class="comp-mod-head"><b>电控</b><em>5 篇</em></div>
     <p>主控选型与实时性、CAN 总线与频率预算、电机驱动器配置、状态估计与整车控制状态机、足式 MPC / WBC、赛场调试与日志回放。</p>
     <span>这一块最缺的是「别人踩过的坑」：同样的 CAN 负载，为什么有的队稳定有的队掉线。</span>
   </a>
@@ -54,10 +54,11 @@ outline: false
     <p>
       有内容的模块都是有作者的实战材料，我们做的是<b>移植 + 标注来源</b>，不是重写：
       机械四篇（铨洲智造平台 CNC 指南 + 哈工大竞技机器人队三篇）、
-      电控四篇（三篇站内教程 + 达妙科技《足式机器人控制基础》飞书原文）、
+      电控五篇（三篇站内教程 + 达妙科技《足式机器人控制基础》飞书原文 +
+      DM_RS 开源驱动项目）、
       硬件两篇（重山战队）、项目管理一篇（RoboParty RP1 白皮书）、
       强化学习一篇（达妙科技《足式强化学习笔记》飞书原文）。
-      飞书文档只做入口与范围说明，不复制正文；其余模块没有可核材料，不拿 AI 凑篇幅。
+      飞书文档与 GitHub 项目只做入口与范围说明，不复制正文；其余模块没有可核材料，不拿 AI 凑篇幅。
     </p>
     <div class="comp-links">
       <a href="https://github.com/RoboWiki/RoboWiki.github.io/issues/new?template=article.yml&labels=article"

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-"""竞赛板块：三个模块（电控 / 机械 / 硬件）。
+"""竞赛板块：五个模块（电控 / 机械 / 项目管理 / 硬件 / 强化学习）。
 
 改了定位（2026-10-31）：原来这一页想做「RM 组织层」，但没有任何一手材料，
 写出来就是把 /catalog、/robots 再摆一遍 —— 那叫重复，不叫内容。
 
 现在按**参赛队真正要用的几门手艺**分模块：
-  · 电控      —— 已移植三篇教程 + 一份飞书足式控制笔记
+  · 电控      —— 已移植三篇教程 + 一份飞书足式控制笔记 + DM_RS 开源项目
   · 机械      —— 已移植四份一手材料（铨洲 CNC 加工指南 + 哈工大竞技机器人队三篇）
   · 项目管理  —— 已移植 RoboParty RP1 白皮书
   · 硬件      —— 已移植重山战队两篇
@@ -24,7 +24,7 @@ FRONT = "---\ntitle: 实战资料\nlayout: page\nsidebar: false\noutline: false\
 MODULES = [
     dict(
         key="ec", name="电控", href="/competitions/ec",
-        state="待补", external=1,
+        state="待补", external=2,
         what="主控选型与实时性、CAN 总线与频率预算、电机驱动器配置、"
              "状态估计与整车控制状态机、足式 MPC / WBC、赛场调试与日志回放。",
         why="这一块最缺的是「别人踩过的坑」：同样的 CAN 负载，为什么有的队稳定有的队掉线。",
@@ -105,10 +105,11 @@ def build(out_dir: pathlib.Path, root: pathlib.Path) -> None:
     <p>
       有内容的模块都是有作者的实战材料，我们做的是<b>移植 + 标注来源</b>，不是重写：
       机械四篇（铨洲智造平台 CNC 指南 + 哈工大竞技机器人队三篇）、
-      电控四篇（三篇站内教程 + 达妙科技《足式机器人控制基础》飞书原文）、
+      电控五篇（三篇站内教程 + 达妙科技《足式机器人控制基础》飞书原文 +
+      DM_RS 开源驱动项目）、
       硬件两篇（重山战队）、项目管理一篇（RoboParty RP1 白皮书）、
       强化学习一篇（达妙科技《足式强化学习笔记》飞书原文）。
-      飞书文档只做入口与范围说明，不复制正文；其余模块没有可核材料，不拿 AI 凑篇幅。
+      飞书文档与 GitHub 项目只做入口与范围说明，不复制正文；其余模块没有可核材料，不拿 AI 凑篇幅。
     </p>
     <div class="comp-links">
       <a href="https://github.com/RoboWiki/RoboWiki.github.io/issues/new?template=article.yml&labels=article"
