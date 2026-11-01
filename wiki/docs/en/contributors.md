@@ -31,6 +31,11 @@ outline: false
   <div class="ct-head"><b>JadeCrane</b><span class="ct-role">Founding contributor</span></div>
   <p>Expanded the chip category from 14 to 18 parts (STM32H723 / TCAN334G / TMC2209 / AS5600), added official doc pages, datasheet PDFs and official repos for all 18 (each link verified), domestic 1+ prices for 17 of them with source and collection date, and 12 product photos. Also registered the doc_url / doc_pdf / repo_urls keys, clearing 20 false warnings (82 → 62).</p>
   <a href="https://github.com/Beni-537" target="_blank" rel="noopener">GitHub</a>
+</div>
+<div class="ct">
+  <div class="ct-head"><b>WUSI321</b><span class="ct-role">Founding contributor</span></div>
+  <p>Fixed the unit-conversion and comparability tables on /method and /semantics rendering as raw pipe-delimited text inside a VitePress raw-HTML block: the pipeline now generates HTML &lt;table&gt; elements from schema/semantics.json, the supplier questionnaire is emitted as &lt;ol&gt;, and a regression test (test_semantics_tables_are_html) guards the fix. Verified with pipeline build, VitePress build, validate and pytest. PR #5.</p>
+  <a href="https://github.com/wusi321" target="_blank" rel="noopener">GitHub</a><a href="https://github.com/RoboWiki/RoboWiki.github.io/pull/5" target="_blank" rel="noopener">PR #5</a>
 </div></div>
   </section>
 

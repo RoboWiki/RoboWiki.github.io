@@ -31,6 +31,11 @@ outline: false
   <div class="ct-head"><b>JadeCrane</b><span class="ct-role">创始贡献者</span></div>
   <p>芯片品类从 14 颗补到 18 颗：新增 STM32H723 / TCAN334G / TMC2209 / AS5600；为 18 颗补齐官方文档页、手册 PDF 与官方仓库链接（逐条实测可打开）；补 17 颗的国内 1+ 挂牌价（含来源与采集日期）；补 12 张商品实拍图。另外登记了 doc_url / doc_pdf / repo_urls 三个参数名，让校验器的 20 条误报消失（82 → 62 警告）。</p>
   <a href="https://github.com/Beni-537" target="_blank" rel="noopener">GitHub</a>
+</div>
+<div class="ct">
+  <div class="ct-head"><b>WUSI321</b><span class="ct-role">创始贡献者</span></div>
+  <p>修复 /method 与 /semantics 的「单位换算」「可比性分级」表格在 VitePress raw HTML 块内不解析、线上显示成竖线的问题：改由 pipeline/build_site.py 从 schema/semantics.json 生成 HTML &lt;table&gt;，把「向供应商问询清单」改成 &lt;ol&gt;，并补 test_semantics_tables_are_html 回归测试；验证 pipeline build、VitePress build、validate 与 pytest 均通过。PR #5。</p>
+  <a href="https://github.com/wusi321" target="_blank" rel="noopener">GitHub</a><a href="https://github.com/RoboWiki/RoboWiki.github.io/pull/5" target="_blank" rel="noopener">PR #5</a>
 </div></div>
   </section>
 

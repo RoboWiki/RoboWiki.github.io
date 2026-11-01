@@ -37,5 +37,22 @@
     "url": "https://github.com/Beni-537"
    }
   ]
+ },
+ {
+  "name": "WUSI321",
+  "handle": "wusi321",
+  "role": "创始贡献者",
+  "did": "修复 /method 与 /semantics 的「单位换算」「可比性分级」表格在 VitePress raw HTML 块内不解析、线上显示成竖线的问题：改由 pipeline/build_site.py 从 schema/semantics.json 生成 HTML &lt;table&gt;，把「向供应商问询清单」改成 &lt;ol&gt;，并补 test_semantics_tables_are_html 回归测试；验证 pipeline build、VitePress build、validate 与 pytest 均通过。PR #5。",
+  "did_en": "Fixed the unit-conversion and comparability tables on /method and /semantics rendering as raw pipe-delimited text inside a VitePress raw-HTML block: the pipeline now generates HTML &lt;table&gt; elements from schema/semantics.json, the supplier questionnaire is emitted as &lt;ol&gt;, and a regression test (test_semantics_tables_are_html) guards the fix. Verified with pipeline build, VitePress build, validate and pytest. PR #5.",
+  "links": [
+   {
+    "label": "GitHub",
+    "url": "https://github.com/wusi321"
+   },
+   {
+    "label": "PR #5",
+    "url": "https://github.com/RoboWiki/RoboWiki.github.io/pull/5"
+   }
+  ]
  }
 ]
