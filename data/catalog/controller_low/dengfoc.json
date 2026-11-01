@@ -1,0 +1,50 @@
+[
+ {
+  "category": "controller_low",
+  "subtype": "driver",
+  "id": "dengfoc-v3-0",
+  "vendor": "灯哥开源 ToanTech",
+  "vendor_cn": "灯哥开源",
+  "model": "DengFOC V3.0",
+  "title": "灯哥开源 DengFOC V3.0 双路 FOC 驱动板",
+  "url": "https://github.com/ToanTech/Deng-s-foc-controller",
+  "source_tier": "A",
+  "verified": true,
+  "last_checked": "2026-11-01",
+  "price_cny": null,
+  "specs": {
+   "mcu": "ESP32（Lolin32 Lite）",
+   "clock_mhz": null,
+   "flash_kb": null,
+   "ram_kb": null,
+   "foc_axes": 2,
+   "torque_mode": true,
+   "current_loop_khz": null,
+   "can": 0,
+   "canfd": false,
+   "can_speed_mbps": null,
+   "voltage_in_V": 24,
+   "voltage_range_V": "12–24 V",
+   "voltage_max_V": 24,
+   "iface": "UART（控制）/ IIC / ABI / PWM / SPI / HALL（编码器）",
+   "encoder": "IIC、ABI、PWM、SPI、HALL（AS5600、AS5047、AS5048 等）",
+   "imu": null,
+   "mass_kg": null,
+   "dims": "56×39 mm",
+   "temp_range": null,
+   "image_url": "/parts/dengfoc-v3-0.jpg",
+   "image_source": "DengFOC 官方仓库产品图（PAFOC_front_v3.jpg，含配套云台电机）",
+   "doc_url": "http://dengfoc.com/",
+   "doc_pdf": "https://raw.githubusercontent.com/ToanTech/Deng-s-foc-controller/master/%E7%81%AF%E5%93%A5%E5%BC%80%E6%BA%90FOC%20V3.0%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3V5%282022423%29.pdf",
+   "repo_urls": [
+    "https://github.com/ToanTech/Deng-s-foc-controller",
+    "https://github.com/ToanTech/DengFOC_Lib"
+   ],
+   "repo_license": "GPL-3.0"
+  },
+  "notes": "V3.0 双路 FOC 驱动板，板载 ESP32（Lolin32 Lite）；12–24 V，单路 120 W、双路共 240 W，电流检测量程 3.3 A；支持 IIC/ABI/PWM/SPI/HALL 编码器，通过 UART 控制，无原生 CAN。官方淘宝店销售含 ESP32 的成品，未公开单价；早期资料提到的 60 元不代表现价，人民币价留空。资料：官方 README 与 V3.0 使用文档 V5（2022-04-23），2026-11-01 核对。",
+  "origin": "DengFOC 官方 GitHub README + V3.0 使用文档 V5（2022-04-23），2026-11-01 核对",
+  "search": "灯哥开源 dengfoc deng foc v3.0 esp32 双路 foc 驱动板 无刷电机 simplefoc",
+  "subtype_label": "驱动板"
+ }
+]

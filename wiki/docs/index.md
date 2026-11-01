@@ -19,9 +19,9 @@ titleTemplate: false
       <a class="rw-home-btn ghost" href="/learn/">从零开始学</a>
     </div>
     <div class="rw-home-stats">
-      <div><b>320</b><span>在库部件</span></div>
+      <div><b>324</b><span>在库部件</span></div>
       <div><b>14</b><span>有数据的品类（共 14 类）</span></div>
-      <div><b>110</b><span>A 级：逐项对过厂商手册</span></div>
+      <div><b>114</b><span>A 级：逐项对过厂商手册</span></div>
       <div><b>21</b><span>整机（19 台带 URDF / 仓库）</span></div>
       <div><b>207</b><span>渠道库（加工 / 元件店铺）</span></div>
     </div>
@@ -80,9 +80,9 @@ titleTemplate: false
     <h2>六个入口</h2>
     <div class="rw-home-entries">
       <a class="rw-home-entry" href="/catalog">
-        <b>部件库 · 320 件</b>
+        <b>部件库 · 324 件</b>
         <p>比参数：按任意列排序、可对比、带来源等级与真实评分。</p>
-        <span>A 级 110 件逐项对过手册</span>
+        <span>A 级 114 件逐项对过手册</span>
       </a>
       <a class="rw-home-entry" href="/robots">
         <b>整机库 · 21 台</b>
@@ -177,9 +177,9 @@ titleTemplate: false
       <a class="rw-home-cat" href="/catalog?category=imu"><b>IMU</b><span>27</span><em>姿态与振动</em></a>
       <a class="rw-home-cat" href="/catalog?category=connector"><b>连接器</b><span>23</span><em>板端 / 线端 / 大电流</em></a>
       <a class="rw-home-cat" href="/catalog?category=lidar"><b>激光雷达</b><span>13</span><em>地形与建图</em></a>
+      <a class="rw-home-cat" href="/catalog?category=controller_low"><b>下位机</b><span>11</span><em>底层控制 / 电机驱动</em></a>
       <a class="rw-home-cat" href="/catalog?category=controller_high"><b>上位机</b><span>9</span><em>推理与感知</em></a>
       <a class="rw-home-cat" href="/catalog?category=camera"><b>深度相机</b><span>9</span><em>视觉感知</em></a>
-      <a class="rw-home-cat" href="/catalog?category=controller_low"><b>下位机</b><span>7</span><em>力矩闭环</em></a>
       <a class="rw-home-cat" href="/catalog?category=battery"><b>电池</b><span>7</span><em>智能电池 / 动力电池</em></a>
       <a class="rw-home-cat" href="/catalog?category=servo"><b>舵机</b><span>4</span><em>串行总线 / PWM</em></a>
       <a class="rw-home-cat" href="/catalog?category=remote_controller"><b>遥控器</b><span>4</span><em>手柄 / 板控 / 遥操作</em></a>

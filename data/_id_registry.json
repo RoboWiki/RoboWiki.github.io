@@ -233,6 +233,11 @@
    "category": "connector",
    "model": "2EDG 5.08 mm 插拔端子 2P"
   },
+  "dengfoc-v3-0": {
+   "added": "2026-11-01",
+   "category": "controller_low",
+   "model": "DengFOC V3.0"
+  },
   "dji-c610": {
    "added": "2026-10-31",
    "category": "esc",
@@ -1171,6 +1176,11 @@
    "category": "lidar",
    "model": "Mid-70"
   },
+  "mit-3phase-integrated": {
+   "added": "2026-11-01",
+   "category": "controller_low",
+   "model": "3phase_integrated"
+  },
   "mjbots-moteus-r4-11": {
    "added": "2026-11-01",
    "category": "controller_low",
@@ -1360,6 +1370,11 @@
    "added": "2026-10-31",
    "category": "imu",
    "model": "YIS320"
+  },
+  "simplefoc-mini-v2-3": {
+   "added": "2026-11-01",
+   "category": "controller_low",
+   "model": "SimpleFOC Mini V2.3"
   },
   "software:amp": {
    "added": "2026-10-31",
@@ -2665,6 +2680,11 @@
    "added": "2026-10-31",
    "category": "actuator",
    "model": "Unitree A1"
+  },
+  "vesc-classic-100v": {
+   "added": "2026-11-01",
+   "category": "controller_low",
+   "model": "VESC Classic 100V"
   },
   "weipu-gx12": {
    "added": "2026-10-31",

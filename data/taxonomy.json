@@ -217,7 +217,7 @@
   {
    "id": "controller_low",
    "name": "下位机",
-   "hint": "力矩闭环",
+   "hint": "底层控制 / 电机驱动",
    "subtypes": {
     "mcu": "主控板",
     "bridge": "调试桥",
@@ -1456,6 +1456,22 @@
   "伟利达 WLD": {
    "slug": "weilida",
    "cn": "伟利达"
+  },
+  "灯哥开源 ToanTech": {
+   "slug": "dengfoc",
+   "cn": "灯哥开源"
+  },
+  "SimpleFOC Team": {
+   "slug": "simplefoc",
+   "cn": "SimpleFOC"
+  },
+  "VESC Labs": {
+   "slug": "vesc",
+   "cn": "VESC Labs"
+  },
+  "MIT Biomimetics Robotics Lab": {
+   "slug": "mit-biomimetics",
+   "cn": "MIT 仿生机器人实验室"
   }
  }
 }
