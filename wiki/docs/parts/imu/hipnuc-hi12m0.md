@@ -1,5 +1,6 @@
 ---
 title: 超核电子 HiPNUC HI12M0
+description: "超核电子 HiPNUC HI12M0（IMU）：额定 5 V、输出 1,000 Hz；来源 A 级、2026-10-28 核对。"
 ---
 
 

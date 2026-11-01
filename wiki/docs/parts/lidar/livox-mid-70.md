@@ -1,5 +1,6 @@
 ---
 title: Livox Mid-70
+description: "Livox Mid-70（激光雷达）：额定 12 V、量程 90 m、视场 70.4°（圆形）；来源 A 级、2026-10-28 核对。"
 ---
 
 

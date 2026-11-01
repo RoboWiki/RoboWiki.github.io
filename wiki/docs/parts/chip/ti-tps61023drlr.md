@@ -1,5 +1,6 @@
 ---
 title: TI TPS61023DRLR
+description: "TI TPS61023DRLR（硬件芯片）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

@@ -1,5 +1,6 @@
 ---
 title: 小米 Xiaomi CyberGear Micro
+description: "小米 Xiaomi CyberGear Micro（关节电机）：峰值扭矩 12 N·m、额定 4 N·m、质量 0.317 kg；来源 B 级、2026-10-31 核对。"
 ---
 
 
@@ -13,7 +14,7 @@ title: 小米 Xiaomi CyberGear Micro
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">关节电机</span>
-      <span class="part-tag soft">qdd</span>
+      <span class="part-tag soft">准直驱 QDD</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
     </div>
@@ -55,7 +56,7 @@ title: 小米 Xiaomi CyberGear Micro
 
 - **腿尖速度上限** —— 空载 296 rpm ≈ 31.0 rad/s。腿长 0.4 m 时理论腿尖上限 ≈ 12.4 m/s；实际打 6 折再定目标速度。
 - **峰值与额定的用法** —— 峰值/额定 = 3.0，这个比值正常。连续按 4 N·m、瞬时按 12 N·m 设计即可。
-- **算你需要多大扭矩** —— 静态站立（两腿支撑）单关节需求 ≈ 整机质量 × 9.81 × 腿长 / 4。例：20 kg、腿长 0.4 m → 约 20 N·m 保持扭矩，再乘 1.5–2 的安全系数才是你该选的额定值。
+- **算你需要多大扭矩** —— 静态站立（四腿支撑，n=4）单关节需求 ≈ 整机质量 × 9.81 × 腿长 / 4；两腿支撑按 /2 估。例：20 kg、腿长 0.4 m → 约 20 N·m 保持扭矩，再乘 1.5–2 的安全系数才是你该选的额定值。
 - **报价要自己问** —— 本站没有这个型号的公开价格。同机座不同绕组的价差可能很小，但扭矩差很多 —— 问价时把型号后缀写全。
 
 

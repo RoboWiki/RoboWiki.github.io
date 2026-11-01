@@ -1,5 +1,6 @@
 ---
 title: TE Connectivity(泰科电子) MS561101BA03-50
+description: "TE Connectivity(泰科电子) MS561101BA03-50（传感器）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

@@ -12,7 +12,7 @@ title: 方法与来源
       「峰值扭矩 40 N·m」可能指瞬时 1 秒、也可能指持续堵转；
       「质量 0.362 kg」可能含线缆、也可能只是定转子。
       这一页把所有字段的<b>定义、缺口含义、以及该停下来复核的阈值</b>写清楚，
-      也提供机器可读版本（<code>GET /api/semantics</code>，MCP 工具直接复用）。
+      也提供机器可读版本：静态站直接读 <code>schema/semantics.json</code>；若部署可选后端，才提供 <code>GET /api/semantics</code>。
     </p>
     <p class="sem-side">
       <b>本站统一的一条硬规则：扭矩与转速一律指输出端（含减速箱）。</b>
@@ -463,7 +463,7 @@ html.dark .rl-th { color: #e0b159; }
 | 图片出处 | 有图 `313` 条（部件 `292` + 整机 `21`），全部写了 `image_source` |
 | 仓库许可 | 引用仓库 `53` 条（部件 `34` + 整机 `19`），许可证已核 `49` 条 |
 
-**口径版本。** 静态站、`/api/semantics`、MCP 读的是同一份 `schema/semantics.json`。
+**口径版本。** 静态站直接读 `schema/semantics.json`；可选后端的 `/api/semantics` 与 MCP 也复用同一份文件。
 改口径（字段定义、单位换算、红线阈值）就升 `version`；页面上任何数字的含义，
 以那一版为准。拿旧版本的数据配新口径来读，会读出错的值。
 

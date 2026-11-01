@@ -275,12 +275,12 @@ onMounted(load)
 .rt-btn {
   display: inline-block; font-size: 0.76rem; font-weight: 600;
   padding: 0.3rem 0.7rem; border-radius: 7px;
-  background: var(--vp-c-brand-1); color: #fff; text-decoration: none;
+  background: var(--vp-c-brand-1); color: var(--rw-on-brand); text-decoration: none;
 }
 .rt-btn:hover { opacity: 0.9; }
-.rt-gh-link { font-size: 0.72rem; color: var(--vp-c-brand-1); text-decoration: none; }
+.rt-gh-link { font-size: 0.72rem; color: var(--rw-link); text-decoration: none; }
 .rt-gh-link:hover { text-decoration: underline; }
 
 .rt-hint { margin: 0.5rem 0 0; font-size: 0.7rem; line-height: 1.85; color: var(--vp-c-text-3); }
-.rt-jump { display: inline-block; margin-top: 0.5rem; font-size: 0.72rem; color: var(--vp-c-brand-1); }
+.rt-jump { display: inline-block; margin-top: 0.5rem; font-size: 0.72rem; color: var(--rw-link); }
 </style>

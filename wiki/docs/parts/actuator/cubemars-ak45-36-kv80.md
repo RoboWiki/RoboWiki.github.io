@@ -1,5 +1,6 @@
 ---
 title: CubeMars AK45-36 KV80
+description: "CubeMars AK45-36 KV80（关节电机）：峰值扭矩 24 N·m、额定 8 N·m、减速比 36:1；来源 B 级、2026-10-31 核对。"
 ---
 
 
@@ -12,7 +13,7 @@ title: CubeMars AK45-36 KV80
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">关节电机</span>
-      <span class="part-tag soft">planetary</span>
+      <span class="part-tag soft">行星减速</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
     </div>
@@ -56,7 +57,7 @@ title: CubeMars AK45-36 KV80
 - **腿尖速度上限** —— 空载 52 rpm ≈ 5.4 rad/s。腿长 0.4 m 时理论腿尖上限 ≈ 2.2 m/s；实际打 6 折再定目标速度。
 - **峰值与额定的用法** —— 峰值/额定 = 3.0，这个比值正常。连续按 8 N·m、瞬时按 24 N·m 设计即可。
 - **高减速比的代价** —— 减速比 36，反射惯量会被放大。膝关节这类要快速摆动的关节，PD 里 kp 别照抄直驱参数，先用低 kp 高 kd 起步。
-- **算你需要多大扭矩** —— 静态站立（两腿支撑）单关节需求 ≈ 整机质量 × 9.81 × 腿长 / 4。例：20 kg、腿长 0.4 m → 约 20 N·m 保持扭矩，再乘 1.5–2 的安全系数才是你该选的额定值。
+- **算你需要多大扭矩** —— 静态站立（四腿支撑，n=4）单关节需求 ≈ 整机质量 × 9.81 × 腿长 / 4；两腿支撑按 /2 估。例：20 kg、腿长 0.4 m → 约 20 N·m 保持扭矩，再乘 1.5–2 的安全系数才是你该选的额定值。
 - **报价要自己问** —— 本站没有这个型号的公开价格。同机座不同绕组的价差可能很小，但扭矩差很多 —— 问价时把型号后缀写全。
 
 

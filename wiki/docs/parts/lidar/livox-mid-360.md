@@ -1,5 +1,6 @@
 ---
 title: Livox Mid-360
+description: "Livox Mid-360（激光雷达）：质量 0.265 kg、额定 12 V、量程 40 m；来源 A 级、2026-10-28 核对。"
 ---
 
 

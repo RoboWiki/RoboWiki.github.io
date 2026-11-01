@@ -1,5 +1,21 @@
 import { defineConfig } from 'vitepress'
+import type { HeadConfig } from 'vitepress'
 import sidebar from './sidebar.json' with { type: 'json' }
+
+// 站点对外域名（organization pages，站点在域名根）。
+// canonical / og:url / sitemap 三处必须用同一个值，否则搜索引擎会把
+// /catalog 与 /catalog.html 当成两个页面各收一次。
+const SITE = 'https://robowiki.github.io'
+const SITE_DESC = 'RoboWiki —— 机器人开发的开放资料底稿：可核对的参数、可追溯的来源、真实使用者的经验。'
+
+//: 页面 → 规范 URL。cleanUrls 关着（产物是 .html），所以路径要带 .html；
+//: 目录型页面（index.md）收成以 / 结尾，和 sitemap.xml 里的写法一致。
+function canonicalPath(relativePath: string): string {
+  const p = relativePath
+    .replace(/(^|\/)index\.md$/, '$1')
+    .replace(/\.md$/, '.html')
+  return `${SITE}/${p}`
+}
 
 // RoboWiki —— 机器人开发的开放资料底稿。
 // 一页两件事：左边官方参数（带来源与口径），右边真实使用者的评分与评价。
@@ -77,7 +93,7 @@ const enTheme = {
     {
       text: 'About',
       items: [
-        { text: 'Method & sources', link: '/en/method' },
+        { text: 'Method & sources', link: '/en/sources' },
         { text: 'Contributors', link: '/en/contributors' },
       ],
     },
@@ -119,6 +135,12 @@ export default defineConfig({
   },
   // 不用 cleanUrls：产物由 FastAPI StaticFiles(html=True) 托管，保持 .html 最省事。
   cleanUrls: false,
+  // 站点地图：VitePress 构建期按页面列表生成 /sitemap.xml。
+  // 之前没有这一项，线上 /sitemap.xml 与 /robots.txt 都是 404 ——
+  // 311 个型号页只能靠外链被发现，搜索引擎与 AI 抓取器都不知道全站有什么。
+  sitemap: {
+    hostname: SITE,
+  },
   // dev 模式下把 /api 代理到 FastAPI（评分/评论/控制台都要它）
   vite: {
     server: {
@@ -131,7 +153,42 @@ export default defineConfig({
     ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['link', { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' }],
     ['meta', { name: 'theme-color', content: '#0078d4' }],
+    // 分享卡片（微信 / Slack / X 都要这张图，否则链接只有一行灰字）
+    ['meta', { property: 'og:site_name', content: 'RoboWiki' }],
+    ['meta', { property: 'og:image', content: `${SITE}/icon-192.png` }],
+    ['meta', { name: 'twitter:card', content: 'summary' }],
   ],
+  // 每页的 canonical / og:url / 结构化数据。VitePress 原来只给全站一句描述，
+  // 311 个型号页在搜索结果里长得一模一样；canonical 也缺，/catalog 与
+  // /catalog.html 会被当成两个 URL 各收一次。
+  transformHead({ pageData }) {
+    const url = canonicalPath(pageData.relativePath)
+    const isHome = pageData.relativePath === 'index.md'
+    const isEn = pageData.relativePath.startsWith('en/')
+    const title = pageData.frontmatter.title || pageData.title || 'RoboWiki'
+    const description = pageData.frontmatter.description || SITE_DESC
+
+    const webPage = {
+      '@context': 'https://schema.org',
+      '@type': isHome ? 'WebSite' : 'WebPage',
+      name: isHome ? 'RoboWiki' : title,
+      url,
+      description,
+      inLanguage: isEn ? 'en-US' : 'zh-CN',
+      isPartOf: { '@type': 'WebSite', name: 'RoboWiki', url: `${SITE}/` },
+    }
+
+    const head: HeadConfig[] = [
+      ['link', { rel: 'canonical', href: url }],
+      ['meta', { property: 'og:type', content: isHome ? 'website' : 'article' }],
+      ['meta', { property: 'og:title', content: title }],
+      ['meta', { property: 'og:description', content: description }],
+      ['meta', { property: 'og:url', content: url }],
+      ['meta', { property: 'og:locale', content: isEn ? 'en_US' : 'zh_CN' }],
+      ['script', { type: 'application/ld+json' }, JSON.stringify(webPage)],
+    ]
+    return head
+  },
 
   themeConfig: {
     // 品牌标：不再叫「文档」—— 这是个社区，不是一个说明书

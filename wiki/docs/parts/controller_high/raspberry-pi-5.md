@@ -1,5 +1,6 @@
 ---
 title: 树莓派 Raspberry Pi 5
+description: "树莓派 Raspberry Pi 5（上位机）：Broadcom BCM2712；来源 A 级、2026-10-28 核对。"
 ---
 
 

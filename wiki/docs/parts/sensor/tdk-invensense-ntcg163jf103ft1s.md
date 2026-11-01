@@ -1,5 +1,6 @@
 ---
 title: TDK InvenSense NTCG163JF103FT1S
+description: "TDK InvenSense NTCG163JF103FT1S（传感器）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

@@ -1,5 +1,6 @@
 ---
 title: NVIDIA Jetson Orin Nano
+description: "NVIDIA Jetson Orin Nano（上位机）：Orin；来源 B 级、2026-10-28 核对。"
 ---
 
 

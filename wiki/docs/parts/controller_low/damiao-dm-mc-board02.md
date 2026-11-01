@@ -1,5 +1,6 @@
 ---
 title: 达妙 DAMIAO DM-MC-Board02
+description: "达妙 DAMIAO DM-MC-Board02（下位机）：质量 0.019 kg；来源 A 级、2026-10-31 核对。"
 ---
 
 

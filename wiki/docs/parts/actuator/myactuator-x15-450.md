@@ -1,5 +1,6 @@
 ---
 title: 脉塔 MyActuator X15-450
+description: "脉塔 MyActuator X15-450（关节电机）：峰值扭矩 450 N·m、额定 145 N·m、减速比 20.25:1；来源 B 级、2026-10-31 核对。"
 ---
 
 
@@ -13,7 +14,7 @@ title: 脉塔 MyActuator X15-450
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">关节电机</span>
-      <span class="part-tag soft">planetary</span>
+      <span class="part-tag soft">行星减速</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
     </div>

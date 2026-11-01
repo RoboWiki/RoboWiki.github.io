@@ -1,5 +1,6 @@
 ---
 title: 瑞莎 Radxa ROCK 5B
+description: "瑞莎 Radxa ROCK 5B（上位机）：Rockchip RK3588；来源 A 级、2026-10-28 核对。"
 ---
 
 

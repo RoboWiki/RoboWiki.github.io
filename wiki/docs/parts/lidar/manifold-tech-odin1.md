@@ -1,5 +1,6 @@
 ---
 title: Manifold Tech Odin1
+description: "Manifold Tech Odin1（激光雷达）：质量 0.28 kg、额定 24 V、量程 70 m；来源 A 级、2026-10-29 核对。"
 ---
 
 

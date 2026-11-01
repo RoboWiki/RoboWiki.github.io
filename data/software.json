@@ -60,7 +60,7 @@
    "license": "Apache-2.0",
    "version": "0.2.0",
    "repo": "https://github.com/google-deepmind/mujoco_playground",
-   "docs": "https://playground.mujoco.com/",
+   "docs": "https://playground.mujoco.org/",
    "lang": "Python / JAX",
    "what": "基于 MJX 的一批 GPU 加速环境，专为机器人学习研究与 sim-to-real 写的。",
    "when": "想在 MuJoCo 上做「大规模并行 + 现成环境」，又不想自己搭环境骨架时用它。",

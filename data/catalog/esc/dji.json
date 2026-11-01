@@ -51,7 +51,7 @@
   "last_checked": "2026-10-31",
   "price_cny": 159.0,
   "origin": "《RM C610 无刷电机调速器使用说明（发布版）》产品规格页；官方商城价",
-  "notes": "M2006 的官方配套电调：CAN 1 Mbps、持续 10 A、17 g。比 C620 更小更轻，配 M2006 带云台/小关节刚好，带 M3508 会先于电机过热。",
+  "notes": "M2006 的官方配套电调：CAN 1 Mbps、持续 10 A、17 g。比 C620 更小更轻，配 M2006 带云台/小关节刚好，带 M3508 会先于电机过热。大疆官网已不再提供 C610 独立产品页（2026-11-01 核对，general/C610 返回 404），规格只存在于 M2006 产品页与官方 PDF 手册里，所以 doc_url 留空、以 url 与本页 PDF 为准。",
   "specs": {
    "current_cont_A": 10,
    "current_peak_A": null,
@@ -71,7 +71,7 @@
    "armature_kgm2": null,
    "kt_Nm_per_A": null,
    "doc_pdf": "https://rm-static.djicdn.com/tem/RM%20C610%E6%97%A0%E5%88%B7%E7%94%B5%E6%9C%BA%E8%B0%83%E9%80%9F%E5%99%A8%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%20%E5%8F%91%E5%B8%83%E7%89%88.pdf",
-   "doc_url": "https://www.robomaster.com/zh-CN/products/components/general/C610"
+   "doc_url": null
   },
   "subtype_label": "CAN 控制"
  },

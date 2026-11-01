@@ -1,5 +1,6 @@
 ---
 title: JSMSEMI AMS1117-3.3V
+description: "JSMSEMI AMS1117-3.3V（硬件芯片）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

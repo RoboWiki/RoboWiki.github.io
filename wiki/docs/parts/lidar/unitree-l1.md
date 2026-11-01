@@ -1,5 +1,6 @@
 ---
 title: 宇树 Unitree L1
+description: "宇树 Unitree L1（激光雷达）：量程 20 m、视场 360° × 90°；来源 A 级、2026-10-28 核对。"
 ---
 
 
@@ -15,7 +16,7 @@ title: 宇树 Unitree L1
       <span class="part-tag">激光雷达</span>
       <span class="part-tag soft">固态</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
-      <span class="part-tag muted">无公开报价</span>
+      <span class="part-tag">¥999</span>
     </div>
 
 <div class="part-split">
@@ -33,8 +34,8 @@ title: 宇树 Unitree L1
 | 质量 (kg) | — |
 
 <div class="part-src">
-来源：<a href="https://www.unitree.com/">https://www.unitree.com/</a><br/>
-收录：《宇树 L1 雷达 用户手册 v1.0》参数规格页<br/>
+来源：<a href="https://www.unitree.com/cn/LiDAR">https://www.unitree.com/cn/LiDAR</a><br/>
+收录：《宇树 L1 雷达 用户手册 v1.0》参数规格页；官网产品页（unitree.com/cn/LiDAR，含 L1/L2 对照表）<br/>
 核对：2026-10-28
 </div>
 
@@ -82,14 +83,14 @@ title: 宇树 Unitree L1
 | ambient_light_lux | 100,000 |
 | scan | 无接触无刷转镜 |
 | data_4d | 3D 位置 + 1D 灰度 |
-| 官方文档 | https://www.unitree.com/cn/L1 |
+| 官方文档 | https://www.unitree.com/cn/LiDAR |
 
 ## 优惠与获取条件
 
 ::: warning 优惠需要资格，不是人人都能拿到
 下面每条的资格都写明。原价与优惠价并列展示，**不划掉原价** —— 资格不满足时按原价算预算。
 
-1. **无固定优惠价**（原价 — 元）
+1. **无固定优惠价**（原价 999 元）
    - 活动：宇树 RM / RC 参赛队首次购买 买二赠一
    - 资格与条件：RM、RC 参赛队凭参赛证明，首次购买可得「买二赠一」；固定结构图纸可向客服索取下载。各型号是否参加以客服确认为准。
    - 有效期：至 2027-12-31
@@ -108,11 +109,11 @@ title: 宇树 Unitree L1
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.unitree.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.unitree.com/cn/L1" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td class="rs-plain">产品图出处</td><td>《宇树 L1 雷达 用户手册 v1.0》参数规格页（内嵌线稿）</td></tr><tr><td class="rs-plain">收录说明</td><td>《宇树 L1 雷达 用户手册 v1.0》参数规格页</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%AE%87%E6%A0%91+Unitree+L1+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=L1&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%AE%87%E6%A0%91+Unitree+L1+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/lidar/unitree.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/unitree.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.unitree.com/cn/LiDAR" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>《宇树 L1 雷达 用户手册 v1.0》参数规格页（内嵌线稿）</td></tr><tr><td class="rs-plain">收录说明</td><td>《宇树 L1 雷达 用户手册 v1.0》参数规格页；官网产品页（unitree.com/cn/LiDAR，含 L1/L2 对照表）</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%AE%87%E6%A0%91+Unitree+L1+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=L1&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%AE%87%E6%A0%91+Unitree+L1+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/lidar/unitree.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/unitree.json</td></tr></tbody></table>
 
 ## 备注
 
-<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>宇树自研的 4D 雷达（3D 位置 + 1D 灰度），无接触无刷转镜扫描</li><li><strong>分 PM / RM 两个型号</strong>：PM 精度优、量程近（20 m@90%、10 m@10%）</li><li>RM 量程远（30 m@90%、15 m@10%）</li><li>接口是 <strong>TTL UART（2 Mbps）</strong>，不是网口 —— 与 L2 的主要差异就在这里</li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>买之前先确认是哪个</li></ul></div></div>
+<div class="part-notes"><div class="pn-block pn-spec"><div class="pn-label">规格与说明</div><ul class="pn-list"><li>宇树自研的 4D 雷达（3D 位置 + 1D 灰度），无接触无刷转镜扫描</li><li><strong>分 PM / RM 两个型号</strong>：PM 精度优、量程近（20 m@90%、10 m@10%）</li><li>RM 量程远（30 m@90%、15 m@10%）</li><li>接口是 <strong>TTL UART（2 Mbps）</strong>，不是网口 —— 与 L2 的主要差异就在这里</li></ul></div><div class="pn-block pn-price"><div class="pn-label">价格与供货</div><ul class="pn-list"><li>宇树官网 L1/L2 对照表（unitree.com/cn/LiDAR，2026-11-01 核对），PM 版 <span class="pn-money">¥999</span>、RM 版 <span class="pn-money">¥1299</span></li></ul></div><div class="pn-block pn-caution"><div class="pn-label">需要注意</div><ul class="pn-list"><li>买之前先确认是哪个</li><li>本站 price 取 PM 版（与本条 20 m 量程口径一致）</li></ul></div></div>
 
 
 

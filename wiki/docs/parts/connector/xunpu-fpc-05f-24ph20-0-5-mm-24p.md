@@ -1,5 +1,6 @@
 ---
 title: XUNPU 讯普 FPC-05F-24PH20 0.5 mm 24P
+description: "XUNPU 讯普 FPC-05F-24PH20 0.5 mm 24P（连接器）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

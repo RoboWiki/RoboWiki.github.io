@@ -1,5 +1,6 @@
 ---
 title: QST(上海矽睿) QMA6100P
+description: "QST(上海矽睿) QMA6100P（IMU）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

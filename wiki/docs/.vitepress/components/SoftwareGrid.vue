@@ -166,7 +166,7 @@ const hasLink = (x: Item) => !!x.repo && x.repo.replace(/\/+$/, '') !== 'https:/
 .sw-when b { color: var(--vp-c-text-1); margin-right: 0.35rem; }
 .sw-note { margin: 0; font-size: 0.78rem; line-height: 1.55; color: var(--vp-c-text-3); }
 .sw-foot { margin-top: auto; padding-top: 0.35rem; font-size: 0.82rem; display: flex; gap: 0.7rem; }
-.sw-foot a { color: var(--vp-c-brand-1); text-decoration: none; }
+.sw-foot a { color: var(--rw-link); text-decoration: none; }
 .sw-foot a:hover { text-decoration: underline; }
 .sw-todo { color: var(--vp-c-text-3); }
 </style>

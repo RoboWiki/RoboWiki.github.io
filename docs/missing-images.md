@@ -30,6 +30,7 @@
 
 ## 已补图记录
 
+- **2026-10-31（下架 1 条，20 → 19）**：`damiao-motor-cable`（达妙电机线）没有独立产品图，按要求下架并在 `data/_id_registry.json` 立墓碑（`removed` / `removed_reason`：整套线可由 XT30(2+2)/CAN/GH1.25 自行配线）；同步移除精选、测试与贡献记录里的引用。连接器 23 条因此全部有图。
 - **2026-10-31（连接器补图）**：补 23 张产品图——JST GH/SH/XH/PH/ZH 5 张、Amass XT30/60/90/MR30/XT30(2+2)/XT90(2+2) 6 张（官方规格书/样册），A2541 排针、FPC-05F-24P、Degson 3.81/5.08、XKB USB-C 5 张（立创/厂商），以及 DB9(Ckmtw)、DC 5.5×2.1(景泰隆)、RJ45(HANRUN)、SMA/BNC(Kinghelm)、GX12-2P(Elecbee)、5264 端子线(伟利达) 7 张。
 - **2026-10-31（合并 ccc 分支）**：补 42 张产品图（覆盖 40 个部件）——达妙 JH/S 系列、高擎 9 款、脉塔 6 款、Stackforce 2 款、小米 CyberGear、大疆 TB47/TB48、Movella MTi-3、乐动 LD19/STL27L、Livox Mid-360S/Mid-70、RoboSense Airy Lite。缺图从 61 降到 21。
 - **2026-10-28**：Intel D435i / D455 / D405 / D457、奥比中光 Gemini 305 / 335 / 336、达妙 H7 与 DM-MC-Board02、大疆 RM A/C 板、灵足 RS10、宇树 L1 / L2（线稿图）。

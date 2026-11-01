@@ -1,5 +1,6 @@
 ---
 title: Sunlord(顺络) SDNT1608X103F3950FTF
+description: "Sunlord(顺络) SDNT1608X103F3950FTF（传感器）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

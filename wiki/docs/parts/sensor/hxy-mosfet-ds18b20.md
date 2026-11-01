@@ -1,5 +1,6 @@
 ---
 title: HXY MOSFET(华轩阳电子) DS18B20
+description: "HXY MOSFET(华轩阳电子) DS18B20（传感器）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

@@ -1,5 +1,6 @@
 ---
 title: Stereolabs ZED 2i
+description: "Stereolabs ZED 2i（深度相机）：额定 5 V、分辨率 1920×1080（双目）、视场 110°×70°；来源 A 级、2026-10-28 核对。"
 ---
 
 

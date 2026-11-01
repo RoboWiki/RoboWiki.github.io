@@ -1,5 +1,6 @@
 ---
 title: TDK InvenSense(应美盛) MPU-6050
+description: "TDK InvenSense(应美盛) MPU-6050（IMU）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

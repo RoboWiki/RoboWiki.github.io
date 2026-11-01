@@ -1,5 +1,6 @@
 ---
 title: Sensirion(瑞士盛思锐) SHT30-DIS-B10KS
+description: "Sensirion(瑞士盛思锐) SHT30-DIS-B10KS（传感器）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

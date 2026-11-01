@@ -1,0 +1,472 @@
+# RoboWiki
+
+> 机器人开发的开放资料底稿：311 个部件的可核对参数、21 台整机、软件库与采购渠道。每个数字都带来源与口径，缺的字段写「—」，不猜、不用同类填补。站点不卖零件、不收佣金。
+
+站点：https://robowiki.github.io/　中文为主，英文是子集（/en/）。
+
+## 机器可读数据（首选入口）
+
+- [catalog.json](https://robowiki.github.io/catalog.json)：全部 311 个部件的结构化数据（id、slug、品类、厂商、型号、关键参数、来源等级、价格、优惠、评分），字段名即参数名。
+- [robots.json](https://robowiki.github.io/robots.json)：21 台整机（自由度、质量、负载、续驶、URDF / 仓库链接、开源生态）。
+- [software.json](https://robowiki.github.io/software.json)：软件库（仿真 / 训练 / 部署 / 算法，含仓库与许可）。
+- [suppliers.json](https://robowiki.github.io/suppliers.json)：采购渠道（加工、电机、结构件等）。
+- [learn.json](https://robowiki.github.io/learn.json)：学习路线与文章索引。
+- [ratings.json](https://robowiki.github.io/ratings.json)：使用者评分快照。
+
+## 主要页面
+
+- [部件库](https://robowiki.github.io/catalog.html)：按列排序 / 筛选的交互式选型台（311 件；纯前端渲染，抓 HTML 请改读 catalog.json 或下面的型号页）。
+- [关节电机总览](https://robowiki.github.io/parts/actuator/index.html)：按峰值扭矩降序的跨厂商速览。
+- [整机库](https://robowiki.github.io/robots.html)：选方案（几自由度、带不带算力、有没有 URDF）。
+- [软件库](https://robowiki.github.io/software.html)：仿真、训练、部署、算法怎么选。
+- [渠道库](https://robowiki.github.io/suppliers.html)：这活找谁做。
+- [参数口径](https://robowiki.github.io/semantics.html)：每个字段怎么定义、怎么换算、什么不能横向比。
+- [方法与来源](https://robowiki.github.io/method.html)：数据从哪来、怎么核对、评分怎么算。
+- [学习指南](https://robowiki.github.io/learn/index.html)：从零到能自己选型。
+- [数据来源](https://robowiki.github.io/sources.html) / [免责声明与许可](https://robowiki.github.io/notice.html)：GPL-3.0，数据可转载但需保留来源与核对日期。
+
+## 部件全索引
+
+每行是「型号页 URL：3 个最能横向比的字段、来源等级、参考价」。字段口径见 /semantics，完整参数见 catalog.json。
+
+### 关节电机（88 件）
+
+选型主战场。
+
+- [CubeMars AK10-9 V2.0 KV60](https://robowiki.github.io/parts/actuator/cubemars-ak10-9-v2-0-kv60.html)：峰值扭矩 48 N·m、额定扭矩 18 N·m、减速比 9、来源 B 级
+- [CubeMars AK10-9 V3.0 KV60](https://robowiki.github.io/parts/actuator/cubemars-ak10-9-v3-0-kv60.html)：峰值扭矩 53 N·m、额定扭矩 18 N·m、减速比 9、来源 B 级
+- [CubeMars AK40-10 KV170](https://robowiki.github.io/parts/actuator/cubemars-ak40-10-kv170.html)：峰值扭矩 4.1 N·m、额定扭矩 1.3 N·m、减速比 10、来源 B 级
+- [CubeMars AK40-10 V3.0 KV170](https://robowiki.github.io/parts/actuator/cubemars-ak40-10-v3-0-kv170.html)：峰值扭矩 4.1 N·m、额定扭矩 1.3 N·m、减速比 10、来源 B 级
+- [CubeMars AK45-10 KV75](https://robowiki.github.io/parts/actuator/cubemars-ak45-10-kv75.html)：峰值扭矩 7 N·m、额定扭矩 2.5 N·m、减速比 10、来源 B 级
+- [CubeMars AK45-10 V3.0 KV75](https://robowiki.github.io/parts/actuator/cubemars-ak45-10-v3-0-kv75.html)：峰值扭矩 7 N·m、额定扭矩 2.5 N·m、减速比 10、来源 B 级
+- [CubeMars AK45-36 KV80](https://robowiki.github.io/parts/actuator/cubemars-ak45-36-kv80.html)：峰值扭矩 24 N·m、额定扭矩 8 N·m、减速比 36、来源 B 级
+- [CubeMars AK45-36 V3.0 KV80](https://robowiki.github.io/parts/actuator/cubemars-ak45-36-v3-0-kv80.html)：峰值扭矩 24 N·m、额定扭矩 8 N·m、减速比 36、来源 B 级
+- [CubeMars AK60-39 V3.0 KV80](https://robowiki.github.io/parts/actuator/cubemars-ak60-39-v3-0-kv80.html)：峰值扭矩 72 N·m、额定扭矩 24 N·m、减速比 39、来源 B 级
+- [CubeMars AK60-6 V1.1 KV140](https://robowiki.github.io/parts/actuator/cubemars-ak60-6-v1-1-kv140.html)：峰值扭矩 9 N·m、额定扭矩 3 N·m、减速比 6、来源 B 级
+- [CubeMars AK60-6 V3.0 KV80](https://robowiki.github.io/parts/actuator/cubemars-ak60-6-v3-0-kv80.html)：峰值扭矩 9 N·m、额定扭矩 3 N·m、减速比 6、来源 B 级
+- [CubeMars AK70-10](https://robowiki.github.io/parts/actuator/cubemars-ak70-10.html)：峰值扭矩 24.8 N·m、额定扭矩 8.3 N·m、减速比 10、来源 B 级
+- [CubeMars AK70-9 V3.0 KV60](https://robowiki.github.io/parts/actuator/cubemars-ak70-9-v3-0-kv60.html)：峰值扭矩 29.2 N·m、额定扭矩 8.5 N·m、减速比 9、来源 B 级
+- [CubeMars AK80-6](https://robowiki.github.io/parts/actuator/cubemars-ak80-6.html)：峰值扭矩 12 N·m、额定扭矩 6 N·m、减速比 6、来源 B 级、¥3,288
+- [CubeMars AK80-64 KV80](https://robowiki.github.io/parts/actuator/cubemars-ak80-64-kv80.html)：峰值扭矩 120 N·m、额定扭矩 48 N·m、减速比 64、来源 B 级
+- [CubeMars AK80-8 KV60](https://robowiki.github.io/parts/actuator/cubemars-ak80-8-kv60.html)：峰值扭矩 25 N·m、额定扭矩 10 N·m、减速比 8、来源 B 级
+- [CubeMars AK80-9 V3.0 KV100](https://robowiki.github.io/parts/actuator/cubemars-ak80-9-v3-0-kv100.html)：峰值扭矩 22 N·m、额定扭矩 9 N·m、减速比 9、来源 B 级
+- [CubeMars AKH70-16 V1.0 KV41](https://robowiki.github.io/parts/actuator/cubemars-akh70-16-v1-0-kv41.html)：峰值扭矩 78 N·m、额定扭矩 26 N·m、减速比 16、来源 B 级
+- [CubeMars AKH70-48 V1.0 KV41](https://robowiki.github.io/parts/actuator/cubemars-akh70-48-v1-0-kv41.html)：峰值扭矩 222 N·m、额定扭矩 74 N·m、减速比 48、来源 B 级
+- [High Torque Robotics 高擎动力 HTCP-4531-06-CYC](https://robowiki.github.io/parts/actuator/high-torque-robotics-htcp-4531-06-cyc.html)：峰值扭矩 10 N·m、额定扭矩 2 N·m、减速比 31、来源 A 级
+- [High Torque Robotics 高擎动力 HTCP-5031-06-CYC](https://robowiki.github.io/parts/actuator/high-torque-robotics-htcp-5031-06-cyc.html)：峰值扭矩 16 N·m、额定扭矩 4 N·m、减速比 31、来源 A 级
+- [High Torque Robotics 高擎动力 HTDW-5036-02-CNE](https://robowiki.github.io/parts/actuator/high-torque-robotics-htdw-5036-02-cne.html)：峰值扭矩 21 N·m、额定扭矩 6 N·m、减速比 36、来源 A 级
+- [High Torque Robotics 高擎动力 HTDW-5036-02-DNE](https://robowiki.github.io/parts/actuator/high-torque-robotics-htdw-5036-02-dne.html)：峰值扭矩 21 N·m、额定扭矩 6 N·m、减速比 36、来源 A 级
+- [High Torque Robotics 高擎动力 HTDW-6036-02-DNE](https://robowiki.github.io/parts/actuator/high-torque-robotics-htdw-6036-02-dne.html)：峰值扭矩 36 N·m、额定扭矩 10 N·m、减速比 36、来源 A 级
+- [High Torque Robotics 高擎动力 HTDW-7535-02-CNE](https://robowiki.github.io/parts/actuator/high-torque-robotics-htdw-7535-02-cne.html)：峰值扭矩 60 N·m、额定扭矩 18 N·m、减速比 35、来源 A 级
+- [High Torque Robotics 高擎动力 HTPU-6035-04-CNE](https://robowiki.github.io/parts/actuator/high-torque-robotics-htpu-6035-04-cne.html)：峰值扭矩 36 N·m、额定扭矩 10 N·m、减速比 35、来源 A 级
+- [High Torque Robotics 高擎动力 HTPU-7033-04-CNE](https://robowiki.github.io/parts/actuator/high-torque-robotics-htpu-7033-04-cne.html)：峰值扭矩 50 N·m、额定扭矩 20 N·m、减速比 33、来源 A 级
+- [High Torque Robotics 高擎动力 HTPW-7507-02-DNE](https://robowiki.github.io/parts/actuator/high-torque-robotics-htpw-7507-02-dne.html)：峰值扭矩 12 N·m、额定扭矩 4 N·m、减速比 7、来源 A 级
+- [STACKFORCE 6010](https://robowiki.github.io/parts/actuator/stackforce-6010.html)：峰值扭矩 11 N·m、额定扭矩 5 N·m、减速比 8、来源 B 级
+- [STACKFORCE 8108](https://robowiki.github.io/parts/actuator/stackforce-8108.html)：峰值扭矩 22 N·m、额定扭矩 7.5 N·m、减速比 8、来源 B 级
+- [大疆 DJI GM6020](https://robowiki.github.io/parts/actuator/dji-gm6020.html)：额定扭矩 1.2 N·m、减速比 1、质量 0.468 kg、来源 A 级、¥899
+- [大疆 DJI M2006 P36](https://robowiki.github.io/parts/actuator/dji-m2006-p36.html)：额定扭矩 1 N·m、减速比 36、质量 0.09 kg、来源 A 级、¥275
+- [大疆 DJI M3508 P19](https://robowiki.github.io/parts/actuator/dji-m3508-p19.html)：峰值扭矩 6.337 N·m、额定扭矩 3 N·m、减速比 19.203、来源 A 级、¥499
+- [宇树 Unitree A1 Motor](https://robowiki.github.io/parts/actuator/unitree-a1-motor.html)：峰值扭矩 33.5 N·m、质量 0.605 kg、额定电压 24 V、来源 A 级、¥2,500
+- [宇树 Unitree GO-M8010-6](https://robowiki.github.io/parts/actuator/unitree-go-m8010-6.html)：峰值扭矩 23.7 N·m、减速比 6.33、质量 0.53 kg、来源 A 级、¥1,500
+- [宇树 Unitree IM6014](https://robowiki.github.io/parts/actuator/unitree-im6014.html)：峰值扭矩 34.4 N·m、减速比 12.667、质量 0.535 kg、来源 A 级、¥1,800
+- [小米 Xiaomi CyberGear Micro](https://robowiki.github.io/parts/actuator/xiaomi-cybergear-micro.html)：峰值扭矩 12 N·m、额定扭矩 4 N·m、质量 0.317 kg、来源 B 级
+- [灵足 RobStride EL05](https://robowiki.github.io/parts/actuator/robstride-el05.html)：峰值扭矩 6 N·m、额定扭矩 1.8 N·m、减速比 9、来源 A 级、¥299
+- [灵足 RobStride RS00](https://robowiki.github.io/parts/actuator/robstride-rs00.html)：峰值扭矩 14 N·m、额定扭矩 5 N·m、减速比 10、来源 A 级、¥598
+- [灵足 RobStride RS01](https://robowiki.github.io/parts/actuator/robstride-rs01.html)：峰值扭矩 17 N·m、额定扭矩 7 N·m、减速比 7.75、来源 A 级、¥599
+- [灵足 RobStride RS02](https://robowiki.github.io/parts/actuator/robstride-rs02.html)：峰值扭矩 17 N·m、额定扭矩 7 N·m、减速比 7.75、来源 A 级、¥699
+- [灵足 RobStride RS03](https://robowiki.github.io/parts/actuator/robstride-rs03.html)：峰值扭矩 60 N·m、额定扭矩 21 N·m、减速比 9、来源 A 级、¥999
+- [灵足 RobStride RS04](https://robowiki.github.io/parts/actuator/robstride-rs04.html)：峰值扭矩 120 N·m、额定扭矩 40 N·m、减速比 9、来源 A 级、¥1,199
+- [灵足 RobStride RS05](https://robowiki.github.io/parts/actuator/robstride-rs05.html)：峰值扭矩 5.5 N·m、额定扭矩 1.8 N·m、减速比 7.75、来源 A 级、¥499
+- [灵足 RobStride RS06](https://robowiki.github.io/parts/actuator/robstride-rs06.html)：峰值扭矩 36 N·m、额定扭矩 11 N·m、减速比 9、来源 A 级、¥849
+- [灵足 RobStride RS10](https://robowiki.github.io/parts/actuator/robstride-rs10.html)：峰值扭矩 42 N·m、额定扭矩 14 N·m、减速比 25、来源 A 级、¥859
+- [脉塔 MyActuator X12-320](https://robowiki.github.io/parts/actuator/myactuator-x12-320.html)：峰值扭矩 320 N·m、额定扭矩 85 N·m、减速比 20、来源 B 级
+- [脉塔 MyActuator X15-450](https://robowiki.github.io/parts/actuator/myactuator-x15-450.html)：峰值扭矩 450 N·m、额定扭矩 145 N·m、减速比 20.25、来源 B 级
+- [脉塔 MyActuator X2-7](https://robowiki.github.io/parts/actuator/myactuator-x2-7.html)：峰值扭矩 7 N·m、额定扭矩 2.5 N·m、减速比 28.17、来源 B 级
+- [脉塔 MyActuator X4-10](https://robowiki.github.io/parts/actuator/myactuator-x4-10.html)：峰值扭矩 10 N·m、额定扭矩 4 N·m、减速比 12.6、来源 B 级
+- [脉塔 MyActuator X4-36](https://robowiki.github.io/parts/actuator/myactuator-x4-36.html)：峰值扭矩 34 N·m、额定扭矩 10.5 N·m、减速比 36、来源 B 级
+- [脉塔 MyActuator X8-120](https://robowiki.github.io/parts/actuator/myactuator-x8-120.html)：峰值扭矩 120 N·m、额定扭矩 43 N·m、减速比 19.61、来源 B 级
+- [达妙 DAMIAO DM-D5730 -1EC](https://robowiki.github.io/parts/actuator/damiao-dm-d5730-1ec.html)：峰值扭矩 1.9 N·m、额定扭矩 0.65 N·m、减速比 1、来源 A 级、¥399
+- [达妙 DAMIAO DM-D5730 -1EE](https://robowiki.github.io/parts/actuator/damiao-dm-d5730-1ee.html)：峰值扭矩 1.9 N·m、额定扭矩 0.65 N·m、减速比 1、来源 A 级
+- [达妙 DAMIAO DM-G6220](https://robowiki.github.io/parts/actuator/damiao-dm-g6220.html)：峰值扭矩 2.7 N·m、额定扭矩 1.3 N·m、减速比 1、来源 B 级
+- [达妙 DAMIAO DM-H6215](https://robowiki.github.io/parts/actuator/damiao-dm-h6215.html)：峰值扭矩 2 N·m、额定扭矩 1 N·m、减速比 1、来源 B 级
+- [达妙 DAMIAO DM-H65-1EC](https://robowiki.github.io/parts/actuator/damiao-dm-h65-1ec.html)：峰值扭矩 21.5 N·m、额定扭矩 6 N·m、质量 3.15 kg、来源 B 级
+- [达妙 DAMIAO DM-J10010-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-j10010-2ec.html)：峰值扭矩 150 N·m、额定扭矩 40 N·m、减速比 10、来源 A 级、¥1,999
+- [达妙 DAMIAO DM-J10010L-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-j10010l-2ec.html)：峰值扭矩 120 N·m、额定扭矩 40 N·m、减速比 10、来源 A 级、¥1,199
+- [达妙 DAMIAO DM-J10422P-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-j10422p-2ec.html)：峰值扭矩 400 N·m、额定扭矩 100 N·m、减速比 22、来源 A 级、¥1,999
+- [达妙 DAMIAO DM-J3507-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-j3507-2ec.html)：峰值扭矩 3 N·m、额定扭矩 0.8 N·m、减速比 7、来源 A 级、¥550
+- [达妙 DAMIAO DM-J4310-2EC V1.1](https://robowiki.github.io/parts/actuator/damiao-dm-j4310-2ec-v1-1.html)：峰值扭矩 7 N·m、额定扭矩 3 N·m、减速比 10、来源 A 级
+- [达妙 DAMIAO DM-J4310-2EC V1.2](https://robowiki.github.io/parts/actuator/damiao-dm-j4310-2ec-v1-2.html)：峰值扭矩 12.5 N·m、额定扭矩 3.5 N·m、减速比 10、来源 A 级、¥599
+- [达妙 DAMIAO DM-J4310M-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-j4310m-2ec.html)：峰值扭矩 18 N·m、额定扭矩 5.2 N·m、减速比 10、来源 A 级
+- [达妙 DAMIAO DM-J4310P-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-j4310p-2ec.html)：峰值扭矩 12.5 N·m、额定扭矩 3.5 N·m、减速比 10、来源 A 级、¥699
+- [达妙 DAMIAO DM-J4340-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-j4340-2ec.html)：峰值扭矩 27 N·m、额定扭矩 9 N·m、减速比 40、来源 A 级、¥899
+- [达妙 DAMIAO DM-J4340-2EC V1.1](https://robowiki.github.io/parts/actuator/damiao-dm-j4340-2ec-v1-1.html)：峰值扭矩 40 N·m、额定扭矩 12 N·m、减速比 40、来源 A 级、¥799
+- [达妙 DAMIAO DM-J4340P-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-j4340p-2ec.html)：峰值扭矩 27 N·m、额定扭矩 9 N·m、减速比 40、来源 A 级
+- [达妙 DAMIAO DM-J4340P-2EC V1.1](https://robowiki.github.io/parts/actuator/damiao-dm-j4340p-2ec-v1-1.html)：峰值扭矩 40 N·m、额定扭矩 12 N·m、减速比 40、来源 A 级
+- [达妙 DAMIAO DM-J6006-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-j6006-2ec.html)：峰值扭矩 11 N·m、额定扭矩 4 N·m、减速比 6、来源 A 级、¥799
+- [达妙 DAMIAO DM-J6216L-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-j6216l-2ec.html)：峰值扭矩 45 N·m、额定扭矩 10 N·m、减速比 16、来源 A 级
+- [达妙 DAMIAO DM-J6216P-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-j6216p-2ec.html)：峰值扭矩 45 N·m、额定扭矩 10 N·m、减速比 16、来源 A 级、¥599
+- [达妙 DAMIAO DM-J6248P-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-j6248p-2ec.html)：峰值扭矩 97 N·m、额定扭矩 30 N·m、减速比 48、来源 A 级、¥1,240
+- [达妙 DAMIAO DM-J8006-2EC V1.1](https://robowiki.github.io/parts/actuator/damiao-dm-j8006-2ec-v1-1.html)：峰值扭矩 20 N·m、额定扭矩 8 N·m、减速比 6、来源 A 级、¥999
+- [达妙 DAMIAO DM-J8009-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-j8009-2ec.html)：峰值扭矩 40 N·m、额定扭矩 20 N·m、减速比 9、来源 A 级、¥1,799
+- [达妙 DAMIAO DM-J8009P-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-j8009p-2ec.html)：峰值扭矩 40 N·m、额定扭矩 20 N·m、减速比 9、来源 A 级
+- [达妙 DAMIAO DM-J8009P-2EC V1.1](https://robowiki.github.io/parts/actuator/damiao-dm-j8009p-2ec-v1-1.html)：峰值扭矩 40 N·m、额定扭矩 20 N·m、减速比 9、来源 A 级、¥1,899
+- [达妙 DAMIAO DM-J8520P-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-j8520p-2ec.html)：峰值扭矩 176 N·m、额定扭矩 50 N·m、减速比 20、来源 A 级
+- [达妙 DAMIAO DM-JH11-101-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-jh11-101-2ec.html)：峰值扭矩 10.5 N·m、额定扭矩 4.8 N·m、减速比 101、来源 A 级、¥1,299
+- [达妙 DAMIAO DM-JH11-51-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-jh11-51-2ec.html)：峰值扭矩 7.8 N·m、额定扭矩 3.2 N·m、减速比 51、来源 A 级、¥1,299
+- [达妙 DAMIAO DM-JH14-101-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-jh14-101-2ec.html)：峰值扭矩 28 N·m、额定扭矩 7.8 N·m、减速比 101、来源 A 级、¥1,499
+- [达妙 DAMIAO DM-JH14-51-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-jh14-51-2ec.html)：峰值扭矩 18 N·m、额定扭矩 5.4 N·m、减速比 51、来源 A 级、¥1,499
+- [达妙 DAMIAO DM-JH17-101-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-jh17-101-2ec.html)：峰值扭矩 54 N·m、额定扭矩 24 N·m、减速比 101、来源 A 级、¥1,689
+- [达妙 DAMIAO DM-JH17-51-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-jh17-51-2ec.html)：峰值扭矩 24 N·m、额定扭矩 16 N·m、减速比 51、来源 A 级、¥1,689
+- [达妙 DAMIAO DM-JH20-101-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-jh20-101-2ec.html)：峰值扭矩 102 N·m、额定扭矩 32 N·m、减速比 101、来源 A 级
+- [达妙 DAMIAO DM-JH20-51-2EC](https://robowiki.github.io/parts/actuator/damiao-dm-jh20-51-2ec.html)：峰值扭矩 69 N·m、额定扭矩 32 N·m、减速比 51、来源 A 级
+- [达妙 DAMIAO DM-S2325-1EC](https://robowiki.github.io/parts/actuator/damiao-dm-s2325-1ec.html)：峰值扭矩 5 N·m、额定扭矩 1.35 N·m、减速比 25、来源 B 级
+- [达妙 DAMIAO DM-S3519-1EC](https://robowiki.github.io/parts/actuator/damiao-dm-s3519-1ec.html)：峰值扭矩 7.8 N·m、额定扭矩 3.5 N·m、减速比 19.2、来源 B 级
+
+### 舵机（4 件）
+
+串行总线 / PWM。
+
+- [Feetech 飞特 ST-3215-C018](https://robowiki.github.io/parts/servo/feetech-st-3215-c018.html)：质量 0.055 kg、额定电压 12 V、分辨率 12 位磁编码（0–4096）、来源 A 级
+- [Feetech 飞特 ST-3235-C001](https://robowiki.github.io/parts/servo/feetech-st-3235-c001.html)：质量 0.07 kg、额定电压 12 V、分辨率 12 位磁编码（0–4096）、来源 A 级
+- [Feetech 飞特 ST-3250-C001](https://robowiki.github.io/parts/servo/feetech-st-3250-c001.html)：质量 0.074 kg、额定电压 12 V、分辨率 12 位磁编码（0–4096）、来源 A 级
+- [Feetech 飞特 STS3215（7.4V 19 kg·cm）](https://robowiki.github.io/parts/servo/feetech-sts3215-7-4v-19-kg-cm.html)：额定电压 7.4 V、接口 TTL 半双工异步串行（数字包）、来源 A 级
+
+### 上位机（9 件）
+
+推理与感知。
+
+- [NVIDIA Jetson AGX Orin Developer Kit](https://robowiki.github.io/parts/controller_high/nvidia-jetson-agx-orin-developer-kit.html)：SoC Tegra Orin (AGX Orin 64GB)、NPU 275 TOPS、来源 A 级
+- [NVIDIA Jetson Orin NX](https://robowiki.github.io/parts/controller_high/nvidia-jetson-orin-nx.html)：SoC Orin、NPU 100 TOPS、来源 B 级
+- [NVIDIA Jetson Orin Nano](https://robowiki.github.io/parts/controller_high/nvidia-jetson-orin-nano.html)：SoC Orin、NPU 40 TOPS、来源 B 级
+- [OrangePi Orange Pi 5 Plus](https://robowiki.github.io/parts/controller_high/orangepi-orange-pi-5-plus.html)：SoC Rockchip RK3588、NPU 6 TOPS、来源 A 级、¥795
+- [地平线 D-Robotics RDK X3](https://robowiki.github.io/parts/controller_high/d-robotics-rdk-x3.html)：SoC Sunrise 3 (X3M)、NPU 5 TOPS、来源 A 级、¥449
+- [地平线 D-Robotics RDK X5](https://robowiki.github.io/parts/controller_high/d-robotics-rdk-x5.html)：接口 USB 3.0 / GbE / MIPI CSI、SoC Sunrise 5、NPU 10 TOPS、来源 B 级
+- [树莓派 Raspberry Pi 4 Model B](https://robowiki.github.io/parts/controller_high/raspberry-pi-4-model-b.html)：SoC Broadcom BCM2711、来源 A 级、¥682
+- [树莓派 Raspberry Pi 5](https://robowiki.github.io/parts/controller_high/raspberry-pi-5.html)：SoC Broadcom BCM2712、来源 A 级、¥1,600
+- [瑞莎 Radxa ROCK 5B](https://robowiki.github.io/parts/controller_high/radxa-rock-5b.html)：SoC Rockchip RK3588、NPU 6 TOPS、来源 A 级、¥884
+
+### 下位机（3 件）
+
+力矩闭环。
+
+- [大疆 DJI RoboMaster 开发板 A 型](https://robowiki.github.io/parts/controller_low/dji-robomaster-a.html)：接口 CAN / UART / SPI / I2C / PWM / ADC、MCU STM32F427IIH6、来源 A 级、¥429
+- [大疆 DJI RoboMaster 开发板 C 型](https://robowiki.github.io/parts/controller_low/dji-robomaster-c.html)：质量 0.038 kg、接口 CAN1×2 + CAN2×2｜UART×2｜PWM×7｜DBUS×1｜USB(micro, DFU)×1｜SWD×1｜BOOT×1｜5V 激光口×1｜24V 输出×1｜可配置 IO(I²C/SPI)｜数字摄像头 FPC 18-pin×1、MCU STM32（手册未注明具体型号，常见资料为 STM32F407IGH6）、来源 A 级、¥379
+- [达妙 DAMIAO DM-MC-Board02](https://robowiki.github.io/parts/controller_low/damiao-dm-mc-board02.html)：质量 0.019 kg、接口 CANFD×3 / RS485×2 / USB×1 / SBUS×1 / PWM×4 / UART×3 / SWD、MCU STM32H723VGT6、来源 A 级、¥199
+
+### 遥控器（4 件）
+
+手柄 / 板控 / 遥操作。
+
+- [乐迪 RadioLink AT9S Pro](https://robowiki.github.io/parts/remote_controller/radiolink-at9s-pro.html)：来源 B 级
+- [乐迪 RadioLink T12D](https://robowiki.github.io/parts/remote_controller/radiolink-t12d.html)：来源 B 级
+- [乐迪 RadioLink T8S](https://robowiki.github.io/parts/remote_controller/radiolink-t8s.html)：来源 B 级
+- [宇树 Unitree R3](https://robowiki.github.io/parts/remote_controller/unitree-r3.html)：来源 B 级
+
+### 电调（3 件）
+
+驱动器 / 调速器。
+
+- [大疆 DJI C610](https://robowiki.github.io/parts/esc/dji-c610.html)：质量 0.017 kg、来源 A 级、¥159
+- [大疆 DJI C615](https://robowiki.github.io/parts/esc/dji-c615.html)：质量 9.70e-03 kg、来源 A 级、¥219
+- [大疆 DJI C620](https://robowiki.github.io/parts/esc/dji-c620.html)：质量 0.035 kg、来源 A 级、¥399
+
+### IMU（27 件）
+
+姿态与振动。
+
+- [Bosch Sensortec BMI088](https://robowiki.github.io/parts/imu/bosch-sensortec-bmi088.html)：额定电压 3.3 V、接口 SPI、I²C、分辨率 16-bit、来源 A 级
+- [Bosch Sensortec BMI270](https://robowiki.github.io/parts/imu/bosch-sensortec-bmi270.html)：来源 B 级、¥15.8
+- [Bosch Sensortec BNO055](https://robowiki.github.io/parts/imu/bosch-sensortec-bno055.html)：来源 B 级、¥55.6
+- [Movella Xsens MTi-3](https://robowiki.github.io/parts/imu/movella-xsens-mti-3.html)：额定电压 3.3 V、接口 UART、SPI、I²C、ODR 1,000 Hz、来源 A 级
+- [QST(上海矽睿) QMA6100P](https://robowiki.github.io/parts/imu/qst-qma6100p.html)：来源 B 级、¥3.59
+- [QST(上海矽睿) QMI8658A](https://robowiki.github.io/parts/imu/qst-qmi8658a.html)：来源 B 级、¥12.1
+- [SILAN(士兰微) SC7A20HTR](https://robowiki.github.io/parts/imu/silan-sc7a20htr.html)：来源 B 级、¥1.75
+- [ST ISM330DHCXTR](https://robowiki.github.io/parts/imu/st-ism330dhcxtr.html)：来源 B 级、¥34
+- [ST LIS2DH12TR](https://robowiki.github.io/parts/imu/st-lis2dh12tr.html)：来源 B 级、¥5.69
+- [ST LIS2DW12TR](https://robowiki.github.io/parts/imu/st-lis2dw12tr.html)：来源 B 级、¥6.35
+- [ST LIS3DHTR](https://robowiki.github.io/parts/imu/st-lis3dhtr.html)：来源 B 级、¥11.7
+- [ST LSM6DS3TR-C](https://robowiki.github.io/parts/imu/st-lsm6ds3tr-c.html)：来源 B 级、¥8.89
+- [ST LSM6DSLTR](https://robowiki.github.io/parts/imu/st-lsm6dsltr.html)：来源 B 级、¥15.6
+- [ST LSM6DSOTR](https://robowiki.github.io/parts/imu/st-lsm6dsotr.html)：来源 B 级、¥24.4
+- [ST LSM6DSOXTR](https://robowiki.github.io/parts/imu/st-lsm6dsoxtr.html)：来源 B 级、¥23.6
+- [ST LSM6DSRTR](https://robowiki.github.io/parts/imu/st-lsm6dsrtr.html)：来源 B 级、¥18.8
+- [ST LSM6DSV16XTR](https://robowiki.github.io/parts/imu/st-lsm6dsv16xtr.html)：来源 B 级、¥20.5
+- [TDK InvenSense ICM-42688-P](https://robowiki.github.io/parts/imu/tdk-invensense-icm-42688-p.html)：额定电压 3.3 V、接口 I3C、I²C、SPI、分辨率 16-bit、来源 A 级
+- [TDK InvenSense(应美盛) ICM-20948](https://robowiki.github.io/parts/imu/tdk-invensense-icm-20948.html)：来源 B 级、¥122
+- [TDK InvenSense(应美盛) ICM-42670-P](https://robowiki.github.io/parts/imu/tdk-invensense-icm-42670-p.html)：来源 B 级、¥11.3
+- [TDK InvenSense(应美盛) ICM-45686](https://robowiki.github.io/parts/imu/tdk-invensense-icm-45686.html)：来源 B 级、¥72.9
+- [TDK InvenSense(应美盛) MPU-6050](https://robowiki.github.io/parts/imu/tdk-invensense-mpu-6050.html)：来源 B 级、¥131
+- [Tokmas(托克马斯) ICM-42688-P(TOKMAS)](https://robowiki.github.io/parts/imu/tokmas-icm-42688-p-tokmas.html)：来源 B 级、¥16.5
+- [WitMotion 维特智能 WT901](https://robowiki.github.io/parts/imu/witmotion-wt901.html)：接口 UART、I²C、分辨率 0.061 °/s/LSB；0.0005 g/LSB、ODR 200 Hz、来源 A 级
+- [元生创新 Yesense YIS320](https://robowiki.github.io/parts/imu/yesense-yis320.html)：额定电压 5 V、接口 UART / USB、ODR 400 Hz、来源 B 级
+- [超核电子 HiPNUC HI12M0](https://robowiki.github.io/parts/imu/hipnuc-hi12m0.html)：额定电压 5 V、接口 UART(TTL)、CAN、ODR 1,000 Hz、来源 A 级
+- [达妙 DAMIAO DM-IMU-L1](https://robowiki.github.io/parts/imu/damiao-dm-imu-l1.html)：额定电压 24 V、接口 USB-C / CAN / RS485、分辨率 16-bit（BMI088）、来源 A 级、¥59
+
+### 传感器（64 件）
+
+NTC / 温湿度 / 温度 / 压力 / 光照 / ToF / 力矩。
+
+- [ADI(亚德诺)/MAXIM(美信) DS18B20+](https://robowiki.github.io/parts/sensor/adi-maxim-ds18b20.html)：来源 B 级、¥7.47
+- [Bosch Sensortec BME280](https://robowiki.github.io/parts/sensor/bosch-sensortec-bme280.html)：来源 B 级、¥49.1
+- [Bosch Sensortec BMP388](https://robowiki.github.io/parts/sensor/bosch-sensortec-bmp388.html)：来源 B 级、¥46.6
+- [Bosch Sensortec BMP580](https://robowiki.github.io/parts/sensor/bosch-sensortec-bmp580.html)：来源 B 级、¥7.41
+- [Bosch Sensortec BMP581](https://robowiki.github.io/parts/sensor/bosch-sensortec-bmp581.html)：来源 B 级、¥14.8
+- [EVERLIGHT(亿光) ALS-PT19-315C/L177/TR8](https://robowiki.github.io/parts/sensor/everlight-als-pt19-315c-l177-tr8.html)：来源 B 级、¥0.6768
+- [FH(风华) CMFA103J3950HANT](https://robowiki.github.io/parts/sensor/fh-cmfa103j3950hant.html)：来源 B 级、¥0.0994
+- [FH(风华) CMFB103F3950FANT](https://robowiki.github.io/parts/sensor/fh-cmfb103f3950fant.html)：来源 B 级、¥0.4697
+- [Goertek(歌尔) SPA06-003](https://robowiki.github.io/parts/sensor/goertek-spa06-003.html)：来源 B 级、¥4.53
+- [HEL(鸿志) 5D-9](https://robowiki.github.io/parts/sensor/hel-5d-9.html)：来源 B 级、¥0.2665
+- [HXY MOSFET(华轩阳电子) DS18B20](https://robowiki.github.io/parts/sensor/hxy-mosfet-ds18b20.html)：来源 B 级、¥3.13
+- [Infineon(英飞凌) DPS368XTSA1](https://robowiki.github.io/parts/sensor/infineon-dps368xtsa1.html)：来源 B 级、¥25.2
+- [JCHL(晶创和立) GL5506（4-7K）](https://robowiki.github.io/parts/sensor/jchl-gl5506-4-7k.html)：来源 B 级、¥0.2775
+- [JCHL(晶创和立) GL5528(10-20)](https://robowiki.github.io/parts/sensor/jchl-gl5528-10-20.html)：来源 B 级、¥0.2806
+- [KUU KNTC0603/10KF3950](https://robowiki.github.io/parts/sensor/kuu-kntc0603-10kf3950.html)：来源 B 级、¥0.174
+- [KUU KNTC0805/10KF3950](https://robowiki.github.io/parts/sensor/kuu-kntc0805-10kf3950.html)：来源 B 级、¥0.2597
+- [MICROCHIP(美国微芯) MCP9700AT-E/TT](https://robowiki.github.io/parts/sensor/microchip-mcp9700at-e-tt.html)：来源 B 级、¥2.54
+- [Nyfea(徕飞) FHT30-TR](https://robowiki.github.io/parts/sensor/nyfea-fht30-tr.html)：来源 B 级、¥6.81
+- [R+O(宏嘉诚) HNTC0402-103F3950FB](https://robowiki.github.io/parts/sensor/r-o-hntc0402-103f3950fb.html)：来源 B 级、¥0.1338
+- [R+O(宏嘉诚) HNTC0603-103F3450FA](https://robowiki.github.io/parts/sensor/r-o-hntc0603-103f3450fa.html)：来源 B 级、¥0.2435
+- [R+O(宏嘉诚) HNTC0603-103F3950FB](https://robowiki.github.io/parts/sensor/r-o-hntc0603-103f3950fb.html)：来源 B 级、¥0.1945
+- [R+O(宏嘉诚) HNTC0603-104F3950FB](https://robowiki.github.io/parts/sensor/r-o-hntc0603-104f3950fb.html)：来源 B 级、¥0.1824
+- [R+O(宏嘉诚) HNTC0603-104F4250FB](https://robowiki.github.io/parts/sensor/r-o-hntc0603-104f4250fb.html)：来源 B 级、¥0.2451
+- [ROHM(罗姆) BH1750FVI-TR](https://robowiki.github.io/parts/sensor/rohm-bh1750fvi-tr.html)：来源 B 级、¥5.63
+- [RUILON(瑞隆源) NTC 10D-9](https://robowiki.github.io/parts/sensor/ruilon-ntc-10d-9.html)：来源 B 级、¥0.5283
+- [RUILON(瑞隆源) NTC 5D-11](https://robowiki.github.io/parts/sensor/ruilon-ntc-5d-11.html)：来源 B 级、¥0.6022
+- [RUILON(瑞隆源) NTC10D-11](https://robowiki.github.io/parts/sensor/ruilon-ntc10d-11.html)：来源 B 级、¥0.5097
+- [ST VL53L4CDV0DH/1](https://robowiki.github.io/parts/sensor/st-vl53l4cdv0dh-1.html)：来源 B 级、¥19.5
+- [STE(松田) MT52B103F3950F01000](https://robowiki.github.io/parts/sensor/ste-mt52b103f3950f01000.html)：来源 B 级、¥0.5923
+- [Sensirion(瑞士盛思锐) SHT30-DIS-B10KS](https://robowiki.github.io/parts/sensor/sensirion-sht30-dis-b10ks.html)：来源 B 级、¥15.7
+- [Sensirion(瑞士盛思锐) SHT40-AD1B-R2](https://robowiki.github.io/parts/sensor/sensirion-sht40-ad1b-r2.html)：来源 B 级、¥10.7
+- [Sensirion(瑞士盛思锐) SHT40-AD1B-R3](https://robowiki.github.io/parts/sensor/sensirion-sht40-ad1b-r3.html)：来源 B 级、¥11.3
+- [Sunlord(顺络) SDNT1005X103F3950FTF](https://robowiki.github.io/parts/sensor/sunlord-sdnt1005x103f3950ftf.html)：来源 B 级、¥0.091
+- [Sunlord(顺络) SDNT1608X103F3380FTF](https://robowiki.github.io/parts/sensor/sunlord-sdnt1608x103f3380ftf.html)：来源 B 级、¥0.1321
+- [Sunlord(顺络) SDNT1608X103F3435FTF](https://robowiki.github.io/parts/sensor/sunlord-sdnt1608x103f3435ftf.html)：来源 B 级、¥0.1456
+- [Sunlord(顺络) SDNT1608X103F3950FTF](https://robowiki.github.io/parts/sensor/sunlord-sdnt1608x103f3950ftf.html)：来源 B 级、¥0.1344
+- [Sunlord(顺络) SDNT1608X104F3950FTF](https://robowiki.github.io/parts/sensor/sunlord-sdnt1608x104f3950ftf.html)：来源 B 级、¥0.0912
+- [Sunlord(顺络) SDNT2012X103F3950FTF](https://robowiki.github.io/parts/sensor/sunlord-sdnt2012x103f3950ftf.html)：来源 B 级、¥0.2803
+- [TDK InvenSense B57332V5103F360](https://robowiki.github.io/parts/sensor/tdk-invensense-b57332v5103f360.html)：来源 B 级、¥0.5355
+- [TDK InvenSense NTCG103JF103FT1](https://robowiki.github.io/parts/sensor/tdk-invensense-ntcg103jf103ft1.html)：来源 B 级、¥0.2304
+- [TDK InvenSense NTCG163JF103FT1S](https://robowiki.github.io/parts/sensor/tdk-invensense-ntcg163jf103ft1s.html)：来源 B 级、¥1.4
+- [TDSEMIC(拓电半导体) TTP223-BA6-TD](https://robowiki.github.io/parts/sensor/tdsemic-ttp223-ba6-td.html)：来源 B 级、¥0.9933
+- [TE Connectivity(泰科电子) MS561101BA03-50](https://robowiki.github.io/parts/sensor/te-connectivity-ms561101ba03-50.html)：来源 B 级、¥39.6
+- [TI HDC1080DMBR](https://robowiki.github.io/parts/sensor/ti-hdc1080dmbr.html)：来源 B 级、¥12.1
+- [TI TMP102AIDRLR](https://robowiki.github.io/parts/sensor/ti-tmp102aidrlr.html)：来源 B 级、¥3.96
+- [TI TMP112AIDRLR](https://robowiki.github.io/parts/sensor/ti-tmp112aidrlr.html)：来源 B 级、¥1.86
+- [TI TMP117AIDRVR](https://robowiki.github.io/parts/sensor/ti-tmp117aidrvr.html)：来源 B 级、¥6.26
+- [TI TMP119AIYBGR](https://robowiki.github.io/parts/sensor/ti-tmp119aiybgr.html)：来源 B 级、¥22
+- [UMW DS18B20(UMW)](https://robowiki.github.io/parts/sensor/umw-ds18b20-umw.html)：来源 B 级、¥3.55
+- [UMW DS18B20U(UMW)](https://robowiki.github.io/parts/sensor/umw-ds18b20u-umw.html)：来源 B 级、¥4.45
+- [hanxia(韩下) HX 0805-C2](https://robowiki.github.io/parts/sensor/hanxia-hx-0805-c2.html)：来源 B 级、¥0.5362
+- [muRata(村田) NCP03XH103F05RL](https://robowiki.github.io/parts/sensor/murata-ncp03xh103f05rl.html)：来源 B 级、¥0.1021
+- [muRata(村田) NCP15WF104F03RC](https://robowiki.github.io/parts/sensor/murata-ncp15wf104f03rc.html)：来源 B 级、¥0.1198
+- [muRata(村田) NCP15XH103F03RC](https://robowiki.github.io/parts/sensor/murata-ncp15xh103f03rc.html)：来源 B 级、¥0.1143
+- [muRata(村田) NCP18XH103F03RB](https://robowiki.github.io/parts/sensor/murata-ncp18xh103f03rb.html)：来源 B 级、¥0.31
+- [muRata(村田) NCU15XH103F6SRC](https://robowiki.github.io/parts/sensor/murata-ncu15xh103f6src.html)：来源 B 级、¥0.2555
+- [muRata(村田) NCU18XH103F6SRB](https://robowiki.github.io/parts/sensor/murata-ncu18xh103f6srb.html)：来源 B 级、¥0.391
+- [广州奥松 AHT20](https://robowiki.github.io/parts/sensor/aht20.html)：来源 B 级、¥4.88
+- [广州奥松 AHT20-F](https://robowiki.github.io/parts/sensor/aht20-f.html)：来源 B 级、¥5
+- [广州奥松 DHT11](https://robowiki.github.io/parts/sensor/dht11.html)：来源 B 级、¥8.36
+- [时恒 CMFA 103F3435](https://robowiki.github.io/parts/sensor/cmfa-103f3435.html)：来源 B 级、¥0.225
+- [时恒 MF52A103F3435 (A1)](https://robowiki.github.io/parts/sensor/mf52a103f3435-a1.html)：来源 B 级、¥0.3133
+- [时恒 MF52A103F3950 (A1)](https://robowiki.github.io/parts/sensor/mf52a103f3950-a1.html)：来源 B 级、¥0.3123
+- [时恒 MF52D 103F3950-100](https://robowiki.github.io/parts/sensor/mf52d-103f3950-100.html)：来源 B 级、¥0.668
+
+### 激光雷达（13 件）
+
+地形与建图。
+
+- [Livox HAP](https://robowiki.github.io/parts/lidar/livox-hap.html)：额定电压 12 V、接口 100Base-TX 以太网（T1 版为 100Base-T1）、分辨率 0.18°×0.23°、来源 A 级、¥7,999
+- [Livox Mid-360](https://robowiki.github.io/parts/lidar/livox-mid-360.html)：质量 0.265 kg、额定电压 12 V、接口 以太网 / PTP 同步、来源 A 级、¥3,999
+- [Livox Mid-360S](https://robowiki.github.io/parts/lidar/livox-mid-360s.html)：来源 B 级
+- [Livox Mid-70](https://robowiki.github.io/parts/lidar/livox-mid-70.html)：额定电压 12 V、接口 以太网、量程 90 m、来源 A 级、¥5,999
+- [Manifold Tech Odin1](https://robowiki.github.io/parts/lidar/manifold-tech-odin1.html)：质量 0.28 kg、额定电压 24 V、接口 以太网（航空插头）；SDK 支持 ROS1 / ROS2、来源 A 级
+- [RoboSense Airy](https://robowiki.github.io/parts/lidar/robosense-airy.html)：额定电压 12 V、接口 100Base-TX 以太网（UDP）、分辨率 0.4°×0.947°、来源 A 级、¥4,078
+- [RoboSense Airy Lite](https://robowiki.github.io/parts/lidar/robosense-airy-lite.html)：来源 B 级
+- [Slamtec RPLIDAR S2](https://robowiki.github.io/parts/lidar/slamtec-rplidar-s2.html)：额定电压 5 V、接口 UART（1 Mbps）、分辨率 0.1125°、来源 A 级、¥2,500
+- [乐动 LDROBOT LD14](https://robowiki.github.io/parts/lidar/ldrobot-ld14.html)：额定电压 5 V、接口 UART 115200、量程 8 m、来源 B 级
+- [乐动 LDROBOT LD19](https://robowiki.github.io/parts/lidar/ldrobot-ld19.html)：额定电压 5 V、接口 UART 230400、量程 12 m、来源 B 级
+- [乐动 LDROBOT STL-27L](https://robowiki.github.io/parts/lidar/ldrobot-stl-27l.html)：额定电压 5 V、接口 UART、量程 25 m、来源 B 级
+- [宇树 Unitree L1](https://robowiki.github.io/parts/lidar/unitree-l1.html)：接口 TTL UART 2 Mbps、量程 20 m、帧率 11 fps、来源 A 级、¥999
+- [宇树 Unitree L2](https://robowiki.github.io/parts/lidar/unitree-l2.html)：额定电压 12 V、接口 ENET UDP + TTL UART 4 Mbps、量程 30 m、来源 A 级、¥1,799
+
+### 深度相机（9 件）
+
+视觉感知。
+
+- [Intel RealSense D405](https://robowiki.github.io/parts/camera/intel-realsense-d405.html)：额定电压 5 V、接口 USB-C 3.1 Gen1、分辨率 深度 1280×720；RGB 1280×720、来源 A 级、¥2,320
+- [Intel RealSense D435i](https://robowiki.github.io/parts/camera/intel-realsense-d435i.html)：额定电压 5 V、接口 USB-C 3.1 Gen1、分辨率 深度 1280×720；RGB 1920×1080、来源 A 级、¥2,850
+- [Intel RealSense D455](https://robowiki.github.io/parts/camera/intel-realsense-d455.html)：额定电压 5 V、接口 USB-C 3.1 Gen1、分辨率 深度 1280×720；RGB 1280×800、来源 A 级、¥3,570
+- [Intel RealSense D457](https://robowiki.github.io/parts/camera/intel-realsense-d457.html)：接口 GMSL2 / FAKRA、帧率 30 fps、来源 B 级
+- [Luxonis OAK-D Pro](https://robowiki.github.io/parts/camera/luxonis-oak-d-pro.html)：额定电压 5 V、接口 USB-C（USB2 / USB3）、分辨率 深度 1280×800；RGB 4056×3040、来源 A 级、¥3,060
+- [Stereolabs ZED 2i](https://robowiki.github.io/parts/camera/stereolabs-zed-2i.html)：额定电压 5 V、接口 USB-C 3.1、分辨率 1920×1080（双目）、来源 A 级、¥3,570
+- [奥比中光 Orbbec Gemini 305](https://robowiki.github.io/parts/camera/orbbec-gemini-305.html)：质量 0.068 kg、额定电压 5 V、接口 USB 3.0 Type-C、来源 B 级
+- [奥比中光 Orbbec Gemini 335](https://robowiki.github.io/parts/camera/orbbec-gemini-335.html)：质量 0.097 kg、额定电压 5 V、接口 USB 3.0 Type-C、来源 B 级、¥1,950
+- [奥比中光 Orbbec Gemini 336](https://robowiki.github.io/parts/camera/orbbec-gemini-336.html)：质量 0.099 kg、额定电压 5 V、接口 USB 3.0 Type-C、来源 B 级
+
+### 电池（2 件）
+
+智能电池 / 动力电池。
+
+- [大疆 DJI TB47](https://robowiki.github.io/parts/battery/dji-tb47.html)：额定电压 22.2 V、接口 DJI 智能电池专用接口（电量/寿命/温度通讯）、来源 B 级
+- [大疆 DJI TB48](https://robowiki.github.io/parts/battery/dji-tb48.html)：额定电压 22.8 V、接口 DJI 智能电池专用接口（电量/寿命/温度通讯）、来源 B 级
+
+### 连接器（23 件）
+
+板端 / 线端 / 大电流。
+
+- [Amass 艾迈斯 MR30](https://robowiki.github.io/parts/connector/amass-mr30.html)：接口 MR30、来源 A 级
+- [Amass 艾迈斯 XT30](https://robowiki.github.io/parts/connector/amass-xt30.html)：接口 XT30、来源 A 级、¥0.86
+- [Amass 艾迈斯 XT30(2+2)](https://robowiki.github.io/parts/connector/amass-xt30-2-2.html)：接口 XT30(2+2)、来源 A 级、¥1.88
+- [Amass 艾迈斯 XT60](https://robowiki.github.io/parts/connector/amass-xt60.html)：接口 XT60、来源 A 级、¥2.14
+- [Amass 艾迈斯 XT90](https://robowiki.github.io/parts/connector/amass-xt90.html)：接口 XT90、来源 A 级
+- [Amass 艾迈斯 XT90(2+2)](https://robowiki.github.io/parts/connector/amass-xt90-2-2.html)：接口 XT90(2+2)、来源 A 级、¥4.6
+- [CJT 长江连接器 A2541 2.54 mm 排针/排母 8P](https://robowiki.github.io/parts/connector/cjt-a2541-2-54-mm-8p.html)：接口 2.54 mm 排针/排母、来源 B 级
+- [Ckmtw 灿科盟 D-DMR009PF-D002 DB9 9P 母座](https://robowiki.github.io/parts/connector/ckmtw-d-dmr009pf-d002-db9-9p.html)：接口 DB9 9P 母座、来源 B 级
+- [Degson 高正 2EDG 3.81 mm 插拔端子 2P](https://robowiki.github.io/parts/connector/degson-2edg-3-81-mm-2p.html)：接口 3.81 mm 插拔端子、来源 B 级
+- [Degson 高正 2EDG 5.08 mm 插拔端子 2P](https://robowiki.github.io/parts/connector/degson-2edg-5-08-mm-2p.html)：接口 5.08 mm 插拔端子、来源 B 级
+- [HANRUN 汉仁 HR911105A RJ45 8P8C 带变压器](https://robowiki.github.io/parts/connector/hanrun-hr911105a-rj45-8p8c.html)：接口 RJ45 8P8C（带变压器）、来源 B 级、¥9.33
+- [JST GH 1.25 mm 线对板](https://robowiki.github.io/parts/connector/jst-gh-1-25-mm.html)：接口 GH 1.25、来源 A 级
+- [JST PH 2.0 mm 线对板](https://robowiki.github.io/parts/connector/jst-ph-2-0-mm.html)：接口 PH 2.0、来源 A 级
+- [JST SH 1.0 mm 线对板](https://robowiki.github.io/parts/connector/jst-sh-1-0-mm.html)：接口 SH 1.0、来源 A 级
+- [JST XH 2.5 mm 线对板](https://robowiki.github.io/parts/connector/jst-xh-2-5-mm.html)：接口 XH 2.5、来源 A 级
+- [JST ZH 1.5 mm 线对板](https://robowiki.github.io/parts/connector/jst-zh-1-5-mm.html)：接口 ZH 1.5、来源 A 级
+- [JTL 景泰隆 DC-005 5.5×2.1 电源座](https://robowiki.github.io/parts/connector/jtl-dc-005-5-5-2-1.html)：接口 DC 5.5×2.1、来源 B 级
+- [Kinghelm 金航标 KH-BNC50-3511 BNC 内孔弯头](https://robowiki.github.io/parts/connector/kinghelm-kh-bnc50-3511-bnc.html)：接口 BNC 内孔、来源 B 级
+- [Kinghelm 金航标 KH-SMA-KE-Z SMA 内孔正脚](https://robowiki.github.io/parts/connector/kinghelm-kh-sma-ke-z-sma.html)：接口 SMA 内孔、来源 B 级
+- [XKB 星坤 USB-C 16P 母座](https://robowiki.github.io/parts/connector/xkb-usb-c-16p.html)：接口 USB-C 16P、来源 B 级
+- [XUNPU 讯普 FPC-05F-24PH20 0.5 mm 24P](https://robowiki.github.io/parts/connector/xunpu-fpc-05f-24ph20-0-5-mm-24p.html)：接口 FFC/FPC 0.5 mm 24P、来源 B 级、¥0.59
+- [伟利达 WLD 5264 3P 端子线](https://robowiki.github.io/parts/connector/wld-5264-3p.html)：接口 5264 3P、来源 B 级
+- [电蜂优选 Elecbee GX12-2P 2芯航空插头](https://robowiki.github.io/parts/connector/elecbee-gx12-2p-2.html)：接口 GX12-2P、来源 B 级
+
+### 其余模块（3 件）
+
+CAN 通信 / 力触觉 / 编码器。
+
+- [灵足 RobStride USB-CAN HUB](https://robowiki.github.io/parts/module/robstride-usb-can-hub.html)：额定电压 5 V、接口 USB 2.0 Type-C（5 V）/ MX1.25-4P、来源 A 级
+- [达妙 DAMIAO DM-USB2CANFD](https://robowiki.github.io/parts/module/damiao-dm-usb2canfd.html)：额定电压 5 V、接口 USB Type-C、来源 A 级
+- [达妙 DAMIAO DM-USB2CANFD Dual](https://robowiki.github.io/parts/module/damiao-dm-usb2canfd-dual.html)：额定电压 5 V、接口 USB 2.0 High-Speed（Type-C）、来源 A 级
+
+### 硬件芯片（59 件）
+
+电源 / 基准 / 电池管理 / 开关。
+
+- [ADI MAX17048G+T10](https://robowiki.github.io/parts/chip/adi-max17048g-t10.html)：来源 B 级、¥12.8
+- [Advanced Monolithic Systems AMS1117-3.3](https://robowiki.github.io/parts/chip/advanced-monolithic-systems-ams1117-3-3.html)：来源 B 级、¥1.26
+- [Advanced Monolithic Systems AMS1117-5.0](https://robowiki.github.io/parts/chip/advanced-monolithic-systems-ams1117-5-0.html)：来源 B 级、¥1.57
+- [CJ CJ431](https://robowiki.github.io/parts/chip/cj-cj431.html)：来源 B 级、¥0.2347
+- [CJ CJ7805 3%](https://robowiki.github.io/parts/chip/cj-cj7805-3.html)：来源 B 级、¥1.2
+- [DIODES AP2112K-3.3TRG1](https://robowiki.github.io/parts/chip/diodes-ap2112k-3-3trg1.html)：来源 B 级、¥1.08
+- [DIODES AP63203WU-7](https://robowiki.github.io/parts/chip/diodes-ap63203wu-7.html)：来源 B 级、¥7.48
+- [DIODES AP63205WU-7](https://robowiki.github.io/parts/chip/diodes-ap63205wu-7.html)：来源 B 级、¥2.7
+- [HOLTEK HT7533-1](https://robowiki.github.io/parts/chip/holtek-ht7533-1.html)：来源 B 级、¥0.884
+- [JSMSEMI AMS1117-3.3V](https://robowiki.github.io/parts/chip/jsmsemi-ams1117-3-3v.html)：来源 B 级、¥0.3295
+- [JSMSEMI TL431](https://robowiki.github.io/parts/chip/jsmsemi-tl431.html)：来源 B 级、¥0.1904
+- [MICRONE ME6211C33M5G-N](https://robowiki.github.io/parts/chip/microne-me6211c33m5g-n.html)：来源 B 级、¥0.3841
+- [MSKSEMI AMS1117-3.3V](https://robowiki.github.io/parts/chip/msksemi-ams1117-3-3v.html)：来源 B 级、¥0.3434
+- [MaxLinear SPX3819M5-L-3-3/TR](https://robowiki.github.io/parts/chip/maxlinear-spx3819m5-l-3-3-tr.html)：来源 B 级、¥1.68
+- [RICHTEK RT9013-33GB](https://robowiki.github.io/parts/chip/richtek-rt9013-33gb.html)：来源 B 级、¥0.8381
+- [RICHTEK RT9193-33GB](https://robowiki.github.io/parts/chip/richtek-rt9193-33gb.html)：来源 B 级、¥0.8244
+- [ST L78M05ABDT-TR](https://robowiki.github.io/parts/chip/st-l78m05abdt-tr.html)：来源 B 级、¥1.26
+- [Silergy SY6280AAC](https://robowiki.github.io/parts/chip/silergy-sy6280aac.html)：来源 B 级、¥0.5556
+- [Silergy SY8089A1AAC](https://robowiki.github.io/parts/chip/silergy-sy8089a1aac.html)：来源 B 级、¥0.5279
+- [Silergy SY8113BADC](https://robowiki.github.io/parts/chip/silergy-sy8113badc.html)：来源 B 级、¥1.34
+- [TECH PUBLIC AP2112K-3.3TRG1](https://robowiki.github.io/parts/chip/tech-public-ap2112k-3-3trg1.html)：来源 B 级、¥0.6796
+- [TI LM5164DDAR](https://robowiki.github.io/parts/chip/ti-lm5164ddar.html)：来源 B 级、¥14.4
+- [TI LP5907MFX-3.3/NOPB](https://robowiki.github.io/parts/chip/ti-lp5907mfx-3-3-nopb.html)：来源 B 级、¥1.01
+- [TI REF3025AIDBZR](https://robowiki.github.io/parts/chip/ti-ref3025aidbzr.html)：来源 B 级、¥3.29
+- [TI REF3030AIDBZR](https://robowiki.github.io/parts/chip/ti-ref3030aidbzr.html)：来源 B 级、¥2.91
+- [TI REF3033AIDBZR](https://robowiki.github.io/parts/chip/ti-ref3033aidbzr.html)：来源 B 级、¥2.81
+- [TI REF5025AIDR](https://robowiki.github.io/parts/chip/ti-ref5025aidr.html)：来源 B 级、¥5.53
+- [TI TL431AIDBZR](https://robowiki.github.io/parts/chip/ti-tl431aidbzr.html)：来源 B 级、¥0.4688
+- [TI TLV62569DBVR](https://robowiki.github.io/parts/chip/ti-tlv62569dbvr.html)：来源 B 级、¥0.4219
+- [TI TLV75533PDBVR](https://robowiki.github.io/parts/chip/ti-tlv75533pdbvr.html)：来源 B 级、¥0.7426
+- [TI TLV75733PDBVR](https://robowiki.github.io/parts/chip/ti-tlv75733pdbvr.html)：来源 B 级、¥1.32
+- [TI TPS2116DRLR](https://robowiki.github.io/parts/chip/ti-tps2116drlr.html)：来源 B 级、¥2.39
+- [TI TPS3823-33DBVR](https://robowiki.github.io/parts/chip/ti-tps3823-33dbvr.html)：来源 B 级、¥2.71
+- [TI TPS54202DDCR](https://robowiki.github.io/parts/chip/ti-tps54202ddcr.html)：来源 B 级、¥1.03
+- [TI TPS54302DDCR](https://robowiki.github.io/parts/chip/ti-tps54302ddcr.html)：来源 B 级、¥1.44
+- [TI TPS5430DDAR](https://robowiki.github.io/parts/chip/ti-tps5430ddar.html)：来源 B 级、¥3.82
+- [TI TPS54331DR](https://robowiki.github.io/parts/chip/ti-tps54331dr.html)：来源 B 级、¥1.87
+- [TI TPS54360BDDAR](https://robowiki.github.io/parts/chip/ti-tps54360bddar.html)：来源 B 级、¥4.62
+- [TI TPS5450DDAR](https://robowiki.github.io/parts/chip/ti-tps5450ddar.html)：来源 B 级、¥12.6
+- [TI TPS54560DDAR](https://robowiki.github.io/parts/chip/ti-tps54560ddar.html)：来源 B 级、¥6.55
+- [TI TPS563201DDCR](https://robowiki.github.io/parts/chip/ti-tps563201ddcr.html)：来源 B 级、¥0.4074
+- [TI TPS61023DRLR](https://robowiki.github.io/parts/chip/ti-tps61023drlr.html)：来源 B 级、¥1.44
+- [TI TPS7A2033PDBVR](https://robowiki.github.io/parts/chip/ti-tps7a2033pdbvr.html)：来源 B 级、¥1.28
+- [TOPPOWER TP4056-42-ESOP8](https://robowiki.github.io/parts/chip/toppower-tp4056-42-esop8.html)：来源 B 级、¥1.13
+- [TOREX XC6206P332MR-G](https://robowiki.github.io/parts/chip/torex-xc6206p332mr-g.html)：来源 B 级、¥0.903
+- [UMW 78L05](https://robowiki.github.io/parts/chip/umw-78l05.html)：来源 B 级、¥0.23
+- [UMW 78M05](https://robowiki.github.io/parts/chip/umw-78m05.html)：来源 B 级、¥0.6478
+- [UMW AMS1117-3.3](https://robowiki.github.io/parts/chip/umw-ams1117-3-3.html)：来源 B 级、¥0.2971
+- [UMW AMS1117-3.3S](https://robowiki.github.io/parts/chip/umw-ams1117-3-3s.html)：来源 B 级、¥0.2846
+- [UMW AMS1117-5.0](https://robowiki.github.io/parts/chip/umw-ams1117-5-0.html)：来源 B 级、¥0.2921
+- [UMW LM2596S-5.0(UMW)](https://robowiki.github.io/parts/chip/umw-lm2596s-5-0-umw.html)：来源 B 级、¥3.73
+- [UMW TP4056](https://robowiki.github.io/parts/chip/umw-tp4056.html)：来源 B 级、¥0.4714
+- [UMW TP4057](https://robowiki.github.io/parts/chip/umw-tp4057.html)：来源 B 级、¥0.2589
+- [UMW XC6206P332MR](https://robowiki.github.io/parts/chip/umw-xc6206p332mr.html)：来源 B 级、¥0.1141
+- [UTC 78L05G-AB3-R](https://robowiki.github.io/parts/chip/utc-78l05g-ab3-r.html)：来源 B 级、¥0.4865
+- [XLSEMI XL1509-5.0E1](https://robowiki.github.io/parts/chip/xlsemi-xl1509-5-0e1.html)：来源 B 级、¥1.51
+- [西安航天民芯 MT2492](https://robowiki.github.io/parts/chip/mt2492.html)：来源 B 级、¥0.3156
+- [西安航天民芯 MT3608](https://robowiki.github.io/parts/chip/mt3608.html)：来源 B 级、¥0.5833
+- [西安航天民芯 MT9700-N](https://robowiki.github.io/parts/chip/mt9700-n.html)：来源 B 级、¥0.348
+
+## 整机
+
+- [K-Scale Labs Stompy](https://robowiki.github.io/robots/kscale-stompy.html)：人形、来源 A 级
+- [Open Dynamic Robot Initiative Solo 12](https://robowiki.github.io/robots/odri-solo12.html)：四足、12 自由度、2.5 kg、来源 A 级
+- [Pollen Robotics（法国） Microduck](https://robowiki.github.io/robots/pollen-microduck.html)：双足、14 自由度、0.8 kg、来源 A 级
+- [RoboParty ROBOTO 01（RP1）](https://robowiki.github.io/robots/roboparty-roboto01.html)：人形、24 自由度、39 kg、负载 3 kg、来源 A 级
+- [斯坦福学生机器人协会 Doggo](https://robowiki.github.io/robots/stanford-doggo.html)：四足、8 自由度、5 kg、来源 A 级
+- [斯坦福学生机器人协会 Pupper v3](https://robowiki.github.io/robots/stanford-pupper-v3.html)：四足、12 自由度、3 kg、来源 A 级
+- [加州大学伯克利分校 Hybrid Robotics Berkeley Humanoid Lite](https://robowiki.github.io/robots/berkeley-humanoid-lite.html)：人形、22 自由度、16 kg、来源 A 级
+- [云深处 DEEP Robotics Lite3](https://robowiki.github.io/robots/deeprobotics-lite3.html)：四足、12 自由度、11.94 kg、来源 B 级
+- [逐际动力 LimX Dynamics TRON 1](https://robowiki.github.io/robots/limx-tron1.html)：双足、来源 B 级
+- [宇树 Unitree A1](https://robowiki.github.io/robots/unitree-a1.html)：四足、12 自由度、12.45 kg、来源 B 级
+- [宇树 Unitree B2-W](https://robowiki.github.io/robots/unitree-b2-w.html)：四轮足、来源 B 级
+- [宇树 Unitree Go1](https://robowiki.github.io/robots/unitree-go1.html)：四足、12 自由度、12 kg、来源 B 级
+- [ZEX（个人项目） ZEX-W](https://robowiki.github.io/robots/zex-w.html)：四轮足、16 自由度、18.04 kg、来源 A 级
+- [云深处科技 山猫 M20](https://robowiki.github.io/robots/deeprobotics-lynx-m20.html)：四轮足 · 内膝肘、35 kg、负载 15 kg、来源 A 级
+- [优宝特 Y30](https://robowiki.github.io/robots/yobotics-y30.html)：四足、60 kg、负载 80 kg、来源 A 级
+- [上海傅利叶智能科技 GR-2](https://robowiki.github.io/robots/fourier-gr2.html)：人形、53 自由度、负载 3 kg、来源 A 级
+- [宇树科技 B2](https://robowiki.github.io/robots/unitree-b2.html)：四足、12 自由度、60 kg、负载 40 kg、来源 A 级
+- [宇树科技 G1](https://robowiki.github.io/robots/unitree-g1.html)：人形、23 自由度、35 kg、负载 2 kg、来源 A 级
+- [宇树科技 Go2 EDU](https://robowiki.github.io/robots/unitree-go2-edu.html)：四足、12 自由度、15 kg、负载 8 kg、来源 A 级
+- [宇树科技 Go2-W](https://robowiki.github.io/robots/unitree-go2-w.html)：四轮足、16 自由度、18 kg、负载 8 kg、来源 A 级
+- [宇树科技 H1](https://robowiki.github.io/robots/unitree-h1.html)：人形、19 自由度、47 kg、来源 A 级
+
+## 软件
+
+逐条说明（怎么选、什么时候用、注意什么）在 [软件库](https://robowiki.github.io/software.html)，结构化字段在 software.json。
+
+- MuJoCo（物理引擎与仿真、Google DeepMind、Apache-2.0）：接触动力学做得准的物理引擎，CPU 上就能跑；MJX 分支可以放到 GPU 上批量并行。 仓库 https://github.com/google-deepmind/mujoco
+- MuJoCo Playground（物理引擎与仿真、Google DeepMind、Apache-2.0）：基于 MJX 的一批 GPU 加速环境，专为机器人学习研究与 sim-to-real 写的。 仓库 https://github.com/google-deepmind/mujoco_playground
+- MuJoCo Menagerie（物理引擎与仿真、Google DeepMind、MIT）：一批高质量 MJCF 模型集合（各家机器人、手、场景），拿来即用。 仓库 https://github.com/google-deepmind/mujoco_menagerie
+- Isaac Lab（物理引擎与仿真、NVIDIA、BSD-3-Clause）：建在 Isaac Sim 上的机器人学习框架：manager-based 的任务组织（观测/奖励/命令/课程/域随机化）+ 大规模并行仿真。 仓库 https://github.com/isaac-sim/IsaacLab
+- Genesis（物理引擎与仿真、Genesis 社区、Apache-2.0）：较新的通用物理平台，主打「一个引擎统一刚体/软体/流体 + 可微」，也在往 GPU 并行方向做。 仓库 https://github.com/Genesis-Embodied-AI/Genesis
+- mjlab（训练框架、mujocolab、Apache-2.0）：把 Isaac Lab 那套 manager-based API 搬到 MuJoCo Warp 上：任务组织照旧，底层换成 GPU 加速的 MuJoCo。 仓库 https://github.com/mujocolab/mjlab
+- UniLab（训练框架、UniLab 社区、Apache-2.0）：契约驱动的机器人学习基础设施：任务语义写一次，换物理后端（CPU/GPU/外部 worker）不改生命周期。 仓库 https://github.com/unilabsim/UniLab
+- legged_gym + rsl_rl（训练框架、ETH RSL、BSD-3-Clause）：腿足 RL 的原始范式：环境是 Isaac Gym，算法是 rsl_rl 的 PPO，配置按机型分层。 仓库 https://github.com/leggedrobotics/legged_gym
+- robot_lab（训练框架、fan-ziqi、Apache-2.0）：基于 Isaac Lab 的多机型任务矩阵，四足/轮足/人形都在里面，配置与奖励写得比较整齐。 仓库 https://github.com/fan-ziqi/robot_lab
+- RL-SAR（训练框架、fan-ziqi、Apache-2.0）：把「仿真验证 + 真机部署」做成一条链的框架，四足/轮足/人形都有，机上侧是 C++ 推理。 仓库 https://github.com/fan-ziqi/rl_sar
+- DreamWaQ（算法与方法、KAIST）：只靠本体感知的「盲走」四足 RL 框架：非对称 actor-critic 让 Actor 从历史观测中隐式推断地形与扰动，不依赖相机或 LiDAR。
+- DreamWaQ++（算法与方法、KAIST）：DreamWaQ 的多模态版：本体感知 + 3D 点云，经 Multi-Modal Mixer 融合，能在崎岖地形与台阶上无碰撞行走。
+- BeamDojo（算法与方法、上海 AI Lab 等）：为人形机器人在稀疏立足点（梅花桩、平衡木）上行走定制的 RL 框架：采样式落脚奖励 + 双 critic + 两阶段训练。
+- AMP（对抗运动先验）（算法与方法、通用方法）：用判别器把参考动作变成风格奖励：策略除了完成任务，还要让动作分布接近参考动作。
+- PPO（近端策略优化）（算法与方法、通用方法）：最常用的 on-policy RL 算法：用裁剪的似然比限制每次更新幅度，稳定、好实现，是腿足 RL 的默认基线。
+- MLP（多层感知机）（模型架构、通用架构）：最通用、最基础的前馈网络：把固定长度的观测映射成动作，训练稳定、推理便宜，常被当作四足 RL 的基线。
+- MoE（混合专家）（模型架构、通用架构）：门控网络按输入只激活少数专家，在不显著抬高推理成本的前提下扩大容量；通常作为 MLP 或 LSTM 之上的插件。
+- ROS 2（中间件与 SDK、Open Robotics / 社区、Apache-2.0）：机器人中间件标准：节点、话题、服务、TF、ros2_control。 仓库 https://github.com/ros2/ros2
+- Unitree SDK2 / unitree_ros2（中间件与 SDK、宇树 Unitree、BSD-3-Clause）：宇树机器人的官方低层接口：读关节状态、下发力矩/位置，ROS2 包把话题桥出来。 仓库 https://github.com/unitreerobotics/unitree_sdk2
+- Pinocchio（运动学与动力学、Inria / LAAS-CNRS、BSD-2-Clause）：刚体运动学与动力学库：正/逆运动学、雅可比、质量矩阵、动力学一致性，都算得快且解析。 仓库 https://github.com/stack-of-tasks/pinocchio
+- LeRobot（模仿学习与数据、Hugging Face、Apache-2.0）：真机模仿学习的工具箱：数据集格式、预训练策略、训练与评测脚本，一套走完。 仓库 https://github.com/huggingface/lerobot
+- GMR（模仿学习与数据、社区（动作重定向））：把人类动作数据重定向到不同机器人骨架上的工具链（本地有多机型 asset）。 仓库 https://github.com/
+
+## 采购渠道
+
+207 条（加工、电机、结构件、传感器等）。逐条见 [suppliers.json](https://robowiki.github.io/suppliers.json)，人读版 [渠道库](https://robowiki.github.io/suppliers.html)（前端渲染）。
+
+## 引用与许可
+
+- 内容许可 GPL-3.0；数据可转载，但请保留来源链接与核对日期（型号页底部有）。
+- 数据快照带版本：2026-11-01T06:17:39.821519+00:00，源提交 1534b60a3370566187ede5a4f9e6cfdffe7cbd3d。
+- 参数口径（峰值 / 额定、转子 / 输出惯量）不统一时不能横向比，先读 /semantics。

@@ -338,6 +338,310 @@ title: {title}
 """
 
 
+def _yaml_str(s: str) -> str:
+    """单行放进 frontmatter 的双引号字符串：引号/反斜杠会撕开 YAML，先清掉。"""
+    s = " ".join(str(s).split())
+    return s.replace("\\", " ").replace('"', "'").strip()
+
+
+def front(title: str, description: str | None = None) -> str:
+    """页面 frontmatter。
+
+    为什么单独要 description：不写的话 311 个型号页共用 config.mts 里那一句站点
+    描述，搜索结果里全站是同一行字，等于没有描述。这里按型号字段现拼一句，
+    VitePress 会把它放进 <meta name="description"> 与 og:description。
+    """
+    if not description:
+        return FRONT.format(title=title)
+    desc = _yaml_str(description)
+    if len(desc) > 160:                      # 摘要太长会被搜索前台截断，主动收住
+        desc = desc[:159].rstrip("，、；。 ") + "…"
+    return f'---\ntitle: {title}\ndescription: "{desc}"\n---\n\n'
+
+
+def part_description(r: dict) -> str:
+    """型号页的 meta description：型号 + 3 个最能横向比的字段 + 来源等级。"""
+    s = r.get("specs") or {}
+    bits = []
+    for key, fmt in (("tau_peak_Nm", "峰值扭矩 {} N·m"), ("tau_rated_Nm", "额定 {} N·m"),
+                     ("gear", "减速比 {}:1"), ("mass_kg", "质量 {} kg"),
+                     ("voltage_V", "额定 {} V"), ("resolution", "分辨率 {}"),
+                     ("range_m", "量程 {} m"), ("fov", "视场 {}"),
+                     ("odr_hz", "输出 {} Hz"), ("soc", "{}")):
+        v = s.get(key)
+        if v not in (None, ""):
+            bits.append(fmt.format(num(v)))
+    cat = CAT_LABEL.get(r.get("category") or "", "")
+    head = f'{r.get("vendor")} {r.get("model")}' + (f"（{cat}）" if cat else "")
+    return (f"{head}：{'、'.join(bits[:3]) or '官方参数'}；"
+            f"来源 {r.get('source_tier') or '—'} 级、{r.get('last_checked') or '—'} 核对。")
+
+
+#: 站点对外域名（organization pages，站点在域名根）。canonical 与旧 URL 跳转页都要
+#: 绝对地址，而 base 可被 WIKI_BASE 改成子路径（自托管），所以不能从 base 推。
+SITE_URL = "https://robowiki.github.io"
+
+#: 旧型号页 URL → 现在的型号页。
+#:
+#: 为什么需要这张表：型号页 URL 是「厂商-型号」现算的（见 part_slug），数据里的型号名
+#: 一改，链接就断。GitHub Pages 没有 301 配置，只能落成静态跳转页。表里的每一条都
+#: 是「曾经上线过、现在 404」的地址，改型号名时要顺手补一行。
+#:
+#: 已核对（2026-11-01，线上 404 → 目标 200）：
+#:   /parts/actuator/unitree-unitree-a1  A1 → A1 Motor（型号名归一）
+#:   /parts/actuator/cubemars-ak80-6-kv100  AK80-6 KV100 → AK80-6
+#:   连接器从「线束」升级为「连接器」时，型号统一成厂商料号（7 条）
+LEGACY_PATHS: dict[str, str] = {
+    "/parts/actuator/unitree-unitree-a1": "/parts/actuator/unitree-a1-motor",
+    "/parts/actuator/cubemars-ak80-6-kv100": "/parts/actuator/cubemars-ak80-6",
+    "/parts/connector/cjt-db9": "/parts/connector/ckmtw-d-dmr009pf-d002-db9-9p",
+    "/parts/connector/cjt-rj45-8p8c": "/parts/connector/hanrun-hr911105a-rj45-8p8c",
+    "/parts/connector/feetech-5264": "/parts/connector/wld-5264-3p",
+    "/parts/connector/kinghelm-bnc": "/parts/connector/kinghelm-kh-bnc50-3511-bnc",
+    "/parts/connector/kinghelm-sma": "/parts/connector/kinghelm-kh-sma-ke-z-sma",
+    "/parts/connector/weipu-gx12": "/parts/connector/elecbee-gx12-2p-2",
+    "/parts/connector/xkb-dc-5-5-2-1": "/parts/connector/jtl-dc-005-5-5-2-1",
+}
+
+_REDIRECT_HTML = """<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>页面已迁移 · RoboWiki</title>
+<!-- 旧型号页 URL。静态托管没有 301，这里用零延迟 meta refresh + canonical：
+     浏览器立刻跳走，搜索引擎按 canonical 把权重归并到新地址。 -->
+<link rel="canonical" href="{new}">
+<meta http-equiv="refresh" content="0; url={new}">
+<script>location.replace({new_js})</script>
+<style>
+  body {{ font: 16px/1.7 -apple-system, "Segoe UI", "PingFang SC", sans-serif;
+         margin: 4rem auto; max-width: 34rem; padding: 0 1.2rem; color: #333; }}
+  a {{ color: #0078d4; word-break: break-all; }}
+</style>
+</head>
+<body>
+<p>这个地址的页面已经改名，正在跳到 <a href="{new}">{new}</a>。</p>
+<p>没有自动跳转就点上面的链接；也可以从<a href="{site}/catalog">部件库</a>重新找。</p>
+</body>
+</html>
+"""
+
+
+def write_legacy_redirects(out: pathlib.Path, pub: pathlib.Path) -> None:
+    """把 LEGACY_PATHS 落成 public/ 下的静态跳转页。
+
+    写到 public/parts/&lt;品类&gt;/&lt;旧 slug&gt;.html：GitHub Pages 对
+    /parts/…/旧slug 这种「无后缀」请求会自动回落到同名 .html，所以两种写法都能进。
+    目标页不存在就跳过并告警 —— 别把 404 引到另一个 404。
+    """
+    written = skipped = 0
+    for old, new in sorted(LEGACY_PATHS.items()):
+        if not (out / (new.lstrip("/") + ".md")).exists():
+            print(f"  ! 旧 URL {old} 的目标 {new} 不存在，跳过")
+            skipped += 1
+            continue
+        dst = pub / (old.lstrip("/") + ".html")
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        new_abs = SITE_URL + new + ".html"
+        dst.write_text(_REDIRECT_HTML.format(new=new_abs, new_js=json.dumps(new_abs),
+                                            site=SITE_URL), encoding="utf-8")
+        written += 1
+    print(f"  旧 URL 跳转页 {written} 个（public/parts/…）"
+          + (f"，跳过 {skipped} 个" if skipped else ""))
+
+
+#: llms.txt 里每个型号带的字段：按品类取前 3 个有值的。选的是最能横向比的，
+#: 不是最全的 —— 全参数在型号页和 catalog.json 里。
+_LLMS_FIELDS = {
+    "actuator": ("tau_peak_Nm", "tau_rated_Nm", "gear", "mass_kg", "voltage_V"),
+    "default": ("mass_kg", "voltage_V", "iface", "resolution", "range_m",
+                "odr_hz", "fps", "bits", "soc", "npu_tops", "mcu"),
+}
+
+
+def _val_phrase(specs: dict, key: str, unit: str, prefix: str = "") -> str:
+    """`12 自由度` / `负载 3 kg`；字段没值就返回空串（行里直接不出现）。"""
+    v = specs.get(key)
+    return f"{prefix}{num(v)} {unit}" if v not in (None, "") else ""
+
+
+def _spec_phrase(specs: dict, keys: tuple[str, ...], label: dict) -> str:
+    """`峰值扭矩 12 N·m、减速比 6` —— 从 SPEC_LABEL 里拆出名与单位。"""
+    out = []
+    for k in keys:
+        v = specs.get(k)
+        if v in (None, "") or k not in label:
+            continue
+        name, unit = label[k], ""
+        if name.endswith(")") and " (" in name:
+            name, unit = name.rsplit(" (", 1)
+            unit = unit.rstrip(")")
+        out.append(f"{name} {num(v)}" + (f" {unit}" if unit else ""))
+        if len(out) == 3:
+            break
+    return "、".join(out)
+
+
+def write_llms_txt(out: pathlib.Path, pub: pathlib.Path, rows: list[dict],
+                   slugs: dict[str, str], label: dict, money) -> None:
+    """llms.txt：给 AI 助手（和只抓 HTML 的爬虫）的一份纯文本索引。
+
+    为什么必须有：/catalog、/software、/suppliers 三个入口页是客户端渲染的，
+    HTML 里一个型号名都没有 —— 会跑 JS 的搜索引擎看得见，只看 HTML 的 AI 抓取器
+    看见的是一张空壳。这里把「有哪些东西、在哪一页、关键参数多少」写成纯文本。
+    """
+    def url(path: str) -> str:
+        return SITE_URL + path
+
+    by_cat: dict[str, list[dict]] = {}
+    for r in rows:
+        by_cat.setdefault(r.get("category") or "", []).append(r)
+
+    def part_line(r: dict) -> str:
+        cat = r.get("category") or ""
+        keys = _LLMS_FIELDS.get(cat, _LLMS_FIELDS["default"])
+        phrase = _spec_phrase(r.get("specs") or {}, keys, label)
+        tail = [x for x in (phrase, f"来源 {r.get('source_tier') or '—'} 级",
+                            money(r.get("price_cny")) if r.get("price_cny") else "") if x]
+        return (f"- [{r.get('vendor')} {r.get('model')}]"
+                f"({url('/parts/' + cat + '/' + slugs[r['id']] + '.html')})"
+                + ("：" + "、".join(tail) if tail else ""))
+
+    # 整机：URL 由 build_robots 按 id 生成，这里用生成好的页面反查 slug，
+    # 免得抄一份 slug 规则过去、两边漂移。
+    robot_slugs: dict[str, str] = {}
+    robot_pages = (out / "robots").glob("*.md") if (out / "robots").exists() else []
+    for page in robot_pages:
+        try:
+            text = page.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        m = re.search(r"^# (.+)$", text, re.M)
+        if m:
+            robot_slugs[m.group(1).strip()] = page.stem
+    robots: list[dict] = []
+    robot_dir = ROOT / "data" / "robots"
+    for f in sorted(robot_dir.glob("*.json")) if robot_dir.exists() else []:
+        try:
+            robots.extend(json.loads(f.read_text(encoding="utf-8")))
+        except Exception:
+            continue
+
+    lines: list[str] = [
+        "# RoboWiki",
+        "",
+        f"> 机器人开发的开放资料底稿：{len(rows)} 个部件的可核对参数、"
+        f"{len(robots)} 台整机、软件库与采购渠道。每个数字都带来源与口径，"
+        "缺的字段写「—」，不猜、不用同类填补。站点不卖零件、不收佣金。",
+        "",
+        f"站点：{SITE_URL}/　中文为主，英文是子集（/en/）。",
+        "",
+        "## 机器可读数据（首选入口）",
+        "",
+        f"- [catalog.json]({url('/catalog.json')})：全部 {len(rows)} 个部件的结构化数据"
+        "（id、slug、品类、厂商、型号、关键参数、来源等级、价格、优惠、评分），"
+        "字段名即参数名。",
+        f"- [robots.json]({url('/robots.json')})：{len(robots)} 台整机（自由度、质量、负载、"
+        "续驶、URDF / 仓库链接、开源生态）。",
+        f"- [software.json]({url('/software.json')})：软件库（仿真 / 训练 / 部署 / 算法，"
+        "含仓库与许可）。",
+        f"- [suppliers.json]({url('/suppliers.json')})：采购渠道（加工、电机、结构件等）。",
+        f"- [learn.json]({url('/learn.json')})：学习路线与文章索引。",
+        f"- [ratings.json]({url('/ratings.json')})：使用者评分快照。",
+        "",
+        "## 主要页面",
+        "",
+        f"- [部件库]({url('/catalog.html')})：按列排序 / 筛选的交互式选型台"
+        f"（{len(rows)} 件；纯前端渲染，抓 HTML 请改读 catalog.json 或下面的型号页）。",
+        f"- [关节电机总览]({url('/parts/actuator/index.html')})：按峰值扭矩降序的跨厂商速览。",
+        f"- [整机库]({url('/robots.html')})：选方案（几自由度、带不带算力、有没有 URDF）。",
+        f"- [软件库]({url('/software.html')})：仿真、训练、部署、算法怎么选。",
+        f"- [渠道库]({url('/suppliers.html')})：这活找谁做。",
+        f"- [参数口径]({url('/semantics.html')})：每个字段怎么定义、怎么换算、什么不能横向比。",
+        f"- [方法与来源]({url('/method.html')})：数据从哪来、怎么核对、评分怎么算。",
+        f"- [学习指南]({url('/learn/index.html')})：从零到能自己选型。",
+        f"- [数据来源]({url('/sources.html')}) / [免责声明与许可]({url('/notice.html')})：GPL-3.0，"
+        "数据可转载但需保留来源与核对日期。",
+        "",
+        "## 部件全索引",
+        "",
+        "每行是「型号页 URL：3 个最能横向比的字段、来源等级、参考价」。"
+        "字段口径见 /semantics，完整参数见 catalog.json。",
+        "",
+    ]
+    for cat, _, desc in CATS:
+        items = by_cat.get(cat) or []
+        if not items:
+            continue
+        lines.append(f"### {CAT_LABEL.get(cat, cat)}（{len(items)} 件）")
+        lines.append("")
+        lines.append(f"{desc}。")
+        lines.append("")
+        lines.extend(part_line(r) for r in sorted(items, key=lambda x: (x["vendor"], x["model"])))
+        lines.append("")
+
+    if robots:
+        lines += ["## 整机", ""]
+        for r in sorted(robots, key=lambda x: (x.get("vendor") or "", x.get("model") or "")):
+            name = f'{r.get("vendor_cn") or r.get("vendor")} {r.get("model")}'
+            slug = robot_slugs.get(name)
+            if not slug:
+                continue
+            specs = r.get("specs") or {}
+            bits = [x for x in (
+                r.get("subtype_label") or "",
+                _val_phrase(specs, "dof", "自由度"),
+                _val_phrase(specs, "mass_kg", "kg"),
+                _val_phrase(specs, "payload_kg", "kg", "负载 "),
+                f"来源 {r.get('source_tier')} 级" if r.get("source_tier") else "",
+            ) if x]
+            lines.append(f"- [{name}]({url('/robots/' + slug + '.html')})：{'、'.join(bits)}")
+        lines.append("")
+
+    try:
+        sw = json.loads((ROOT / "data" / "software.json").read_text(encoding="utf-8"))
+    except Exception:
+        sw = {}
+    groups = {g["id"]: g.get("name") or g["id"] for g in sw.get("groups") or []}
+    if sw.get("items"):
+        lines += ["## 软件",
+                  "",
+                  f"逐条说明（怎么选、什么时候用、注意什么）在 [软件库]({url('/software.html')})，"
+                  "结构化字段在 software.json。",
+                  ""]
+        for it in sw["items"]:
+            bits = [groups.get(it.get("group") or "", ""), it.get("vendor") or "",
+                    it.get("license") or ""]
+            metas = "、".join(x for x in bits if x)
+            lines.append(f"- {it.get('name')}（{metas}）：{(it.get('what') or '').strip()}"
+                         + (f" 仓库 {it['repo']}" if it.get("repo") else ""))
+        lines.append("")
+
+    try:
+        sups = json.loads((ROOT / "data" / "suppliers.json").read_text(encoding="utf-8"))
+    except Exception:
+        sups = []
+    if sups:
+        lines += ["## 采购渠道", "",
+                  f"{len(sups)} 条（加工、电机、结构件、传感器等）。逐条见 "
+                  f"[suppliers.json]({url('/suppliers.json')})，人读版 "
+                  f"[渠道库]({url('/suppliers.html')})（前端渲染）。", ""]
+
+    lines += [
+        "## 引用与许可",
+        "",
+        f"- 内容许可 GPL-3.0；数据可转载，但请保留来源链接与核对日期（型号页底部有）。",
+        f"- 数据快照带版本：{_artifact_meta(len(rows)).get('generated_at')}，"
+        f"源提交 {_artifact_meta(len(rows)).get('source_commit')}。",
+        "- 参数口径（峰值 / 额定、转子 / 输出惯量）不统一时不能横向比，先读 /semantics。",
+        "",
+    ]
+    text = "\n".join(lines)
+    (pub / "llms.txt").write_text(text, encoding="utf-8")
+    print(f"  llms.txt {len(text.encode('utf-8')) // 1024} KB -> public/llms.txt")
+
+
 #: 许可提示：只给「需要注意的」加 ⚠ —— 宽松许可不必制造噪音
 _RISK = ("NO-LICENSE", "NOASSERTION", "AGPL", "GPL", "LGPL", "CC-BY-SA")
 
@@ -892,10 +1196,10 @@ def main() -> None:
                             f"电流环带宽低于 8 kHz 时，触地冲击会明显传到腿上。"))
             if mass and tau:
                 out.append(("算你需要多大扭矩",
-                            "静态站立（两腿支撑）单关节需求 ≈ 整机质量 × 9.81 × 腿长 / 4。"
+                            "静态站立（四腿支撑，n=4）单关节需求 ≈ 整机质量 × 9.81 × 腿长 / 4；两腿支撑按 /2 估。"
                             "例：20 kg、腿长 0.4 m → 约 20 N·m 保持扭矩，"
                             "再乘 1.5–2 的安全系数才是你该选的额定值。"))
-            if not s.get("price_cny"):
+            if not r.get("price_cny"):
                 out.append(("报价要自己问", "本站没有这个型号的公开价格。"
                             "同机座不同绕组的价差可能很小，但扭矩差很多 —— 问价时把型号后缀写全。"))
 
@@ -1132,7 +1436,7 @@ def main() -> None:
 {vrows}
 """
 
-        fname.write_text(FRONT.format(title=f'{r["vendor"]} {r["model"]}') + f"""
+        fname.write_text(front(f'{r["vendor"]} {r["model"]}', part_description(r)) + f"""
 # {r["vendor"]} {r["model"]}
 
 <div class="part-hero">
@@ -1386,7 +1690,7 @@ def main() -> None:
       「峰值扭矩 40 N·m」可能指瞬时 1 秒、也可能指持续堵转；
       「质量 0.362 kg」可能含线缆、也可能只是定转子。
       这一页把所有字段的<b>定义、缺口含义、以及该停下来复核的阈值</b>写清楚，
-      也提供机器可读版本（<code>GET /api/semantics</code>，MCP 工具直接复用）。
+      也提供机器可读版本：静态站直接读 <code>schema/semantics.json</code>；若部署可选后端，才提供 <code>GET /api/semantics</code>。
     </p>
     <p class="sem-side">
       <b>本站统一的一条硬规则：扭矩与转速一律指输出端（含减速箱）。</b>
@@ -1583,8 +1887,9 @@ html.dark .rl-th {{ color: #e0b159; }}
                    ensure_ascii=False, separators=(",", ":")),
         encoding="utf-8")
     # 渠道库（原「供应商」）：页头由 ExplorerShell 提供
-    (OUT / "suppliers.md").write_text("""---
+    (OUT / "suppliers.md").write_text(f"""---
 title: 渠道库
+description: "{len(sups)} 个机器人零件与加工的采购渠道：按品类、地区、是否接小批量筛选，标了来源与核对日期。"
 layout: page
 sidebar: false
 outline: false
@@ -1790,7 +2095,7 @@ outline: false
 | 图片出处 | {img_txt} |
 | 仓库许可 | {repo_txt} |
 
-**口径版本。** 静态站、`/api/semantics`、MCP 读的是同一份 `schema/semantics.json`。
+**口径版本。** 静态站直接读 `schema/semantics.json`；可选后端的 `/api/semantics` 与 MCP 也复用同一份文件。
 改口径（字段定义、单位换算、红线阈值）就升 `version`；页面上任何数字的含义，
 以那一版为准。拿旧版本的数据配新口径来读，会读出错的值。
 
@@ -1831,7 +2136,9 @@ tag 形如 `data-YYYY.MM.DD`。每次发布带三个附件：
         act_items.append({"text": v, "link": f"/parts/actuator/{slug(v)}"})
     sidebar["/parts/"] = [
         {"text": "部件手册", "items": [
-            {"text": "索引", "link": "/parts/"},
+            # 顶层的 /parts/ 目录页没有生成（部件库 /catalog 就是入口），
+            # 这里曾指向 /parts/ —— 每个型号页的侧边栏都挂着一个 404。
+            {"text": "选型台（全部）", "link": "/catalog"},
             {"text": "关节电机", "collapsed": False, "items": act_items},
         ]},
     ]
@@ -1846,6 +2153,11 @@ tag 形如 `data-YYYY.MM.DD`。每次发布带三个附件：
     (OUT / ".vitepress").mkdir(parents=True, exist_ok=True)
     (OUT / ".vitepress" / "sidebar.json").write_text(
         json.dumps(sidebar, ensure_ascii=False, indent=1), encoding="utf-8")
+
+    # ── 机器可读出口：旧 URL 跳转 + llms.txt ────────────────────────────
+    # 都放在页面生成之后：跳转页要确认目标页在，llms.txt 要用型号页的实际 slug。
+    write_legacy_redirects(OUT, pub)
+    write_llms_txt(OUT, pub, rows, slugs, SPEC_LABEL, money)
 
     print(f"生成 {len(list(OUT.rglob('*.md')))} 个页面")
     print(f"  侧边栏 {sum(len(g[0]['items']) for g in sidebar.values())} 组")

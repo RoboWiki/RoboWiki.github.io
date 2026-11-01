@@ -1,5 +1,6 @@
 ---
 title: Bosch Sensortec BNO055
+description: "Bosch Sensortec BNO055（IMU）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

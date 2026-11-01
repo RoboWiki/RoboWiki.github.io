@@ -1,5 +1,6 @@
 ---
 title: 大疆 DJI RoboMaster 开发板 C 型
+description: "大疆 DJI RoboMaster 开发板 C 型（下位机）：质量 0.038 kg；来源 A 级、2026-10-31 核对。"
 ---
 
 

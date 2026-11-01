@@ -1,5 +1,6 @@
 ---
 title: 大疆 DJI RoboMaster 开发板 A 型
+description: "大疆 DJI RoboMaster 开发板 A 型（下位机）：官方参数；来源 A 级、2026-10-31 核对。"
 ---
 
 

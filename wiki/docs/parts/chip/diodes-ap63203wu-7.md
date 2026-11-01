@@ -1,5 +1,6 @@
 ---
 title: DIODES AP63203WU-7
+description: "DIODES AP63203WU-7（硬件芯片）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

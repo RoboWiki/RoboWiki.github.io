@@ -1,5 +1,6 @@
 ---
 title: 乐迪 RadioLink T12D
+description: "乐迪 RadioLink T12D（遥控器）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

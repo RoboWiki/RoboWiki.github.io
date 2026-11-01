@@ -1,5 +1,6 @@
 ---
 title: Intel RealSense D457
+description: "Intel RealSense D457（深度相机）：视场 87°×58°；来源 B 级、2026-10-31 核对。"
 ---
 
 

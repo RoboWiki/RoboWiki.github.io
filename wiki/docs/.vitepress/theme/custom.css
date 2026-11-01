@@ -16,7 +16,10 @@
 
   --vp-c-text-1: #1f1f1f;
   --vp-c-text-2: #616161;
-  --vp-c-text-3: #8a8a8a;
+  /* 三级文字（品类标签、计数、字段名）原来 #8a8a8a → 白底仅 3.45:1、
+     #f8f8f8 卡片底 3.29:1，10–12px 的小字直接掉出 AA。收到 #6b6b6b：
+     白底 5.3:1、卡片底 5.1:1，仍明显浅于 #616161，层级没丢。 */
+  --vp-c-text-3: #6b6b6b;
 
   --vp-c-default-soft: #f3f3f3;
   --vp-sidebar-bg-color: #ffffff;
@@ -29,7 +32,25 @@
   --rw-accent-1: #a06a00;
   --rw-accent-2: #d97706;
   --rw-danger: #c02b2b;
+
+  /* 无障碍令牌（2026-11）—— 三组颜色专门给「文字」用，别拿它们画边框：
+     · --rw-brand-ink：品牌色软底（rgba 10%）上的小号文字。原色 #0078d4 铺在
+       #e6f2fb 上只有 3.98:1，10px 的类别标签读不清；深一档到 #005a9e 是 6.25:1。
+     · --rw-on-brand：品牌色实底上的文字。浅色下白字 4.53:1 够用；
+       深色下品牌色变亮（#3794ff），白字只剩 3.07:1 —— 必须换成深字。
+     · --rw-on-accent：琥珀色实底（「优惠」角标）上的文字，同理。 */
+  --rw-brand-ink: #005a9e;
+  --rw-on-brand: #ffffff;
+  --rw-on-accent: #ffffff;
+  /* · --rw-link：正文链接色。品牌色 #0078d4 在白底是 4.53:1，刚好压线；
+     可链接经常落在 #f8f8f8 / #fcfcfc（卡片底、斑马纹）上，就掉到 4.3–4.4:1。
+     深一档到 #006cbf：白底 5.4:1、卡片底 5.1:1，蓝还是同一支。 */
+  --rw-link: #006cbf;
 }
+
+/* 正文链接统一走 --rw-link（VitePress 默认用品牌色，在浅灰底上不达 AA） */
+.vp-doc a { color: var(--rw-link); }
+.vp-doc a:hover { color: var(--vp-c-brand-2); }
 
 /* 页面底用 #f3f3f3，内容区仍白 —— 和参考站一致的分层 */
 body {
@@ -129,7 +150,9 @@ html.dark {
 
   --vp-c-text-1: #cccccc;
   --vp-c-text-2: #9d9d9d;
-  --vp-c-text-3: #6f6f6f;
+  /* 深色下三级文字 #6f6f6f 对 #1e1e1e 只有 3.32:1，比浅色还差；
+     #909090 在 #1e1e1e 是 5.2:1、在 #252526 卡片底 4.8:1。 */
+  --vp-c-text-3: #909090;
 
   --vp-c-default-soft: #2d2d30;
   --vp-sidebar-bg-color: #1e1e1e;
@@ -142,6 +165,13 @@ html.dark {
   --rw-accent-1: #e0b159;
   --rw-accent-2: #e0b159;
   --rw-danger: #f48771;
+
+  /* 深色下品牌色/琥珀色都是亮底，白字压不住（3.07:1 / 1.98:1）→ 改深字 */
+  --rw-brand-ink: #6fd0ff;
+  --rw-on-brand: #06263e;
+  --rw-on-accent: #241700;
+  /* 深色底上品牌色本身就有 5.2:1（#1e1e1e）/ 5.0:1（#252526），链接直接用 */
+  --rw-link: #3794ff;
 }
 
 html.dark body {
@@ -240,7 +270,7 @@ html.dark .vp-doc div[class*='language-'] {
 .ct-head { display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }
 .ct-head b { font-size: 0.88rem; color: var(--vp-c-text-1); }
 .ct-role { font-size: 0.64rem; padding: 0 6px; border-radius: 999px;
-  background: var(--vp-c-brand-soft); color: var(--vp-c-brand-1); }
+  background: var(--vp-c-brand-soft); color: var(--rw-brand-ink); }
 .ct p { margin: 0.35rem 0 0.1rem; font-size: 0.78rem; line-height: 1.7; color: var(--vp-c-text-2); }
 .ct a { font-size: 0.74rem; margin-right: 0.6rem; color: var(--vp-c-brand-1); }
 
@@ -300,13 +330,13 @@ html.dark .vp-doc div[class*='language-'] {
   font-size: 0.72rem; padding: 0.1rem 0.45rem; border-radius: 999px;
   border: 1px solid var(--vp-c-divider); color: var(--vp-c-text-2);
 }
-.sw-chip.lic { color: var(--vp-c-brand-1); border-color: var(--vp-c-brand-2); }
+.sw-chip.lic { color: var(--rw-brand-ink); border-color: var(--vp-c-brand-2); }
 .sw-what { margin: 0; font-size: 0.88rem; line-height: 1.6; }
 .sw-when { margin: 0; font-size: 0.85rem; line-height: 1.6; color: var(--vp-c-text-2); }
 .sw-when b { color: var(--vp-c-text-1); }
 .sw-note { margin: 0; font-size: 0.8rem; line-height: 1.55; color: var(--vp-c-text-3); }
 .sw-card footer { margin-top: auto; padding-top: 0.4rem; font-size: 0.82rem; }
-.sw-card footer a { color: var(--vp-c-brand-1); text-decoration: none; }
+.sw-card footer a { color: var(--rw-link); text-decoration: none; }
 .sw-card footer a:hover { text-decoration: underline; }
 .sw-pick { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 0.6rem; }
 .sw-pick th, .sw-pick td {

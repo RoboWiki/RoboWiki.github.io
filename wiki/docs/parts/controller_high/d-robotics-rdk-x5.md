@@ -1,5 +1,6 @@
 ---
 title: 地平线 D-Robotics RDK X5
+description: "地平线 D-Robotics RDK X5（上位机）：Sunrise 5；来源 B 级、2026-10-28 核对。"
 ---
 
 

@@ -121,6 +121,7 @@
   "id": "livox-mid-360s",
   "category": "lidar",
   "subtype": "solid",
+  "subtype_label": "固态",
   "vendor": "Livox",
   "vendor_cn": "览沃科技",
   "model": "Mid-360S",

@@ -1,5 +1,6 @@
 ---
 title: 宇树 Unitree R3
+description: "宇树 Unitree R3（遥控器）：官方参数；来源 B 级、2026-10-29 核对。"
 ---
 
 

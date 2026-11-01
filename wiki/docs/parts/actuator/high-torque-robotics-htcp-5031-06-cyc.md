@@ -1,5 +1,6 @@
 ---
 title: High Torque Robotics 高擎动力 HTCP-5031-06-CYC
+description: "High Torque Robotics 高擎动力 HTCP-5031-06-CYC（关节电机）：峰值扭矩 16 N·m、额定 4 N·m、减速比 31:1；来源 A 级、2026-10-31 核对。"
 ---
 
 
@@ -13,7 +14,7 @@ title: High Torque Robotics 高擎动力 HTCP-5031-06-CYC
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">关节电机</span>
-      <span class="part-tag soft">planetary</span>
+      <span class="part-tag soft">行星减速</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag muted">无公开报价</span>
     </div>
@@ -59,7 +60,7 @@ title: High Torque Robotics 高擎动力 HTCP-5031-06-CYC
 - **腿尖速度上限** —— 空载 103 rpm ≈ 10.8 rad/s。腿长 0.4 m 时理论腿尖上限 ≈ 4.3 m/s；实际打 6 折再定目标速度。
 - **峰值只能用秒级** —— 峰值/额定 = 4.0。连续负载应当按额定 4 N·m 设计，峰值只在加速/触地瞬间用。超 3 倍时必须向厂商要「持续时间 + 初始温度」。
 - **高减速比的代价** —— 减速比 31，反射惯量会被放大。膝关节这类要快速摆动的关节，PD 里 kp 别照抄直驱参数，先用低 kp 高 kd 起步。
-- **算你需要多大扭矩** —— 静态站立（两腿支撑）单关节需求 ≈ 整机质量 × 9.81 × 腿长 / 4。例：20 kg、腿长 0.4 m → 约 20 N·m 保持扭矩，再乘 1.5–2 的安全系数才是你该选的额定值。
+- **算你需要多大扭矩** —— 静态站立（四腿支撑，n=4）单关节需求 ≈ 整机质量 × 9.81 × 腿长 / 4；两腿支撑按 /2 估。例：20 kg、腿长 0.4 m → 约 20 N·m 保持扭矩，再乘 1.5–2 的安全系数才是你该选的额定值。
 - **报价要自己问** —— 本站没有这个型号的公开价格。同机座不同绕组的价差可能很小，但扭矩差很多 —— 问价时把型号后缀写全。
 
 

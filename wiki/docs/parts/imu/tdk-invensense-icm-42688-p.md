@@ -1,5 +1,6 @@
 ---
 title: TDK InvenSense ICM-42688-P
+description: "TDK InvenSense ICM-42688-P（IMU）：额定 3.3 V、分辨率 16-bit、输出 32,000 Hz；来源 A 级、2026-10-28 核对。"
 ---
 
 

@@ -8,7 +8,7 @@
  * 术语：卡片上用「转子惯量」而不是 armature —— 对读者友好；但部件页里会写清
  * 它是**折算到输出端**的等效惯量（与电机本体的转子惯量差 N² 倍），口径不丢。
  */
-import { computed, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { withBase } from 'vitepress'
 
 interface Offer {
@@ -92,6 +92,64 @@ const sort = ref<string>('tau_peak_Nm')
 const order = ref<'desc' | 'asc'>('desc')
 const picked = ref<Part[]>([])
 const detail = ref<Part | null>(null)
+
+/* ── 「全部参数」弹窗的键盘契约 ────────────────────────────────────────
+   之前只有 role="dialog" aria-modal="true" 这层声明，行为一条都没有：
+   打开后焦点还留在遮罩后面的「全部参数」按钮上，Tab 会继续走到背景卡片，
+   Esc 不关，关掉之后焦点回到文档开头 —— 键盘/读屏用户进了弹窗就出不来。
+   现在：打开即把焦点移到「关闭」上，Tab / Shift+Tab 在面板内循环，
+   Esc 关闭，关闭后焦点回到打开它的那个按钮。 */
+const panelRef = ref<HTMLElement | null>(null)
+const closeBtnRef = ref<HTMLButtonElement | null>(null)
+let lastTrigger: HTMLElement | null = null
+
+function openDetail(p: Part, ev?: Event) {
+  const t = (ev?.currentTarget as HTMLElement) || (document.activeElement as HTMLElement)
+  if (t && typeof t.focus === 'function') lastTrigger = t
+  detail.value = p
+}
+
+function closeDetail() {
+  detail.value = null
+}
+
+watch(detail, async (v) => {
+  if (typeof document === 'undefined') return
+  if (v) {
+    await nextTick()
+    closeBtnRef.value?.focus()
+  } else if (lastTrigger) {
+    const back = lastTrigger
+    lastTrigger = null
+    back.focus()
+  }
+})
+
+function onPanelKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape') {
+    e.preventDefault()
+    closeDetail()
+    return
+  }
+  if (e.key !== 'Tab') return
+  const panel = panelRef.value
+  if (!panel) return
+  const focusables = [...panel.querySelectorAll<HTMLElement>(
+    'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+  )].filter(el => el.offsetParent !== null)
+  if (!focusables.length) return
+  const first = focusables[0]
+  const last = focusables[focusables.length - 1]
+  const active = document.activeElement as HTMLElement | null
+  const inside = !!active && panel.contains(active)
+  if (e.shiftKey && (!inside || active === first)) {
+    e.preventDefault()
+    last.focus()
+  } else if (!e.shiftKey && (!inside || active === last)) {
+    e.preventDefault()
+    first.focus()
+  }
+}
 
 //: 品类表来自 catalog.json（构建时由 data/taxonomy.json 生成）——
 //: 这里只留一份「加载失败时的兜底」，不再硬编码全量。
@@ -372,7 +430,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
                   :class="['pd-chip', 'sm', vendor === v ? 'on' : '']"
                   @click="vendor = vendor === v ? '' : v">{{ v }}</button>
         </template>
-        <span class="pd-count">{{ rows.length }} {{ L.count }}</span>
+        <span class="pd-count" role="status">{{ rows.length }} {{ L.count }}</span>
       </div>
 
       <!-- 分类 -->
@@ -400,8 +458,9 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
         </table>
       </div>
 
-      <!-- 卡片 -->
-      <div class="pd-grid" aria-live="polite">
+      <!-- 卡片：不再给整个网格加 aria-live —— 每次输入都重排 311 张卡，
+           读屏会把新子树整个念一遍；改成只播报上面的计数（role="status"）。 -->
+      <div class="pd-grid">
         <article v-for="p in rows" :key="p.id" class="card">
           <a class="card-img" :href="withBase('/parts/' + p.category + '/' + p.slug)">
             <img v-if="p.image" :src="withBase(p.image)" :alt="p.model" loading="lazy" />
@@ -471,7 +530,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
 
             <div class="card-acts">
               <button class="pd-link" @click="toggleCompare(p)">{{ isPicked(p) ? '取消对比' : '对比' }}</button>
-              <button class="pd-link" @click="detail = p">{{ L.all }}</button>
+              <button class="pd-link" @click="openDetail(p, $event)">{{ L.all }}</button>
             </div>
           </div>
         </article>
@@ -482,12 +541,14 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
       </p>
 
       <!-- 全部参数 -->
-      <div v-if="detail" class="pd-modal" role="dialog" aria-modal="true" :aria-label="detail.model + ' 全部参数'" @click.self="detail = null">
-        <div class="pd-panel">
+      <div v-if="detail" class="pd-modal" role="dialog" aria-modal="true"
+           aria-labelledby="pd-detail-title"
+           @keydown="onPanelKeydown" @click.self="closeDetail">
+        <div ref="panelRef" class="pd-panel" tabindex="-1">
           <div class="pd-panel-head">
-            <b>{{ detail.model }}</b>
+            <b id="pd-detail-title">{{ detail.model }}</b>
             <span class="pd-muted">{{ detail.vendor }}</span>
-            <button class="pd-link" aria-label="关闭" @click="detail = null">关闭</button>
+            <button ref="closeBtnRef" class="pd-link" aria-label="关闭" @click="closeDetail">关闭</button>
           </div>
           <table class="pd-specs">
             <tr v-for="(v, k) in detail.specs" :key="k">
@@ -515,17 +576,20 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
 .pd-input, .pd-sel {
   font-size: 0.82rem; padding: 0.36rem 0.7rem; border-radius: 999px;
   border: 1px solid var(--vp-c-divider); background: var(--vp-c-bg);
-  color: var(--vp-c-text-1); outline: none;
+  color: var(--vp-c-text-1);
 }
 .pd-input { width: 200px; }
 .pd-input:focus, .pd-sel:focus { border-color: var(--vp-c-brand-1); }
+.pd-input:focus-visible, .pd-sel:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1); outline-offset: 2px;
+}
 .pd-btn {
   font-size: 0.8rem; padding: 0.36rem 0.75rem; border-radius: 999px; cursor: pointer;
   border: 1px solid var(--vp-c-divider); background: var(--vp-c-bg); color: var(--vp-c-text-2);
 }
 .pd-featrow { margin-bottom: 0.15rem; }
 .pd-featured { border-color: var(--vp-c-brand-1); color: var(--vp-c-brand-1); font-weight: 700; }
-.pd-featured.on { background: var(--vp-c-brand-1); border-color: var(--vp-c-brand-1); color: #fff; }
+.pd-featured.on { background: var(--vp-c-brand-1); border-color: var(--vp-c-brand-1); color: var(--rw-on-brand); }
 .pd-featured.off { opacity: 0.55; cursor: not-allowed; }
 .pd-star { margin-right: 0.25rem; font-size: 0.7rem; }
 .pd-chip {
@@ -534,7 +598,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
 }
 .pd-chip.sm { font-size: 0.75rem; padding: 0.22rem 0.55rem; }
 .pd-chip.on {
-  border-color: var(--vp-c-brand-1); background: var(--vp-c-brand-1); color: #fff; font-weight: 600;
+  border-color: var(--vp-c-brand-1); background: var(--vp-c-brand-1); color: var(--rw-on-brand); font-weight: 600;
 }
 .pd-chip.empty { border-style: dashed; color: var(--vp-c-text-3); }
 .pd-n { margin-left: 0.35rem; opacity: 0.6; font-variant-numeric: tabular-nums; }
@@ -592,10 +656,10 @@ html.dark .card-img img { mix-blend-mode: normal; background: #fff; border-radiu
   padding: 1px 5px; border-radius: 999px;
   background: var(--vp-c-default-soft); color: var(--vp-c-text-2);
 }
-.card-tier.a { background: var(--vp-c-brand-soft); color: var(--vp-c-brand-1); }
+.card-tier.a { background: var(--vp-c-brand-soft); color: var(--rw-brand-ink); }
 .card-promo {
   position: absolute; top: 6px; left: 6px; font-size: 0.62rem; font-weight: 700;
-  padding: 1px 5px; border-radius: 999px; background: var(--rw-accent-1); color: #fff;
+  padding: 1px 5px; border-radius: 999px; background: var(--rw-accent-1); color: var(--rw-on-accent);
 }
 
 .card-body { padding: 0.55rem 0.65rem 0.6rem; display: flex; flex-direction: column; gap: 0.28rem; }
@@ -636,6 +700,17 @@ html.dark .card-rate .stars { color: var(--rw-accent-1); }
 .card-rate .cnt { font-size: 0.68rem; color: var(--vp-c-text-3); }
 
 .card-acts { display: flex; gap: 0.7rem; margin-top: 0.15rem; }
+/* 「对比 / 全部参数」原来 font-size 11.5px、padding 0 —— 实测 23×24px，
+   手指点不准（WCAG 2.5.8 最小 24×24，移动端最好 ≥ 32）。给这两个按钮
+   撑出可点区域，文案与位置不动。 */
+.card-acts .pd-link {
+  display: inline-flex; align-items: center;
+  min-height: 28px; padding: 0.15rem 0.4rem; border-radius: 6px;
+}
+@media (pointer: coarse), (max-width: 640px) {
+  .card-acts { gap: 0.4rem; }
+  .card-acts .pd-link { min-height: 34px; padding: 0.3rem 0.55rem; font-size: 0.78rem; }
+}
 .pd-link {
   font-size: 0.72rem; border: none; background: none; padding: 0; cursor: pointer;
   color: var(--vp-c-brand-1); text-decoration: none;
@@ -667,6 +742,8 @@ html.dark .card-rate .stars { color: var(--rw-accent-1); }
   padding: 0.95rem 1.05rem; max-width: 560px; width: 100%; max-height: 82vh; overflow: auto;
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.25);
 }
+/* 面板只是 tabindex="-1" 的焦点落点，不自带焦点框 */
+.pd-panel:focus { outline: none; }
 .pd-panel-head { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.5rem; }
 .pd-panel-head b { font-size: 0.95rem; color: var(--vp-c-text-1); }
 .pd-panel-head .pd-link { margin-left: auto; }

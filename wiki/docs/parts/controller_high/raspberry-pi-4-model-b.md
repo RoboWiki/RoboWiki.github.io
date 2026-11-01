@@ -1,5 +1,6 @@
 ---
 title: 树莓派 Raspberry Pi 4 Model B
+description: "树莓派 Raspberry Pi 4 Model B（上位机）：Broadcom BCM2711；来源 A 级、2026-10-28 核对。"
 ---
 
 

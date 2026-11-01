@@ -1,5 +1,6 @@
 ---
 title: TOPPOWER TP4056-42-ESOP8
+description: "TOPPOWER TP4056-42-ESOP8（硬件芯片）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

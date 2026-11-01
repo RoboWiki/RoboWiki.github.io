@@ -105,6 +105,6 @@ const people = computed(() => snap.value?.contributors ?? [])
 .cw-login { font-size: 0.86rem; font-weight: 700; color: var(--vp-c-brand-1); line-height: 1.3; }
 .cw-meta { display: flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; color: var(--vp-c-text-3); margin-top: 0.15rem; }
 .cw-meta em { font-style: normal; font-size: 0.64rem; padding: 0 5px; border-radius: 999px;
-  background: var(--vp-c-brand-soft); color: var(--vp-c-brand-1); }
+  background: var(--vp-c-brand-soft); color: var(--rw-brand-ink); }
 .cw-meta em.bot { background: var(--vp-c-default-soft); color: var(--vp-c-text-3); }
 </style>

@@ -1,5 +1,6 @@
 ---
 title: JST SH 1.0 mm 线对板
+description: "JST SH 1.0 mm 线对板（连接器）：官方参数；来源 A 级、2026-10-31 核对。"
 ---
 
 

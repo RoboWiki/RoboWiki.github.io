@@ -1,5 +1,6 @@
 ---
 title: Kinghelm 金航标 KH-SMA-KE-Z SMA 内孔正脚
+description: "Kinghelm 金航标 KH-SMA-KE-Z SMA 内孔正脚（连接器）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

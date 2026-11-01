@@ -1,5 +1,6 @@
 ---
 title: Goertek(歌尔) SPA06-003
+description: "Goertek(歌尔) SPA06-003（传感器）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

@@ -1,5 +1,6 @@
 ---
 title: HANRUN 汉仁 HR911105A RJ45 8P8C 带变压器
+description: "HANRUN 汉仁 HR911105A RJ45 8P8C 带变压器（连接器）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

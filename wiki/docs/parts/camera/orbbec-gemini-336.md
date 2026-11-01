@@ -1,5 +1,6 @@
 ---
 title: 奥比中光 Orbbec Gemini 336
+description: "奥比中光 Orbbec Gemini 336（深度相机）：质量 0.099 kg、额定 5 V、分辨率 深度 1280×800；RGB 1920×1080；来源 B 级、2026-10-31 核对。"
 ---
 
 

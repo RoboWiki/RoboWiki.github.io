@@ -1,5 +1,6 @@
 ---
 title: TI TMP119AIYBGR
+description: "TI TMP119AIYBGR（传感器）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

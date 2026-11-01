@@ -1621,6 +1621,7 @@
  {
   "category": "actuator",
   "subtype": "direct",
+  "subtype_label": "直驱",
   "vendor": "达妙 DAMIAO",
   "vendor_cn": "达妙科技",
   "model": "DM-G6220",
@@ -1662,6 +1663,7 @@
  {
   "category": "actuator",
   "subtype": "direct",
+  "subtype_label": "直驱",
   "vendor": "达妙 DAMIAO",
   "vendor_cn": "达妙科技",
   "model": "DM-H6215",
@@ -1703,6 +1705,7 @@
  {
   "category": "actuator",
   "subtype": "planetary",
+  "subtype_label": "直驱",
   "vendor": "达妙 DAMIAO",
   "vendor_cn": "达妙科技",
   "model": "DM-H65-1EC",
@@ -1744,6 +1747,7 @@
  {
   "category": "actuator",
   "subtype": "planetary",
+  "subtype_label": "行星减速",
   "vendor": "达妙 DAMIAO",
   "vendor_cn": "达妙科技",
   "model": "DM-S2325-1EC",
@@ -1785,6 +1789,7 @@
  {
   "category": "actuator",
   "subtype": "planetary",
+  "subtype_label": "行星减速",
   "vendor": "达妙 DAMIAO",
   "vendor_cn": "达妙科技",
   "model": "DM-S3519-1EC",

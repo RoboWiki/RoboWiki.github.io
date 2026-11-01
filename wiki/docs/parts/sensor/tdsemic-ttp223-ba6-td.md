@@ -1,5 +1,6 @@
 ---
 title: TDSEMIC(拓电半导体) TTP223-BA6-TD
+description: "TDSEMIC(拓电半导体) TTP223-BA6-TD（传感器）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

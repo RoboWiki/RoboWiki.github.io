@@ -1,5 +1,6 @@
 ---
 title: ST VL53L4CDV0DH/1
+description: "ST VL53L4CDV0DH/1（传感器）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

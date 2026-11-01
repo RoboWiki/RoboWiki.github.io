@@ -172,5 +172,5 @@ const rows = computed(() => {
 }
 /* 红黑榜徽标：黑榜琥珀色（警示，不刺眼），红榜品牌色（推荐） */
 .ex-tag.tag-bad { color: #b45309; border-color: #d97706; font-weight: 600; }
-.ex-tag.tag-good { color: var(--vp-c-brand-1); border-color: var(--vp-c-brand-2); font-weight: 600; }
+.ex-tag.tag-good { color: var(--rw-brand-ink); border-color: var(--vp-c-brand-2); font-weight: 600; }
 </style>

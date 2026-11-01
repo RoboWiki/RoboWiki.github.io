@@ -1,5 +1,6 @@
 ---
 title: Livox Mid-360S
+description: "Livox Mid-360S（激光雷达）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 
@@ -13,7 +14,7 @@ title: Livox Mid-360S
   <div class="part-hero-right">
     <div class="part-tags">
       <span class="part-tag">激光雷达</span>
-      <span class="part-tag soft">solid</span>
+      <span class="part-tag soft">固态</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
     </div>

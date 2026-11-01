@@ -77,6 +77,30 @@
   color: var(--vp-c-text-1);
 }
 .ex-search:focus { border-color: var(--vp-c-brand-1); outline: none; }
+/* 键盘用户：:.ex-search 的 outline:none 只留 1px 边框变色，几乎看不见焦点落在哪。
+   补一圈 2px 品牌色焦点环（:focus-visible 才画，鼠标点击不画）。 */
+.ex-search:focus-visible,
+.ex-sel:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+}
+.ex-chip:focus-visible,
+.pd-chip:focus-visible,
+.pd-btn:focus-visible,
+.pd-link:focus-visible,
+.ex-link:focus-visible,
+.card-model:focus-visible,
+.card-img:focus-visible,
+.rw-home-btn:focus-visible,
+.rw-home-task:focus-visible,
+.rw-home-entry:focus-visible,
+.rw-home-cat:focus-visible,
+.rt-btn:focus-visible,
+.rt-jump:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
 .ex-sel {
   font-size: 0.78rem;
   padding: 0.4rem 0.55rem;
@@ -114,15 +138,23 @@
 .ex-chip.on {
   background: var(--vp-c-brand-1);
   border-color: var(--vp-c-brand-1);
-  color: #fff;
+  color: var(--rw-on-brand);
 }
-.ex-chip.empty { opacity: 0.55; }
+/* 0 计数的分面（步兵 / 哨兵 / 英雄 …）：原来整颗 chip opacity .55，
+   文字实际落到 2.38:1 —— 而这几个分面是**故意留的空入口**，读不出来就等于不存在。
+   改成不透明 + 虚线框 + 三级灰（5.1:1），一眼能看出「有入口、暂无数据」。 */
+.ex-chip.empty {
+  opacity: 1;
+  border-style: dashed;
+  color: var(--vp-c-text-2);
+  background: transparent;
+}
 .ex-chip.pin {
   border-color: var(--vp-c-brand-1);
   color: var(--vp-c-brand-1);
   font-weight: 700;
 }
-.ex-chip.pin.on { background: var(--vp-c-brand-1); color: #fff; }
+.ex-chip.pin.on { background: var(--vp-c-brand-1); color: var(--rw-on-brand); }
 .ex-chip:disabled { opacity: 0.5; cursor: not-allowed; }
 .ex-chip .n {
   font-variant-numeric: tabular-nums;
@@ -209,7 +241,7 @@ html.dark .ex-plate img {
   padding: 0 6px;
   border-radius: 999px;
   background: var(--vp-c-brand-soft);
-  color: var(--vp-c-brand-1);
+  color: var(--rw-brand-ink);
 }
 .ex-sub {
   margin: 0;
@@ -276,7 +308,7 @@ html.dark .ex-plate img {
   right: auto;
   border-style: none;
   background: var(--vp-c-brand-1);
-  color: #fff;
+  color: var(--rw-on-brand);
   font-weight: 700;
 }
 
@@ -308,7 +340,12 @@ html.dark .ex-plate img {
   background: var(--vp-c-bg);
   color: var(--vp-c-text-1);
 }
-.pd-input:focus, .pd-sel:focus { border-color: var(--vp-c-brand-1); outline: none; }
+.pd-input:focus, .pd-sel:focus { border-color: var(--vp-c-brand-1); }
+/* 同上：部件库的搜索框/排序下拉也不能只靠 1px 边框交差 */
+.pd-input:focus-visible, .pd-sel:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+}
 .pd-chip {
   font-size: 0.74rem;
   line-height: 1.5;
@@ -319,7 +356,7 @@ html.dark .ex-plate img {
   color: var(--vp-c-text-2);
   white-space: nowrap;
 }
-.pd-chip.on { background: var(--vp-c-brand-1); border-color: var(--vp-c-brand-1); color: #fff; }
+.pd-chip.on { background: var(--vp-c-brand-1); border-color: var(--vp-c-brand-1); color: var(--rw-on-brand); }
 .pd-chip.empty { opacity: 0.55; }
 .pd-count { margin-left: auto; font-size: 0.75rem; color: var(--vp-c-text-3); }
 
@@ -342,7 +379,7 @@ html.dark .ex-plate img {
 .rw-home-cta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.1rem 0 1.4rem; }
 .rw-home-btn {
   display: inline-block; font-size: 0.82rem; font-weight: 600; padding: 0.42rem 0.9rem;
-  border-radius: 8px; background: var(--vp-c-brand-1); color: #fff; text-decoration: none;
+  border-radius: 8px; background: var(--vp-c-brand-1); color: var(--rw-on-brand); text-decoration: none;
 }
 .rw-home-btn:hover { opacity: 0.9; }
 .rw-home-btn.ghost { background: transparent; color: var(--vp-c-text-1); border: 1px solid var(--vp-c-divider); }

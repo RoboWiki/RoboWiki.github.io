@@ -1,5 +1,6 @@
 ---
 title: 地平线 D-Robotics RDK X3
+description: "地平线 D-Robotics RDK X3（上位机）：Sunrise 3 (X3M)；来源 A 级、2026-10-28 核对。"
 ---
 
 

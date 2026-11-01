@@ -14,7 +14,7 @@ outline: false
       「峰值扭矩 40 N·m」可能指瞬时 1 秒、也可能指持续堵转；
       「质量 0.362 kg」可能含线缆、也可能只是定转子。
       这一页把所有字段的<b>定义、缺口含义、以及该停下来复核的阈值</b>写清楚，
-      也提供机器可读版本（<code>GET /api/semantics</code>，MCP 工具直接复用）。
+      也提供机器可读版本：静态站直接读 <code>schema/semantics.json</code>；若部署可选后端，才提供 <code>GET /api/semantics</code>。
     </p>
     <p class="sem-side">
       <b>本站统一的一条硬规则：扭矩与转速一律指输出端（含减速箱）。</b>

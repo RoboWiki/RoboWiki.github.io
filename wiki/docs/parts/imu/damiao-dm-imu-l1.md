@@ -1,5 +1,6 @@
 ---
 title: 达妙 DAMIAO DM-IMU-L1
+description: "达妙 DAMIAO DM-IMU-L1（IMU）：额定 24 V、分辨率 16-bit（BMI088）、输出 1,000 Hz；来源 A 级、2026-10-31 核对。"
 ---
 
 

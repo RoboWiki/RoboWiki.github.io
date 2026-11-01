@@ -1,5 +1,6 @@
 ---
 title: JST GH 1.25 mm 线对板
+description: "JST GH 1.25 mm 线对板（连接器）：官方参数；来源 A 级、2026-10-31 核对。"
 ---
 
 

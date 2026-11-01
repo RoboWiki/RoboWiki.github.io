@@ -185,7 +185,9 @@ watch(isDark, syncGiscusTheme)
 </script>
 
 <template>
-  <section class="rsw">
+  <!-- id 是部件页「去写评论 ↓」(#这一页的讨论) 的落点：
+       少了它那个锚点只是改 URL、页面不动，等于点了没反应。 -->
+  <section id="这一页的讨论" class="rsw">
     <h2 class="rsw-title">
       这一页的讨论
       <span v-if="mode === 'self'" class="rsw-count">{{ items.length }}</span>
@@ -268,6 +270,8 @@ watch(isDark, syncGiscusTheme)
   margin-top: 3rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--vp-c-divider);
+  /* 锚点跳过来时别被吸顶导航盖住标题 */
+  scroll-margin-top: calc(var(--vp-nav-height, 64px) + 16px);
 }
 .rsw-title {
   font-size: 1.05rem;

@@ -2,6 +2,7 @@
  {
   "category": "actuator",
   "subtype": "planetary",
+  "subtype_label": "行星减速",
   "vendor": "脉塔 MyActuator",
   "vendor_cn": "脉塔智能",
   "model": "X2-7",
@@ -35,6 +36,7 @@
  {
   "category": "actuator",
   "subtype": "planetary",
+  "subtype_label": "行星减速",
   "vendor": "脉塔 MyActuator",
   "vendor_cn": "脉塔智能",
   "model": "X4-10",
@@ -68,6 +70,7 @@
  {
   "category": "actuator",
   "subtype": "planetary",
+  "subtype_label": "行星减速",
   "vendor": "脉塔 MyActuator",
   "vendor_cn": "脉塔智能",
   "model": "X4-36",
@@ -101,6 +104,7 @@
  {
   "category": "actuator",
   "subtype": "planetary",
+  "subtype_label": "行星减速",
   "vendor": "脉塔 MyActuator",
   "vendor_cn": "脉塔智能",
   "model": "X8-120",
@@ -134,6 +138,7 @@
  {
   "category": "actuator",
   "subtype": "planetary",
+  "subtype_label": "行星减速",
   "vendor": "脉塔 MyActuator",
   "vendor_cn": "脉塔智能",
   "model": "X12-320",
@@ -167,6 +172,7 @@
  {
   "category": "actuator",
   "subtype": "planetary",
+  "subtype_label": "行星减速",
   "vendor": "脉塔 MyActuator",
   "vendor_cn": "脉塔智能",
   "model": "X15-450",

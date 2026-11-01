@@ -110,9 +110,9 @@ titleTemplate: false
 <div class="rw-home">
   <section class="rw-home-hero">
     <div class="rw-home-kicker">RoboWiki</div>
-    <h1>机器人开发的开放资料底稿。</h1>
+    <h1>做机器人，先查清选什么、能不能一起用。</h1>
     <p class="rw-home-lead">
-      可核对的参数、可追溯的来源、真实使用者的经验。
+      可核对的参数、可追溯的来源、可复现的配置；每个数字有来源，未知就明说。
       不卖零件、不收佣金、没有推荐位 —— 所以判定不必讨好谁。
     </p>
     <div class="rw-home-cta">
@@ -122,7 +122,7 @@ titleTemplate: false
     </div>
     <div class="rw-home-stats">
       <div><b>{c['parts']}</b><span>在库部件</span></div>
-      <div><b>{c['cats_with_data']}</b><span>有数据的品类（共 {c['cats_total']} 类）</span></div>
+      <div><b>{c['cats_with_data']}</b><span>在库品类</span></div>
       <div><b>{c['tier_a']}</b><span>A 级：逐项对过厂商手册</span></div>
       <div><b>{c['robots']}</b><span>整机（{c['robots_with_links']} 台带 URDF / 仓库）</span></div>
       <div><b>{c['suppliers']}</b><span>渠道库（加工 / 元件店铺）</span></div>

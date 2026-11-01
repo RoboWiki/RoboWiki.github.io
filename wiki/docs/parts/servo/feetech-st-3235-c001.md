@@ -1,5 +1,6 @@
 ---
 title: Feetech 飞特 ST-3235-C001
+description: "Feetech 飞特 ST-3235-C001（舵机）：减速比 钢齿:1、质量 0.07 kg、额定 12 V；来源 A 级、2026-10-31 核对。"
 ---
 
 

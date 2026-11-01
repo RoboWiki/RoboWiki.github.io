@@ -1,5 +1,6 @@
 ---
 title: TI TMP112AIDRLR
+description: "TI TMP112AIDRLR（传感器）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

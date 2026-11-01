@@ -1,5 +1,6 @@
 ---
 title: OrangePi Orange Pi 5 Plus
+description: "OrangePi Orange Pi 5 Plus（上位机）：Rockchip RK3588；来源 A 级、2026-10-31 核对。"
 ---
 
 

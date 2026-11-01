@@ -1,5 +1,6 @@
 ---
 title: Slamtec RPLIDAR S2
+description: "Slamtec RPLIDAR S2（激光雷达）：额定 5 V、分辨率 0.1125°、量程 30 m；来源 A 级、2026-10-28 核对。"
 ---
 
 

@@ -1,5 +1,6 @@
 ---
 title: RUILON(瑞隆源) NTC 10D-9
+description: "RUILON(瑞隆源) NTC 10D-9（传感器）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

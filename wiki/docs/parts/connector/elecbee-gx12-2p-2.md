@@ -1,5 +1,6 @@
 ---
 title: 电蜂优选 Elecbee GX12-2P 2芯航空插头
+description: "电蜂优选 Elecbee GX12-2P 2芯航空插头（连接器）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

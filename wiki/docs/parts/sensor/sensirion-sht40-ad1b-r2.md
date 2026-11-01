@@ -1,5 +1,6 @@
 ---
 title: Sensirion(瑞士盛思锐) SHT40-AD1B-R2
+description: "Sensirion(瑞士盛思锐) SHT40-AD1B-R2（传感器）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

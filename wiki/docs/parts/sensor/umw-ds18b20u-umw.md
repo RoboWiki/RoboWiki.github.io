@@ -1,5 +1,6 @@
 ---
 title: UMW DS18B20U(UMW)
+description: "UMW DS18B20U(UMW)（传感器）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

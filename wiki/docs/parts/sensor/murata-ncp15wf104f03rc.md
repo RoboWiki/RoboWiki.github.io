@@ -1,5 +1,6 @@
 ---
 title: muRata(村田) NCP15WF104F03RC
+description: "muRata(村田) NCP15WF104F03RC（传感器）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

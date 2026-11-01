@@ -1,5 +1,6 @@
 ---
 title: Bosch Sensortec BMP388
+description: "Bosch Sensortec BMP388（传感器）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

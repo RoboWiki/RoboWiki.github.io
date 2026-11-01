@@ -1,5 +1,6 @@
 ---
 title: 达妙 DAMIAO DM-USB2CANFD Dual
+description: "达妙 DAMIAO DM-USB2CANFD Dual（其余模块）：额定 5 V；来源 A 级、2026-10-29 核对。"
 ---
 
 

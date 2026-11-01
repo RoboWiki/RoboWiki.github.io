@@ -1,5 +1,6 @@
 ---
 title: MaxLinear SPX3819M5-L-3-3/TR
+description: "MaxLinear SPX3819M5-L-3-3/TR（硬件芯片）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 

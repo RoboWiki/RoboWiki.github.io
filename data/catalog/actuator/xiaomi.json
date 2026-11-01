@@ -2,6 +2,7 @@
  {
   "category": "actuator",
   "subtype": "qdd",
+  "subtype_label": "准直驱 QDD",
   "vendor": "小米 Xiaomi",
   "vendor_cn": "小米",
   "model": "CyberGear Micro",

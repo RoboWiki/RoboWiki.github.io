@@ -1,5 +1,6 @@
 ---
 title: WitMotion 维特智能 WT901
+description: "WitMotion 维特智能 WT901（IMU）：分辨率 0.061 °/s/LSB；0.0005 g/LSB、输出 200 Hz；来源 A 级、2026-10-28 核对。"
 ---
 
 

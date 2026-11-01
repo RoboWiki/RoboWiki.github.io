@@ -1,5 +1,6 @@
 ---
 title: DIODES AP2112K-3.3TRG1
+description: "DIODES AP2112K-3.3TRG1（硬件芯片）：官方参数；来源 B 级、2026-10-31 核对。"
 ---
 
 
