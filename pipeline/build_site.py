@@ -1293,17 +1293,29 @@ def main() -> None:
     TRINARY = _sem["trinary"]
 
     def rows3(items, cols):
-        head = "| " + " | ".join(cols) + " |\n|" + "---|" * len(cols)
+        """输出 HTML 表格，不是 Markdown 表格。
+
+        这一页整体包在 raw HTML 块（<div class="sem">）里，Markdown 表格在 HTML
+        块内不会被解析；模板还给首行留了 4 个空格缩进，就算脱离 HTML 块也会被当成
+        代码块。两种写法叠加的结果，线上就是一段带竖线的纯文本。
+        """
+        head = "".join(f"<th>{html.escape(str(c))}</th>" for c in cols)
         body = []
         for it in items:
-            body.append("| " + " | ".join(
-                str(it.get(c, "") if not isinstance(it.get(c), list)
-                    else "、".join(map(str, it[c]))) for c in cols) + " |")
-        return head + "\n" + "\n".join(body)
+            cells = []
+            for c in cols:
+                v = it.get(c, "")
+                if isinstance(v, list):
+                    v = "、".join(map(str, v))
+                cells.append(f"<td>{html.escape(str(v))}</td>")
+            body.append("<tr>" + "".join(cells) + "</tr>")
+        return ("<table><thead><tr>" + head + "</tr></thead><tbody>"
+                + "".join(body) + "</tbody></table>")
 
     section_conv = rows3(CONVERSIONS, ["from", "to", "formula"])
     section_comp = rows3(COMPARABILITY, ["grade", "name", "condition"])
-    section_ask = "\n".join(f"{i}. {q}" for i, q in enumerate(SUPPLIER_QUESTIONS, 1))
+    section_ask = "<ol>" + "".join(
+        f"<li>{html.escape(str(q))}</li>" for q in SUPPLIER_QUESTIONS) + "</ol>"
 
     # 红线做成卡片：6 列表格在小屏上没法读，而这一节是最该被读完的
     def redline_cards() -> str:

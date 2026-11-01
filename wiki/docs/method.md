@@ -217,38 +217,20 @@ title: 方法与来源
 
   <section>
     <h2>单位换算</h2>
-    | from | to | formula |
-|---|---|---|
-| rpm | rad/s | rad_s = rpm * pi / 30 |
-| sec/60deg | rad/s | rad_s = (pi/3) / t_sec |
-| kgf·cm | N·m | Nm = kgf_cm * 0.0980665 |
-| arcmin | deg | deg = arcmin / 60 |
-| g·cm² | kg·m² | kgm2 = gcm2 * 1e-7 |
-| bit(单圈) | deg(量化步长) | deg_step = 360 / 2**bits |
+    <table><thead><tr><th>from</th><th>to</th><th>formula</th></tr></thead><tbody><tr><td>rpm</td><td>rad/s</td><td>rad_s = rpm * pi / 30</td></tr><tr><td>sec/60deg</td><td>rad/s</td><td>rad_s = (pi/3) / t_sec</td></tr><tr><td>kgf·cm</td><td>N·m</td><td>Nm = kgf_cm * 0.0980665</td></tr><tr><td>arcmin</td><td>deg</td><td>deg = arcmin / 60</td></tr><tr><td>g·cm²</td><td>kg·m²</td><td>kgm2 = gcm2 * 1e-7</td></tr><tr><td>bit(单圈)</td><td>deg(量化步长)</td><td>deg_step = 360 / 2**bits</td></tr></tbody></table>
     <p class="sem-note">转速的两种写法量纲互逆（<code>sec/60°</code> 与 <code>rpm</code>），
     按数值直接比会得到相反结论。</p>
   </section>
 
   <section>
     <h2>可比性分级</h2>
-    | grade | name | condition |
-|---|---|---|
-| A | 可直接比较 | 同一物理量 + 同一负载/温度/电压工况 + 同一测量端（输出端）+ 声明额定或峰值 |
-| B | 换算后可比 | 同一物理量，单位不同但换算关系确定，且工况声明一致 |
-| C | 仅同厂商内可比 | 有数值但缺工况声明；同厂商内部口径通常自洽 |
-| D | 不可比 | 定性描述、缺失、或物理量本身不同；放进对比表就是选型事故的起点 |
+    <table><thead><tr><th>grade</th><th>name</th><th>condition</th></tr></thead><tbody><tr><td>A</td><td>可直接比较</td><td>同一物理量 + 同一负载/温度/电压工况 + 同一测量端（输出端）+ 声明额定或峰值</td></tr><tr><td>B</td><td>换算后可比</td><td>同一物理量，单位不同但换算关系确定，且工况声明一致</td></tr><tr><td>C</td><td>仅同厂商内可比</td><td>有数值但缺工况声明；同厂商内部口径通常自洽</td></tr><tr><td>D</td><td>不可比</td><td>定性描述、缺失、或物理量本身不同；放进对比表就是选型事故的起点</td></tr></tbody></table>
   </section>
 
   <section>
     <h2>向供应商问询清单</h2>
     <p class="sem-note">可直接粘进技术协议或询价邮件。写不进合同的参数，验收时不具备约束力。</p>
-    1. 额定扭矩：同时索取母线电压、环境温度、连续运行时长、测量端（电机端/输出端）
-2. 峰值扭矩：同时索取允许持续时间、起始温度、循环占空比
-3. 背隙：同时索取测量加载扭矩、是减速器背隙还是整机回差
-4. 精度：区分重复定位精度与绝对定位精度，并注明测量温度
-5. 质量：确认是否含减速器、编码器、刹车、外壳、线缆
-6. IP 等级：确认是否覆盖出线口与输出轴动密封
-7. 写不进技术协议的参数，验收时不具备约束力
+    <ol><li>额定扭矩：同时索取母线电压、环境温度、连续运行时长、测量端（电机端/输出端）</li><li>峰值扭矩：同时索取允许持续时间、起始温度、循环占空比</li><li>背隙：同时索取测量加载扭矩、是减速器背隙还是整机回差</li><li>精度：区分重复定位精度与绝对定位精度，并注明测量温度</li><li>质量：确认是否含减速器、编码器、刹车、外壳、线缆</li><li>IP 等级：确认是否覆盖出线口与输出轴动密封</li><li>写不进技术协议的参数，验收时不具备约束力</li></ol>
   </section>
 </div>
 
