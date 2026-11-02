@@ -24,7 +24,7 @@ const en = computed(() => props.lang === 'en')
 const snap = ref<Snap | null>(null)
 
 onMounted(async () => {
-  const r = await fetch(`${import.meta.env.BASE_URL}contributors.json`)
+  const r = await fetch(`${import.meta.env.BASE_URL}contributors.json`, { cache: 'no-store' })
   if (r.ok) snap.value = await r.json()
 })
 
@@ -67,7 +67,9 @@ const people = computed(() => snap.value?.contributors ?? [])
             <div class="cw-txt">
               <div class="cw-login">{{ p.login }}</div>
               <div class="cw-meta">
-                <span :title="`初始 ${p.baseline ?? 0} + GitHub ${p.contributions}`">
+                <span :title="en
+                  ? `Initial ${p.baseline ?? 0} + ${p.contributions} commits (both repos)`
+                  : `初始 ${p.baseline ?? 0} + 提交 ${p.contributions}（双仓）`">
                   {{ p.contribution_total ?? p.contributions }} {{ L.times_n }}
                 </span>
                 <em v-if="p.role">{{ p.role }}</em>

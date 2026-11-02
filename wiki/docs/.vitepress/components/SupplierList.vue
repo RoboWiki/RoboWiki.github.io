@@ -19,7 +19,10 @@ interface Sup {
 }
 
 const all = ref<Sup[]>([])
-const q = ref('')
+const initialQ = typeof window !== 'undefined'
+  ? (new URLSearchParams(window.location.search).get('q') || '').trim()
+  : ''
+const q = ref(initialQ)
 const sortKey = ref('price')
 const active = ref<Record<string, string>>({})
 const expanded = ref<string | null>(null)
@@ -89,6 +92,7 @@ const rows = computed(() => {
     title="活找谁做。"
     lead="与部件库同一套交互，但比的是另一件事：加工质量、交货准不准、价格档、能不能开票。数据来自社区整理的实战反馈，不是厂商自述。"
     search-placeholder="搜店名 / 工艺 / 点评关键词"
+    :initial-query="initialQ"
     :facets="facets"
     :sorts="[{ k: 'board', label: '红黑榜优先' }, { k: 'price', label: '按价格档' }, { k: 'notes', label: '优先有点评' }, { k: 'name', label: '按名称' }]"
     v-model:sort-key="sortKey"

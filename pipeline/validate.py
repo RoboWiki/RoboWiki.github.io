@@ -250,6 +250,38 @@ PLAUSIBLE = {
     "freq_max_ghz": (0.01, 100.0),
 }
 
+# 材质库：材料物理量与工艺能力各自的量程。单位已写进键名，超范围基本是换算错。
+MATERIAL_GROUPS = {"metal", "engineering_plastic", "printing", "composite", "elastomer", "process"}
+MATERIAL_SPEC_KEYS = {
+    "density_g_cm3", "modulus_GPa", "tensile_MPa", "yield_MPa", "elongation_pct",
+    "hardness", "service_temp_C", "low_temp_C", "melting_C", "thermal_cond_W_mK",
+    "cte_um_mK", "price_level", "price_note", "sim_note", "image_url",
+    "image_source", "doc_url",
+}
+PROCESS_SPEC_KEYS = {
+    "tolerance_mm", "tolerance_note", "surface_ra_um", "layer_height_mm",
+    "min_wall_mm", "max_size", "cost_level", "lead_time", "materials",
+}
+MATERIAL_PLAUSIBLE = {
+    "density_g_cm3": (0.5, 25.0),
+    "modulus_GPa": (0.0001, 1500.0),
+    "tensile_MPa": (0.1, 8000.0),
+    "yield_MPa": (0.1, 8000.0),
+    "elongation_pct": (0.0, 1500.0),
+    "service_temp_C": (-273.0, 1500.0),
+    "low_temp_C": (-273.0, 500.0),
+    "melting_C": (-50.0, 4000.0),
+    "thermal_cond_W_mK": (0.01, 2000.0),
+    "cte_um_mK": (-20.0, 500.0),
+}
+PROCESS_PLAUSIBLE = {
+    "tolerance_mm": (0.001, 10.0),
+    "surface_ra_um": (0.001, 100.0),
+    "layer_height_mm": (0.01, 10.0),
+    "min_wall_mm": (0.05, 100.0),
+}
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
 
 def load(name: str) -> list[dict]:
     p = DATA / name
@@ -263,6 +295,194 @@ def load_path(p: pathlib.Path) -> list[dict]:
     if not p.exists():
         return []
     return json.loads(p.read_text(encoding="utf-8"))
+
+
+def check_materials(data_dir: Path) -> tuple[list[str], list[str], list[dict]]:
+    """材料与工艺：字段齐全、物理量在量程内、材料↔工艺↔渠道交叉引用成立。"""
+    errors: list[str] = []
+    warns: list[str] = []
+    rows: list[dict] = []
+    mdir = data_dir / "materials"
+    files = sorted(mdir.glob("*.json")) if mdir.exists() else []
+    if not files:
+        return errors, warns, rows
+
+    supplier_ids: set[str] = set()
+    sp = data_dir / "suppliers.json"
+    if sp.exists():
+        supplier_ids = {s["id"] for s in json.loads(sp.read_text(encoding="utf-8"))
+                        if isinstance(s, dict) and s.get("id")}
+
+    entries: list[tuple[str, dict]] = []
+    for p in files:
+        data = load_path(p)
+        if not isinstance(data, list) or not data:
+            errors.append(f"materials/{p.name}: 应为非空数组")
+            continue
+        for r in data:
+            if not isinstance(r, dict):
+                errors.append(f"materials/{p.name}: 条目不是对象")
+                continue
+            rows.append(r)
+            entries.append((f"materials/{p.name}", r))
+
+    by_id: dict[str, dict] = {}
+    for fn, r in entries:
+        rid = r.get("id")
+        where = f"{fn}:{rid or '?'}"
+        if not rid:
+            errors.append(f"{fn}: 有一行没有 id")
+            continue
+        if not ID_RE.match(rid):
+            errors.append(f"{where}: id 只允许小写字母/数字/连字符（2–64 字符）")
+        if rid in by_id:
+            errors.append(f"{where}: id 重复")
+        by_id[rid] = r
+
+        cat = r.get("category")
+        if cat not in ("material", "process"):
+            errors.append(f"{where}: category={cat!r} 只允许 material/process")
+        elif cat == "material" and not rid.startswith("mat-"):
+            errors.append(f"{where}: 材料 id 必须以 mat- 开头")
+        elif cat == "process" and not rid.startswith("proc-"):
+            errors.append(f"{where}: 工艺 id 必须以 proc- 开头")
+
+        for k in ("group", "group_label", "family", "family_label", "name", "title",
+                  "origin", "notes", "pros", "cons"):
+            if not r.get(k):
+                errors.append(f"{where}: 缺 {k}")
+        if r.get("group") not in MATERIAL_GROUPS:
+            errors.append(f"{where}: group={r.get('group')!r} 不在 {sorted(MATERIAL_GROUPS)}")
+        if cat == "process" and r.get("group") != "process":
+            errors.append(f"{where}: 工艺记录的 group 必须是 process")
+        if cat == "material" and r.get("group") == "process":
+            errors.append(f"{where}: 材料记录的 group 不能是 process")
+
+        if r.get("source_tier") not in TIERS:
+            errors.append(f"{where}: source_tier={r.get('source_tier')!r} 不在 {sorted(TIERS)}")
+        if r.get("verified") not in (0, 1):
+            errors.append(f"{where}: verified 必须显式给 0/1")
+        if not DATE_RE.match(str(r.get("last_checked") or "")):
+            errors.append(f"{where}: last_checked 必须是 YYYY-MM-DD")
+        if r.get("url") and not str(r["url"]).startswith("http"):
+            errors.append(f"{where}: url 必须是 http(s)")
+        for s in r.get("sources") or []:
+            if not isinstance(s, dict) or not str(s.get("url") or "").startswith("http"):
+                errors.append(f"{where}: sources 条目缺 http(s) url")
+                continue
+            if not DATE_RE.match(str(s.get("checked_on") or "")):
+                errors.append(f"{where}: sources[].checked_on 必须是 YYYY-MM-DD")
+            if s.get("kind") not in ("datasheet", "reference", "manual", "vendor", "standard", "process", "other"):
+                warns.append(f"{where}: sources[].kind={s.get('kind')!r} 未登记")
+
+        forms = r.get("forms")
+        if not isinstance(forms, list) or not forms:
+            errors.append(f"{where}: forms 必须是非空数组")
+        else:
+            for f in forms:
+                if not isinstance(f, dict) or not f.get("form") or not f.get("spec"):
+                    errors.append(f"{where}: forms 条目必须含 form/spec")
+        apps = r.get("applications")
+        if not isinstance(apps, list) or not apps:
+            errors.append(f"{where}: applications 必须是非空数组")
+
+        for sup in r.get("suppliers") or []:
+            if not isinstance(sup, dict):
+                errors.append(f"{where}: suppliers 条目不是对象")
+                continue
+            sid = sup.get("supplier_id")
+            if not sid:
+                errors.append(f"{where}: suppliers 条目缺 supplier_id")
+            elif sid not in supplier_ids:
+                errors.append(f"{where}: supplier_id={sid} 不在 data/suppliers.json")
+            if not sup.get("role"):
+                errors.append(f"{where}: suppliers 条目缺 role")
+
+        specs = r.get("specs")
+        if not isinstance(specs, dict):
+            errors.append(f"{where}: specs 不是对象")
+            continue
+        allowed = PROCESS_SPEC_KEYS if cat == "process" else MATERIAL_SPEC_KEYS
+        unknown = sorted(set(specs) - allowed)
+        if unknown:
+            warns.append(f"{where}: 未登记的参数名 {unknown}（词表可能漂移）")
+
+        if cat == "process":
+            if specs.get("tolerance_mm") is None:
+                errors.append(f"{where}: 工艺缺 tolerance_mm")
+            if not specs.get("cost_level"):
+                errors.append(f"{where}: 工艺缺 cost_level")
+            for k, (lo, hi) in PROCESS_PLAUSIBLE.items():
+                v = specs.get(k)
+                if v is None:
+                    continue
+                if isinstance(v, bool) or not isinstance(v, (int, float)):
+                    errors.append(f"{where}: {k} 必须是数字或 null")
+                elif not (lo <= v <= hi):
+                    errors.append(f"{where}: {k}={v:g} 超出合理量程 [{lo:g}, {hi:g}]")
+            continue
+
+        for k in ("density_g_cm3", "modulus_GPa", "tensile_MPa"):
+            if specs.get(k) is None:
+                errors.append(f"{where}: 材料缺 {k}（仿真必需）")
+        for k, (lo, hi) in MATERIAL_PLAUSIBLE.items():
+            v = specs.get(k)
+            if v is None:
+                continue
+            if isinstance(v, bool) or not isinstance(v, (int, float)):
+                errors.append(f"{where}: {k} 必须是数字或 null")
+            elif not (lo <= v <= hi):
+                errors.append(f"{where}: {k}={v:g} 超出物理量程 [{lo:g}, {hi:g}] —— 检查单位")
+        ten = specs.get("tensile_MPa")
+        yld = specs.get("yield_MPa")
+        if isinstance(ten, (int, float)) and isinstance(yld, (int, float)) and yld > ten:
+            errors.append(f"{where}: yield_MPa={yld} 大于 tensile_MPa={ten}")
+        st = specs.get("service_temp_C")
+        mt = specs.get("melting_C")
+        if isinstance(st, (int, float)) and isinstance(mt, (int, float)) and st >= mt:
+            warns.append(f"{where}: 长期工作温度 {st}°C 不低于熔点 {mt}°C，复核口径")
+        lt = specs.get("low_temp_C")
+        if isinstance(lt, (int, float)) and isinstance(st, (int, float)) and lt >= st:
+            errors.append(f"{where}: low_temp_C={lt} 不低于 service_temp_C={st}")
+        if specs.get("image_url") and not specs.get("image_source"):
+            errors.append(f"{where}: 有 image_url 但没写 image_source —— 图必须能追溯出处")
+        if specs.get("price_level") not in ("低", "低-中", "中", "中高", "高", None):
+            errors.append(f"{where}: price_level={specs.get('price_level')!r} 不在 低/低-中/中/中高/高")
+
+    # 交叉引用放到第二遍：文件按字母序读，材料先于工艺，前向引用不能误报
+    for fn, r in entries:
+        rid = r.get("id")
+        if not rid:
+            continue
+        where = f"{fn}:{rid}"
+        if r.get("category") == "process":
+            mats = (r.get("specs") or {}).get("materials")
+            if not isinstance(mats, list) or not mats:
+                errors.append(f"{where}: 工艺缺 specs.materials（可加工材料）")
+                continue
+            for mid in mats:
+                mr = by_id.get(mid)
+                if mr is None:
+                    warns.append(f"{where}: 引用的材料 {mid} 暂不存在")
+                elif rid not in (mr.get("processes") or []):
+                    warns.append(f"{where}: 材料 {mid} 未反向登记该工艺")
+        elif r.get("category") == "material":
+            procs = r.get("processes")
+            if not isinstance(procs, list) or not procs:
+                warns.append(f"{where}: processes 为空 —— 材料没挂加工工艺，详情页会缺一节")
+                continue
+            for pid in procs:
+                pr = by_id.get(pid)
+                if pr is None:
+                    warns.append(f"{where}: 引用的工艺 {pid} 暂不存在")
+                elif rid not in ((pr.get("specs") or {}).get("materials") or []):
+                    warns.append(f"{where}: 工艺 {pid} 未反向收录该材料")
+
+    if rows:
+        n_mat = sum(1 for r in rows if r.get("category") == "material")
+        print(f"材质 {n_mat} 条 · 工艺 {len(rows) - n_mat} 条（{len(files)} 个文件）")
+    return errors, warns, rows
+
 
 
 def main() -> int:
@@ -412,6 +632,11 @@ def main() -> int:
                 if specs.get("frictionloss_Nm") is None and tau_p:
                     pass  # 允许为空；不吵
 
+    # 材质库：材料 / 工艺（data/materials/*.json）
+    m_errors, m_warns, _material_rows = check_materials(DATA)
+    errors.extend(m_errors)
+    warns.extend(m_warns)
+
     # 优惠：另一套结构，单独校验（data/offers/*.json 或旧的 data/offers.json）
     KINDS = {"sponsor", "coupon", "discount", "giveaway", "event", "edu", "retail"}
     n_offer = 0
@@ -466,6 +691,8 @@ def main() -> int:
     for _f in sorted((DATA_DIR / "catalog").glob("*/*.json")):
         all_rows += json.loads(_f.read_text(encoding="utf-8"))
     for _f in sorted((DATA_DIR / "robots").glob("*.json")):
+        all_rows += json.loads(_f.read_text(encoding="utf-8"))
+    for _f in sorted((DATA_DIR / "materials").glob("*.json")):
         all_rows += json.loads(_f.read_text(encoding="utf-8"))
     _sw = DATA_DIR / "software.json"
     if _sw.exists():

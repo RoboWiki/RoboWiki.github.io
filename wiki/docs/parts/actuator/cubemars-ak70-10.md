@@ -1,6 +1,6 @@
 ---
 title: CubeMars AK70-10
-description: "CubeMars AK70-10（关节电机）：峰值扭矩 24.8 N·m、额定 8.3 N·m、减速比 10:1；来源 B 级、2026-10-31 核对。"
+description: "CubeMars AK70-10（关节电机）：峰值扭矩 24.8 N·m、额定 8.3 N·m、减速比 10:1；来源 B 级、2026-11-02 核对。"
 ---
 
 
@@ -8,7 +8,8 @@ description: "CubeMars AK70-10（关节电机）：峰值扭矩 24.8 N·m、额�
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/cubemars-ak70-10.jpg" alt="AK70-10" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
@@ -33,7 +34,7 @@ description: "CubeMars AK70-10（关节电机）：峰值扭矩 24.8 N·m、额�
 <div class="part-src">
 来源：<a href="https://www.cubemars.com/cn/product/ak70-10-kv100-robotic-actuator.html">https://www.cubemars.com/cn/product/ak70-10-kv100-robotic-actuator.html</a><br/>
 收录：CubeMars 中文站产品页（2026-10-31 抓取）<br/>
-核对：2026-10-31
+核对：2026-11-02
 </div>
 
 </div>
@@ -118,7 +119,7 @@ description: "CubeMars AK70-10（关节电机）：峰值扭矩 24.8 N·m、额�
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.cubemars.com/cn/product/ak70-10-kv100-robotic-actuator.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>CubeMars 中文站产品页（2026-10-31 抓取）</td></tr><tr><td><a href="https://www.google.com/search?q=CubeMars+AK70-10+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=AK70-10&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=CubeMars+AK70-10+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/actuator/cubemars.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/cubemars.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.cubemars.com/cn/product/ak70-10-kv100-robotic-actuator.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>CubeMars 官方产品图（cubemars.com，AK70-10 产品页，2026-11-02）</td></tr><tr><td class="rs-plain">收录说明</td><td>CubeMars 中文站产品页（2026-10-31 抓取）</td></tr><tr><td><a href="https://www.google.com/search?q=CubeMars+AK70-10+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=AK70-10&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=CubeMars+AK70-10+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/actuator/cubemars.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/cubemars.json</td></tr></tbody></table>
 
 ## 备注
 
