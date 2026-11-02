@@ -21,14 +21,22 @@
 """
 from __future__ import annotations
 
+try:
+    from .paths import DATA_DIR, SCHEMA_DIR
+except ImportError:  # 直接 python pipeline/xxx.py 时没有包上下文
+    import sys
+    from pathlib import Path as _Path
+    sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+    from pipeline.paths import DATA_DIR, SCHEMA_DIR
+
 import json
 import pathlib
 import re
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-OUT = ROOT / "data" / "ratings_snapshot.json"
-CATALOG = ROOT / "data" / "catalog"
+OUT = DATA_DIR / "ratings_snapshot.json"
+CATALOG = DATA_DIR / "catalog"
 
 TITLE_RE = re.compile(r"^\s*\[评分\]\s*(\S+)")
 #: Issue Forms 渲染出来的结构是 `### 字段名\n\n值`，所以按标题切块取值
@@ -52,7 +60,7 @@ def main() -> None:
     # --out 让测试把产物写到临时目录，而不是覆盖 data/ 里的真实快照。
     # 默认仍写 data/（生产行为不变）。
     argv = [a for a in sys.argv[1:]]
-    out_dir = ROOT / "data"
+    out_dir = DATA_DIR
     if "--out" in argv:
         i = argv.index("--out")
         out_dir = pathlib.Path(argv[i + 1])

@@ -20,7 +20,14 @@ from urllib.parse import quote_plus
 from datetime import date
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-DATA = ROOT / "data"
+try:
+    from .paths import DATA_DIR, SCHEMA_DIR
+except ImportError:  # 直接 python pipeline/xxx.py 时没有包上下文
+    import sys
+    from pathlib import Path as _Path
+    sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+    from pipeline.paths import DATA_DIR, SCHEMA_DIR
+DATA = DATA_DIR
 OUT = ROOT / "wiki" / "docs"
 
 #: 品类。顺序即展示顺序 —— 关节电机是重点，放最前。
@@ -620,7 +627,7 @@ def write_llms_txt(out: pathlib.Path, pub: pathlib.Path, rows: list[dict],
         if m:
             robot_slugs[m.group(1).strip()] = page.stem
     robots: list[dict] = []
-    robot_dir = ROOT / "data" / "robots"
+    robot_dir = DATA_DIR / "robots"
     for f in sorted(robot_dir.glob("*.json")) if robot_dir.exists() else []:
         try:
             robots.extend(json.loads(f.read_text(encoding="utf-8")))
@@ -699,7 +706,7 @@ def write_llms_txt(out: pathlib.Path, pub: pathlib.Path, rows: list[dict],
         lines.append("")
 
     try:
-        sw = json.loads((ROOT / "data" / "software.json").read_text(encoding="utf-8"))
+        sw = json.loads((DATA_DIR / "software.json").read_text(encoding="utf-8"))
     except Exception:
         sw = {}
     groups = {g["id"]: g.get("name") or g["id"] for g in sw.get("groups") or []}
@@ -718,7 +725,7 @@ def write_llms_txt(out: pathlib.Path, pub: pathlib.Path, rows: list[dict],
         lines.append("")
 
     try:
-        sups = json.loads((ROOT / "data" / "suppliers.json").read_text(encoding="utf-8"))
+        sups = json.loads((DATA_DIR / "suppliers.json").read_text(encoding="utf-8"))
     except Exception:
         sups = []
     if sups:
@@ -796,7 +803,7 @@ def main() -> None:
     # 把它加进 featured.json，也会自动进精选视图，不会在默认页「隐形」。
     # 后期要剔除某件，从 ids 里删掉即可（并集不影响剔除：删了就只剩「不在精选」）。
     try:
-        _feat = json.loads((ROOT / "data" / "featured.json").read_text(encoding="utf-8"))
+        _feat = json.loads((DATA_DIR / "featured.json").read_text(encoding="utf-8"))
     except Exception:
         _feat = {"ids": []}
     featured_ids = sorted(set(_feat.get("ids") or []) | {r["id"] for r in rows})
@@ -819,7 +826,7 @@ def main() -> None:
     # 卡片要显示的东西（评分、优惠）也在这里一次性烤进去 —— 静态站没有 API，
     # 卡片上不该为空着而再发一次请求。
     ratings: dict = {}
-    _rp = ROOT / "data" / "ratings_snapshot.json"
+    _rp = DATA_DIR / "ratings_snapshot.json"
     if _rp.exists():
         try:
             ratings = json.loads(_rp.read_text(encoding="utf-8")).get("parts") or {}
@@ -829,7 +836,7 @@ def main() -> None:
     # 实测汇总（来自 [实测] issue，由 Actions 聚合）。和评分是两套东西：
     # 评分回答「值不值得买」，实测回答「在什么条件下跑了多久、坏没坏」。
     reviews: dict = {}
-    _vw = ROOT / "data" / "reviews_snapshot.json"
+    _vw = DATA_DIR / "reviews_snapshot.json"
     if _vw.exists():
         try:
             reviews = json.loads(_vw.read_text(encoding="utf-8")).get("parts") or {}
@@ -945,7 +952,7 @@ def main() -> None:
 
     # 评分快照：纯静态部署（GitHub Pages）没有后端，页面读不到 /api/ratings，
     # 所以把「上次导出时」的聚合结果一起发布。页面上会标明这是快照。
-    snap = ROOT / "data" / "ratings_snapshot.json"
+    snap = DATA_DIR / "ratings_snapshot.json"
     if snap.exists():
         (pub / "ratings.json").write_bytes(snap.read_bytes())
         try:
@@ -1729,7 +1736,7 @@ def main() -> None:
 
 
     # ── 参数口径：读 schema/semantics.json（唯一事实源，不再 import 后端）──
-    _sem = json.loads((ROOT / "schema" / "semantics.json").read_text(encoding="utf-8"))
+    _sem = json.loads((SCHEMA_DIR / "semantics.json").read_text(encoding="utf-8"))
     COMPARABILITY = _sem["comparability"]
     CONVERSIONS = _sem["conversions"]
     FIELD_SEMANTICS = _sem["field_semantics"]
@@ -1988,7 +1995,7 @@ html.dark .rl-th {{ color: #e0b159; }}
     # ── 厂商官网 / 官方文档 ──────────────────────────────────────────
     # 一手来源单列：参数最终都要能追溯到这些页面（或它们的 PDF）。
     try:
-        offs = json.loads((ROOT / "data" / "sources.json").read_text(encoding="utf-8"))
+        offs = json.loads((DATA_DIR / "sources.json").read_text(encoding="utf-8"))
     except Exception:
         offs = []
     orow = "\n".join(
@@ -2001,7 +2008,7 @@ html.dark .rl-th {{ color: #e0b159; }}
     # 交给 pipeline/contrib_page.py：GitHub 快照 + 手工名单，生成中英两版。
     # 学习路线：data/learn.json -> public/learn.json（路线、文章索引、转载规范）
     try:
-        learn = json.loads((ROOT / "data" / "learn.json").read_text(encoding="utf-8"))
+        learn = json.loads((DATA_DIR / "learn.json").read_text(encoding="utf-8"))
     except Exception:
         learn = {"routes": [], "articles": []}
     (pub / "learn.json").write_text(
@@ -2019,7 +2026,7 @@ html.dark .rl-th {{ color: #e0b159; }}
     # 部件库回答「这台电机怎么样」，供应商回答「这活找谁做」——
     # 字段、排序、评价方式都不同；混在一个库里会污染部件数量与品牌筛选。
     try:
-        sups = json.loads((ROOT / "data" / "suppliers.json").read_text(encoding="utf-8"))
+        sups = json.loads((DATA_DIR / "suppliers.json").read_text(encoding="utf-8"))
     except Exception:
         sups = []
     (pub / "suppliers.json").write_text(
@@ -2183,14 +2190,14 @@ outline: false
         # 口径版本：与 /api/semantics、MCP 同源
         try:
             _semver = json.loads(
-                (ROOT / "schema" / "semantics.json").read_text(encoding="utf-8")
+                (SCHEMA_DIR / "semantics.json").read_text(encoding="utf-8")
             ).get("version")
         except Exception:
             _semver = None
         # 永久 ID：注册表只追加，removed 即 tombstone
         try:
             _ids = json.loads(
-                (ROOT / "data" / "_id_registry.json").read_text(encoding="utf-8")
+                (DATA_DIR / "_id_registry.json").read_text(encoding="utf-8")
             ).get("ids") or {}
         except Exception:
             _ids = {}
@@ -2198,7 +2205,7 @@ outline: false
 
         # 整机与部件一样有图和仓库字段，覆盖率要一起数，否则表格是半个事实
         _robots: list[dict] = []
-        for _f in sorted((ROOT / "data" / "robots").glob("*.json")):
+        for _f in sorted((DATA_DIR / "robots").glob("*.json")):
             try:
                 _robots += json.loads(_f.read_text(encoding="utf-8"))
             except Exception:

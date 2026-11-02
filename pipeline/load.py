@@ -9,12 +9,20 @@
 """
 from __future__ import annotations
 
+try:
+    from .paths import DATA_DIR, SCHEMA_DIR
+except ImportError:  # 直接 python pipeline/xxx.py 时没有包上下文
+    import sys
+    from pathlib import Path as _Path
+    sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+    from pipeline.paths import DATA_DIR, SCHEMA_DIR
+
 import json
 import pathlib
 from typing import Any
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-DATA = ROOT / "data"
+DATA = DATA_DIR
 
 
 def _read(p: pathlib.Path) -> Any:

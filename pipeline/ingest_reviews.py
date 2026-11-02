@@ -26,13 +26,21 @@
 """
 from __future__ import annotations
 
+try:
+    from .paths import DATA_DIR, SCHEMA_DIR
+except ImportError:  # 直接 python pipeline/xxx.py 时没有包上下文
+    import sys
+    from pathlib import Path as _Path
+    sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+    from pipeline.paths import DATA_DIR, SCHEMA_DIR
+
 import json
 import pathlib
 import re
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-OUT = ROOT / "data" / "reviews_snapshot.json"
+OUT = DATA_DIR / "reviews_snapshot.json"
 
 FIELD_ALIASES = {
     "part": ["部件 id"],
@@ -88,7 +96,7 @@ def hours_of(s: str) -> float | None:
 
 def main() -> None:
     argv = [a for a in sys.argv[1:]]
-    out_dir = ROOT / "data"
+    out_dir = DATA_DIR
     if "--out" in argv:
         i = argv.index("--out")
         out_dir = pathlib.Path(argv[i + 1])
@@ -97,7 +105,7 @@ def main() -> None:
         print("用法: ingest_reviews.py <issues.json> [--out DIR]")
         raise SystemExit(2)
     issues = json.loads(pathlib.Path(argv[0]).read_text(encoding="utf-8"))
-    known = {r["id"] for f in (ROOT / "data" / "catalog").glob("*/*.json")
+    known = {r["id"] for f in (DATA_DIR / "catalog").glob("*/*.json")
              for r in json.loads(f.read_text(encoding="utf-8"))}
 
     by: dict[str, list[dict]] = {}

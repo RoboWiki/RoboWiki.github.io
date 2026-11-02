@@ -12,6 +12,14 @@
 """
 from __future__ import annotations
 
+try:
+    from .paths import DATA_DIR, SCHEMA_DIR
+except ImportError:  # 直接 python pipeline/xxx.py 时没有包上下文
+    import sys
+    from pathlib import Path as _Path
+    sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
+    from pipeline.paths import DATA_DIR, SCHEMA_DIR
+
 import argparse
 import json
 import pathlib
@@ -20,7 +28,7 @@ import re
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-DATA = ROOT / "data"
+DATA = DATA_DIR
 
 TIERS = {"A", "B", "C"}
 TAU_BASIS = {"peak", "rated"}
@@ -185,7 +193,7 @@ UI_KEYS = {
 # 红线的**数值**只有一份：schema/semantics.json 的 RL-01 / RL-02
 # （文案和阈值都在那儿，静态站口径页、/api/semantics、MCP 也都读同一份）。
 # 这里只取数不复制 —— 别在代码里再写一遍 120 / 200 / 3 / 5。
-_SEMANTICS_FILE = ROOT / "schema" / "semantics.json"
+_SEMANTICS_FILE = SCHEMA_DIR / "semantics.json"
 if not _SEMANTICS_FILE.is_file():
     raise RuntimeError(
         f"缺参数口径事实源：{_SEMANTICS_FILE}\n"
@@ -455,23 +463,23 @@ def main() -> int:
 
     # 永久 ID：数据将来要被外部按版本引用，id 不能改名/复用
     all_rows = []
-    for _f in sorted((ROOT / "data" / "catalog").glob("*/*.json")):
+    for _f in sorted((DATA_DIR / "catalog").glob("*/*.json")):
         all_rows += json.loads(_f.read_text(encoding="utf-8"))
-    for _f in sorted((ROOT / "data" / "robots").glob("*.json")):
+    for _f in sorted((DATA_DIR / "robots").glob("*.json")):
         all_rows += json.loads(_f.read_text(encoding="utf-8"))
-    _sw = ROOT / "data" / "software.json"
+    _sw = DATA_DIR / "software.json"
     if _sw.exists():
         for _it in json.loads(_sw.read_text(encoding="utf-8")).get("items", []):
             all_rows.append({"id": f"software:{_it['id']}", "model": _it.get("name")})
     # 供应商与协议也有稳定 id（sup-xxxxxxxx / dji-c620 这类），一并纳入注册表口径。
     # contributors.json / learn.json 没有 id 字段（见 docs/ID-POLICY.md「哪些实体不带 id」）。
     id_rows = list(all_rows)
-    _sp = ROOT / "data" / "suppliers.json"
+    _sp = DATA_DIR / "suppliers.json"
     if _sp.exists():
         for _it in json.loads(_sp.read_text(encoding="utf-8")):
             if _it.get("id"):
                 id_rows.append({"id": f"supplier:{_it['id']}"})
-    _pr = ROOT / "data" / "protocols.json"
+    _pr = DATA_DIR / "protocols.json"
     if _pr.exists():
         for _it in json.loads(_pr.read_text(encoding="utf-8")).get("protocols", []):
             if _it.get("id"):
