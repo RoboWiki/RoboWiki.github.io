@@ -5,8 +5,8 @@
 线上：<https://robowiki.github.io/>
 
 ```
-311 个部件 · 14 个品类 · 21 台整机 · 22 个软件 · 207 家渠道
-其中 A 级（逐项核对过厂商手册）104 个；缺失一律写 null，不猜、不填补
+329 个部件 · 14 个品类 · 21 台整机 · 22 个软件 · 207 家渠道
+其中 A 级（逐项核对过厂商手册）114 个；缺失一律写 null，不猜、不填补
 ```
 
 ## 数据来源与拆分
@@ -43,6 +43,27 @@ python -m pipeline build
    评分不是一个总分，是三个通用维度（性价比 / 做工 / 文档与支持）加一项按品类决定的维度
    （电机芯片类看参数可信度，主控类看兼容与生态），并带使用工况与样本量。
    1 条 5 分和 20 条 5 分不是一个确定程度，页面上会直说。
+
+## 数据怎么变
+
+目录字段**只从核心仓 release 来**，后台不直接改 `parts`：
+
+```
+站内/控制台纠错 → submissions → staff 审核 → outbox → worker 开 PR
+      → 合并 → data-v* release → 回灌只读 parts 投影
+```
+
+审核通过不等于生效，合并并发布 release 才生效。后台只读 `parts`，写入入口只有
+提案；每条提案保留依据、来源、字段级旧值与新值。UGC（评价、评论、投票）走 `/api/v1` 写 Postgres，不回写 git。
+
+## 多端与分享
+
+- **Web / PWA**：同一份静态构建；可安装，访问过的页面离线可读，本地搜索离线可用。
+- **分享卡**：部件页按同一份 `share/*.json` 在浏览器生成 1080×1440 竖版卡与二维码，直接发群。
+- **API**：`/api/v1` 是唯一规范前缀（`/api` 保留为旧客户端别名），响应带
+  `X-RoboWiki-API-Version` 与 `X-RoboWiki-Data-Version`。
+- **QQ 群机器人**：`GET /api/v1/bot/answer` 只读问答，回答固定为一句结论 + 链接 +
+  数据版本；适配器见 `clients/qqbot/`，只被动回复、不推送。
 
 ## 站点结构
 
@@ -87,16 +108,29 @@ python -m pytest                  # 构建链 + API 测试
 cd wiki && npm i && npm run dev    # 本地起站（VitePress 默认 5173）
 ```
 
-改一个型号的参数 = 去核心仓改一个 JSON，然后跑 `python -m pipeline validate`。
-数据闸门会拦住三类错：A 级键集不一致、来源等级越级、厂商未登记；构建阶段再拦页面死链。
+只读静态站不需要后端。需要登录、评价、提案与审核时：
+
+```bash
+cd backend && pip install -r requirements.txt
+uvicorn app.main:app --reload      # http://127.0.0.1:8000/api/v1/docs
+
+# 或整套容器（Caddy + API + Postgres + worker）
+cd deploy && cp .env.example .env && docker compose up -d --build
+```
+
+改一个型号的参数 = 去核心仓改一个 JSON，或走站内提案/控制台，然后跑
+`python -m pipeline validate`。数据闸门会拦住三类错：A 级键集不一致、来源等级越级、
+厂商未登记；构建阶段再拦页面死链。**后台不改 `parts`**：提案审核通过后由 worker 开 PR。
 
 ## 目录
 
 ```
-wiki/       VitePress 站点（主体，纯静态）
-backend/    FastAPI + SQLModel（可选：评论区与后台，静态部署不需要）
-console/    React 控制台（可选，挂在后端 /console/）
-pipeline/   页面生成（数据从核心仓 release 读取）
+wiki/       VitePress 站点（纯静态 + PWA，静态部署不需要后端）
+backend/    FastAPI + SQLModel：/api/v1、UGC、提案与 outbox worker
+console/    React 控制台：提案审核、数据缺口、社区
+deploy/     Docker Compose（Caddy + API + Postgres + migrate + worker）
+clients/    多端适配：QQ 机器人；小程序/App/SDK 的契约与目录
+pipeline/   页面与分享产物生成（数据从核心仓 release 读取）
 docs/       站点架构、决策记录、历史归档
 tools/      站点专用脚本；数据工具在核心仓
 inbox/      产品图暂存区（认领后进核心仓 assets/parts）
@@ -112,7 +146,7 @@ inbox/      产品图暂存区（认领后进核心仓 assets/parts）
 
 | 想做的事 | 怎么进 |
 |---|---|
-| 纠参数 / 补数据 | 去核心仓 [RoboWiki/RoboWiki](https://github.com/RoboWiki/RoboWiki) 提 PR 或 issue |
+| 纠参数 / 补数据 | 核心仓 issue / PR，或站内提案；维护者审核后由 worker 开 PR，合并并 release 后生效 |
 | 写评价（含四维打分） | 部件页的「写评价」→ GitHub issue 表单。一人一件一票，改主意就编辑原 issue |
 | 写文章 / 教程 | 本仓学习栏目 + 投稿页；转载规范见「分享与转载」 |
 
