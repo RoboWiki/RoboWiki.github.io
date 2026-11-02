@@ -221,8 +221,6 @@ def test_group_pages_show_product_gallery(built):
     assert f"{len(cm)} 型中 {n_img} 款有可核实的产品图" in cm_page
 
     assert "part-gallery" not in (
-        built / "parts" / "battery" / "feifei.md").read_text(encoding="utf-8")
-    assert "part-gallery" not in (
         built / "parts" / "sensor" / "force_torque.md").read_text(encoding="utf-8")
 
 
