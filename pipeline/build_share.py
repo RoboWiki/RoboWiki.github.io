@@ -1,7 +1,7 @@
 """构建期分享产物：每个部件一张可转发的 JSON 卡。
 
-不做 PNG 渲染（需要字体/图像依赖）；先把“一句话 + 参数 + 来源 + 版本 + URL”
-做成稳定 JSON，Web 组件、QQ 机器人、后续分享图都从这里取同一份文案。
+JSON 是文案的唯一来源；分享图由浏览器按这份 JSON 用 Canvas 绘制，
+避免构建链依赖字体/图像库，也避免每个页面预生成几十 MB 图片。
 """
 from __future__ import annotations
 
@@ -20,35 +20,48 @@ def _fmt(v, unit: str = "") -> str | None:
     return f"{s}{unit}"
 
 
-def _summary(specs: dict) -> str:
-    parts = []
-    for label, key, unit in (
-        ("峰值", "tau_peak_Nm", " N·m"),
-        ("额定", "tau_rated_Nm", " N·m"),
-        ("电压", "voltage_V", " V"),
-        ("质量", "mass_kg", " kg"),
-    ):
-        v = _fmt(specs.get(key), unit)
-        if v:
-            parts.append(f"{label} {v}")
-    return " · ".join(parts[:4])
+#: 每个品类一句话里最有用的字段；顺序即展示顺序
+_FACTS: dict[str, list[tuple[str, str, str]]] = {
+    "actuator": [("峰值", "tau_peak_Nm", " N·m"), ("额定", "tau_rated_Nm", " N·m"),
+                 ("电压", "voltage_V", " V"), ("质量", "mass_kg", " kg")],
+    "controller_high": [("NPU", "npu_tops", " TOPS"), ("CPU", "cpu", ""),
+                        ("内存", "ram_gb", " GB"), ("功耗", "power_max_w", " W")],
+    "controller_low": [("MCU", "mcu", ""), ("CAN", "can", ""),
+                       ("电压", "voltage_in_V", " V")],
+    "imu": [("陀螺", "gyro_range_dps", " °/s"), ("接口", "iface", ""),
+            ("噪声", "noise", "")],
+    "camera": [("深度", "depth_range_m", " m"), ("视场", "fov", ""),
+               ("帧率", "fps", " fps")],
+    "lidar": [("量程", "range_m", " m"), ("视场", "fov", ""),
+              ("点频", "points_per_s", " pts/s")],
+    "connector": [("位数", "positions", " pin"), ("间距", "pitch_mm", " mm"),
+                  ("电流", "current_rated_A", " A"), ("电压", "voltage_rated_V", " V"),
+                  ("线规", "wire_awg", ""), ("插拔", "mating_cycles", " 次")],
+    "module": [("接口", "iface", ""), ("CAN", "can", ""),
+               ("电压", "voltage_V", " V")],
+    "chip": [("封装", "package", ""), ("料号", "lcsc_part", ""),
+             ("输入", "voltage_in", ""), ("输出", "voltage_out", "")],
+}
+_GENERIC = [("电压", "voltage_V", " V"), ("接口", "iface", ""),
+            ("CAN", "can", ""), ("通道", "channel", "")]
 
 
-def _params(specs: dict) -> list[dict]:
+def _spec_lines(category: str, specs: dict) -> list[dict]:
     out = []
-    for label, key, unit in (
-        ("峰值扭矩", "tau_peak_Nm", " N·m"),
-        ("额定扭矩", "tau_rated_Nm", " N·m"),
-        ("减速比", "gear", ":1"),
-        ("电压", "voltage_V", " V"),
-        ("质量", "mass_kg", " kg"),
-        ("通信", "comm", ""),
-        ("编码器", "encoder", ""),
-    ):
+    for label, key, unit in _FACTS.get(category, []) + _GENERIC:
         v = _fmt(specs.get(key), unit)
-        if v:
+        if v and not any(x["label"] == label for x in out):
             out.append({"label": label, "value": v})
     return out
+
+
+def _summary(category: str, specs: dict) -> str:
+    return " · ".join(f"{x['label']} {x['value']}"
+                      for x in _spec_lines(category, specs)[:4])
+
+
+def _params(category: str, specs: dict) -> list[dict]:
+    return _spec_lines(category, specs)[:7]
 
 
 def build(rows: list[dict], slugs: dict[str, str], out: Path,
@@ -66,13 +79,13 @@ def build(rows: list[dict], slugs: dict[str, str], out: Path,
             continue
         cat = r["category"]
         specs = r.get("specs") or {}
-        url = f"{site_url.rstrip('/')}/parts/{cat}/{slug}"
+        url = f"{site_url.rstrip('/')}/parts/{cat}/{slug}.html"
         title = r["title"]
-        summary = _summary(specs)
+        summary = _summary(cat, specs)
         tier = r.get("source_tier", "B")
         checked = r.get("last_checked") or ""
         image = specs.get("image_url")
-        params = _params(specs)
+        params = _params(cat, specs)
 
         copy = "\n".join(x for x in [
             f"[部件] {title}",
@@ -87,6 +100,7 @@ def build(rows: list[dict], slugs: dict[str, str], out: Path,
             "title": title,
             "summary": summary,
             "params": params,
+            "use_cases": specs.get("use_cases") or [],
             "source_tier": tier,
             "last_checked": checked,
             "data_version": data_version,
@@ -99,10 +113,14 @@ def build(rows: list[dict], slugs: dict[str, str], out: Path,
         (d / f"{slug}.json").write_text(
             json.dumps(payload, ensure_ascii=False, indent=1), encoding="utf-8")
         index.append({
+            "id": rid,
             "path": f"/parts/{cat}/{slug}",
+            "url": url,
             "json": f"/share/parts/{cat}/{slug}.json",
             "title": title,
             "summary": summary,
+            "source_tier": tier,
+            "last_checked": checked,
             "data_version": data_version,
         })
 
