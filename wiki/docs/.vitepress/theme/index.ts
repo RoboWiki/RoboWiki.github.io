@@ -13,6 +13,7 @@ import SoftwareGrid from '../components/SoftwareGrid.vue'
 import MaterialGrid from '../components/MaterialGrid.vue'
 import ExplorerShell from '../components/ExplorerShell.vue'
 import PartRating from '../components/PartRating.vue'
+import ShareBox from '../components/ShareBox.vue'
 import './custom.css'
 import './part.css'
 import './explorer.css'
@@ -21,7 +22,7 @@ export default {
   extends: DefaultTheme,
   Layout() {
     return h(DefaultTheme.Layout, null, {
-      'doc-after': () => h(PageComments),
+      'doc-after': () => h('div', [h(ShareBox), h(PageComments)]),
     })
   },
   enhanceApp({ app }) {
@@ -34,5 +35,6 @@ app.component('SoftwareGrid', SoftwareGrid)
     app.component('MaterialGrid', MaterialGrid)
     app.component('ExplorerShell', ExplorerShell)
         app.component('PartRating', PartRating)
+    app.component('ShareBox', ShareBox)
   },
 } satisfies Theme

@@ -17,7 +17,8 @@ from .core.db import create_tables, seed_catalog, seed_community, session
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
-    create_tables()
+    if settings.auto_create_tables:
+        create_tables()
     db = session()
     try:
         stats = seed_catalog(db)
@@ -41,18 +42,51 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-for r in (auth.router, catalog.router, community.router, export.router,
-          semantics.router, admin.router, protocols.router, wiki.router,
-          ratings.router):
+_ROUTERS = (auth.router, catalog.router, community.router, export.router,
+            semantics.router, admin.router, protocols.router, wiki.router,
+            ratings.router)
+
+# 规范前缀 /api/v1；/api 只作旧客户端别名，不进入 OpenAPI。
+for r in _ROUTERS:
     app.include_router(r, prefix=settings.api_v1)
+for r in _ROUTERS:
+    app.include_router(r, prefix=settings.api_legacy, include_in_schema=False)
 
 # MCP 不挂在 /api 下：Agent 按约定访问 /mcp
 app.include_router(mcp.router)
 
 
-@app.get("/api/health", tags=["meta"])
+@app.middleware("http")
+async def _release_headers(request, call_next):
+    response = await call_next(request)
+    response.headers["X-RoboWiki-Data-Version"] = settings.data_version
+    response.headers["X-RoboWiki-API-Version"] = "v1"
+    return response
+
+
+@app.get(settings.api_v1 + "/meta", tags=["meta"])
+def meta():
+    return {
+        "ok": True,
+        "project": settings.project_name,
+        "api_version": "v1",
+        "data_version": settings.data_version,
+    }
+
+
+@app.get(settings.api_legacy + "/meta", tags=["meta"], include_in_schema=False)
+def meta_legacy():
+    return meta()
+
+
+@app.get(settings.api_v1 + "/health", tags=["meta"])
 def health():
     return {"ok": True, "project": settings.project_name}
+
+
+@app.get(settings.api_legacy + "/health", tags=["meta"], include_in_schema=False)
+def health_legacy():
+    return health()
 
 
 # ── 静态站点托管 ────────────────────────────────────────────────────────────

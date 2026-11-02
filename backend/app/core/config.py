@@ -14,11 +14,20 @@ class Settings(BaseSettings):
                                       extra="ignore")
 
     project_name: str = "RoboWiki"
-    api_v1: str = "/api"
+    #: 规范前缀；/api 作为旧客户端别名保留（不计入 OpenAPI）
+    api_v1: str = "/api/v1"
+    api_legacy: str = "/api"
 
-    #: 种子 JSON 目录（仓库根的 data/）
+    #: 种子 JSON 目录（仓库根的 data/；拆分后由核心仓 release 提供）
     data_dir: pathlib.Path = ROOT / "data"
+    schema_dir: pathlib.Path = ROOT / "schema"
+    data_version: str = "dev"
+    #: 开发/测试可自动建表；生产由 Alembic 迁移，设为 false
+    auto_create_tables: bool = True
     db_path: pathlib.Path = ROOT / "robowiki.db"
+
+    #: 生产用 ROBOWIKI_DATABASE_URL=postgresql+psycopg://...
+    database_url: str | None = None
 
     #: 生产必须覆盖：ROBOWIKI_SECRET_KEY=...（≥32 字节，否则 PyJWT 会告警）
     secret_key: str = "dev-only-change-me-please-set-ROBOWIKI_SECRET_KEY"
@@ -36,8 +45,8 @@ class Settings(BaseSettings):
     rate_max_comments: int = 40
 
     @property
-    def database_url(self) -> str:
-        return f"sqlite:///{self.db_path}"
+    def sqlalchemy_url(self) -> str:
+        return self.database_url or f"sqlite:///{self.db_path}"
 
 
 settings = Settings()

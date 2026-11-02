@@ -1,0 +1,23 @@
+# RoboWiki 单机入口：静态由 Caddy 直出，API/控制台/MCP 反代到 FastAPI。
+# 主域与 TLS 由 SITE_DOMAIN 控制；本地不设时用 localhost。
+{$SITE_DOMAIN:localhost} {
+	encode zstd gzip
+
+	handle /api/* {
+		reverse_proxy api:8000
+	}
+
+	handle /mcp/* {
+		reverse_proxy api:8000
+	}
+
+	handle /console/* {
+		reverse_proxy api:8000
+	}
+
+	handle {
+		root * /srv
+		try_files {path} {path}.html {path}/index.html /404.html
+		file_server
+	}
+}

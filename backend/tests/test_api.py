@@ -302,3 +302,28 @@ def test_site_root_is_the_wiki(client):
 
 def test_api_unknown_path_404(client):
     assert client.get("/api/nope").status_code == 404
+
+
+# ── v1 契约 ─────────────────────────────────────────────────────────────────
+def test_api_v1_meta_and_release_header(client):
+    r = client.get("/api/v1/meta")
+    assert r.status_code == 200
+    d = r.json()
+    assert d["api_version"] == "v1"
+    assert "data_version" in d
+    assert r.headers["X-RoboWiki-API-Version"] == "v1"
+    assert r.headers["X-RoboWiki-Data-Version"] == d["data_version"]
+
+
+def test_api_legacy_alias_still_works(client):
+    assert client.get("/api/meta").json()["api_version"] == "v1"
+    assert client.get("/api/parts", params={"limit": 1}).status_code == 200
+
+
+def test_public_part_hides_internal_fields(client):
+    d = client.get("/api/v1/parts", params={"category": "actuator", "limit": 1}).json()
+    assert d["items"]
+    item = d["items"][0]
+    assert "source_tier" in item
+    for internal in ("origin", "search"):
+        assert internal not in item

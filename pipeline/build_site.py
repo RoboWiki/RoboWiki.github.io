@@ -13,6 +13,7 @@ from __future__ import annotations
 import hashlib
 import html
 import json
+import os
 import pathlib
 import re
 import shutil
@@ -38,6 +39,7 @@ from .build_home import build as build_home
 from .build_competitions import build as build_competitions
 from .build_robots import build as build_robots
 from .build_software import build as build_software
+from .build_share import build as build_share
 from .contrib_page import build as build_contributors
 from .load import cat_dims, load_taxonomy, vendor_slug
 
@@ -485,7 +487,18 @@ def part_description(r: dict) -> str:
 
 #: 站点对外域名（organization pages，站点在域名根）。canonical 与旧 URL 跳转页都要
 #: 绝对地址，而 base 可被 WIKI_BASE 改成子路径（自托管），所以不能从 base 推。
-SITE_URL = "https://robowiki.github.io"
+SITE_URL = os.environ.get("ROBOWIKI_SITE_URL", "https://robowiki.github.io").rstrip("/")
+
+
+def _data_version() -> str:
+    env = os.environ.get("ROBOWIKI_DATA_VERSION")
+    if env:
+        return env
+    try:
+        lock = json.loads((ROOT / "data.lock.json").read_text(encoding="utf-8"))
+        return lock.get("data_version") or "dev"
+    except Exception:
+        return "dev"
 
 #: 旧型号页 URL → 现在的型号页。
 #:
@@ -818,6 +831,9 @@ def main() -> None:
     HREF.clear()
     for r in rows:
         HREF[r["id"]] = f'/parts/{r["category"]}/{slugs[r["id"]]}'
+
+    n_share = build_share(rows, slugs, OUT, SITE_URL, _data_version())
+    print(f"  分享卡 {n_share} 条 -> public/share")
 
     # ── 静态目录快照：让静态站也能做交互式检索 ────────────────────────
     # 数据本来就是静态的（data/*.json），排序 / 筛选 / 搜索都是客户端计算，

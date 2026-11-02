@@ -57,7 +57,7 @@ def export_draft(
     else:
         rows = db.exec(select(Part).where(
             Part.category == "actuator",
-            func.json_extract(Part.specs, "$.armature_kgm2").isnot(None),
+            Part.specs["armature_kgm2"].as_string().isnot(None),
         ).order_by(Part.vendor, Part.model)).all()
 
     yaml_rows, mjcf = [], []

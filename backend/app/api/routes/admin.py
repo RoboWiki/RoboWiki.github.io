@@ -105,9 +105,9 @@ def admin_stats(user: CurrentUser, db: Db):
         return int(db.exec(stmt).one())
 
     is_act = Part.category == "actuator"
-    no_rated_spec = func.json_extract(Part.specs, "$.tau_rated_Nm").is_(None)
-    no_arm_spec = func.json_extract(Part.specs, "$.armature_kgm2").is_(None)
-    no_img_spec = func.json_extract(Part.specs, "$.image_url").is_(None)
+    no_rated_spec = Part.specs["tau_rated_Nm"].as_string().is_(None)
+    no_arm_spec = Part.specs["armature_kgm2"].as_string().is_(None)
+    no_img_spec = Part.specs["image_url"].as_string().is_(None)
 
     total = count(Part.id > "")
     act_total = count(is_act)
@@ -153,16 +153,16 @@ def admin_parts(
     if q:
         stmt = stmt.where(Part.search.contains(q.lower()))
     if gap == "no_image":
-        stmt = stmt.where(func.json_extract(Part.specs, "$.image_url").is_(None))
+        stmt = stmt.where(Part.specs["image_url"].as_string().is_(None))
     elif gap == "no_url":
         stmt = stmt.where(Part.url.is_(None))
     elif gap == "no_armature":
         # 这两个字段只对执行器有意义，筛选时也必须同口径，否则会混进 41 个主控/传感器
         stmt = stmt.where(Part.category == "actuator",
-                          func.json_extract(Part.specs, "$.armature_kgm2").is_(None))
+                          Part.specs["armature_kgm2"].as_string().is_(None))
     elif gap == "no_rated":
         stmt = stmt.where(Part.category == "actuator",
-                          func.json_extract(Part.specs, "$.tau_rated_Nm").is_(None))
+                          Part.specs["tau_rated_Nm"].as_string().is_(None))
     elif gap == "no_price":
         stmt = stmt.where(Part.price_cny.is_(None))
     elif gap == "unverified":
