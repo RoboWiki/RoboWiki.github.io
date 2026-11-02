@@ -1,0 +1,85 @@
+name: robowiki
+
+x-api-env: &api-env
+  ROBOWIKI_DATABASE_URL: postgresql+psycopg://robowiki:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}@db:5432/robowiki
+  ROBOWIKI_DATA_DIR: /data
+  ROBOWIKI_SCHEMA_DIR: /schema
+  ROBOWIKI_DATA_VERSION: ${DATA_VERSION:-dev}
+  ROBOWIKI_AUTO_CREATE_TABLES: "false"
+  ROBOWIKI_SECRET_KEY: ${SECRET_KEY:?set SECRET_KEY (>=32 bytes)}
+  ROBOWIKI_CORS_ORIGINS: '${CORS_ORIGINS:-["http://localhost:5173"]}'
+
+services:
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN:-localhost}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ${STATIC_DIR:-../wiki/docs/.vitepress/dist}:/srv:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      api:
+        condition: service_started
+
+  api:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.api
+    image: robowiki/api:${TAG:-dev}
+    restart: unless-stopped
+    environment:
+      <<: *api-env
+    volumes:
+      - ${DATA_DIR:-../.data/data}:/data:ro
+      - ${SCHEMA_DIR:-../.data/schema}:/schema:ro
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/health', timeout=2)"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  migrate:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.api
+    image: robowiki/api:${TAG:-dev}
+    environment:
+      <<: *api-env
+    command: ["alembic", "upgrade", "head"]
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: robowiki
+      POSTGRES_USER: robowiki
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U robowiki -d robowiki"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+volumes:
+  pgdata:
+  caddy_data:
+  caddy_config:

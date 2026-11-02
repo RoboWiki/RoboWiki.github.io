@@ -159,6 +159,34 @@ def part_out(p: Part, viewer: bool = False) -> dict:
     }
 
 
+def public_part(p: Part) -> dict:
+    """对外白名单投影。
+
+    内部字段（search / origin / 编辑备注）不进入公开 API；字段只增不删，
+    破坏性变更走 /api/v2。
+    """
+    return {
+        "id": p.id,
+        "category": p.category,
+        "category_label": CATEGORY_LABELS.get(p.category, p.category),
+        "subtype": p.subtype,
+        "subtype_label": subtype_label(p.category, p.subtype),
+        "vendor": p.vendor,
+        "vendor_cn": p.vendor_cn,
+        "model": p.model,
+        "title": p.title,
+        "url": p.url,
+        "source_tier": p.source_tier,
+        "verified": p.verified,
+        "last_checked": p.last_checked,
+        "price_cny": p.price_cny,
+        "specs": p.specs,
+        "derived": derive(p.specs),
+        "notes": p.notes,
+        "image_url": (p.specs or {}).get("image_url"),
+    }
+
+
 def _attach_reviews(db, items: list[dict]) -> None:
     """给一页零件挂上「最高赞评价」与评价统计（一次查询，不 N+1）。"""
     ids = [i["id"] for i in items]
@@ -258,7 +286,7 @@ def list_parts(
     if q:
         stmt = stmt.where(Part.search.contains(q.lower()))
     if has_armature:
-        stmt = stmt.where(func.json_extract(Part.specs, "$.armature_kgm2").isnot(None))
+        stmt = stmt.where(Part.specs["armature_kgm2"].as_string().isnot(None))
     if in_stock:
         stmt = stmt.where(Part.price_cny.isnot(None))
 
@@ -276,13 +304,13 @@ def list_parts(
         stmt = stmt.order_by(col.is_(None), col.desc() if order == "desc" else col.asc(),
                              Part.vendor, Part.model)
     else:
-        col = func.json_extract(Part.specs, f"$.{SORTABLE[key]}")
+        col = Part.specs[SORTABLE[key]].as_float()
         # NULL 永远排最后，两个方向一致
         stmt = stmt.order_by(col.is_(None), col.desc() if order == "desc" else col.asc(),
                              Part.vendor, Part.model)
     stmt = stmt.offset(offset).limit(limit)
 
-    items = [part_out(p) for p in db.exec(stmt).all()]
+    items = [public_part(p) for p in db.exec(stmt).all()]
     _attach_reviews(db, items)
     return {"total": int(total), "limit": limit, "offset": offset,
             "sort": key, "order": order, "items": items}
@@ -297,7 +325,7 @@ def get_part(part_id: str, db: Db, user: MaybeUser):
                                          | (Offer.part_id.is_(None)))).all()
     posts = db.exec(select(Post).where(Post.part_id == part_id)
                     .order_by(Post.pinned.desc(), Post.created_at.desc()).limit(50)).all()
-    out = part_out(p)
+    out = public_part(p)
     out["offers"] = [{"id": o.id, "kind": o.kind, "title": o.title,
                       "detail": o.detail, "url": o.url, "vendor": o.vendor,
                       "expires_on": o.expires_on, "demo": o.demo} for o in offers]
@@ -310,9 +338,9 @@ def get_part(part_id: str, db: Db, user: MaybeUser):
 def stats(db: Db):
     n = int(db.exec(select(func.count(Part.id))).one())
     arm = int(db.exec(select(func.count(Part.id)).where(
-        func.json_extract(Part.specs, "$.armature_kgm2").isnot(None))).one())
+        Part.specs["armature_kgm2"].as_string().isnot(None))).one())
     rated = int(db.exec(select(func.count(Part.id)).where(
-        func.json_extract(Part.specs, "$.tau_rated_Nm").isnot(None))).one())
+        Part.specs["tau_rated_Nm"].as_string().isnot(None))).one())
     priced = int(db.exec(select(func.count(Part.id)).where(
         Part.price_cny.isnot(None))).one())
     from ...models import Comment, User

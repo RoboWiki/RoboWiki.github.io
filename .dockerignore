@@ -1,0 +1,14 @@
+.git
+.github
+.pytest_cache
+__pycache__
+*.pyc
+wiki/node_modules
+wiki/docs/.vitepress/dist
+wiki/docs/.vitepress/cache
+console/node_modules
+console/dist
+.data
+deploy/backup/*.dump
+backups
+*.log

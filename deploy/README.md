@@ -1,0 +1,53 @@
+# RoboWiki 容器部署
+
+一套 Compose：Caddy（静态 + TLS + 反代）+ FastAPI + Postgres + 一次性迁移。
+数据与静态都不进镜像，换机器只换环境。
+
+## 首次启动
+
+```bash
+cd deploy
+cp .env.example .env
+# 改 POSTGRES_PASSWORD / SECRET_KEY / SITE_DOMAIN
+
+# 1) 取核心仓数据 release（在仓库根执行）
+bash ../scripts/fetch-data-release.sh
+
+# 2) 构建静态站（在 wiki/ 执行）
+cd ../wiki && npm ci && npm run build && cd ../deploy
+
+# 3) 起服务（migrate 会先跑完，api 再启动）
+docker compose up -d --build
+curl -fsS http://localhost/api/v1/health
+```
+
+## 常用
+
+```bash
+docker compose ps
+docker compose logs -f api
+docker compose run --rm migrate          # 手动迁移
+bash backup/backup.sh                    # pg_dump 到 deploy/backup/
+docker compose down                      # 停服务，保留卷
+```
+
+## 换机器
+
+```bash
+# 旧机
+bash deploy/backup/backup.sh
+# 新机
+docker compose up -d --build
+docker compose exec -T db pg_restore -U robowiki -d robowiki --clean --if-exists < backup/xxx.dump
+docker compose restart api
+```
+
+静态站与数据 release 分别从 OSS/CDN、核心仓 release 同步；不依赖服务器上的源码构建。
+
+## 边界
+
+- `pgdata`、`media`、`caddy_data` 是命名卷；不要 `down -v`。
+- 静态目录由 `STATIC_DIR` 指定，默认 `../wiki/docs/.vitepress/dist`。
+- 数据目录由 `DATA_DIR` / `SCHEMA_DIR` 指定，默认 `../.data/...`。
+- 生产用自有域名 + HTTPS；Caddy 自动申请证书。
+- 不在服务器上 `npm install` / `pip install` 跑生产；镜像由 CI 构建。

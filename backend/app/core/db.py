@@ -17,11 +17,9 @@ def engine():
     global _engine
     if _engine is None:
         settings.db_path.parent.mkdir(parents=True, exist_ok=True)
-        _engine = create_engine(
-            settings.database_url,
-            connect_args={"check_same_thread": False},
-            pool_pre_ping=True,
-        )
+        url = settings.sqlalchemy_url
+        connect_args = {"check_same_thread": False} if url.startswith("sqlite") else {}
+        _engine = create_engine(url, connect_args=connect_args, pool_pre_ping=True)
     return _engine
 
 
