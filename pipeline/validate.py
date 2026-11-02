@@ -49,7 +49,7 @@ def check_id_registry(root: Path, rows: list[dict]) -> list[str]:
 
     口径与 tools/id_registry.py:check() 必须一致：那边是操作入口，这边是数据闸门。
     """
-    reg_path = root / "data" / "_id_registry.json"
+    reg_path = DATA_DIR / "_id_registry.json"
     if not reg_path.exists():
         return ["ID 注册表不存在：data/_id_registry.json（跑 tools/id_registry.py）"]
     reg = json.loads(reg_path.read_text(encoding="utf-8"))

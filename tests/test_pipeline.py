@@ -22,8 +22,9 @@ import sys
 import pytest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-DATA = ROOT / "data"
 sys.path.insert(0, str(ROOT))
+from pipeline.paths import DATA_DIR, SCHEMA_DIR  # noqa: E402
+DATA = DATA_DIR
 
 
 def run(mod: str, *args: str) -> subprocess.CompletedProcess:
@@ -88,7 +89,7 @@ def test_loader_prefers_catalog_dir():
     # 品类白名单从 schema 读，而不是在测试里抄一份 —— 抄一份的后果就是
     # 新增品类时这里先红，而真正该拦的是 schema 与闸门。
     allowed = set(json.loads(
-        (ROOT / "schema" / "part.schema.json").read_text(encoding="utf-8")
+        (SCHEMA_DIR / "part.schema.json").read_text(encoding="utf-8")
     )["properties"]["category"]["enum"])
     cats = {r["category"] for r in rows}
     assert cats <= allowed, f"出现 schema 未定义的品类：{cats - allowed}"

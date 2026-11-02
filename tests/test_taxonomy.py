@@ -13,6 +13,7 @@ import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from pipeline.paths import DATA_DIR, SCHEMA_DIR  # noqa: E402
 
 from pipeline.load import (  # noqa: E402
     cat_labels, load_parts, load_taxonomy, vendor_slug,
@@ -23,7 +24,7 @@ def test_taxonomy_categories_match_schema_enum():
     """注册表的品类 == schema 允许的品类。两者不一致时，闸门和表单会各说各话。"""
     tax = {c["id"] for c in load_taxonomy()["categories"]}
     enum = set(json.loads(
-        (ROOT / "schema" / "part.schema.json").read_text(encoding="utf-8")
+        (SCHEMA_DIR / "part.schema.json").read_text(encoding="utf-8")
     )["properties"]["category"]["enum"])
     assert tax == enum, f"只在注册表: {tax - enum}；只在 schema: {enum - tax}"
 
@@ -80,7 +81,7 @@ def test_featured_ids_exist():
     from pipeline.load import load_parts
 
     feat = json.loads(
-        (ROOT / "data" / "featured.json").read_text(encoding="utf-8"))
+        (DATA_DIR / "featured.json").read_text(encoding="utf-8"))
     ids = set(feat.get("ids") or [])
     have = {r["id"] for r in load_parts()}
     ghost = sorted(ids - have)

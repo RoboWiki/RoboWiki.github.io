@@ -10,6 +10,8 @@
 """
 from __future__ import annotations
 
+from .paths import DATA_DIR
+
 import json
 import pathlib
 
@@ -106,13 +108,13 @@ outline: false
 
 
 def build(root: pathlib.Path, out_dir: pathlib.Path, pub_dir: pathlib.Path) -> None:
-    snap_path = root / "data" / "contributors_snapshot.json"
+    snap_path = DATA_DIR / "contributors_snapshot.json"
     snap = json.loads(snap_path.read_text(encoding="utf-8")) if snap_path.exists() else {
         "repo": "RoboWiki/RoboWiki.github.io", "source": "—", "updated_at": "—",
         "total": 0, "total_contributions": 0, "contributors": []}
     pub_dir.mkdir(parents=True, exist_ok=True)
 
-    rows_path = root / "data" / "contributors.json"
+    rows_path = DATA_DIR / "contributors.json"
     rows = json.loads(rows_path.read_text(encoding="utf-8")) if rows_path.exists() else []
 
     # 把手工名单里的角色合进快照：卡片要显示「创始贡献者 / 维护者」

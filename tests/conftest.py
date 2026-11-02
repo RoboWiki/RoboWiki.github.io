@@ -7,6 +7,7 @@
 """
 from __future__ import annotations
 
+import os
 import pathlib
 import shutil
 import tempfile
@@ -15,6 +16,22 @@ import pytest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 _TMP = ROOT / ".pytest-tmp"
+
+# 站点仓不再保存 data/schema/assets；测试指向 .data（CI 下载）或同级核心仓。
+_CORE = ROOT.parent / "robowiki-core"
+_DATA = ROOT / ".data" / "data"
+if not _DATA.exists() and (_CORE / "data").exists():
+    _DATA = _CORE / "data"
+_SCHEMA = ROOT / ".data" / "schema"
+if not _SCHEMA.exists() and (_CORE / "schema").exists():
+    _SCHEMA = _CORE / "schema"
+_ASSETS = ROOT / ".data" / "assets" / "parts"
+if not _ASSETS.exists() and (_CORE / "assets" / "parts").exists():
+    _ASSETS = _CORE / "assets" / "parts"
+
+os.environ.setdefault("ROBOWIKI_DATA_DIR", str(_DATA))
+os.environ.setdefault("ROBOWIKI_SCHEMA_DIR", str(_SCHEMA))
+os.environ.setdefault("ROBOWIKI_ASSETS_DIR", str(_ASSETS))
 
 
 @pytest.fixture()

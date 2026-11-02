@@ -28,7 +28,8 @@ import types
 import pytest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-SEMANTICS_JSON = ROOT / "schema" / "semantics.json"
+from pipeline.paths import SCHEMA_DIR
+SEMANTICS_JSON = SCHEMA_DIR / "semantics.json"
 BACKEND_SEMANTICS = ROOT / "backend" / "app" / "api" / "routes" / "semantics.py"
 BUILD_SITE = ROOT / "pipeline" / "build_site.py"
 VALIDATE = ROOT / "pipeline" / "validate.py"
@@ -212,9 +213,11 @@ def test_backend_reports_missing_key_clearly(tmp_path):
     assert "trinary" in str(exc.value)
 
 
-def test_backend_search_fails_loudly_outside_repo():
+def test_backend_search_fails_loudly_outside_repo(monkeypatch):
     """向上找不到 JSON 时给可执行说明 —— 顺带证明路径解析不是写死下标。"""
     module = _load_backend_semantics("_semantics_search_under_test")
+    # 模块导入需要 schema；导入后再清掉 env，验证「没有 env 且向上找不到」的失败路径
+    monkeypatch.delenv("ROBOWIKI_SCHEMA_DIR", raising=False)
     # 仓库内的任何临时目录都会向上撞到 schema/，所以探针放到仓库外层
     probe_root = pathlib.Path(tempfile.mkdtemp(prefix="sem-probe-", dir=str(ROOT.parent)))
     try:

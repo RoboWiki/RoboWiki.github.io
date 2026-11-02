@@ -194,6 +194,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: 取锁定数据
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/fetch-data-release.sh
       - run: pip install "pydantic>=2.9"
       - name: 校验目录数据
         run: python -m pipeline validate
@@ -203,10 +207,11 @@ jobs:
           python - <<'PY'
           import json, pathlib, sys
           from jsonschema import Draft7Validator
-          sch = json.loads(pathlib.Path('schema/part.schema.json').read_text(encoding='utf-8'))
+          from pipeline.paths import DATA_DIR, SCHEMA_DIR
+          sch = json.loads((SCHEMA_DIR / 'part.schema.json').read_text(encoding='utf-8'))
           v = Draft7Validator(sch)
           bad = 0
-          for f in sorted(pathlib.Path('data/catalog').glob('*/*.json')):
+          for f in sorted((DATA_DIR / 'catalog').glob('*/*.json')):
               for r in json.loads(f.read_text(encoding='utf-8')):
                   errs = list(v.iter_errors(r))
                   if errs:
@@ -215,27 +220,6 @@ jobs:
           print('schema 不符:', bad)
           sys.exit(1 if bad else 0)
           PY
-
-  # ── data 层：只跑跟数据有关的测试（不装后端、不跑前端）───────────────────
-  # 为什么是这两个文件：它们全部只读 data/ 与 schema/，
-  # 覆盖「id 未登记 / 已登记 id 消失 / 图片没出处 / 品类与 schema enum 不一致」这些
-  # 数据 PR 真会踩的坑；test_pipeline.py 会 subprocess 跑整个 build_site，属于 pipeline 层。
-  test_data:
-    name: 数据测试
-    needs: [changes]
-    if: needs.changes.outputs.full == 'true' || needs.changes.outputs.data == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - run: pip install "pydantic>=2.9" pytest
-      - name: 数据治理 + 品类注册表
-        run: |
-          python -m pytest tests/test_data_governance.py tests/test_taxonomy.py
-      - name: 永久 ID 注册表
-        run: python tools/id_registry.py --check
 
   # ── pipeline 层：全量 pytest（pyproject 的 testpaths 含 backend/tests）─────
   # pipeline/ 一改，构建链和 API 都可能被带到，所以这里是「宁可慢」的那一档。
@@ -249,6 +233,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: 取锁定数据
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/fetch-data-release.sh
       - run: |
           pip install "pydantic>=2.9" pytest httpx
           pip install -r backend/requirements.txt
@@ -267,6 +255,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: 取锁定数据
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/fetch-data-release.sh
       - run: |
           pip install "pydantic>=2.9" pytest httpx
           pip install -r backend/requirements.txt
@@ -296,6 +288,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: 取锁定数据
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/fetch-data-release.sh
       - uses: actions/setup-node@v4
         if: env.DO_SITE == 'true'
         with:
@@ -334,7 +330,7 @@ jobs:
   # skipped 视为「这一层没被触发」= 通过；「输出缺失」不能当跳过放行。
   gate:
     name: pr-gate
-    needs: [changes, validate, test_data, test, backend, build, console]
+    needs: [changes, validate, test, backend, build, console]
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -349,7 +345,6 @@ jobs:
           BACKEND: ${{ needs.changes.outputs.backend }}
           R_CHANGES: ${{ needs.changes.result }}
           R_VALIDATE: ${{ needs.validate.result }}
-          R_TEST_DATA: ${{ needs.test_data.result }}
           R_TEST: ${{ needs.test.result }}
           R_BACKEND: ${{ needs.backend.result }}
           R_BUILD: ${{ needs.build.result }}
@@ -385,7 +380,6 @@ jobs:
           done <<EOF
           changes|$R_CHANGES
           validate|$R_VALIDATE
-          test_data|$R_TEST_DATA
           test|$R_TEST
           backend|$R_BACKEND
           build|$R_BUILD

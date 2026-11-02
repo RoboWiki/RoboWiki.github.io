@@ -11,13 +11,14 @@ GM6020 ±3 A（编码 16384）、达妙 MIT ±10.261194 A。
 from __future__ import annotations
 
 import json
-import pathlib
 
 from fastapi import APIRouter, HTTPException
 
+from app.core.config import settings
+
 router = APIRouter(tags=["protocols"])
 
-_DATA = pathlib.Path(__file__).resolve().parents[4] / "data" / "protocols.json"
+_DATA = settings.data_dir / "protocols.json"
 _cache: dict | None = None
 
 

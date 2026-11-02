@@ -19,12 +19,14 @@
 """
 from __future__ import annotations
 
+from .paths import DATA_DIR
+
 import json
 import pathlib
 
 
 def _count_software(root: pathlib.Path) -> int:
-    f = root / "data" / "software.json"
+    f = DATA_DIR / "software.json"
     if not f.exists():
         return 0
     try:
@@ -35,7 +37,7 @@ def _count_software(root: pathlib.Path) -> int:
 
 def _eco_ids(root: pathlib.Path) -> set:
     """有开源生态条目的 ecosystem_id 集合（与 build_robots 的 _eco 同源）。"""
-    f = root / "data" / "robot_ecosystem.json"
+    f = DATA_DIR / "robot_ecosystem.json"
     if not f.exists():
         return set()
     try:
@@ -47,13 +49,13 @@ def _eco_ids(root: pathlib.Path) -> set:
 
 def _counts(root: pathlib.Path) -> dict:
     rows = []
-    for f in (root / "data" / "catalog").glob("*/*.json"):
+    for f in (DATA_DIR / "catalog").glob("*/*.json"):
         rows += json.loads(f.read_text(encoding="utf-8"))
     robots = 0
     robots_with_eco = 0
     robots_with_links = 0
     eco_ids = _eco_ids(root)
-    for f in (root / "data" / "robots").glob("*.json"):
+    for f in (DATA_DIR / "robots").glob("*.json"):
         data = json.loads(f.read_text(encoding="utf-8"))
         robots += len(data)
         robots_with_eco += sum(
@@ -64,10 +66,10 @@ def _counts(root: pathlib.Path) -> dict:
             if ((r.get("specs") or {}).get("urdf_urls")
                 or (r.get("specs") or {}).get("repo_urls")))
     try:
-        sups = len(json.loads((root / "data" / "suppliers.json").read_text(encoding="utf-8")))
+        sups = len(json.loads((DATA_DIR / "suppliers.json").read_text(encoding="utf-8")))
     except Exception:
         sups = 0
-    tax = json.loads((root / "data" / "taxonomy.json").read_text(encoding="utf-8"))
+    tax = json.loads((DATA_DIR / "taxonomy.json").read_text(encoding="utf-8"))
     cats = tax.get("categories") or []
     return {
         "parts": len(rows),

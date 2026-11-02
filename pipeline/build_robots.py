@@ -10,6 +10,8 @@ URDF：ccc 分支带来的最实用字段。按你的要求**先留接口不接�
 """
 from __future__ import annotations
 
+from .paths import DATA_DIR
+
 import html
 import json
 import pathlib
@@ -54,7 +56,7 @@ ROLE_ORDER = ["官方项目", "官方描述/资产", "官方 SDK", "仿真", "�
 
 
 def _eco(root: pathlib.Path) -> dict:
-    f = root / "data" / "robot_ecosystem.json"
+    f = DATA_DIR / "robot_ecosystem.json"
     if not f.exists():
         return {}
     try:
@@ -169,7 +171,7 @@ def _cards(rows: list[dict]) -> str:
 
 
 def build(root: pathlib.Path, out: pathlib.Path, pub: pathlib.Path) -> None:
-    src = root / "data" / "robots"
+    src = DATA_DIR / "robots"
     rows: list[dict] = []
     if src.exists():
         for f in sorted(src.glob("*.json")):

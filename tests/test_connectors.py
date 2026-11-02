@@ -13,6 +13,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from pipeline.paths import SCHEMA_DIR  # noqa: E402
 
 from pipeline.load import load_parts, load_taxonomy  # noqa: E402
 
@@ -47,7 +48,7 @@ def test_connector_category_replaces_wiring():
     assert "wiring" not in cats, "旧的 wiring 品类还在"
     assert cats["connector"]["name"] == "连接器"
     enum = set(json.loads(
-        (ROOT / "schema" / "part.schema.json").read_text(encoding="utf-8")
+        (SCHEMA_DIR / "part.schema.json").read_text(encoding="utf-8")
     )["properties"]["category"]["enum"])
     assert "connector" in enum, "schema 还没允许 connector"
     assert "wiring" not in enum, "schema 还允许旧的 wiring"

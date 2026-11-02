@@ -8,6 +8,8 @@
 """
 from __future__ import annotations
 
+from .paths import DATA_DIR
+
 import json
 import pathlib
 
@@ -49,7 +51,7 @@ def _pick_html() -> str:
 
 
 def build(out: pathlib.Path, root: pathlib.Path) -> None:
-    data = json.loads((root / "data" / "software.json").read_text(encoding="utf-8"))
+    data = json.loads((DATA_DIR / "software.json").read_text(encoding="utf-8"))
     items = data["items"]
     groups = data["groups"]
 

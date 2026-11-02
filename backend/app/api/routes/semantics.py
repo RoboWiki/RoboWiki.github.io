@@ -13,6 +13,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 from fastapi import APIRouter
@@ -41,6 +42,12 @@ def _find_semantics_file(start: Path | None = None) -> Path:
     原先的 `parents[4]` 正好落在仓库根上，是对的；但它只是「当前布局恰好对」，
     不是「布局变了还对」。
     """
+    env_dir = os.environ.get("ROBOWIKI_SCHEMA_DIR")
+    if env_dir:
+        candidate = Path(env_dir) / "semantics.json"
+        if candidate.is_file():
+            return candidate
+
     here = Path(__file__).resolve() if start is None else Path(start).resolve()
     for base in here.parents:
         candidate = base / "schema" / "semantics.json"
@@ -51,7 +58,7 @@ def _find_semantics_file(start: Path | None = None) -> Path:
         f"  查找起点：{here}\n"
         "  已从该位置逐级向上查找 schema/semantics.json，全部未命中。\n"
         "这份 JSON 是静态站 / FastAPI / MCP 共用的唯一事实源，缺了不该启动。\n"
-        "  排查：① backend/ 和 schema/ 是否在同一个仓库根下（ADR-002 单仓）；"
+        "  排查：① 拆分后请设置 ROBOWIKI_SCHEMA_DIR 指向核心仓 release 的 schema/；"
         "② 部署时是否只拷了 backend/；③ 参考 schema/semantics.README.md。"
     )
 
