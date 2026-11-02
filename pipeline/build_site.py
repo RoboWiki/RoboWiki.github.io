@@ -21,12 +21,12 @@ from datetime import date
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 try:
-    from .paths import DATA_DIR, SCHEMA_DIR
+    from .paths import ASSETS_DIR, DATA_DIR, SCHEMA_DIR
 except ImportError:  # 直接 python pipeline/xxx.py 时没有包上下文
     import sys
     from pathlib import Path as _Path
     sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
-    from pipeline.paths import DATA_DIR, SCHEMA_DIR
+    from pipeline.paths import ASSETS_DIR, DATA_DIR, SCHEMA_DIR
 DATA = DATA_DIR
 OUT = ROOT / "wiki" / "docs"
 
@@ -937,7 +937,7 @@ def main() -> None:
 
     # 产品图：从 console/public/parts 复制到文档站的 public。
     # 两站要能各自独立部署，所以不能靠相对路径引用另一棵树。
-    src_img = ROOT / "console" / "public" / "parts"
+    src_img = ASSETS_DIR
     dst_img = pub / "parts"
     copied = 0
     if src_img.exists():

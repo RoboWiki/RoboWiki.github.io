@@ -6,7 +6,7 @@
 
 产出（都在 --out 目录下）：
 
-    robowiki-data-<tag>.tar.gz   只含 data/ 与 schema/ 两个前缀
+    robowiki-data-<tag>.tar.gz   只含 data/、schema/ 与 assets/ 两个前缀
                                  （tag 自带 data- 前缀时剥掉，出 robowiki-data-2026.11.01.tar.gz）
     MANIFEST.json                口径指纹：条目数 + semantics 版本
     SHA256SUMS.txt               <sha256>  <文件名>（覆盖上面两个文件）
@@ -43,13 +43,13 @@ import tarfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-INCLUDE_ROOTS = ("data", "schema")
+INCLUDE_ROOTS = ("data", "schema", "assets")
 
 # 与 workflow 的 Release 说明保持同一句，避免两处措辞漂移
 MANIFEST_NOTE = "按版本引用数据时请一并记录本清单，便于回溯口径。"
 
 # Manifest 里与「口径/体量」有关的字段，自检时逐个比对
-COUNT_KEYS = ("parts", "robots", "software", "ids", "semantics_version")
+COUNT_KEYS = ("parts", "robots", "software", "ids", "semantics_version", "assets")
 
 TAG_RE = re.compile(r"^[0-9A-Za-z][0-9A-Za-z._-]{0,80}$")
 
@@ -167,12 +167,14 @@ def _counts_from(blobs: dict[str, bytes]) -> dict:
         except KeyError:
             raise SystemExit(f"缺少必要文件：{rel}（导出中断，先确认仓库完整）")
 
+    assets = sum(1 for rel in blobs if rel.startswith("assets/"))
     return {
         "parts": parts,
         "robots": robots,
         "software": len(need("data/software.json")["items"]),
         "ids": len(need("data/_id_registry.json")["ids"]),
         "semantics_version": need("schema/semantics.json")["version"],
+        "assets": assets,
     }
 
 
@@ -217,7 +219,7 @@ def sha256_of(path: Path) -> str:
 
 
 def verify(archive: Path, files: list[str], manifest: dict, sums: dict[str, str]) -> list[str]:
-    """把归档重新读一遍，验证「只含 data/ 与 schema/」且计数与 MANIFEST 一致。"""
+    """把归档重新读一遍，验证「只含 data/、schema/ 与 assets/」且计数与 MANIFEST 一致。"""
     problems: list[str] = []
     blobs: dict[str, bytes] = {}
     names: list[str] = []
@@ -225,8 +227,8 @@ def verify(archive: Path, files: list[str], manifest: dict, sums: dict[str, str]
     with tarfile.open(archive, "r:gz") as tar:
         for member in tar.getmembers():
             names.append(member.name)
-            if not member.name.startswith(("data/", "schema/")):
-                problems.append(f"归档里出现了 data/ 与 schema/ 之外的东西：{member.name}")
+            if not member.name.startswith(("data/", "schema/", "assets/")):
+                problems.append(f"归档里出现了 data/、schema/ 与 assets/ 之外的东西：{member.name}")
             handle = tar.extractfile(member)
             if handle is not None:
                 blobs[member.name] = handle.read()
@@ -267,7 +269,7 @@ def main(argv: list[str] | None = None) -> int:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
     parser = argparse.ArgumentParser(
-        description="导出 data/ + schema/ 为可 pin 的数据快照（tar.gz + MANIFEST + SHA256SUMS）",
+        description="导出 data/ + schema/ + assets/ 为可 pin 的数据快照（tar.gz + MANIFEST + SHA256SUMS）",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="产物别提交：dist/ 与 .tmp-data-export/ 已在 .gitignore 里。",
     )
@@ -346,7 +348,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"           · {item}", file=sys.stderr)
         return 1
 
-    print("[export] 自检通过：归档只含 data/ 与 schema/；MANIFEST 五项计数与归档内容一致")
+    print("[export] 自检通过：归档只含 data/、schema/ 与 assets/；MANIFEST 五项计数与归档内容一致")
     return 0
 
 
