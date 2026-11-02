@@ -26,6 +26,7 @@ const busy = ref(false)
 const error = ref('')
 const done = ref<number | null>(null)
 const mine = ref<Mine[]>([])
+const apiReady = ref<boolean | null>(null)
 
 const token = () => localStorage.getItem(TOKEN_KEY)
 
@@ -52,6 +53,10 @@ async function loadMine() {
 onMounted(async () => {
   entry.value = await findShareEntry(window.location.pathname)
   if (!entry.value) return
+  apiReady.value = await fetch(`${API}/health`, { signal: AbortSignal.timeout(3000) })
+    .then(r => r.ok)
+    .catch(() => false)
+  if (!apiReady.value) return
   detail.value = await fetch(withBase(entry.value.json)).then(r => r.ok ? r.json() : null).catch(() => null)
   if (token()) {
     me.value = await req<Me>('/auth/me').catch(() => {
@@ -60,6 +65,12 @@ onMounted(async () => {
     })
     await loadMine()
   }
+})
+
+const issueUrl = computed(() => {
+  if (!entry.value) return ''
+  const title = encodeURIComponent(`[数据纠错] ${entry.value.id}`)
+  return `https://github.com/RoboWiki/RoboWiki.github.io/issues/new?template=data-fix.yml&title=${title}`
 })
 
 const options = computed(() => {
@@ -164,6 +175,14 @@ function logout() {
       <span v-if="me">{{ me.display_name }}（{{ me.handle }}）· <a href="#" @click.prevent="logout">退出</a></span>
     </div>
 
+    <template v-if="apiReady === false">
+      <p class="rw-fix-text">
+        当前是只读镜像，登录与站内提交没有后端；可以到 GitHub 用表单纠错，维护者会转成提案。
+      </p>
+      <a class="rw-fix-alt" :href="issueUrl" target="_blank" rel="noopener">去 GitHub 提交纠错 ↗</a>
+    </template>
+
+    <template v-else>
     <template v-if="!me">
       <p class="rw-fix-text">
         登录后提交纠错，站务审核通过会转成 PR；合并并发布数据版本后页面才更新。
@@ -222,6 +241,7 @@ function logout() {
         <span>{{ s.created_at.slice(0, 10) }}</span>
       </div>
     </div>
+    </template>
   </section>
 </template>
 
@@ -309,6 +329,13 @@ function logout() {
   color: var(--vp-c-danger-1);
   font-size: 0.85rem;
   margin: 0.5rem 0 0;
+}
+.rw-fix-alt {
+  display: inline-block;
+  margin-top: 0.2rem;
+  font-size: 0.88rem;
+  color: var(--vp-c-brand-1);
+  font-weight: 600;
 }
 .rw-fix-mine {
   margin-top: 0.8rem;
