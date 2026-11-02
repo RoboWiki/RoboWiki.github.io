@@ -8,6 +8,7 @@
 
 | 时间 | 类型 | 分支 / 提交 | 修改内容 | 验证 |
 |---|---|---|---|---|
+| 23:01 | 数据 / 功能 | 数据仓 ccc_dt `5c578ac` / 站点 ccc `ff6bc30` | 贡献者页计数从冻结快照改为双仓全分支统计：`fetch_contributors.py` 同时统计站点仓与数据仓全部分支，按作者时间 + 标题去重；Dichen33 由 30 修正为 49（初始 20 + 29 次提交：站点 28、数据仓 13、重叠 12），全站 221→254，zeitvex 同口径 169→183；组件提示改为「初始 + 提交（双仓）」，`contributors.json` 加 `no-store` 防止缓存旧数字 | 核心仓 `pipeline validate` 通过、`pytest` 18 passed 1 skipped；`pipeline all` 贡献者 4 人 / 254 次；VitePress 构建 14.61s；页面实测 Dichen33 49 次、总 254、快照 2026-11-02 22:55，排序 183 / 49 / 20 / 2 |
 | 21:07 | 数据 / 图片 | 数据仓 ccc_dt `4f9a4cb` | 关节电机 18 个缺图 CubeMars 型号补齐官方产品图：13 张旧图换成官网 1000×780 原图、5 张新增；同步写入 `image_source` 与抓取日期；17 条误指 AK80-6 的 `url`/`doc_url` 改为各自型号产品页 | `pipeline validate` 通过（127 警告）、`id_registry --check` 通过、`pytest` 18 passed 1 skipped；按核心仓数据重建 `pipeline all` 通过（329 零件 / 424 图、506 页）、VitePress 构建 21.29s；19 个 CubeMars 型号页与厂商页图集图片引用齐全、图片 HTTP 200，全库关节电机 88/88 有图 |
 
 ## 2026-11-01
