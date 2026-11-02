@@ -6,15 +6,19 @@
 PY ?= python
 NPM ?= npm
 
-.PHONY: help validate build test site serve clean
+.PHONY: help data validate build test site serve clean
 
 help:
+	@echo "make data       下载 data.lock.json 锁定的核心仓数据")
 	@echo "make validate   数据闸门（PR 与 CI 的必过关）"
 	@echo "make build      生成站点内容与静态产物（catalog.json 等）"
 	@echo "make site       构建 VitePress 静态站点"
 	@echo "make test       pipeline + backend 全部测试"
 	@echo "make serve      本地起站点热更（5174）"
 	@echo "make clean      清掉生成物（wiki/docs/parts 与 public/catalog.json）"
+
+data:
+	bash scripts/fetch-data-release.sh
 
 validate:
 	$(PY) -m pipeline validate
@@ -31,7 +35,7 @@ site: build
 serve:
 	cd wiki && $(NPM) run dev
 
-# 只删「由 pipeline 生成」的东西，不碰 data/ 与图片
+# 只删「由 pipeline 生成」的东西，不碰核心仓数据与发布物
 clean:
 	rm -rf wiki/docs/parts wiki/docs/index.md wiki/docs/semantics.md wiki/docs/sources.md
 	rm -f wiki/docs/public/catalog.json wiki/docs/.vitepress/sidebar.json

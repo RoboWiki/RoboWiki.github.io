@@ -1,7 +1,7 @@
 {
   "data_version": "data-v2026.11.0",
   "schema_version": "1.1.0",
-  "source_repo": "RoboWiki/robowiki",
+  "source_repo": "RoboWiki/RoboWiki",
   "release_asset": "robowiki-data-v2026.11.0.tar.gz",
   "sha256": "be49a580bd70054d21f981dda57d3e6652aa6e41716ca92db29c3f067530f84c",
   "manifest_sha256": "2e0ac1e5282c7bd434c9ec91e89aa32969e3757968ccfa62bf2e0110768badf1",

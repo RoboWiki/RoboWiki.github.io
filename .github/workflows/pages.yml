@@ -1,6 +1,6 @@
 name: Deploy wiki to GitHub Pages
 
-# 站点只负责渲染：数据从核心仓 RoboWiki/robowiki 的锁定 release 取。
+# 站点只负责渲染：数据从核心仓 RoboWiki/RoboWiki 的锁定 release 取。
 # 不在站点仓保存 data/ schema/ 或产品图副本。
 on:
   push:
