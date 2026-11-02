@@ -15,6 +15,7 @@ import tempfile
 _TMP = tempfile.mkdtemp(prefix="roboselect-admin-")
 os.environ["ROBOWIKI_DB_PATH"] = str(pathlib.Path(_TMP) / "test.db")
 os.environ["ROBOWIKI_SECRET_KEY"] = "test-secret-key-at-least-32-bytes-long-0000"
+os.environ["ROBOWIKI_BOT_TOKEN"] = "test-bot-token"
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
@@ -102,33 +103,37 @@ def test_gap_filter_for_image_is_global(client):
     assert d["total"] == s["no_image"]
 
 
-# ── 改字段与留痕 ────────────────────────────────────────────────────────────
-def test_patch_writes_history_with_reason(client):
+# ── 改字段：只生成提案，不写目录 ────────────────────────────────────────────
+def test_patch_creates_submission_without_writing_catalog(client):
+    """后台 PATCH 不得再改 parts：目录只能由 release 写。"""
     h = staff(client)
     pid = "达妙-dm-dm-j4340-2ec-v1-1"
     before = client.get(f"/api/admin/parts/{pid}", headers=h).json()
-    n_before = len(before["history"])
+    old_rated = before["specs"]["tau_rated_Nm"]
 
     r = client.patch(f"/api/admin/parts/{pid}", headers=h, json={
         "changes": {"specs.tau_rated_Nm": 13.0},
         "note": "据达妙 DAMIAO-J4340-2EC V1.1 选型手册 p17 参数表，额定 12 N·m",
         "source_url": "https://www.damiao.tech/",
     })
-    assert r.status_code == 200
-    assert r.json()["changed"] == 1
+    assert r.status_code == 200, r.text
+    d = r.json()
+    assert d["changed"] == 2                 # 改动字段 + 刷新核对日期
+    assert d["status"] == "pending"
+    sid = d["submission_id"]
+    assert d["diff"][0]["field"] == "specs.tau_rated_Nm"
 
     after = client.get(f"/api/admin/parts/{pid}", headers=h).json()
-    assert after["specs"]["tau_rated_Nm"] == 13.0
-    assert len(after["history"]) == n_before + 1
+    assert after["specs"]["tau_rated_Nm"] == old_rated   # 目录未被写
 
-    h0 = after["history"][0]
-    assert h0["field"] == "specs.tau_rated_Nm"
-    assert h0["new_value"] == "13.0"
-    assert "源" in h0["note"] or "手册" in h0["note"]           # 依据留下来了
-    assert h0["source_url"].startswith("http")  # 来源也留下来了
-    assert h0["editor"] == "RoboWiki 编辑部"
-    # 改完自动打核对日期
-    assert after["last_checked"]
+    q = client.get("/api/v1/submissions/queue", headers=h).json()
+    mine = [s for s in q if s["id"] == sid]
+    assert mine and mine[0]["payload"]["specs.tau_rated_Nm"] == 13.0
+    assert mine[0]["payload"]["last_checked"]
+    assert mine[0]["evidence"]["source_url"] == "https://www.damiao.tech/"
+    assert mine[0]["evidence"]["preview"][0]["old_value"] == old_rated
+    assert mine[0]["evidence"]["preview"][0]["new_value"] == 13.0
+    assert any(s["submission_id"] == sid for s in after["proposals"])
 
 
 def test_patch_rejects_fields_outside_whitelist(client):
@@ -151,22 +156,33 @@ def test_patch_requires_a_reason(client):
 
 def test_patch_noop_returns_zero(client):
     h = staff(client)
-    r = client.patch("/api/admin/parts/达妙-dm-dm-j4340-2ec-v1-1", headers=h,
-                     json={"changes": {"specs.tau_rated_Nm": 13.0}, "note": "重复提交同值"})
+    pid = "达妙-dm-dm-j4340-2ec-v1-1"
+    cur = client.get(f"/api/admin/parts/{pid}", headers=h).json()["specs"]["mass_kg"]
+    r = client.patch(f"/api/admin/parts/{pid}", headers=h,
+                     json={"changes": {"specs.mass_kg": cur}, "note": "重复提交同值"})
     assert r.status_code == 200 and r.json()["changed"] == 0
+    assert "submission_id" not in r.json()
 
 
-def test_verify_marks_and_timestamps(client):
+def test_verify_creates_submission_instead_of_writing(client):
     h = staff(client)
-    r = client.post("/api/admin/parts/灵足-robstride-rs05/verify", headers=h)
-    assert r.status_code == 200
-    d = client.get("/api/admin/parts/灵足-robstride-rs05", headers=h).json()
-    assert d["verified"] is True
-    assert any(x["field"] == "verified" for x in d["history"])
+    gap = client.get("/api/admin/parts", params={"gap": "unverified", "limit": 1},
+                     headers=h).json()
+    pid = gap["items"][0]["id"]
+    r = client.post(f"/api/admin/parts/{pid}/verify", headers=h)
+    assert r.status_code == 200, r.text
+    sid = r.json()["submission_id"]
+    d = client.get(f"/api/admin/parts/{pid}", headers=h).json()
+    assert d["verified"] is False          # 未发布，目录不动
+    q = client.get("/api/v1/submissions/queue", headers=h).json()
+    mine = [s for s in q if s["id"] == sid]
+    assert mine and mine[0]["payload"]["verified"] is True
+    assert mine[0]["payload"]["last_checked"]
 
 
-def test_history_endpoint_lists_recent_edits(client):
+def test_history_endpoint_lists_proposals(client):
     h = staff(client)
     d = client.get("/api/admin/history?limit=10", headers=h).json()
     assert isinstance(d, list) and d
-    assert {"part_id", "field", "note", "editor"} <= set(d[0])
+    assert any(x["source"] == "proposal" for x in d)
+    assert {"part_id", "note", "editor", "status"} <= set(d[0])

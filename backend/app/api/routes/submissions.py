@@ -8,16 +8,13 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException, Request
 from sqlmodel import select
 
-from ...crud import user_out
+from ...catalog_fields import allowed
 from ...models import Outbox, Part, Submission, SubmissionReview, User
 from ...schemas import (OutboxOut, ReviewIn, ReviewOut, SubmissionIn,
                         SubmissionOut)
 from ..deps import CurrentUser, Db, MaybeUser, rate_limit
 
 router = APIRouter(prefix="/submissions", tags=["submissions"])
-
-TOP_FIELDS = {"price_cny", "url", "source_tier", "verified", "last_checked",
-              "notes", "title", "vendor", "vendor_cn", "model"}
 
 
 def _staff(user: User) -> None:
@@ -29,11 +26,7 @@ def _check_payload(payload: dict) -> None:
     if not payload:
         raise HTTPException(422, "payload 不能为空")
     for key in payload:
-        if key.startswith("specs."):
-            if len(key) <= len("specs."):
-                raise HTTPException(422, f"非法字段：{key}")
-            continue
-        if key not in TOP_FIELDS:
+        if not allowed(key):
             raise HTTPException(422, f"不允许通过提案修改字段：{key}")
 
 

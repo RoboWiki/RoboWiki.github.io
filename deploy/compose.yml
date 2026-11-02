@@ -8,6 +8,8 @@ x-api-env: &api-env
   ROBOWIKI_AUTO_CREATE_TABLES: "false"
   ROBOWIKI_SECRET_KEY: ${SECRET_KEY:?set SECRET_KEY (>=32 bytes)}
   ROBOWIKI_CORS_ORIGINS: '${CORS_ORIGINS:-["http://localhost:5173"]}'
+  ROBOWIKI_SITE_URL: ${SITE_URL:-https://robowiki.org}
+  ROBOWIKI_BOT_TOKEN: ${BOT_TOKEN:-}
 
 services:
   caddy:
@@ -62,7 +64,6 @@ services:
       db:
         condition: service_healthy
     restart: "no"
-
 
   worker:
     build:

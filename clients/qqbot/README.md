@@ -1,42 +1,53 @@
 # QQ 群机器人（参考实现）
 
-推荐用 **NoneBot2**（Python）或 **Koishi**（Node）承接 QQ 协议与事件；RoboWiki 只提供
-`/api/v1/bot/answer`，不自己实现 QQ 协议、不做 WebSocket 重连。
+协议、重连、事件与鉴权交给 **NoneBot2 + nonebot-adapter-qq**；RoboWiki 只提供
+`/api/v1/bot/answer`。机器人不自己实现 QQ 协议，也不读群文件或私聊。
 
 ## 行为
 
-- 只在被 `@` 时回答；不做主动推送（QQ 群主动消息 4 条/月）。
-- 只答高置信问题；答不上来说“不知道，建议问人”，并给站内链接。
-- 同一群 5 分钟内最多回 5 次；相同问题 30 分钟内不重复回答。
-- 回答固定格式：**一句结论 + 链接 + data_version**。
-- 不读取群文件、不读私聊、不把群聊内容回传为语料。
+- 只在群内被 `@` 时回答；不做主动推送（QQ 群主动消息 4 条/月）。
+- 回答固定格式：一句结论（型号 + 关键参数 + 来源等级）+ 链接 + `data_version`。
+- 查不到就明确说没找到，给目录链接，不编参数。
+- 不落群聊正文、不把聊天记录回传为语料；服务端只记录限流计数。
+
+## 运行
+
+```bash
+cd clients/qqbot
+python -m venv .venv && . .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env        # 填 QQ_BOTS 与 ROBOWIKI_BOT_TOKEN
+python bot.py
+```
+
+后端需设置同一个令牌：
+
+```bash
+ROBOWIKI_BOT_TOKEN=<随机长串>
+ROBOWIKI_SITE_URL=https://robowiki.org
+```
 
 ## 调用契约
 
 ```http
-GET /api/v1/bot/answer?q=4310+配+C620
+GET /api/v1/bot/answer?q=AK80-6
+X-Bot-Token: <token>
 ```
 
 ```json
 {
-  "answer": "4310 可用 48V，配 C620 需确认固件版本。",
-  "url": "https://robowiki.org/parts/actuator/damiao-dm-j4310-2ec-v1-2",
+  "found": true,
+  "answer": "CubeMars AK80-6 · 额定 6 N·m · 峰值 12 N·m · 48 V（来源 B·已核对）",
+  "url": "https://robowiki.org/parts/actuator/cubemars-ak80-6.html",
   "data_version": "data-v2026.11.0",
-  "confidence": "high"
+  "part": { "id": "cubemars-ak80-6", "model": "AK80-6" }
 }
 ```
 
-`confidence=low` 时机器人只回“没查到，建议问人”，不编。
-
-## 环境
-
-```bash
-ROBOWIKI_API=https://api.robowiki.org
-QQ_BOT_APP_ID=
-QQ_BOT_SECRET=
-```
+未配置 `ROBOWIKI_BOT_TOKEN` 时接口返回 503；令牌错误返回 401。
+接口只读、按 IP 限流，不写库，也不依赖用户登录。
 
 ## 为什么不是自写协议
 
-NoneBot2 / Koishi 已经处理登录、重连、事件、限流；自写一遍就是重复造轮子，而且
-QQ 侧协议变更频繁。机器人只做“把群消息转成一次 API 查询 + 把结果转成一条消息”。
+NoneBot2 已经处理登录、重连、事件分发与限流；自写一遍就是重复造轮子，且 QQ 侧
+协议变更频繁。机器人只做“群消息 → 一次 API 查询 → 一条消息”。

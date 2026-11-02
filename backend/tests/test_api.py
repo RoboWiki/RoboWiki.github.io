@@ -16,6 +16,7 @@ import tempfile
 _TMP = tempfile.mkdtemp(prefix="roboselect-test-")
 os.environ["ROBOWIKI_DB_PATH"] = str(pathlib.Path(_TMP) / "test.db")
 os.environ["ROBOWIKI_SECRET_KEY"] = "test-secret-key-at-least-32-bytes-long-0000"
+os.environ["ROBOWIKI_BOT_TOKEN"] = "test-bot-token"
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
@@ -381,3 +382,34 @@ def test_non_staff_cannot_review(client):
         "decision": "accepted",
     })
     assert r.status_code == 403
+
+
+# ── 群机器人只读问答 ────────────────────────────────────────────────────────
+BOT = {"X-Bot-Token": "test-bot-token"}
+
+
+def test_bot_answer_is_one_line_with_url_and_version(client):
+    r = client.get("/api/v1/bot/answer", params={"q": "cubemars ak80"}, headers=BOT)
+    assert r.status_code == 200, r.text
+    d = r.json()
+    assert d["found"] is True
+    assert d["part"]["model"].lower().startswith("ak80")
+    assert d["url"].endswith(".html")
+    assert d["data_version"]
+    assert "\n" not in d["answer"]
+    assert d["part"]["model"] in d["answer"]
+
+
+def test_bot_requires_token(client):
+    assert client.get("/api/v1/bot/answer", params={"q": "ak80"}).status_code == 401
+    assert client.get("/api/v1/bot/answer", params={"q": "ak80"},
+                      headers={"X-Bot-Token": "wrong"}).status_code == 401
+
+
+def test_bot_not_found_returns_search_hint(client):
+    r = client.get("/api/v1/bot/answer", params={"q": "不存在型号zzz"}, headers=BOT)
+    assert r.status_code == 200
+    d = r.json()
+    assert d["found"] is False
+    assert d["url"].endswith("/catalog")
+    assert "没找到" in d["answer"]
