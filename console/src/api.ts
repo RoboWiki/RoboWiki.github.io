@@ -39,6 +39,25 @@ async function req<T>(path: string, init?: RequestInit): Promise<T> {
   return data as T
 }
 
+/** v1 规范接口（非 /admin 前缀），带同一份 Bearer token */
+export async function v1Req<T>(path: string, init?: RequestInit): Promise<T> {
+  const headers: Record<string, string> = { ...(init?.headers as any) }
+  if (init?.body) headers['Content-Type'] = 'application/json'
+  const t = auth.token
+  if (t) headers['Authorization'] = `Bearer ${t}`
+  const r = await fetch(`/api/v1${path}`, { ...init, headers })
+  const text = await r.text()
+  const data = text ? JSON.parse(text) : null
+  if (!r.ok) {
+    const detail = data?.detail
+    const msg = typeof detail === 'string' ? detail
+      : Array.isArray(detail) ? detail.map((d: any) => d.msg).join('；')
+        : `HTTP ${r.status}`
+    throw new ApiError(r.status, msg)
+  }
+  return data as T
+}
+
 const qs = (o: Record<string, any>) => {
   const p = new URLSearchParams()
   Object.entries(o).forEach(([k, v]) => {

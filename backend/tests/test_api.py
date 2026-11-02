@@ -342,6 +342,9 @@ def test_submission_review_enqueues_outbox(client):
     assert r.status_code == 201, r.text
     sid = r.json()["id"]
     assert r.json()["status"] == "pending"
+    preview = r.json()["evidence"]["preview"][0]
+    assert preview["field"] == "price_cny"
+    assert preview["new_value"] == 3288.0
 
     r = client.post(f"/api/v1/submissions/{sid}/review", headers=h, json={
         "decision": "accepted", "reason_code": "ok", "note": "test",

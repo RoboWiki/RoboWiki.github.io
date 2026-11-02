@@ -64,3 +64,6 @@ ui-*.png
 # 走 GitHub Release 分发，不进仓库历史。规则见 docs/DATA-VERSIONING.md
 dist/
 .tmp-data-export/
+
+# TypeScript 增量构建缓存
+console/tsconfig.tsbuildinfo
