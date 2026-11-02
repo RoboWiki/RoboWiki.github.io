@@ -9,6 +9,24 @@
 其中 A 级（逐项核对过厂商手册）104 个；缺失一律写 null，不猜、不填补
 ```
 
+## 数据来源与拆分
+
+数据、schema 和产品图在核心仓 [RoboWiki/robowiki](https://github.com/RoboWiki/robowiki)；
+本仓只负责站点渲染。`data.lock.json` 锁定核心仓的 `data-v*` 发布物，Pages 构建时下载、
+校验 SHA-256 后再生成页面。
+
+本地从核心仓构建：
+
+```bash
+gh release download "$(python -c "import json;print(json.load(open('data.lock.json'))['data_version'])")" \
+  -R RoboWiki/robowiki -p "$(python -c "import json;print(json.load(open('data.lock.json'))['release_asset'])")" -D .data --clobber
+tar -xzf .data/robowiki-data-*.tar.gz -C .data
+ROBOWIKI_DATA_DIR="$PWD/.data/data" \
+ROBOWIKI_SCHEMA_DIR="$PWD/.data/schema" \
+ROBOWIKI_ASSETS_DIR="$PWD/.data/assets/parts" \
+python -m pipeline build
+```
+
 ## 这个站在做什么
 
 三件事，按重要性排序：

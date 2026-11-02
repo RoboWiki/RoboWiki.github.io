@@ -20,6 +20,9 @@ audit-*.png
 # 测试用的一次性沙箱
 .tmp-validate/
 
+# 核心仓数据发布物（Pages/本地构建时下载，不提交）
+.data/
+
 # 厂商原始 PDF / 抓取缓存（40 MB）：可由 docs/ref-zju-wiki.md §5 复现，不入库
 data/raw/
 console/public/parts/*.pdf

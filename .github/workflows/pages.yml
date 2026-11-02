@@ -1,19 +1,15 @@
 name: Deploy wiki to GitHub Pages
 
-# 为什么只部署 wiki：
-#   本项目的后端是 FastAPI + SQLite（登录、发帖、评论、后台都要写库），
-#   GitHub Pages 只能托管静态文件，跑不了它。
-#   而 VitePress 文档站是**纯静态**的，可以完整部署。
-#   选型台（React SPA）要等有 Python 托管环境时再单独部署。
-
+# 站点只负责渲染：数据从核心仓 RoboWiki/robowiki 的锁定 release 取。
+# 不在站点仓保存 data/ schema/ 或产品图副本。
 on:
   push:
     branches: [main]
     paths:
       - 'wiki/**'
-      - 'data/**'
       - 'pipeline/**'
       - 'console/public/**'
+      - 'data.lock.json'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -42,18 +38,35 @@ jobs:
         with:
           python-version: '3.12'
 
-      # 文档内容由 data/*.json 生成，所以先跑生成器。
-      # build_wiki.py 会 import 后端的 semantics 常量（杜绝两份口径漂移），
-      # 因此要装上后端依赖 —— 只装依赖，不启动服务。
-      - name: generate wiki pages from data
+      - name: fetch pinned data release
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          python -m pip install --quiet -r backend/requirements.txt
+          set -euo pipefail
+          TAG=$(python -c "import json;print(json.load(open('data.lock.json'))['data_version'])")
+          REPO=$(python -c "import json;print(json.load(open('data.lock.json'))['source_repo'])")
+          ASSET=$(python -c "import json;print(json.load(open('data.lock.json'))['release_asset'])")
+          SHA=$(python -c "import json;print(json.load(open('data.lock.json'))['sha256'])")
+          mkdir -p .data
+          gh release download "$TAG" -R "$REPO" -p "$ASSET" -D .data --clobber
+          echo "$SHA  .data/$ASSET" | sha256sum -c -
+          tar -xzf ".data/$ASSET" -C .data
+          test -f .data/data/taxonomy.json
+          test -f .data/schema/semantics.json
+          test -d .data/assets/parts
+
+      - name: generate wiki pages from pinned data
+        env:
+          ROBOWIKI_DATA_DIR: ${{ github.workspace }}/.data/data
+          ROBOWIKI_SCHEMA_DIR: ${{ github.workspace }}/.data/schema
+          ROBOWIKI_ASSETS_DIR: ${{ github.workspace }}/.data/assets/parts
+        run: |
+          python -m pip install --quiet pydantic
           python -m pipeline build
 
       - name: install & build
         working-directory: wiki
         env:
-          # 仓库叫 RoboWiki.github.io（organization pages）→ 站点在域名根，base 必须是 /
           WIKI_BASE: /
         run: |
           npm ci
