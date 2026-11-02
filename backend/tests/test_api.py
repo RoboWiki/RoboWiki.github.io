@@ -24,6 +24,8 @@ from fastapi.testclient import TestClient  # noqa: E402
 
 from app.main import app  # noqa: E402
 
+ROOT = pathlib.Path(__file__).resolve().parents[2]
+
 
 @pytest.fixture(scope="module")
 def client():
@@ -277,6 +279,10 @@ def test_export_draft(client):
     assert "armature" in r["mjcf_joints"][0]
 
 
+@pytest.mark.skipif(
+    not (ROOT / "console" / "dist" / "index.html").exists(),
+    reason="console 未构建（由 console job 单独构建）",
+)
 def test_console_fallback(client):
     """控制台在 /console 下，客户端路由必须回退到 index.html，否则分享链接 404。"""
     for path in ("/console/", "/console/community", "/console/top",

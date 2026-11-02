@@ -201,25 +201,7 @@ jobs:
       - run: pip install "pydantic>=2.9"
       - name: 校验目录数据
         run: python -m pipeline validate
-      - name: 对照 schema 校验
-        run: |
-          pip install "jsonschema>=4.21"
-          python - <<'PY'
-          import json, pathlib, sys
-          from jsonschema import Draft7Validator
-          from pipeline.paths import DATA_DIR, SCHEMA_DIR
-          sch = json.loads((SCHEMA_DIR / 'part.schema.json').read_text(encoding='utf-8'))
-          v = Draft7Validator(sch)
-          bad = 0
-          for f in sorted((DATA_DIR / 'catalog').glob('*/*.json')):
-              for r in json.loads(f.read_text(encoding='utf-8')):
-                  errs = list(v.iter_errors(r))
-                  if errs:
-                      bad += 1
-                      print(f"{f.name}:{r.get('id')} -> {errs[0].message}")
-          print('schema 不符:', bad)
-          sys.exit(1 if bad else 0)
-          PY
+
 
   # ── pipeline 层：全量 pytest（pyproject 的 testpaths 含 backend/tests）─────
   # pipeline/ 一改，构建链和 API 都可能被带到，所以这里是「宁可慢」的那一档。

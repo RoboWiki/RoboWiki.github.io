@@ -11,7 +11,7 @@
 
 ## 数据来源与拆分
 
-数据、schema 和产品图在核心仓 [RoboWiki/robowiki](https://github.com/RoboWiki/robowiki)；
+数据、schema 和产品图在核心仓 [RoboWiki/RoboWiki](https://github.com/RoboWiki/RoboWiki)；
 本仓只负责站点渲染。`data.lock.json` 锁定核心仓的 `data-v*` 发布物，Pages 构建时下载、
 校验 SHA-256 后再生成页面。
 
@@ -19,7 +19,7 @@
 
 ```bash
 gh release download "$(python -c "import json;print(json.load(open('data.lock.json'))['data_version'])")" \
-  -R RoboWiki/robowiki -p "$(python -c "import json;print(json.load(open('data.lock.json'))['release_asset'])")" -D .data --clobber
+  -R RoboWiki/RoboWiki -p "$(python -c "import json;print(json.load(open('data.lock.json'))['release_asset'])")" -D .data --clobber
 tar -xzf .data/robowiki-data-*.tar.gz -C .data
 ROBOWIKI_DATA_DIR="$PWD/.data/data" \
 ROBOWIKI_SCHEMA_DIR="$PWD/.data/schema" \
@@ -87,7 +87,7 @@ python -m pytest                  # 构建链 + API 测试
 cd wiki && npm i && npm run dev    # 本地起站（VitePress 默认 5173）
 ```
 
-改一个型号的参数 = 改一个 JSON，然后跑 `python -m pipeline validate`。
+改一个型号的参数 = 去核心仓改一个 JSON，然后跑 `python -m pipeline validate`。
 数据闸门会拦住三类错：A 级键集不一致、来源等级越级、厂商未登记；构建阶段再拦页面死链。
 
 ## 目录
@@ -96,15 +96,15 @@ cd wiki && npm i && npm run dev    # 本地起站（VitePress 默认 5173）
 wiki/       VitePress 站点（主体，纯静态）
 backend/    FastAPI + SQLModel（可选：评论区与后台，静态部署不需要）
 console/    React 控制台（可选，挂在后端 /console/）
-data/       唯一事实源：catalog/ robots/ suppliers.json taxonomy.json learn.json
-pipeline/   数据闸门 → 页面生成 → 快照导出
-schema/     JSON Schema（部件 / 整机 / 软件 / 渠道 / 报价 / 评分 / 评价 / 口径）
-docs/       架构说明、参数口径、决策记录、历史归档
-tools/      抓取与导入脚本（一次性迁移用，见 tools/README，谨慎跑）
-inbox/      产品图暂存区（认领后进 console/public/parts）
+pipeline/   页面生成（数据从核心仓 release 读取）
+docs/       站点架构、决策记录、历史归档
+tools/      站点专用脚本；数据工具在核心仓
+inbox/      产品图暂存区（认领后进核心仓 assets/parts）
 ```
 
-**`data/` 是唯一事实源**：`wiki/docs/` 下的页面全部由它生成，不手改。
+**数据、schema、产品图不在本仓**：它们在
+[RoboWiki/RoboWiki](https://github.com/RoboWiki/RoboWiki)，由 `data.lock.json`
+锁定版本。`wiki/docs/` 下的页面全部由 release 数据生成，不手改。
 
 ## 怎么贡献
 
@@ -112,9 +112,9 @@ inbox/      产品图暂存区（认领后进 console/public/parts）
 
 | 想做的事 | 怎么进 |
 |---|---|
-| 纠参数 / 补数据 | 投稿页有表单，或直接改 `data/catalog/<品类>/<厂商>.json` 提 PR |
+| 纠参数 / 补数据 | 去核心仓 [RoboWiki/RoboWiki](https://github.com/RoboWiki/RoboWiki) 提 PR 或 issue |
 | 写评价（含四维打分） | 部件页的「写评价」→ GitHub issue 表单。一人一件一票，改主意就编辑原 issue |
-| 写文章 / 教程 | 学习栏目 + 投稿页；转载规范见「分享与转载」 |
+| 写文章 / 教程 | 本仓学习栏目 + 投稿页；转载规范见「分享与转载」 |
 
 贡献者页按「**初始贡献 + GitHub 叠加**」计数：发生在默认分支之外的工作
 GitHub API 统计不到，所以不会因为「没有 PR」就被记成 0。
@@ -135,7 +135,7 @@ GitHub API 统计不到，所以不会因为「没有 PR」就被记成 0。
 我们将第一时间核实并处理。细节见 [`NOTICE.md`](https://github.com/RoboWiki/RoboWiki.github.io/blob/main/NOTICE.md)。
 
 > 厂商手册、商品图、第三方仓库代码的版权归原方。手册只给链接；**产品图是随条目托管在本仓库的**
-> （`console/public/parts/`，出处记在每条数据的 `image_source`），权利人要求撤下就撤下。
+> （`assets/parts/`，出处记在每条数据的 `image_source`），权利人要求撤下就撤下。
 > 每条数据都标了来源等级（A/B/C）与核对日期。
 
 **⚠️ 安全提示**：这里收录的是会通电、会转、会热的零件（48 V 关节模组、22.2 V 6S 锂电池、
