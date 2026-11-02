@@ -9,8 +9,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .api.routes import (admin, auth, catalog, community, export, mcp, protocols,
-                         ratings, semantics, submissions, wiki)
+from .api.routes import (admin, auth, bot, catalog, community, export, mcp,
+                         protocols, ratings, semantics, submissions, wiki)
 from .core.config import ROOT, settings
 from .core.db import create_tables, seed_catalog, seed_community, session
 
@@ -44,7 +44,7 @@ app.add_middleware(
 
 _ROUTERS = (auth.router, catalog.router, community.router, export.router,
             semantics.router, admin.router, protocols.router, wiki.router,
-            ratings.router, submissions.router)
+            ratings.router, submissions.router, bot.router)
 
 # 规范前缀 /api/v1；/api 只作旧客户端别名，不进入 OpenAPI。
 for r in _ROUTERS:

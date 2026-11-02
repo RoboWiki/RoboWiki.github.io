@@ -64,3 +64,15 @@ ls var/outbox/
 
 生产接入 GitHub PR 时，只替换 `backend/app/worker.py::_publish`，outbox 表、
 幂等键和审核记录不变。不要直接在 API 请求里改目录。
+
+## 群机器人只读问答
+
+在 `.env` 设置 `BOT_TOKEN` 与 `SITE_URL` 后，后端提供：
+
+```bash
+curl -H "X-Bot-Token: $BOT_TOKEN" \
+  "https://$SITE_DOMAIN/api/v1/bot/answer?q=AK80-6"
+```
+
+未设置令牌时接口返回 503；只读、按 IP 限流、不写库。QQ 侧适配见
+`clients/qqbot/`（NoneBot2 + nonebot-adapter-qq）。

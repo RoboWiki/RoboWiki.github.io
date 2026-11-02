@@ -22,6 +22,10 @@ class Settings(BaseSettings):
     data_dir: pathlib.Path = ROOT / "data"
     schema_dir: pathlib.Path = ROOT / "schema"
     data_version: str = "dev"
+    #: 对外站点根（分享卡、机器人回复的链接）
+    site_url: str = "https://robowiki.org"
+    #: 群机器人只读问答的共享令牌；未设置则禁用该接口
+    bot_token: str | None = None
     #: 开发/测试可自动建表；生产由 Alembic 迁移，设为 false
     auto_create_tables: bool = True
     db_path: pathlib.Path = ROOT / "robowiki.db"
