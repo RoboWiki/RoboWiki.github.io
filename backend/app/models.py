@@ -207,3 +207,58 @@ class Rating(SQLModel, table=True):
     note: str = ""                                      # 一句话理由，可空
     created_at: datetime = Field(default_factory=utcnow)
     updated_at: datetime = Field(default_factory=utcnow)
+
+
+# ── 数据变更：提交 → 审核 → outbox ───────────────────────────────────────────
+class Submission(SQLModel, table=True):
+    """目录字段的变更提案。审核通过也不直接改库；由 outbox 走 PR → release。"""
+
+    __tablename__ = "submissions"
+    __table_args__ = (Index("ix_submissions_status_created", "status", "created_at"),)
+
+    id: int | None = Field(default=None, primary_key=True)
+    kind: str = Field(default="part_patch", index=True)
+    target_id: str | None = Field(default=None, index=True)
+    payload: dict = Field(default_factory=dict, sa_column=Column(JSON))
+    evidence: dict = Field(default_factory=dict, sa_column=Column(JSON))
+    submitter_id: int | None = Field(default=None, foreign_key="users.id", index=True)
+    status: str = Field(default="pending", index=True)
+    revision: int = 1
+    created_at: datetime = Field(default_factory=utcnow, index=True)
+    updated_at: datetime = Field(default_factory=utcnow)
+
+
+class SubmissionReview(SQLModel, table=True):
+    """审核记录：只追加，不覆盖。"""
+
+    __tablename__ = "submission_reviews"
+    __table_args__ = (Index("ix_subreview_submission", "submission_id", "created_at"),)
+
+    id: int | None = Field(default=None, primary_key=True)
+    submission_id: int = Field(foreign_key="submissions.id", index=True)
+    reviewer_id: int | None = Field(default=None, foreign_key="users.id")
+    decision: str                                      # accepted | rejected
+    reason_code: str = ""
+    note: str = ""
+    created_at: datetime = Field(default_factory=utcnow)
+
+
+class Outbox(SQLModel, table=True):
+    """DB → GitHub 的可靠副作用。idempotency_key 防止重复开 PR。"""
+
+    __tablename__ = "outbox"
+    __table_args__ = (
+        UniqueConstraint("idempotency_key", name="uq_outbox_idempotency"),
+        Index("ix_outbox_status_next", "status", "next_at"),
+    )
+
+    id: int | None = Field(default=None, primary_key=True)
+    submission_id: int | None = Field(default=None, foreign_key="submissions.id", index=True)
+    action: str = "part_patch"
+    payload: dict = Field(default_factory=dict, sa_column=Column(JSON))
+    idempotency_key: str = Field(index=True)
+    status: str = Field(default="pending", index=True)
+    attempts: int = 0
+    next_at: datetime = Field(default_factory=utcnow, index=True)
+    last_error: str | None = None
+    created_at: datetime = Field(default_factory=utcnow)

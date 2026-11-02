@@ -327,3 +327,57 @@ def test_public_part_hides_internal_fields(client):
     assert "source_tier" in item
     for internal in ("origin", "search"):
         assert internal not in item
+
+
+# ── 数据提案 / outbox ───────────────────────────────────────────────────────
+def test_submission_review_enqueues_outbox(client):
+    h = auth_header(client)  # robowiki / staff
+    r = client.post("/api/v1/submissions", headers=h, json={
+        "kind": "part_patch",
+        "target_id": "cubemars-ak80-6",
+        "payload": {"price_cny": 3288.0},
+        "evidence": {"source_url": "https://example.com/manual", "note": "test"},
+    })
+    assert r.status_code == 201, r.text
+    sid = r.json()["id"]
+    assert r.json()["status"] == "pending"
+
+    r = client.post(f"/api/v1/submissions/{sid}/review", headers=h, json={
+        "decision": "accepted", "reason_code": "ok", "note": "test",
+    })
+    assert r.status_code == 200, r.text
+    assert r.json()["status"] == "accepted"
+    assert r.json()["reviews"][0]["decision"] == "accepted"
+
+    r = client.get("/api/v1/submissions/outbox", headers=h)
+    assert r.status_code == 200
+    assert any(x["submission_id"] == sid and x["status"] == "pending"
+               for x in r.json())
+
+    import os
+    import shutil
+    from app.worker import process_one
+    outdir = ROOT / "backend" / ".tmp-outbox"
+    shutil.rmtree(outdir, ignore_errors=True)
+    outdir.mkdir(parents=True)
+    os.environ["ROBOWIKI_OUTBOX_DIR"] = str(outdir)
+    assert process_one() is True
+    assert list(outdir.glob("submission-*.json"))
+    shutil.rmtree(outdir, ignore_errors=True)
+
+
+def test_submission_requires_evidence(client):
+    h = auth_header(client)
+    r = client.post("/api/v1/submissions", headers=h, json={
+        "kind": "part_patch", "target_id": "cubemars-ak80-6",
+        "payload": {"price_cny": 1.0}, "evidence": {},
+    })
+    assert r.status_code == 422
+
+
+def test_non_staff_cannot_review(client):
+    h = auth_header(client, "demo1", "robowiki")
+    r = client.post("/api/v1/submissions/1/review", headers=h, json={
+        "decision": "accepted",
+    })
+    assert r.status_code == 403

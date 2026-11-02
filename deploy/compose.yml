@@ -63,6 +63,24 @@ services:
         condition: service_healthy
     restart: "no"
 
+
+  worker:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.api
+    image: robowiki/api:${TAG:-dev}
+    restart: unless-stopped
+    environment:
+      <<: *api-env
+    command: ["python", "-m", "app.worker"]
+    volumes:
+      - ./var/outbox:/app/var/outbox
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+
   db:
     image: postgres:16
     restart: unless-stopped

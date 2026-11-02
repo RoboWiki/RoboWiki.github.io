@@ -138,3 +138,63 @@ class VoteIn(BaseModel):
 class VoteOut(BaseModel):
     score: int
     my_vote: int
+
+
+# ── 数据变更提案 ────────────────────────────────────────────────────────────
+class SubmissionIn(BaseModel):
+    kind: str = "part_patch"
+    target_id: str | None = None
+    payload: dict = Field(default_factory=dict)
+    evidence: dict = Field(default_factory=dict)
+
+    @field_validator("kind")
+    @classmethod
+    def _kind_ok(cls, v: str) -> str:
+        if v != "part_patch":
+            raise ValueError("当前只接受 part_patch")
+        return v
+
+
+class ReviewIn(BaseModel):
+    decision: str
+    reason_code: str = Field(default="", max_length=80)
+    note: str = Field(default="", max_length=2000)
+
+    @field_validator("decision")
+    @classmethod
+    def _decision_ok(cls, v: str) -> str:
+        if v not in ("accepted", "rejected"):
+            raise ValueError("decision 必须是 accepted / rejected")
+        return v
+
+
+class ReviewOut(BaseModel):
+    id: int
+    decision: str
+    reason_code: str = ""
+    note: str = ""
+    reviewer_id: int | None = None
+    created_at: datetime
+
+
+class SubmissionOut(BaseModel):
+    id: int
+    kind: str
+    target_id: str | None = None
+    payload: dict = {}
+    evidence: dict = {}
+    submitter_id: int | None = None
+    status: str
+    revision: int
+    created_at: datetime
+    reviews: list[ReviewOut] = []
+
+
+class OutboxOut(BaseModel):
+    id: int
+    submission_id: int | None = None
+    action: str
+    status: str
+    attempts: int = 0
+    last_error: str | None = None
+    created_at: datetime
