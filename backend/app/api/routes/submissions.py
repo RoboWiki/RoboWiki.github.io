@@ -53,6 +53,12 @@ def create_submission(payload: SubmissionIn, request: Request, db: Db,
     _check_payload(payload.payload)
     if not payload.evidence:
         raise HTTPException(422, "evidence 不能为空：请给出 source_url / 手册页码 / 说明")
+    note = str(payload.evidence.get("note") or "").strip()
+    if len(note) < 2:
+        raise HTTPException(422, "请写清依据：至少 2 个字的说明或手册页码")
+    src = str(payload.evidence.get("source_url") or "").strip()
+    if src and not src.lower().startswith(("http://", "https://")):
+        raise HTTPException(422, "source_url 必须是 http/https 链接")
     if payload.kind == "part_patch":
         if not payload.target_id:
             raise HTTPException(422, "part_patch 需要 target_id")

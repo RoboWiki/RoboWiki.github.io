@@ -51,7 +51,7 @@ def _spec_lines(category: str, specs: dict) -> list[dict]:
     for label, key, unit in _FACTS.get(category, []) + _GENERIC:
         v = _fmt(specs.get(key), unit)
         if v and not any(x["label"] == label for x in out):
-            out.append({"label": label, "value": v})
+            out.append({"key": key, "label": label, "value": v})
     return out
 
 

@@ -2,47 +2,15 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { withBase } from 'vitepress'
 import QRCode from 'qrcode'
-
-type ShareEntry = {
-  id: string
-  path: string
-  url?: string
-  json: string
-  title: string
-  summary: string
-  source_tier?: string
-  last_checked?: string
-  data_version: string
-}
+import { canonical, findShareEntry, type ShareEntry } from '../lib/share'
 
 const entry = ref<ShareEntry | null>(null)
 const copied = ref(false)
 const qrEl = ref<HTMLCanvasElement | null>(null)
 const drawing = ref(false)
-let indexPromise: Promise<ShareEntry[]> | null = null
-
-function normalize(path: string) {
-  let p = path.replace(/\.html$/, '').replace(/\/+$/, '')
-  return p || '/'
-}
-
-function canonical(e: ShareEntry) {
-  return e.url || `${window.location.origin}${e.path}`
-}
-
-async function loadIndex(): Promise<ShareEntry[]> {
-  if (!indexPromise) {
-    indexPromise = fetch(withBase('/share/index.json'))
-      .then((r) => (r.ok ? r.json() : []))
-      .catch(() => [])
-  }
-  return indexPromise
-}
 
 onMounted(async () => {
-  const here = normalize(window.location.pathname)
-  const rows = await loadIndex()
-  entry.value = rows.find((r) => normalize(r.path) === here) || null
+  entry.value = await findShareEntry(window.location.pathname)
 })
 
 watch([entry, qrEl], async ([e, el]) => {
