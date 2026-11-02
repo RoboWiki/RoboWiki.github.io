@@ -6,10 +6,10 @@
     所以首页直接给一张「口径速查」，想深究再去 /method。
 
 结构（自上而下）：
-    1 定位一句话 + 三个动作按钮 + 五个数字
+    1 定位一句话 + 三个动作按钮 + 六个数字
     2 按需求走：六个任务入口（多方评审共识：新用户不按分类思考，按任务思考）
     3 这个站在做什么：三块（信息底稿 / 开源生态 / 真实评价）
-    4 六个资源入口（部件 / 整机 / 软件 / 学习 / 加工 / 贡献者）
+    4 七个资源入口（部件 / 整机 / 材质 / 软件 / 学习 / 加工 / 贡献者）
     5 口径速查（A/B/C、null、扭矩端口径、评分规则、价格日期）
     6 按品类
     7 底部：方法与来源 / 投稿 / 转载规范 / 贡献者
@@ -33,6 +33,23 @@ def _count_software(root: pathlib.Path) -> int:
         return len(json.loads(f.read_text(encoding="utf-8")).get("items") or [])
     except Exception:
         return 0
+
+
+def _count_materials(root: pathlib.Path) -> tuple[int, int]:
+    """材料与工艺分开计数；数据仓还没发布材质库时返回 0，不让首页崩。"""
+    n_mat = n_proc = 0
+    d = DATA_DIR / "materials"
+    for f in sorted(d.glob("*.json")) if d.exists() else []:
+        try:
+            rows = json.loads(f.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        for r in rows:
+            if r.get("category") == "material":
+                n_mat += 1
+            elif r.get("category") == "process":
+                n_proc += 1
+    return n_mat, n_proc
 
 
 def _eco_ids(root: pathlib.Path) -> set:
@@ -71,6 +88,7 @@ def _counts(root: pathlib.Path) -> dict:
         sups = 0
     tax = json.loads((DATA_DIR / "taxonomy.json").read_text(encoding="utf-8"))
     cats = tax.get("categories") or []
+    materials, processes = _count_materials(root)
     return {
         "parts": len(rows),
         "cats_with_data": len({r["category"] for r in rows}),
@@ -80,6 +98,8 @@ def _counts(root: pathlib.Path) -> dict:
         "robots_with_eco": robots_with_eco,
         "robots_with_links": robots_with_links,
         "software": _count_software(root),
+        "materials": materials,
+        "processes": processes,
         "suppliers": sups,
         "cat_rows": sorted(
             ((c["id"], c["name"], c["hint"],
@@ -127,6 +147,7 @@ titleTemplate: false
       <div><b>{c['cats_with_data']}</b><span>在库品类</span></div>
       <div><b>{c['tier_a']}</b><span>A 级：逐项对过厂商手册</span></div>
       <div><b>{c['robots']}</b><span>整机（{c['robots_with_links']} 台带 URDF / 仓库）</span></div>
+      <div><b>{c['materials']}</b><span>结构材料 + {c['processes']} 种加工工艺</span></div>
       <div><b>{c['suppliers']}</b><span>渠道库（加工 / 元件店铺）</span></div>
     </div>
   </section>
@@ -141,6 +162,10 @@ titleTemplate: false
       <a class="rw-home-task" href="/robots">
         <b>我想找开源方案</b>
         <span>带 URDF / 仓库的整机，能不能复现一眼看清</span>
+      </a>
+      <a class="rw-home-task" href="/materials">
+        <b>我要选材料 / 工艺</b>
+        <span>密度 / 模量 / 强度直接换算，形态与加工方式一起看</span>
       </a>
       <a class="rw-home-task" href="/catalog?category=actuator">
         <b>我想选电机 / 执行器</b>
@@ -181,7 +206,7 @@ titleTemplate: false
     </div>
   </section>
   <section class="rw-home-block">
-    <h2>六个入口</h2>
+    <h2>七个入口</h2>
     <div class="rw-home-entries">
       <a class="rw-home-entry" href="/catalog">
         <b>部件库 · {c['parts']} 件</b>
@@ -192,6 +217,11 @@ titleTemplate: false
         <b>整机库 · {c['robots']} 台</b>
         <p>比方案与生态：几自由度、带不带算力、有没有开源描述与训练工程。</p>
         <span>{eco_note}</span>
+      </a>
+      <a class="rw-home-entry" href="/materials">
+        <b>材质库 · {c['materials']} 种材料 + {c['processes']} 种工艺</b>
+        <p>查物理属性与形态规格：密度、弹性模量、抗拉强度带 SI 换算，加工工艺与渠道联动。</p>
+        <span>没有官方图就用材质色块，不放假图</span>
       </a>
       <a class="rw-home-entry" href="/software">
         <b>软件库 · {c['software']} 个</b>
@@ -292,4 +322,5 @@ titleTemplate: false
 '''
 
     (out_dir / "index.md").write_text(md, encoding="utf-8")
-    print(f"  首页：{c['parts']} 部件 / {c['robots']} 整机 / {c['suppliers']} 渠道 / 口径速查 6 块")
+    print(f"  首页：{c['parts']} 部件 / {c['robots']} 整机 / {c['materials']} 材料 + "
+          f"{c['processes']} 工艺 / {c['suppliers']} 渠道 / 口径速查 6 块")

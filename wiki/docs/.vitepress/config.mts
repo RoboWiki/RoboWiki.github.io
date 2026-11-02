@@ -38,6 +38,7 @@ const zhTheme = {
     { text: '指南', link: '/learn/' },
     { text: '部件库', link: '/catalog' },
     { text: '整机库', link: '/robots' },
+    { text: '材质库', link: '/materials' },
     { text: '软件库', link: '/software' },
     { text: '渠道库', link: '/suppliers' },
     { text: '实战资料', link: '/competitions' },

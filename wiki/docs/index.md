@@ -23,6 +23,7 @@ titleTemplate: false
       <div><b>14</b><span>在库品类</span></div>
       <div><b>114</b><span>A 级：逐项对过厂商手册</span></div>
       <div><b>21</b><span>整机（19 台带 URDF / 仓库）</span></div>
+      <div><b>27</b><span>结构材料 + 9 种加工工艺</span></div>
       <div><b>207</b><span>渠道库（加工 / 元件店铺）</span></div>
     </div>
   </section>
@@ -37,6 +38,10 @@ titleTemplate: false
       <a class="rw-home-task" href="/robots">
         <b>我想找开源方案</b>
         <span>带 URDF / 仓库的整机，能不能复现一眼看清</span>
+      </a>
+      <a class="rw-home-task" href="/materials">
+        <b>我要选材料 / 工艺</b>
+        <span>密度 / 模量 / 强度直接换算，形态与加工方式一起看</span>
       </a>
       <a class="rw-home-task" href="/catalog?category=actuator">
         <b>我想选电机 / 执行器</b>
@@ -77,7 +82,7 @@ titleTemplate: false
     </div>
   </section>
   <section class="rw-home-block">
-    <h2>六个入口</h2>
+    <h2>七个入口</h2>
     <div class="rw-home-entries">
       <a class="rw-home-entry" href="/catalog">
         <b>部件库 · 329 件</b>
@@ -88,6 +93,11 @@ titleTemplate: false
         <b>整机库 · 21 台</b>
         <p>比方案与生态：几自由度、带不带算力、有没有开源描述与训练工程。</p>
         <span>20 台标了「生态 ×N」，点进去看每个环节是谁</span>
+      </a>
+      <a class="rw-home-entry" href="/materials">
+        <b>材质库 · 27 种材料 + 9 种工艺</b>
+        <p>查物理属性与形态规格：密度、弹性模量、抗拉强度带 SI 换算，加工工艺与渠道联动。</p>
+        <span>没有官方图就用材质色块，不放假图</span>
       </a>
       <a class="rw-home-entry" href="/software">
         <b>软件库 · 22 个</b>

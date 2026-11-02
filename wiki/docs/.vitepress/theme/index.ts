@@ -11,11 +11,13 @@ import ContributorGrid from '../components/ContributorGrid.vue'
 import RobotGrid from '../components/RobotGrid.vue'
 import SoftwareGrid from '../components/SoftwareGrid.vue'
 import MaterialGrid from '../components/MaterialGrid.vue'
+import MaterialLibGrid from '../components/MaterialLibGrid.vue'
 import ExplorerShell from '../components/ExplorerShell.vue'
 import PartRating from '../components/PartRating.vue'
 import './custom.css'
 import './part.css'
 import './explorer.css'
+import './material.css'
 
 export default {
   extends: DefaultTheme,
@@ -32,6 +34,7 @@ export default {
     app.component('RobotGrid', RobotGrid)
 app.component('SoftwareGrid', SoftwareGrid)
     app.component('MaterialGrid', MaterialGrid)
+    app.component('MaterialLibGrid', MaterialLibGrid)
     app.component('ExplorerShell', ExplorerShell)
         app.component('PartRating', PartRating)
   },

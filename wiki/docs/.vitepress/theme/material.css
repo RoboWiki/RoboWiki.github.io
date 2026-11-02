@@ -1,0 +1,141 @@
+/* ────────────────────────────────────────────────────────────────────────
+   材质库 —— 材料卡片托板、详情页元信息与工艺/应用 chips
+   没有官方型号图时用材料族色块，避免拿示意图冒充产品图。
+   ──────────────────────────────────────────────────────────────────────── */
+
+.mt-plate {
+  flex-direction: column;
+  gap: 0.3rem;
+  color: #29303a;
+}
+/* 统一叠一层细纹理，让纯色块不至于像加载失败 */
+.mt-plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0 1px, transparent 1px 7px);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.mt-symbol {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(0.95rem, 1.8vw, 1.3rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  text-align: center;
+  padding: 0 0.6rem;
+}
+.mt-swlabel {
+  position: relative;
+  z-index: 1;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  opacity: 0.72;
+}
+
+.mt-sw-aluminum { background: linear-gradient(135deg, #f0f3f6, #b9c2cb 58%, #dfe5ea); }
+.mt-sw-titanium { background: linear-gradient(135deg, #e4e7ea, #9aa3ac 60%, #ccd1d6); }
+.mt-sw-alloy_steel { background: linear-gradient(135deg, #c3c8cd, #727a82 62%, #a7aeb5); }
+.mt-sw-stainless_steel {
+  background: repeating-linear-gradient(0deg, #eef1f4 0 2px, #cdd3d9 2px 3px), linear-gradient(135deg, #f4f6f8, #aeb6be 62%, #d9dee3);
+}
+.mt-sw-magnesium { background: linear-gradient(135deg, #f2f4ef, #c4cdc2 62%, #e0e5dc); }
+.mt-sw-peek { background: linear-gradient(135deg, #eadfc8, #c3aa7c 62%, #dccfae); }
+.mt-sw-pps { background: linear-gradient(135deg, #ded0b4, #ab9166 62%, #cdbd9c); }
+.mt-sw-pa { background: linear-gradient(135deg, #e7e3d7, #b7b09b 62%, #d4cfc0); }
+.mt-sw-abs { background: linear-gradient(135deg, #f5f2ea, #d5cdbc 62%, #eae4d8); }
+.mt-sw-pc_abs { background: linear-gradient(135deg, #eef2f5, #c3ccd4 62%, #dde4e9); }
+.mt-sw-pom { background: linear-gradient(135deg, #f7f6f1, #d9d3c4 62%, #ece9e0); }
+.mt-sw-pla { background: linear-gradient(135deg, #eef6e2, #b9d38e 62%, #dcebcb); }
+.mt-sw-petg {
+  background: linear-gradient(135deg, #e8f4f5, #a8cfd4 58%, #d3e9ec);
+}
+.mt-sw-photopolymer {
+  background: linear-gradient(135deg, #fbf0d8, #e0b978 60%, #f3ddb4);
+}
+.mt-sw-gfrp {
+  background: repeating-linear-gradient(135deg, #f3f1e4 0 3px, #d8d3b9 3px 6px);
+}
+.mt-sw-uhmwpe { background: linear-gradient(135deg, #f0f2ed, #c3cbc0 62%, #dfe4db); }
+.mt-sw-silicone { background: linear-gradient(135deg, #e8eef2, #b7c6cf 62%, #d4dfe5); }
+.mt-sw-epdm {
+  background: repeating-linear-gradient(135deg, #34383c 0 3px, #4a4f54 3px 6px);
+  color: #e9eef3;
+}
+.mt-sw-tpu { background: linear-gradient(135deg, #f8efd9, #d8b97e 62%, #eedcb5); }
+.mt-sw-cfrp {
+  background: repeating-linear-gradient(135deg, #252b31 0 3px, #3b444d 3px 6px);
+  color: #e9eef3;
+}
+.mt-sw-machining { background: linear-gradient(135deg, #dde7ee, #a9bbc8 62%, #cbd8e1); }
+.mt-sw-additive { background: repeating-linear-gradient(0deg, #ece6d9 0 7px, #cfc6b4 7px 14px); }
+.mt-sw-molding { background: linear-gradient(135deg, #efe3d4, #c9b29a 62%, #e5d4c1); }
+.mt-sw-casting {
+  background:
+    radial-gradient(circle at 24% 30%, rgba(255, 255, 255, 0.55) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 68% 62%, rgba(90, 96, 102, 0.28) 0 1px, transparent 1.5px),
+    linear-gradient(135deg, #d9dde1, #aab1b8 62%, #c9ced3);
+  background-size: 9px 9px, 13px 13px, 100% 100%;
+}
+.mt-sw-composite {
+  background: repeating-linear-gradient(90deg, #2d343c 0 2px, #4a545f 2px 5px);
+  color: #e9eef3;
+}
+
+.mt-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.35rem 0 1.1rem;
+}
+.mt-meta span {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 999px;
+  background: var(--vp-c-bg-alt);
+  font-size: 0.76rem;
+  color: var(--vp-c-text-2);
+}
+
+.mt-intro { max-width: 56ch; margin: 1rem 0 2rem; }
+.mt-intro p {
+  margin: 0 0 0.8rem;
+  font-size: 0.95rem;
+  line-height: 1.95;
+  letter-spacing: 0.01em;
+  color: var(--vp-c-text-2);
+}
+.mt-intro p:last-child { margin-bottom: 0; }
+.mt-intro strong { color: var(--vp-c-text-1); font-weight: 600; }
+
+.mt-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.6rem 0 1.2rem;
+}
+.mt-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.24rem 0.65rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 999px;
+  background: var(--vp-c-bg-alt);
+  font-size: 0.8rem;
+  color: var(--vp-c-text-2);
+  text-decoration: none;
+}
+a.mt-chip { color: var(--vp-c-brand-1); border-color: var(--vp-c-brand-2, var(--vp-c-brand-1)); }
+a.mt-chip:hover { background: var(--vp-c-brand-soft, var(--vp-c-bg-soft)); }
+
+.mt-note {
+  max-width: 74ch;
+  margin: 0.8rem 0 1.2rem;
+  font-size: 0.84rem;
+  line-height: 1.85;
+  color: var(--vp-c-text-3);
+}
