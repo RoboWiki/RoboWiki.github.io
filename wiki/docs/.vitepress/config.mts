@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress'
 import type { HeadConfig } from 'vitepress'
+import { withPwa } from '@vite-pwa/vitepress'
 import sidebar from './sidebar.json' with { type: 'json' }
 
 // 站点对外域名（organization pages，站点在域名根）。
@@ -120,7 +121,7 @@ const enTheme = {
   },
 }
 
-export default defineConfig({
+export default withPwa(defineConfig({
   title: 'RoboWiki',
   // 标签页统一成「页面 · RoboWiki」；首页只有 RoboWiki，不重复
   titleTemplate: ':title · RoboWiki',
@@ -155,8 +156,11 @@ export default defineConfig({
     ['meta', { name: 'theme-color', content: '#0078d4' }],
     // 分享卡片（微信 / Slack / X 都要这张图，否则链接只有一行灰字）
     ['meta', { property: 'og:site_name', content: 'RoboWiki' }],
-    ['meta', { property: 'og:image', content: `${SITE}/icon-192.png` }],
-    ['meta', { name: 'twitter:card', content: 'summary' }],
+    ['meta', { property: 'og:image', content: `${SITE}/og-default.png` }],
+    ['meta', { property: 'og:image:width', content: '1200' }],
+    ['meta', { property: 'og:image:height', content: '630' }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { name: 'twitter:image', content: `${SITE}/og-default.png` }],
   ],
   // 每页的 canonical / og:url / 结构化数据。VitePress 原来只给全站一句描述，
   // 311 个型号页在搜索结果里长得一模一样；canonical 也缺，/catalog 与
@@ -209,4 +213,66 @@ export default defineConfig({
       },
     },
   },
-})
+
+  pwa: {
+    registerType: 'autoUpdate',
+    includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png'],
+    manifest: {
+      name: 'RoboWiki',
+      short_name: 'RoboWiki',
+      description: SITE_DESC,
+      lang: 'zh-CN',
+      start_url: '/',
+      scope: '/',
+      display: 'standalone',
+      background_color: '#0b1220',
+      theme_color: '#0078d4',
+      icons: [
+        { src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+        { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
+      ],
+    },
+    workbox: {
+      // 只预缓存外壳；页面与图片按访问缓存，避免把 100+ MB 目录塞进安装包
+      globPatterns: ['**/*.{css,js,ico,svg,woff2}'],
+      // 本地搜索索引 2.3 MB；预缓存它，离线也能用搜索
+      maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
+      // 静态站是多页：不要把所有导航都回退到首页，按访问缓存真实页面
+      navigateFallback: null,
+      cleanupOutdatedCaches: true,
+      clientsClaim: true,
+      skipWaiting: true,
+      runtimeCaching: [
+        {
+          urlPattern: ({ url }) => url.pathname.startsWith('/api/'),
+          handler: 'NetworkOnly',
+        },
+        {
+          urlPattern: ({ request }) => request.mode === 'navigate',
+          handler: 'NetworkFirst',
+          options: {
+            cacheName: 'pages',
+            networkTimeoutSeconds: 3,
+            expiration: { maxEntries: 60, maxAgeSeconds: 7 * 86400 },
+          },
+        },
+        {
+          urlPattern: ({ url }) => url.pathname.startsWith('/share/'),
+          handler: 'StaleWhileRevalidate',
+          options: {
+            cacheName: 'share',
+            expiration: { maxEntries: 400, maxAgeSeconds: 30 * 86400 },
+          },
+        },
+        {
+          urlPattern: ({ request }) => request.destination === 'image',
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'images',
+            expiration: { maxEntries: 200, maxAgeSeconds: 30 * 86400 },
+          },
+        },
+      ],
+    },
+  },
+}))
