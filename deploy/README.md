@@ -51,3 +51,16 @@ docker compose restart api
 - 数据目录由 `DATA_DIR` / `SCHEMA_DIR` 指定，默认 `../.data/...`。
 - 生产用自有域名 + HTTPS；Caddy 自动申请证书。
 - 不在服务器上 `npm install` / `pip install` 跑生产；镜像由 CI 构建。
+
+## Worker / Outbox
+
+`worker` 与 `api` 共用镜像，只消费 `outbox` 表：
+
+```bash
+docker compose logs -f worker
+# 第一版把审核通过的提案写成 dry-run 产物：
+ls var/outbox/
+```
+
+生产接入 GitHub PR 时，只替换 `backend/app/worker.py::_publish`，outbox 表、
+幂等键和审核记录不变。不要直接在 API 请求里改目录。
