@@ -15,6 +15,60 @@
 }
 html.dark .part-photo { background: #f4f4f4; }
 
+/* 分组页产品图集：托板等高，图像 contain —— 不拉伸，也不裁掉机身。
+   长图/宽图只在托板里留白，卡片尺寸始终一致。 */
+.part-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  gap: 0.55rem;
+  margin: 0.9rem 0 1.3rem;
+}
+.part-gallery-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.35rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  background: var(--vp-c-bg);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s, transform 0.15s;
+}
+a.part-gallery-card:hover {
+  border-color: var(--vp-c-brand-1);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+.part-gallery-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 112px;
+  overflow: hidden;
+  border-radius: 5px;
+  background: #fff;
+}
+html.dark .part-gallery-img { background: #f4f4f4; }
+.part-gallery-img img {
+  display: block;
+  max-width: 88%;
+  max-height: 96px;
+  object-fit: contain;
+}
+.part-gallery-model {
+  font-size: 0.78rem;
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+  word-break: break-word;
+}
+.part-gallery-meta {
+  font-size: 0.68rem;
+  line-height: 1.35;
+  color: var(--vp-c-text-3);
+}
+
 .part-tags {
   display: flex;
   flex-wrap: wrap;

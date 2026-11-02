@@ -1,0 +1,36 @@
+[
+ {
+  "category": "battery",
+  "subtype": "pack",
+  "id": "feiqilai-jumbo-power-6s-21700",
+  "vendor": "飞起来Jumbo Power",
+  "vendor_cn": "飞起来",
+  "model": "6S 平铺 21700",
+  "title": "飞起来 Jumbo Power 6S 平铺 21700 航模锂电池",
+  "url": null,
+  "source_tier": "C",
+  "verified": false,
+  "last_checked": "2026-11-01",
+  "price_cny": 197,
+  "origin": "用户提供的采购清单行（2026-11-01）：飞起来Jumbo Power 航模21700锂电池 6S平铺22.2V A品电芯，1 件 197 元",
+  "notes": "仅确认商品名、6S/22.2V、21700 平铺结构与单价；容量、能量、放电倍率、重量、尺寸、接口和充电截止电压均未在采购清单中给出，未核实。商品名中的 Jumbo Power 对应新能安 Ampace 的 JP 系列高倍率圆柱电芯，但本包具体电芯型号与容量未确认。价格为采购清单记录，非官方指导价。产品图来自卖家同名淘宝商品页，图上为 6S 21700 平铺、10400mAh 30C（TP-50XG-21700）版本；采购清单未给出容量，故容量与放电倍率仍留空，图片所示版本待确认。",
+  "specs": {
+   "chem": "锂离子 21700（A 品电芯，具体型号未注明）",
+   "capacity_mah": null,
+   "voltage_V": 22.2,
+   "energy_wh": null,
+   "discharge_rate_c": null,
+   "current_rated_A": null,
+   "v_charge_V": null,
+   "mass_g": null,
+   "iface": null,
+   "dims": null,
+   "charge_current": null,
+   "battery_type": "21700 锂电池组（6S 平铺）",
+   "image_url": "/parts/feiqilai-jumbo-power-6s-21700.jpg",
+   "image_source": "淘宝卖家『飛起来 Jumbo Power』商品图（航模21700锂电池4S6S商品页主图，图示 6S 10400mAh 30C 版本；2026-11-01 抓取）",
+   "doc_url": null
+  },
+  "subtype_label": "航模动力电池"
+ }
+]

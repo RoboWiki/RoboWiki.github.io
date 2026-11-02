@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
-"""竞赛板块：三个模块（电控 / 机械 / 硬件）。
+"""竞赛板块：五个模块（电控 / 机械 / 项目管理 / 硬件 / 强化学习）。
 
 改了定位（2026-10-31）：原来这一页想做「RM 组织层」，但没有任何一手材料，
 写出来就是把 /catalog、/robots 再摆一遍 —— 那叫重复，不叫内容。
 
-现在按**参赛队真正要用的三门手艺**分模块：
-  · 电控  —— 待补（没有可核材料就不编）
-  · 机械  —— 已移植四份一手材料（铨洲 CNC 加工指南 + 哈工大竞技机器人队三篇）
-  · 硬件  —— 待补
+现在按**参赛队真正要用的几门手艺**分模块：
+  · 电控      —— 已移植三篇教程 + 一份飞书足式控制笔记 + DM_RS 开源项目
+  · 机械      —— 已移植四份一手材料（铨洲 CNC 加工指南 + 哈工大竞技机器人队三篇）
+  · 项目管理  —— 已移植 RoboParty RP1 白皮书
+  · 硬件      —— 已移植重山战队两篇
+  · 强化学习  —— 飞书《达妙科技足式强化学习笔记》（外链，不复制正文）
 
 本文件只生成**总览页**（competitions.md）；机械模块的文章在
 wiki/docs/competitions/mechanical/*.md，是导入工具 tools/import_competition_pdf.py
@@ -22,9 +24,9 @@ FRONT = "---\ntitle: 实战资料\nlayout: page\nsidebar: false\noutline: false\
 MODULES = [
     dict(
         key="ec", name="电控", href="/competitions/ec",
-        state="待补",
+        state="待补", external=2,
         what="主控选型与实时性、CAN 总线与频率预算、电机驱动器配置、"
-             "状态估计与整车控制状态机、赛场调试与日志回放。",
+             "状态估计与整车控制状态机、足式 MPC / WBC、赛场调试与日志回放。",
         why="这一块最缺的是「别人踩过的坑」：同样的 CAN 负载，为什么有的队稳定有的队掉线。",
     ),
     dict(
@@ -47,20 +49,28 @@ MODULES = [
              "PCB 布局布线在强电流下的注意事项、故障排查。",
         why="赛场上的「玄学问题」八成出在电源与接地，这一块值得攒案例。",
     ),
+    dict(
+        key="rl", name="强化学习", href="/competitions/rl",
+        state="待补", external=1,
+        what="MDP 与动态规划、策略梯度、PPO / SAC / TD3、模仿与特权学习、"
+             "域随机化与课程学习、Sim-to-Real。",
+        why="足式运动的策略越来越依赖 RL；先把算法脉络和 Sim2Real 的坑对上，再谈调参。",
+    ),
 ]
 
 
 def build(out_dir: pathlib.Path, root: pathlib.Path) -> None:
     comp = root / "wiki/docs/competitions"
     counts = {}
-    for key in ("mechanical", "ec", "pm", "hardware"):
+    for key in ("mechanical", "ec", "pm", "hardware", "rl"):
         d = comp / key
         n = len([f for f in d.glob("*.md") if f.name != "index.md"]) if d.exists() else 0
         counts[key] = n
 
     cards = []
     for m in MODULES:
-        n = counts.get(m["key"], 0)
+        n = counts.get(m["key"], 0) + m.get("external", 0)
+        counts[m["key"]] = n
         state = f"{n} 篇" if n else m["state"]
         cls = "comp-mod on" if n else "comp-mod"
         cards.append(f"""  <a class="{cls}" href="{m['href']}">
@@ -73,17 +83,18 @@ def build(out_dir: pathlib.Path, root: pathlib.Path) -> None:
 <div class="comp">
   <header class="comp-hero">
     <div class="comp-kicker">实战资料</div>
-    <h1>四块内容：电控、机械、项目管理、硬件。</h1>
+    <h1>五块内容：电控、机械、项目管理、硬件、强化学习。</h1>
     <p>
       竞赛页面不重复收录部件和整机 —— 那在<a href="/catalog">部件库</a>与
       <a href="/robots">整机库</a>里。这里只放<b>打比赛才会用到的做法</b>：
       怎么加工得出来、传动怎么选、结构按什么顺序设计、项目怎么排期、
-      以及（将来）电控与硬件怎么不翻车。没有一手材料的模块就明说「待补」，不拿 AI 凑篇幅。
+      电控与硬件怎么不翻车，以及足式控制与强化学习怎么落地。
+      没有一手材料的模块就明说「待补」，不拿 AI 凑篇幅。
     </p>
   </header>
 
   <section class="comp-block">
-    <h2>四个模块</h2>
+    <h2>五个模块</h2>
     <div class="comp-mods">
 """ + "\n".join(cards) + """
     </div>
@@ -92,10 +103,13 @@ def build(out_dir: pathlib.Path, root: pathlib.Path) -> None:
   <section class="comp-block comp-honest">
     <h2>为什么有些模块还是空的</h2>
     <p>
-      有内容的三块都是有作者的实战材料，我们做的是<b>移植 + 标注来源</b>，不是重写：
+      有内容的模块都是有作者的实战材料，我们做的是<b>移植 + 标注来源</b>，不是重写：
       机械四篇（铨洲智造平台 CNC 指南 + 哈工大竞技机器人队三篇）、
-      电控一篇（How To Begin v2.0）、项目管理一篇（RoboParty RP1 白皮书）。
-      硬件暂时没有同等级的一手材料 —— 与其编一份「设计规范」，不如空着。
+      电控五篇（三篇站内教程 + 达妙科技《足式机器人控制基础》飞书原文 +
+      DM_RS 开源驱动项目）、
+      硬件两篇（重山战队）、项目管理一篇（RoboParty RP1 白皮书）、
+      强化学习一篇（达妙科技《足式强化学习笔记》飞书原文）。
+      飞书文档与 GitHub 项目只做入口与范围说明，不复制正文；其余模块没有可核材料，不拿 AI 凑篇幅。
     </p>
     <div class="comp-links">
       <a href="https://github.com/RoboWiki/RoboWiki.github.io/issues/new?template=article.yml&labels=article"

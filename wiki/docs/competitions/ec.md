@@ -4,18 +4,54 @@ title: 电控
 
 # 电控
 
-::: tip 现在有三篇了，仍然偏薄
-三篇合起来解决「入门第一周 + 学习路径 + 知识对表」，剩下五块（实时性、总线预算、
-驱动器配置、状态估计、赛场调试）仍然空着 —— 因为这些只能来自真打过比赛的人，编不出来。
+::: tip 五份材料，仍然偏薄
+三篇站内教程解决「入门第一周 + 学习路径 + 知识对表」，两篇外部材料补足式控制与
+电机调试；剩下几块（实时性、总线预算、驱动器配置、状态估计、赛场调试）仍然空着 ——
+因为这些只能来自真打过比赛的人，编不出来。
 :::
 
 ## 现有材料
 
-| 材料 | 讲什么 | 什么时候读 |
-|---|---|---|
-| [How To Begin（v2.0）](/competitions/ec/how-to-begin) | 刚进电控组的第一周该干什么：环境、工具链、第一个能跑起来的东西（17 页） | **入队第一周**。作者自己写明「多数步骤还没有实际测试」，我们按原样搬运 |
-| [电控组学习大纲](/competitions/ec/ec-group-outline) | 按「嵌入式软件 / 硬件」两个方向列书单、工具、练习顺序，末尾给基本任务 | 想系统学、不想只跟着教程走时，拿它当目录 |
-| [RM 电控组需要掌握的基础知识](/competitions/ec/ec-basics-rm) | 三条线（嵌入式开发 / 控制算法 / 硬件设计）各自要会什么，怎么拼成一台机器人 | 用来**对表**：看自己缺哪一块 |
+<MaterialGrid :items="[
+  {
+    title: 'How To Begin（v2.0）',
+    href: '/competitions/ec/how-to-begin',
+    meta: '17 页',
+    tags: ['入门', '第一周'],
+    what: '刚进电控组的第一周该干什么：环境、工具链、第一个能跑起来的东西。',
+    when: '入队第一周。作者自己写明「多数步骤还没有实际测试」，我们按原样搬运。',
+  },
+  {
+    title: '电控组学习大纲',
+    href: '/competitions/ec/ec-group-outline',
+    tags: ['学习路径'],
+    what: '按「嵌入式软件 / 硬件」两个方向列书单、工具、练习顺序，末尾给基本任务。',
+    when: '想系统学、不想只跟着教程走时，拿它当目录。',
+  },
+  {
+    title: 'RM 电控组需要掌握的基础知识',
+    href: '/competitions/ec/ec-basics-rm',
+    tags: ['知识对表'],
+    what: '三条线（嵌入式开发 / 控制算法 / 硬件设计）各自要会什么，怎么拼成一台机器人。',
+    when: '用来对表：看自己缺哪一块。',
+  },
+  {
+    title: '达妙科技足式机器人控制基础',
+    href: 'https://my.feishu.cn/wiki/D88NwctmXieODakf3f1cPWCinfe',
+    meta: '飞书 · 08-03 更新',
+    tags: ['足式控制', 'MPC / WBC'],
+    what: 'MuJoCo / URDF、硬件抽象、运动学与动力学、状态估计、MPC、WBC、VMC、落足点规划与 ZMP，附 A1-QP-MPC 与 Legged Control 项目解析。',
+    when: '想弄清模型控制这条线时按章节读；末尾「强化学习环境配置实录」可与强化学习模块对照。',
+  },
+  {
+    title: '达妙 USB 转 CAN 适配灵足电机（DM_RS）',
+    href: 'https://github.com/zeitvex/DM_RS',
+    meta: 'GitHub · zeitvex/DM_RS',
+    tags: ['USB-CAN', '灵足电机'],
+    what: '用达妙 USB 转 CAN 硬件驱动灵足（RobStride）电机的整合项目：Python / Tkinter 图形界面、MIT 控制模式、实时曲线与参数调试，可用 PyInstaller 打包。',
+    when: '手上有达妙 USB-CAN 模块、要快速验证灵足电机通信或做上位机调试时。作者写明不对电机损坏负责，先在空载、低限幅下跑通。',
+  },
+]" />
 
 ## 该有什么
 

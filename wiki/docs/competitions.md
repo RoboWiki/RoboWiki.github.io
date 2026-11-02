@@ -8,21 +8,22 @@ outline: false
 <div class="comp">
   <header class="comp-hero">
     <div class="comp-kicker">实战资料</div>
-    <h1>四块内容：电控、机械、项目管理、硬件。</h1>
+    <h1>五块内容：电控、机械、项目管理、硬件、强化学习。</h1>
     <p>
       竞赛页面不重复收录部件和整机 —— 那在<a href="/catalog">部件库</a>与
       <a href="/robots">整机库</a>里。这里只放<b>打比赛才会用到的做法</b>：
       怎么加工得出来、传动怎么选、结构按什么顺序设计、项目怎么排期、
-      以及（将来）电控与硬件怎么不翻车。没有一手材料的模块就明说「待补」，不拿 AI 凑篇幅。
+      电控与硬件怎么不翻车，以及足式控制与强化学习怎么落地。
+      没有一手材料的模块就明说「待补」，不拿 AI 凑篇幅。
     </p>
   </header>
 
   <section class="comp-block">
-    <h2>四个模块</h2>
+    <h2>五个模块</h2>
     <div class="comp-mods">
   <a class="comp-mod on" href="/competitions/ec">
-    <div class="comp-mod-head"><b>电控</b><em>3 篇</em></div>
-    <p>主控选型与实时性、CAN 总线与频率预算、电机驱动器配置、状态估计与整车控制状态机、赛场调试与日志回放。</p>
+    <div class="comp-mod-head"><b>电控</b><em>5 篇</em></div>
+    <p>主控选型与实时性、CAN 总线与频率预算、电机驱动器配置、状态估计与整车控制状态机、足式 MPC / WBC、赛场调试与日志回放。</p>
     <span>这一块最缺的是「别人踩过的坑」：同样的 CAN 负载，为什么有的队稳定有的队掉线。</span>
   </a>
   <a class="comp-mod on" href="/competitions/mechanical">
@@ -40,16 +41,24 @@ outline: false
     <p>电源树与上下电时序、电机驱动与保护、传感器接口与接地、PCB 布局布线在强电流下的注意事项、故障排查。</p>
     <span>赛场上的「玄学问题」八成出在电源与接地，这一块值得攒案例。</span>
   </a>
+  <a class="comp-mod on" href="/competitions/rl">
+    <div class="comp-mod-head"><b>强化学习</b><em>1 篇</em></div>
+    <p>MDP 与动态规划、策略梯度、PPO / SAC / TD3、模仿与特权学习、域随机化与课程学习、Sim-to-Real。</p>
+    <span>足式运动的策略越来越依赖 RL；先把算法脉络和 Sim2Real 的坑对上，再谈调参。</span>
+  </a>
     </div>
   </section>
 
   <section class="comp-block comp-honest">
     <h2>为什么有些模块还是空的</h2>
     <p>
-      有内容的三块都是有作者的实战材料，我们做的是<b>移植 + 标注来源</b>，不是重写：
+      有内容的模块都是有作者的实战材料，我们做的是<b>移植 + 标注来源</b>，不是重写：
       机械四篇（铨洲智造平台 CNC 指南 + 哈工大竞技机器人队三篇）、
-      电控一篇（How To Begin v2.0）、项目管理一篇（RoboParty RP1 白皮书）。
-      硬件暂时没有同等级的一手材料 —— 与其编一份「设计规范」，不如空着。
+      电控五篇（三篇站内教程 + 达妙科技《足式机器人控制基础》飞书原文 +
+      DM_RS 开源驱动项目）、
+      硬件两篇（重山战队）、项目管理一篇（RoboParty RP1 白皮书）、
+      强化学习一篇（达妙科技《足式强化学习笔记》飞书原文）。
+      飞书文档与 GitHub 项目只做入口与范围说明，不复制正文；其余模块没有可核材料，不拿 AI 凑篇幅。
     </p>
     <div class="comp-links">
       <a href="https://github.com/RoboWiki/RoboWiki.github.io/issues/new?template=article.yml&labels=article"

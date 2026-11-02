@@ -1,12 +1,12 @@
 # RoboWiki
 
-> 机器人开发的开放资料底稿：311 个部件的可核对参数、21 台整机、软件库与采购渠道。每个数字都带来源与口径，缺的字段写「—」，不猜、不用同类填补。站点不卖零件、不收佣金。
+> 机器人开发的开放资料底稿：329 个部件的可核对参数、21 台整机、软件库与采购渠道。每个数字都带来源与口径，缺的字段写「—」，不猜、不用同类填补。站点不卖零件、不收佣金。
 
 站点：https://robowiki.github.io/　中文为主，英文是子集（/en/）。
 
 ## 机器可读数据（首选入口）
 
-- [catalog.json](https://robowiki.github.io/catalog.json)：全部 311 个部件的结构化数据（id、slug、品类、厂商、型号、关键参数、来源等级、价格、优惠、评分），字段名即参数名。
+- [catalog.json](https://robowiki.github.io/catalog.json)：全部 329 个部件的结构化数据（id、slug、品类、厂商、型号、关键参数、来源等级、价格、优惠、评分），字段名即参数名。
 - [robots.json](https://robowiki.github.io/robots.json)：21 台整机（自由度、质量、负载、续驶、URDF / 仓库链接、开源生态）。
 - [software.json](https://robowiki.github.io/software.json)：软件库（仿真 / 训练 / 部署 / 算法，含仓库与许可）。
 - [suppliers.json](https://robowiki.github.io/suppliers.json)：采购渠道（加工、电机、结构件等）。
@@ -15,7 +15,7 @@
 
 ## 主要页面
 
-- [部件库](https://robowiki.github.io/catalog.html)：按列排序 / 筛选的交互式选型台（311 件；纯前端渲染，抓 HTML 请改读 catalog.json 或下面的型号页）。
+- [部件库](https://robowiki.github.io/catalog.html)：按列排序 / 筛选的交互式选型台（329 件；纯前端渲染，抓 HTML 请改读 catalog.json 或下面的型号页）。
 - [关节电机总览](https://robowiki.github.io/parts/actuator/index.html)：按峰值扭矩降序的跨厂商速览。
 - [整机库](https://robowiki.github.io/robots.html)：选方案（几自由度、带不带算力、有没有 URDF）。
 - [软件库](https://robowiki.github.io/software.html)：仿真、训练、部署、算法怎么选。
@@ -145,21 +145,34 @@
 - [树莓派 Raspberry Pi 5](https://robowiki.github.io/parts/controller_high/raspberry-pi-5.html)：SoC Broadcom BCM2712、来源 A 级、¥1,600
 - [瑞莎 Radxa ROCK 5B](https://robowiki.github.io/parts/controller_high/radxa-rock-5b.html)：SoC Rockchip RK3588、NPU 6 TOPS、来源 A 级、¥884
 
-### 下位机（3 件）
+### 下位机（11 件）
 
-力矩闭环。
+底层控制 / 电机驱动。
 
+- [MIT Biomimetics Robotics Lab 3phase_integrated](https://robowiki.github.io/parts/controller_low/mit-biomimetics-robotics-lab-3phase-integrated.html)：接口 CAN 1 Mbit/s / UART（配置，921600）/ ST-Link（JST-SH）、MCU STM32F446RET6、来源 A 级
+- [ODrive Robotics ODrive S1](https://robowiki.github.io/parts/controller_low/odrive-robotics-odrive-s1.html)：质量 0.035 kg、接口 USB / CAN-FD / UART / PWM / STEP-DIR / GPIO、来源 A 级
+- [PJRC Teensy 4.1](https://robowiki.github.io/parts/controller_low/pjrc-teensy-4-1.html)：接口 CAN / CAN-FD / UART / SPI / I2C / PWM / ADC / Ethernet / USB、MCU i.MX RT1062（Arm Cortex-M7）、来源 A 级
+- [STMicroelectronics B-G431B-ESC1](https://robowiki.github.io/parts/controller_low/stmicroelectronics-b-g431b-esc1.html)：质量 9.20e-03 kg、接口 CAN / UART / PWM / USB（ST-LINK）、MCU STM32G431CBU6、来源 A 级
+- [SimpleFOC Team SimpleFOC Mini V2.3](https://robowiki.github.io/parts/controller_low/simplefoc-team-simplefoc-mini-v2-3.html)：接口 3×PWM + ENABLE；3 路低侧电流采样；母线电压采样、来源 A 级
+- [VESC Labs VESC Classic 100V](https://robowiki.github.io/parts/controller_low/vesc-labs-vesc-classic-100v.html)：质量 0.153 kg、接口 USB / CAN / SPI / I2C / UART / PWM / ADC、MCU STM32F405、来源 A 级
+- [mjbots moteus r4.11](https://robowiki.github.io/parts/controller_low/mjbots-moteus-r4-11.html)：质量 0.014 kg、接口 CAN-FD / UART / SPI、MCU STM32G4（170 MHz，官方未注明具体型号）、来源 A 级
 - [大疆 DJI RoboMaster 开发板 A 型](https://robowiki.github.io/parts/controller_low/dji-robomaster-a.html)：接口 CAN / UART / SPI / I2C / PWM / ADC、MCU STM32F427IIH6、来源 A 级、¥429
 - [大疆 DJI RoboMaster 开发板 C 型](https://robowiki.github.io/parts/controller_low/dji-robomaster-c.html)：质量 0.038 kg、接口 CAN1×2 + CAN2×2｜UART×2｜PWM×7｜DBUS×1｜USB(micro, DFU)×1｜SWD×1｜BOOT×1｜5V 激光口×1｜24V 输出×1｜可配置 IO(I²C/SPI)｜数字摄像头 FPC 18-pin×1、MCU STM32（手册未注明具体型号，常见资料为 STM32F407IGH6）、来源 A 级、¥379
+- [灯哥开源 ToanTech DengFOC V3.0](https://robowiki.github.io/parts/controller_low/toantech-dengfoc-v3-0.html)：接口 UART（控制）/ IIC / ABI / PWM / SPI / HALL（编码器）、MCU ESP32（Lolin32 Lite）、来源 A 级
 - [达妙 DAMIAO DM-MC-Board02](https://robowiki.github.io/parts/controller_low/damiao-dm-mc-board02.html)：质量 0.019 kg、接口 CANFD×3 / RS485×2 / USB×1 / SBUS×1 / PWM×4 / UART×3 / SWD、MCU STM32H723VGT6、来源 A 级、¥199
 
-### 遥控器（4 件）
+### 遥控器（9 件）
 
 手柄 / 板控 / 遥操作。
 
 - [乐迪 RadioLink AT9S Pro](https://robowiki.github.io/parts/remote_controller/radiolink-at9s-pro.html)：来源 B 级
 - [乐迪 RadioLink T12D](https://robowiki.github.io/parts/remote_controller/radiolink-t12d.html)：来源 B 级
 - [乐迪 RadioLink T8S](https://robowiki.github.io/parts/remote_controller/radiolink-t8s.html)：来源 B 级
+- [大疆 DJI RC 2](https://robowiki.github.io/parts/remote_controller/dji-rc-2.html)：来源 B 级
+- [大疆 DJI RC Plus](https://robowiki.github.io/parts/remote_controller/dji-rc-plus.html)：来源 B 级、¥9,000
+- [大疆 DJI RC Pro 2](https://robowiki.github.io/parts/remote_controller/dji-rc-pro-2.html)：来源 B 级、¥5,999
+- [大疆 DJI RC-N1](https://robowiki.github.io/parts/remote_controller/dji-rc-n1.html)：来源 B 级、¥599
+- [大疆 DJI RC-N3](https://robowiki.github.io/parts/remote_controller/dji-rc-n3.html)：来源 B 级、¥699
 - [宇树 Unitree R3](https://robowiki.github.io/parts/remote_controller/unitree-r3.html)：来源 B 级
 
 ### 电调（3 件）
@@ -303,12 +316,17 @@ NTC / 温湿度 / 温度 / 压力 / 光照 / ToF / 力矩。
 - [奥比中光 Orbbec Gemini 335](https://robowiki.github.io/parts/camera/orbbec-gemini-335.html)：质量 0.097 kg、额定电压 5 V、接口 USB 3.0 Type-C、来源 B 级、¥1,950
 - [奥比中光 Orbbec Gemini 336](https://robowiki.github.io/parts/camera/orbbec-gemini-336.html)：质量 0.099 kg、额定电压 5 V、接口 USB 3.0 Type-C、来源 B 级
 
-### 电池（2 件）
+### 电池（7 件）
 
 智能电池 / 动力电池。
 
 - [大疆 DJI TB47](https://robowiki.github.io/parts/battery/dji-tb47.html)：额定电压 22.2 V、接口 DJI 智能电池专用接口（电量/寿命/温度通讯）、来源 B 级
 - [大疆 DJI TB48](https://robowiki.github.io/parts/battery/dji-tb48.html)：额定电压 22.8 V、接口 DJI 智能电池专用接口（电量/寿命/温度通讯）、来源 B 级
+- [宇树 Unitree BT2-05](https://robowiki.github.io/parts/battery/unitree-bt2-05.html)：额定电压 29.6 V、接口 Go2 专用电池接口（放电口 / 充电口分离）、来源 A 级、¥2,500
+- [宇树 Unitree BT2-06](https://robowiki.github.io/parts/battery/unitree-bt2-06.html)：额定电压 28.8 V、接口 Go2 专用电池接口（放电口 / 充电口分离）、来源 A 级、¥4,000
+- [福来翔航模 6S4P 21700 20000mAh（长条）](https://robowiki.github.io/parts/battery/6s4p-21700-20000mah.html)：额定电压 22.2 V、接口 XT60（默认，可定制；带平衡头）、来源 C 级
+- [飞起来Jumbo Power 6S 平铺 21700](https://robowiki.github.io/parts/battery/jumbo-power-6s-21700.html)：额定电压 22.2 V、来源 C 级、¥197
+- [飞飞模型 6S 22.2V XT60](https://robowiki.github.io/parts/battery/6s-22-2v-xt60.html)：额定电压 22.2 V、接口 XT60、来源 C 级、¥218
 
 ### 连接器（23 件）
 
@@ -468,5 +486,5 @@ CAN 通信 / 力触觉 / 编码器。
 ## 引用与许可
 
 - 内容许可 GPL-3.0；数据可转载，但请保留来源链接与核对日期（型号页底部有）。
-- 数据快照带版本：2026-11-01T06:17:39.821519+00:00，源提交 1534b60a3370566187ede5a4f9e6cfdffe7cbd3d。
+- 数据快照带版本：2026-11-02T02:47:45.207007+00:00，源提交 ab0f18b166d460417ec413a4416cf65c105d8c04。
 - 参数口径（峰值 / 额定、转子 / 输出惯量）不统一时不能横向比，先读 /semantics。

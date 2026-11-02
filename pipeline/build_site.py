@@ -32,7 +32,7 @@ from .build_competitions import build as build_competitions
 from .build_robots import build as build_robots
 from .build_software import build as build_software
 from .contrib_page import build as build_contributors
-from .load import cat_dims, load_taxonomy
+from .load import cat_dims, load_taxonomy, vendor_slug
 
 #: 品类表来自 data/taxonomy.json —— 不再在这里硬编码。
 #: 改品类名只改注册表，站点导航、筛选、后端标签、schema 会一起跟上。
@@ -47,6 +47,47 @@ def slug(s: str) -> str:
     if len(a) < 2:
         a = "v" + hashlib.sha1(s.encode()).hexdigest()[:6]
     return a
+
+
+def vendor_slugs(items: list[dict], *, legacy: bool = False) -> dict[str, str]:
+    """品类内的厂商 URL 片段。
+
+    关节电机的厂商页已经发过一轮，继续沿用 slug() 的写法，不换成 taxonomy
+    里的 vendor slug，免得已有链接失效；其余品类是新页面，直接用注册表里
+    已登记、可读的厂商 slug。同一品类里两个厂商归一化后撞名（IMU 的 TDK
+    就有两家）时，后一个补 6 位哈希。
+    """
+    out: dict[str, str] = {}
+    taken: set[str] = set()
+    for v in sorted({r["vendor"] for r in items}):
+        base = slug(v) if legacy else vendor_slug(v)
+        if base in taken:
+            base = f"{base}-{hashlib.sha1(v.encode()).hexdigest()[:6]}"
+        while base in taken:
+            base += "-x"
+        taken.add(base)
+        out[v] = base
+    return out
+
+
+def sensor_type_groups(items: list[dict]) -> list[tuple[str, str, list[dict]]]:
+    """传感器按类型分组，顺序与部件库的类型筛选一致。
+
+    有数据的类型按数量降序（同数保持 taxonomy 顺序），0 型的排在最后 ——
+    部件库把空类型也列出来，让「以后该收什么」显式可见，这里照做。
+    """
+    labels = dict(next(
+        (c.get("subtypes") or {} for c in (load_taxonomy().get("categories") or [])
+         if c.get("id") == "sensor"), {}))
+    for r in items:
+        labels.setdefault(r.get("subtype") or "other",
+                          r.get("subtype_label") or r.get("subtype") or "其他")
+    by: dict[str, list[dict]] = {k: [] for k in labels}
+    for r in items:
+        by[r.get("subtype") or "other"].append(r)
+    groups = [(k, str(label), by[k]) for k, label in labels.items()]
+    filled = sorted((g for g in groups if g[2]), key=lambda g: -len(g[2]))
+    return filled + [g for g in groups if not g[2]]
 
 
 def part_slug(part_id: str, vendor: str, model: str, seen: dict[str, str]) -> str:
@@ -250,6 +291,52 @@ def actuator_table(items: list[dict], href: dict[str, str] | None = None) -> str
     return "\n".join(lines)
 
 
+def _gallery_meta(p: dict, cat: str) -> str:
+    s = p.get("specs") or {}
+    bits: list[str] = []
+    if cat == "actuator":
+        if s.get("tau_peak_Nm") not in (None, ""):
+            bits.append(f"峰值 {num(s['tau_peak_Nm'])} N·m")
+    elif cat == "sensor":
+        bits.append(str(p["vendor"]))
+    elif p.get("subtype_label"):
+        bits.append(str(p["subtype_label"]))
+    if p.get("price_cny") is not None:
+        bits.append(f"¥{_price_cell(p['price_cny'])}")
+    return " · ".join(bits)
+
+
+def group_gallery(items: list[dict], cat: str,
+                  href: dict[str, str] | None = None) -> str:
+    """分组页顶部的产品图集。
+
+    图统一放进等高托板、用 contain 缩放：不拉伸、不裁机身，长宽比再怪
+    也只在托板里留白。没图的型号不占位，数量差异用一行说明交代。
+    """
+    pics = [p for p in items if (p.get("specs") or {}).get("image_url")]
+    if not pics:
+        return ""
+    cards = []
+    for p in pics:
+        s = p["specs"]
+        meta = _gallery_meta(p, cat)
+        meta_html = f'<span class="part-gallery-meta">{meta}</span>' if meta else ""
+        url = (href or {}).get(p["id"])
+        open_tag, close_tag = ((f'<a class="part-gallery-card" href="{url}">', "</a>")
+                               if url else ('<span class="part-gallery-card">', "</span>"))
+        cards.append(
+            f'{open_tag}<span class="part-gallery-img">'
+            f'<img src="{s["image_url"]}" alt="{p["vendor"]} {p["model"]}" '
+            f'loading="lazy" decoding="async" /></span>'
+            f'<span class="part-gallery-model">{p["model"]}</span>{meta_html}{close_tag}')
+    note = ""
+    if len(pics) < len(items):
+        note = (f"\n> {len(items)} 型中 {len(pics)} 款有可核实的产品图；"
+                f"其余不配图凑数，出处见各型号页。\n")
+    return ('\n## 产品图\n\n<div class="part-gallery">\n'
+            + "\n".join(cards) + f"\n</div>\n{note}")
+
+
 def generic_table(items: list[dict], cat: str, href: dict[str, str] | None = None) -> str:
     if cat == "controller_high":
         head = "| 型号 | SoC | CUDA | NPU TOPS | 内存 GB | 峰值 W | 价格 ¥ | 来源 |\n|---|---|---|---|---|---|---|---|"
@@ -316,6 +403,18 @@ def generic_table(items: list[dict], cat: str, href: dict[str, str] | None = Non
             kv = "、".join(parts) or (s.get("iface") or "—")
             return (f"| {mdl(p, (href or {}).get(p['id']))} | {p.get('subtype_label') or p['subtype']} "
                     f"| {s.get('iface') or '—'} | {kv} "
+                    f"| {_price_cell(p.get('price_cny'))} "
+                    f"| {tier_badge(p['source_tier'], p['verified'])} |")
+    elif cat == "sensor":
+        head = ("| 型号 | 厂商 | 类型 | 接口 | 关键参数 | 价格 ¥ | 来源 |\n"
+                "|---|---|---|---|---|---|---|")
+        def row(p):
+            s = p["specs"]
+            keys = ("bits", "depth_range_m", "range_m", "fps", "odr_hz", "iface")
+            kv = "、".join(f"{k}={num(s[k])}" for k in keys if s.get(k))
+            return (f"| {mdl(p, (href or {}).get(p['id']))} | {p['vendor']} "
+                    f"| {p.get('subtype_label') or p['subtype']} "
+                    f"| {s.get('iface') or '—'} | {kv or '—'} "
                     f"| {_price_cell(p.get('price_cny'))} "
                     f"| {tier_badge(p['source_tier'], p['verified'])} |")
     else:
@@ -1531,8 +1630,10 @@ def main() -> None:
 
     for c, name, desc in CATS:
         items = [r for r in rows if r["category"] == c]
+        vs = sorted({r["vendor"] for r in items})
+        vslug = vendor_slugs(items, legacy=(c == "actuator"))
+
         if c == "actuator":
-            vs = sorted({r["vendor"] for r in items})
             (OUT / "parts" / c / "index.md").write_text(
                 FRONT.format(title=name) + f"""
 # {name}
@@ -1542,7 +1643,7 @@ def main() -> None:
 ## 厂商
 
 """ + "\n".join(
-                    f"- [{'/'.join(['', 'parts', c, slug(v)])}]({('/parts/' + c + '/' + slug(v))}) —— "
+                    f"- [{'/'.join(['', 'parts', c, vslug[v]])}]({('/parts/' + c + '/' + vslug[v])}) —— "
                     f"{v}（{sum(1 for r in items if r['vendor'] == v)} 型）" for v in vs)
                 + f"""
 
@@ -1555,18 +1656,19 @@ def main() -> None:
 
             # 每家一页
             for v in vs:
-                sub = [r for r in items if r["vendor"] == v]
+                sub = sorted((r for r in items if r["vendor"] == v),
+                             key=lambda r: -(r["specs"].get("tau_peak_Nm") or 0))
                 note = ""
                 notes = [r["notes"] for r in sub if "来源冲突" in (r.get("notes") or "")]
                 if notes:
                     note = "\n::: warning 来源冲突\n" + "\n\n".join(
                         n.split("【来源冲突】")[-1][:400] for n in notes[:3]) + "\n:::\n"
-                (OUT / "parts" / c / f"{slug(v)}.md").write_text(
+                (OUT / "parts" / c / f"{vslug[v]}.md").write_text(
                     FRONT.format(title=v) + f"""
 # {v}
 
 共 **{len(sub)}** 型。数据等级 `A` 表示来自厂商手册/规格书且已逐项核对过。
-{note}
+{note}{group_gallery(sub, c, HREF)}
 {actuator_table(sub, HREF)}
 
 ## 这一页的讨论
@@ -1575,15 +1677,54 @@ def main() -> None:
 只写「好用/不好用」对下一个人没有价值。
 """, encoding="utf-8")
         else:
+            legend = "> 来源等级见行末徽章：`A` = 逐项核对过官方手册，`B` = 公开网页，`C` = 转述线索。采购前请回原厂页面确认。"
+            if c == "sensor":
+                # 传感器跨厂商比才有意义：第二层按类型分，与部件库的类型筛选一致
+                groups = sensor_type_groups(items)
+                count_line = f"{desc}，共 **{len(items)}** 件、**{len(groups)}** 个类型。"
+                group_title = "类型"
+            else:
+                groups = [(vslug[v], v, [r for r in items if r["vendor"] == v]) for v in vs]
+                count_line = f"{desc}，共 **{len(items)}** 件、**{len(vs)}** 家厂商。"
+                group_title = "厂商"
+            group_md = ""
+            if groups:
+                group_md = f"\n## {group_title}\n\n" + "\n".join(
+                    f"- [{label}](/parts/{c}/{key}) —— {len(sub)} 型"
+                    + ("" if sub else "（暂未收录）")
+                    for key, label, sub in groups) + "\n"
             (OUT / "parts" / c / "index.md").write_text(
                 FRONT.format(title=name) + f"""
 # {name}
 
-{desc}，共 **{len(items)}** 件。
+{count_line}
+{group_md}
+## 全部型号
 
 {generic_table(items, c, HREF)}
 
-{"> 来源等级见行末徽章：`A` = 逐项核对过官方手册，`B` = 公开网页。采购前请回原厂页面确认。" if c in ("remote_controller", "module", "connector") else "> 这些行是 `B` 级（来自公开文档/官网，未逐项核对），采购前请回原厂页面确认。"}
+{legend}
+""", encoding="utf-8")
+
+            # 每个分组一页：普通品类按厂商，传感器按类型
+            for key, label, sub in groups:
+                empty = "" if sub else "\n> 这一类还没有收录 —— 没有可信来源，宁缺不编。\n"
+                gallery = group_gallery(sub, c, HREF) if sub else ""
+                table = generic_table(sub, c, HREF) if sub else ""
+                (OUT / "parts" / c / f"{key}.md").write_text(
+                    FRONT.format(title=label) + f"""
+# {label}
+
+{name} · 共 **{len(sub)}** 型。
+{empty}{gallery}
+{table}
+
+{legend if sub else ""}
+
+## 这一页的讨论
+
+用过的、量到的、和厂商确认过的，写在下面。**带上具体工况**（负载、占空比、环境温度），
+只写「好用/不好用」对下一个人没有价值。
 """, encoding="utf-8")
 
 
@@ -2131,24 +2272,33 @@ tag 形如 `data-YYYY.MM.DD`。每次发布带三个附件：
     print("  方法与来源 -> method.md")
 
     # ── 侧边栏 ──────────────────────────────────────────────────────────
-    act_items = [{"text": "总览", "link": "/parts/actuator/"}]
-    for v in sorted({r["vendor"] for r in rows if r["category"] == "actuator"}):
-        act_items.append({"text": v, "link": f"/parts/actuator/{slug(v)}"})
     sidebar["/parts/"] = [
         {"text": "部件手册", "items": [
-            # 顶层的 /parts/ 目录页没有生成（部件库 /catalog 就是入口），
-            # 这里曾指向 /parts/ —— 每个型号页的侧边栏都挂着一个 404。
+            # 顶层的 /parts/ 目录页没有生成（部件库 /catalog 就是入口）。
+            # 品类分组由下面的循环统一追加，关节电机默认展开。
             {"text": "选型台（全部）", "link": "/catalog"},
-            {"text": "关节电机", "collapsed": False, "items": act_items},
         ]},
     ]
-    # 其余品类按 CATS 生成（含暂无数据的：点进去是「未收录」说明页，
-    # 这样读者知道这一类存在但还没收，而不是以为漏了）
+    # 每个品类都按「总览 + 厂商」分组（传感器按类型）；关节电机默认展开，
+    # 其余默认收起，进入某一类时 VitePress 会自动展开当前分组，不会把侧边栏撑成一长条。
+    # 含暂无数据的品类仍生成总览链接：点进去是「未收录」说明页，
+    # 这样读者知道这一类存在但还没收，而不是以为漏了。
     for c, name, _ in CATS:
-        if c == "actuator":
-            continue
-        sidebar["/parts/"][0]["items"].append(
-            {"text": name, "link": f"/parts/{c}/"})
+        items = [r for r in rows if r["category"] == c]
+        if c == "sensor":
+            groups = [(key, label) for key, label, _ in sensor_type_groups(items)]
+        else:
+            vs = sorted({r["vendor"] for r in items})
+            vslug = vendor_slugs(items, legacy=(c == "actuator"))
+            groups = [(vslug[v], v) for v in vs]
+        if groups:
+            group = [{"text": "总览", "link": f"/parts/{c}/"}]
+            group += [{"text": label, "link": f"/parts/{c}/{key}"} for key, label in groups]
+            sidebar["/parts/"][0]["items"].append(
+                {"text": name, "collapsed": c != "actuator", "items": group})
+        else:
+            sidebar["/parts/"][0]["items"].append(
+                {"text": name, "link": f"/parts/{c}/"})
 
     (OUT / ".vitepress").mkdir(parents=True, exist_ok=True)
     (OUT / ".vitepress" / "sidebar.json").write_text(

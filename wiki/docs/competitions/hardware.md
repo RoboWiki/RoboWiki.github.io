@@ -9,10 +9,23 @@ title: 硬件
 
 ## 现有材料
 
-| 材料 | 讲什么 | 什么时候看 |
-|---|---|---|
-| [RoboMaster 硬件组做什么](/competitions/hardware/hw-what-we-do) | 职责边界：升降压电源模块、开发板与外设（IMU / USART / CAN / USB / S.BUS）、舵机与电机驱动 | **决定要不要进硬件组之前**，一页看清这活儿是什么 |
-| [硬件组入门与训练安排（重山战队 2026）](/competitions/hardware/hw-training-2026) | 电路基础 → Buck 电源 → 超级电容（含开源超电板案例）→ 四开关 Buck-Boost → PCB（嘉立创 EDA）→ 工具 → 焊接 → 训练题目与检查清单 | 入队第一个月，按顺序照着做 |
+<MaterialGrid when-label="什么时候看" :items="[
+  {
+    title: 'RoboMaster 硬件组做什么',
+    href: '/competitions/hardware/hw-what-we-do',
+    tags: ['职责边界'],
+    what: '升降压电源模块、开发板与外设（IMU / USART / CAN / USB / S.BUS）、舵机与电机驱动。',
+    when: '决定要不要进硬件组之前，一页看清这活儿是什么。',
+  },
+  {
+    title: '硬件组入门与训练安排（重山战队 2026）',
+    href: '/competitions/hardware/hw-training-2026',
+    meta: '重山战队 2026',
+    tags: ['训练路径'],
+    what: '电路基础 → Buck 电源 → 超级电容（含开源超电板案例）→ 四开关 Buck-Boost → PCB（嘉立创 EDA）→ 工具 → 焊接 → 训练题目与检查清单。',
+    when: '入队第一个月，按顺序照着做。',
+  },
+]" />
 
 ::: tip 这两篇怎么用
 第一篇回答「硬件组干什么」，第二篇回答「我第一年具体练什么」。

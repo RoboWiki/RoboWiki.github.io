@@ -7,6 +7,17 @@ title: 脉塔 MyActuator
 
 共 **6** 型。数据等级 `A` 表示来自厂商手册/规格书且已逐项核对过。
 
+## 产品图
+
+<div class="part-gallery">
+<a class="part-gallery-card" href="/parts/actuator/myactuator-x15-450"><span class="part-gallery-img"><img src="/parts/myactuator-x15-450.jpg" alt="脉塔 MyActuator X15-450" loading="lazy" decoding="async" /></span><span class="part-gallery-model">X15-450</span><span class="part-gallery-meta">峰值 450 N·m</span></a>
+<a class="part-gallery-card" href="/parts/actuator/myactuator-x12-320"><span class="part-gallery-img"><img src="/parts/myactuator-x12-320.jpg" alt="脉塔 MyActuator X12-320" loading="lazy" decoding="async" /></span><span class="part-gallery-model">X12-320</span><span class="part-gallery-meta">峰值 320 N·m</span></a>
+<a class="part-gallery-card" href="/parts/actuator/myactuator-x8-120"><span class="part-gallery-img"><img src="/parts/myactuator-x8-120.jpg" alt="脉塔 MyActuator X8-120" loading="lazy" decoding="async" /></span><span class="part-gallery-model">X8-120</span><span class="part-gallery-meta">峰值 120 N·m</span></a>
+<a class="part-gallery-card" href="/parts/actuator/myactuator-x4-36"><span class="part-gallery-img"><img src="/parts/myactuator-x4-36.jpg" alt="脉塔 MyActuator X4-36" loading="lazy" decoding="async" /></span><span class="part-gallery-model">X4-36</span><span class="part-gallery-meta">峰值 34 N·m</span></a>
+<a class="part-gallery-card" href="/parts/actuator/myactuator-x4-10"><span class="part-gallery-img"><img src="/parts/myactuator-x4-10.jpg" alt="脉塔 MyActuator X4-10" loading="lazy" decoding="async" /></span><span class="part-gallery-model">X4-10</span><span class="part-gallery-meta">峰值 10 N·m</span></a>
+<a class="part-gallery-card" href="/parts/actuator/myactuator-x2-7"><span class="part-gallery-img"><img src="/parts/myactuator-x2-7.jpg" alt="脉塔 MyActuator X2-7" loading="lazy" decoding="async" /></span><span class="part-gallery-model">X2-7</span><span class="part-gallery-meta">峰值 7 N·m</span></a>
+</div>
+
 | 型号 | 峰值 τ N·m | 额定 τ N·m | 减速比 | 空载 rpm | 质量 kg | 转子惯量 kg·m² | 价格 ¥ | 来源 |
 |---|---|---|---|---|---|---|---|---|
 | [**X15-450**](/parts/actuator/myactuator-x15-450) | 450 | 145 | 20.25 | 108 | — | — | — | `B` |

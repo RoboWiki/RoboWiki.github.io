@@ -5,7 +5,24 @@ title: 连接器
 
 # 连接器
 
-板端 / 线端 / 大电流，共 **23** 件。
+板端 / 线端 / 大电流，共 **23** 件、**12** 家厂商。
+
+## 厂商
+
+- [Amass 艾迈斯](/parts/connector/amass) —— 6 型
+- [CJT 长江连接器](/parts/connector/cjt) —— 1 型
+- [Ckmtw 灿科盟](/parts/connector/ckmtw) —— 1 型
+- [Degson 高正](/parts/connector/degson) —— 2 型
+- [HANRUN 汉仁](/parts/connector/hanrun) —— 1 型
+- [JST](/parts/connector/jst) —— 5 型
+- [JTL 景泰隆](/parts/connector/jtl) —— 1 型
+- [Kinghelm 金航标](/parts/connector/kinghelm) —— 2 型
+- [XKB 星坤](/parts/connector/xkb) —— 1 型
+- [XUNPU 讯普](/parts/connector/xunpu) —— 1 型
+- [伟利达 WLD](/parts/connector/weilida) —— 1 型
+- [电蜂优选 Elecbee](/parts/connector/elecbee) —— 1 型
+
+## 全部型号
 
 | 型号 | 子类 | 系列 | 关键参数 | 价格 ¥ | 来源 |
 |---|---|---|---|---|---|
@@ -33,4 +50,4 @@ title: 连接器
 | [**5264 3P 端子线**](/parts/connector/wld-5264-3p) | 成品线束 | 5264 3P | 3P、2.5 mm、2 A、250 V、AWG 24–22 | — | `B` |
 | [**GX12-2P 2芯航空插头**](/parts/connector/elecbee-gx12-2p-2) | 航空插 | GX12-2P | 2P、5 A、300 V | — | `B` |
 
-> 来源等级见行末徽章：`A` = 逐项核对过官方手册，`B` = 公开网页。采购前请回原厂页面确认。
+> 来源等级见行末徽章：`A` = 逐项核对过官方手册，`B` = 公开网页，`C` = 转述线索。采购前请回原厂页面确认。

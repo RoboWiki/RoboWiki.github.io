@@ -7,6 +7,14 @@ title: CubeMars
 
 共 **19** 型。数据等级 `A` 表示来自厂商手册/规格书且已逐项核对过。
 
+## 产品图
+
+<div class="part-gallery">
+<a class="part-gallery-card" href="/parts/actuator/cubemars-ak80-6"><span class="part-gallery-img"><img src="/parts/cubemars-ak80-6.jpg" alt="CubeMars AK80-6" loading="lazy" decoding="async" /></span><span class="part-gallery-model">AK80-6</span><span class="part-gallery-meta">峰值 12 N·m · ¥3,288</span></a>
+</div>
+
+> 19 型中 1 款有可核实的产品图；其余不配图凑数，出处见各型号页。
+
 | 型号 | 峰值 τ N·m | 额定 τ N·m | 减速比 | 空载 rpm | 质量 kg | 转子惯量 kg·m² | 价格 ¥ | 来源 |
 |---|---|---|---|---|---|---|---|---|
 | [**AKH70-48 V1.0 KV41**](/parts/actuator/cubemars-akh70-48-v1-0-kv41) | 222 | 74 | 48 | 35 | 1.396 | — | — | `B` |

@@ -5,7 +5,18 @@ title: 激光雷达
 
 # 激光雷达
 
-地形与建图，共 **13** 件。
+地形与建图，共 **13** 件、**6** 家厂商。
+
+## 厂商
+
+- [Livox](/parts/lidar/livox) —— 4 型
+- [Manifold Tech](/parts/lidar/manifold) —— 1 型
+- [RoboSense](/parts/lidar/robosense) —— 2 型
+- [Slamtec](/parts/lidar/slamtec) —— 1 型
+- [乐动 LDROBOT](/parts/lidar/ldrobot) —— 3 型
+- [宇树 Unitree](/parts/lidar/unitree) —— 2 型
+
+## 全部型号
 
 | 型号 | 子类 | 接口 | 关键参数 | 价格 ¥ | 来源 |
 |---|---|---|---|---|---|
@@ -23,4 +34,4 @@ title: 激光雷达
 | [**L1**](/parts/lidar/unitree-l1) | 固态 | TTL UART 2 Mbps | range_m=20、fps=11、iface=TTL UART 2 Mbps | 999 | `A✓` |
 | [**L2**](/parts/lidar/unitree-l2) | 固态 | ENET UDP + TTL UART 4 Mbps | range_m=30、fps=5.55、iface=ENET UDP + TTL UART 4 Mbps | 1,799 | `A✓` |
 
-> 这些行是 `B` 级（来自公开文档/官网，未逐项核对），采购前请回原厂页面确认。
+> 来源等级见行末徽章：`A` = 逐项核对过官方手册，`B` = 公开网页，`C` = 转述线索。采购前请回原厂页面确认。
