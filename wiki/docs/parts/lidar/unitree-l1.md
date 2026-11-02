@@ -71,7 +71,7 @@ description: "宇树 Unitree L1（激光雷达）：量程 20 m、视场 360° �
 | 帧率 (fps) | 11 |
 | 接口 | TTL UART 2 Mbps |
 | 质量 (kg) | — |
-| range_note | PM：20 m@90%、10 m@10%；RM：30 m@90%、15 m@10% |
+| 量程说明 | PM：20 m@90%、10 m@10%；RM：30 m@90%、15 m@10% |
 | effective_points_per_s | 21,600 |
 | blind_m | 0.05 |
 | 精度 | ±2.0 cm |
@@ -109,7 +109,7 @@ description: "宇树 Unitree L1（激光雷达）：量程 20 m、视场 360° �
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.unitree.com/cn/LiDAR" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>《宇树 L1 雷达 用户手册 v1.0》参数规格页（内嵌线稿）</td></tr><tr><td class="rs-plain">收录说明</td><td>《宇树 L1 雷达 用户手册 v1.0》参数规格页；官网产品页（unitree.com/cn/LiDAR，含 L1/L2 对照表）</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%AE%87%E6%A0%91+Unitree+L1+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=L1&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%AE%87%E6%A0%91+Unitree+L1+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/lidar/unitree.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/unitree.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.unitree.com/cn/LiDAR" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>《宇树 L1 雷达 用户手册 v1.0》参数规格页（内嵌线稿）</td></tr><tr><td class="rs-plain">收录说明</td><td>《宇树 L1 雷达 用户手册 v1.0》参数规格页；官网产品页（unitree.com/cn/LiDAR，含 L1/L2 对照表）</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%AE%87%E6%A0%91+Unitree+L1+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=L1&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%AE%87%E6%A0%91+Unitree+L1+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/lidar/unitree.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/unitree.json</td></tr></tbody></table>
 
 ## 备注
 

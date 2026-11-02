@@ -71,7 +71,7 @@ def list_posts(
 
 @router.post("/posts", response_model=PostOut, status_code=201)
 def create_post(payload: PostIn, request: Request, db: Db, user: CurrentUser):
-    rate_limit(request, "post", settings.rate_max_posts)
+    rate_limit(request, "post", settings.rate_max_posts, user.id)
 
     if payload.kind == "review":
         if not payload.part_id:
@@ -122,7 +122,7 @@ def list_comments(post_id: int, db: Db, user: MaybeUser):
 @router.post("/posts/{post_id}/comments", response_model=CommentOut, status_code=201)
 def create_comment(post_id: int, payload: CommentIn, request: Request, db: Db,
                    user: CurrentUser):
-    rate_limit(request, "comment", settings.rate_max_comments)
+    rate_limit(request, "comment", settings.rate_max_comments, user.id)
     if db.get(Post, post_id) is None:
         raise HTTPException(404, "帖子不存在")
     if payload.parent_id is not None:

@@ -83,14 +83,14 @@ description: "达妙 DAMIAO DM-IMU-L1（IMU）：额定 24 V、分辨率 16-bit�
 | 安装方向数 | 24 |
 | 硬件版本 | V10 / V11（软件自动识别） |
 | 适用固件 | 2.0.3.0 |
-| power_w | 0.47 |
-| size_mm | 36×26×9 |
-| weight_g | 11.5 |
+| 功耗 (W) | 0.47 |
+| 尺寸 (mm) | 36×26×9 |
+| 重量 (g) | 11.5 |
 | 分辨率 | 16-bit（BMI088） |
 | 官方文档 | https://gitee.com/kit-miao/dm-imu |
 | 官方手册 (PDF) | https://gitee.com/kit-miao/dm-imu/raw/master/%E8%AF%B4%E6%98%8E%E4%B9%A6/DM-IMU-L1%20%E5%85%AD%E8%BD%B4%E6%83%AF%E6%80%A7%E6%B5%8B%E9%87%8F%E5%8D%95%E5%85%83%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E4%B9%A6%20V1.3%202026-09-22.pdf |
-| repo_urls | https://github.com/OpenDogeRobotics/OpenDoge_hardware |
-| repo_license | NO-LICENSE |
+| 开源仓库 | https://github.com/OpenDogeRobotics/OpenDoge_hardware |
+| 仓库许可 | NO-LICENSE |
 
 ## 优惠与获取条件
 
@@ -107,7 +107,7 @@ description: "达妙 DAMIAO DM-IMU-L1（IMU）：额定 24 V、分辨率 16-bit�
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://gitee.com/kit-miao/dm-imu" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://gitee.com/kit-miao/dm-imu/raw/master/%E8%AF%B4%E6%98%8E%E4%B9%A6/DM-IMU-L1%20%E5%85%AD%E8%BD%B4%E6%83%AF%E6%80%A7%E6%B5%8B%E9%87%8F%E5%8D%95%E5%85%83%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E4%B9%A6%20V1.3%202026-09-22.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://github.com/OpenDogeRobotics/OpenDoge_hardware" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NO-LICENSE（⚠ 仓库里没有 LICENSE 文件 —— 默认保留所有权利，转载资产或商用前先问作者）</td></tr><tr><td class="rs-plain">产品图出处</td><td>达妙官方说明书 V1.3 内嵌产品图</td></tr><tr><td class="rs-plain">收录说明</td><td>《DM-IMU-L1 六轴惯性测量单元使用说明书 V1.3》(2026-09-22) 技术参数表（官方 Gitee 仓库 kit-miao/dm-imu）</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-IMU-L1+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=DM-IMU-L1&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-IMU-L1+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/imu/damiao.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/imu/damiao.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://gitee.com/kit-miao/dm-imu" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://gitee.com/kit-miao/dm-imu/raw/master/%E8%AF%B4%E6%98%8E%E4%B9%A6/DM-IMU-L1%20%E5%85%AD%E8%BD%B4%E6%83%AF%E6%80%A7%E6%B5%8B%E9%87%8F%E5%8D%95%E5%85%83%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E4%B9%A6%20V1.3%202026-09-22.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://github.com/OpenDogeRobotics/OpenDoge_hardware" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NO-LICENSE（⚠ 仓库里没有 LICENSE 文件 —— 默认保留所有权利，转载资产或商用前先问作者）</td></tr><tr><td class="rs-plain">产品图出处</td><td>达妙官方说明书 V1.3 内嵌产品图</td></tr><tr><td class="rs-plain">收录说明</td><td>《DM-IMU-L1 六轴惯性测量单元使用说明书 V1.3》(2026-09-22) 技术参数表（官方 Gitee 仓库 kit-miao/dm-imu）</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-IMU-L1+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=DM-IMU-L1&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-IMU-L1+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/imu/damiao.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/imu/damiao.json</td></tr></tbody></table>
 
 ## 备注
 

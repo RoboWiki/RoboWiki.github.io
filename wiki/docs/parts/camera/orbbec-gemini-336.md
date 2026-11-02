@@ -15,7 +15,7 @@ description: "奥比中光 Orbbec Gemini 336（深度相机）：质量 0.099 kg
     <div class="part-tags">
       <span class="part-tag">深度相机</span>
       <span class="part-tag soft">双目</span>
-      <span class="part-tag tierB">来源 B ✓ 已核对</span>
+      <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
     </div>
 
@@ -73,15 +73,15 @@ description: "奥比中光 Orbbec Gemini 336（深度相机）：质量 0.099 kg
 | 额定电压 (V) | 5 |
 | 官方文档 | https://www.orbbec.com/docs/g330-orbbec-gemini-330-series-datasheet/ |
 | 分辨率 | 深度 1280×800；RGB 1920×1080 |
-| weight_g | 99 |
-| power_w | 3 |
-| size_mm | 90×25×30.7 |
+| 重量 (g) | 99 |
+| 功耗 (W) | 3 |
+| 尺寸 (mm) | 90×25×30.7 |
 | 工作温度 | -10~45 |
 | 防护等级 | IP5X |
 | 板载 IMU | 6 轴（陀螺仪 + 加速度计，50–1000 Hz） |
 | 官方手册 (PDF) | https://orbbec-debian-repos-aws.s3.amazonaws.com/product/Gemini%20330%20series%20Datasheet-V1.8.pdf |
-| repo_urls | https://github.com/orbbec/OrbbecSDK_v2 |
-| repo_license | NOASSERTION |
+| 开源仓库 | https://github.com/orbbec/OrbbecSDK_v2 |
+| 仓库许可 | NOASSERTION |
 
 ## 优惠与获取条件
 
@@ -98,7 +98,7 @@ description: "奥比中光 Orbbec Gemini 336（深度相机）：质量 0.099 kg
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.orbbec.com/products/3d-cameras/gemini-336/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.orbbec.com/docs/g330-orbbec-gemini-330-series-datasheet/" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://orbbec-debian-repos-aws.s3.amazonaws.com/product/Gemini%20330%20series%20Datasheet-V1.8.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://github.com/orbbec/OrbbecSDK_v2" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NOASSERTION（⚠ 有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍）</td></tr><tr><td class="rs-plain">产品图出处</td><td>奥比中光官网产品图</td></tr><tr><td class="rs-plain">收录说明</td><td>奥比中光 G330 系列官方数据表 + 官网产品页（2026-10-31 核对）</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A5%A5%E6%AF%94%E4%B8%AD%E5%85%89+Orbbec+Gemini+336+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Gemini+336&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A5%A5%E6%AF%94%E4%B8%AD%E5%85%89+Orbbec+Gemini+336+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/camera/orbbec.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/camera/orbbec.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.orbbec.com/products/3d-cameras/gemini-336/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.orbbec.com/docs/g330-orbbec-gemini-330-series-datasheet/" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://orbbec-debian-repos-aws.s3.amazonaws.com/product/Gemini%20330%20series%20Datasheet-V1.8.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://github.com/orbbec/OrbbecSDK_v2" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NOASSERTION（⚠ 有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍）</td></tr><tr><td class="rs-plain">产品图出处</td><td>奥比中光官网产品图</td></tr><tr><td class="rs-plain">收录说明</td><td>奥比中光 G330 系列官方数据表 + 官网产品页（2026-10-31 核对）</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A5%A5%E6%AF%94%E4%B8%AD%E5%85%89+Orbbec+Gemini+336+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Gemini+336&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A5%A5%E6%AF%94%E4%B8%AD%E5%85%89+Orbbec+Gemini+336+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/camera/orbbec.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/camera/orbbec.json</td></tr></tbody></table>
 
 ## 备注
 

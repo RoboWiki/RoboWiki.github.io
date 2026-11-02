@@ -71,16 +71,30 @@ MaybeUser = Annotated[Optional[User], Depends(optional_user)]
 _buckets: dict[tuple[str, str], deque] = defaultdict(deque)
 
 
-def rate_limit(request: Request, bucket: str, limit: int) -> None:
-    ip = (request.client.host if request.client else "?") or "?"
-    key = (bucket, ip)
+def _client_ip(request: Request) -> str:
+    """反代后取真实客户端 IP；API 只在内网，可信 X-Forwarded-For。"""
+    xff = request.headers.get("x-forwarded-for")
+    if xff:
+        return xff.split(",")[0].strip() or "?"
+    return (request.client.host if request.client else "?") or "?"
+
+
+def rate_limit(request: Request, bucket: str, limit: int,
+               identity: int | str | None = None) -> None:
+    who = f"u:{identity}" if identity is not None else f"ip:{_client_ip(request)}"
+    key = (bucket, who)
     now = time.time()
     q = _buckets[key]
     while q and now - q[0] > settings.rate_window_s:
         q.popleft()
     if len(q) >= limit:
-        raise HTTPException(status.HTTP_429_TOO_MANY_REQUESTS,
-                            f"操作太频繁（{settings.rate_window_s}s 内最多 {limit} 次）")
+        retry = max(1, int(settings.rate_window_s - (now - q[0])) + 1)
+        raise HTTPException(
+            status.HTTP_429_TOO_MANY_REQUESTS,
+            f"操作太频繁（{settings.rate_window_s}s 内最多 {limit} 次），"
+            f"请 {retry}s 后再试",
+            headers={"Retry-After": str(retry)},
+        )
     q.append(now)
 
 

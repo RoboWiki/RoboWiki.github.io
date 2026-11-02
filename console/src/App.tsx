@@ -60,7 +60,7 @@ function AuthModal({ open, onClose }: { open: boolean; onClose: () => void }) {
         options={[{ label: '登录', value: 'login' }, { label: '注册', value: 'register' }]} />
       <Form form={form} layout="vertical" onFinish={submit}>
         <Form.Item name="handle" label="账号" rules={[{ required: true, min: 2 }]}>
-          <Input placeholder="字母数字，用作主页地址" autoComplete="username" />
+          <Input placeholder="2–24 位 a-z、0-9、-、_，用作主页地址" autoComplete="username" />
         </Form.Item>
         {mode === 'register' && (
           <Form.Item name="display_name" label="显示名" rules={[{ required: true }]}>

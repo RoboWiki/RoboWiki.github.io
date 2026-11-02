@@ -207,4 +207,4 @@ def publish_job(job, data_dir: Path) -> dict:
         "outbox_id": job.id, "submission_id": job.submission_id,
         "action": job.action, "payload": job.payload,
     }, ensure_ascii=False, indent=1), encoding="utf-8")
-    return {"dry_run": True, "path": str(path)}
+    return {"dry_run": True, "file": path.name}

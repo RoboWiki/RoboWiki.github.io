@@ -5,6 +5,15 @@ import { v1Req } from './api'
 import { useAuth } from './App'
 
 type Review = { id: number; decision: string; reason_code: string; note: string; reviewer_id: number | null; created_at: string }
+type Outbox = {
+  id: number
+  submission_id: number | null
+  status: string
+  attempts: number
+  last_error: string | null
+  result: { pr_url?: string; file?: string; skipped?: boolean; reason?: string }
+  created_at: string
+}
 type Sub = {
   id: number
   kind: string
@@ -50,6 +59,18 @@ export default function Submissions() {
     queryKey: ['submissions', status],
     queryFn: () => v1Req<Sub[]>(`/submissions/queue?status=${status}&limit=200`),
     enabled: !!user?.is_staff,
+  })
+
+  const outbox = useQuery({
+    queryKey: ['outbox'],
+    queryFn: () => v1Req<Outbox[]>('/submissions/outbox?limit=20'),
+    enabled: !!user?.is_staff,
+  })
+
+  const retry = useMutation({
+    mutationFn: (id: number) => v1Req(`/submissions/outbox/${id}/retry`, { method: 'POST' }),
+    onSuccess: () => { message.success('已重新排队'); qc.invalidateQueries({ queryKey: ['outbox'] }) },
+    onError: (e: any) => message.error(e.message),
   })
 
   const review = useMutation({
@@ -167,6 +188,44 @@ export default function Submissions() {
         ]}
         scroll={{ x: 1110 }}
       />
+
+      <div className="mt-8">
+        <div className="mb-2 flex items-baseline justify-between">
+          <h2 className="m-0 text-[16px] font-bold text-slate-900">发布队列</h2>
+          <span className="text-[11.5px] text-slate-400">失败会自动退避重试；也可以手动重排</span>
+        </div>
+        <Table<Outbox>
+          rowKey="id"
+          size="small"
+          loading={outbox.isLoading}
+          dataSource={outbox.data || []}
+          pagination={false}
+          locale={{ emptyText: '还没有发布任务' }}
+          columns={[
+            { title: '#', dataIndex: 'id', width: 50 },
+            { title: '提案', dataIndex: 'submission_id', width: 70, render: v => v ? `#${v}` : '—' },
+            {
+              title: '状态', width: 90,
+              render: (_, r) => <Tag color={r.status === 'done' ? 'green' : r.status === 'failed' ? 'red' : 'gold'}>{r.status}</Tag>,
+            },
+            { title: '尝试', dataIndex: 'attempts', width: 60 },
+            {
+              title: '结果 / 错误',
+              render: (_, r) => r.result?.pr_url
+                ? <a href={r.result.pr_url} target="_blank" rel="noreferrer" className="text-blue-600">PR ↗</a>
+                : r.result?.file
+                  ? <code className="text-[11px]">{r.result.file}</code>
+                  : <span className="text-[11.5px] text-slate-500">{r.last_error || (r.result?.reason ?? '—')}</span>,
+            },
+            {
+              title: '操作', width: 90,
+              render: (_, r) => r.status === 'failed' || r.status === 'pending'
+                ? <Button size="small" loading={retry.isPending} onClick={() => retry.mutate(r.id)}>重试</Button>
+                : <span className="text-slate-300">—</span>,
+            },
+          ]}
+        />
+      </div>
 
       <Modal open={!!rejecting} title={`驳回提案 #${rejecting?.id ?? ''}`}
         onCancel={() => setRejecting(null)} footer={null} destroyOnHidden>

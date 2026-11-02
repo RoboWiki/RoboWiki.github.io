@@ -26,6 +26,10 @@ const busy = ref(false)
 const error = ref('')
 const done = ref<number | null>(null)
 const mine = ref<Mine[]>([])
+const STATUS_LABEL: Record<string, string> = {
+  pending: '待审核', accepted: '已通过', rejected: '已驳回',
+  pr_open: 'PR 中', merged: '已合并', released: '已发布',
+}
 const apiReady = ref<boolean | null>(null)
 
 const token = () => localStorage.getItem(TOKEN_KEY)
@@ -193,7 +197,7 @@ function logout() {
         <button type="button" :class="{ on: mode === 'register' }" @click="mode = 'register'">注册</button>
       </div>
       <div class="rw-fix-grid">
-        <input v-model="handle" placeholder="账号（2–32 位字母数字）" autocomplete="username" />
+        <input v-model="handle" placeholder="账号（2–24 位 a-z、0-9、-、_）" autocomplete="username" />
         <input v-if="mode === 'register'" v-model="displayName" placeholder="显示名" />
         <input v-model="password" type="password" placeholder="密码（至少 6 位）"
           autocomplete="current-password" @keyup.enter="auth" />
@@ -237,7 +241,7 @@ function logout() {
 
     <div v-if="mine.length" class="rw-fix-mine">
       <div v-for="s in mine" :key="s.id">
-        #{{ s.id }} · {{ s.status }} · {{ Object.keys(s.payload).join(', ') }}
+        #{{ s.id }} · {{ STATUS_LABEL[s.status] || s.status }} · {{ Object.keys(s.payload).join(', ') }}
         <span>{{ s.created_at.slice(0, 10) }}</span>
       </div>
     </div>

@@ -29,7 +29,7 @@ title: CubeMars
 | [**AK45-36 V3.0 KV80**](/parts/actuator/cubemars-ak45-36-v3-0-kv80) | 24 | 8 | 36 | 52 | 0.349 | — | — | `B` |
 | [**AK45-36 KV80**](/parts/actuator/cubemars-ak45-36-kv80) | 24 | 8 | 36 | 52 | 0.34 | — | — | `B` |
 | [**AK80-9 V3.0 KV100**](/parts/actuator/cubemars-ak80-9-v3-0-kv100) | 22 | 9 | 9 | 570 | 0.49 | — | — | `B` |
-| [**AK80-6**](/parts/actuator/cubemars-ak80-6) | 12 | 6 | 6 | 800 | 0.485 | — | 3,288 | `B✓` |
+| [**AK80-6**](/parts/actuator/cubemars-ak80-6) | 12 | 6 | 6 | 800 | 0.485 | — | 3,288 | `B` |
 | [**AK60-6 V3.0 KV80**](/parts/actuator/cubemars-ak60-6-v3-0-kv80) | 9 | 3 | 6 | — | 0.38 | — | — | `B` |
 | [**AK60-6 V1.1 KV140**](/parts/actuator/cubemars-ak60-6-v1-1-kv140) | 9 | 3 | 6 | 560 | 0.368 | — | — | `B` |
 | [**AK45-10 V3.0 KV75**](/parts/actuator/cubemars-ak45-10-v3-0-kv75) | 7 | 2.5 | 10 | 180 | 0.262 | — | — | `B` |

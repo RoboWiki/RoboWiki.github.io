@@ -92,9 +92,9 @@ def test_nulls_sort_last_both_directions(client):
         assert all(v is None for v in vals[len(vals) - n_null:]), "null 必须排最后"
 
 
-def test_sort_whitelist_falls_back(client):
+def test_sort_whitelist_rejects_unknown(client):
     r = client.get("/api/parts", params={"sort": "id;DROP TABLE parts"})
-    assert r.status_code == 200
+    assert r.status_code == 422
     assert client.get("/api/health").status_code == 200
 
 
@@ -321,6 +321,60 @@ def test_api_legacy_alias_still_works(client):
     assert client.get("/api/parts", params={"limit": 1}).status_code == 200
 
 
+def test_bootstrap_admin_creates_staff(client, monkeypatch):
+    from app.core.config import settings
+    from app.core.db import bootstrap_admin, session
+    monkeypatch.setattr(settings, "admin_handle", "opsadmin")
+    monkeypatch.setattr(settings, "admin_password", "secret12345")
+    db = session()
+    try:
+        assert bootstrap_admin(db) == "opsadmin"
+    finally:
+        db.close()
+    r = client.post("/api/auth/login", json={"handle": "opsadmin",
+                                            "password": "secret12345"})
+    assert r.status_code == 200
+    assert r.json()["user"]["is_staff"] is True
+
+
+def test_openapi_has_security_schemes(client):
+    r = client.get("/api/v1/openapi.json")
+    assert r.status_code == 200
+    d = r.json()
+    assert "bearerAuth" in d["components"]["securitySchemes"]
+    assert "botToken" in d["components"]["securitySchemes"]
+    assert "X-Bot-Token" in str(d["paths"])
+
+
+def test_ready_checks_database_and_request_id(client):
+    r = client.get("/api/v1/ready")
+    assert r.status_code == 200
+    assert r.json()["db"] == "ok"
+    assert r.headers["X-Request-ID"]
+
+    r = client.get("/api/v1/health", headers={"X-Request-ID": "trace-123"})
+    assert r.headers["X-Request-ID"] == "trace-123"
+
+
+def test_parts_sort_price_and_reject_unknown(client):
+    r = client.get("/api/v1/parts", params={"sort": "price", "order": "desc", "limit": 3})
+    assert r.status_code == 200
+    prices = [x["price_cny"] for x in r.json()["items"] if x["price_cny"] is not None]
+    assert prices == sorted(prices, reverse=True)
+    assert client.get("/api/v1/parts", params={"sort": "typo"}).status_code == 422
+
+
+def test_register_rejects_non_ascii_handle(client):
+    r = client.post("/api/auth/register", json={
+        "handle": "管理员", "display_name": "x", "password": "testpass123",
+    })
+    assert r.status_code == 422
+    r = client.post("/api/auth/register", json={
+        "handle": "abcｄ", "display_name": "x", "password": "testpass123",
+    })
+    assert r.status_code == 422
+
+
 def test_public_part_hides_internal_fields(client):
     d = client.get("/api/v1/parts", params={"category": "actuator", "limit": 1}).json()
     assert d["items"]
@@ -379,6 +433,33 @@ def test_submission_requires_evidence(client):
     assert r.status_code == 422
 
 
+def test_submission_preview_is_server_generated(client):
+    h = auth_header(client)
+    r = client.post("/api/v1/submissions", headers=h, json={
+        "kind": "part_patch", "target_id": "cubemars-ak80-6",
+        "payload": {"price_cny": 1.0},
+        "evidence": {"note": "test preview", "source_url": "https://example.com",
+                     "preview": [{"field": "notes", "old_value": "a", "new_value": "b"}]},
+    })
+    assert r.status_code == 201
+    preview = r.json()["evidence"]["preview"]
+    assert preview[0]["field"] == "price_cny"
+    assert preview[0]["new_value"] == 1.0
+
+
+def test_submission_rejects_bad_value_shapes(client):
+    h = auth_header(client)
+    for payload in ({"price_cny": [1, 2, 3]},
+                    {"specs.tau_peak_Nm": {"x": 1}},
+                    {"specs.use_cases": [{"x": 1}]}):
+        r = client.post("/api/v1/submissions", headers=h, json={
+            "kind": "part_patch", "target_id": "cubemars-ak80-6",
+            "payload": payload,
+            "evidence": {"note": "shape test", "source_url": "https://example.com"},
+        })
+        assert r.status_code == 422, payload
+
+
 def test_submission_rejects_non_http_source(client):
     h = auth_header(client)
     r = client.post("/api/v1/submissions", headers=h, json={
@@ -419,6 +500,20 @@ def test_bot_answer_is_one_line_with_url_and_version(client):
     assert d["part"]["model"] in d["answer"]
 
 
+def test_bot_answer_uses_connector_rated_fields(client):
+    r = client.get("/api/v1/bot/answer", params={"q": "xt30"}, headers=BOT)
+    assert r.status_code == 200
+    d = r.json()
+    assert d["part"]["id"] == "amass-xt30"
+    assert "20 A" in d["answer"] and "500 V" in d["answer"]
+
+
+def test_bot_wildcards_do_not_match_everything(client):
+    r = client.get("/api/v1/bot/answer", params={"q": "%"}, headers=BOT)
+    assert r.status_code == 200
+    assert r.json()["found"] is False
+
+
 def test_bot_requires_token(client):
     assert client.get("/api/v1/bot/answer", params={"q": "ak80"}).status_code == 401
     assert client.get("/api/v1/bot/answer", params={"q": "ak80"},
@@ -432,3 +527,62 @@ def test_bot_not_found_returns_search_hint(client):
     assert d["found"] is False
     assert d["url"].endswith("/catalog")
     assert "没找到" in d["answer"]
+
+
+def test_worker_retries_failed_job(client, monkeypatch):
+    from datetime import datetime, timedelta, timezone
+    from app import worker
+    from app.core.db import session
+    from app.models import Outbox
+
+    db = session()
+    job = Outbox(action="part_patch", payload={"target_id": "x", "changes": {}},
+                 idempotency_key="retry-test")
+    db.add(job)
+    db.commit()
+    db.refresh(job)
+    jid = job.id
+    db.close()
+
+    calls: list[int] = []
+
+    def flaky(_job, _data_dir):
+        calls.append(1)
+        if len(calls) == 1:
+            raise RuntimeError("boom")
+        return {"dry_run": True, "file": "x.json"}
+
+    monkeypatch.setattr(worker, "publish_job", flaky)
+    assert worker.process_one() is True
+    db = session()
+    j = db.get(Outbox, jid)
+    assert j.status == "pending" and j.attempts == 1 and "boom" in (j.last_error or "")
+    j.next_at = datetime.now(timezone.utc) - timedelta(seconds=1)
+    db.add(j)
+    db.commit()
+    db.close()
+
+    assert worker.process_one() is True
+    db = session()
+    j = db.get(Outbox, jid)
+    assert j.status == "done" and j.attempts == 2 and j.result["dry_run"] is True
+    db.close()
+
+
+def test_staff_can_retry_failed_outbox(client):
+    from app.core.db import session
+    from app.models import Outbox
+
+    db = session()
+    row = Outbox(action="part_patch", payload={}, idempotency_key="retry-api",
+                 status="failed", attempts=5, last_error="boom")
+    db.add(row)
+    db.commit()
+    db.refresh(row)
+    oid = row.id
+    db.close()
+
+    h = auth_header(client)
+    r = client.post(f"/api/v1/submissions/outbox/{oid}/retry", headers=h)
+    assert r.status_code == 200
+    assert r.json()["status"] == "pending" and r.json()["last_error"] is None

@@ -8,7 +8,8 @@
 ```bash
 cd deploy
 cp .env.example .env
-# 改 POSTGRES_PASSWORD / SECRET_KEY / SITE_DOMAIN
+# 改 POSTGRES_PASSWORD / SECRET_KEY / SITE_DOMAIN / ADMIN_PASSWORD
+# 生产 SITE_DOMAIN 用真实域名（自动 HTTPS）；本地才用 :80
 
 # 1) 取核心仓数据 release（在仓库根执行）
 bash ../scripts/fetch-data-release.sh
@@ -18,7 +19,7 @@ cd ../wiki && npm ci && npm run build && cd ../deploy
 
 # 3) 起服务（migrate 会先跑完，api 再启动）
 docker compose up -d --build
-curl -fsS http://localhost/api/v1/health
+curl -fsS http://localhost/api/v1/ready
 ```
 
 ## 常用
@@ -29,6 +30,7 @@ docker compose logs -f api
 docker compose run --rm migrate          # 手动迁移
 bash backup/backup.sh                    # pg_dump 到 deploy/backup/
 docker compose down                      # 停服务，保留卷
+# 日志已按 10MB × 3 轮转；DB 端口不映射到宿主
 ```
 
 ## 换机器
@@ -39,6 +41,7 @@ bash deploy/backup/backup.sh
 # 新机
 docker compose up -d --build
 docker compose exec -T db pg_restore -U robowiki -d robowiki --clean --if-exists < backup/xxx.dump
+# 恢复后跑 /api/v1/ready，并抽查 3 个部件与提案队列
 docker compose restart api
 ```
 
@@ -46,7 +49,7 @@ docker compose restart api
 
 ## 边界
 
-- `pgdata`、`media`、`caddy_data` 是命名卷；不要 `down -v`。
+- `pgdata`、`caddy_data` 是命名卷；不要 `down -v`。备份文件默认在 `deploy/backup/`，已被 git 忽略。
 - 静态目录由 `STATIC_DIR` 指定，默认 `../wiki/docs/.vitepress/dist`。
 - 数据目录由 `DATA_DIR` / `SCHEMA_DIR` 指定，默认 `../.data/...`。
 - 生产用自有域名 + HTTPS；Caddy 自动申请证书。
@@ -58,7 +61,7 @@ docker compose restart api
 
 ```bash
 docker compose logs -f worker
-ls var/outbox/        # 审核通过的提案写成待发布 JSON
+ls var/outbox/        # 审核通过的提案写成待发布 JSON（outbox.result.file 是文件名）
 ```
 
 要直接开核心仓 PR，在 `.env` 设置：
@@ -84,5 +87,5 @@ curl -H "X-Bot-Token: $BOT_TOKEN" \
   "https://$SITE_DOMAIN/api/v1/bot/answer?q=AK80-6"
 ```
 
-未设置令牌时接口返回 503；只读、按 IP 限流、不写库。QQ 侧适配见
+未设置令牌时接口返回 503；只读、按客户端 IP（反代后取 XFF）限流、不写库。QQ 侧适配见
 `clients/qqbot/`（NoneBot2 + nonebot-adapter-qq）。

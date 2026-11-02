@@ -8,6 +8,7 @@ export type ShareEntry = {
   title: string
   summary: string
   source_tier?: string
+  verified?: boolean
   last_checked?: string
   data_version: string
 }

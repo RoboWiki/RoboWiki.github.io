@@ -269,7 +269,7 @@ def load() -> list[dict]:
 
 
 def tier_badge(t: str, verified) -> str:
-    mark = "✓" if verified else ""
+    mark = "✓" if (verified and t == "A") else ""
     return f"`{t}{mark}`"
 
 
@@ -1086,6 +1086,19 @@ def main() -> None:
         "instantaneous_current_A": "瞬时电流 (A)", "use_cases": "适用场景",
         "impedance_ohm": "阻抗 (Ω)", "freq_max_ghz": "最高频率 (GHz)",
         "length_m": "长度 (m)", "awg": "线规",
+        # 归档/采集字段的中文标签：不再把原始键名直接暴露给读者
+        "size_mm": "尺寸 (mm)", "weight_g": "重量 (g)", "power_w": "功耗 (W)",
+        "power_idle_w": "待机功耗 (W)", "storage_gb": "存储 (GB)",
+        "cpu_arch": "CPU 架构", "cores": "核心数", "os": "系统",
+        "cuda": "CUDA", "ros2": "ROS 2", "eth": "以太网", "usb": "USB",
+        "csi": "CSI", "pcie": "PCIe", "noise": "噪声",
+        "repo_urls": "开源仓库", "repo_license": "仓库许可",
+        "range_note": "量程说明", "absolute": "绝对式",
+        "meas_range": "测量范围", "response_time": "响应时间",
+        "storage_temp_range": "存储温度", "motor_type": "电机类型",
+        "gear_material": "齿轮材料", "housing_material": "外壳材料",
+        "bearing": "轴承", "mounting": "安装方式", "backlash_arcmin": "背隙 (arcmin)",
+        "protocol": "协议", "mass_g": "质量 (g)", "params": "参数",
     }
 
     _TAX_BY_CAT = {c["id"]: [k["k"] for k in (c.get("keys") or [])]
@@ -1257,7 +1270,7 @@ def main() -> None:
         src = r.get("_file")
         if src:
             rows.append(("在 GitHub 上编辑这条数据",
-                         f"https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/{src}",
+                         f"https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/{src}",
                          f"文件 data/catalog/{src}"))
 
         body = []
@@ -1569,7 +1582,7 @@ def main() -> None:
     <div class="part-tags">
       <span class="part-tag">{CAT_LABEL.get(cat, cat)}</span>
       <span class="part-tag soft">{r.get("subtype_label") or r["subtype"]}</span>
-      <span class="part-tag tier{r["source_tier"]}">来源 {r["source_tier"]}{" ✓ 已核对" if r["verified"] else ""}</span>
+      <span class="part-tag tier{r["source_tier"]}">来源 {r["source_tier"]}{" ✓ 已核对" if (r["verified"] and r["source_tier"] == "A") else ""}</span>
       {f'<span class="part-tag">{money(r["price_cny"])}</span>' if r.get("price_cny") else '<span class="part-tag muted">无公开报价</span>'}
     </div>
 
@@ -2065,13 +2078,13 @@ outline: false
 
 
     (OUT / "sources.md").write_text(FRONT.format(title="数据来源") + f"""
-# 数据来源
+## 数据来源
 
 判定一条数据够不够格进目录，只看一件事：**它能不能指回一手来源。**
 
 - `A` 级 = 逐项核对过厂商手册 / 官方文档（下表的「厂商官网 / 官方文档」）
 - `B` 级 = 采自公开商品页或第三方整理，未逐项核对
-- `C` 级 = 转述，仅作线索
+- `C` 级 = 转述，仅作线索；默认不参与对比与推荐，库内保留时明确标注
 
 ## 厂商官网 / 官方文档
 

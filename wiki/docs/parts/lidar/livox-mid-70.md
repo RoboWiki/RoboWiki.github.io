@@ -73,14 +73,14 @@ description: "Livox Mid-70（激光雷达）：额定 12 V、量程 90 m、视�
 | 质量 (kg) | — |
 | blind_m | 0.05 |
 | voltage_range | DC 10–15 V |
-| absolute | ≤2 cm @20 m (1σ) |
+| 绝对式 | ≤2 cm @20 m (1σ) |
 | 官方手册 (PDF) | https://cdn.shopify.com/s/files/1/0673/6848/5000/files/Livox_Mid-70_User_Manual.pdf |
 | 工作温度 | -20~65 |
-| power_w | 8 |
+| 功耗 (W) | 8 |
 | 防护等级 | IP67 |
 | 额定电压 (V) | 12 |
-| size_mm | 97×64×62.7 |
-| weight_g | 580 |
+| 尺寸 (mm) | 97×64×62.7 |
+| 重量 (g) | 580 |
 
 ## 优惠与获取条件
 
@@ -97,7 +97,7 @@ description: "Livox Mid-70（激光雷达）：额定 12 V、量程 90 m、视�
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.livoxtech.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://cdn.shopify.com/s/files/1/0673/6848/5000/files/Livox_Mid-70_User_Manual.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>Livox 官网产品图（内部结构渲染，livoxtech.com）</td></tr><tr><td class="rs-plain">收录说明</td><td>Livox《Mid-70 快速入门》；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对</td></tr><tr><td><a href="https://www.google.com/search?q=Livox+Mid-70+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Mid-70&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Livox+Mid-70+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/lidar/third-party.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/third-party.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.livoxtech.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://cdn.shopify.com/s/files/1/0673/6848/5000/files/Livox_Mid-70_User_Manual.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>Livox 官网产品图（内部结构渲染，livoxtech.com）</td></tr><tr><td class="rs-plain">收录说明</td><td>Livox《Mid-70 快速入门》；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对</td></tr><tr><td><a href="https://www.google.com/search?q=Livox+Mid-70+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Mid-70&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Livox+Mid-70+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/lidar/third-party.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/third-party.json</td></tr></tbody></table>
 
 ## 备注
 

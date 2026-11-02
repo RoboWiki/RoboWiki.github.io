@@ -15,7 +15,7 @@ description: "大疆 DJI RC-N3（遥控器）：官方参数；来源 B 级、20
     <div class="part-tags">
       <span class="part-tag">遥控器</span>
       <span class="part-tag soft">手柄式</span>
-      <span class="part-tag tierB">来源 B ✓ 已核对</span>
+      <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥699</span>
     </div>
 
@@ -75,8 +75,8 @@ description: "大疆 DJI RC-N3（遥控器）：官方参数；来源 B 级、20
 | 重量 (g) | 320 |
 | 官方文档 | https://www.dji.com/cn/downloads/products/rc-n3 |
 | 官方手册 (PDF) | https://dl.djicdn.com/downloads/neo/20250113/DJI_RC-N3_User_Manual_v1.2_zh-cn.pdf |
-| repo_urls | — |
-| size_mm | 104.2×150×45.2 |
+| 开源仓库 | — |
+| 尺寸 (mm) | 104.2×150×45.2 |
 
 ## 优惠与获取条件
 
@@ -93,7 +93,7 @@ description: "大疆 DJI RC-N3（遥控器）：官方参数；来源 B 级、20
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://store.dji.com/cn/product/dji-rc-n3-remote-controller" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.dji.com/cn/downloads/products/rc-n3" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://dl.djicdn.com/downloads/neo/20250113/DJI_RC-N3_User_Manual_v1.2_zh-cn.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>大疆商城 DJI RC-N3 商品页产品图（2026-11-01 下载）</td></tr><tr><td class="rs-plain">收录说明</td><td>DJI 大疆商城 RC-N3 商品页 + RC-N3 用户手册 v1.2（2026-11-01 核对）</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+RC-N3+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=RC-N3&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+RC-N3+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/remote_controller/dji.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/remote_controller/dji.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://store.dji.com/cn/product/dji-rc-n3-remote-controller" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.dji.com/cn/downloads/products/rc-n3" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://dl.djicdn.com/downloads/neo/20250113/DJI_RC-N3_User_Manual_v1.2_zh-cn.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>大疆商城 DJI RC-N3 商品页产品图（2026-11-01 下载）</td></tr><tr><td class="rs-plain">收录说明</td><td>DJI 大疆商城 RC-N3 商品页 + RC-N3 用户手册 v1.2（2026-11-01 核对）</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+RC-N3+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=RC-N3&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+RC-N3+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/remote_controller/dji.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/remote_controller/dji.json</td></tr></tbody></table>
 
 ## 备注
 

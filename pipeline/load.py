@@ -76,9 +76,14 @@ def load_parts() -> list[dict]:
                 print(f"[catalog] 跳过 {f.relative_to(ROOT)}: {e}")
                 continue
             rel = f.relative_to(cat_dir).as_posix()
+            kept = []
             for r in items:
+                # C 级是转述线索，按口径不进目录/推荐/对比
+                if r.get("source_tier") == "C":
+                    continue
                 r["_file"] = rel
-            rows.extend(items)
+                kept.append(r)
+            rows.extend(kept)
 
     return rows
 

@@ -71,15 +71,15 @@ description: "Bosch Sensortec BMI088（IMU）：额定 3.3 V、分辨率 16-bit�
 | 封装 | — |
 | 库存 | — |
 | ODR (Hz) | 2,000 |
-| noise | 0.014 °/s/√Hz；175 µg/√Hz |
+| 噪声 | 0.014 °/s/√Hz；175 µg/√Hz |
 | 电压范围 | 2.4–3.6 |
-| power_w | 0.017 |
+| 功耗 (W) | 0.017 |
 | 工作温度 | -40~85 |
-| size_mm | 3×4.5×0.95 |
+| 尺寸 (mm) | 3×4.5×0.95 |
 | 分辨率 | 16-bit |
 | 官方文档 | https://www.bosch-sensortec.com/en/products/motion-sensors/imus/bmi088/ |
 | 官方手册 (PDF) | https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi088-ds001.pdf |
-| repo_urls | — |
+| 开源仓库 | — |
 
 ## 优惠与获取条件
 
@@ -96,7 +96,7 @@ description: "Bosch Sensortec BMI088（IMU）：额定 3.3 V、分辨率 16-bit�
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.bosch-sensortec.com/en/products/motion-sensors/imus/bmi088/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi088-ds001.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>Bosch Sensortec BMI088 产品页 + BST-BMI088-DS001 数据手册核对（2026-10-28）</td></tr><tr><td><a href="https://www.google.com/search?q=Bosch+Sensortec+BMI088+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=BMI088&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Bosch+Sensortec+BMI088+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/imu/bosch.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/imu/bosch.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.bosch-sensortec.com/en/products/motion-sensors/imus/bmi088/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi088-ds001.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>Bosch Sensortec BMI088 产品页 + BST-BMI088-DS001 数据手册核对（2026-10-28）</td></tr><tr><td><a href="https://www.google.com/search?q=Bosch+Sensortec+BMI088+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=BMI088&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Bosch+Sensortec+BMI088+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/imu/bosch.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/imu/bosch.json</td></tr></tbody></table>
 
 ## 备注
 

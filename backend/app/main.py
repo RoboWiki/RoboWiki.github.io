@@ -4,15 +4,22 @@
 """
 from __future__ import annotations
 
+import uuid
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+import traceback
+
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.openapi.utils import get_openapi
+from fastapi.responses import JSONResponse
+from sqlalchemy import text
 
 from .api.routes import (admin, auth, bot, catalog, community, export, mcp,
                          protocols, ratings, semantics, submissions, wiki)
 from .core.config import ROOT, settings
-from .core.db import create_tables, seed_catalog, seed_community, session
+from .core.db import (bootstrap_admin, create_tables, seed_catalog,
+                      seed_community, session)
 
 
 @asynccontextmanager
@@ -22,8 +29,13 @@ async def lifespan(_app: FastAPI):
     db = session()
     try:
         stats = seed_catalog(db)
-        people = seed_community(db)
-        print(f"[robowiki] 目录 {stats} · 社区 {people}")
+        demo = settings.seed_demo if settings.seed_demo is not None \
+            else settings.auto_create_tables
+        people = seed_community(db) if demo else {"users": 0, "posts": 0}
+        admin = bootstrap_admin(db)
+        print(f"[robowiki] 目录 {stats} · 社区 {people}"
+              + ("" if demo else "（演示数据已关闭）")
+              + (f" · 管理员 {admin}" if admin else ""))
     finally:
         db.close()
     yield
@@ -31,7 +43,8 @@ async def lifespan(_app: FastAPI):
 
 app = FastAPI(title="RoboWiki API", version="0.2.0",
               description="四足机器人选型 + 社区。选型是底座，互动是主体。",
-              docs_url="/api/docs", openapi_url="/api/openapi.json",
+              docs_url="/api/docs" if settings.expose_docs else None,
+              openapi_url="/api/openapi.json",
               lifespan=lifespan)
 
 app.add_middleware(
@@ -58,9 +71,11 @@ app.include_router(mcp.router)
 
 @app.middleware("http")
 async def _release_headers(request, call_next):
+    request_id = request.headers.get("X-Request-ID") or uuid.uuid4().hex[:16]
     response = await call_next(request)
     response.headers["X-RoboWiki-Data-Version"] = settings.data_version
     response.headers["X-RoboWiki-API-Version"] = "v1"
+    response.headers["X-Request-ID"] = request_id
     return response
 
 
@@ -84,9 +99,52 @@ def health():
     return {"ok": True, "project": settings.project_name}
 
 
+@app.get(settings.api_v1 + "/ready", tags=["meta"])
+def ready():
+    """就绪检查：进程活着不等于能用，数据库连不上就不该接流量。"""
+    db = session()
+    try:
+        db.execute(text("SELECT 1"))
+    except Exception as exc:
+        raise HTTPException(503, f"数据库不可用：{type(exc).__name__}") from exc
+    finally:
+        db.close()
+    return {"ok": True, "db": "ok", "data_version": settings.data_version}
+
+
 @app.get(settings.api_legacy + "/health", tags=["meta"], include_in_schema=False)
 def health_legacy():
     return health()
+
+
+@app.get(settings.api_v1 + "/openapi.json", include_in_schema=False)
+def openapi_v1():
+    return app.openapi()
+
+
+@app.exception_handler(Exception)
+async def _unhandled(request: Request, exc: Exception):
+    traceback.print_exc()
+    return JSONResponse(
+        {"detail": "服务器内部错误", "request_id": request.headers.get("x-request-id", "")},
+        status_code=500,
+    )
+
+
+def _custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    schema = get_openapi(title=app.title, version=app.version,
+                         description=app.description, routes=app.routes)
+    schema.setdefault("components", {}).setdefault("securitySchemes", {}).update({
+        "bearerAuth": {"type": "http", "scheme": "bearer", "bearerFormat": "JWT"},
+        "botToken": {"type": "apiKey", "in": "header", "name": "X-Bot-Token"},
+    })
+    app.openapi_schema = schema
+    return schema
+
+
+app.openapi = _custom_openapi
 
 
 # ── 静态站点托管 ────────────────────────────────────────────────────────────
@@ -99,7 +157,6 @@ def health_legacy():
 _WIKI_DIST = ROOT / "wiki" / "docs" / ".vitepress" / "dist"
 _SPA_DIST = ROOT / "console" / "dist"
 
-from fastapi import HTTPException  # noqa: E402
 from fastapi.responses import FileResponse, RedirectResponse  # noqa: E402
 from fastapi.staticfiles import StaticFiles  # noqa: E402
 

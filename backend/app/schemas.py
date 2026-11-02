@@ -16,9 +16,11 @@ class RegisterIn(BaseModel):
     @field_validator("handle")
     @classmethod
     def _handle_ok(cls, v: str) -> str:
-        if not all(c.isalnum() or c in "-_" for c in v):
-            raise ValueError("handle 只能包含字母、数字、- 和 _")
-        return v.lower()
+        low = v.lower()
+        if not low[0].isascii() or not (low[0].isalnum()) or \
+                any(not (c.isascii() and (c.isalnum() or c in "-_")) for c in low[1:]):
+            raise ValueError("handle 只能使用 a-z、0-9、- 和 _，且以字母或数字开头")
+        return low
 
 
 class LoginIn(BaseModel):

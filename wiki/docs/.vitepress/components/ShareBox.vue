@@ -63,8 +63,15 @@ function wrap(ctx: CanvasRenderingContext2D, text: string, maxWidth: number) {
   for (const ch of Array.from(text)) {
     const next = line + ch
     if (ctx.measureText(next).width > maxWidth && line) {
-      lines.push(line)
-      line = ch
+      // URL 在 / 或 - 处断，别把型号名劈成两半
+      const cut = Math.max(line.lastIndexOf('/'), line.lastIndexOf('-'), line.lastIndexOf(' '))
+      if (cut > 8) {
+        lines.push(line.slice(0, cut + 1))
+        line = line.slice(cut + 1) + ch
+      } else {
+        lines.push(line)
+        line = ch
+      }
     } else {
       line = next
     }
@@ -109,7 +116,8 @@ async function downloadCard() {
     }
 
     const tier = e.source_tier ? `${e.source_tier} 级来源` : '来源待补'
-    const checked = e.last_checked ? ` · 核对 ${e.last_checked}` : ''
+    const checkWord = e.source_tier === 'A' && e.verified ? '已核对' : '最近检查'
+    const checked = e.last_checked ? ` · ${checkWord} ${e.last_checked}` : ''
     ctx.fillStyle = '#67e8f9'
     ctx.font = `28px ${sans}`
     ctx.fillText(`${tier}${checked}`, 80, y + 6)
