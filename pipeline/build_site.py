@@ -38,6 +38,7 @@ from .meta import meta as _artifact_meta
 from .build_home import build as build_home
 from .build_competitions import build as build_competitions
 from .build_robots import build as build_robots
+from .build_materials import build as build_materials
 from .build_software import build as build_software
 from .build_share import build as build_share
 from .contrib_page import build as build_contributors
@@ -647,6 +648,13 @@ def write_llms_txt(out: pathlib.Path, pub: pathlib.Path, rows: list[dict],
         except Exception:
             continue
 
+    try:
+        mat_data = json.loads((pub / "materials.json").read_text(encoding="utf-8"))
+    except Exception:
+        mat_data = {}
+    mats = mat_data.get("materials") or []
+    procs = mat_data.get("processes") or []
+
     lines: list[str] = [
         "# RoboWiki",
         "",
@@ -663,6 +671,8 @@ def write_llms_txt(out: pathlib.Path, pub: pathlib.Path, rows: list[dict],
         "字段名即参数名。",
         f"- [robots.json]({url('/robots.json')})：{len(robots)} 台整机（自由度、质量、负载、"
         "续驶、URDF / 仓库链接、开源生态）。",
+        f"- [materials.json]({url('/materials.json')})：{len(mats)} 种结构材料 + "
+        f"{len(procs)} 种加工工艺（密度、弹性模量、抗拉强度、形态规格与渠道引用）。",
         f"- [software.json]({url('/software.json')})：软件库（仿真 / 训练 / 部署 / 算法，"
         "含仓库与许可）。",
         f"- [suppliers.json]({url('/suppliers.json')})：采购渠道（加工、电机、结构件等）。",
@@ -675,6 +685,8 @@ def write_llms_txt(out: pathlib.Path, pub: pathlib.Path, rows: list[dict],
         f"（{len(rows)} 件；纯前端渲染，抓 HTML 请改读 catalog.json 或下面的型号页）。",
         f"- [关节电机总览]({url('/parts/actuator/index.html')})：按峰值扭矩降序的跨厂商速览。",
         f"- [整机库]({url('/robots.html')})：选方案（几自由度、带不带算力、有没有 URDF）。",
+        f"- [材质库]({url('/materials.html')})：材料物理属性、形态规格与加工工艺；"
+        "密度 / 模量 / 强度带 SI 换算。",
         f"- [软件库]({url('/software.html')})：仿真、训练、部署、算法怎么选。",
         f"- [渠道库]({url('/suppliers.html')})：这活找谁做。",
         f"- [参数口径]({url('/semantics.html')})：每个字段怎么定义、怎么换算、什么不能横向比。",
@@ -716,6 +728,39 @@ def write_llms_txt(out: pathlib.Path, pub: pathlib.Path, rows: list[dict],
                 f"来源 {r.get('source_tier')} 级" if r.get("source_tier") else "",
             ) if x]
             lines.append(f"- [{name}]({url('/robots/' + slug + '.html')})：{'、'.join(bits)}")
+        lines.append("")
+
+    if mats or procs:
+        lines += ["## 材质库", ""]
+        for m in mats:
+            s = m.get("specs") or {}
+            bits = [m.get("group_label") or "", m.get("family_label") or ""]
+            for key, label, unit in (
+                    ("density_g_cm3", "密度", "g/cm³"),
+                    ("modulus_GPa", "弹性模量", "GPa"),
+                    ("tensile_MPa", "抗拉", "MPa"),
+                    ("service_temp_C", "耐温", "°C")):
+                v = s.get(key)
+                if isinstance(v, (int, float)):
+                    bits.append(f"{label} {v:g} {unit}")
+            bits.append(f"来源 {m.get('source_tier') or '—'} 级")
+            lines.append(f"- [{m.get('name')}]({url('/materials/' + m['_slug'] + '.html')})："
+                         f"{'、'.join(x for x in bits if x)}")
+        if procs:
+            lines += ["", "### 加工工艺", ""]
+            for p in procs:
+                s = p.get("specs") or {}
+                bits = [p.get("family_label") or ""]
+                if isinstance(s.get("tolerance_mm"), (int, float)):
+                    bits.append(f"公差 ±{s['tolerance_mm']:g} mm")
+                if isinstance(s.get("layer_height_mm"), (int, float)):
+                    bits.append(f"层高 {s['layer_height_mm']:g} mm")
+                if s.get("cost_level"):
+                    bits.append(f"成本 {s['cost_level']}")
+                if s.get("lead_time"):
+                    bits.append(f"交期 {s['lead_time']}")
+                lines.append(f"- [{p.get('name')}]({url('/materials/process-' + p['_slug'] + '.html')})："
+                             f"{'、'.join(x for x in bits if x)}")
         lines.append("")
 
     try:
@@ -793,7 +838,7 @@ def main() -> None:
     # 那些页面还能被访问到，等于把废弃数据留在线上。
     # 手写页面（explore.md）不在清理范围内。
     GENERATED = ["index.md", "semantics.md", "protocols.md", "sources.md",
-                 "contributors.md", "suppliers.md", "robots.md", "method.md",
+                 "contributors.md", "suppliers.md", "robots.md", "materials.md", "method.md",
                  "competitions.md"]
     for name in GENERATED:
         p = OUT / name
@@ -2047,6 +2092,7 @@ html.dark .rl-th {{ color: #e0b159; }}
           f"{len(learn.get('articles', []))} 篇 -> public/learn.json")
 
     build_robots(ROOT, OUT, pub)
+    build_materials(ROOT, OUT, pub)
     build_software(OUT, ROOT)
     build_contributors(ROOT, OUT, pub)
 

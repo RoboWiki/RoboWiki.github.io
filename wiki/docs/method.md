@@ -459,8 +459,8 @@ html.dark .rl-th { color: #e0b159; }
 | 项 | 现在是什么 |
 |---|---|
 | 口径版本 | `1.1.0`（`schema/semantics.json` 的 `version`） |
-| 永久 ID | `586` 条已登记，`2` 条 tombstone（`data/_id_registry.json`） |
-| 图片出处 | 有图 `328` 条（部件 `307` + 整机 `21`），全部写了 `image_source` |
+| 永久 ID | `622` 条已登记，`2` 条 tombstone（`data/_id_registry.json`） |
+| 图片出处 | 有图 `346` 条（部件 `325` + 整机 `21`），全部写了 `image_source` |
 | 仓库许可 | 引用仓库 `60` 条（部件 `41` + 整机 `19`），许可证已核 `56` 条 |
 
 **口径版本。** 静态站直接读 `schema/semantics.json`；可选后端的 `/api/semantics` 与 MCP 也复用同一份文件。

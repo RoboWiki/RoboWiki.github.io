@@ -218,7 +218,9 @@ def test_group_pages_show_product_gallery(built):
     cm = [r for r in rows if r["vendor"] == "CubeMars"]
     n_img = sum(1 for r in cm if (r.get("specs") or {}).get("image_url"))
     cm_page = (built / "parts" / "actuator" / "cubemars.md").read_text(encoding="utf-8")
-    assert f"{len(cm)} 型中 {n_img} 款有可核实的产品图" in cm_page
+    assert cm_page.count('class="part-gallery-card"') == n_img
+    if n_img < len(cm):
+        assert f"{len(cm)} 型中 {n_img} 款有可核实的产品图" in cm_page
 
     assert "part-gallery" not in (
         built / "parts" / "sensor" / "force_torque.md").read_text(encoding="utf-8")

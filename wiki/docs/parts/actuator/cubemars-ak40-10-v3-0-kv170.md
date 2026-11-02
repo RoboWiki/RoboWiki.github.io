@@ -1,6 +1,6 @@
 ---
 title: CubeMars AK40-10 V3.0 KV170
-description: "CubeMars AK40-10 V3.0 KV170（关节电机）：峰值扭矩 4.1 N·m、额定 1.3 N·m、减速比 10:1；来源 B 级、2026-10-31 核对。"
+description: "CubeMars AK40-10 V3.0 KV170（关节电机）：峰值扭矩 4.1 N·m、额定 1.3 N·m、减速比 10:1；来源 B 级、2026-11-02 核对。"
 ---
 
 
@@ -8,7 +8,8 @@ description: "CubeMars AK40-10 V3.0 KV170（关节电机）：峰值扭矩 4.1 N
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/cubemars-ak40-10-v3-0-kv170.jpg" alt="AK40-10 V3.0 KV170" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
@@ -31,9 +32,9 @@ description: "CubeMars AK40-10 V3.0 KV170（关节电机）：峰值扭矩 4.1 N
 | 质量 (kg) | 0.19 |
 
 <div class="part-src">
-来源：<a href="https://www.cubemars.com/cn/product/ak80-6-kv100-robotic-actuator.html">https://www.cubemars.com/cn/product/ak80-6-kv100-robotic-actuator.html</a><br/>
+来源：<a href="https://www.cubemars.com/cn/product/ak40-10-v3-0-kv170-robotic-actuator.html">https://www.cubemars.com/cn/product/ak40-10-v3-0-kv170-robotic-actuator.html</a><br/>
 收录：CubeMars 官网产品对比表（cubemars.com/cn，2026-10-31 抓取）<br/>
-核对：2026-10-31
+核对：2026-11-02
 </div>
 
 </div>
@@ -108,7 +109,7 @@ description: "CubeMars AK40-10 V3.0 KV170（关节电机）：峰值扭矩 4.1 N
 | 长度 (mm) | 40.2 |
 | 编码器 | 双编 |
 | 扭矩口径 | peak |
-| 官方文档 | https://www.cubemars.com/cn/product/ak80-6-kv100-robotic-actuator.html |
+| 官方文档 | https://www.cubemars.com/cn/product/ak40-10-v3-0-kv170-robotic-actuator.html |
 
 ## 优惠与获取条件
 
@@ -125,7 +126,7 @@ description: "CubeMars AK40-10 V3.0 KV170（关节电机）：峰值扭矩 4.1 N
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.cubemars.com/cn/product/ak80-6-kv100-robotic-actuator.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>CubeMars 官网产品对比表（cubemars.com/cn，2026-10-31 抓取）</td></tr><tr><td><a href="https://www.google.com/search?q=CubeMars+AK40-10+V3.0+KV170+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=AK40-10+V3.0+KV170&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=CubeMars+AK40-10+V3.0+KV170+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/actuator/cubemars.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/cubemars.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.cubemars.com/cn/product/ak40-10-v3-0-kv170-robotic-actuator.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>CubeMars 官方产品图（cubemars.com，AK40-10 V3.0 KV170 产品页，2026-11-02）</td></tr><tr><td class="rs-plain">收录说明</td><td>CubeMars 官网产品对比表（cubemars.com/cn，2026-10-31 抓取）</td></tr><tr><td><a href="https://www.google.com/search?q=CubeMars+AK40-10+V3.0+KV170+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=AK40-10+V3.0+KV170&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=CubeMars+AK40-10+V3.0+KV170+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/actuator/cubemars.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/cubemars.json</td></tr></tbody></table>
 
 ## 备注
 

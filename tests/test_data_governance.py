@@ -16,6 +16,9 @@ def _all_rows() -> list[dict]:
         rows += json.loads(f.read_text(encoding="utf-8"))
     for f in sorted((DATA / "robots").glob("*.json")):
         rows += json.loads(f.read_text(encoding="utf-8"))
+    md = DATA / "materials"
+    for f in sorted(md.glob("*.json")) if md.exists() else []:
+        rows += json.loads(f.read_text(encoding="utf-8"))
     sw = DATA / "software.json"
     if sw.exists():
         for it in json.loads(sw.read_text(encoding="utf-8")).get("items", []):

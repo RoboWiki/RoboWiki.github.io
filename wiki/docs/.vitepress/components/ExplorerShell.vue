@@ -24,6 +24,8 @@ const props = withDefaults(defineProps<{
   lead?: string
   note?: string
   searchPlaceholder?: string
+  /** 初始搜索词：从别的页面带 ?q= 进来时预填 */
+  initialQuery?: string
   /** 分面：按 group 分行显示，组内单选 */
   facets?: Facet[]
   /** 排序项 */
@@ -34,6 +36,7 @@ const props = withDefaults(defineProps<{
   /** 没有任何数据时的提示 */
   emptyText?: string
 }>(), {
+  initialQuery: '',
   countUnit: '条',
   emptyText: '没有匹配的结果，换个关键词或点掉筛选。',
 })
@@ -44,7 +47,7 @@ const emit = defineEmits<{
   (e: 'select-facet', payload: { group: string; value: string }): void
 }>()
 
-const q = ref('')
+const q = ref(props.initialQuery || '')
 const active = defineModel<Record<string, string>>('active', { default: () => ({}) })
 
 /** 按 group 分组，保持传入顺序 */
