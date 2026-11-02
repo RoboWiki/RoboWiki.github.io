@@ -8,7 +8,7 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException, Request
 from sqlmodel import select
 
-from ...catalog_fields import allowed
+from ...catalog_fields import allowed, split_field
 from ...models import Outbox, Part, Submission, SubmissionReview, User
 from ...schemas import (OutboxOut, ReviewIn, ReviewOut, SubmissionIn,
                         SubmissionOut)
@@ -59,8 +59,19 @@ def create_submission(payload: SubmissionIn, request: Request, db: Db,
         if db.get(Part, payload.target_id) is None:
             raise HTTPException(404, "目标部件不存在")
 
+    evidence = dict(payload.evidence)
+    if payload.kind == "part_patch" and "preview" not in evidence:
+        p = db.get(Part, payload.target_id)
+        specs = (p.specs or {}) if p else {}
+        preview = []
+        for key, new in payload.payload.items():
+            where, field = split_field(key)
+            old = specs.get(field) if where == "specs" else getattr(p, field, None)
+            preview.append({"field": key, "old_value": old, "new_value": new})
+        evidence["preview"] = preview
+
     s = Submission(kind=payload.kind, target_id=payload.target_id,
-                   payload=payload.payload, evidence=payload.evidence,
+                   payload=payload.payload, evidence=evidence,
                    submitter_id=user.id)
     db.add(s)
     db.commit()

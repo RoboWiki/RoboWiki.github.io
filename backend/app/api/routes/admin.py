@@ -54,22 +54,31 @@ def _split(key: str) -> tuple[str, str]:
     return split_field(key)
 
 
+_STRING_FIELDS = {
+    "tau_basis", "inertia_basis", "encoder", "comm", "notes", "origin", "url",
+    "last_checked", "ip", "voltage_range_V", "category", "subtype", "vendor",
+    "vendor_cn", "model", "title", "source_tier", "iface", "protocol", "mount_type",
+    "lock_type", "wire_awg", "awg", "current_basis", "contact_layout", "chem",
+    "battery_type", "function_type", "output_type", "polarity", "chip_function",
+    "switch_type", "logic", "package", "lcsc_part", "doc_url", "doc_pdf",
+    "dims", "temp_range", "temp_range_C", "image_url", "image_source",
+}
+
+
 def _coerce(field: str, value: Any) -> Any:
     if value is None or value == "":
         return None
-    if field.startswith("image_"):
-        return str(value)
-    if field in ("tau_basis", "inertia_basis", "encoder", "comm", "notes", "origin",
-                 "url", "last_checked", "ip", "voltage_range_V",
-                 "category", "subtype", "vendor", "model", "title"):
+    if isinstance(value, (bool, int, float, list, dict)):
+        return value
+    if field.startswith("image_") or field in _STRING_FIELDS:
         return str(value)
     if field == "driver_integrated":
         return bool(value)
     try:
-        num = float(value)
+        return float(value)
     except (TypeError, ValueError):
-        raise HTTPException(422, f"{field} 需要数值，收到 {value!r}") from None
-    return num
+        # 非数值字段（如 use_cases 的单值）原样保留，交给 pipeline 校验
+        return str(value)
 
 
 @router.get("/stats")

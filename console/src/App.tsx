@@ -8,6 +8,7 @@ import { Composer } from './ui'
 import Catalog from './Catalog'
 import { ThemeProvider, useTheme } from './theme'
 import Admin from './Admin'
+import Submissions from './Submissions'
 import { CommunityPage, PostPage, ProfilePage, SemanticsPage, TopPage } from './pages'
 
 // ── 认证上下文 ────────────────────────────────────────────────────────────
@@ -82,10 +83,11 @@ function AuthModal({ open, onClose }: { open: boolean; onClose: () => void }) {
 
 // 控制台只放「要写库」的东西：发帖、信息流、排行榜、后台改数。
 // 部件库与参数口径归主站（VitePress），这里用外链跳过去，不做第二套。
-const NAV = [
+const NAV: { key: string; to: string; label: string; staffOnly?: boolean }[] = [
   { key: 'community', to: '/community', label: '社区' },
   { key: 'people', to: '/top', label: '贡献榜' },
-  { key: 'admin', to: '/admin', label: '后台' },
+  { key: 'submissions', to: '/submissions', label: '提案', staffOnly: true },
+  { key: 'admin', to: '/admin', label: '后台', staffOnly: true },
 ]
 const EXTERNAL = [
   { href: '/catalog', label: '部件库 ↗' },
@@ -131,7 +133,8 @@ function Shell() {
 
   const section = loc.pathname.startsWith('/community') || loc.pathname.startsWith('/post') ? 'community'
     : loc.pathname.startsWith('/top') || loc.pathname.startsWith('/u/') ? 'people'
-      : loc.pathname.startsWith('/admin') ? 'admin' : 'community'
+      : loc.pathname.startsWith('/submissions') ? 'submissions'
+        : loc.pathname.startsWith('/admin') ? 'admin' : 'community'
 
   return (
     <Ctx.Provider value={ctx}>
@@ -149,7 +152,7 @@ function Shell() {
           </a>
 
           <nav className="hidden items-center gap-0.5 sm:flex">
-            {NAV.map(n => {
+            {NAV.filter(n => !n.staffOnly || user?.is_staff).map(n => {
               const on = section === n.key
               return (
                 <Link key={n.key} to={n.to}
@@ -219,7 +222,7 @@ function Shell() {
         </div>
         {/* 移动端导航 */}
         <nav className="flex gap-1 overflow-x-auto border-t border-slate-100 px-4 pb-2 pt-1 sm:hidden">
-          {NAV.map(n => (
+          {NAV.filter(n => !n.staffOnly || user?.is_staff).map(n => (
             <Link key={n.key} to={n.to}
               className={`whitespace-nowrap rounded-md px-2.5 py-1 text-[12.5px]
                 ${section === n.key ? 'bg-slate-100 font-semibold text-slate-900' : 'text-slate-500'}`}>
@@ -239,6 +242,7 @@ function Shell() {
           <Route path="/u/:handle" element={<ProfilePage onOpenPost={id => nav(`/post/${id}`)} />} />
           <Route path="/top" element={<TopPage />} />
           <Route path="/semantics" element={<SemanticsPage />} />
+          <Route path="/submissions" element={<Submissions />} />
           <Route path="/admin" element={<Admin />} />
         </Routes>
       </main>
