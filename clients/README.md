@@ -9,8 +9,9 @@
 | 端 | 目录/形态 | 说明 |
 |---|---|---|
 | Web | `wiki/`（VitePress） | 主站；静态读 + `/api/v1` 写 |
+| PWA | 同一构建产物 | 可安装；外壳与访问过的页面离线可读 |
 | github.io | 同一构建产物 | 海外镜像/备份；canonical 指主域 |
-| 控制台 | `console/` | 内部审核/改数（后续改为 submission） |
+| 控制台 | `console/` | 内部审核；改数只生成 submission，不直接写目录 |
 
 ## 后续客户端
 
