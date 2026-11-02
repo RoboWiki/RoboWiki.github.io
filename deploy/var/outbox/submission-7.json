@@ -1,0 +1,22 @@
+{
+ "outbox_id": 3,
+ "submission_id": 7,
+ "action": "part_patch",
+ "payload": {
+  "target_id": "dji-tb47",
+  "changes": {
+   "specs.capacity_mah": 4600
+  },
+  "evidence": {
+   "note": "QA 测试：TB47 标称容量按手册应为 4500mAh，此处仅验证审核链路",
+   "source_url": "https://example.com/qa-doc",
+   "preview": [
+    {
+     "field": "specs.capacity_mah",
+     "old_value": 4500,
+     "new_value": 4600
+    }
+   ]
+  }
+ }
+}

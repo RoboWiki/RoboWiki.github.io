@@ -86,6 +86,9 @@ def seed_catalog(db: Session) -> dict[str, int]:
         rows = json.loads(p.read_text(encoding="utf-8"))
         stats[fn] = len(rows)
         for r in rows:
+            # 与前端同一口径：C 级线索不进目录
+            if r.get("source_tier") == "C":
+                continue
             keep.append(r["id"])
             obj = db.get(Part, r["id"])
             if obj is None:
@@ -172,6 +175,31 @@ DEMO_POSTS = [
 
 写不进合同的参数，验收时不具备约束力。详见 `/semantics` 页的 RL-01 / RL-02 两条红线。"""),
 ]
+
+def bootstrap_admin(db: Session) -> str | None:
+    """生产初始化管理员：账号不存在就创建，存在就确保 staff 且密码与 env 一致。
+
+    密码由部署环境掌握，避免「库里有旧账号、没人知道密码」这种锁死状态。
+    """
+    handle = (settings.admin_handle or "").strip().lower()
+    password = settings.admin_password or ""
+    if not handle or not password:
+        return None
+    u = db.exec(select(User).where(User.handle == handle)).first()
+    if u is None:
+        u = User(handle=handle, display_name=settings.admin_display_name or handle,
+                 password_hash=hash_password(password),
+                 avatar_hue=(abs(hash(handle)) % 360), is_staff=True)
+        db.add(u)
+    else:
+        u.is_staff = True
+        u.password_hash = hash_password(password)
+        if not u.display_name:
+            u.display_name = settings.admin_display_name or handle
+        db.add(u)
+    db.commit()
+    return handle
+
 
 def seed_community(db: Session) -> dict[str, int]:
     """造几个示例用户与帖子，让社区不空。真实部署可关掉。"""

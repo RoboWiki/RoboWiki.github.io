@@ -52,7 +52,7 @@ titleTemplate: false
       </a>
       <a class="rw-home-task" href="/submit">
         <b>我想分享 / 纠错</b>
-        <span>补数据、写评价、写实测、投文章，全是 GitHub 表单</span>
+        <span>补数据、写评价、写实测、投文章；纠错也可在部件页站内提交</span>
       </a>
     </div>
   </section>
@@ -120,7 +120,7 @@ titleTemplate: false
         <ul>
           <li><code>A</code> 逐项核对过厂商手册 / 官方文档 —— 每个字段都能指回手册或官方页面</li>
           <li><code>B</code> 采自公开商品页或第三方整理 —— 未逐项核对，<b>不做视觉强调</b></li>
-          <li><code>C</code> 转述，仅作线索 —— 不进目录，只出现在讨论里</li>
+          <li><code>C</code> 转述，仅作线索 —— 不进推荐与对比，库内保留时明确标注</li>
         </ul>
       </div>
       <div>

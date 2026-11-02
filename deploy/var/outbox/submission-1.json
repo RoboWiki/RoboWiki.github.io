@@ -1,0 +1,22 @@
+{
+ "outbox_id": 1,
+ "submission_id": 1,
+ "action": "part_patch",
+ "payload": {
+  "target_id": "amass-xt30",
+  "changes": {
+   "specs.current_rated_A": 21
+  },
+  "evidence": {
+   "note": "E2E: sample p9 says 20A MAX; 21 only to test the chain",
+   "source_url": "https://www.china-amass.com/",
+   "preview": [
+    {
+     "field": "specs.current_rated_A",
+     "old_value": 20,
+     "new_value": 21
+    }
+   ]
+  }
+ }
+}

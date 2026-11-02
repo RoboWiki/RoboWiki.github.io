@@ -24,11 +24,11 @@
 
 ## 客户端契约
 
-1. **认证**：Web 同域 Cookie / Bearer；小程序 `wx.login`；App OAuth2 PKCE；机器人服务令牌。都映射到同一 `users + identities`。
-2. **版本**：请求带 `X-RoboWiki-Client`；响应带 `X-RoboWiki-Data-Version`；破坏性变更走 `/api/v2`。
+1. **认证**：Web 同域 Cookie / Bearer；小程序 `wx.login`；App OAuth2 PKCE；机器人服务令牌。都映射到同一 `users`；外部身份绑定（`identities`）是下一步，尚未建表。
+2. **版本**：响应带 `X-RoboWiki-Data-Version`；破坏性变更走 `/api/v2`。
 3. **分享**：所有端使用同一份 `share/{kind}/{id}.json`（标题、参数、来源、`data_version`、canonical URL、复制文本）；客户端只渲染，不各自拼文案。
 4. **离线**：PWA/小程序/App 缓存目录与 `data_version`；写操作进本地 outbox，联网后重放，冲突进人工队列。
-5. **SDK**：从 `backend/openapi.json` 生成 TypeScript/Dart/Kotlin 客户端；不手写第二套模型。
+5. **SDK**：从 `/api/openapi.json` 生成 TypeScript/Dart/Kotlin 客户端；不手写第二套模型。
 
 ## 目录约定
 

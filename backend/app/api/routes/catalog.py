@@ -94,6 +94,7 @@ def subtype_label(category: str, subtype: str) -> str:
 #: 允许排序的字段 → JSON 路径。白名单，用户输入不进 SQL。
 SORTABLE = {
     "featured": None, "vendor": None, "model": None, "price": None, "verified": None,
+
     "tau_peak": "tau_peak_Nm", "tau_rated": "tau_rated_Nm", "gear": "gear",
     "mass": "mass_kg", "speed": "speed_noload_rpm",
     "armature": "armature_kgm2", "rotor_inertia": "rotor_inertia_kgm2",
@@ -102,6 +103,8 @@ SORTABLE = {
     "channels": "channels", "control_range": "control_range_m",
     "can": "can", "can_speed": "can_speed_mbps",
 }
+#: 前端排序名与真实列名不一致的，单独映射，避免 getattr(Part, "price") 爆炸
+SORT_COLUMNS = {"price": "price_cny"}
 
 
 def derive(specs: dict) -> dict[str, Any]:
@@ -292,7 +295,9 @@ def list_parts(
 
     total = db.exec(select(func.count()).select_from(stmt.subquery())).one()
 
-    key = sort if sort in SORTABLE else "vendor"
+    if sort not in SORTABLE:
+        raise HTTPException(422, f"不支持的排序字段：{sort}")
+    key = sort
     if key == "featured":
         # 首页默认口径：有评价的排前面（按最高赞评价的分数），其余按厂商
         best = (select(func.max(Post.score))
@@ -300,7 +305,7 @@ def list_parts(
                 .correlate(Part).scalar_subquery())
         stmt = stmt.order_by(best.is_(None), best.desc(), Part.vendor, Part.model)
     elif SORTABLE.get(key) is None:
-        col = getattr(Part, key)
+        col = getattr(Part, SORT_COLUMNS.get(key, key))
         stmt = stmt.order_by(col.is_(None), col.desc() if order == "desc" else col.asc(),
                              Part.vendor, Part.model)
     else:

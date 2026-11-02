@@ -8,13 +8,15 @@ from __future__ import annotations
 import re
 import secrets
 
-from fastapi import APIRouter, HTTPException, Request
+from typing import Annotated
+
+from fastapi import APIRouter, Header, HTTPException, Request
 from sqlmodel import select
 
 from ...core.config import settings
 from ...models import Part
 from ..deps import Db, rate_limit
-from .catalog import public_part
+from .catalog import public_part, subtype_label
 
 router = APIRouter(prefix="/bot", tags=["bot"])
 
@@ -29,29 +31,31 @@ _FACTS: dict[str, list[tuple[str, str]]] = {
         ("power_max_w", "{} W"),
     ],
     "controller_low": [
-        ("mcu", "{}"), ("can", "CAN {}"), ("io", "{}"), ("voltage_V", "{} V"),
+        ("mcu", "{}"), ("can", "CAN {}"), ("io", "{}"), ("voltage_in_V", "{} V"),
     ],
     "imu": [("gyro_range_dps", "陀螺 {} °/s"), ("iface", "{}"), ("noise", "{}")],
     "camera": [("depth_range_m", "{} m"), ("fov", "{}"), ("fps", "{} fps")],
     "lidar": [("range_m", "{} m"), ("fov", "{}"), ("points_per_s", "{} pts/s")],
-    "connector": [("positions", "{} pin"), ("pitch_mm", "{} mm"), ("current_a", "{} A"),
-                  ("voltage_V", "{} V")],
+    "connector": [("positions", "{} pin"), ("pitch_mm", "{} mm"),
+                  ("current_rated_A", "{} A"), ("voltage_rated_V", "{} V"),
+                  ("wire_awg", "{}"), ("mating_cycles", "{} 次")],
     "module": [("iface", "{}"), ("voltage_V", "{} V"), ("channel", "{} 通道")],
 }
 _GENERIC = [("voltage_V", "{} V"), ("iface", "{}"), ("channel", "{} 通道"),
             ("mass_kg", "{} kg")]
 
 
-def _auth(request: Request) -> None:
+def _auth(request: Request, token: str | None = None) -> None:
     expected = settings.bot_token
     if not expected:
         raise HTTPException(503, "机器人问答未启用：未配置 ROBOWIKI_BOT_TOKEN")
-    got = request.headers.get("X-Bot-Token") or ""
+    got = token or request.headers.get("X-Bot-Token") or ""
     if not got or not secrets.compare_digest(got, expected):
         raise HTTPException(401, "机器人令牌无效")
 
 
 def _normalize(q: str) -> str:
+    q = re.sub(r"[\x00-\x1f\x7f]", " ", q)[:100]
     q = re.sub(r"^\s*(?:@\S+\s+|/[\w-]+\s+)", "", q)
     q = re.sub(r"^\s*(?:查一下|查一查|查询|查|search)\s*[:：]?\s*", "", q,
                flags=re.I)
@@ -65,12 +69,14 @@ def _fact_line(p: Part, limit: int = 3) -> str:
         v = specs.get(key)
         if v in (None, "", 0):
             continue
-        text = fmt.format(v)
+        # 字符串值常常自带单位/区间说明，不再套单位，避免「0.2–10 mm m」
+        text = fmt.format(v) if isinstance(v, (int, float)) and not isinstance(v, bool) \
+            else str(v)
         if text not in picked:
             picked.append(text)
         if len(picked) >= limit:
             break
-    return " · ".join(picked) if picked else (p.subtype or p.category)
+    return " · ".join(picked) if picked else subtype_label(p.category, p.subtype)
 
 
 def _slug(p: Part) -> str:
@@ -105,17 +111,27 @@ def _best(rows: list[Part], terms: list[str]) -> Part:
 
 
 @router.get("/answer")
-def answer(request: Request, db: Db, q: str, limit: int = 3):
-    _auth(request)
+def answer(request: Request, db: Db, q: str, limit: int = 3,
+           x_bot_token: Annotated[str | None, Header()] = None):
+    _auth(request, x_bot_token)
     rate_limit(request, "bot", 300)
     text = _normalize(q)
     terms = text.split()
     if not terms:
         raise HTTPException(422, "q 不能为空")
+    if all(set(t) <= set("%_\\") for t in terms):
+        return {
+            "found": False,
+            "answer": "请给出型号或厂商关键词，例如 AK80-6、XT30",
+            "url": f"{settings.site_url.rstrip('/')}/catalog",
+            "data_version": settings.data_version,
+        }
 
     stmt = select(Part)
     for t in terms:
-        stmt = stmt.where(Part.search.contains(t.lower()))
+        # 手动转义：用户输入里的 % / _ 不能当通配符把整个目录捞出来
+        safe = t.lower().replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+        stmt = stmt.where(Part.search.like(f"%{safe}%", escape="\\"))
     rows = db.exec(stmt.limit(max(1, min(limit, 10)) * 4)).all()
 
     if not rows:

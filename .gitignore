@@ -67,3 +67,7 @@ dist/
 
 # TypeScript 增量构建缓存
 console/tsconfig.tsbuildinfo
+
+# 数据备份（可能含 PII）
+deploy/backup/*.dump
+deploy/backup/*.dump.tmp

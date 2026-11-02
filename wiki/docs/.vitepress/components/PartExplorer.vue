@@ -62,9 +62,9 @@ const props = withDefaults(defineProps<{ lang?: 'zh' | 'en' }>(), { lang: 'zh' }
 const en = computed(() => props.lang === 'en')
 /** 只翻界面壳；型号与参数值保持原文。 */
 const L = computed(() => en.value
-  ? { featured: 'Featured', search: 'Search model / brand / type', compare: 'Compare', all: 'All params',
+  ? { featured: 'Catalogued', search: 'Search model / brand / type', compare: 'Compare', all: 'All params',
       none: 'No photo yet', count: 'items', sort: 'Sort by', vendor: 'Vendor', type: 'Type' }
-  : { featured: '精选', search: '搜型号 / 品牌 / 类型', compare: '对比', all: '全部参数',
+  : { featured: '入库', search: '搜型号 / 品牌 / 类型', compare: '对比', all: '全部参数',
       none: '暂无产品图', count: '件', sort: '按', vendor: '厂商', type: '类型' })
 
 const all = ref<Part[]>([])
@@ -387,7 +387,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
         有优惠条件、有资料链接、能按任意列排序。
       </p>
       <div class="ex-note">
-        <b>★ 精选</b> 默认全收录；关掉仍可看全部。
+        <b>★ 入库</b> 默认全收录；关掉仍可看全部。
         <b>每一行参数都标了来源等级</b>：A 级逐项对过厂商手册，缺的值写 —，不猜。
       </div>
     </header>
@@ -499,7 +499,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
               </svg>
               <em>{{ L.none }}</em>
             </span>
-            <span :class="['card-tier', p.tier === 'A' ? 'a' : '']">{{ p.tier }}{{ p.verified ? ' ✓' : '' }}</span>
+            <span :class="['card-tier', p.tier === 'A' ? 'a' : '']">{{ p.tier }}{{ p.verified && p.tier === 'A' ? ' ✓' : '' }}</span>
             <span v-if="p.offer?.price != null" class="card-promo">优惠</span>
           </a>
 

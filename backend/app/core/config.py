@@ -5,8 +5,9 @@ import pathlib
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-# backend/app/core/config.py -> parents[3] = 仓库根
-ROOT = pathlib.Path(__file__).resolve().parents[3]
+# 本地：backend/app/core/config.py -> 仓库根；容器：/app/app/core/config.py -> /app
+_here = pathlib.Path(__file__).resolve()
+ROOT = _here.parents[3] if (_here.parents[3] / "backend").is_dir() else _here.parents[2]
 
 
 class Settings(BaseSettings):
@@ -34,6 +35,14 @@ class Settings(BaseSettings):
     core_branch: str = "main"
     #: 开发/测试可自动建表；生产由 Alembic 迁移，设为 false
     auto_create_tables: bool = True
+    #: 是否灌入演示用户/帖子；None = 跟随 auto_create_tables（生产默认不灌）
+    seed_demo: bool | None = None
+    #: 是否公开 Swagger UI；生产建议 false（OpenAPI JSON 仍可用于生成 SDK）
+    expose_docs: bool = True
+    #: 生产初始化管理员；设置后启动时确保该账号存在且为 staff
+    admin_handle: str | None = None
+    admin_password: str | None = None
+    admin_display_name: str = "站务"
     db_path: pathlib.Path = ROOT / "robowiki.db"
 
     #: 生产用 ROBOWIKI_DATABASE_URL=postgresql+psycopg://...

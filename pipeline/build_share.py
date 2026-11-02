@@ -83,6 +83,7 @@ def build(rows: list[dict], slugs: dict[str, str], out: Path,
         title = r["title"]
         summary = _summary(cat, specs)
         tier = r.get("source_tier", "B")
+        verified = bool(r.get("verified")) and tier == "A"
         checked = r.get("last_checked") or ""
         image = specs.get("image_url")
         params = _params(cat, specs)
@@ -90,7 +91,7 @@ def build(rows: list[dict], slugs: dict[str, str], out: Path,
         copy = "\n".join(x for x in [
             f"[部件] {title}",
             summary,
-            f"{tier} 级来源 · 最近核对 {checked} · 数据 {data_version}",
+            f"{tier} 级来源 · {'已核对' if verified else '最近检查'} {checked} · 数据 {data_version}",
             url,
         ] if x)
 
@@ -102,6 +103,7 @@ def build(rows: list[dict], slugs: dict[str, str], out: Path,
             "params": params,
             "use_cases": specs.get("use_cases") or [],
             "source_tier": tier,
+            "verified": verified,
             "last_checked": checked,
             "data_version": data_version,
             "canonical_url": url,
@@ -120,6 +122,7 @@ def build(rows: list[dict], slugs: dict[str, str], out: Path,
             "title": title,
             "summary": summary,
             "source_tier": tier,
+            "verified": verified,
             "last_checked": checked,
             "data_version": data_version,
         })

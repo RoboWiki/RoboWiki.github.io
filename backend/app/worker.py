@@ -11,8 +11,9 @@ from __future__ import annotations
 import argparse
 import os
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
+from sqlalchemy import and_, or_
 from sqlmodel import select
 
 from .core.config import settings
@@ -31,9 +32,13 @@ def _publish(job: Outbox) -> dict:
 
 def process_one() -> bool:
     with session() as db:
+        now = _now()
         job = db.exec(
-            select(Outbox).where(Outbox.status == "pending")
-            .order_by(Outbox.id).limit(1)
+            select(Outbox).where(or_(
+                and_(Outbox.status == "pending", Outbox.next_at <= now),
+                and_(Outbox.status == "failed", Outbox.attempts < 5,
+                     Outbox.next_at <= now),
+            )).order_by(Outbox.id).limit(1)
         ).first()
         if job is None:
             return False
@@ -48,10 +53,13 @@ def process_one() -> bool:
             job.last_error = None
             job.result = result
             print(f"[outbox] {job.id} -> {result.get('pr_url') or result.get('path')}")
-        except Exception as exc:  # 保留任务，等待重试
-            job.status = "failed"
+        except Exception as exc:  # 指数退避重试；超过 5 次才永久失败
+            job.status = "pending" if job.attempts < 5 else "failed"
             job.last_error = str(exc)[:500]
-            print(f"[outbox] {job.id} failed: {exc}")
+            delay = min(300, 5 * 2 ** max(0, job.attempts - 1))
+            job.next_at = _now() + timedelta(seconds=delay)
+            print(f"[outbox] {job.id} attempt {job.attempts} failed: {exc} "
+                  f"（{delay}s 后重试）")
         db.add(job)
         db.commit()
         return True

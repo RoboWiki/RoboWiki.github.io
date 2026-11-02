@@ -1,0 +1,22 @@
+{
+ "outbox_id": 6,
+ "submission_id": 14,
+ "action": "part_patch",
+ "payload": {
+  "target_id": "dji-tb47",
+  "changes": {
+   "price_cny": 9999
+  },
+  "evidence": {
+   "note": "QA 提示文案测试（不会发布）",
+   "source_url": "https://example.com/qa",
+   "preview": [
+    {
+     "field": "price_cny",
+     "old_value": null,
+     "new_value": 9999
+    }
+   ]
+  }
+ }
+}
