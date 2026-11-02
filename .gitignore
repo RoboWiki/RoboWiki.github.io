@@ -71,3 +71,6 @@ console/tsconfig.tsbuildinfo
 # 数据备份（可能含 PII）
 deploy/backup/*.dump
 deploy/backup/*.dump.tmp
+
+# outbox 运行时产物（测试/生产）
+deploy/var/outbox/*.json
