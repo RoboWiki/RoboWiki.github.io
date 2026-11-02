@@ -26,6 +26,12 @@ class Settings(BaseSettings):
     site_url: str = "https://robowiki.org"
     #: 群机器人只读问答的共享令牌；未设置则禁用该接口
     bot_token: str | None = None
+
+    #: worker 发布：dryrun（默认，写本地产物）| github（开 PR）
+    publish_mode: str = "dryrun"
+    github_token: str | None = None
+    core_repo: str = "RoboWiki/RoboWiki"
+    core_branch: str = "main"
     #: 开发/测试可自动建表；生产由 Alembic 迁移，设为 false
     auto_create_tables: bool = True
     db_path: pathlib.Path = ROOT / "robowiki.db"

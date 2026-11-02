@@ -197,4 +197,5 @@ class OutboxOut(BaseModel):
     status: str
     attempts: int = 0
     last_error: str | None = None
+    result: dict = {}
     created_at: datetime

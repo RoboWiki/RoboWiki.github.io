@@ -10,6 +10,10 @@ x-api-env: &api-env
   ROBOWIKI_CORS_ORIGINS: '${CORS_ORIGINS:-["http://localhost:5173"]}'
   ROBOWIKI_SITE_URL: ${SITE_URL:-https://robowiki.org}
   ROBOWIKI_BOT_TOKEN: ${BOT_TOKEN:-}
+  ROBOWIKI_PUBLISH_MODE: ${PUBLISH_MODE:-dryrun}
+  ROBOWIKI_GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+  ROBOWIKI_CORE_REPO: ${CORE_REPO:-RoboWiki/RoboWiki}
+  ROBOWIKI_CORE_BRANCH: ${CORE_BRANCH:-main}
 
 services:
   caddy:

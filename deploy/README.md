@@ -54,16 +54,26 @@ docker compose restart api
 
 ## Worker / Outbox
 
-`worker` 与 `api` 共用镜像，只消费 `outbox` 表：
+`worker` 与 `api` 共用镜像，只消费 `outbox` 表。默认 `PUBLISH_MODE=dryrun`：
 
 ```bash
 docker compose logs -f worker
-# 第一版把审核通过的提案写成 dry-run 产物：
-ls var/outbox/
+ls var/outbox/        # 审核通过的提案写成待发布 JSON
 ```
 
-生产接入 GitHub PR 时，只替换 `backend/app/worker.py::_publish`，outbox 表、
-幂等键和审核记录不变。不要直接在 API 请求里改目录。
+要直接开核心仓 PR，在 `.env` 设置：
+
+```bash
+PUBLISH_MODE=github
+GITHUB_TOKEN=<细粒度 token>
+CORE_REPO=RoboWiki/RoboWiki
+CORE_BRANCH=main
+```
+
+token 只需核心仓 `contents:write` + `pull_requests:write`，不要用个人全权限
+token，也不要提交进仓库。worker 会：定位 `data/catalog/...` 文件 → 建
+`proposal/<submission-id>` 分支 → 提交字段变更 → 开 PR。合并与 `data-v*`
+release 后目录才更新；API 请求路径不会碰 GitHub。
 
 ## 群机器人只读问答
 

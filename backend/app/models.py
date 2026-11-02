@@ -261,4 +261,6 @@ class Outbox(SQLModel, table=True):
     attempts: int = 0
     next_at: datetime = Field(default_factory=utcnow, index=True)
     last_error: str | None = None
+    #: 发布结果（PR URL / dry-run 产物路径 / 提交 SHA）
+    result: dict = Field(default_factory=dict, sa_column=Column(JSON))
     created_at: datetime = Field(default_factory=utcnow)
