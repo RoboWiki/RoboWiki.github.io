@@ -95,7 +95,8 @@ def outbox(db: Db, user: CurrentUser, limit: int = 100):
                    .limit(min(limit, 500))).all()
     return [OutboxOut(id=r.id or 0, submission_id=r.submission_id,
                       action=r.action, status=r.status, attempts=r.attempts,
-                      last_error=r.last_error, created_at=r.created_at)
+                      last_error=r.last_error, result=r.result or {},
+                      created_at=r.created_at)
             for r in rows]
 
 

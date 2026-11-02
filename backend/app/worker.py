@@ -1,6 +1,7 @@
-"""Outbox worker（第一版：本地 dry-run 产物）。
+"""Outbox worker：把审核通过的提案发布成 PR。
 
-生产下一步可把 `_publish` 换成 GitHub API / bot PR；核心保证不变：
+默认 dry-run（写本地产物）；`ROBOWIKI_PUBLISH_MODE=github` 时开核心仓 PR。
+核心保证不变：
 - 只从 `outbox` 取 pending；
 - `idempotency_key` 防重复；
 - 失败保留错误与重试计数，不丢任务。
@@ -8,34 +9,24 @@
 from __future__ import annotations
 
 import argparse
-import json
 import os
 import time
 from datetime import datetime, timezone
-from pathlib import Path
 
 from sqlmodel import select
 
+from .core.config import settings
 from .core.db import session
 from .models import Outbox
+from .publisher import publish_job
 
 
 def _now() -> datetime:
     return datetime.now(timezone.utc)
 
 
-def _publish(job: Outbox) -> Path:
-    out_dir = Path(os.environ.get("ROBOWIKI_OUTBOX_DIR", "var/outbox"))
-    out_dir.mkdir(parents=True, exist_ok=True)
-    path = out_dir / f"submission-{job.submission_id or job.id}.json"
-    path.write_text(json.dumps({
-        "outbox_id": job.id,
-        "submission_id": job.submission_id,
-        "action": job.action,
-        "payload": job.payload,
-        "created_at": _now().isoformat(),
-    }, ensure_ascii=False, indent=1), encoding="utf-8")
-    return path
+def _publish(job: Outbox) -> dict:
+    return publish_job(job, settings.data_dir)
 
 
 def process_one() -> bool:
@@ -52,10 +43,11 @@ def process_one() -> bool:
         db.add(job)
         db.commit()
         try:
-            path = _publish(job)
+            result = _publish(job)
             job.status = "done"
             job.last_error = None
-            print(f"[outbox] {job.id} -> {path}")
+            job.result = result
+            print(f"[outbox] {job.id} -> {result.get('pr_url') or result.get('path')}")
         except Exception as exc:  # 保留任务，等待重试
             job.status = "failed"
             job.last_error = str(exc)[:500]
