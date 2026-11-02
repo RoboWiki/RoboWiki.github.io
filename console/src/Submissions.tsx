@@ -127,7 +127,7 @@ export default function Submissions() {
             render: (_, r) => (
               <div className="text-[11.5px]">
                 <div className="text-slate-600">{r.evidence.note || '—'}</div>
-                {r.evidence.source_url && (
+                {/^https?:\/\//i.test(r.evidence.source_url || '') && (
                   <a className="text-blue-600 hover:underline" href={r.evidence.source_url}
                     target="_blank" rel="noreferrer">来源 ↗</a>
                 )}

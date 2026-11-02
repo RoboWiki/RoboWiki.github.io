@@ -379,6 +379,22 @@ def test_submission_requires_evidence(client):
     assert r.status_code == 422
 
 
+def test_submission_rejects_non_http_source(client):
+    h = auth_header(client)
+    r = client.post("/api/v1/submissions", headers=h, json={
+        "kind": "part_patch", "target_id": "cubemars-ak80-6",
+        "payload": {"price_cny": 1.0},
+        "evidence": {"note": "测试来源校验", "source_url": "javascript:alert(1)"},
+    })
+    assert r.status_code == 422
+    r = client.post("/api/v1/submissions", headers=h, json={
+        "kind": "part_patch", "target_id": "cubemars-ak80-6",
+        "payload": {"price_cny": 1.0},
+        "evidence": {"note": "", "source_url": "https://example.com"},
+    })
+    assert r.status_code == 422
+
+
 def test_non_staff_cannot_review(client):
     h = auth_header(client, "demo1", "robowiki")
     r = client.post("/api/v1/submissions/1/review", headers=h, json={

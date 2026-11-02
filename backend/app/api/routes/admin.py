@@ -223,6 +223,8 @@ def admin_patch(part_id: str, payload: PatchIn, user: CurrentUser, db: Db):
     p = db.get(Part, part_id)
     if p is None:
         raise HTTPException(404, "零件不存在")
+    if payload.source_url and not payload.source_url.lower().startswith(("http://", "https://")):
+        raise HTTPException(422, "source_url 必须是 http/https 链接")
 
     specs = dict(p.specs or {})
     changes: dict[str, Any] = {}
