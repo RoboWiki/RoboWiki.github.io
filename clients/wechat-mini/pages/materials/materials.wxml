@@ -1,0 +1,16 @@
+<view class="wrap">
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+  <view wx:elif="{{error}}" class="empty">{{error}}</view>
+  <view wx:elif="{{!items.length}}" class="empty">暂无材料数据</view>
+  <block wx:for="{{items}}" wx:key="id">
+    <view class="card" data-id="{{item.id}}" bindtap="open">
+      <view class="title">{{item.name}}</view>
+      <view class="muted">{{item.group_label}} · {{item.family_label}}</view>
+      <view style="margin-top:10rpx">
+        <text class="tag">{{item.category === 'process' ? '工艺' : '材料'}}</text>
+        <text class="tag">来源 {{item.source_tier}} 级</text>
+      </view>
+    </view>
+  </block>
+  <view class="muted" wx:if="{{items.length}}" style="text-align:center;padding:20rpx">共 {{total}} 条</view>
+</view>

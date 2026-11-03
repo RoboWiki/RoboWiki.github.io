@@ -27,7 +27,7 @@ changes（算层） → validate（数据闸门，必跑） → 按层跑 test /
 | job | 内容 |
 |---|---|
 | `validate` | `python -m pipeline validate`；本仓校验器已同步材质库 |
-| `test` | `python -m pytest`（站点 + 后端，本机当前 166 条） |
+| `test` | `python -m pytest`（站点 + 后端，本机当前 170 条） |
 | `backend` | `cd backend && python -c "import app.main"` + `pytest backend/tests` |
 | `build` | `python -m pipeline build`；站点层再 `npm ci && npm run build` |
 | `console` | `npm ci && npm run build` |

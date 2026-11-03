@@ -1,0 +1,31 @@
+<view class="wrap">
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+  <view wx:elif="{{error}}" class="empty">{{error}}</view>
+  <block wx:else>
+    <view class="card">
+      <view class="title">{{part.title}}</view>
+      <view class="muted" style="margin-top:8rpx">{{part.vendor}} · {{part.model}}</view>
+      <view style="margin-top:12rpx">
+        <text class="tag">{{part.category_label}}</text>
+        <text class="tag">来源 {{part.source_tier}} 级</text>
+        <text class="tag" wx:if="{{part.verified && part.source_tier === 'A'}}">已核对</text>
+      </view>
+    </view>
+    <view class="card">
+      <view class="title">参数</view>
+      <view class="row" wx:for="{{rows}}" wx:key="label">
+        <text class="muted">{{item.label}}</text><text>{{item.value}}</text>
+      </view>
+      <view wx:if="{{!rows.length}}" class="muted">暂无结构化参数</view>
+    </view>
+    <view class="card" wx:if="{{part.notes}}">
+      <view class="title">备注</view>
+      <view class="muted" style="margin-top:8rpx">{{part.notes}}</view>
+    </view>
+    <view class="card">
+      <view class="title">来源</view>
+      <view class="muted" style="margin-top:8rpx">{{part.url || '—'}}</view>
+      <view class="muted">最近核对：{{part.last_checked || '—'}}</view>
+    </view>
+  </block>
+</view>

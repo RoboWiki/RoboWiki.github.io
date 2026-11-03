@@ -70,6 +70,7 @@ class User(SQLModel, table=True):
     handle: str = Field(index=True, unique=True)       # 登录名 / URL
     display_name: str
     email: str | None = Field(default=None, unique=True)
+    email_verified: bool = False
     password_hash: str
     bio: str = ""
     avatar_hue: int = 160                              # 头像底色，免上传
@@ -78,6 +79,21 @@ class User(SQLModel, table=True):
     created_at: datetime = Field(default_factory=utcnow)
 
     #: 帖子数 / 评论数在个人页按需聚合，不落库
+
+
+class EmailToken(SQLModel, table=True):
+    """邮箱验证 / 找回密码的一次性令牌；只存 hash，不存原文。"""
+
+    __tablename__ = "email_tokens"
+    __table_args__ = (Index("ix_email_tokens_user_purpose", "user_id", "purpose"),)
+
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="users.id", index=True)
+    purpose: str = Field(index=True)          # verify | reset
+    token_hash: str = Field(index=True, unique=True)
+    expires_at: datetime = Field(index=True)
+    used_at: datetime | None = None
+    created_at: datetime = Field(default_factory=utcnow)
 
 
 class Post(SQLModel, table=True):

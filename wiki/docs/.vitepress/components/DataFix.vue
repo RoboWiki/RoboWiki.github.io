@@ -3,7 +3,7 @@ import { computed, onMounted, ref } from 'vue'
 import { withBase } from 'vitepress'
 import { findShareEntry, type ShareEntry } from '../lib/share'
 
-type Me = { handle: string; display_name: string }
+type Me = { handle: string; display_name: string; email_verified?: boolean }
 type Mine = { id: number; status: string; payload: Record<string, unknown>; created_at: string }
 
 const API = ((import.meta.env.VITE_ROBOWIKI_API as string | undefined) || '/api/v1')
@@ -13,10 +13,16 @@ const TOKEN_KEY = 'robowiki.token'
 const entry = ref<ShareEntry | null>(null)
 const detail = ref<{ params?: { key: string; label: string; value: string }[] } | null>(null)
 const me = ref<Me | null>(null)
-const mode = ref<'login' | 'register'>('login')
+const mode = ref<'login' | 'register' | 'forgot'>('login')
 const handle = ref('')
 const password = ref('')
 const displayName = ref('')
+const email = ref('')
+const resetToken = ref('')
+const newPassword = ref('')
+const authNotice = ref('')
+const verifySent = ref(false)
+const verifyToken = ref('')
 const field = ref('price_cny')
 const customField = ref('')
 const value = ref('')
@@ -95,6 +101,22 @@ const key = computed(() => field.value === '__custom__' ? customField.value.trim
 
 async function auth() {
   error.value = ''
+  authNotice.value = ''
+  if (mode.value === 'forgot') {
+    if (!email.value.trim()) { error.value = '请填写注册邮箱'; return }
+    busy.value = true
+    try {
+      const r = await req<{ message: string }>('/auth/password/forgot', {
+        method: 'POST', body: JSON.stringify({ email: email.value.trim() }),
+      })
+      authNotice.value = r.message || '如果该邮箱已注册，重置邮件已发送'
+    } catch (e: any) {
+      error.value = e.message
+    } finally {
+      busy.value = false
+    }
+    return
+  }
   if (handle.value.trim().length < 2 || password.value.length < 6) {
     error.value = '账号至少 2 位、密码至少 6 位'
     return
@@ -105,9 +127,11 @@ async function auth() {
   }
   busy.value = true
   try {
-    const body = mode.value === 'login'
-      ? { handle: handle.value.trim(), password: password.value }
-      : { handle: handle.value.trim(), password: password.value, display_name: displayName.value.trim() }
+    const body: Record<string, string> = { handle: handle.value.trim(), password: password.value }
+    if (mode.value === 'register') {
+      body.display_name = displayName.value.trim()
+      if (email.value.trim()) body.email = email.value.trim()
+    }
     const r = await req<{ access_token: string; user: Me }>(
       mode.value === 'login' ? '/auth/login' : '/auth/register', {
         method: 'POST', body: JSON.stringify(body),
@@ -119,6 +143,54 @@ async function auth() {
     error.value = e.message
   } finally {
     busy.value = false
+  }
+}
+
+async function resetPassword() {
+  error.value = ''
+  authNotice.value = ''
+  if (newPassword.value.length < 6) { error.value = '新密码至少 6 位'; return }
+  busy.value = true
+  try {
+    await req('/auth/password/reset', {
+      method: 'POST',
+      body: JSON.stringify({ token: resetToken.value.trim(), password: newPassword.value }),
+    })
+    authNotice.value = '密码已重置，请用新密码登录'
+    mode.value = 'login'
+    resetToken.value = ''
+    newPassword.value = ''
+  } catch (e: any) {
+    error.value = e.message
+  } finally {
+    busy.value = false
+  }
+}
+
+async function requestVerify() {
+  error.value = ''
+  verifySent.value = false
+  try {
+    await req('/auth/email/verify/request', { method: 'POST' })
+    verifySent.value = true
+    authNotice.value = '验证邮件已发送；开发环境可在服务端日志看到令牌'
+  } catch (e: any) {
+    error.value = e.message
+  }
+}
+
+async function verifyEmail() {
+  error.value = ''
+  try {
+    const u = await req<Me>('/auth/email/verify', {
+      method: 'POST', body: JSON.stringify({ token: verifyToken.value.trim() }),
+    })
+    me.value = u
+    verifySent.value = false
+    verifyToken.value = ''
+    authNotice.value = '邮箱已验证'
+  } catch (e: any) {
+    error.value = e.message
   }
 }
 
@@ -195,10 +267,26 @@ function logout() {
       <div class="rw-fix-auth">
         <button type="button" :class="{ on: mode === 'login' }" @click="mode = 'login'">登录</button>
         <button type="button" :class="{ on: mode === 'register' }" @click="mode = 'register'">注册</button>
+        <button type="button" :class="{ on: mode === 'forgot' }" @click="mode = 'forgot'; authNotice = ''">找回密码</button>
       </div>
-      <div class="rw-fix-grid">
+
+      <template v-if="mode === 'forgot'">
+        <div class="rw-fix-grid">
+          <input v-model="email" type="email" placeholder="注册邮箱" autocomplete="email" />
+          <button type="button" :disabled="busy" @click="auth">发送重置邮件</button>
+        </div>
+        <div class="rw-fix-grid">
+          <input v-model="resetToken" placeholder="邮件里的重置令牌" />
+          <input v-model="newPassword" type="password" placeholder="新密码（至少 6 位）" autocomplete="new-password" />
+          <button type="button" :disabled="busy || !resetToken.trim()" @click="resetPassword">重置密码</button>
+        </div>
+        <p class="rw-fix-hint">令牌只发到注册邮箱；开发环境（EMAIL_MODE=log）在服务端日志查看。</p>
+      </template>
+
+      <div v-else class="rw-fix-grid">
         <input v-model="handle" placeholder="账号（2–24 位 a-z、0-9、-、_）" autocomplete="username" />
         <input v-if="mode === 'register'" v-model="displayName" placeholder="显示名" />
+        <input v-if="mode === 'register'" v-model="email" type="email" placeholder="邮箱（用于验证/找回，建议填写）" autocomplete="email" />
         <input v-model="password" type="password" placeholder="密码（至少 6 位）"
           autocomplete="current-password" @keyup.enter="auth" />
         <button type="button" :disabled="busy" @click="auth">{{ busy ? '请稍候…' : (mode === 'login' ? '登录' : '注册并登录') }}</button>
@@ -206,6 +294,14 @@ function logout() {
     </template>
 
     <template v-else>
+      <div v-if="!me.email_verified" class="rw-fix-verify">
+        <span>邮箱未验证。</span>
+        <button type="button" @click="requestVerify">发送验证邮件</button>
+        <template v-if="verifySent">
+          <input v-model="verifyToken" placeholder="邮件里的验证令牌" />
+          <button type="button" :disabled="!verifyToken.trim()" @click="verifyEmail">验证</button>
+        </template>
+      </div>
       <p class="rw-fix-text">
         只提交你核对过的字段与来源；审核通过不等于生效，合并并发布 <code>data-v*</code> 后才更新。
       </p>
@@ -238,6 +334,7 @@ function logout() {
     </template>
 
     <p v-if="error" class="err">{{ error }}</p>
+    <p v-if="authNotice" class="notice">{{ authNotice }}</p>
 
     <div v-if="mine.length" class="rw-fix-mine">
       <div v-for="s in mine" :key="s.id">
@@ -333,6 +430,40 @@ function logout() {
   color: var(--vp-c-danger-1);
   font-size: 0.85rem;
   margin: 0.5rem 0 0;
+}
+.rw-fix .notice {
+  color: var(--vp-c-success-1);
+  font-size: 0.85rem;
+  margin: 0.5rem 0 0;
+}
+.rw-fix-hint {
+  margin: 0.2rem 0 0.4rem;
+  font-size: 0.78rem;
+  color: var(--vp-c-text-3);
+}
+.rw-fix-verify {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 0.2rem 0 0.8rem;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--vp-c-warning-1);
+  border-radius: 8px;
+  background: var(--vp-c-warning-soft);
+  font-size: 0.82rem;
+}
+.rw-fix-verify button {
+  border: 1px solid var(--vp-c-warning-1);
+  background: transparent;
+  color: var(--vp-c-warning-1);
+  border-radius: 6px;
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+}
+.rw-fix-verify input {
+  margin: 0;
+  max-width: 220px;
 }
 .rw-fix-alt {
   display: inline-block;

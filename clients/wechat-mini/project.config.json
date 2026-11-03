@@ -1,0 +1,12 @@
+{
+  "description": "RoboWiki 只读目录（微信小程序）",
+  "appid": "touristappid",
+  "projectname": "robowiki-mini",
+  "compileType": "miniprogram",
+  "libVersion": "3.6.0",
+  "setting": {
+    "urlCheck": true,
+    "es6": true,
+    "minified": true
+  }
+}

@@ -12,14 +12,15 @@
 | PWA | 同一构建产物 | 可安装；外壳与访问过的页面离线可读 |
 | github.io | 同一构建产物 | 当前线上主站；自有域名部署后再把 canonical 指回主域 |
 | 控制台 | `console/` | 内部审核；改数只生成 submission，不直接写目录 |
-| 材质库 | `wiki/docs/materials/` | 27 种材料 + 9 种工艺；当前只有静态页，尚无 `/api/v1/materials` |
+| 材质库 | `wiki/docs/materials/` + `/api/v1/materials` | 27 种材料 + 9 种工艺；静态页与 API 同源 |
+| 微信小程序 | `clients/wechat-mini/` | 只读：部件/材质搜索、详情、分享；不登录不写入 |
 
 ## 后续客户端
 
 | 端 | 推荐参考 | 接入方式 | 约束 |
 |---|---|---|---|
 | QQ 群机器人 | **NoneBot2**（Python）或 Koishi（Node） | 调 `/api/v1/bot/answer`，被动回复 | 不能主动推送；URL 预配置；只答高置信问题 |
-| 微信小程序 | **Taro** 或 **uni-app** | `wx.login` → 绑定同一 user；读 `/api/v1` | 需 ICP 域名、工具类目；首发只读 |
+| 微信小程序（写入） | **Taro** 或 **uni-app** | `wx.login` → 绑定同一 user；读 `/api/v1` | 需 ICP 域名、社区类目、内容安全；当前只读壳已存在 |
 | QQ 小程序 | Taro / uni-app | 同上 | 生态较小，优先级低于 QQ 机器人 |
 | App | React Native / Flutter | OAuth2 PKCE；同一 `/api/v1` | 留存数据成立后再做 |
 
@@ -36,11 +37,11 @@
 ```text
 clients/
   qqbot/          # NoneBot2 / Koishi 适配器
-  wechat-mini/    # Taro / uni-app
+  wechat-mini/    # 原生只读壳（写入版再考虑 Taro/uni-app）
   qq-mini/        # 可选
   app/            # RN / Flutter
   sdk/            # 生成的 OpenAPI client
 ```
 
 新增客户端时，先加目录和 README，确认 API 契约够用，再写 UI。不要先复制后端逻辑。
-材质库要接多端时，先补 `/api/v1/materials` 与 OpenAPI schema，再写客户端。
+材质 API 已提供：`GET /api/v1/materials`、`/materials/meta`、`/materials/{id}`；小程序直接用这套。

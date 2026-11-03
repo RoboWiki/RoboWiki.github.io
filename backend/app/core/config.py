@@ -31,6 +31,16 @@ class Settings(BaseSettings):
     #: 群机器人只读问答的共享令牌；未设置则禁用该接口
     bot_token: str | None = None
 
+    #: 邮件：log（开发，打印到日志）| smtp
+    email_mode: str = "log"
+    smtp_host: str | None = None
+    smtp_port: int = 587
+    smtp_user: str | None = None
+    smtp_password: str | None = None
+    smtp_from: str = "RoboWiki <no-reply@robowiki.org>"
+    smtp_starttls: bool = True
+    email_token_minutes: int = 30
+
     #: worker 发布：dryrun（默认，写本地产物）| github（开 PR）
     publish_mode: str = "dryrun"
     github_token: str | None = None

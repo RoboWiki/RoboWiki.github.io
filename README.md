@@ -70,6 +70,8 @@ python -m pipeline build
   `X-RoboWiki-API-Version` 与 `X-RoboWiki-Data-Version`。
 - **QQ 群机器人**：`GET /api/v1/bot/answer` 只读问答，回答固定为一句结论 + 链接 +
   数据版本；适配器见 `clients/qqbot/`，只被动回复、不推送。
+- **微信小程序**：`clients/wechat-mini/` 只读部件/材质搜索、详情与分享；不登录、不写入。
+- **材质 API**：`/api/v1/materials`、`/materials/meta`、`/materials/{id}`，与静态材质页同源。
 
 ## 站点结构
 
