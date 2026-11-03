@@ -20,7 +20,21 @@ cd ../wiki && npm ci && npm run build && cd ../deploy
 # 3) 起服务（migrate 会先跑完，api 再启动）
 docker compose up -d --build
 curl -fsS http://localhost/api/v1/ready
+# 静态站应包含：/、/catalog、/materials、/console/
 ```
+
+## 关键环境变量
+
+| 变量 | 作用 | 生产值 |
+|---|---|---|
+| `SITE_DOMAIN` | Caddy 站点域名 | `robowiki.example`（不要 `:80`） |
+| `AUTO_HTTPS` | Caddy 自动证书 | `on` |
+| `ADMIN_HANDLE` / `ADMIN_PASSWORD` | 启动时创建/更新站务账号 | 必须设置强密码 |
+| `EXPOSE_DOCS` | Swagger UI | `false` |
+| `PUBLISH_MODE` | worker 发布方式 | `dryrun` 或 `github` |
+| `BOT_TOKEN` | 群机器人只读问答 | 随机长串，留空则关闭 |
+
+`data.lock.json` 决定静态站与 API 看到的数据版本；升级数据只换 lock，不把 `data/` 复制进服务器。
 
 ## 常用
 
@@ -45,7 +59,7 @@ docker compose exec -T db pg_restore -U robowiki -d robowiki --clean --if-exists
 docker compose restart api
 ```
 
-静态站与数据 release 分别从 OSS/CDN、核心仓 release 同步；不依赖服务器上的源码构建。
+静态站与数据 release 分别从 OSS/CDN、核心仓 release 同步；材质库、部件、整机都来自同一份 release，不单独同步。
 
 ## 边界
 
