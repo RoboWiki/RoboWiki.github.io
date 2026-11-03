@@ -133,8 +133,9 @@ def _tool_detail(db, args: dict) -> str:
     if p is None:
         return json.dumps({"error": "not_found", "id": pid}, ensure_ascii=False)
     out = part_out(p)
-    posts = db.exec(select(Post).where(Post.part_id == pid)
-                    .order_by(Post.score.desc()).limit(5)).all()
+    posts = db.exec(select(Post).where(
+        Post.part_id == pid, Post.hidden == False)  # noqa: E712
+        .order_by(Post.score.desc()).limit(5)).all()
     # mode="json" 让 datetime 变成 ISO 字符串 —— 否则只要该零件有评价，
     # json.dumps 就会抛 "Object of type datetime is not JSON serializable"，
     # 整个 tools/call 变成 isError。这个 bug 只有「有评价的零件」才触发，

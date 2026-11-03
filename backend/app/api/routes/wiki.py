@@ -50,7 +50,7 @@ def list_comments(
     limit: Annotated[int, Query(ge=1, le=200)] = 100,
 ):
     """一个页面的讨论串；不传 page 则返回最近的全站讨论。"""
-    stmt = select(WikiComment)
+    stmt = select(WikiComment).where(WikiComment.hidden == False)  # noqa: E712
     if page:
         stmt = stmt.where(WikiComment.page == page)
     rows = db.exec(stmt.order_by(WikiComment.created_at.asc()).limit(limit)).all()
@@ -66,6 +66,7 @@ def list_comments(
 def comment_counts(db: Db):
     """每页条数，供侧边栏或索引页显示「N 条讨论」。"""
     rows = db.exec(select(WikiComment.page, func.count(WikiComment.id))
+                   .where(WikiComment.hidden == False)  # noqa: E712
                    .group_by(WikiComment.page)).all()
     return {"counts": {p: int(n) for p, n in rows},
             "total": sum(int(n) for _, n in rows)}
@@ -78,6 +79,8 @@ def create_comment(payload: CommentIn, user: CurrentUser, db: Db):
         parent = db.get(WikiComment, payload.parent_id)
         if parent is None:
             raise HTTPException(422, "要回复的那条讨论不存在")
+        if parent.hidden:
+            raise HTTPException(422, "要回复的讨论已被隐藏")
         if parent.page != payload.page:
             raise HTTPException(422, "回复不能跨页面")
     c = WikiComment(page=payload.page.strip("/"), user_id=user.id,
