@@ -1,9 +1,13 @@
-const { SITE } = require('../config')
+const config = require('../config')
+
+function site() {
+  return config.SITE
+}
 
 function imageUrl(path) {
   if (!path) return ''
   if (/^https?:\/\//i.test(path)) return path
-  return SITE + (path.charAt(0) === '/' ? path : '/' + path)
+  return site() + (path.charAt(0) === '/' ? path : '/' + path)
 }
 
 function tier(t) {
@@ -41,26 +45,27 @@ function partSlug(p) {
 }
 
 function partUrl(p) {
-  if (!p) return SITE
-  if (p.web_path) return SITE + p.web_path
+  if (!p) return site()
+  if (p.web_path) return site() + p.web_path
   const slug = partSlug(p)
-  if (slug.length < 2) return SITE + '/catalog.html'
-  return SITE + '/parts/' + p.category + '/' + slug + '.html'
+  if (slug.length < 2) return site() + '/catalog.html'
+  return site() + '/parts/' + p.category + '/' + slug + '.html'
 }
 
 function sharePartUrl(p) {
   const slug = partSlug(p)
   if (!slug) return ''
-  return SITE + '/share/parts/' + p.category + '/' + slug + '.json'
+  return site() + '/share/parts/' + p.category + '/' + slug + '.json'
 }
 
 function materialUrl(r) {
-  if (!r) return SITE
+  if (!r) return site()
+  if (r.web_path) return site() + r.web_path
   const id = String(r.id || '')
   const slug = r.category === 'process'
     ? 'process-' + id.replace(/^proc-/, '')
     : id.replace(/^mat-/, '')
-  return SITE + '/materials/' + slug + '.html'
+  return site() + '/materials/' + slug + '.html'
 }
 
 function copy(data, okText) {
@@ -76,4 +81,7 @@ function copy(data, okText) {
   })
 }
 
-module.exports = { imageUrl, tier, price, short, date, partUrl, sharePartUrl, materialUrl, copy }
+module.exports = {
+  imageUrl, tier, price, short, date,
+  partUrl, sharePartUrl, materialUrl, copy,
+}

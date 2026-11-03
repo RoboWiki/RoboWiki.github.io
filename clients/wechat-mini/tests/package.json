@@ -2,8 +2,9 @@
   "name": "robowiki-mini-smoke",
   "version": "1.0.0",
   "private": true,
-  "description": "RoboWiki 微信小程序真实开发者工具冒烟（官方 miniprogram-automator）",
+  "description": "RoboWiki 微信小程序静态检查与真实开发者工具冒烟",
   "scripts": {
+    "check": "node check.js",
     "test": "node smoke.js"
   },
   "devDependencies": {

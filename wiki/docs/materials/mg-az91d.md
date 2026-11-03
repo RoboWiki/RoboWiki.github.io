@@ -1,5 +1,6 @@
 ---
 title: "AZ91D 镁合金"
+description: "材料 AZ91D 镁合金：最常用的压铸镁合金"
 ---
 
 # AZ91D 镁合金

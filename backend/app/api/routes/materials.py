@@ -43,6 +43,7 @@ def list_materials(
         "limit": limit,
         "offset": offset,
         "data_version": settings.data_version,
+        "site_url": settings.site_url,
         "groups": groups(),
         "items": [public_material(r) for r in rows[offset:offset + limit]],
     }
@@ -57,6 +58,7 @@ def materials_meta():
         "processes": sum(1 for r in rows if r.get("category") == "process"),
         "groups": groups(),
         "data_version": settings.data_version,
+        "site_url": settings.site_url,
     }
 
 
@@ -67,6 +69,7 @@ def get_material(item_id: str):
         raise HTTPException(404, "材料或工艺不存在")
     out = public_material(r)
     out["data_version"] = settings.data_version
+    out["site_url"] = settings.site_url
     out["related"] = []
     refs = list(r.get("processes") or [])
     refs += list((r.get("specs") or {}).get("materials") or [])

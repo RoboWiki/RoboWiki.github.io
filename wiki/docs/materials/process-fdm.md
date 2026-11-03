@@ -1,5 +1,6 @@
 ---
 title: "3D 打印 FDM"
+description: "加工工艺 3D 打印 FDM：熔融沉积打印"
 ---
 
 # 3D 打印 FDM

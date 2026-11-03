@@ -1,13 +1,7 @@
 const api = require('../../utils/api')
 const F = require('../../utils/format')
 const L = require('../../utils/labels')
-
-function text(v) {
-  if (v === null || v === undefined || v === '') return ''
-  if (Array.isArray(v)) return v.join('、')
-  if (typeof v === 'object') return JSON.stringify(v)
-  return String(v)
-}
+const { text } = require('../../utils/text')
 
 Page({
   data: {
@@ -15,6 +9,10 @@ Page({
     rows: [],
     related: [],
     sources: [],
+    formsText: '',
+    prosText: '',
+    consText: '',
+    suppliers: [],
     webUrl: '',
     tierLabel: '',
     tierNote: '',
@@ -48,12 +46,22 @@ Page({
         label: s.kind || '来源',
         checked: s.checked_on || '',
       }))
+      const suppliers = (r.suppliers || []).map(s => ({
+        name: s.name || s.id || '供应商',
+        price: s.price_level || '',
+        role: s.role || '',
+        note: s.note || '',
+      }))
 
       this.setData({
         item: r,
         rows,
         related: r.related || [],
         sources,
+        formsText: text(r.forms),
+        prosText: text(r.pros),
+        consText: text(r.cons),
+        suppliers,
         webUrl: F.materialUrl(r),
         tierLabel: t.label,
         tierNote: t.note,
@@ -73,7 +81,11 @@ Page({
 
   retry() { this.load() },
 
-  goHome() { wx.reLaunch({ url: '/pages/index/index' }) },
+  goHome() {
+    const pages = getCurrentPages()
+    if (pages.length > 1) wx.navigateBack()
+    else wx.reLaunch({ url: '/pages/index/index' })
+  },
 
   copySource(e) {
     F.copy(e.currentTarget.dataset.url, '来源链接已复制')

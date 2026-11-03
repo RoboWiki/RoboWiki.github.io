@@ -64,7 +64,7 @@ html.dark .part-gallery-img { background: #f4f4f4; }
   word-break: break-word;
 }
 .part-gallery-meta {
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   line-height: 1.35;
   color: var(--vp-c-text-3);
 }
@@ -83,7 +83,7 @@ html.dark .part-gallery-img { background: #f4f4f4; }
   height: auto;
   line-height: 1.6;
   white-space: nowrap;
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   padding: 2px 8px;
   border-radius: 999px;
   border: 1px solid var(--vp-c-divider);
@@ -127,7 +127,7 @@ html.dark .part-gallery-img { background: #f4f4f4; }
 
 .part-src {
   margin-top: 0.5rem;
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   line-height: 1.7;
   color: var(--vp-c-text-3);
   word-break: break-all;

@@ -2095,7 +2095,7 @@ html.dark .rl-th {{ color: #e0b159; }}
           f"{len(learn.get('articles', []))} 篇 -> public/learn.json")
 
     build_robots(ROOT, OUT, pub)
-    build_materials(ROOT, OUT, pub)
+    build_materials(ROOT, OUT, pub, SITE_URL, _data_version())
     build_software(OUT, ROOT)
     build_contributors(ROOT, OUT, pub)
 

@@ -10,6 +10,7 @@ RoboWiki 拆成两个仓：
 ## 先跑一次
 
 ```bash
+gh auth login                          # 下载核心仓 release 需要登录态
 bash scripts/fetch-data-release.sh   # 下载 data.lock.json 锁定的核心仓 release
 export ROBOWIKI_DATA_DIR="$PWD/.data/data"
 export ROBOWIKI_SCHEMA_DIR="$PWD/.data/schema"

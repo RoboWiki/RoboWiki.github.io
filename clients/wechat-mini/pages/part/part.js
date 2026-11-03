@@ -1,14 +1,7 @@
 const api = require('../../utils/api')
 const F = require('../../utils/format')
 const L = require('../../utils/labels')
-
-function text(v) {
-  if (v === null || v === undefined || v === '') return ''
-  if (Array.isArray(v)) return v.join('、')
-  if (typeof v === 'object') return JSON.stringify(v)
-  if (typeof v === 'boolean') return v ? '是' : '否'
-  return String(v)
-}
+const { text } = require('../../utils/text')
 
 Page({
   data: {
@@ -26,6 +19,7 @@ Page({
     priceLabel: '',
     basis: '',
     version: '',
+    rating: null,
     loading: true,
     error: '',
   },
@@ -45,8 +39,10 @@ Page({
       const p = await api.get('/parts/' + encodeURIComponent(this.id), { posts_kind: 'review', posts_limit: 5 })
       const t = F.tier(p.source_tier)
       const specs = p.specs || {}
+      const hidden = ['image_url', 'image_source', 'doc_url', 'doc_pdf',
+        'repo_urls', 'repo_license', 'tags', 'coupon', 'fetched_at', 'category_cn']
       const rows = Object.keys(specs)
-        .filter(k => !['image_url', 'image_source'].includes(k))
+        .filter(k => !hidden.includes(k))
         .filter(k => specs[k] !== null && specs[k] !== undefined && specs[k] !== '')
         .slice(0, 80)
         .map(k => ({ key: k, label: L.partLabel(k), value: text(specs[k]) }))
@@ -98,9 +94,24 @@ Page({
         loading: false,
       })
       wx.setNavigationBarTitle({ title: p.model || p.title || '部件详情' })
+      this.loadRating()
     } catch (e) {
       this.setData({ loading: false, error: e.message })
     }
+  },
+
+  async loadRating() {
+    try {
+      const r = await api.get('/ratings/' + encodeURIComponent(this.id))
+      if (!r.count) {
+        this.setData({ rating: null })
+        return
+      }
+      const bars = Object.keys(r.histogram || {})
+        .map(k => ({ score: k, n: r.histogram[k] || 0 }))
+        .sort((a, b) => Number(b.score) - Number(a.score))
+      this.setData({ rating: Object.assign({}, r, { bars }) })
+    } catch (e) {}
   },
 
   async copyLink() {
@@ -114,7 +125,11 @@ Page({
 
   retry() { this.load() },
 
-  goHome() { wx.reLaunch({ url: '/pages/index/index' }) },
+  goHome() {
+    const pages = getCurrentPages()
+    if (pages.length > 1) wx.navigateBack()
+    else wx.reLaunch({ url: '/pages/index/index' })
+  },
 
   copySource(e) {
     F.copy(e.currentTarget.dataset.url, '来源链接已复制')
@@ -131,7 +146,7 @@ Page({
   onShareAppMessage() {
     const p = this.data.part || {}
     return {
-      title: `${p.vendor || ''} ${p.model || ''} · RoboWiki`.trim(),
+      title: `${p.model || p.title || '部件'} · RoboWiki`,
       path: `/pages/part/part?id=${encodeURIComponent(this.id)}`,
       imageUrl: this.data.image || undefined,
     }
@@ -140,7 +155,7 @@ Page({
   onShareTimeline() {
     const p = this.data.part || {}
     return {
-      title: `${p.vendor || ''} ${p.model || ''} · RoboWiki`.trim(),
+      title: `${p.model || p.title || '部件'} · RoboWiki`,
       query: `id=${encodeURIComponent(this.id)}`,
     }
   },

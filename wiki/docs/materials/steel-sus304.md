@@ -1,5 +1,6 @@
 ---
 title: "SUS304 不锈钢"
+description: "材料 SUS304 不锈钢：通用奥氏体不锈钢"
 ---
 
 # SUS304 不锈钢

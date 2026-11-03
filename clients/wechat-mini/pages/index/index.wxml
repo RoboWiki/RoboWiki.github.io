@@ -23,12 +23,36 @@
     <view class="tab {{tab === 'materials' ? 'on' : ''}}" data-tab="materials" bindtap="switchTab">材质库</view>
   </view>
 
+  <view class="share-row">
+    <button class="btn share-btn" open-type="share">分享当前筛选</button>
+  </view>
+
   <scroll-view class="cats" scroll-x enable-flex>
     <view wx:for="{{categories}}" wx:key="id"
       class="cat {{category === item.id ? 'on' : ''}}"
       data-id="{{item.id}}" bindtap="selectCategory">
       {{item.label}}<text wx:if="{{item.n}}"> {{item.n}}</text>
     </view>
+  </scroll-view>
+
+  <scroll-view wx:if="{{tab === 'materials' && materialGroups.length}}" class="cats" scroll-x enable-flex>
+    <view class="cat {{materialGroup === item.id ? 'on' : ''}}"
+      data-id="{{item.id}}" bindtap="selectMaterialGroup">
+      {{item.label}} {{item.count}}
+    </view>
+  </scroll-view>
+
+  <scroll-view wx:elif="{{tab === 'parts'}}" class="cats" scroll-x enable-flex>
+    <view class="cat {{sort === 'featured' ? 'on' : ''}}" data-sort="featured" bindtap="selectSort">推荐</view>
+    <view class="cat {{sort === 'price_asc' ? 'on' : ''}}" data-sort="price_asc" bindtap="selectSort">价格从低</view>
+    <view class="cat {{sort === 'price_desc' ? 'on' : ''}}" data-sort="price_desc" bindtap="selectSort">价格从高</view>
+  </scroll-view>
+
+  <scroll-view wx:if="{{tab === 'materials'}}" class="cats" scroll-x enable-flex>
+    <view class="cat {{materialSort === 'default' ? 'on' : ''}}" data-sort="default" bindtap="selectMaterialSort">默认</view>
+    <view class="cat {{materialSort === 'density' ? 'on' : ''}}" data-sort="density" bindtap="selectMaterialSort">密度从高</view>
+    <view class="cat {{materialSort === 'modulus' ? 'on' : ''}}" data-sort="modulus" bindtap="selectMaterialSort">模量从高</view>
+    <view class="cat {{materialSort === 'tensile' ? 'on' : ''}}" data-sort="tensile" bindtap="selectMaterialSort">抗拉从高</view>
   </scroll-view>
 
   <view wx:if="{{error}}" class="error">
@@ -52,11 +76,16 @@
           <text class="tag {{item.tierColor}}">{{item.tierLabel}}</text>
           <text wx:if="{{item.verifiedLabel}}" class="tag a">{{item.verifiedLabel}}</text>
           <text wx:if="{{tab === 'materials'}}" class="tag">{{item.category === 'process' ? '工艺' : '材料'}}</text>
+          <text wx:if="{{item.ratingCount}}" class="tag a">{{item.ratingAvg}} 分 · {{item.ratingCount}} 人</text>
         </view>
         <view class="item-foot">
           <text wx:if="{{tab === 'parts'}}" class="price">{{item.priceLabel}}</text>
-          <text wx:else class="muted">B 级典型值 · 设计前核对</text>
+          <text wx:else class="muted">{{item.source_tier === 'A' ? 'A 级典型值 · 已核对' : '公开资料汇编 · 设计前核对'}}</text>
           <text class="muted">{{item.source_tier ? '来源 ' + item.source_tier + ' 级' : ''}}</text>
+        </view>
+        <view class="card-actions">
+          <button class="card-share" hover-class="none" open-type="share"
+            data-id="{{item.id}}" catchtap="noop">分享这一条</button>
         </view>
       </view>
     </view>

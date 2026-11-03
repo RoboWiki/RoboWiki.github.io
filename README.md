@@ -15,7 +15,7 @@
 本仓只负责站点渲染。`data.lock.json` 锁定核心仓的 `data-v*` 发布物，Pages 构建时下载、
 校验 SHA-256 后再生成页面。
 
-本地从核心仓构建：
+本地从核心仓构建（先 `gh auth login`，下载公开 release 需要登录态）：
 
 ```bash
 gh release download "$(python -c "import json;print(json.load(open('data.lock.json'))['data_version'])")" \

@@ -45,6 +45,22 @@ def groups() -> list[dict]:
     return list(out.values())
 
 
+def material_web_path(r: dict) -> str:
+    """与 pipeline/build_materials.py 的 _slug 同规则。
+
+    小程序不再自己从 id 猜 URL；服务端直接给 canonical 路径。
+    """
+    rid = str(r.get("id") or "")
+    prefix = "mat-" if r.get("category") == "material" else "proc-"
+    base = rid[len(prefix):] if rid.startswith(prefix) else rid
+    keep = "".join(ch if (ch.isalnum() and ch.isascii()) else "-" for ch in base.lower())
+    while "--" in keep:
+        keep = keep.replace("--", "-")
+    slug = keep.strip("-") or "item"
+    href = "process-" + slug if r.get("category") == "process" else slug
+    return f"/materials/{href}.html"
+
+
 def public_material(r: dict) -> dict:
     """白名单投影：保留来源、规格、关联，不暴露内部缓存字段。"""
     return {
@@ -72,6 +88,7 @@ def public_material(r: dict) -> dict:
         "notes": r.get("notes") or "",
         "processes": r.get("processes") or [],
         "suppliers": r.get("suppliers") or [],
+        "web_path": material_web_path(r),
     }
 
 

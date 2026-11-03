@@ -88,6 +88,7 @@ def meta():
         "project": settings.project_name,
         "api_version": "v1",
         "data_version": settings.data_version,
+        "site_url": settings.site_url,
     }
 
 
@@ -143,6 +144,22 @@ def _custom_openapi():
         "botToken": {"type": "apiKey", "in": "header", "name": "X-Bot-Token"},
     })
     schema["servers"] = [{"url": settings.site_url.rstrip("/")}]
+
+    # 公共只读接口不依赖登录；不清理的话，可选 Bearer 依赖会让 SDK 生成
+    # “必须传 JWT” 的客户端，把小程序/静态站的集成成本抬高。
+    public_gets = (
+        "/api/v1/meta", "/api/v1/health", "/api/v1/ready", "/api/v1/stats",
+        "/api/v1/catalog", "/api/v1/parts", "/api/v1/parts/{part_id}",
+        "/api/v1/materials", "/api/v1/materials/meta",
+        "/api/v1/materials/{item_id}",
+        "/api/v1/ratings", "/api/v1/ratings/summary",
+        "/api/v1/ratings/{part_id}",
+    )
+    for path in public_gets:
+        item = schema.get("paths", {}).get(path, {}).get("get")
+        if item:
+            item["security"] = []
+
     app.openapi_schema = schema
     return schema
 

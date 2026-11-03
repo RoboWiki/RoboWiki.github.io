@@ -8,6 +8,7 @@
 from __future__ import annotations
 
 from .paths import DATA_DIR
+from .build_share import build_materials as build_material_shares
 
 import html
 import json
@@ -166,6 +167,18 @@ def _source_block(r: dict) -> str:
     return "\n".join(lines)
 
 
+def _page_desc(r: dict) -> str:
+    """一句话描述：给 og:description / 分享卡用，避免材质页沿用站点通用文案。"""
+    name = r.get("name") or r["id"]
+    note = (r.get("notes") or "").strip()
+    first = re.split(r"[。！？]", note)[0].strip() if note else ""
+    kind = "加工工艺" if r.get("category") == "process" else "材料"
+    desc = f"{kind} {name}"
+    if first:
+        desc += f"：{first}"
+    return desc[:110]
+
+
 def _material_page(r: dict, procs_by_id: dict[str, dict], sup_map: dict[str, dict]) -> str:
     s = r.get("specs") or {}
     pairs = []
@@ -181,6 +194,7 @@ def _material_page(r: dict, procs_by_id: dict[str, dict], sup_map: dict[str, dic
     sim_note = s.get("sim_note") or ""
     return f"""---
 title: {json.dumps(r.get('name') or r['id'], ensure_ascii=False)}
+description: {json.dumps(_page_desc(r), ensure_ascii=False)}
 ---
 
 # {r.get('name') or r['id']}
@@ -246,6 +260,7 @@ def _process_page(r: dict, mats_by_id: dict[str, dict], sup_map: dict[str, dict]
     mat_items = [mats_by_id[m] for m in (s.get("materials") or []) if m in mats_by_id]
     return f"""---
 title: {json.dumps(r.get('name') or r['id'], ensure_ascii=False)}
+description: {json.dumps(_page_desc(r), ensure_ascii=False)}
 ---
 
 # {r.get('name') or r['id']}
@@ -291,7 +306,8 @@ title: {json.dumps(r.get('name') or r['id'], ensure_ascii=False)}
 """
 
 
-def build(root: pathlib.Path, out: pathlib.Path, pub: pathlib.Path) -> None:
+def build(root: pathlib.Path, out: pathlib.Path, pub: pathlib.Path,
+          site_url: str, data_version: str) -> None:
     src = DATA_DIR / "materials"
     rows: list[dict] = []
     if src.exists():
@@ -384,5 +400,6 @@ outline: false
         (ddir / f"process-{r['_slug']}.md").write_text(
             _process_page(r, id_index, sup_map), encoding="utf-8")
 
+    n_share = build_material_shares(rows, pub, site_url, data_version)
     print(f"  材质 {len(mats)} 条 + 工艺 {len(procs)} 条 -> materials.md + "
-          f"materials/*.md（{len(rows)} 页）")
+          f"materials/*.md（{len(rows)} 页）；分享卡 {n_share} 张")

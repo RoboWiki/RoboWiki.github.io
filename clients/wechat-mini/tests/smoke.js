@@ -59,7 +59,10 @@ async function main() {
     assert(share && share.title, '部件详情分享标题为空')
     console.log(`part: ${part.part.title} · ${part.rows.length} 行参数 · 分享「${share.title}」`)
 
-    page = await mini.reLaunch('/pages/materials/materials')
+    // 材质库是首页里的 Tab，不再有独立 pages/materials 页。
+    await page.callMethod('switchTab', {
+      currentTarget: { dataset: { tab: 'materials' } },
+    })
     await page.waitFor(1800)
     const mats = await page.data()
     assert(mats.items && mats.items.length > 0, '材质列表没有加载')

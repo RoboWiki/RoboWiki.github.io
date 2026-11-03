@@ -1,5 +1,6 @@
 ---
 title: "PLA-CF 碳纤维增强线材"
+description: "材料 PLA-CF 碳纤维增强线材：短切碳纤维增强的 PLA"
 ---
 
 # PLA-CF 碳纤维增强线材

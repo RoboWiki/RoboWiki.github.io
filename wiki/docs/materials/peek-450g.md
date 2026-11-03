@@ -1,5 +1,6 @@
 ---
 title: "PEEK 450G"
+description: "材料 PEEK 450G：高性能半结晶工程塑料"
 ---
 
 # PEEK 450G
