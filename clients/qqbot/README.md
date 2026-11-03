@@ -24,7 +24,7 @@ python bot.py
 
 ```bash
 ROBOWIKI_BOT_TOKEN=<随机长串>
-ROBOWIKI_SITE_URL=https://robowiki.org
+ROBOWIKI_SITE_URL=https://robowiki.org.cn
 ```
 
 ## 调用契约
@@ -38,7 +38,7 @@ X-Bot-Token: <token>
 {
   "found": true,
   "answer": "CubeMars AK80-6 · 额定 6.0 N·m · 峰值 12.0 N·m · 48.0 V（来源 B）",
-  "url": "https://robowiki.org/parts/actuator/cubemars-ak80-6.html",
+  "url": "https://robowiki.org.cn/parts/actuator/cubemars-ak80-6.html",
   "data_version": "data-v2026.11.2",
   "part": { "id": "cubemars-ak80-6", "model": "AK80-6" }
 }

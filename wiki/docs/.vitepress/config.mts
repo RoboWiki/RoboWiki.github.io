@@ -6,7 +6,7 @@ import sidebar from './sidebar.json' with { type: 'json' }
 // 站点对外域名（organization pages，站点在域名根）。
 // canonical / og:url / sitemap 三处必须用同一个值，否则搜索引擎会把
 // /catalog 与 /catalog.html 当成两个页面各收一次。
-const SITE = 'https://robowiki.github.io'
+const SITE = 'https://robowiki.org.cn'
 const SITE_DESC = 'RoboWiki —— 机器人开发的开放资料底稿：可核对的参数、可追溯的来源、真实使用者的经验。'
 
 //: 页面 → 规范 URL。cleanUrls 关着（产物是 .html），所以路径要带 .html；

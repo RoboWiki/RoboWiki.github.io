@@ -27,13 +27,13 @@ def _rows():
 
 def test_index_carries_canonical_url_and_category_facts(tmp_path):
     slugs = {"amass-xt30": "amass-xt30", "cubemars-ak80-6": "cubemars-ak80-6"}
-    n = build(_rows(), slugs, tmp_path, "https://robowiki.org/", "data-v2026.11.0")
+    n = build(_rows(), slugs, tmp_path, "https://robowiki.org.cn/", "data-v2026.11.0")
     assert n == 2
 
     idx = json.loads((tmp_path / "public/share/index.json").read_text(encoding="utf-8"))
     by_id = {x["id"]: x for x in idx}
     con = by_id["amass-xt30"]
-    assert con["url"] == "https://robowiki.org/parts/connector/amass-xt30.html"
+    assert con["url"] == "https://robowiki.org.cn/parts/connector/amass-xt30.html"
     assert "2 pin" in con["summary"] and "20 A" in con["summary"]
     assert "500 V" in con["summary"]
 

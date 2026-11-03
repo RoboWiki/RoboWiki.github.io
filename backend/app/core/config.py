@@ -28,7 +28,7 @@ class Settings(BaseSettings):
     data_version: str | None = None
     #: 对外站点根（分享卡、机器人回复、小程序 canonical 链接）。
     #: 默认指向当前线上静态站；切到自有域名后在部署环境里覆盖。
-    site_url: str = "https://robowiki.github.io"
+    site_url: str = "https://robowiki.org.cn"
     #: 群机器人只读问答的共享令牌；未设置则禁用该接口
     bot_token: str | None = None
 
@@ -38,7 +38,7 @@ class Settings(BaseSettings):
     smtp_port: int = 587
     smtp_user: str | None = None
     smtp_password: str | None = None
-    smtp_from: str = "RoboWiki <no-reply@robowiki.org>"
+    smtp_from: str = "RoboWiki <no-reply@robowiki.org.cn>"
     smtp_starttls: bool = True
     email_token_minutes: int = 30
 

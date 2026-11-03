@@ -9,7 +9,7 @@
 
 **四足机器人选型 + 真实使用社区。**
 
-> **线上**：<https://robowiki.github.io/> —— 文档站（VitePress，纯静态）。
+> **线上**：<https://robowiki.org.cn/> —— 文档站（VitePress，纯静态）。
 > 选型台与社区需要 Python 托管环境，本地 `uvicorn` 起来即完整。原因见 §4.1。
 
 选型台是底座，社区是主体。零件参数带口径、可校验、能导出到仿真；评价来自真装机，
@@ -252,7 +252,7 @@ Vite 默认只监听 `localhost`（`::1`），IPv4 的 curl / playwright 会连�
 ### 4.1 GitHub Pages 部署了什么、没部署什么
 
 仓库：<https://github.com/RoboWiki/RoboWiki.github.io>（`roboselect.github.io` → `roboselect` → 现名 `RoboWiki`）
-线上：<https://robowiki.github.io/>
+线上：<https://robowiki.org.cn/>
 
 仓库名不是 `<user>.github.io`，所以是 **project site**，站点挂在 `/roboselect/` 下，
 不是根域名。`wiki/docs/.vitepress/config.mts` 用 `WIKI_BASE` 环境变量切换 base，

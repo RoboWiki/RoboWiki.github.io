@@ -13,7 +13,7 @@ from nonebot.adapters.qq import (Bot, GroupAtMessageCreateEvent, MessageEvent,
                                  MessageSegment)
 from nonebot.rule import Rule
 
-API = os.environ.get("ROBOWIKI_API", "https://robowiki.org").rstrip("/")
+API = os.environ.get("ROBOWIKI_API", "https://robowiki.org.cn").rstrip("/")
 TOKEN = os.environ["ROBOWIKI_BOT_TOKEN"]
 TIMEOUT = float(os.environ.get("ROBOWIKI_BOT_TIMEOUT", "5"))
 

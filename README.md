@@ -2,7 +2,7 @@
 
 **机器人开发的开放资料底稿：可核对的参数 · 可追溯的来源 · 真实使用者的经验。**
 
-线上：<https://robowiki.github.io/>
+线上：<https://robowiki.org.cn/>（GitHub Pages 镜像：<https://robowiki.github.io/>）
 
 ```
 326 个部件 · 14 个品类（另有 3 条 C 级线索未入目录） · 27 种材料 + 9 种工艺 · 21 台整机 · 22 个软件 · 207 家渠道
