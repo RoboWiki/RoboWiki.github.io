@@ -281,7 +281,8 @@ jobs:
         if: env.DO_SITE == 'true'
         with:
           node-version: '20'
-      - run: pip install "pydantic>=2.9"
+      # 数据治理/分类测试要 pytest；站点层本来就要装 node，多个 pytest 成本可忽略
+      - run: pip install "pydantic>=2.9" pytest
       - name: 生成内容
         run: python -m pipeline build
       # 数据层的测试放在 build 里：它和生成器共用同一份锁定数据，
