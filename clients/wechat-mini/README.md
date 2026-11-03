@@ -8,9 +8,9 @@ AppID：`wx13bffd77b0b597e2`。当前是只读工具型小程序，建议类目�
 
 | 页面 | 能力 |
 |---|---|
-| `pages/index` | 部件/材质切换、搜索、品类/分组筛选、价格与材料排序、分页、下拉刷新、单条分享、离线回退 |
-| `pages/part` | 图片、完整参数（含 `params` / `price_tiers` 结构化值）、派生量、真实评分分布、评价、优惠条件、来源、复制 canonical 链接、分享 |
-| `pages/material` | 参数、适用场景、供货形态、优缺点、渠道与价格、相关条目、来源、分享 |
+| `pages/index` | 部件/材质切换、搜索、品类/子类/分组筛选、价格与材料排序、分页、下拉刷新、骨架屏、空态重置、单条分享、离线回退、朋友圈预览提示 |
+| `pages/part` | 首屏标题/价格/等级/关键参数、图片、完整参数（含 `params` / `price_tiers` 结构化值）、派生量、真实评分分布、评价、优惠与免责声明、来源、复制网页链接、分享 |
+| `pages/material` | 参数、适用场景、供货形态、优缺点、渠道与价格、相关条目、来源、分享、朋友圈预览提示 |
 
 数据只来自同一套 `/api/v1`，不复制后端逻辑：
 
@@ -76,6 +76,7 @@ WECHAT_WS=ws://127.0.0.1:9420 npm test
 - [官方图片懒加载](https://developers.weixin.qq.com/miniprogram/dev/component/image.html)：列表缩略图已开 `lazy-load`。
 - [官方朋友圈分享](https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/share-timeline.html)：单页模式只传 `query`，不做自定义页面路径。
 - [WeUI](https://github.com/Tencent/weui-wxss)：空态/加载/错误态的微信原生语义参考；本项目保持零 npm 依赖，只用原生 WXML/WXSS。
+- 本地参考克隆（仅学习模式，不进本仓）：`_refs/vant-weapp`、`_refs/tdesign-miniprogram`、`_refs/mini-github`、`_refs/weui-wxss`、`_refs/iview-weapp`；采纳了 empty/skeleton 解剖、check-tag 筛选、repo-item 元信息行，不引入整个组件库。
 - [TDesign Miniprogram](https://github.com/Tencent/tdesign-miniprogram)、[Vant Weapp](https://github.com/youzan/vant-weapp)：适合复杂电商/表单；只读目录不引入，避免包体与审核类目偏移。
 - 内容/结构参考：[awesome-open-source-robots](https://github.com/stephane-caron/awesome-open-source-robots)、[awesome-robotics](https://github.com/kiloreux/awesome-robotics)、[list_of_robot_electronics](https://github.com/cajt/list_of_robot_electronics)；只学分类与许可标注方式，不复制内容。
 
@@ -88,7 +89,7 @@ WECHAT_WS=ws://127.0.0.1:9420 npm test
 
 ## 验证记录
 
-- `cli preview`：编译成功，主包约 53 KB（2026-11-04）。
+- `cli preview`：编译成功，主包约 60 KB（2026-11-04）。
 - 静态检查：`node check.js` 通过（11 JS / 9 JSON / 3 WXML）。
-- 模拟器：首页 326 件部件、36 材料/工艺；品类/价格/材料排序、评分标签、详情结构化参数、材质优缺点/渠道均已加载。
+- 模拟器：首页 326 件部件、36 材料/工艺；品类/子类/价格/材料排序、关键参数、评分标签、详情结构化参数、材质优缺点/渠道均已加载。
 - 自动化：`miniprogram-automator` 连接成功但 `App.getCurrentPage` 超时，已在 README 记录为工具链限制。

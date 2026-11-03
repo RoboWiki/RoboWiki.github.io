@@ -18,14 +18,17 @@ Page({
     tierColor: '',
     priceLabel: '',
     basis: '',
+    keySpecs: [],
     version: '',
     rating: null,
     loading: true,
     error: '',
+    timelinePreview: false,
   },
 
   onLoad(query) {
     this.id = decodeURIComponent(query.id || '')
+    this.setData({ timelinePreview: Number(query.scene) === 1154 })
     this.load()
   },
 
@@ -81,7 +84,7 @@ Page({
         rows,
         derived,
         reviews,
-        offers: (p.offers || []).slice(0, 3),
+        offers: (p.offers || []).filter(o => o.url && o.kind !== 'sponsor').slice(0, 3),
         sources,
         image: F.imageUrl(p.image_url),
         webUrl: F.partUrl(p),
@@ -90,6 +93,7 @@ Page({
         tierColor: t.color,
         priceLabel: F.price(p.price_cny),
         basis,
+        keySpecs: (p.key_specs || []).map(x => `${x.label} ${x.value}`),
         version: (getApp().globalData || {}).dataVersion || '',
         loading: false,
       })
@@ -115,12 +119,8 @@ Page({
   },
 
   async copyLink() {
-    let url = this.data.webUrl
-    try {
-      const share = await api.getUrl(F.sharePartUrl(this.data.part))
-      if (share && share.canonical_url) url = share.canonical_url
-    } catch (e) {}
-    F.copy(url, '网页链接已复制')
+    // web_path 由 API 给出，和站点 slug 同规则；不再为拿 canonical 多等一次 /share 请求。
+    F.copy(this.data.webUrl, '网页链接已复制')
   },
 
   retry() { this.load() },
@@ -136,26 +136,38 @@ Page({
   },
 
   copyOffer(e) {
-    F.copy(e.currentTarget.dataset.url, '优惠链接已复制')
+    const url = e.currentTarget.dataset.url
+    if (!url) {
+      wx.showToast({ title: '该优惠没有可复制链接', icon: 'none' })
+      return
+    }
+    F.copy(url, '优惠链接已复制')
   },
 
   onImageError() {
     this.setData({ image: '' })
   },
 
-  onShareAppMessage() {
+  shareBits() {
     const p = this.data.part || {}
+    const bits = [p.model || p.title || '部件']
+    if (this.data.priceLabel && this.data.priceLabel !== '价格未公布') bits.push(this.data.priceLabel)
+    if (p.source_tier) bits.push(p.source_tier + ' 级')
+    if (this.data.keySpecs && this.data.keySpecs.length) bits.push(this.data.keySpecs[0])
+    return bits
+  },
+
+  onShareAppMessage() {
     return {
-      title: `${p.model || p.title || '部件'} · RoboWiki`,
+      title: this.shareBits().join(' · '),
       path: `/pages/part/part?id=${encodeURIComponent(this.id)}`,
       imageUrl: this.data.image || undefined,
     }
   },
 
   onShareTimeline() {
-    const p = this.data.part || {}
     return {
-      title: `${p.model || p.title || '部件'} · RoboWiki`,
+      title: this.shareBits().join(' · '),
       query: `id=${encodeURIComponent(this.id)}`,
     }
   },

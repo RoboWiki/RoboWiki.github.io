@@ -8,11 +8,21 @@ function friendly(message) {
   return message || '网络不可用'
 }
 
+function hostOf(url) {
+  const m = /^https?:\/\/([^\/]+)/i.exec(String(url || ''))
+  return m ? m[1].toLowerCase() : ''
+}
+
 function absorbMeta(data) {
-  // 所有公开响应都会带 site_url；拿到后立刻切换分享/图片域名，
-  // 避免页面用构建时写死的域名去拼 canonical 链接。
+  // 所有公开响应都会带 site_url；只有它和 API 同源时才切分享/图片域名。
+  // 真机预览常把 API 指向局域网 IP，而 Docker 里 site_url 还是 localhost——
+  // 无条件采用会让图片和复制链接继续指向本机。
   if (data && typeof data === 'object' && data.site_url) {
-    config.setSite(data.site_url)
+    const apiHost = hostOf(config.API)
+    const siteHost = hostOf(data.site_url)
+    if (!apiHost || !siteHost || apiHost === siteHost) {
+      config.setSite(data.site_url)
+    }
   }
 }
 

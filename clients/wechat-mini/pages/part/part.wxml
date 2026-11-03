@@ -8,8 +8,7 @@
     </view>
   </view>
   <block wx:else>
-    <image wx:if="{{image}}" class="hero-image" src="{{image}}" mode="aspectFill"
-      binderror="onImageError" />
+    <view wx:if="{{timelinePreview}}" class="note timeline-note">预览模式：点右下角「前往小程序」可进入完整目录</view>
     <view class="card">
       <view class="title">{{part.title}}</view>
       <view class="subline">{{part.vendor}} · {{part.model}} · {{part.category_label}}</view>
@@ -22,13 +21,18 @@
         <text class="price">{{priceLabel}}</text>
         <text class="muted">最近核对 {{part.last_checked || '—'}}</text>
       </view>
+      <view wx:if="{{keySpecs.length}}" class="specs-line" style="margin-top:10rpx">
+        {{keySpecs.join(' · ')}}
+      </view>
       <view class="note">{{tierNote}}</view>
       <view class="actions">
-        <button class="btn" bindtap="copyLink">复制网页链接</button>
-        <button class="btn" bindtap="goHome">回目录</button>
         <button class="btn primary" open-type="share">分享给好友</button>
+        <button class="btn" bindtap="copyLink">复制网页链接</button>
       </view>
     </view>
+
+    <image wx:if="{{image}}" class="detail-image" src="{{image}}" mode="aspectFit"
+      binderror="onImageError" />
 
     <view class="card" wx:if="{{rating}}">
       <view class="title">真实评分 {{rating.avg}} / 5</view>
@@ -72,6 +76,7 @@
         <text wx:if="{{item.expires_on}}" class="muted"> · 至 {{item.expires_on}}</text>
         <view wx:if="{{item.detail}}" class="muted">{{item.detail}}</view>
       </view>
+      <view class="muted" style="margin-top:8rpx">优惠需资格，以厂商页面为准；本站不代理销售、不收佣金。</view>
     </view>
 
     <view class="card" wx:if="{{reviews.length}}">

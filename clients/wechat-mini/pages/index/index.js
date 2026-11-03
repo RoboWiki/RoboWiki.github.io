@@ -8,6 +8,8 @@ Page({
     tab: 'parts',
     q: '',
     category: '',
+    subtype: '',
+    subtypes: [],
     sort: 'featured',
     categories: [{ id: '', label: '全部' }],
     materialGroups: [],
@@ -22,15 +24,18 @@ Page({
     partCount: 0,
     materialCount: 0,
     hasMore: false,
+    timelinePreview: false,
   },
 
   onLoad(options = {}) {
     this._seq = 0
+    this.setData({ timelinePreview: Number(options.scene) === 1154 })
     const tab = options.tab === 'materials' ? 'materials' : 'parts'
     this.setData({
       tab,
       q: options.q ? decodeURIComponent(options.q) : '',
       category: options.category ? decodeURIComponent(options.category) : '',
+      subtype: options.subtype ? decodeURIComponent(options.subtype) : '',
       sort: options.sort ? decodeURIComponent(options.sort) : 'featured',
       materialGroup: options.group ? decodeURIComponent(options.group) : '',
       materialSort: options.msort ? decodeURIComponent(options.msort) : 'default',
@@ -68,6 +73,7 @@ Page({
     try {
       const c = await api.get('/catalog')
       const counts = {}
+      this._facets = c.facets || []
       ;(c.facets || []).forEach(f => { counts[f.category] = (counts[f.category] || 0) + f.n })
       const cats = Object.keys(c.categories || {})
         .filter(id => counts[id])
@@ -79,6 +85,7 @@ Page({
           ? this._partCategories
           : this.data.categories,
       })
+      this.updateSubtypes()
     } catch (e) {}
   },
 
@@ -93,6 +100,23 @@ Page({
     return this._partCategories || [{ id: '', label: '全部' }]
   },
 
+  updateSubtypes() {
+    if (this.data.tab !== 'parts' || !this._facets) return
+    const cat = this.data.category
+    const subs = this._facets
+      .filter(f => f.category === cat)
+      .map(f => ({ id: f.subtype, label: f.subtype_label, n: f.n }))
+    const stillThere = subs.some(x => x.id === this.data.subtype)
+    const dropped = !stillThere && !!this.data.subtype
+    this.setData({
+      subtypes: subs,
+      subtype: stillThere ? this.data.subtype : '',
+    })
+    // 分享链接里的子类已不存在时，芯片显示「全部」但列表还必须重载，
+    // 否则用户看到「没有结果」却看不到原因。
+    if (dropped) this.load(true)
+  },
+
   switchTab(e) {
     const tab = e.currentTarget.dataset.tab
     if (tab === this.data.tab) return
@@ -102,8 +126,11 @@ Page({
       tab,
       q: '',
       category: '',
+      subtype: '',
+      subtypes: [],
       materialGroup: '',
       materialSort: 'default',
+      sort: 'featured',
       categories: this.categoriesFor(tab),
       items: [],
       total: 0,
@@ -113,13 +140,44 @@ Page({
   },
 
   selectCategory(e) {
+    clearTimeout(this._t)
     const id = e.currentTarget.dataset.id || ''
     if (id === this.data.category) return
-    this.setData({ category: id, items: [], total: 0 })
+    this.setData({ category: id, subtype: '', items: [], total: 0 })
+    this.updateSubtypes()
+    this.load(true)
+  },
+
+  selectSubtype(e) {
+    clearTimeout(this._t)
+    const id = e.currentTarget.dataset.id || ''
+    if (id === this.data.subtype) return
+    this.setData({ subtype: id, items: [], total: 0 })
+    this.load(true)
+  },
+
+  retry() { this.load(true) },
+
+  resetFilters() {
+    clearTimeout(this._t)
+    this.setData({
+      q: '',
+      category: '',
+      subtype: '',
+      subtypes: this.data.tab === 'parts' ? this.data.subtypes : [],
+      sort: 'featured',
+      materialGroup: '',
+      materialSort: 'default',
+      items: [],
+      total: 0,
+      error: '',
+    })
+    this.updateSubtypes()
     this.load(true)
   },
 
   selectSort(e) {
+    clearTimeout(this._t)
     const sort = e.currentTarget.dataset.sort || 'featured'
     if (sort === this.data.sort) return
     this.setData({ sort, items: [], total: 0 })
@@ -127,6 +185,7 @@ Page({
   },
 
   selectMaterialGroup(e) {
+    clearTimeout(this._t)
     const id = e.currentTarget.dataset.id || ''
     if (id === this.data.materialGroup) return
     this.setData({ materialGroup: id, items: [], total: 0 })
@@ -134,6 +193,7 @@ Page({
   },
 
   selectMaterialSort(e) {
+    clearTimeout(this._t)
     const sort = e.currentTarget.dataset.sort || 'default'
     if (sort === this.data.materialSort) return
     this.setData({ materialSort: sort, items: [], total: 0 })
@@ -182,11 +242,12 @@ Page({
 
     const isParts = this.data.tab === 'parts'
     const offset = reset ? 0 : this.data.items.length
-    const cacheKey = `rw:list:${this.data.tab}:${this.data.category}:${this.data.q.trim()}:${this.data.sort}`
+    const cacheKey = `rw:list:${this.data.tab}:${this.data.category}:${this.data.subtype}:${this.data.q.trim()}:${this.data.sort}:${this.data.materialGroup}:${this.data.materialSort}`
     const params = { limit: isParts ? PAGE_SIZE : 100, offset }
     const q = this.data.q.trim()
     if (q) params.q = q
     if (this.data.category) params.category = this.data.category
+    if (isParts && this.data.subtype) params.subtype = this.data.subtype
     if (!isParts && this.data.materialGroup) params.group = this.data.materialGroup
     if (isParts) {
       params.compact = true
@@ -206,6 +267,7 @@ Page({
       const incoming = rawRows.map(isParts ? this.decoratePart : this.decorateMaterial)
       const patch = {
         total: d.total || 0,
+        partCount: isParts && !this.data.partCount ? (d.total || 0) : this.data.partCount,
         materialGroups: isParts ? this.data.materialGroups : (d.groups || this.data.materialGroups),
         loading: false,
         loadingMore: false,
@@ -224,6 +286,11 @@ Page({
             version: d.data_version || this.data.version,
             savedAt: Date.now(),
           })
+          // 离线缓存只留最近 30 个筛选，避免 Storage 无限增长。
+          const keys = wx.getStorageInfoSync().keys.filter(k => k.startsWith('rw:list:'))
+          if (keys.length > 30) {
+            keys.sort().slice(0, keys.length - 30).forEach(k => wx.removeStorageSync(k))
+          }
         }
       } catch (err) {}
     } catch (e) {
@@ -263,6 +330,7 @@ Page({
       image: F.imageUrl(p.image_url),
       glyph: (p.category_label || p.title || 'R').slice(0, 1),
       subline: [p.vendor, p.model, p.category_label].filter(Boolean).join(' · '),
+      keySpecs: (p.key_specs || []).map(x => `${x.label} ${x.value}`).join(' · '),
       priceLabel: F.price(p.price_cny),
       tierLabel: t.label,
       tierColor: t.color,
@@ -302,6 +370,9 @@ Page({
     if (this.data.tab !== 'parts') qs.push('tab=' + encodeURIComponent(this.data.tab))
     if (this.data.q.trim()) qs.push('q=' + encodeURIComponent(this.data.q.trim()))
     if (this.data.category) qs.push('category=' + encodeURIComponent(this.data.category))
+    if (this.data.tab === 'parts' && this.data.subtype) {
+      qs.push('subtype=' + encodeURIComponent(this.data.subtype))
+    }
     if (this.data.tab === 'materials' && this.data.materialGroup) {
       qs.push('group=' + encodeURIComponent(this.data.materialGroup))
     }
@@ -329,8 +400,12 @@ Page({
       const item = this.data.items.find(x => x.id === res.target.dataset.id)
       if (item) {
         const isPart = this.data.tab === 'parts'
+        const bits = [item.title || item.name || 'RoboWiki']
+        if (isPart && item.priceLabel && item.priceLabel !== '价格未公布') bits.push(item.priceLabel)
+        if (item.source_tier) bits.push(item.source_tier + ' 级')
+        if (item.keySpecs) bits.push(item.keySpecs.split(' · ')[0])
         return {
-          title: item.title || item.name || 'RoboWiki',
+          title: bits.join(' · '),
           path: `/pages/${isPart ? 'part/part' : 'material/material'}?id=${encodeURIComponent(item.id)}`,
           imageUrl: item.image || undefined,
         }
