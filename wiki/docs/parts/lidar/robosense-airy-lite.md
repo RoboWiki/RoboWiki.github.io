@@ -22,7 +22,7 @@ description: "RoboSense Airy Lite（激光雷达）：官方参数；来源 B �
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -34,7 +34,7 @@ description: "RoboSense Airy Lite（激光雷达）：官方参数；来源 B �
 <div class="part-src">
 来源：<a href="https://www.robosense.cn/">https://www.robosense.cn/</a><br/>
 收录：RoboSense《Airy Lite 用户手册》（本地存档，仅目录级信息）；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对<br/>
-核对：2026-10-28
+最近查阅：2026-10-28
 </div>
 
 </div>

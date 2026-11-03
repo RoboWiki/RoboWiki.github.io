@@ -21,7 +21,7 @@
 	@assets path /assets/*
 	header @assets Cache-Control "public, max-age=31536000, immutable"
 	@images path /parts/*.png /parts/*.jpg /parts/*.webp /icon-*.png /og-*.png
-	header @images Cache-Control "public, max-age=2592000"
+	header @images Cache-Control "public, max-age=86400"
 	@share path /share/*
 	header @share Cache-Control "public, max-age=300"
 	@revalidate path /sw.js /registerSW.js /manifest.webmanifest /console /console/ /console/index.html

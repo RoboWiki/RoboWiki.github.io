@@ -140,6 +140,7 @@ def _custom_openapi():
         "bearerAuth": {"type": "http", "scheme": "bearer", "bearerFormat": "JWT"},
         "botToken": {"type": "apiKey", "in": "header", "name": "X-Bot-Token"},
     })
+    schema["servers"] = [{"url": settings.site_url.rstrip("/")}]
     app.openapi_schema = schema
     return schema
 

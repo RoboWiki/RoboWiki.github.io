@@ -1,8 +1,10 @@
 """配置：环境变量 + 默认值。沿用 fastapi/full-stack-fastapi-template 的 core/config.py 约定。"""
 from __future__ import annotations
 
+import json
 import pathlib
 
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # 本地：backend/app/core/config.py -> 仓库根；容器：/app/app/core/config.py -> /app
@@ -22,7 +24,8 @@ class Settings(BaseSettings):
     #: 种子 JSON 目录（仓库根的 data/；拆分后由核心仓 release 提供）
     data_dir: pathlib.Path = ROOT / "data"
     schema_dir: pathlib.Path = ROOT / "schema"
-    data_version: str = "dev"
+    #: 留空时从仓库根 data.lock.json 读取；显式设置可覆盖
+    data_version: str | None = None
     #: 对外站点根（分享卡、机器人回复的链接）
     site_url: str = "https://robowiki.org"
     #: 群机器人只读问答的共享令牌；未设置则禁用该接口
@@ -62,6 +65,20 @@ class Settings(BaseSettings):
     rate_window_s: int = 600
     rate_max_posts: int = 10
     rate_max_comments: int = 40
+
+    @model_validator(mode="after")
+    def _fill_data_version(self):
+        if self.data_version:
+            return self
+        for p in (ROOT / "data.lock.json", pathlib.Path("data.lock.json")):
+            try:
+                self.data_version = json.loads(p.read_text(encoding="utf-8"))["data_version"]
+                break
+            except (OSError, KeyError, ValueError):
+                continue
+        if not self.data_version:
+            self.data_version = "dev"
+        return self
 
     @property
     def sqlalchemy_url(self) -> str:

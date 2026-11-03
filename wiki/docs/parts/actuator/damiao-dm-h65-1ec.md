@@ -22,7 +22,7 @@ description: "达妙 DAMIAO DM-H65-1EC（关节电机）：峰值扭矩 21.5 N·
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -35,7 +35,7 @@ description: "达妙 DAMIAO DM-H65-1EC（关节电机）：峰值扭矩 21.5 N·
 <div class="part-src">
 来源：<a href="https://www.damiaokeji.com/index.php?c=show&id=116">https://www.damiaokeji.com/index.php?c=show&id=116</a><br/>
 收录：达妙官网产品页 + 官方 Gitee 仓库（kit-miao）说明书 V1.2（2026-08-19）（>10 MB，Gitee 匿名 raw 无法直链），2026-10-31 核对<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

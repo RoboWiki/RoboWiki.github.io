@@ -22,7 +22,7 @@ description: "XUNPU 讯普 FPC-05F-24PH20 0.5 mm 24P（连接器）：官方参�
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -36,7 +36,7 @@ description: "XUNPU 讯普 FPC-05F-24PH20 0.5 mm 24P（连接器）：官方参�
 <div class="part-src">
 来源：<a href="#">—</a><br/>
 收录：立创商城 C2856805（5+ 价，2026-10-31）<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

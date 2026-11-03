@@ -22,7 +22,7 @@ description: "Intel RealSense D457（深度相机）：视场 87°×58°；来�
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -36,7 +36,7 @@ description: "Intel RealSense D457（深度相机）：视场 87°×58°；来�
 <div class="part-src">
 来源：<a href="https://www.realsenseai.com/cn/products/d457-gmsl-fakra/">https://www.realsenseai.com/cn/products/d457-gmsl-fakra/</a><br/>
 收录：Intel RealSense 国内代理 realsenseai.com（官方页面）；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

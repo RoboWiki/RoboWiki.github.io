@@ -173,7 +173,8 @@ def _material_page(r: dict, procs_by_id: dict[str, dict], sup_map: dict[str, dic
         v = s.get(key)
         if v is None or v == "":
             continue
-        pairs.append((label + (f" ({unit})" if unit else ""), _fmt(v)))
+        value = f"±{_fmt(v)}" if key == "tolerance_mm" else _fmt(v)
+        pairs.append((label + (f" ({unit})" if unit else ""), value))
     pairs.append(("参考价格档", _fmt(s.get("price_level"))))
     proc_items = [procs_by_id[p] for p in (r.get("processes") or []) if p in procs_by_id]
     price_note = s.get("price_note") or "价格随牌号、形态、批量与表面处理浮动，采购前先询价。"
@@ -238,7 +239,8 @@ def _process_page(r: dict, mats_by_id: dict[str, dict], sup_map: dict[str, dict]
         v = s.get(key)
         if v is None or v == "":
             continue
-        pairs.append((label + (f" ({unit})" if unit else ""), _fmt(v)))
+        value = f"±{_fmt(v)}" if key == "tolerance_mm" else _fmt(v)
+        pairs.append((label + (f" ({unit})" if unit else ""), value))
     mat_items = [mats_by_id[m] for m in (s.get("materials") or []) if m in mats_by_id]
     return f"""---
 title: {json.dumps(r.get('name') or r['id'], ensure_ascii=False)}

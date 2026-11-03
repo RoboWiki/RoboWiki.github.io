@@ -343,7 +343,8 @@ def test_openapi_has_security_schemes(client):
     d = r.json()
     assert "bearerAuth" in d["components"]["securitySchemes"]
     assert "botToken" in d["components"]["securitySchemes"]
-    assert "X-Bot-Token" in str(d["paths"])
+    assert d["paths"]["/api/v1/bot/answer"]["get"]["security"] == [{"botToken": []}]
+    assert d["paths"]["/api/v1/submissions"]["post"]["security"] == [{"bearerAuth": []}]
 
 
 def test_ready_checks_database_and_request_id(client):
@@ -498,6 +499,7 @@ def test_bot_answer_is_one_line_with_url_and_version(client):
     assert d["data_version"]
     assert "\n" not in d["answer"]
     assert d["part"]["model"] in d["answer"]
+    assert "已核对" not in d["answer"]  # B 级不显示核对信号
 
 
 def test_bot_answer_uses_connector_rated_fields(client):

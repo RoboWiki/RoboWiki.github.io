@@ -22,7 +22,7 @@ description: "大疆 DJI RC Plus（遥控器）：官方参数；来源 B 级、
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -36,7 +36,7 @@ description: "大疆 DJI RC Plus（遥控器）：官方参数；来源 B 级、
 <div class="part-src">
 来源：<a href="https://store.dji.com/cn/product/dji-rc-plus-inspire-3">https://store.dji.com/cn/product/dji-rc-plus-inspire-3</a><br/>
 收录：DJI RC Plus（Inspire 3）商品页 + Inspire 3 技术参数页（2026-11-01 核对）<br/>
-核对：2026-11-01
+最近查阅：2026-11-01
 </div>
 
 </div>

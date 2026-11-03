@@ -22,7 +22,7 @@ description: "小米 Xiaomi CyberGear Micro（关节电机）：峰值扭矩 12 
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -33,7 +33,7 @@ description: "小米 Xiaomi CyberGear Micro（关节电机）：峰值扭矩 12 
 <div class="part-src">
 来源：<a href="https://www.mi.com/">https://www.mi.com/</a><br/>
 收录：wiki.aifitlab 小米 CyberGear Micro 手册（英文机翻镜像）；待原厂复核<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

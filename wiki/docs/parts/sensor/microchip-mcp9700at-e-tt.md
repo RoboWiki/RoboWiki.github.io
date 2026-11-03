@@ -22,7 +22,7 @@ description: "MICROCHIP(美国微芯) MCP9700AT-E/TT（传感器）：官方参�
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -32,7 +32,7 @@ description: "MICROCHIP(美国微芯) MCP9700AT-E/TT（传感器）：官方参�
 <div class="part-src">
 来源：<a href="https://www.lcsc.com/product-detail/C127949.html">https://www.lcsc.com/product-detail/C127949.html</a><br/>
 收录：立创商城搜索页（2026-10-29）<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

@@ -10,7 +10,7 @@
 |---|---|---|
 | Web | `wiki/`（VitePress） | 主站；静态读 + `/api/v1` 写 |
 | PWA | 同一构建产物 | 可安装；外壳与访问过的页面离线可读 |
-| github.io | 同一构建产物 | 海外镜像/备份；canonical 指主域 |
+| github.io | 同一构建产物 | 当前线上主站；自有域名部署后再把 canonical 指回主域 |
 | 控制台 | `console/` | 内部审核；改数只生成 submission，不直接写目录 |
 | 材质库 | `wiki/docs/materials/` | 27 种材料 + 9 种工艺；当前只有静态页，尚无 `/api/v1/materials` |
 

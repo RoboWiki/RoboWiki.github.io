@@ -22,7 +22,7 @@ description: "HANRUN 汉仁 HR911105A RJ45 8P8C 带变压器（连接器）：�
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -36,7 +36,7 @@ description: "HANRUN 汉仁 HR911105A RJ45 8P8C 带变压器（连接器）：�
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/12651.html">https://item.szlcsc.com/12651.html</a><br/>
 收录：立创商城 C12074（HANRUN，2026-10-31）<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

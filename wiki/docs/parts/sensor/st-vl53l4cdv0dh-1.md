@@ -22,7 +22,7 @@ description: "ST VL53L4CDV0DH/1（传感器）：官方参数；来源 B 级、2
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -32,7 +32,7 @@ description: "ST VL53L4CDV0DH/1（传感器）：官方参数；来源 B 级、2
 <div class="part-src">
 来源：<a href="https://www.lcsc.com/product-detail/C3178291.html">https://www.lcsc.com/product-detail/C3178291.html</a><br/>
 收录：立创商城搜索页（2026-10-29）<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>
