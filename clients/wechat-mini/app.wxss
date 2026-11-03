@@ -1,13 +1,187 @@
-page { background: #f8fafc; color: #0f172a; font-family: -apple-system, "PingFang SC", sans-serif; }
-.wrap { padding: 24rpx; }
-.card { background: #fff; border: 1rpx solid #e2e8f0; border-radius: 16rpx; padding: 24rpx; margin-bottom: 16rpx; }
+page {
+  background: #f4f6f9;
+  color: #0f172a;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 28rpx;
+  line-height: 1.55;
+}
+
+.wrap { max-width: 750px; margin: 0 auto; padding: 24rpx 24rpx calc(48rpx + env(safe-area-inset-bottom)); }
+
+.hero {
+  margin: -24rpx -24rpx 24rpx;
+  padding: 40rpx 32rpx 34rpx;
+  background: linear-gradient(145deg, #0b1220 0%, #14263f 58%, #163a52 100%);
+  color: #fff;
+}
+.hero-kicker { font-size: 22rpx; letter-spacing: 2rpx; color: #7dd3fc; }
+.hero-title { margin-top: 12rpx; font-size: 42rpx; font-weight: 700; line-height: 1.3; }
+.hero-sub { margin-top: 10rpx; font-size: 25rpx; color: #cbd5e1; }
+.hero-note { margin-top: 14rpx; font-size: 22rpx; color: #7dd3fc; }
+.hero-meta { margin-top: 18rpx; font-size: 22rpx; color: #94a3b8; }
+.hero-meta text { margin-right: 16rpx; }
+
+.search-box { position: relative; }
+.search {
+  height: 84rpx;
+  padding: 0 72rpx 0 28rpx;
+  background: #fff;
+  border: 1rpx solid #dbe3ec;
+  border-radius: 18rpx;
+  font-size: 28rpx;
+}
+.search-clear {
+  position: absolute;
+  top: 0;
+  right: 4rpx;
+  width: 76rpx;
+  height: 84rpx;
+  line-height: 84rpx;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 36rpx;
+}
+
+.tabs { display: flex; gap: 14rpx; margin: 20rpx 0 16rpx; }
+.tab {
+  flex: 1;
+  padding: 16rpx 0;
+  text-align: center;
+  border-radius: 14rpx;
+  border: 1rpx solid #dbe3ec;
+  background: #fff;
+  color: #475569;
+  font-size: 27rpx;
+}
+.tab.on { background: #0b1220; border-color: #0b1220; color: #fff; font-weight: 600; }
+
+.cats { white-space: nowrap; margin: 0 -24rpx 12rpx; padding: 0 24rpx; }
+.cat {
+  display: inline-flex;
+  align-items: center;
+  min-height: 64rpx;
+  box-sizing: border-box;
+  margin-right: 12rpx;
+  padding: 10rpx 22rpx;
+  border-radius: 999rpx;
+  background: #fff;
+  border: 1rpx solid #dbe3ec;
+  color: #475569;
+  font-size: 24rpx;
+}
+.cat.on { background: #e0f2fe; border-color: #7dd3fc; color: #0369a1; font-weight: 600; }
+
+.card {
+  background: #fff;
+  border: 1rpx solid #e2e8f0;
+  border-radius: 18rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+}
+.item { display: flex; gap: 20rpx; }
+.thumb {
+  flex: 0 0 128rpx;
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: 14rpx;
+  background: #eef2f7;
+}
+.glyph {
+  flex: 0 0 128rpx;
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: 14rpx;
+  background: linear-gradient(140deg, #e0f2fe, #dbeafe);
+  color: #0369a1;
+  font-size: 46rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.item-body { flex: 1; min-width: 0; }
+.title { font-size: 30rpx; font-weight: 600; line-height: 1.4; }
+.item .title { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .muted { color: #64748b; font-size: 24rpx; }
-.tag { display: inline-block; padding: 4rpx 12rpx; border-radius: 999rpx; background: #e0f2fe; color: #0369a1; font-size: 22rpx; margin-right: 8rpx; }
-.title { font-size: 32rpx; font-weight: 600; }
-.row { display: flex; justify-content: space-between; padding: 12rpx 0; border-bottom: 1rpx solid #f1f5f9; font-size: 26rpx; }
+.subline { margin-top: 4rpx; font-size: 24rpx; color: #64748b; }
+.tags { margin-top: 10rpx; }
+.tag {
+  display: inline-block;
+  padding: 3rpx 12rpx;
+  margin: 0 8rpx 6rpx 0;
+  border-radius: 999rpx;
+  background: #e0f2fe;
+  color: #0369a1;
+  font-size: 21rpx;
+}
+.tag.a { background: #dcfce7; color: #15803d; }
+.tag.b { background: #fef3c7; color: #a16207; }
+.tag.c { background: #fee2e2; color: #b91c1c; }
+.item-foot { display: flex; justify-content: space-between; align-items: baseline; margin-top: 8rpx; }
+.price { color: #0f172a; font-size: 26rpx; font-weight: 600; }
+
+.empty { text-align: center; color: #64748b; padding: 80rpx 0; font-size: 26rpx; }
+.error {
+  margin: 20rpx 0;
+  padding: 20rpx;
+  border-radius: 14rpx;
+  background: #fff7ed;
+  color: #9a3412;
+  font-size: 24rpx;
+}
+.loadmore {
+  margin: 24rpx 0 8rpx;
+  padding: 22rpx 0;
+  text-align: center;
+  color: #0369a1;
+  font-size: 26rpx;
+}
+.footer { margin-top: 30rpx; text-align: center; color: #64748b; font-size: 22rpx; }
+.retry { display: inline-block; margin-left: 12rpx; padding: 8rpx 18rpx; border-radius: 999rpx; background: #e0f2fe; color: #0369a1; }
+
+.hero-image {
+  width: 100%;
+  height: 420rpx;
+  border-radius: 18rpx;
+  background: #eef2f7;
+  margin-bottom: 16rpx;
+}
+.section-title { margin: 28rpx 0 12rpx; font-size: 28rpx; font-weight: 600; }
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20rpx;
+  padding: 14rpx 0;
+  border-bottom: 1rpx solid #f1f5f9;
+  font-size: 26rpx;
+}
 .row:last-child { border-bottom: 0; }
-.search { background: #fff; border: 1rpx solid #cbd5e1; border-radius: 12rpx; padding: 16rpx 20rpx; font-size: 28rpx; margin-bottom: 16rpx; }
-.tabs { display: flex; gap: 16rpx; margin-bottom: 16rpx; }
-.tab { flex: 1; text-align: center; padding: 14rpx; border-radius: 12rpx; background: #fff; border: 1rpx solid #e2e8f0; font-size: 26rpx; }
-.tab.on { background: #0b1220; color: #fff; border-color: #0b1220; }
-.empty { text-align: center; color: #94a3b8; padding: 80rpx 0; font-size: 26rpx; }
+.row-label { color: #64748b; flex: 0 0 44%; }
+.row-value { flex: 1; text-align: right; word-break: break-all; }
+.source-line { padding: 10rpx 0; font-size: 24rpx; color: #475569; word-break: break-all; }
+.note {
+  margin-top: 12rpx;
+  padding: 16rpx 20rpx;
+  border-radius: 12rpx;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 23rpx;
+}
+.actions { display: flex; gap: 14rpx; margin-top: 24rpx; }
+.btn {
+  flex: 1;
+  padding: 18rpx 0;
+  text-align: center;
+  border-radius: 14rpx;
+  border: 1rpx solid #dbe3ec;
+  background: #fff;
+  color: #334155;
+  font-size: 26rpx;
+}
+.btn.primary { background: #0b1220; border-color: #0b1220; color: #fff; }
+.review { padding: 16rpx 0; border-bottom: 1rpx solid #f1f5f9; }
+.review:last-child { border-bottom: 0; }
+.review-title { font-size: 26rpx; font-weight: 600; }
+.review-body { margin-top: 4rpx; color: #475569; font-size: 24rpx; }
+.rel { padding: 16rpx 0; border-bottom: 1rpx solid #f1f5f9; display: flex; justify-content: space-between; }
+.rel:last-child { border-bottom: 0; }

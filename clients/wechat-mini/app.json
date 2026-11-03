@@ -9,8 +9,10 @@
     "navigationBarTitleText": "RoboWiki",
     "navigationBarBackgroundColor": "#0b1220",
     "navigationBarTextStyle": "white",
-    "backgroundColor": "#f8fafc"
+    "backgroundColor": "#f8fafc",
+    "backgroundTextStyle": "dark"
   },
   "style": "v2",
+  "lazyCodeLoading": "requiredComponents",
   "sitemapLocation": "sitemap.json"
 }

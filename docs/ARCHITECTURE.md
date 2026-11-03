@@ -46,6 +46,7 @@
 - `/api/v1` 是唯一规范前缀；`/api` 只作旧客户端别名。
 - 目录 `parts` 是 release 的只读投影；后台不直接写。
 - 材质 `/api/v1/materials` 直接从 release 的 `data/materials` 读取（36 条，按文件 mtime 缓存），不落库。
+- 移动端列表用 `GET /parts?compact=true`（仅卡片字段）；详情用 `GET /parts/{id}?posts_kind=review&posts_limit=5`，避免把整包 specs 与全部帖子塞进小程序。`/parts` 与 `/materials` 的列表/详情响应体会带 `data_version`。
 - 邮箱验证/找回密码用一次性 token 表；开发 `EMAIL_MODE=log`，生产 SMTP。
 
 ### 控制台与 worker

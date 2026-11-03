@@ -1,31 +1,147 @@
 const api = require('../../utils/api')
-const LABELS = {
-  tau_peak_Nm: '峰值扭矩 (N·m)', tau_rated_Nm: '额定扭矩 (N·m)', gear: '减速比',
-  voltage_V: '额定电压 (V)', mass_kg: '质量 (kg)', speed_noload_rpm: '空载转速 (rpm)',
-  positions: '位数', pitch_mm: '间距 (mm)', current_rated_A: '额定电流 (A)',
-  voltage_rated_V: '电压等级 (V)', iface: '接口', npu_tops: 'NPU (TOPS)',
-  range_m: '量程 (m)', depth_range_m: '深度量程 (m)', fov: '视场', fps: '帧率',
-  encoder: '编码器', comm: '通信', ip: '防护等级',
+const F = require('../../utils/format')
+const L = require('../../utils/labels')
+
+function text(v) {
+  if (v === null || v === undefined || v === '') return ''
+  if (Array.isArray(v)) return v.join('、')
+  if (typeof v === 'object') return JSON.stringify(v)
+  if (typeof v === 'boolean') return v ? '是' : '否'
+  return String(v)
 }
+
 Page({
-  data: { part: null, rows: [], error: '', loading: true },
-  onLoad(query) { this.id = decodeURIComponent(query.id || ''); this.load() },
+  data: {
+    part: null,
+    rows: [],
+    derived: [],
+    reviews: [],
+    offers: [],
+    sources: [],
+    image: '',
+    webUrl: '',
+    tierLabel: '',
+    tierNote: '',
+    tierColor: '',
+    priceLabel: '',
+    basis: '',
+    version: '',
+    loading: true,
+    error: '',
+  },
+
+  onLoad(query) {
+    this.id = decodeURIComponent(query.id || '')
+    this.load()
+  },
+
+  onPullDownRefresh() {
+    this.load().then(() => wx.stopPullDownRefresh(), () => wx.stopPullDownRefresh())
+  },
+
   async load() {
+    this.setData({ loading: true, error: '' })
     try {
-      const p = await api.get('/parts/' + encodeURIComponent(this.id))
-      const rows = Object.keys(p.specs || {})
-        .filter(k => p.specs[k] !== null && p.specs[k] !== '' && LABELS[k])
-        .slice(0, 24)
-        .map(k => ({ label: LABELS[k], value: String(p.specs[k]) }))
-      this.setData({ part: p, rows, loading: false })
-    } catch (e) { this.setData({ error: e.message, loading: false }) }
+      const p = await api.get('/parts/' + encodeURIComponent(this.id), { posts_kind: 'review', posts_limit: 5 })
+      const t = F.tier(p.source_tier)
+      const specs = p.specs || {}
+      const rows = Object.keys(specs)
+        .filter(k => !['image_url', 'image_source'].includes(k))
+        .filter(k => specs[k] !== null && specs[k] !== undefined && specs[k] !== '')
+        .slice(0, 80)
+        .map(k => ({ key: k, label: L.partLabel(k), value: text(specs[k]) }))
+
+      const derived = Object.keys(p.derived || {})
+        .filter(k => p.derived[k] !== null && p.derived[k] !== undefined)
+        .map(k => ({
+          key: k,
+          label: L.DERIVED[k] || L.humanize(k),
+          value: text(p.derived[k]),
+        }))
+
+      const reviews = (p.posts || [])
+        .filter(x => x.kind === 'review')
+        .slice(0, 3)
+        .map(x => ({
+          id: x.id,
+          title: x.title,
+          body: F.short(x.body, 100),
+          rating: x.rating,
+          score: x.score,
+          author: x.author && x.author.display_name,
+        }))
+
+      const sources = []
+      if (p.url) sources.push({ label: '厂商 / 商品页', url: p.url })
+      if (specs.doc_url) sources.push({ label: '官方资料', url: specs.doc_url })
+      if (specs.doc_pdf) sources.push({ label: '官方手册 PDF', url: specs.doc_pdf })
+
+      let basis = ''
+      if (specs.tau_basis) basis += '扭矩口径：' + (specs.tau_basis === 'peak' ? '峰值' : specs.tau_basis === 'rated' ? '额定' : specs.tau_basis) + '；'
+      if (specs.inertia_basis) basis += '惯量口径：' + (specs.inertia_basis === 'rotor' ? '转子侧' : specs.inertia_basis === 'output' ? '输出端' : specs.inertia_basis)
+
+      this.setData({
+        part: p,
+        rows,
+        derived,
+        reviews,
+        offers: (p.offers || []).slice(0, 3),
+        sources,
+        image: F.imageUrl(p.image_url),
+        webUrl: F.partUrl(p),
+        tierLabel: t.label,
+        tierNote: t.note,
+        tierColor: t.color,
+        priceLabel: F.price(p.price_cny),
+        basis,
+        version: (getApp().globalData || {}).dataVersion || '',
+        loading: false,
+      })
+      wx.setNavigationBarTitle({ title: p.model || p.title || '部件详情' })
+    } catch (e) {
+      this.setData({ loading: false, error: e.message })
+    }
   },
-  copyUrl() {
-    if (!this.data.part) return
-    wx.setClipboardData({ data: this.data.part.url || '' })
+
+  async copyLink() {
+    let url = this.data.webUrl
+    try {
+      const share = await api.getUrl(F.sharePartUrl(this.data.part))
+      if (share && share.canonical_url) url = share.canonical_url
+    } catch (e) {}
+    F.copy(url, '网页链接已复制')
   },
+
+  retry() { this.load() },
+
+  goHome() { wx.reLaunch({ url: '/pages/index/index' }) },
+
+  copySource(e) {
+    F.copy(e.currentTarget.dataset.url, '来源链接已复制')
+  },
+
+  copyOffer(e) {
+    F.copy(e.currentTarget.dataset.url, '优惠链接已复制')
+  },
+
+  onImageError() {
+    this.setData({ image: '' })
+  },
+
   onShareAppMessage() {
     const p = this.data.part || {}
-    return { title: `${p.vendor || ''} ${p.model || ''} · RoboWiki`, path: `/pages/part/part?id=${encodeURIComponent(this.id)}` }
+    return {
+      title: `${p.vendor || ''} ${p.model || ''} · RoboWiki`.trim(),
+      path: `/pages/part/part?id=${encodeURIComponent(this.id)}`,
+      imageUrl: this.data.image || undefined,
+    }
+  },
+
+  onShareTimeline() {
+    const p = this.data.part || {}
+    return {
+      title: `${p.vendor || ''} ${p.model || ''} · RoboWiki`.trim(),
+      query: `id=${encodeURIComponent(this.id)}`,
+    }
   },
 })

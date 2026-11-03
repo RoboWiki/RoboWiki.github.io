@@ -70,7 +70,9 @@ python -m pipeline build
   `X-RoboWiki-API-Version` 与 `X-RoboWiki-Data-Version`。
 - **QQ 群机器人**：`GET /api/v1/bot/answer` 只读问答，回答固定为一句结论 + 链接 +
   数据版本；适配器见 `clients/qqbot/`，只被动回复、不推送。
-- **微信小程序**：`clients/wechat-mini/` 只读部件/材质搜索、详情与分享；不登录、不写入。
+- **微信小程序**：`clients/wechat-mini/`（AppID `wx13bffd77b0b597e2`）只读部件/材质搜索、
+  分类筛选、详情、来源与分享；不登录、不写入。开发版连本机 Docker，正式版需已备案 API 域名。
+  列表走 `compact=true` 轻量投影，详情只取 5 条评价；`cli preview` 编译约 48 KB。
 - **材质 API**：`/api/v1/materials`、`/materials/meta`、`/materials/{id}`，与静态材质页同源。
 - **举报与处置**：`POST /api/v1/reports` 供登录用户举报帖子/评论/文档讨论；站务在
   `/api/v1/admin/reports` 审核，可隐藏或恢复，所有动作带 note 与处置人留痕。

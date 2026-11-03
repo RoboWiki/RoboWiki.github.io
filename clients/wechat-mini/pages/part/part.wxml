@@ -1,31 +1,90 @@
 <view class="wrap">
   <view wx:if="{{loading}}" class="empty">加载中…</view>
-  <view wx:elif="{{error}}" class="empty">{{error}}</view>
+  <view wx:elif="{{error}}" class="card">
+    <view class="error">{{error}}</view>
+    <view class="actions">
+      <button class="btn" bindtap="retry">重试</button>
+      <button class="btn primary" bindtap="goHome">回目录</button>
+    </view>
+  </view>
   <block wx:else>
+    <image wx:if="{{image}}" class="hero-image" src="{{image}}" mode="aspectFill"
+      binderror="onImageError" />
     <view class="card">
       <view class="title">{{part.title}}</view>
-      <view class="muted" style="margin-top:8rpx">{{part.vendor}} · {{part.model}}</view>
-      <view style="margin-top:12rpx">
-        <text class="tag">{{part.category_label}}</text>
-        <text class="tag">来源 {{part.source_tier}} 级</text>
+      <view class="subline">{{part.vendor}} · {{part.model}} · {{part.category_label}}</view>
+      <view class="tags" style="margin-top:14rpx">
+        <text class="tag {{tierColor}}">{{tierLabel}}</text>
         <text class="tag" wx:if="{{part.verified && part.source_tier === 'A'}}">已核对</text>
+        <text class="tag" wx:if="{{part.subtype_label}}">{{part.subtype_label}}</text>
+      </view>
+      <view class="item-foot" style="margin-top:14rpx">
+        <text class="price">{{priceLabel}}</text>
+        <text class="muted">最近核对 {{part.last_checked || '—'}}</text>
+      </view>
+      <view class="note">{{tierNote}}</view>
+      <view class="actions">
+        <button class="btn" bindtap="copyLink">复制网页链接</button>
+        <button class="btn" bindtap="goHome">回目录</button>
+        <button class="btn primary" open-type="share">分享给好友</button>
       </view>
     </view>
+
     <view class="card">
       <view class="title">参数</view>
-      <view class="row" wx:for="{{rows}}" wx:key="label">
-        <text class="muted">{{item.label}}</text><text>{{item.value}}</text>
+      <view wx:if="{{basis}}" class="note">{{basis}}</view>
+      <view class="row" wx:for="{{rows}}" wx:key="key">
+        <text class="row-label">{{item.label}}</text>
+        <text class="row-value">{{item.value}}</text>
       </view>
       <view wx:if="{{!rows.length}}" class="muted">暂无结构化参数</view>
     </view>
+
+    <view class="card" wx:if="{{derived.length}}">
+      <view class="title">派生量（读取时计算）</view>
+      <view class="row" wx:for="{{derived}}" wx:key="key">
+        <text class="row-label">{{item.label}}</text>
+        <text class="row-value">{{item.value}}</text>
+      </view>
+    </view>
+
     <view class="card" wx:if="{{part.notes}}">
       <view class="title">备注</view>
       <view class="muted" style="margin-top:8rpx">{{part.notes}}</view>
     </view>
+
+    <view class="card" wx:if="{{offers.length}}">
+      <view class="title">当前优惠</view>
+      <view class="source-line" wx:for="{{offers}}" wx:key="id" data-url="{{item.url}}" bindtap="copyOffer">
+        <text style="font-weight:600">{{item.title}}</text>
+        <text wx:if="{{item.expires_on}}" class="muted"> · 至 {{item.expires_on}}</text>
+      </view>
+    </view>
+
+    <view class="card" wx:if="{{reviews.length}}">
+      <view class="title">真实评价</view>
+      <view class="review" wx:for="{{reviews}}" wx:key="id">
+        <view class="review-title">
+          {{item.title}}
+          <text wx:if="{{item.rating}}" class="tag">{{item.rating}} / 5</text>
+        </view>
+        <view class="review-body">{{item.body}}</view>
+        <view class="muted">{{item.author || '匿名'}} · {{item.score}} 赞</view>
+      </view>
+      <view class="muted">评价来自站内账号，仅代表作者使用经历。</view>
+    </view>
+
     <view class="card">
       <view class="title">来源</view>
-      <view class="muted" style="margin-top:8rpx">{{part.url || '—'}}</view>
-      <view class="muted">最近核对：{{part.last_checked || '—'}}</view>
+      <view wx:if="{{!sources.length}}" class="muted">未登记外部来源</view>
+      <view class="source-line" wx:for="{{sources}}" wx:key="url" data-url="{{item.url}}" bindtap="copySource">
+        {{item.label}}：{{item.url}}
+      </view>
+      <view class="muted" style="margin-top:8rpx">点按可复制链接；版权归原方。</view>
+    </view>
+
+    <view class="footer">
+      {{version ? '数据版本 ' + version + ' · ' : ''}}{{part.source_tier}} 级来源 · 只读目录
     </view>
   </block>
 </view>

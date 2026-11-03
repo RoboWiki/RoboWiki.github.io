@@ -668,3 +668,25 @@ def test_email_verify_and_password_reset(client, monkeypatch):
     assert r.status_code == 202 and len(sent) == before
     assert client.post("/api/auth/password/reset",
                        json={"token": "x" * 20, "password": "newpass123"}).status_code == 400
+
+
+# ── 移动端轻量接口 ───────────────────────────────────────────────────────────
+def test_compact_part_list_omits_specs_for_mobile(client):
+    full = client.get("/api/v1/parts", params={"limit": 3}).json()
+    assert full.get("data_version")
+    assert "specs" in full["items"][0]
+
+    card = client.get("/api/v1/parts", params={"limit": 3, "compact": "true"}).json()
+    assert card["total"] == full["total"]
+    item = card["items"][0]
+    assert "specs" not in item and "derived" not in item
+    assert "title" in item and "image_url" in item and "price_cny" in item
+    assert item["web_path"].startswith("/parts/") and item["web_path"].endswith(".html")
+    assert item["web_path"].count(".html") == 1
+
+
+def test_material_detail_carries_data_version(client):
+    rows = client.get("/api/v1/materials", params={"limit": 1}).json()
+    mid = rows["items"][0]["id"]
+    detail = client.get(f"/api/v1/materials/{mid}").json()
+    assert detail.get("data_version")

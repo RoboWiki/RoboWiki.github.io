@@ -1,16 +1,46 @@
 <view class="wrap">
+  <view class="hero">
+    <view class="hero-kicker">ROBOWIKI · 只读目录</view>
+    <view class="hero-title">材料与加工工艺</view>
+    <view class="hero-sub">密度、模量、强度与可加工性；B 级典型值，设计前回原来源核对。</view>
+    <view class="hero-meta">
+      <text>{{total || '—'}} 条材料 / 工艺</text>
+      <text wx:if="{{version}}">{{version}}</text>
+    </view>
+  </view>
+
+  <view class="search-box">
+    <input class="search" placeholder="搜材料 / 工艺 / 别名"
+      value="{{q}}" bindinput="onSearch" bindconfirm="onSearchConfirm"
+      confirm-type="search" />
+    <text wx:if="{{q}}" class="search-clear" bindtap="clearSearch">×</text>
+  </view>
+
+  <scroll-view class="cats" scroll-x enable-flex>
+    <view wx:for="{{categories}}" wx:key="id"
+      class="cat {{category === item.id ? 'on' : ''}}"
+      data-id="{{item.id}}" bindtap="selectCategory">{{item.label}}</view>
+  </scroll-view>
+
+  <view wx:if="{{error}}" class="error">{{error}} <text class="retry" bindtap="onSearchConfirm">重试</text></view>
   <view wx:if="{{loading}}" class="empty">加载中…</view>
-  <view wx:elif="{{error}}" class="empty">{{error}}</view>
-  <view wx:elif="{{!items.length}}" class="empty">暂无材料数据</view>
+  <view wx:elif="{{!items.length && !error}}" class="empty">没有结果；换个关键词或切回「全部」</view>
+
   <block wx:for="{{items}}" wx:key="id">
-    <view class="card" data-id="{{item.id}}" bindtap="open">
-      <view class="title">{{item.name}}</view>
-      <view class="muted">{{item.group_label}} · {{item.family_label}}</view>
-      <view style="margin-top:10rpx">
-        <text class="tag">{{item.category === 'process' ? '工艺' : '材料'}}</text>
-        <text class="tag">来源 {{item.source_tier}} 级</text>
+    <view class="card item" data-id="{{item.id}}" bindtap="open">
+      <view class="glyph">{{item.glyph}}</view>
+      <view class="item-body">
+        <view class="title">{{item.name}}</view>
+        <view class="subline">{{item.subline}}</view>
+        <view class="tags">
+          <text class="tag">{{item.category === 'process' ? '工艺' : '材料'}}</text>
+          <text class="tag {{item.tierColor}}">{{item.tierLabel}}</text>
+        </view>
       </view>
     </view>
   </block>
-  <view class="muted" wx:if="{{items.length}}" style="text-align:center;padding:20rpx">共 {{total}} 条</view>
+
+  <view wx:if="{{items.length && hasMore}}" class="loadmore" bindtap="onReachBottom">{{loadingMore ? '加载中…' : '加载更多'}}</view>
+  <view wx:if="{{items.length && !hasMore}}" class="footer">共 {{total}} 条 · {{version || '数据版本见页面'}}</view>
+  <view class="footer">只读目录 · 参数缺失写「—」，不做猜测</view>
 </view>

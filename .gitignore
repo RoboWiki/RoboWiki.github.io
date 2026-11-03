@@ -74,3 +74,7 @@ deploy/backup/*.dump.tmp
 
 # outbox 运行时产物（测试/生产）
 deploy/var/outbox/*.json
+
+# 微信开发者工具个人设置（关闭域名校验等，不入库）
+clients/wechat-mini/project.private.config.json
+clients/wechat-mini/tests/node_modules/
