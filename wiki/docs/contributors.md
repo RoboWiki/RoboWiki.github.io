@@ -19,7 +19,7 @@ outline: false
     <p class="cd-sub">不从 git log 生成：机器只会数 commit，说不出谁核过哪本手册。</p>
     <div class="ct-grid"><div class="ct">
   <div class="ct-head"><b>zeitvex</b><span class="ct-role">创始维护者</span></div>
-  <p>建站与全部工程实现：数据闸门与校验、按品类生成页面、部件库检索与对比、参数口径页、供应商页、贡献者页；达妙 / 灵足 / 大疆 / 宇树四家的 A 级参数逐条核对（扭矩统一到输出端、缺字段一律写 null）；把「来源可追溯」做成机器可查的规则，而不是写在文档里的一句话。目录扩到 14 个品类、311 个部件（104 个 A 级）、21 台整机、22 个软件、207 家渠道；在 271 件里为 269 件补上官方来源链接；新增高擎、STACKFORCE、乐动雷达、CubeMars、脉塔、飞特等批次；本次合并 ccc 分支的 42 张产品图与整机/传感器改进，并订正首页、README、缺图清单与架构文档。新增连接器品类（线束→连接器，23 条：JST GH/SH/XH/PH/ZH、Amass XT30/60/90/MR30 与 XT30(2+2)/XT90(2+2)，另收排针、FFC/FPC、插拔端子、USB-C、DC、DB9、RJ45、SMA/BNC、GX12 等常见件）。并补 23 张连接器官方/立创产品图（JST 5、Amass 6、排针/FPC/Degson/XKB 5、DB9/DC/RJ45/SMA/BNC/GX12/5264 7）。</p>
+  <p>建站与全部工程实现：数据闸门与校验、按品类生成页面、部件/整机/软件/渠道/材料五类目录；达妙 / 灵足 / 大疆 / 宇树等厂商的 A 级参数逐项核对（扭矩统一到输出端、缺字段一律写 null），把「来源可追溯」做成机器可查的规则。目录扩到 14 个品类、326 件入库（329 条数据，3 条 C 级线索不入目录）、114 个 A 级、27 种材料 + 9 种工艺、21 台整机、22 个软件、207 家渠道、425 张产品图；新增连接器品类与 23 条常见件、CubeMars 官方补图、材质库。主导拆分为核心数据仓与站点仓，建立 data-v* 发布与 data.lock 锁定；实现 /api/v1、提案→审核→outbox→worker PR、Docker Compose 部署、PWA/分享卡与站内纠错表单。</p>
   <a href="https://github.com/zeitvex" target="_blank" rel="noopener">GitHub</a>
 </div>
 <div class="ct">

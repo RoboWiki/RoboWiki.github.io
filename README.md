@@ -75,10 +75,11 @@ python -m pipeline build
 （命名与多视角评审的决策记录见 `docs/ARCH-DECISION-2026-10-ia.md`）：
 
 ```
-首页            这个站是什么 + 按需求走（六个任务入口）+ 当前有多少东西
+首页            这个站是什么 + 按需求走 + 当前有多少东西
 指南            怎么用这个站 + 学习路线 + 四篇实操文章（整机选型 / 电控链路 / 关节电机参数怎么读 / 开源项目怎么读）
-部件库          311 个部件，按任意列排序、可对比，带来源等级与真实评分
+部件库          326 个部件，按任意列排序、可对比，带来源等级与真实评分
 整机库          21 台整机，比方案与生态（自由度 / 负载 / 开源项目数）
+材质库          27 种材料 + 9 种工艺，比密度 / 模量 / 强度 / 耐温与加工边界
 软件库          22 个，比「该用哪个」：引擎 / 训练 / 算法与方法 / 模型架构 / 中间件 / 数学，带许可与版本
 渠道库          207 家，比「活找谁做」（质量 / 交期 / 价格档 / 发票）
 实战资料        竞赛与实战（电控 / 机械 / 项目管理 / 硬件四模块，回链实战文章）
@@ -106,24 +107,27 @@ python -m pipeline build
 ```bash
 git clone https://github.com/RoboWiki/RoboWiki.github.io
 cd RoboWiki.github.io
+bash scripts/fetch-data-release.sh   # 下载 data.lock.json 锁定的核心仓 release
+export ROBOWIKI_DATA_DIR="$PWD/.data/data"
+export ROBOWIKI_SCHEMA_DIR="$PWD/.data/schema"
+export ROBOWIKI_ASSETS_DIR="$PWD/.data/assets/parts"
 
-python -m pipeline all            # 校验数据 + 生成站点内容
+python -m pipeline build          # 校验数据 + 生成站点内容
 python -m pytest                  # 构建链 + API 测试
 cd wiki && npm i && npm run dev    # 本地起站（VitePress 默认 5173）
 ```
 
-只读静态站不需要后端。需要登录、评价、提案与审核时：
+只读静态站不需要后端。需要登录、评价、提案与审核时（沿用上面的 `ROBOWIKI_*` 环境变量）：
 
 ```bash
 cd backend && pip install -r requirements.txt
-uvicorn app.main:app --reload      # http://127.0.0.1:8000/api/v1/docs
+uvicorn app.main:app --reload      # http://127.0.0.1:8000/api/docs（开发环境）
 
 # 或整套容器（Caddy + API + Postgres + worker）
 cd deploy && cp .env.example .env && docker compose up -d --build
 ```
 
-改一个型号的参数 = 去核心仓改一个 JSON，或走站内提案/控制台，然后跑
-`python -m pipeline validate`。数据闸门会拦住三类错：A 级键集不一致、来源等级越级、
+改一个型号的参数 = 去核心仓改一个 JSON，或走站内提案/控制台；核心仓发布新 `data-v*` 后更新 `data.lock.json`。数据闸门会拦住三类错：A 级键集不一致、来源等级越级、
 厂商未登记；构建阶段再拦页面死链。**后台不改 `parts`**：提案审核通过后由 worker 开 PR。
 
 ## 目录
