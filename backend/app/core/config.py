@@ -75,6 +75,7 @@ class Settings(BaseSettings):
     rate_window_s: int = 600
     rate_max_posts: int = 10
     rate_max_comments: int = 40
+    rate_max_reports: int = 10
 
     @model_validator(mode="after")
     def _fill_data_version(self):

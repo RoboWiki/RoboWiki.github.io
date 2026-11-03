@@ -4,8 +4,8 @@
 于是社区信息流、零件评价、整机方案共用同一套 Post / Comment / Vote，
 只差 `kind` 与 `part_id`。少一套机制，少一处漂移。
 
-实体取自开源社区项目的标准骨架（user / post / comment / vote / badge …），
-精简掉本轮不需要的通知、收藏、举报、修订。
+实体取自开源社区项目的标准骨架（user / post / comment / vote / report / badge …），
+精简掉本轮不需要的通知、收藏、修订。
 """
 from __future__ import annotations
 
@@ -128,6 +128,8 @@ class Post(SQLModel, table=True):
     comment_count: int = 0
     view_count: int = 0
     pinned: bool = False
+    #: 站务处置后隐藏；列表、详情与评分聚合都不再返回，站务仍可在后台查看
+    hidden: bool = Field(default=False, index=True)
     created_at: datetime = Field(default_factory=utcnow, index=True)
     updated_at: datetime = Field(default_factory=utcnow)
 
@@ -141,6 +143,7 @@ class Comment(SQLModel, table=True):
     author_id: int = Field(foreign_key="users.id", index=True)
     body: str
     score: int = 0
+    hidden: bool = Field(default=False, index=True)
     created_at: datetime = Field(default_factory=utcnow, index=True)
 
 
@@ -156,6 +159,30 @@ class Vote(SQLModel, table=True):
     target_id: int = Field(index=True)
     value: int = 1                                     # +1 / -1
     created_at: datetime = Field(default_factory=utcnow)
+
+
+class Report(SQLModel, table=True):
+    """用户举报。举报不改可见性；站务处置（hide/dismiss）才产生状态变更。"""
+
+    __tablename__ = "reports"
+    __table_args__ = (
+        UniqueConstraint("reporter_id", "target_kind", "target_id",
+                         name="uq_report_once"),
+        Index("ix_reports_status_created", "status", "created_at"),
+        Index("ix_reports_target", "target_kind", "target_id"),
+    )
+
+    id: int | None = Field(default=None, primary_key=True)
+    reporter_id: int = Field(foreign_key="users.id", index=True)
+    target_kind: str                                   # post | comment | wiki_comment
+    target_id: int = Field(index=True)
+    reason: str                                        # spam | abuse | misinfo | other
+    detail: str = ""
+    status: str = Field(default="open", index=True)    # open | resolved | dismissed
+    resolution_note: str = ""
+    resolver_id: int | None = Field(default=None, foreign_key="users.id")
+    created_at: datetime = Field(default_factory=utcnow, index=True)
+    resolved_at: datetime | None = None
 
 
 class PartEdit(SQLModel, table=True):
@@ -195,6 +222,7 @@ class WikiComment(SQLModel, table=True):
     user_id: int = Field(foreign_key="users.id", index=True)
     body: str
     parent_id: int | None = Field(default=None, foreign_key="wiki_comments.id")
+    hidden: bool = Field(default=False, index=True)
     created_at: datetime = Field(default_factory=utcnow)
 
 

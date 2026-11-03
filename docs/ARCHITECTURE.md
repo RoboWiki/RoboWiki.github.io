@@ -40,7 +40,9 @@
 ### 后端（可选但生产需要）
 
 - `backend/`：FastAPI + SQLModel + Alembic。
-- `users` 管身份，`posts/comments/votes` 管社区，`submissions/reviews/outbox` 管目录提案。
+- `users` 管身份，`posts/comments/votes` 管社区，`reports` 管举报与处置，
+  `submissions/reviews/outbox` 管目录提案。
+- 隐藏是软操作：被处置内容不进公开列表/详情/评分聚合，站务仍可在后台查看与恢复。
 - `/api/v1` 是唯一规范前缀；`/api` 只作旧客户端别名。
 - 目录 `parts` 是 release 的只读投影；后台不直接写。
 - 材质 `/api/v1/materials` 直接从 release 的 `data/materials` 读取（36 条，按文件 mtime 缓存），不落库。
@@ -48,7 +50,7 @@
 
 ### 控制台与 worker
 
-- `console/`：提案审核、发布队列、数据缺口、社区管理。
+- `console/`：提案审核、举报处置、发布队列、数据缺口、社区管理。
 - `worker/`：消费 outbox；默认 dry-run 写产物，配置 GitHub token 后开核心仓 PR。
 - 审核通过 ≠ 生效：合并并发布 `data-v*`、站点更新 `data.lock` 后才更新页面。
 
@@ -96,4 +98,5 @@ docs/        架构、ADR、版本化、CI
 - 静态站与 API 都可单机运行；当前 326 件入库部件 + 36 个材料/工艺页，构建约 35 秒。
 - 搜索先用 VitePress 本地索引与 Postgres 子串；文档 >20 万或 p95 >300ms 再上 Meilisearch。
 - 多副本前把进程内限流换成 Redis；当前单副本 + Caddy 已足够。
-- 小程序/App 未实现，契约见 `clients/README.md`；不要为每个端复制业务逻辑。
+- 微信小程序只读壳已实现（`clients/wechat-mini/`）；App 与小程序写操作未实现，
+  契约见 `clients/README.md`；不要为每个端复制业务逻辑。

@@ -37,7 +37,7 @@ def list_posts(
     limit: Annotated[int, Query(ge=1, le=100)] = 20,
     offset: Annotated[int, Query(ge=0)] = 0,
 ):
-    stmt = select(Post)
+    stmt = select(Post).where(Post.hidden == False)  # noqa: E712
     if kind:
         stmt = stmt.where(Post.kind == kind)
     if part_id:
@@ -103,7 +103,7 @@ def create_post(payload: PostIn, request: Request, db: Db, user: CurrentUser):
 @router.get("/posts/{post_id}", response_model=PostOut)
 def get_post(post_id: int, db: Db, user: MaybeUser):
     p = db.get(Post, post_id)
-    if p is None:
+    if p is None or (p.hidden and not (user and user.is_staff)):
         raise HTTPException(404, "帖子不存在")
     p.view_count += 1
     db.add(p)
@@ -114,7 +114,8 @@ def get_post(post_id: int, db: Db, user: MaybeUser):
 
 @router.get("/posts/{post_id}/comments", response_model=list[CommentOut])
 def list_comments(post_id: int, db: Db, user: MaybeUser):
-    if db.get(Post, post_id) is None:
+    post = db.get(Post, post_id)
+    if post is None or (post.hidden and not (user and user.is_staff)):
         raise HTTPException(404, "帖子不存在")
     return comments_out(db, post_id, user.id if user else None)
 
@@ -123,12 +124,15 @@ def list_comments(post_id: int, db: Db, user: MaybeUser):
 def create_comment(post_id: int, payload: CommentIn, request: Request, db: Db,
                    user: CurrentUser):
     rate_limit(request, "comment", settings.rate_max_comments, user.id)
-    if db.get(Post, post_id) is None:
+    post = db.get(Post, post_id)
+    if post is None or post.hidden:
         raise HTTPException(404, "帖子不存在")
     if payload.parent_id is not None:
         parent = db.get(Comment, payload.parent_id)
         if parent is None or parent.post_id != post_id:
             raise HTTPException(422, "父评论不属于这个帖子")
+        if parent.hidden:
+            raise HTTPException(422, "父评论已被隐藏")
         if parent.parent_id is not None:
             raise HTTPException(422, "只支持两级回复")
 

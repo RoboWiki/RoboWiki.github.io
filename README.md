@@ -72,6 +72,8 @@ python -m pipeline build
   数据版本；适配器见 `clients/qqbot/`，只被动回复、不推送。
 - **微信小程序**：`clients/wechat-mini/` 只读部件/材质搜索、详情与分享；不登录、不写入。
 - **材质 API**：`/api/v1/materials`、`/materials/meta`、`/materials/{id}`，与静态材质页同源。
+- **举报与处置**：`POST /api/v1/reports` 供登录用户举报帖子/评论/文档讨论；站务在
+  `/api/v1/admin/reports` 审核，可隐藏或恢复，所有动作带 note 与处置人留痕。
 
 ## 站点结构
 
@@ -141,7 +143,7 @@ cd deploy && cp .env.example .env && docker compose up -d --build
 ```
 wiki/       VitePress 站点（纯静态 + PWA，静态部署不需要后端）
 backend/    FastAPI + SQLModel：/api/v1、UGC、提案与 outbox worker
-console/    React 控制台：提案审核、数据缺口、社区
+console/    React 控制台：提案审核、举报处置、数据缺口、社区
 deploy/     Docker Compose（Caddy + API + Postgres + migrate + worker）
 clients/    多端适配：QQ 机器人；小程序/App/SDK 的契约与目录
 pipeline/   页面与分享产物生成（数据从核心仓 release 读取）

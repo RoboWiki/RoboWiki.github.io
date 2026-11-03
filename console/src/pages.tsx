@@ -1,9 +1,9 @@
-import { App as AntApp, Alert, Button, Card, Col, Empty, Input, Pagination, Row, Segmented, Select, Skeleton, Space, Statistic, Table, Tag, Typography } from 'antd'
+import { App as AntApp, Alert, Button, Card, Col, Empty, Input, Modal, Pagination, Row, Segmented, Select, Skeleton, Space, Statistic, Table, Tag, Typography } from 'antd'
 import { DownloadOutlined, FireOutlined, RocketOutlined, SearchOutlined, StarOutlined, TrophyOutlined } from '@ant-design/icons'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
-import { KIND_COLOR, KIND_LABEL, api, type Part, type Post } from './api'
+import { KIND_COLOR, KIND_LABEL, api, v1Req, type Part, type Post } from './api'
 import { F, SENSOR_HERO, fmtField } from './fields'
 import { CommentList, PartDrawer, PostCard, UserBadge } from './ui'
 import { useAuth } from './App'
@@ -295,6 +295,22 @@ export function PostPage() {
   const { message } = AntApp.useApp()
   const { user, openAuth } = useAuth()
   const post = useQuery({ queryKey: ['post', postId], queryFn: () => api.post(postId) })
+  const [reportOpen, setReportOpen] = useState(false)
+  const [reason, setReason] = useState('spam')
+  const [detail, setDetail] = useState('')
+
+  const submitReport = async () => {
+    if (!user) return openAuth()
+    try {
+      await v1Req('/reports', {
+        method: 'POST',
+        body: JSON.stringify({ target_kind: 'post', target_id: postId, reason, detail }),
+      })
+      message.success('已提交，站务会审核')
+      setReportOpen(false)
+      setDetail('')
+    } catch (e: any) { message.error(e.message) }
+  }
 
   const vote = async (v: number) => {
     if (!user) return openAuth()
@@ -323,6 +339,10 @@ export function PostPage() {
             <UserBadge user={p.author} />
             <Text type="secondary">{new Date(p.created_at).toLocaleString('zh-CN')}</Text>
             <Text type="secondary"><EyeOutlined /> {p.view_count}</Text>
+            <Button type="text" size="small" style={{ color: 'var(--text-secondary)' }}
+              onClick={() => user ? setReportOpen(true) : openAuth()}>
+              举报
+            </Button>
           </Space>
 
           <div style={{ display: 'flex', gap: 14 }}>
@@ -344,6 +364,23 @@ export function PostPage() {
             : <Button type="primary" onClick={openAuth}>登录后参与讨论</Button>}
         </Card>
       </Col>
+      <Modal open={reportOpen} title="举报这条内容" onCancel={() => setReportOpen(false)}
+        okText="提交举报" onOk={submitReport} destroyOnHidden>
+        <Space direction="vertical" size={10} style={{ width: '100%', paddingTop: 8 }}>
+          <Select value={reason} onChange={setReason} style={{ width: '100%' }}
+            options={[
+              { value: 'spam', label: '垃圾广告' },
+              { value: 'abuse', label: '攻击辱骂' },
+              { value: 'misinfo', label: '虚假信息' },
+              { value: 'other', label: '其他' },
+            ]} />
+          <Input.TextArea rows={3} value={detail} onChange={e => setDetail(e.target.value)}
+            placeholder="补充说明（选填）" maxLength={500} />
+          <Text type="secondary" style={{ fontSize: 12 }}>
+            举报不会自动下架；站务核实后决定隐藏或驳回。
+          </Text>
+        </Space>
+      </Modal>
     </Row>
   )
 }

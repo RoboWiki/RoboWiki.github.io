@@ -196,7 +196,8 @@ def _attach_reviews(db, items: list[dict]) -> None:
     if not ids:
         return
     rows = db.exec(
-        select(Post).where(Post.part_id.in_(ids), Post.kind == "review")
+        select(Post).where(Post.part_id.in_(ids), Post.kind == "review",
+                           Post.hidden == False)  # noqa: E712
         .order_by(Post.score.desc(), Post.created_at.desc())).all()
     best: dict[str, Post] = {}
     agg: dict[str, list[float]] = {}
@@ -301,7 +302,8 @@ def list_parts(
     if key == "featured":
         # 首页默认口径：有评价的排前面（按最高赞评价的分数），其余按厂商
         best = (select(func.max(Post.score))
-                .where(Post.part_id == Part.id, Post.kind == "review")
+                .where(Post.part_id == Part.id, Post.kind == "review",
+                       Post.hidden == False)  # noqa: E712
                 .correlate(Part).scalar_subquery())
         stmt = stmt.order_by(best.is_(None), best.desc(), Part.vendor, Part.model)
     elif SORTABLE.get(key) is None:
@@ -328,8 +330,9 @@ def get_part(part_id: str, db: Db, user: MaybeUser):
         raise HTTPException(404, "零件不存在")
     offers = db.exec(select(Offer).where((Offer.part_id == part_id)
                                          | (Offer.part_id.is_(None)))).all()
-    posts = db.exec(select(Post).where(Post.part_id == part_id)
-                    .order_by(Post.pinned.desc(), Post.created_at.desc()).limit(50)).all()
+    posts = db.exec(select(Post).where(
+        Post.part_id == part_id, Post.hidden == False)  # noqa: E712
+        .order_by(Post.pinned.desc(), Post.created_at.desc()).limit(50)).all()
     out = public_part(p)
     out["offers"] = [{"id": o.id, "kind": o.kind, "title": o.title,
                       "detail": o.detail, "url": o.url, "vendor": o.vendor,
@@ -354,6 +357,8 @@ def stats(db: Db):
         "with_price": priced,
         "armature_coverage": round(arm / n, 3) if n else 0,
         "users": int(db.exec(select(func.count(User.id))).one()),
-        "posts": int(db.exec(select(func.count(Post.id))).one()),
-        "comments": int(db.exec(select(func.count(Comment.id))).one()),
+        "posts": int(db.exec(select(func.count(Post.id)).where(
+            Post.hidden == False)).one()),  # noqa: E712
+        "comments": int(db.exec(select(func.count(Comment.id)).where(
+            Comment.hidden == False)).one()),  # noqa: E712
     }

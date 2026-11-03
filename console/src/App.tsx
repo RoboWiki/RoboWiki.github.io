@@ -9,6 +9,7 @@ import Catalog from './Catalog'
 import { ThemeProvider, useTheme } from './theme'
 import Admin from './Admin'
 import Submissions from './Submissions'
+import Reports from './Reports'
 import { CommunityPage, PostPage, ProfilePage, SemanticsPage, TopPage } from './pages'
 
 // ── 认证上下文 ────────────────────────────────────────────────────────────
@@ -87,6 +88,7 @@ const NAV: { key: string; to: string; label: string; staffOnly?: boolean }[] = [
   { key: 'community', to: '/community', label: '社区' },
   { key: 'people', to: '/top', label: '贡献榜' },
   { key: 'submissions', to: '/submissions', label: '提案', staffOnly: true },
+  { key: 'reports', to: '/reports', label: '举报', staffOnly: true },
   { key: 'admin', to: '/admin', label: '后台', staffOnly: true },
 ]
 const EXTERNAL = [
@@ -134,6 +136,7 @@ function Shell() {
   const section = loc.pathname.startsWith('/community') || loc.pathname.startsWith('/post') ? 'community'
     : loc.pathname.startsWith('/top') || loc.pathname.startsWith('/u/') ? 'people'
       : loc.pathname.startsWith('/submissions') ? 'submissions'
+        : loc.pathname.startsWith('/reports') ? 'reports'
         : loc.pathname.startsWith('/admin') ? 'admin' : 'community'
 
   return (
@@ -243,6 +246,7 @@ function Shell() {
           <Route path="/top" element={<TopPage />} />
           <Route path="/semantics" element={<SemanticsPage />} />
           <Route path="/submissions" element={<Submissions />} />
+          <Route path="/reports" element={<Reports />} />
           <Route path="/admin" element={<Admin />} />
         </Routes>
       </main>
