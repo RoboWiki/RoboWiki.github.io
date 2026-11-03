@@ -491,7 +491,7 @@ def part_description(r: dict) -> str:
 
 #: 站点对外域名（organization pages，站点在域名根）。canonical 与旧 URL 跳转页都要
 #: 绝对地址，而 base 可被 WIKI_BASE 改成子路径（自托管），所以不能从 base 推。
-SITE_URL = os.environ.get("ROBOWIKI_SITE_URL", "https://robowiki.github.io").rstrip("/")
+SITE_URL = os.environ.get("ROBOWIKI_SITE_URL", "https://robowiki.org.cn").rstrip("/")
 
 
 def _data_version() -> str:

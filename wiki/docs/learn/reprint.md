@@ -10,7 +10,7 @@ title: 分享与转载规范
 
 转载时写清三件事：
 
-1. **来源**：RoboWiki（`https://robowiki.github.io/`）
+1. **来源**：RoboWiki（`https://robowiki.org.cn/`）
 2. **作者**：文章页署名的人或「RoboWiki 编辑部」
 3. **原文链接**：链到具体那篇文章，不是首页
 
@@ -65,7 +65,7 @@ GPL-3.0 允许商业使用，**不需要来问我们**（我们自己的定位�
 
 ```
 RoboWiki 编辑部. 《从零开始学：第一次做机器人，先做这五件事》[EB/OL].
-https://robowiki.github.io/learn/, 2026-10-30.
+https://robowiki.org.cn/learn/, 2026-10-30.
 ```
 
 数据类引用（参数表）建议同时写明**核对日期**，因为价格与固件版本会变。
