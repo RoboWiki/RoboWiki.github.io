@@ -36,6 +36,8 @@ curl -fsS http://localhost/api/v1/ready
 | `EXPOSE_DOCS` | Swagger UI | `false` |
 | `PUBLISH_MODE` | worker 发布方式 | `dryrun` 或 `github` |
 | `BOT_TOKEN` | 群机器人只读问答 | 随机长串，留空则关闭 |
+| `EMAIL_MODE` | 邮箱验证/找回密码 | 开发 `log`；生产 `smtp` |
+| `SMTP_*` | SMTP 主机/端口/账号/发件人 | 生产必填；不要提交密码 |
 
 `data.lock.json` 决定静态站与 API 看到的数据版本；升级数据只换 lock，不把 `data/` 复制进服务器。
 
@@ -97,6 +99,18 @@ token 只需核心仓 `contents:write` + `pull_requests:write`，不要用个人
 token，也不要提交进仓库。worker 会：定位 `data/catalog/...` 文件 → 建
 `proposal/<submission-id>` 分支 → 提交字段变更 → 开 PR。合并与 `data-v*`
 release 后目录才更新；API 请求路径不会碰 GitHub。
+
+## 邮箱验证 / 找回密码
+
+`.env` 设置 `EMAIL_MODE=log`（开发：令牌打印到 `docker compose logs api`）或
+`EMAIL_MODE=smtp` + `SMTP_HOST/PORT/USER/PASSWORD/FROM`。接口：
+
+- `POST /api/v1/auth/email/verify/request`（登录）
+- `POST /api/v1/auth/email/verify`
+- `POST /api/v1/auth/password/forgot`（始终 202，不暴露邮箱是否存在）
+- `POST /api/v1/auth/password/reset`
+
+令牌 30 分钟一次性，数据库只存 SHA-256；生产不要把日志令牌发到公开渠道。
 
 ## 群机器人只读问答
 

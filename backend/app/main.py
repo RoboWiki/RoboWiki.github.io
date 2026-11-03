@@ -16,7 +16,8 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import text
 
 from .api.routes import (admin, auth, bot, catalog, community, export, mcp,
-                         protocols, ratings, semantics, submissions, wiki)
+                         materials, protocols, ratings, semantics, submissions,
+                         wiki)
 from .core.config import ROOT, settings
 from .core.db import (bootstrap_admin, create_tables, seed_catalog,
                       seed_community, session)
@@ -57,7 +58,7 @@ app.add_middleware(
 
 _ROUTERS = (auth.router, catalog.router, community.router, export.router,
             semantics.router, admin.router, protocols.router, wiki.router,
-            ratings.router, submissions.router, bot.router)
+            ratings.router, submissions.router, bot.router, materials.router)
 
 # 规范前缀 /api/v1；/api 只作旧客户端别名，不进入 OpenAPI。
 for r in _ROUTERS:

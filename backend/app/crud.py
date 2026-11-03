@@ -41,7 +41,8 @@ def user_out(db: Session, u: User) -> UserOut:
         select(func.count(Comment.id)).where(Comment.author_id == u.id)).one()
     return UserOut(
         id=u.id or 0, handle=u.handle, display_name=u.display_name, bio=u.bio,
-        avatar_hue=u.avatar_hue, is_staff=u.is_staff, reputation=u.reputation,
+        avatar_hue=u.avatar_hue, is_staff=u.is_staff,
+        email_verified=u.email_verified, reputation=u.reputation,
         created_at=u.created_at, post_count=int(posts or 0),
         comment_count=int(comments or 0),
         badges=badges_for(db, u, int(posts or 0), int(comments or 0)),

@@ -588,3 +588,83 @@ def test_staff_can_retry_failed_outbox(client):
     r = client.post(f"/api/v1/submissions/outbox/{oid}/retry", headers=h)
     assert r.status_code == 200
     assert r.json()["status"] == "pending" and r.json()["last_error"] is None
+
+
+# ── 材质库 API ──────────────────────────────────────────────────────────────
+def test_materials_list_and_meta(client):
+    r = client.get("/api/v1/materials", params={"limit": 200})
+    assert r.status_code == 200
+    d = r.json()
+    assert d["total"] == 36 and len(d["items"]) == 36
+    assert d["data_version"]
+    assert {x["category"] for x in d["items"]} == {"material", "process"}
+
+    m = client.get("/api/v1/materials/meta").json()
+    assert m["materials"] == 27 and m["processes"] == 9
+    assert len(m["groups"]) >= 5
+
+
+def test_material_detail_and_related(client):
+    r = client.get("/api/v1/materials/proc-cnc")
+    assert r.status_code == 200
+    d = r.json()
+    assert d["category"] == "process"
+    assert d["specs"]["tolerance_mm"] == 0.05
+    assert d["related"] and all(x["category"] == "material" for x in d["related"])
+
+    r = client.get("/api/v1/materials/mat-alu-6061-t6")
+    assert r.status_code == 200
+    assert r.json()["related"]
+    assert client.get("/api/v1/materials/nope").status_code == 404
+
+
+def test_materials_search_and_filters(client):
+    d = client.get("/api/v1/materials", params={"q": "CNC"}).json()
+    assert d["total"] >= 1
+    assert any(x["id"] == "proc-cnc" for x in d["items"])
+    d = client.get("/api/v1/materials", params={"category": "material",
+                                                "group": "metal"}).json()
+    assert d["total"] >= 1
+    assert all(x["category"] == "material" and x["group"] == "metal"
+               for x in d["items"])
+
+
+# ── 邮箱验证 / 找回密码 ─────────────────────────────────────────────────────
+def test_email_verify_and_password_reset(client, monkeypatch):
+    import re
+    from app.api.routes import auth as auth_route
+
+    sent: list[tuple[str, str, str]] = []
+    monkeypatch.setattr(auth_route, "send_email",
+                        lambda to, subject, text: sent.append((to, subject, text)))
+    r = client.post("/api/auth/register", json={
+        "handle": "mailuser", "display_name": "Mail User",
+        "email": "mailuser@example.com", "password": "oldpass123",
+    })
+    assert r.status_code == 201, r.text
+    h = {"Authorization": f"Bearer {r.json()['access_token']}"}
+    assert r.json()["user"]["email_verified"] is False
+
+    r = client.post("/api/auth/email/verify/request", headers=h)
+    assert r.status_code == 200 and sent
+    token = re.search(r"令牌：(\S+)", sent[-1][2]).group(1)
+    r = client.post("/api/auth/email/verify", json={"token": token})
+    assert r.status_code == 200 and r.json()["email_verified"] is True
+    assert client.post("/api/auth/email/verify", json={"token": token}).status_code == 400
+
+    r = client.post("/api/auth/password/forgot", json={"email": "mailuser@example.com"})
+    assert r.status_code == 202 and len(sent) == 2
+    token = re.search(r"令牌：(\S+)", sent[-1][2]).group(1)
+    r = client.post("/api/auth/password/reset",
+                    json={"token": token, "password": "newpass123"})
+    assert r.status_code == 200
+    assert client.post("/api/auth/login", json={
+        "handle": "mailuser", "password": "oldpass123"}).status_code == 401
+    assert client.post("/api/auth/login", json={
+        "handle": "mailuser", "password": "newpass123"}).status_code == 200
+
+    before = len(sent)
+    r = client.post("/api/auth/password/forgot", json={"email": "none@example.com"})
+    assert r.status_code == 202 and len(sent) == before
+    assert client.post("/api/auth/password/reset",
+                       json={"token": "x" * 20, "password": "newpass123"}).status_code == 400

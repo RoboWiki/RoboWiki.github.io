@@ -23,6 +23,19 @@ class RegisterIn(BaseModel):
         return low
 
 
+class VerifyEmailIn(BaseModel):
+    token: str = Field(min_length=10, max_length=200)
+
+
+class ForgotIn(BaseModel):
+    email: str = Field(min_length=3, max_length=200)
+
+
+class ResetPasswordIn(BaseModel):
+    token: str = Field(min_length=10, max_length=200)
+    password: str = Field(min_length=6, max_length=128)
+
+
 class LoginIn(BaseModel):
     handle: str
     password: str
@@ -35,6 +48,7 @@ class UserOut(BaseModel):
     bio: str = ""
     avatar_hue: int = 160
     is_staff: bool = False
+    email_verified: bool = False
     reputation: int = 0
     created_at: datetime
     post_count: int = 0

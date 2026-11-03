@@ -1,0 +1,24 @@
+<view class="wrap">
+  <input class="search" placeholder="搜型号 / 厂商 / 材料 / 工艺" value="{{q}}" bindinput="onSearch" />
+  <view class="tabs">
+    <view class="tab {{tab === 'parts' ? 'on' : ''}}" data-tab="parts" bindtap="switchTab">部件库</view>
+    <view class="tab {{tab === 'materials' ? 'on' : ''}}" data-tab="materials" bindtap="switchTab">材质库</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+  <view wx:elif="{{error}}" class="empty">{{error}}</view>
+  <view wx:elif="{{!items.length}}" class="empty">没有结果；换个关键词试试</view>
+
+  <block wx:for="{{items}}" wx:key="id">
+    <view class="card" data-id="{{item.id}}" bindtap="openItem">
+      <view class="title">{{item.title || item.name}}</view>
+      <view class="muted" wx:if="{{tab === 'parts'}}">{{item.vendor}} · {{item.model}} · {{item.category_label}}</view>
+      <view class="muted" wx:else>{{item.group_label}} · {{item.family_label}}</view>
+      <view style="margin-top:10rpx">
+        <text class="tag">来源 {{item.source_tier}} 级</text>
+        <text class="tag" wx:if="{{tab === 'materials'}}">{{item.category === 'process' ? '工艺' : '材料'}}</text>
+      </view>
+    </view>
+  </block>
+  <view class="muted" wx:if="{{items.length}}" style="text-align:center;padding:20rpx">共 {{total}} 条 · {{version || '数据版本见页面'}}</view>
+</view>
