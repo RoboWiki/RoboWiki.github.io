@@ -1,24 +1,72 @@
 <view class="wrap">
-  <input class="search" placeholder="搜型号 / 厂商 / 材料 / 工艺" value="{{q}}" bindinput="onSearch" />
+  <view class="hero">
+    <view class="hero-kicker">ROBOWIKI · 只读目录</view>
+    <view class="hero-title">机器人硬件，先查清再买</view>
+    <view class="hero-sub">参数有来源，未知就写未知；不卖零件、不收佣金。</view>
+    <view class="hero-note">A 级逐项核对 · B 级公开资料汇编 · 缺失写「—」</view>
+    <view class="hero-meta">
+      <text>{{partCount || '—'}} 件部件</text>
+      <text>{{materialCount || '—'}} 材料 / 工艺</text>
+      <text wx:if="{{version}}">{{version}}</text>
+    </view>
+  </view>
+
+  <view class="search-box">
+    <input class="search" placeholder="搜型号 / 厂商 / 材料 / 工艺"
+      value="{{q}}" bindinput="onSearch" bindconfirm="onSearchConfirm"
+      confirm-type="search" />
+    <text wx:if="{{q}}" class="search-clear" bindtap="clearSearch">×</text>
+  </view>
+
   <view class="tabs">
     <view class="tab {{tab === 'parts' ? 'on' : ''}}" data-tab="parts" bindtap="switchTab">部件库</view>
     <view class="tab {{tab === 'materials' ? 'on' : ''}}" data-tab="materials" bindtap="switchTab">材质库</view>
   </view>
 
+  <scroll-view class="cats" scroll-x enable-flex>
+    <view wx:for="{{categories}}" wx:key="id"
+      class="cat {{category === item.id ? 'on' : ''}}"
+      data-id="{{item.id}}" bindtap="selectCategory">
+      {{item.label}}<text wx:if="{{item.n}}"> {{item.n}}</text>
+    </view>
+  </scroll-view>
+
+  <view wx:if="{{error}}" class="error">
+    {{error}}
+    <text class="retry" bindtap="onSearchConfirm">重试</text>
+  </view>
   <view wx:if="{{loading}}" class="empty">加载中…</view>
-  <view wx:elif="{{error}}" class="empty">{{error}}</view>
-  <view wx:elif="{{!items.length}}" class="empty">没有结果；换个关键词试试</view>
+  <view wx:elif="{{!items.length && !error}}" class="empty">
+    没有结果；换个关键词，或切回「全部」
+  </view>
 
   <block wx:for="{{items}}" wx:key="id">
-    <view class="card" data-id="{{item.id}}" bindtap="openItem">
-      <view class="title">{{item.title || item.name}}</view>
-      <view class="muted" wx:if="{{tab === 'parts'}}">{{item.vendor}} · {{item.model}} · {{item.category_label}}</view>
-      <view class="muted" wx:else>{{item.group_label}} · {{item.family_label}}</view>
-      <view style="margin-top:10rpx">
-        <text class="tag">来源 {{item.source_tier}} 级</text>
-        <text class="tag" wx:if="{{tab === 'materials'}}">{{item.category === 'process' ? '工艺' : '材料'}}</text>
+    <view class="card item" data-id="{{item.id}}" bindtap="openItem">
+      <image wx:if="{{item.image}}" class="thumb" src="{{item.image}}"
+        mode="aspectFill" lazy-load data-index="{{index}}" binderror="onImageError" />
+      <view wx:else class="glyph">{{item.glyph || 'R'}}</view>
+      <view class="item-body">
+        <view class="title">{{item.title || item.name}}</view>
+        <view class="subline">{{item.subline}}</view>
+        <view class="tags">
+          <text class="tag {{item.tierColor}}">{{item.tierLabel}}</text>
+          <text wx:if="{{item.verifiedLabel}}" class="tag a">{{item.verifiedLabel}}</text>
+          <text wx:if="{{tab === 'materials'}}" class="tag">{{item.category === 'process' ? '工艺' : '材料'}}</text>
+        </view>
+        <view class="item-foot">
+          <text wx:if="{{tab === 'parts'}}" class="price">{{item.priceLabel}}</text>
+          <text wx:else class="muted">B 级典型值 · 设计前核对</text>
+          <text class="muted">{{item.source_tier ? '来源 ' + item.source_tier + ' 级' : ''}}</text>
+        </view>
       </view>
     </view>
   </block>
-  <view class="muted" wx:if="{{items.length}}" style="text-align:center;padding:20rpx">共 {{total}} 条 · {{version || '数据版本见页面'}}</view>
+
+  <view wx:if="{{items.length && hasMore}}" class="loadmore" bindtap="onReachBottom">
+    {{loadingMore ? '加载中…' : '加载更多'}}
+  </view>
+  <view wx:if="{{items.length && !hasMore}}" class="footer">
+    共 {{total}} 条{{version ? ' · ' + version : ''}}
+  </view>
+  <view class="footer">微信小程序为只读目录 · 投稿与纠错请到网页版</view>
 </view>

@@ -1,27 +1,101 @@
 const api = require('../../utils/api')
-const LABELS = {
-  density_g_cm3: '密度 (g/cm³)', modulus_GPa: '弹性模量 (GPa)', tensile_MPa: '抗拉强度 (MPa)',
-  yield_MPa: '屈服强度 (MPa)', elongation_pct: '断裂延伸率 (%)', hardness: '硬度',
-  service_temp_C: '长期工作温度 (°C)', low_temp_C: '低温下限 (°C)', melting_C: '熔点 (°C)',
-  thermal_cond_W_mK: '导热系数 (W/(m·K))', cte_um_mK: '线膨胀系数 (µm/(m·K))',
-  tolerance_mm: '可达公差 (mm)', surface_ra_um: '表面粗糙度 Ra (µm)',
-  layer_height_mm: '层高 (mm)', min_wall_mm: '最小壁厚 (mm)', max_size: '最大尺寸',
-  cost_level: '成本档', lead_time: '参考交期', price_level: '价格档',
+const F = require('../../utils/format')
+const L = require('../../utils/labels')
+
+function text(v) {
+  if (v === null || v === undefined || v === '') return ''
+  if (Array.isArray(v)) return v.join('、')
+  if (typeof v === 'object') return JSON.stringify(v)
+  return String(v)
 }
+
 Page({
-  data: { item: null, rows: [], error: '', loading: true },
-  onLoad(query) { this.id = decodeURIComponent(query.id || ''); this.load() },
+  data: {
+    item: null,
+    rows: [],
+    related: [],
+    sources: [],
+    webUrl: '',
+    tierLabel: '',
+    tierNote: '',
+    tierColor: '',
+    version: '',
+    loading: true,
+    error: '',
+  },
+
+  onLoad(query) {
+    this.id = decodeURIComponent(query.id || '')
+    this.load()
+  },
+
+  onPullDownRefresh() {
+    this.load().then(() => wx.stopPullDownRefresh(), () => wx.stopPullDownRefresh())
+  },
+
   async load() {
+    this.setData({ loading: true, error: '' })
     try {
       const r = await api.get('/materials/' + encodeURIComponent(this.id))
-      const rows = Object.keys(r.specs || {})
-        .filter(k => r.specs[k] !== null && r.specs[k] !== '' && LABELS[k])
-        .map(k => ({ label: LABELS[k], value: String(r.specs[k]) }))
-      this.setData({ item: r, rows, loading: false })
-    } catch (e) { this.setData({ error: e.message, loading: false }) }
+      const t = F.tier(r.source_tier)
+      const specs = r.specs || {}
+      const rows = Object.keys(specs)
+        .filter(k => specs[k] !== null && specs[k] !== undefined && specs[k] !== '')
+        .map(k => ({ key: k, label: L.materialLabel(k), value: text(specs[k]) }))
+
+      const sources = (r.sources || []).map(s => ({
+        url: s.url,
+        label: s.kind || '来源',
+        checked: s.checked_on || '',
+      }))
+
+      this.setData({
+        item: r,
+        rows,
+        related: r.related || [],
+        sources,
+        webUrl: F.materialUrl(r),
+        tierLabel: t.label,
+        tierNote: t.note,
+        tierColor: t.color,
+        version: r.data_version || (getApp().globalData || {}).dataVersion || '',
+        loading: false,
+      })
+      wx.setNavigationBarTitle({ title: r.name || '材料 / 工艺' })
+    } catch (e) {
+      this.setData({ loading: false, error: e.message })
+    }
   },
+
+  copyLink() {
+    F.copy(this.data.webUrl, '网页链接已复制')
+  },
+
+  retry() { this.load() },
+
+  goHome() { wx.reLaunch({ url: '/pages/index/index' }) },
+
+  copySource(e) {
+    F.copy(e.currentTarget.dataset.url, '来源链接已复制')
+  },
+
+  openRelated(e) {
+    wx.navigateTo({ url: `/pages/material/material?id=${encodeURIComponent(e.currentTarget.dataset.id)}` })
+  },
+
   onShareAppMessage() {
     const r = this.data.item || {}
-    return { title: `${r.name || '材质'} · RoboWiki`, path: `/pages/material/material?id=${encodeURIComponent(this.id)}` }
+    return {
+      title: `${r.name || '材质'} · RoboWiki`,
+      path: `/pages/material/material?id=${encodeURIComponent(this.id)}`,
+    }
+  },
+
+  onShareTimeline() {
+    const r = this.data.item || {}
+    return {
+      title: `${r.name || '材质'} · RoboWiki`,
+      query: `id=${encodeURIComponent(this.id)}`,
+    }
   },
 })

@@ -1,1 +1,5 @@
-{ "navigationBarTitleText": "材质库" }
+{
+  "navigationBarTitleText": "材质库",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark"
+}

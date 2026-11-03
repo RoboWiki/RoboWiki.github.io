@@ -1,1 +1,5 @@
-{ "navigationBarTitleText": "RoboWiki" }
+{
+  "navigationBarTitleText": "RoboWiki",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark"
+}

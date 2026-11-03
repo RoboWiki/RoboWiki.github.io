@@ -13,7 +13,7 @@
 | github.io | 同一构建产物 | 当前线上主站；自有域名部署后再把 canonical 指回主域 |
 | 控制台 | `console/` | 内部审核；改数只生成 submission，不直接写目录 |
 | 材质库 | `wiki/docs/materials/` + `/api/v1/materials` | 27 种材料 + 9 种工艺；静态页与 API 同源 |
-| 微信小程序 | `clients/wechat-mini/` | 只读：部件/材质搜索、详情、分享；不登录不写入 |
+| 微信小程序 | `clients/wechat-mini/`（AppID `wx13bffd77b0b597e2`） | 只读：部件/材质搜索、筛选、详情、分享；不登录不写入 |
 
 ## 后续客户端
 

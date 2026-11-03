@@ -66,6 +66,7 @@ def get_material(item_id: str):
     if r is None:
         raise HTTPException(404, "材料或工艺不存在")
     out = public_material(r)
+    out["data_version"] = settings.data_version
     out["related"] = []
     refs = list(r.get("processes") or [])
     refs += list((r.get("specs") or {}).get("materials") or [])

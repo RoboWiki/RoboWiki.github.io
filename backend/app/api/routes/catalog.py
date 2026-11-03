@@ -1,6 +1,8 @@
 """目录：目录结构、零件列表、零件详情。"""
 from __future__ import annotations
 
+import re
+from datetime import date
 from typing import Annotated, Any, Literal
 
 from fastapi import APIRouter, HTTPException, Query
@@ -132,18 +134,31 @@ def derive(specs: dict) -> dict[str, Any]:
     return out
 
 
-def _offer_ok(offer, part_id: str, today: str) -> bool:
+def _offer_ok(offer, part_id: str, today: str, vendor: str | None = None) -> bool:
     """优惠是否适用于该零件：未过期、有条件、且不在排除名单里。
 
     排除列表是给「厂商级优惠但有例外」用的 —— 例：灵足教育 9 折适用范围是
     RS 全系，EL05 因成本原因不参与（官方口径）。没有这条，卡片上会给 EL05
     显示一个它其实拿不到的价。
     """
-    if (offer.expires_on or "9999") >= today and not (offer.detail or ""):
+    if (offer.expires_on or "9999") < today or not (offer.detail or ""):
+        return False
+    if offer.part_id is None and vendor and offer.vendor and offer.vendor != vendor:
         return False
     if part_id in (getattr(offer, "exclude_parts", None) or []):
         return False
     return True
+
+
+def part_web_path(p: Part) -> str:
+    """与 pipeline/build_site.py 的 part_slug 同规则：厂商+型号的 ASCII 形式。
+
+    目录 id 可能含中文，直接拼 URL 会被百分号编码；web_path 由服务端给出，
+    小程序/分享卡不再自己猜 slug。
+    """
+    base = re.sub(r"[^A-Za-z0-9]+", "-", f"{p.vendor}-{p.model}").strip("-").lower()
+    base = re.sub(r"-+", "-", base)[:60] or "part"
+    return f"/parts/{p.category}/{base}.html"
 
 
 def part_out(p: Part, viewer: bool = False) -> dict:
@@ -187,6 +202,31 @@ def public_part(p: Part) -> dict:
         "derived": derive(p.specs),
         "notes": p.notes,
         "image_url": (p.specs or {}).get("image_url"),
+        "web_path": part_web_path(p),
+    }
+
+
+def public_part_card(p: Part) -> dict:
+    """移动端列表用的轻量投影：只保留卡片会渲染的字段。
+
+    完整 `specs` 只给详情页。列表一次 20~30 条，把几百个参数塞进小程序
+    `setData` 既浪费流量，也容易触发单次数据量上限。
+    """
+    return {
+        "id": p.id,
+        "category": p.category,
+        "category_label": CATEGORY_LABELS.get(p.category, p.category),
+        "subtype_label": subtype_label(p.category, p.subtype),
+        "vendor": p.vendor,
+        "vendor_cn": p.vendor_cn,
+        "model": p.model,
+        "title": p.title,
+        "source_tier": p.source_tier,
+        "verified": p.verified,
+        "last_checked": p.last_checked,
+        "price_cny": p.price_cny,
+        "image_url": (p.specs or {}).get("image_url"),
+        "web_path": part_web_path(p),
     }
 
 
@@ -275,6 +315,7 @@ def list_parts(
     order: Literal["asc", "desc"] = "asc",
     limit: Annotated[int, Query(ge=1, le=200)] = 60,
     offset: Annotated[int, Query(ge=0)] = 0,
+    compact: bool = False,
 ):
     stmt = select(Part)
     if category:
@@ -317,28 +358,40 @@ def list_parts(
                              Part.vendor, Part.model)
     stmt = stmt.offset(offset).limit(limit)
 
-    items = [public_part(p) for p in db.exec(stmt).all()]
-    _attach_reviews(db, items)
+    if compact:
+        items = [public_part_card(p) for p in db.exec(stmt).all()]
+    else:
+        items = [public_part(p) for p in db.exec(stmt).all()]
+        _attach_reviews(db, items)
     return {"total": int(total), "limit": limit, "offset": offset,
-            "sort": key, "order": order, "items": items}
+            "sort": key, "order": order,
+            "data_version": settings.data_version, "items": items}
 
 
 @router.get("/parts/{part_id}")
-def get_part(part_id: str, db: Db, user: MaybeUser):
+def get_part(part_id: str, db: Db, user: MaybeUser,
+             posts_kind: Literal["review", "discussion", "build"] | None = None,
+             posts_limit: Annotated[int, Query(ge=1, le=50)] = 50):
     p = db.get(Part, part_id)
     if p is None:
         raise HTTPException(404, "零件不存在")
-    offers = db.exec(select(Offer).where((Offer.part_id == part_id)
-                                         | (Offer.part_id.is_(None)))).all()
-    posts = db.exec(select(Post).where(
+    today = date.today().isoformat()
+    offers = [o for o in db.exec(select(Offer).where(
+        (Offer.part_id == part_id) | (Offer.part_id.is_(None)))).all()
+        if not o.demo and _offer_ok(o, part_id, today, p.vendor)]
+    post_stmt = select(Post).where(
         Post.part_id == part_id, Post.hidden == False)  # noqa: E712
-        .order_by(Post.pinned.desc(), Post.created_at.desc()).limit(50)).all()
+    if posts_kind:
+        post_stmt = post_stmt.where(Post.kind == posts_kind)
+    posts = db.exec(post_stmt.order_by(Post.pinned.desc(), Post.created_at.desc())
+                    .limit(posts_limit)).all()
     out = public_part(p)
     out["offers"] = [{"id": o.id, "kind": o.kind, "title": o.title,
                       "detail": o.detail, "url": o.url, "vendor": o.vendor,
                       "expires_on": o.expires_on, "demo": o.demo} for o in offers]
     out["posts"] = [x.model_dump() for x in
                     posts_out(db, list(posts), user.id if user else None)]
+    out["data_version"] = settings.data_version
     return out
 
 
