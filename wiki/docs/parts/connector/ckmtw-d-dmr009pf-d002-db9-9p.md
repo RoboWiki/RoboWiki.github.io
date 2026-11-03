@@ -1,6 +1,6 @@
 ---
 title: Ckmtw 灿科盟 D-DMR009PF-D002 DB9 9P 母座
-description: "Ckmtw 灿科盟 D-DMR009PF-D002 DB9 9P 母座（连接器）：官方参数；来源 B 级、2026-10-31 核对。"
+description: "Ckmtw 灿科盟 D-DMR009PF-D002 DB9 9P 母座（连接器）：公开页面参数；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

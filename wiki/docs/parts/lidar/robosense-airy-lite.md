@@ -1,6 +1,6 @@
 ---
 title: RoboSense Airy Lite
-description: "RoboSense Airy Lite（激光雷达）：官方参数；来源 B 级、2026-10-28 核对。"
+description: "RoboSense Airy Lite（激光雷达）：公开页面参数；来源 B 级、2026-10-28 最近查阅。"
 ---
 
 

@@ -1,6 +1,6 @@
 ---
 title: 乐动 LDROBOT LD19
-description: "乐动 LDROBOT LD19（激光雷达）：额定 5 V、量程 12 m；来源 B 级、2026-10-31 核对。"
+description: "乐动 LDROBOT LD19（激光雷达）：额定 5 V、量程 12 m；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

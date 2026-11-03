@@ -1,6 +1,6 @@
 ---
 title: TOREX XC6206P332MR-G
-description: "TOREX XC6206P332MR-G（硬件芯片）：官方参数；来源 B 级、2026-10-31 核对。"
+description: "TOREX XC6206P332MR-G（硬件芯片）：公开页面参数；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

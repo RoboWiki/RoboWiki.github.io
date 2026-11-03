@@ -1,6 +1,6 @@
 ---
 title: 达妙 DAMIAO DM-H6215
-description: "达妙 DAMIAO DM-H6215（关节电机）：峰值扭矩 2 N·m、额定 1 N·m、减速比 1:1；来源 B 级、2026-10-31 核对。"
+description: "达妙 DAMIAO DM-H6215（关节电机）：峰值扭矩 2 N·m、额定 1 N·m、减速比 1:1；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

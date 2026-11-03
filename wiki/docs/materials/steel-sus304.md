@@ -4,6 +4,8 @@ title: "SUS304 不锈钢"
 
 # SUS304 不锈钢
 
+<p><a href="/materials">← 返回材质库</a></p>
+
 <div class="mt-meta">
   <span>金属材料</span>
   <span>不锈钢</span>

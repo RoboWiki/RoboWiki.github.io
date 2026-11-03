@@ -1,6 +1,6 @@
 ---
 title: 达妙 DAMIAO DM-H65-1EC
-description: "达妙 DAMIAO DM-H65-1EC（关节电机）：峰值扭矩 21.5 N·m、额定 6 N·m、质量 3.15 kg；来源 B 级、2026-10-31 核对。"
+description: "达妙 DAMIAO DM-H65-1EC（关节电机）：峰值扭矩 21.5 N·m、额定 6 N·m、质量 3.15 kg；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

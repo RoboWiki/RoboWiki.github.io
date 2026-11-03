@@ -4,6 +4,8 @@ title: "42CrMo 合金钢"
 
 # 42CrMo 合金钢
 
+<p><a href="/materials">← 返回材质库</a></p>
+
 <div class="mt-meta">
   <span>金属材料</span>
   <span>合金钢</span>

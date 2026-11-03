@@ -1,6 +1,6 @@
 ---
 title: 大疆 DJI TB48
-description: "大疆 DJI TB48（电池）：额定 22.8 V；来源 B 级、2026-10-31 核对。"
+description: "大疆 DJI TB48（电池）：额定 22.8 V；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

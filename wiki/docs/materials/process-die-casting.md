@@ -4,6 +4,8 @@ title: "压铸（高压）"
 
 # 压铸（高压）
 
+<p><a href="/materials">← 返回材质库</a></p>
+
 <div class="mt-meta">
   <span>加工工艺</span>
   <span>压铸</span>

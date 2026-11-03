@@ -4,6 +4,8 @@ title: "PLA-CF 碳纤维增强线材"
 
 # PLA-CF 碳纤维增强线材
 
+<p><a href="/materials">← 返回材质库</a></p>
+
 <div class="mt-meta">
   <span>3D 打印材料</span>
   <span>PLA</span>

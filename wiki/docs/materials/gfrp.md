@@ -4,6 +4,8 @@ title: "玻璃纤维环氧复合材料"
 
 # 玻璃纤维环氧复合材料
 
+<p><a href="/materials">← 返回材质库</a></p>
+
 <div class="mt-meta">
   <span>复合材料</span>
   <span>玻纤复合</span>

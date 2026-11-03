@@ -1,6 +1,6 @@
 ---
 title: 小米 Xiaomi CyberGear Micro
-description: "小米 Xiaomi CyberGear Micro（关节电机）：峰值扭矩 12 N·m、额定 4 N·m、质量 0.317 kg；来源 B 级、2026-10-31 核对。"
+description: "小米 Xiaomi CyberGear Micro（关节电机）：峰值扭矩 12 N·m、额定 4 N·m、质量 0.317 kg；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

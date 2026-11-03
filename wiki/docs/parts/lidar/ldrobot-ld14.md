@@ -1,6 +1,6 @@
 ---
 title: 乐动 LDROBOT LD14
-description: "乐动 LDROBOT LD14（激光雷达）：额定 5 V、量程 8 m、视场 360°；来源 B 级、2026-10-31 核对。"
+description: "乐动 LDROBOT LD14（激光雷达）：额定 5 V、量程 8 m、视场 360°；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

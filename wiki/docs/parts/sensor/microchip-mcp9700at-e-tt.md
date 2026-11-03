@@ -1,6 +1,6 @@
 ---
 title: MICROCHIP(美国微芯) MCP9700AT-E/TT
-description: "MICROCHIP(美国微芯) MCP9700AT-E/TT（传感器）：官方参数；来源 B 级、2026-10-31 核对。"
+description: "MICROCHIP(美国微芯) MCP9700AT-E/TT（传感器）：公开页面参数；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

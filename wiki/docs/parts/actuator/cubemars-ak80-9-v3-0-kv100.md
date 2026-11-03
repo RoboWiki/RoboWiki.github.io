@@ -1,6 +1,6 @@
 ---
 title: CubeMars AK80-9 V3.0 KV100
-description: "CubeMars AK80-9 V3.0 KV100（关节电机）：峰值扭矩 22 N·m、额定 9 N·m、减速比 9:1；来源 B 级、2026-11-02 核对。"
+description: "CubeMars AK80-9 V3.0 KV100（关节电机）：峰值扭矩 22 N·m、额定 9 N·m、减速比 9:1；来源 B 级、2026-11-02 最近查阅。"
 ---
 
 

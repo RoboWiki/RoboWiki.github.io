@@ -1,6 +1,6 @@
 ---
 title: UMW TP4057
-description: "UMW TP4057（硬件芯片）：官方参数；来源 B 级、2026-10-31 核对。"
+description: "UMW TP4057（硬件芯片）：公开页面参数；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

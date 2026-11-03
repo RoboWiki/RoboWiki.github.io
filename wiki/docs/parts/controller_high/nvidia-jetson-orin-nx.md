@@ -1,6 +1,6 @@
 ---
 title: NVIDIA Jetson Orin NX
-description: "NVIDIA Jetson Orin NX（上位机）：Orin；来源 B 级、2026-10-28 核对。"
+description: "NVIDIA Jetson Orin NX（上位机）：Orin；来源 B 级、2026-10-28 最近查阅。"
 ---
 
 

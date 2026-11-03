@@ -4,6 +4,8 @@ title: "碳纤维 T300 复合材料"
 
 # 碳纤维 T300 复合材料
 
+<p><a href="/materials">← 返回材质库</a></p>
+
 <div class="mt-meta">
   <span>复合材料</span>
   <span>碳纤维复合</span>

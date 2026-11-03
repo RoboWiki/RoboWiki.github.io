@@ -1,6 +1,6 @@
 ---
 title: 脉塔 MyActuator X12-320
-description: "脉塔 MyActuator X12-320（关节电机）：峰值扭矩 320 N·m、额定 85 N·m、减速比 20:1；来源 B 级、2026-10-31 核对。"
+description: "脉塔 MyActuator X12-320（关节电机）：峰值扭矩 320 N·m、额定 85 N·m、减速比 20:1；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

@@ -37,9 +37,9 @@ X-Bot-Token: <token>
 ```json
 {
   "found": true,
-  "answer": "CubeMars AK80-6 · 额定 6 N·m · 峰值 12 N·m · 48 V（来源 B·已核对）",
+  "answer": "CubeMars AK80-6 · 额定 6.0 N·m · 峰值 12.0 N·m · 48.0 V（来源 B）",
   "url": "https://robowiki.org/parts/actuator/cubemars-ak80-6.html",
-  "data_version": "data-v2026.11.0",
+  "data_version": "data-v2026.11.2",
   "part": { "id": "cubemars-ak80-6", "model": "AK80-6" }
 }
 ```

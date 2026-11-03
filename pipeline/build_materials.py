@@ -185,6 +185,8 @@ title: {json.dumps(r.get('name') or r['id'], ensure_ascii=False)}
 
 # {r.get('name') or r['id']}
 
+<p><a href="/materials">← 返回材质库</a></p>
+
 <div class="mt-meta">
   <span>{_fmt(r.get('group_label'))}</span>
   <span>{_fmt(r.get('family_label'))}</span>
@@ -247,6 +249,8 @@ title: {json.dumps(r.get('name') or r['id'], ensure_ascii=False)}
 ---
 
 # {r.get('name') or r['id']}
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>加工工艺</span>

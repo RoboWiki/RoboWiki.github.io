@@ -1,6 +1,6 @@
 ---
 title: muRata(村田) NCU15XH103F6SRC
-description: "muRata(村田) NCU15XH103F6SRC（传感器）：官方参数；来源 B 级、2026-10-31 核对。"
+description: "muRata(村田) NCU15XH103F6SRC（传感器）：公开页面参数；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

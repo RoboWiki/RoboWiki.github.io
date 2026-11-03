@@ -4,6 +4,8 @@ title: "铺层/缠绕成型"
 
 # 铺层/缠绕成型
 
+<p><a href="/materials">← 返回材质库</a></p>
+
 <div class="mt-meta">
   <span>加工工艺</span>
   <span>复合材料成型</span>
