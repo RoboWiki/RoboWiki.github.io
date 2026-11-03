@@ -22,7 +22,7 @@ description: "TECH PUBLIC AP2112K-3.3TRG1（硬件芯片）：官方参数；来
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -36,7 +36,7 @@ description: "TECH PUBLIC AP2112K-3.3TRG1（硬件芯片）：官方参数；来
 <div class="part-src">
 来源：<a href="https://www.lcsc.com/product-detail/C23380830.html">https://www.lcsc.com/product-detail/C23380830.html</a><br/>
 收录：立创商城搜索页（2026-10-29）<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

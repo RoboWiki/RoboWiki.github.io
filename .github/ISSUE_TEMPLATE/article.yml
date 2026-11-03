@@ -75,5 +75,5 @@ body:
     attributes:
       label: 授权
       options:
-        - label: 我同意按「署名 — 非商用 — 相同方式共享」发布，并确认内容为原创或已获授权
+        - label: 我同意按「署名 — 相同方式共享 4.0（CC BY-SA 4.0）」发布，并确认内容为原创或已获授权
           required: true

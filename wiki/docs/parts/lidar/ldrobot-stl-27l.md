@@ -22,7 +22,7 @@ description: "乐动 LDROBOT STL-27L（激光雷达）：额定 5 V、量程 25 
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -34,7 +34,7 @@ description: "乐动 LDROBOT STL-27L（激光雷达）：额定 5 V、量程 25 
 <div class="part-src">
 来源：<a href="https://www.ldrobot.com/">https://www.ldrobot.com/</a><br/>
 收录：微雪 Wiki / 商城（2026-10-31）；型号属乐动 LDROBOT<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

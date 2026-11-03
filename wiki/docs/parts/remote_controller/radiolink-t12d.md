@@ -22,7 +22,7 @@ description: "乐迪 RadioLink T12D（遥控器）：官方参数；来源 B 级
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -36,7 +36,7 @@ description: "乐迪 RadioLink T12D（遥控器）：官方参数；来源 B 级
 <div class="part-src">
 来源：<a href="https://www.radiolink.com.cn/cn/t12d">https://www.radiolink.com.cn/cn/t12d</a><br/>
 收录：乐迪官网产品页 + 在线说明书（2026-10-31 核对）<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

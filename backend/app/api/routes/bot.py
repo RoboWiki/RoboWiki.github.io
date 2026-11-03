@@ -10,7 +10,8 @@ import secrets
 
 from typing import Annotated
 
-from fastapi import APIRouter, Header, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request, Security
+from fastapi.security import APIKeyHeader
 from sqlmodel import select
 
 from ...core.config import settings
@@ -19,6 +20,8 @@ from ..deps import Db, rate_limit
 from .catalog import public_part, subtype_label
 
 router = APIRouter(prefix="/bot", tags=["bot"])
+bot_scheme = APIKeyHeader(name="X-Bot-Token", auto_error=False, scheme_name="botToken",
+                         description="与后端 ROBOWIKI_BOT_TOKEN 相同的共享令牌")
 
 #: 一句话里优先展示的字段（按品类取前三个有值的）
 _FACTS: dict[str, list[tuple[str, str]]] = {
@@ -112,7 +115,7 @@ def _best(rows: list[Part], terms: list[str]) -> Part:
 
 @router.get("/answer")
 def answer(request: Request, db: Db, q: str, limit: int = 3,
-           x_bot_token: Annotated[str | None, Header()] = None):
+           x_bot_token: Annotated[str | None, Security(bot_scheme)] = None):
     _auth(request, x_bot_token)
     rate_limit(request, "bot", 300)
     text = _normalize(q)
@@ -144,7 +147,7 @@ def answer(request: Request, db: Db, q: str, limit: int = 3,
 
     p = _best(rows, terms)
     facts = _fact_line(p)
-    tier = f"来源 {p.source_tier or '—'}" + ("·已核对" if p.verified else "")
+    tier = f"来源 {p.source_tier or '—'}" + ("·已核对" if (p.verified and p.source_tier == "A") else "")
     line = f"{p.vendor} {p.model}" + (f" · {facts}" if facts else "") + f"（{tier}）"
     return {
         "found": True,

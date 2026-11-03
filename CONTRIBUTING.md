@@ -11,8 +11,11 @@ RoboWiki 拆成两个仓：
 
 ```bash
 bash scripts/fetch-data-release.sh   # 下载 data.lock.json 锁定的核心仓 release
+export ROBOWIKI_DATA_DIR="$PWD/.data/data"
+export ROBOWIKI_SCHEMA_DIR="$PWD/.data/schema"
+export ROBOWIKI_ASSETS_DIR="$PWD/.data/assets/parts"
 python -m pipeline build             # 生成页面
-ROBOWIKI_DATA_DIR="$PWD/.data/data" \nROBOWIKI_SCHEMA_DIR="$PWD/.data/schema" \nROBOWIKI_ASSETS_DIR="$PWD/.data/assets/parts" \npython -m pytest                     # 测试
+python -m pytest                     # 测试（需先装 backend/requirements.txt）
 cd wiki && npm ci && npm run dev      # 本地起站
 ```
 

@@ -22,7 +22,7 @@ description: "大疆 DJI RC-N3（遥控器）：官方参数；来源 B 级、20
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -36,7 +36,7 @@ description: "大疆 DJI RC-N3（遥控器）：官方参数；来源 B 级、20
 <div class="part-src">
 来源：<a href="https://store.dji.com/cn/product/dji-rc-n3-remote-controller">https://store.dji.com/cn/product/dji-rc-n3-remote-controller</a><br/>
 收录：DJI 大疆商城 RC-N3 商品页 + RC-N3 用户手册 v1.2（2026-11-01 核对）<br/>
-核对：2026-11-01
+最近查阅：2026-11-01
 </div>
 
 </div>

@@ -22,7 +22,7 @@ description: "达妙 DAMIAO DM-H6215（关节电机）：峰值扭矩 2 N·m、�
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -35,7 +35,7 @@ description: "达妙 DAMIAO DM-H6215（关节电机）：峰值扭矩 2 N·m、�
 <div class="part-src">
 来源：<a href="https://www.damiaokeji.com/index.php?c=show&id=115">https://www.damiaokeji.com/index.php?c=show&id=115</a><br/>
 收录：达妙官网产品页 + 官方 Gitee 仓库（kit-miao）使用教程 V2，2026-10-31 核对<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

@@ -15,6 +15,7 @@
   "release_asset": "robowiki-data-v2026.11.2.tar.gz",
   "sha256": "<tar.gz 的 SHA-256>",
   "manifest_sha256": "<MANIFEST 的 SHA-256>",
+  "schema_version": "1.1.0",
   "counts": {"parts": 329, "robots": 21, "software": 22,
              "materials": 27, "processes": 9, "ids": 622,
              "semantics_version": "1.1.0", "assets": 425}
@@ -37,7 +38,7 @@ python -m pipeline build
 cd wiki && npm run build
 ```
 
-- `fetch-data-release.sh` 会先校验 `sha256`，失败即停止，不会带着半份数据构建。
+- `fetch-data-release.sh` 校验 tar.gz 与 MANIFEST 两个 sha256，并把 MANIFEST 计数与 `data.lock.counts` 对表；失败即停止。
 - 构建脚本不访问 GitHub，不读 `raw.githubusercontent.com`；离线可用。
 - Pages workflow 每次构建都重新下载锁定版本，不用仓库里的缓存。
 

@@ -22,7 +22,7 @@ description: "STACKFORCE 6010（关节电机）：峰值扭矩 11 N·m、额定 
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -35,7 +35,7 @@ description: "STACKFORCE 6010（关节电机）：峰值扭矩 11 N·m、额定 
 <div class="part-src">
 来源：<a href="https://github.com/Seeed-Projects/Stackforce-Motor-SDK">https://github.com/Seeed-Projects/Stackforce-Motor-SDK</a><br/>
 收录：Seeed wiki zh-CN《Stackforce 系列电机》+ 厂商 PDF《新版6010关节电机用户文档V1.1》（2026-10-31）；原厂官网规格页未取到<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

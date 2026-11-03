@@ -22,7 +22,7 @@ description: "元生创新 Yesense YIS320（IMU）：额定 5 V、输出 400 Hz�
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -34,7 +34,7 @@ description: "元生创新 Yesense YIS320（IMU）：额定 5 V、输出 400 Hz�
 <div class="part-src">
 来源：<a href="https://www.yesense.com/yis320">https://www.yesense.com/yis320</a><br/>
 收录：授权代理规格页（elmak.tech，逐项参数表）+ 官方产品目录标题（2026-10-31）；官方站对抓取返回 429，未经官方手册逐项核对<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

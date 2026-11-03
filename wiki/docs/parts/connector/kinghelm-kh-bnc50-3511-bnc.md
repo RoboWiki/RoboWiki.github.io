@@ -22,7 +22,7 @@ description: "Kinghelm 金航标 KH-BNC50-3511 BNC 内孔弯头（连接器）�
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -36,7 +36,7 @@ description: "Kinghelm 金航标 KH-BNC50-3511 BNC 内孔弯头（连接器）�
 <div class="part-src">
 来源：<a href="https://www.szlcsc.com/info/16747.html">https://www.szlcsc.com/info/16747.html</a><br/>
 收录：金航标产品页（KH-BNC50-3511，2026-10-31）<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

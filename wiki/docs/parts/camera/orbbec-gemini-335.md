@@ -22,7 +22,7 @@ description: "奥比中光 Orbbec Gemini 335（深度相机）：质量 0.097 kg
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -36,7 +36,7 @@ description: "奥比中光 Orbbec Gemini 335（深度相机）：质量 0.097 kg
 <div class="part-src">
 来源：<a href="https://www.orbbec.com/products/3d-cameras/gemini-335/">https://www.orbbec.com/products/3d-cameras/gemini-335/</a><br/>
 收录：奥比中光 G330 系列官方数据表 + 官网产品页（2026-10-31 核对）<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

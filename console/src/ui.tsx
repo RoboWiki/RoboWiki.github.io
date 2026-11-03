@@ -327,7 +327,7 @@ export function PartDrawer({ partId, open, onClose, onOpenPost, onCompose }: {
             <Tag color={p.source_tier === 'A' ? 'blue' : p.source_tier === 'B' ? 'default' : 'orange'}>
               来源 {p.source_tier}
             </Tag>
-            {p.verified && <Tag color="blue">已核对 {p.last_checked}</Tag>}
+            {p.verified && p.source_tier === 'A' && <Tag color="blue">已核对 {p.last_checked}</Tag>}
             <Tag>{p.subtype_label}</Tag>
             {p.price_cny && <Tag color="gold">¥{p.price_cny}</Tag>}
             {p.url && <a href={p.url} target="_blank" rel="noreferrer">官方资料 ↗</a>}

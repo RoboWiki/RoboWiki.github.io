@@ -22,7 +22,7 @@ description: "NVIDIA Jetson Orin Nano（上位机）：Orin；来源 B 级、202
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -35,7 +35,7 @@ description: "NVIDIA Jetson Orin Nano（上位机）：Orin；来源 B 级、202
 <div class="part-src">
 来源：<a href="https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/">https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/</a><br/>
 收录：厂商公开资料（待逐项核对）<br/>
-核对：2026-10-28
+最近查阅：2026-10-28
 </div>
 
 </div>

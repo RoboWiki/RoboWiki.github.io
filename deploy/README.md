@@ -11,10 +11,13 @@ cp .env.example .env
 # 改 POSTGRES_PASSWORD / SECRET_KEY / SITE_DOMAIN / ADMIN_PASSWORD
 # 生产 SITE_DOMAIN 用真实域名（自动 HTTPS）；本地才用 :80
 
-# 1) 取核心仓数据 release（在仓库根执行）
-bash ../scripts/fetch-data-release.sh
+# 1) 取核心仓数据 release（在仓库根执行；不要在 deploy/ 里跑，否则 .data 会落错）
+cd .. && bash scripts/fetch-data-release.sh && cd deploy
+export ROBOWIKI_DATA_DIR="$PWD/../.data/data"
+export ROBOWIKI_SCHEMA_DIR="$PWD/../.data/schema"
+export ROBOWIKI_ASSETS_DIR="$PWD/../.data/assets/parts"
 
-# 2) 构建静态站（在 wiki/ 执行）
+# 2) 构建静态站（需要 pydantic；生产镜像不负责构建）
 cd ../wiki && npm ci && npm run build && cd ../deploy
 
 # 3) 起服务（migrate 会先跑完，api 再启动）
@@ -29,7 +32,7 @@ curl -fsS http://localhost/api/v1/ready
 |---|---|---|
 | `SITE_DOMAIN` | Caddy 站点域名 | `robowiki.example`（不要 `:80`） |
 | `AUTO_HTTPS` | Caddy 自动证书 | `on` |
-| `ADMIN_HANDLE` / `ADMIN_PASSWORD` | 启动时创建/更新站务账号 | 必须设置强密码 |
+| `ADMIN_HANDLE` / `ADMIN_PASSWORD` | 每次启动创建/更新站务账号并重置为该密码 | 必须设置强密码；改密要改 env 再重启 |
 | `EXPOSE_DOCS` | Swagger UI | `false` |
 | `PUBLISH_MODE` | worker 发布方式 | `dryrun` 或 `github` |
 | `BOT_TOKEN` | 群机器人只读问答 | 随机长串，留空则关闭 |
@@ -52,11 +55,12 @@ docker compose down                      # 停服务，保留卷
 ```bash
 # 旧机
 bash deploy/backup/backup.sh
-# 新机
-docker compose up -d --build
+# 新机：先准备 .data 与静态站（同“首次启动” 1-2 步）
+docker compose up -d db migrate
+docker compose stop api worker
 docker compose exec -T db pg_restore -U robowiki -d robowiki --clean --if-exists < backup/xxx.dump
+docker compose start api worker
 # 恢复后跑 /api/v1/ready，并抽查 3 个部件与提案队列
-docker compose restart api
 ```
 
 静态站与数据 release 分别从 OSS/CDN、核心仓 release 同步；材质库、部件、整机都来自同一份 release，不单独同步。
@@ -66,7 +70,9 @@ docker compose restart api
 - `pgdata`、`caddy_data` 是命名卷；不要 `down -v`。备份文件默认在 `deploy/backup/`，已被 git 忽略。
 - 静态目录由 `STATIC_DIR` 指定，默认 `../wiki/docs/.vitepress/dist`。
 - 数据目录由 `DATA_DIR` / `SCHEMA_DIR` 指定，默认 `../.data/...`。
-- 生产用自有域名 + HTTPS；Caddy 自动申请证书。
+- 生产用自有域名 + HTTPS；Caddy 自动申请证书（`AUTO_HTTPS=on`）。
+- 单副本 API 使用进程内限流；扩容到多副本前必须换 Redis，否则限流按副本失效。
+- 备份含邮箱与密码哈希（PII）：不要进 git，复制到异地并定期做恢复演练。
 - 不在服务器上 `npm install` / `pip install` 跑生产；镜像由 CI 构建。
 
 ## Worker / Outbox

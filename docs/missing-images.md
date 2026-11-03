@@ -1,40 +1,36 @@
 # 缺图清单
 
-共 **19 个**零件没有产品图。清单以 `data/catalog/**` 为准逐条核对——不是没找，是不拿错图、同系列图或整机宣传图凑数。
+以 `data-v2026.11.2` 为准：**目录内只有 1 件没有产品图**（乐动 LD14）；
+另有 2 条 C 级电池线索没有图，它们不投影进站点目录。
 
-> 补图方式：丢进 `inbox/`，文件名用零件 id 或型号，然后 `python tools/import_from_inbox.py`。
+> 补图在核心仓做：图片放核心仓 `inbox/`，在核心仓根目录跑
+> `python tools/import_from_inbox.py`，产物写入 `assets/parts/`，
+> 并在条目的 `specs.image_source` 写清出处。不要在本仓提交图片副本。
 
-## 当前缺图（19）
+## 当前缺图
 
-| 品类 | 零件 id | 型号 | 待补原因 |
+| 范围 | 零件 id | 型号 | 原因 |
 |---|---|---|---|
-| actuator | `cubemars-ak70-10` | AK70-10 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
-| actuator | `cubemars-ak10-9-v3-0-kv60` | AK10-9 V3.0 KV60 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
-| actuator | `cubemars-ak10-9-v2-0-kv60` | AK10-9 V2.0 KV60 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
-| actuator | `cubemars-ak80-9-v3-0-kv100` | AK80-9 V3.0 KV100 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
-| actuator | `cubemars-ak80-8-kv60` | AK80-8 KV60 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
-| actuator | `cubemars-ak45-10-v3-0-kv75` | AK45-10 V3.0 KV75 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
-| actuator | `cubemars-ak45-36-v3-0-kv80` | AK45-36 V3.0 KV80 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
-| actuator | `cubemars-ak40-10-v3-0-kv170` | AK40-10 V3.0 KV170 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
-| actuator | `cubemars-ak80-64-kv80` | AK80-64 KV80 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
-| actuator | `cubemars-ak70-9-v3-0-kv60` | AK70-9 V3.0 KV60 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
-| actuator | `cubemars-akh70-48-v1-0-kv41` | AKH70-48 V1.0 KV41 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
-| actuator | `cubemars-ak60-39-v3-0-kv80` | AK60-39 V3.0 KV80 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
-| actuator | `cubemars-ak60-6-v3-0-kv80` | AK60-6 V3.0 KV80 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
-| actuator | `cubemars-ak60-6-v1-1-kv140` | AK60-6 V1.1 KV140 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
-| actuator | `cubemars-ak45-36-kv80` | AK45-36 KV80 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
-| actuator | `cubemars-ak45-10-kv75` | AK45-10 KV75 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
-| actuator | `cubemars-ak40-10-kv170` | AK40-10 KV170 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
-| actuator | `cubemars-akh70-16-v1-0-kv41` | AKH70-16 V1.0 KV41 | CubeMars 官方产品页按型号有图；本轮新增的 18 款尚未逐款抓取/核对，暂不拿同系列图充数 |
-| lidar | `sens-ldrobot-ld14` | LD14 | 乐动 LD14 官方产品页/商城图待核；LD19 已用 Wayback 快照补图，STL-27L 用官网图 |
+| 目录内 | `sens-ldrobot-ld14` | LD14 | 官方产品图待核；LD19 已用 Wayback 快照补图 |
+| C 级线索（不入目录） | `feifei-6s-222v-xt60` | 6S 22.2V XT60 | 采购清单线索，无官方图 |
+| C 级线索（不入目录） | `fulaixiang-6s4p-21700-20000` | 6S4P 21700 20000mAh | 淘宝截图线索，无官方图 |
 
-## 已补图记录
+## 补图流程
 
-- **2026-10-31（下架 1 条，20 → 19）**：`damiao-motor-cable`（达妙电机线）没有独立产品图，按要求下架并在 `data/_id_registry.json` 立墓碑（`removed` / `removed_reason`：整套线可由 XT30(2+2)/CAN/GH1.25 自行配线）；同步移除精选、测试与贡献记录里的引用。连接器 23 条因此全部有图。
-- **2026-10-31（连接器补图）**：补 23 张产品图——JST GH/SH/XH/PH/ZH 5 张、Amass XT30/60/90/MR30/XT30(2+2)/XT90(2+2) 6 张（官方规格书/样册），A2541 排针、FPC-05F-24P、Degson 3.81/5.08、XKB USB-C 5 张（立创/厂商），以及 DB9(Ckmtw)、DC 5.5×2.1(景泰隆)、RJ45(HANRUN)、SMA/BNC(Kinghelm)、GX12-2P(Elecbee)、5264 端子线(伟利达) 7 张。
-- **2026-10-31（合并 ccc 分支）**：补 42 张产品图（覆盖 40 个部件）——达妙 JH/S 系列、高擎 9 款、脉塔 6 款、Stackforce 2 款、小米 CyberGear、大疆 TB47/TB48、Movella MTi-3、乐动 LD19/STL27L、Livox Mid-360S/Mid-70、RoboSense Airy Lite。缺图从 61 降到 21。
-- **2026-10-28**：Intel D435i / D455 / D405 / D457、奥比中光 Gemini 305 / 335 / 336、达妙 H7 与 DM-MC-Board02、大疆 RM A/C 板、灵足 RS10、宇树 L1 / L2（线稿图）。
+```bash
+# 在核心仓根目录
+# 1) 把图片放进 inbox/（文件名用零件 id 或型号）
+python tools/import_from_inbox.py     # 认领 + 登记 image_source
+python tools/normalize_images.py      # 统一白底/尺寸
+python tools/apply_images.py          # 合并进 data/catalog
+python -m pipeline validate
+python tools/export_data.py --out dist --tag data-vYYYY.MM.N
+```
 
-## 怎么补
+发布后本仓更新 `data.lock.json`，再 `pipeline build`。
 
-剩下的主要是 CubeMars 新增的 18 款和乐动 LD14：CubeMars 官方产品页按型号有图；LD14 官方图待核。
+## 口径
+
+- 不拿同系列图、整机宣传图或商城图冒充某型号产品图。
+- 没有官方图就保持 `image_url: null`，页面用材料色块/示意图，不放假图。
+- 图片版权归原方；`image_source` 必填，权利人要求下架先撤图再讨论。

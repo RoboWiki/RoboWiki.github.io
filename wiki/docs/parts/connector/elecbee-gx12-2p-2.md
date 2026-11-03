@@ -22,7 +22,7 @@ description: "电蜂优选 Elecbee GX12-2P 2芯航空插头（连接器）：官
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -36,7 +36,7 @@ description: "电蜂优选 Elecbee GX12-2P 2芯航空插头（连接器）：官
 <div class="part-src">
 来源：<a href="https://www.elecbee.cn/">https://www.elecbee.cn/</a><br/>
 收录：电蜂优选 GX12-2P 产品图（2026-10-31）+ 通用 GX12-2P 参数页<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

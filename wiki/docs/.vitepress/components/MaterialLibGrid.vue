@@ -150,7 +150,7 @@ const refHref = (r: Ref) => `./materials/${r._href}.html`
     @update:q="q = $event"
   >
     <template #note>
-      物理量是常温典型值，热处理状态、纤维方向与批次会改变实际值；复合材料要按方向取值。
+      当前 36 条材料/工艺均为 <strong>B 级</strong>典型值，不是厂商认证；热处理状态、纤维方向与批次会改变实际值。
       没有官方型号图时不放示意图 —— 色块只表示材料族，<strong>不冒充产品图</strong>。
     </template>
 
@@ -163,6 +163,7 @@ const refHref = (r: Ref) => `./materials/${r._href}.html`
         <div class="ex-title">
           <a :href="href(x)">{{ x.name }}</a>
           <em class="ex-tag">{{ x.family_label }}</em>
+          <em class="ex-tag">B 级</em>
         </div>
         <p class="ex-sub">{{ x.name_en || x.group_label }}</p>
         <p v-if="pitch(x)" class="ex-desc">{{ pitch(x) }}</p>

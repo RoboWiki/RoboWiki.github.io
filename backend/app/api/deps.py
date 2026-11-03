@@ -5,7 +5,8 @@ import time
 from collections import defaultdict, deque
 from typing import Annotated, Optional
 
-from fastapi import Depends, Header, HTTPException, Request, status
+from fastapi import Depends, HTTPException, Request, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlmodel import Session, select
 
 from ..core.config import settings
@@ -25,20 +26,19 @@ def get_db() -> Session:
 Db = Annotated[Session, Depends(get_db)]
 
 
-def _bearer(authorization: str | None) -> str | None:
-    if not authorization:
-        return None
-    parts = authorization.split()
-    if len(parts) == 2 and parts[0].lower() == "bearer":
-        return parts[1]
-    return None
+bearer_scheme = HTTPBearer(auto_error=False, scheme_name="bearerAuth",
+                         description="JWT access token")
+
+
+def _bearer(credentials: HTTPAuthorizationCredentials | None) -> str | None:
+    return credentials.credentials if credentials else None
 
 
 def current_user(
     db: Db,
-    authorization: Annotated[str | None, Header()] = None,
+    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer_scheme)] = None,
 ) -> User:
-    token = _bearer(authorization)
+    token = _bearer(credentials)
     if not token:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "需要登录",
                             headers={"WWW-Authenticate": "Bearer"})
@@ -51,9 +51,9 @@ def current_user(
 
 def optional_user(
     db: Db,
-    authorization: Annotated[str | None, Header()] = None,
+    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer_scheme)] = None,
 ) -> User | None:
-    token = _bearer(authorization)
+    token = _bearer(credentials)
     if not token:
         return None
     try:

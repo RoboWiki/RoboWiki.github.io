@@ -22,7 +22,7 @@ description: "大疆 DJI TB47（电池）：额定 22.2 V；来源 B 级、2026-
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -33,7 +33,7 @@ description: "大疆 DJI TB47（电池）：额定 22.2 V；来源 B 级、2026-
 <div class="part-src">
 来源：<a href="https://www.dji.com/cn/inspire-1">https://www.dji.com/cn/inspire-1</a><br/>
 收录：大疆官网 Inspire 1 规格页；RoboMaster 社区《DJI 智能电池 TB47/TB48 使用手册 V2.4》<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

@@ -22,7 +22,7 @@ description: "Ckmtw 灿科盟 D-DMR009PF-D002 DB9 9P 母座（连接器）：官
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -36,7 +36,7 @@ description: "Ckmtw 灿科盟 D-DMR009PF-D002 DB9 9P 母座（连接器）：官
 <div class="part-src">
 来源：<a href="https://item.szlcsc.com/153213.html">https://item.szlcsc.com/153213.html</a><br/>
 收录：立创商城 C141882（Ckmtw，2026-10-31）<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>
