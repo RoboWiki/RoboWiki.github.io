@@ -28,9 +28,17 @@ interface Item {
 }
 
 const all = ref<Item[]>([...materialsData.materials || [], ...materialsData.processes || []])
+// URL 状态放 onMounted：SSR 与首帧一致，深链也不会 hydration mismatch。
 const q = ref('')
 const sortKey = ref('group')
 const active = ref<Record<string, string>>({})
+
+onMounted(() => {
+  const params = new URLSearchParams(window.location.search)
+  q.value = params.get('q') || ''
+  const group = params.get('group')
+  if (group) active.value = { ...active.value, kind: group }
+})
 
 const GROUP_ORDER = ['metal', 'engineering_plastic', 'printing', 'composite', 'elastomer', 'process']
 const FAMILY_ORDER = [

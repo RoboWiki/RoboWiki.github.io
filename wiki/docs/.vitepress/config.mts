@@ -206,6 +206,8 @@ export default withPwa(defineConfig({
   themeConfig: {
     // 品牌标：不再叫「文档」—— 这是个社区，不是一个说明书
     siteTitle: 'RoboWiki',
+    // 英文站只有少数页面；不要让语言切换链到不存在的对应路径（404）。
+    i18nRouting: false,
     // 站内搜索：local = 构建期生成本地索引，浏览器内检索，不需要后端也不需要 Algolia。
     // 243 部件 / 21 整机 / 207 渠道 + 全部文章，靠点导航找不到时这是唯一入口。
     search: {

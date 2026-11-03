@@ -2,18 +2,39 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { withBase } from 'vitepress'
 import QRCode from 'qrcode'
-import { canonical, findShareEntry, type ShareEntry } from '../lib/share'
+import { canonical, findShareEntry, shareJsonPath, type ShareEntry } from '../lib/share'
 
 const entry = ref<ShareEntry | null>(null)
 const copied = ref(false)
 const qrEl = ref<HTMLCanvasElement | null>(null)
 const drawing = ref(false)
 
+async function loadEntry(pathname: string): Promise<ShareEntry | null> {
+  // 先直查当前页那张 1KB 的分享卡；找不到再退回 165KB 索引。
+  const direct = shareJsonPath(pathname)
+  if (direct) {
+    try {
+      const r = await fetch(withBase(direct))
+      if (r.ok) {
+        const d = await r.json()
+        return {
+          id: d.id, path: pathname.replace(/\.html$/, ''), url: d.canonical_url,
+          json: direct, title: d.title, summary: d.summary,
+          source_tier: d.source_tier, verified: d.verified,
+          last_checked: d.last_checked, data_version: d.data_version,
+          copy_text: d.copy_text,
+        }
+      }
+    } catch { /* 退回索引 */ }
+  }
+  return findShareEntry(pathname)
+}
+
 onMounted(async () => {
   // 只有部件/材质页有分享卡；别的页面别拖 165KB 的 share/index.json。
   const p = window.location.pathname
   if (!p.startsWith('/parts/') && !p.startsWith('/materials/')) return
-  entry.value = await findShareEntry(p)
+  entry.value = await loadEntry(p)
 })
 
 watch([entry, qrEl], async ([e, el]) => {
@@ -21,8 +42,13 @@ watch([entry, qrEl], async ([e, el]) => {
   await QRCode.toCanvas(el, canonical(e), { width: 132, margin: 1, color: { dark: '#0b1220', light: '#ffffff' } })
 }, { immediate: true })
 
+const shareNoun = computed(() =>
+  window.location.pathname.startsWith('/materials/') ? '材料 / 工艺' : '部件')
+
 const copyText = computed(() => {
   if (!entry.value) return ''
+  // 优先用构建期生成的 copy_text：它带来源等级与数据版本，比现场拼更稳。
+  if (entry.value.copy_text) return entry.value.copy_text
   return [
     entry.value.title,
     entry.value.summary,
@@ -221,9 +247,9 @@ async function downloadCard() {
 </script>
 
 <template>
-  <section v-if="entry" class="rw-share" aria-label="分享这个部件">
+  <section v-if="entry" class="rw-share" :aria-label="`分享这个${shareNoun}`">
     <div class="rw-share-head">
-      <b>分享这个部件</b>
+      <b>分享这个{{ shareNoun }}</b>
       <span>{{ entry.data_version }}</span>
     </div>
     <p class="rw-share-text">{{ entry.summary }}</p>
@@ -235,8 +261,9 @@ async function downloadCard() {
           {{ drawing ? '生成中…' : '下载分享卡' }}
         </button>
       </div>
-      <canvas ref="qrEl" class="rw-share-qr" aria-label="页面二维码"></canvas>
+      <canvas ref="qrEl" class="rw-share-qr" role="img" aria-label="页面二维码"></canvas>
     </div>
+    <span class="rw-share-status" role="status" aria-live="polite">{{ copied ? '已复制' : '' }}</span>
   </section>
 </template>
 
@@ -295,3 +322,12 @@ async function downloadCard() {
   cursor: default;
 }
 </style>
+.rw-share-status {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

@@ -23,9 +23,17 @@ interface Group { id: string; name: string; hint?: string }
 
 const items = ref<Item[]>(softwareData.items || [])
 const groups = ref<Group[]>(softwareData.groups || [])
+// 同其它列表：URL 状态放 onMounted，避免 hydration mismatch。
 const q = ref('')
 const sortKey = ref('group')
 const active = ref<Record<string, string>>({})
+
+onMounted(() => {
+  const params = new URLSearchParams(window.location.search)
+  q.value = params.get('q') || ''
+  const group = params.get('group')
+  if (group) active.value = { ...active.value, group }
+})
 
 const GNAME = computed(() => {
   const m: Record<string, string> = {}

@@ -116,14 +116,17 @@ async function load() {
     }
   } catch { /* 没有快照就继续 */ }
 
-  try {
-    const r = await fetch(`/api/ratings/${encodeURIComponent(props.partId)}`)
-    if (r.ok && (r.headers.get('content-type') || '').includes('json')) {
-      const d = await r.json()
-      s.value = { ...empty, ...d }
-      source.value = 'live'
-    }
-  } catch { /* 静态部署：保持快照 */ }
+  // 静态站没有 /api；只有本地 dev 才探实时值，避免每次访问都下载 40KB 404 页。
+  if (import.meta.env.DEV) {
+    try {
+      const r = await fetch(`/api/ratings/${encodeURIComponent(props.partId)}`)
+      if (r.ok && (r.headers.get('content-type') || '').includes('json')) {
+        const d = await r.json()
+        s.value = { ...empty, ...d }
+        source.value = 'live'
+      }
+    } catch { /* 静态部署：保持快照 */ }
+  }
 }
 
 onMounted(load)

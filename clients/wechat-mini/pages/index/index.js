@@ -401,7 +401,6 @@ Page({
       if (item) {
         const isPart = this.data.tab === 'parts'
         const bits = [item.title || item.name || 'RoboWiki']
-        if (isPart && item.priceLabel && item.priceLabel !== '价格未公布') bits.push(item.priceLabel)
         if (item.source_tier) bits.push(item.source_tier + ' 级')
         if (item.keySpecs) bits.push(item.keySpecs.split(' · ')[0])
         return {

@@ -2115,7 +2115,7 @@ html.dark .rl-th {{ color: #e0b159; }}
     # 渠道库（原「供应商」）：页头由 ExplorerShell 提供
     (OUT / "suppliers.md").write_text(f"""---
 title: 渠道库
-description: "{len(sups)} 个机器人零件与加工的采购渠道：按品类、地区、是否接小批量筛选，标了来源与核对日期。"
+description: "{len(sups)} 个机器人零件与加工的采购渠道：按品类与工艺筛选，标了来源与社区反馈。"
 layout: page
 sidebar: false
 outline: false
