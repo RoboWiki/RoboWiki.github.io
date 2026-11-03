@@ -8,6 +8,7 @@
  * 数据：public/software.json（pipeline/build_software.py 生成）
  */
 import { computed, onMounted, ref } from 'vue'
+import softwareData from '../../public/software.json'
 import ExplorerShell from './ExplorerShell.vue'
 
 interface Item {
@@ -20,19 +21,11 @@ interface Item {
 
 interface Group { id: string; name: string; hint?: string }
 
-const items = ref<Item[]>([])
-const groups = ref<Group[]>([])
+const items = ref<Item[]>(softwareData.items || [])
+const groups = ref<Group[]>(softwareData.groups || [])
 const q = ref('')
 const sortKey = ref('group')
 const active = ref<Record<string, string>>({})
-
-onMounted(async () => {
-  const r = await fetch(`${import.meta.env.BASE_URL}software.json`)
-  if (!r.ok) return
-  const d = await r.json()
-  items.value = d.items || []
-  groups.value = d.groups || []
-})
 
 const GNAME = computed(() => {
   const m: Record<string, string> = {}

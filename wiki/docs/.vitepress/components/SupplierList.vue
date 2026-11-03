@@ -6,6 +6,7 @@
  * 卡片比的是「谁靠谱」：质量、交期、价格档、能不能开票，还有点评原话。
  */
 import { computed, onMounted, ref } from 'vue'
+import suppliersData from '../../public/suppliers.json'
 import ExplorerShell from './ExplorerShell.vue'
 
 interface Sup {
@@ -18,7 +19,7 @@ interface Sup {
   lead?: string | null; notes?: string | null; tier?: string | null
 }
 
-const all = ref<Sup[]>([])
+const all = ref<Sup[]>(suppliersData.suppliers || [])
 const initialQ = typeof window !== 'undefined'
   ? (new URLSearchParams(window.location.search).get('q') || '').trim()
   : ''
@@ -26,11 +27,6 @@ const q = ref(initialQ)
 const sortKey = ref('price')
 const active = ref<Record<string, string>>({})
 const expanded = ref<string | null>(null)
-
-onMounted(async () => {
-  const r = await fetch(`${import.meta.env.BASE_URL}suppliers.json`)
-  if (r.ok) all.value = (await r.json()).suppliers || []
-})
 
 const hasNote = (s: Sup) => !!s.notes
 
@@ -137,7 +133,7 @@ const rows = computed(() => {
           <div v-if="s.materials"><dt>材料</dt><dd>{{ s.materials }}</dd></div>
           <div v-if="s.lead"><dt>工期</dt><dd>{{ s.lead }}</dd></div>
         </dl>
-        <p v-if="hasNote(s)" class="ex-sub" :class="{ 'note-open': expanded === s.id }"
+        <p v-if="hasNote(s)" class="ex-sub ex-notes" :class="{ 'note-open': expanded === s.id }"
            style="border-left:2px solid var(--vp-c-divider); padding-left:0.55rem; line-height:1.75; cursor:pointer"
            role="button" tabindex="0" :aria-expanded="expanded === s.id" @click="expanded = expanded === s.id ? null : s.id" @keydown.enter.prevent="expanded = expanded === s.id ? null : s.id" @keydown.space.prevent="expanded = expanded === s.id ? null : s.id">
           {{ s.notes }}
@@ -155,11 +151,9 @@ const rows = computed(() => {
 </template>
 
 <style scoped>
-/* 点评默认折叠三行，点开看全文 */
-.ex-sub.note-open {
-  display: block;
-}
-.ex-sub:not(.note-open) {
+/* 只有点评默认折叠三行；别把工艺行、上榜原因一起裁掉 */
+.ex-notes.note-open { display: block; }
+.ex-notes:not(.note-open) {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;

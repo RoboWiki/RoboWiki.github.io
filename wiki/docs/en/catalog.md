@@ -18,9 +18,9 @@ import PartExplorer from '../.vitepress/components/PartExplorer.vue'
   </p>
 </div>
 
-> <strong>What is translated:</strong> interface labels only. Model names, spec values and
-> supplier reviews stay in their original Chinese — they are other people's words, and a
-> machine translation would blur who said what. Specs themselves are language-neutral numbers.
+> <strong>What is translated:</strong> this intro only. The filter/sort toolbar below is still
+> Chinese-only for now. Model names, spec values and supplier reviews stay in their original
+> Chinese — they are other people's words, and a machine translation would blur who said what.
 
 
 <PartExplorer lang="en" />
