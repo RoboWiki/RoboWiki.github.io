@@ -4,6 +4,8 @@ title: "PPS GF40 聚苯硫醚"
 
 # PPS GF40 聚苯硫醚
 
+<p><a href="/materials">← 返回材质库</a></p>
+
 <div class="mt-meta">
   <span>工程塑料</span>
   <span>PPS</span>

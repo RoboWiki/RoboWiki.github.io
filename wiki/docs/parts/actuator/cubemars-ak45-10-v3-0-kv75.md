@@ -1,6 +1,6 @@
 ---
 title: CubeMars AK45-10 V3.0 KV75
-description: "CubeMars AK45-10 V3.0 KV75（关节电机）：峰值扭矩 7 N·m、额定 2.5 N·m、减速比 10:1；来源 B 级、2026-11-02 核对。"
+description: "CubeMars AK45-10 V3.0 KV75（关节电机）：峰值扭矩 7 N·m、额定 2.5 N·m、减速比 10:1；来源 B 级、2026-11-02 最近查阅。"
 ---
 
 

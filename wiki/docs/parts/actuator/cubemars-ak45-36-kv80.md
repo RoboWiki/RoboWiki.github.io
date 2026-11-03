@@ -1,6 +1,6 @@
 ---
 title: CubeMars AK45-36 KV80
-description: "CubeMars AK45-36 KV80（关节电机）：峰值扭矩 24 N·m、额定 8 N·m、减速比 36:1；来源 B 级、2026-11-02 核对。"
+description: "CubeMars AK45-36 KV80（关节电机）：峰值扭矩 24 N·m、额定 8 N·m、减速比 36:1；来源 B 级、2026-11-02 最近查阅。"
 ---
 
 

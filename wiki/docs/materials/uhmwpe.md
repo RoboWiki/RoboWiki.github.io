@@ -4,6 +4,8 @@ title: "UHMWPE 超高分子量聚乙烯"
 
 # UHMWPE 超高分子量聚乙烯
 
+<p><a href="/materials">← 返回材质库</a></p>
+
 <div class="mt-meta">
   <span>复合材料</span>
   <span>UHMWPE</span>

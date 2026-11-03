@@ -4,6 +4,8 @@ title: "PLA 聚乳酸"
 
 # PLA 聚乳酸
 
+<p><a href="/materials">← 返回材质库</a></p>
+
 <div class="mt-meta">
   <span>3D 打印材料</span>
   <span>PLA</span>

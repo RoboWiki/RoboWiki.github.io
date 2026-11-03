@@ -4,6 +4,8 @@ title: "AlSi10Mg 铝合金（SLM）"
 
 # AlSi10Mg 铝合金（SLM）
 
+<p><a href="/materials">← 返回材质库</a></p>
+
 <div class="mt-meta">
   <span>金属材料</span>
   <span>铝合金</span>

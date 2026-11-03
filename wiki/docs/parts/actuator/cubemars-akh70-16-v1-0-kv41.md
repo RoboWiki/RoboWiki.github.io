@@ -1,6 +1,6 @@
 ---
 title: CubeMars AKH70-16 V1.0 KV41
-description: "CubeMars AKH70-16 V1.0 KV41（关节电机）：峰值扭矩 78 N·m、额定 26 N·m、减速比 16:1；来源 B 级、2026-11-02 核对。"
+description: "CubeMars AKH70-16 V1.0 KV41（关节电机）：峰值扭矩 78 N·m、额定 26 N·m、减速比 16:1；来源 B 级、2026-11-02 最近查阅。"
 ---
 
 

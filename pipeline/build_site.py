@@ -482,8 +482,11 @@ def part_description(r: dict) -> str:
             bits.append(fmt.format(num(v)))
     cat = CAT_LABEL.get(r.get("category") or "", "")
     head = f'{r.get("vendor")} {r.get("model")}' + (f"（{cat}）" if cat else "")
-    return (f"{head}：{'、'.join(bits[:3]) or '官方参数'}；"
-            f"来源 {r.get('source_tier') or '—'} 级、{r.get('last_checked') or '—'} 核对。")
+    tier = r.get("source_tier") or "—"
+    fallback = "官方参数" if tier == "A" else "公开页面参数"
+    check = "核对" if tier == "A" else "最近查阅"
+    return (f"{head}：{'、'.join(bits[:3]) or fallback}；"
+            f"来源 {tier} 级、{r.get('last_checked') or '—'} {check}。")
 
 
 #: 站点对外域名（organization pages，站点在域名根）。canonical 与旧 URL 跳转页都要

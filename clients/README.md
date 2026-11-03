@@ -27,7 +27,7 @@
 
 1. **认证**：当前统一 `Authorization: Bearer <JWT>`（Web 也用 Bearer，Cookie 未实现）；小程序 `wx.login`、App PKCE 是规划；机器人用 `X-Bot-Token`。都映射到同一 `users`；外部身份绑定（`identities`）尚未建表。
 2. **版本**：响应带 `X-RoboWiki-Data-Version`；破坏性变更走 `/api/v2`。
-3. **分享**：所有端使用同一份 `/share/parts/{category}/{slug}.json` 与 `/share/index.json`（标题、参数、来源、`data_version`、canonical URL）；客户端只渲染，不各自拼文案。
+3. **分享**：所有端使用同一份 `/share/parts/{category}/{slug}.json` 与 `/share/index.json`（标题、参数、来源、`data_version`、`url`；`verified` 是 A 级展示标记）；客户端只渲染，不各自拼文案。
 4. **离线**：PWA 已缓存外壳、访问页与分享 JSON；小程序/App 的本地写队列尚未实现。服务端 outbox 是发布队列，不是客户端离线队列。
 5. **SDK**：从 `/api/openapi.json` 生成 TypeScript/Dart/Kotlin 客户端；当前未生成，先按 OpenAPI 手写最小客户端。
 

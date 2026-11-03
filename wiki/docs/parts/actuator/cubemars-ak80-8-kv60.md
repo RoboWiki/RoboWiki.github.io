@@ -1,6 +1,6 @@
 ---
 title: CubeMars AK80-8 KV60
-description: "CubeMars AK80-8 KV60（关节电机）：峰值扭矩 25 N·m、额定 10 N·m、减速比 8:1；来源 B 级、2026-11-02 核对。"
+description: "CubeMars AK80-8 KV60（关节电机）：峰值扭矩 25 N·m、额定 10 N·m、减速比 8:1；来源 B 级、2026-11-02 最近查阅。"
 ---
 
 

@@ -1,6 +1,6 @@
 ---
 title: CubeMars AK40-10 V3.0 KV170
-description: "CubeMars AK40-10 V3.0 KV170（关节电机）：峰值扭矩 4.1 N·m、额定 1.3 N·m、减速比 10:1；来源 B 级、2026-11-02 核对。"
+description: "CubeMars AK40-10 V3.0 KV170（关节电机）：峰值扭矩 4.1 N·m、额定 1.3 N·m、减速比 10:1；来源 B 级、2026-11-02 最近查阅。"
 ---
 
 

@@ -1,6 +1,6 @@
 ---
 title: Tokmas(托克马斯) ICM-42688-P(TOKMAS)
-description: "Tokmas(托克马斯) ICM-42688-P(TOKMAS)（IMU）：官方参数；来源 B 级、2026-10-31 核对。"
+description: "Tokmas(托克马斯) ICM-42688-P(TOKMAS)（IMU）：公开页面参数；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

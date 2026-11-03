@@ -1,6 +1,6 @@
 ---
 title: SILAN(士兰微) SC7A20HTR
-description: "SILAN(士兰微) SC7A20HTR（IMU）：官方参数；来源 B 级、2026-10-31 核对。"
+description: "SILAN(士兰微) SC7A20HTR（IMU）：公开页面参数；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

@@ -1,6 +1,6 @@
 ---
 title: CubeMars AK10-9 V2.0 KV60
-description: "CubeMars AK10-9 V2.0 KV60（关节电机）：峰值扭矩 48 N·m、额定 18 N·m、减速比 9:1；来源 B 级、2026-11-02 核对。"
+description: "CubeMars AK10-9 V2.0 KV60（关节电机）：峰值扭矩 48 N·m、额定 18 N·m、减速比 9:1；来源 B 级、2026-11-02 最近查阅。"
 ---
 
 

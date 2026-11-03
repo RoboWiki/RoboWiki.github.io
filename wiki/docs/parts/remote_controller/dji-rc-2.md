@@ -1,6 +1,6 @@
 ---
 title: 大疆 DJI RC 2
-description: "大疆 DJI RC 2（遥控器）：官方参数；来源 B 级、2026-11-01 核对。"
+description: "大疆 DJI RC 2（遥控器）：公开页面参数；来源 B 级、2026-11-01 最近查阅。"
 ---
 
 

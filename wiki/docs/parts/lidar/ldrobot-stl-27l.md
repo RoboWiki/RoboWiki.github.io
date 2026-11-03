@@ -1,6 +1,6 @@
 ---
 title: 乐动 LDROBOT STL-27L
-description: "乐动 LDROBOT STL-27L（激光雷达）：额定 5 V、量程 25 m；来源 B 级、2026-10-31 核对。"
+description: "乐动 LDROBOT STL-27L（激光雷达）：额定 5 V、量程 25 m；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

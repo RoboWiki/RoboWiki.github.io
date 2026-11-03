@@ -1,6 +1,6 @@
 ---
 title: XKB 星坤 USB-C 16P 母座
-description: "XKB 星坤 USB-C 16P 母座（连接器）：官方参数；来源 B 级、2026-10-31 核对。"
+description: "XKB 星坤 USB-C 16P 母座（连接器）：公开页面参数；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

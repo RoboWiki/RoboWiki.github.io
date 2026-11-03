@@ -4,6 +4,8 @@ title: "CNC 加工"
 
 # CNC 加工
 
+<p><a href="/materials">← 返回材质库</a></p>
+
 <div class="mt-meta">
   <span>加工工艺</span>
   <span>减材加工</span>

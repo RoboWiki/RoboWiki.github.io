@@ -1,6 +1,6 @@
 ---
 title: STACKFORCE 8108
-description: "STACKFORCE 8108（关节电机）：峰值扭矩 22 N·m、额定 7.5 N·m、减速比 8:1；来源 B 级、2026-10-31 核对。"
+description: "STACKFORCE 8108（关节电机）：峰值扭矩 22 N·m、额定 7.5 N·m、减速比 8:1；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

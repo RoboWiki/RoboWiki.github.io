@@ -4,6 +4,8 @@ title: "PC/ABS 合金"
 
 # PC/ABS 合金
 
+<p><a href="/materials">← 返回材质库</a></p>
+
 <div class="mt-meta">
   <span>工程塑料</span>
   <span>PC/ABS</span>

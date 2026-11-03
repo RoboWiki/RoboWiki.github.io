@@ -1,6 +1,6 @@
 ---
 title: 达妙 DAMIAO DM-S3519-1EC
-description: "达妙 DAMIAO DM-S3519-1EC（关节电机）：峰值扭矩 7.8 N·m、额定 3.5 N·m、减速比 19.2:1；来源 B 级、2026-10-31 核对。"
+description: "达妙 DAMIAO DM-S3519-1EC（关节电机）：峰值扭矩 7.8 N·m、额定 3.5 N·m、减速比 19.2:1；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

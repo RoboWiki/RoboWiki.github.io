@@ -1,6 +1,6 @@
 ---
 title: FH(风华) CMFA103J3950HANT
-description: "FH(风华) CMFA103J3950HANT（传感器）：官方参数；来源 B 级、2026-10-31 核对。"
+description: "FH(风华) CMFA103J3950HANT（传感器）：公开页面参数；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

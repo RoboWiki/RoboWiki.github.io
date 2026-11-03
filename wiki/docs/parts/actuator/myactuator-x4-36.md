@@ -1,6 +1,6 @@
 ---
 title: 脉塔 MyActuator X4-36
-description: "脉塔 MyActuator X4-36（关节电机）：峰值扭矩 34 N·m、额定 10.5 N·m、减速比 36:1；来源 B 级、2026-10-31 核对。"
+description: "脉塔 MyActuator X4-36（关节电机）：峰值扭矩 34 N·m、额定 10.5 N·m、减速比 36:1；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

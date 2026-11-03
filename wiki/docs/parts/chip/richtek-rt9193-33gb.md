@@ -1,6 +1,6 @@
 ---
 title: RICHTEK RT9193-33GB
-description: "RICHTEK RT9193-33GB（硬件芯片）：官方参数；来源 B 级、2026-10-31 核对。"
+description: "RICHTEK RT9193-33GB（硬件芯片）：公开页面参数；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 

@@ -4,6 +4,8 @@ title: "3D 打印 SLM"
 
 # 3D 打印 SLM
 
+<p><a href="/materials">← 返回材质库</a></p>
+
 <div class="mt-meta">
   <span>加工工艺</span>
   <span>增材制造</span>

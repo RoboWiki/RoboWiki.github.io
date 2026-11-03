@@ -4,6 +4,8 @@ title: "硅胶 VMQ"
 
 # 硅胶 VMQ
 
+<p><a href="/materials">← 返回材质库</a></p>
+
 <div class="mt-meta">
   <span>弹性体</span>
   <span>硅胶</span>

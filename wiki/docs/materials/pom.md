@@ -4,6 +4,8 @@ title: "POM 聚甲醛"
 
 # POM 聚甲醛
 
+<p><a href="/materials">← 返回材质库</a></p>
+
 <div class="mt-meta">
   <span>工程塑料</span>
   <span>POM</span>

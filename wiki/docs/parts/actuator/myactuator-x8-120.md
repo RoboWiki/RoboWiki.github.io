@@ -1,6 +1,6 @@
 ---
 title: 脉塔 MyActuator X8-120
-description: "脉塔 MyActuator X8-120（关节电机）：峰值扭矩 120 N·m、额定 43 N·m、减速比 19.61:1；来源 B 级、2026-10-31 核对。"
+description: "脉塔 MyActuator X8-120（关节电机）：峰值扭矩 120 N·m、额定 43 N·m、减速比 19.61:1；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 
