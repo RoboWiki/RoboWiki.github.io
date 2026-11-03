@@ -1,5 +1,6 @@
 ---
 title: "PPS GF40 聚苯硫醚"
+description: "材料 PPS GF40 聚苯硫醚：40% 玻纤增强的聚苯硫醚"
 ---
 
 # PPS GF40 聚苯硫醚

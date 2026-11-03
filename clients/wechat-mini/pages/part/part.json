@@ -1,5 +1,7 @@
 {
   "navigationBarTitleText": "部件详情",
   "enablePullDownRefresh": true,
-  "backgroundTextStyle": "dark"
+  "backgroundTextStyle": "dark",
+  "enableShareAppMessage": true,
+  "enableShareTimeline": true
 }

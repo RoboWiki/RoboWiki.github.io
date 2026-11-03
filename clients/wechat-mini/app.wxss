@@ -45,6 +45,10 @@ page {
 .tabs { display: flex; gap: 14rpx; margin: 20rpx 0 16rpx; }
 .tab {
   flex: 1;
+  min-height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 16rpx 0;
   text-align: center;
   border-radius: 14rpx;
@@ -55,11 +59,23 @@ page {
 }
 .tab.on { background: #0b1220; border-color: #0b1220; color: #fff; font-weight: 600; }
 
+.share-row { margin: 0 0 16rpx; }
+.share-btn {
+  width: 100%;
+  min-height: 88rpx;
+  line-height: 88rpx;
+  border: 1rpx solid #dbe3ec;
+  border-radius: 14rpx;
+  background: #fff;
+  color: #0369a1;
+  font-size: 27rpx;
+  font-weight: 600;
+}
 .cats { white-space: nowrap; margin: 0 -24rpx 12rpx; padding: 0 24rpx; }
 .cat {
   display: inline-flex;
   align-items: center;
-  min-height: 64rpx;
+  min-height: 88rpx;
   box-sizing: border-box;
   margin-right: 12rpx;
   padding: 10rpx 22rpx;
@@ -185,3 +201,23 @@ page {
 .review-body { margin-top: 4rpx; color: #475569; font-size: 24rpx; }
 .rel { padding: 16rpx 0; border-bottom: 1rpx solid #f1f5f9; display: flex; justify-content: space-between; }
 .rel:last-child { border-bottom: 0; }
+
+.card-actions { margin-top: 12rpx; display: flex; justify-content: flex-end; }
+.card-share {
+  margin: 0;
+  padding: 0 20rpx;
+  min-height: 56rpx;
+  line-height: 56rpx;
+  border: 1rpx solid #dbe3ec;
+  border-radius: 999rpx;
+  background: #fff;
+  color: #0369a1;
+  font-size: 24rpx;
+}
+.rating-row { display: flex; align-items: center; gap: 12rpx; margin-top: 10rpx; font-size: 24rpx; }
+.rating-score { color: #64748b; width: 84rpx; }
+.rating-bar { flex: 1; height: 12rpx; border-radius: 999rpx; background: #e2e8f0; overflow: hidden; }
+.rating-fill { height: 100%; background: #0ea5e9; }
+.rating-n { color: #64748b; width: 48rpx; text-align: right; }
+.loadmore { min-height: 88rpx; line-height: 88rpx; }
+.search-clear { width: 88rpx; height: 84rpx; line-height: 84rpx; }

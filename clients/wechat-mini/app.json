@@ -2,7 +2,6 @@
   "pages": [
     "pages/index/index",
     "pages/part/part",
-    "pages/materials/materials",
     "pages/material/material"
   ],
   "window": {

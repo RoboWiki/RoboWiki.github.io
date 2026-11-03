@@ -1,5 +1,6 @@
 ---
 title: "光敏树脂"
+description: "材料 光敏树脂：SLA/DLP 用光敏树脂"
 ---
 
 # 光敏树脂

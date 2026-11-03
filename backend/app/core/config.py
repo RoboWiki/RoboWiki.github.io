@@ -26,8 +26,9 @@ class Settings(BaseSettings):
     schema_dir: pathlib.Path = ROOT / "schema"
     #: 留空时从仓库根 data.lock.json 读取；显式设置可覆盖
     data_version: str | None = None
-    #: 对外站点根（分享卡、机器人回复的链接）
-    site_url: str = "https://robowiki.org"
+    #: 对外站点根（分享卡、机器人回复、小程序 canonical 链接）。
+    #: 默认指向当前线上静态站；切到自有域名后在部署环境里覆盖。
+    site_url: str = "https://robowiki.github.io"
     #: 群机器人只读问答的共享令牌；未设置则禁用该接口
     bot_token: str | None = None
 

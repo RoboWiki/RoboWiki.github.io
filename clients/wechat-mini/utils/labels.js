@@ -47,6 +47,10 @@ const PART = {
   chem: '化学体系', capacity_Ah: '容量 (Ah)', voltage_nominal_V: '标称电压 (V)',
   energy_Wh: '能量 (Wh)', discharge_C: '放电倍率 (C)', charge_C: '充电倍率 (C)',
   pulse_A: '脉冲电流 (A)', internal_mohm: '内阻 (mΩ)', cycles: '循环寿命',
+  // 立创/芯片条目里常见的结构化字段
+  params: '参数', price_tiers: '价格阶梯', price_lead: '起步价',
+  stock: '库存', stock_lead: '库存交期', lead_time: '交期',
+  jlc_library: '立创库', coupon: '优惠', category_cn: '类别',
   // 通用
   image_url: '产品图', image_source: '图片来源', notes: '备注', url: '来源',
 }

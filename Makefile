@@ -14,7 +14,7 @@ help:
 	@echo "make build      生成站点内容与静态产物（catalog.json 等）"
 	@echo "make site       构建 VitePress 静态站点"
 	@echo "make test       pipeline + backend 全部测试"
-	@echo "make serve      本地起站点热更（5174）"
+	@echo "make serve      本地起站点热更（VitePress 默认 5173）"
 	@echo "make clean      清掉生成物（wiki/docs/parts 与 public/catalog.json）"
 
 data:

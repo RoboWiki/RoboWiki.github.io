@@ -1,5 +1,6 @@
 ---
 title: "ABS 线材"
+description: "材料 ABS 线材：ABS 是 FDM 的功能材料"
 ---
 
 # ABS 线材

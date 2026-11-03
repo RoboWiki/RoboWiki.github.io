@@ -1,5 +1,6 @@
 ---
 title: "40CrNiMoA 合金钢"
+description: "材料 40CrNiMoA 合金钢：国内常用的中碳合金钢，对应 AISI 4340"
 ---
 
 # 40CrNiMoA 合金钢

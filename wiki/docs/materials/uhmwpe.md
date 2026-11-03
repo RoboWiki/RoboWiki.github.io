@@ -1,5 +1,6 @@
 ---
 title: "UHMWPE 超高分子量聚乙烯"
+description: "材料 UHMWPE 超高分子量聚乙烯：超高分子量聚乙烯"
 ---
 
 # UHMWPE 超高分子量聚乙烯

@@ -30,6 +30,17 @@
       </view>
     </view>
 
+    <view class="card" wx:if="{{rating}}">
+      <view class="title">真实评分 {{rating.avg}} / 5</view>
+      <view class="muted">{{rating.count}} 人评分 · {{rating.own_hardware_count}} 人装过机</view>
+      <view class="rating-row" wx:for="{{rating.bars}}" wx:key="score">
+        <text class="rating-score">{{item.score}} 星</text>
+        <view class="rating-bar"><view class="rating-fill" style="width:{{item.n / rating.count * 100}}%"></view></view>
+        <text class="rating-n">{{item.n}}</text>
+      </view>
+      <view wx:if="{{rating.count < 5}}" class="note">样本量少于 5 人，均分只作参考，不代表稳定性。</view>
+    </view>
+
     <view class="card">
       <view class="title">参数</view>
       <view wx:if="{{basis}}" class="note">{{basis}}</view>
@@ -57,7 +68,9 @@
       <view class="title">当前优惠</view>
       <view class="source-line" wx:for="{{offers}}" wx:key="id" data-url="{{item.url}}" bindtap="copyOffer">
         <text style="font-weight:600">{{item.title}}</text>
+        <text wx:if="{{item.vendor}}" class="muted"> · {{item.vendor}}</text>
         <text wx:if="{{item.expires_on}}" class="muted"> · 至 {{item.expires_on}}</text>
+        <view wx:if="{{item.detail}}" class="muted">{{item.detail}}</view>
       </view>
     </view>
 

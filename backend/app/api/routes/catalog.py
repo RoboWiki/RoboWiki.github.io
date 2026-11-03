@@ -10,7 +10,7 @@ from sqlalchemy import func
 from sqlmodel import select
 
 from ...crud import posts_out
-from ...models import Offer, Part, Post
+from ...models import Offer, Part, Post, Rating
 from ...core.config import settings
 from ..deps import Db, MaybeUser
 
@@ -230,6 +230,24 @@ def public_part_card(p: Part) -> dict:
     }
 
 
+def _attach_rating_cards(db, items: list[dict]) -> None:
+    """给一页零件挂上真实评分摘要；没评过的件 count=0、avg=null。
+
+    均分和样本量必须一起给：1 条 5 分和 20 条 5 分不是一个确定程度。
+    """
+    ids = [i["id"] for i in items]
+    if not ids:
+        return
+    rows = db.exec(select(Rating).where(Rating.part_id.in_(ids))).all()
+    by: dict[str, list[Rating]] = {}
+    for r in rows:
+        by.setdefault(r.part_id, []).append(r)
+    for item in items:
+        rs = by.get(item["id"]) or []
+        item["rating_count"] = len(rs)
+        item["rating_avg"] = round(sum(r.score for r in rs) / len(rs), 2) if rs else None
+
+
 def _attach_reviews(db, items: list[dict]) -> None:
     """给一页零件挂上「最高赞评价」与评价统计（一次查询，不 N+1）。"""
     ids = [i["id"] for i in items]
@@ -360,12 +378,15 @@ def list_parts(
 
     if compact:
         items = [public_part_card(p) for p in db.exec(stmt).all()]
+        _attach_rating_cards(db, items)
     else:
         items = [public_part(p) for p in db.exec(stmt).all()]
         _attach_reviews(db, items)
+        _attach_rating_cards(db, items)
     return {"total": int(total), "limit": limit, "offset": offset,
             "sort": key, "order": order,
-            "data_version": settings.data_version, "items": items}
+            "data_version": settings.data_version,
+            "site_url": settings.site_url, "items": items}
 
 
 @router.get("/parts/{part_id}")
@@ -392,6 +413,7 @@ def get_part(part_id: str, db: Db, user: MaybeUser,
     out["posts"] = [x.model_dump() for x in
                     posts_out(db, list(posts), user.id if user else None)]
     out["data_version"] = settings.data_version
+    out["site_url"] = settings.site_url
     return out
 
 

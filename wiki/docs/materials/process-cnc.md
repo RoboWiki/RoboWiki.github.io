@@ -1,5 +1,6 @@
 ---
 title: "CNC 加工"
+description: "加工工艺 CNC 加工：最通用的精密加工方式"
 ---
 
 # CNC 加工

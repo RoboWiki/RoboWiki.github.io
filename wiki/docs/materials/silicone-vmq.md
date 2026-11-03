@@ -1,5 +1,6 @@
 ---
 title: "硅胶 VMQ"
+description: "材料 硅胶 VMQ：有机硅弹性体（VMQ）"
 ---
 
 # 硅胶 VMQ

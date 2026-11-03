@@ -1,5 +1,6 @@
 ---
 title: "TC4 钛合金"
+description: "材料 TC4 钛合金：钛合金里的通用牌号（Ti-6Al-4V）"
 ---
 
 # TC4 钛合金

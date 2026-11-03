@@ -1,5 +1,6 @@
 ---
 title: "TPU 热塑性聚氨酯"
+description: "材料 TPU 热塑性聚氨酯：热塑性聚氨酯"
 ---
 
 # TPU 热塑性聚氨酯

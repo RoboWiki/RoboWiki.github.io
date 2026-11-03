@@ -124,7 +124,7 @@ const enTheme = {
 
 export default withPwa(defineConfig({
   title: 'RoboWiki',
-  // 标签页统一成「页面 · RoboWiki」；首页只有 RoboWiki，不重复
+  // 标签页统一成「页面 · RoboWiki」；首页/404/英文首页用各自 frontmatter 关掉模板。
   titleTemplate: ':title · RoboWiki',
   description: 'RoboWiki —— 机器人开发的开放资料底稿：可核对的参数、可追溯的来源、真实使用者的经验。',
   // 仓库是 organization pages（RoboWiki.github.io）→ 站点在域名根，base 用 /。
@@ -170,8 +170,16 @@ export default withPwa(defineConfig({
     const url = canonicalPath(pageData.relativePath)
     const isHome = pageData.relativePath === 'index.md'
     const isEn = pageData.relativePath.startsWith('en/')
+    const isNotFound = pageData.relativePath === '404.md'
+      || pageData.frontmatter.title === '404'
+      || pageData.title === '404'
     const title = pageData.frontmatter.title || pageData.title || 'RoboWiki'
     const description = pageData.frontmatter.description || SITE_DESC
+
+    // 404 页不该被索引，也不该把 canonical 指到自己；群里的坏链会固化错误 URL。
+    if (isNotFound) {
+      return [['meta', { name: 'robots', content: 'noindex, nofollow' }]]
+    }
 
     const webPage = {
       '@context': 'https://schema.org',
