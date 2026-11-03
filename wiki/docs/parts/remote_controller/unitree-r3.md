@@ -22,7 +22,7 @@ description: "宇树 Unitree R3（遥控器）：官方参数；来源 B 级、2
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -36,7 +36,7 @@ description: "宇树 Unitree R3（遥控器）：官方参数；来源 B 级、2
 <div class="part-src">
 来源：<a href="https://www.unitree.com/cn/R3">https://www.unitree.com/cn/R3</a><br/>
 收录：宇树官网 R3 产品页（2026-10-29 采集）<br/>
-核对：2026-10-29
+最近查阅：2026-10-29
 </div>
 
 </div>

@@ -21,7 +21,7 @@ description: "乐动 LDROBOT LD14（激光雷达）：额定 5 V、量程 8 m、
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -34,7 +34,7 @@ description: "乐动 LDROBOT LD14（激光雷达）：额定 5 V、量程 8 m、
 <div class="part-src">
 来源：<a href="https://www.waveshare.net/wiki/Triangulation_LiDAR_LD14">https://www.waveshare.net/wiki/Triangulation_LiDAR_LD14</a><br/>
 收录：微雪 Wiki《Triangulation LiDAR LD14》产品参数表（2026-10-31 抓取）；型号属乐动 LDROBOT<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

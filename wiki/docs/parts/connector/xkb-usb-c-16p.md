@@ -22,7 +22,7 @@ description: "XKB 星坤 USB-C 16P 母座（连接器）：官方参数；来源
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -36,7 +36,7 @@ description: "XKB 星坤 USB-C 16P 母座（连接器）：官方参数；来源
 <div class="part-src">
 来源：<a href="#">—</a><br/>
 收录：立创商城/厂商公开页（未逐项核对）<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

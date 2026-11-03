@@ -8,11 +8,23 @@ TAG="$(python -c "import json;print(json.load(open('data.lock.json'))['data_vers
 REPO="$(python -c "import json;print(json.load(open('data.lock.json'))['source_repo'])")"
 ASSET="$(python -c "import json;print(json.load(open('data.lock.json'))['release_asset'])")"
 SHA="$(python -c "import json;print(json.load(open('data.lock.json'))['sha256'])")"
+MANIFEST_SHA="$(python -c "import json;print(json.load(open('data.lock.json'))['manifest_sha256'])")"
 
 rm -rf .data
 mkdir -p .data
-gh release download "$TAG" -R "$REPO" -p "$ASSET" -D .data --clobber
+gh release download "$TAG" -R "$REPO" -p "$ASSET" -p MANIFEST.json -p SHA256SUMS.txt -D .data --clobber
 echo "$SHA  .data/$ASSET" | sha256sum -c -
+echo "$MANIFEST_SHA  .data/MANIFEST.json" | sha256sum -c -
+python - <<'PY'
+import json
+lock = json.load(open("data.lock.json", encoding="utf-8"))
+man = json.load(open(".data/MANIFEST.json", encoding="utf-8"))
+for key, want in (lock.get("counts") or {}).items():
+    got = man.get(key)
+    if got is not None and got != want:
+        raise SystemExit(f"MANIFEST.{key}={got} 与 data.lock {want} 不一致")
+print("MANIFEST 计数与 data.lock 一致")
+PY
 tar -xzf ".data/$ASSET" -C .data
 
 test -f .data/data/taxonomy.json

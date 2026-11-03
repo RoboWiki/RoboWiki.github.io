@@ -22,7 +22,7 @@ description: "CubeMars AK80-6（关节电机）：峰值扭矩 12 N·m、额定 
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -36,7 +36,7 @@ description: "CubeMars AK80-6（关节电机）：峰值扭矩 12 N·m、额定 
 <div class="part-src">
 来源：<a href="https://www.cubemars.com/cn/product/ak80-6-kv100-robotic-actuator.html">https://www.cubemars.com/cn/product/ak80-6-kv100-robotic-actuator.html</a><br/>
 收录：CubeMars 官网 AK80-6 KV100 产品页与产品对比表（2026-10-31 核对）<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

@@ -22,7 +22,7 @@ description: "CubeMars AK70-10（关节电机）：峰值扭矩 24.8 N·m、额�
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -34,7 +34,7 @@ description: "CubeMars AK70-10（关节电机）：峰值扭矩 24.8 N·m、额�
 <div class="part-src">
 来源：<a href="https://www.cubemars.com/cn/product/ak70-10-kv100-robotic-actuator.html">https://www.cubemars.com/cn/product/ak70-10-kv100-robotic-actuator.html</a><br/>
 收录：CubeMars 中文站产品页（2026-10-31 抓取）<br/>
-核对：2026-11-02
+最近查阅：2026-11-02
 </div>
 
 </div>

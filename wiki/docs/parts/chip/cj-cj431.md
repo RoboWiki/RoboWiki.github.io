@@ -22,7 +22,7 @@ description: "CJ CJ431（硬件芯片）：官方参数；来源 B 级、2026-10
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -35,7 +35,7 @@ description: "CJ CJ431（硬件芯片）：官方参数；来源 B 级、2026-10
 <div class="part-src">
 来源：<a href="https://www.lcsc.com/product-detail/C3113.html">https://www.lcsc.com/product-detail/C3113.html</a><br/>
 收录：立创商城搜索页（2026-10-29）<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

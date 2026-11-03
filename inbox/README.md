@@ -1,37 +1,15 @@
-# inbox —— 丢图的地方
+# inbox —— 图片暂存（历史目录）
 
-把要补的产品图丢进这个目录，文件名用**零件 id** 或**型号**都行：
+**补图请在核心仓做**：图片放核心仓 `inbox/`，在核心仓根目录跑
+`python tools/import_from_inbox.py`，产物进 `assets/parts/` 并写 `specs.image_source`。
 
-```
-inbox/
-  dji-rm-board-a.png          ← 用 id
-  DM-J4340-2EC V1.1.jpg       ← 用型号（大小写、空格、符号都不敏感）
-  IM6014.jpg
-```
+本目录是拆仓前的暂存区，不再有导入脚本；不要在这里提交图片或依赖本目录的
+`tools/` 命令。当前本仓 `tools/` 只保留站点专用脚本（`tools/site/`）。
 
-然后跑：
+图片要求（核心仓同样适用）：
 
-```bash
-python tools/import_from_inbox.py     # 认领 + 登记
-python tools/normalize_images.py      # 统一白底、裁掉多余留白
-python tools/apply_images.py          # 合并进 data/catalog
-python -m pipeline all                # 重新生成站点
-```
+- 白底、产品本体；不要整机宣传图、二维码、logo
+- 长边 ≥ 600 px
+- jpg / png / webp 均可
 
-四条命令可以一次性交给我，你不用自己跑。
-
-## 图片要求
-
-- **白底、产品本体**，不要整机宣传图、不要二维码、不要 logo
-- 长边 ≥ 600 px（卡片显示高度约 96–112 px，太小会糊）
-- jpg / png / webp 都行，之后会统一转成白底 jpg
-
-## 这个目录会进 git 吗
-
-不会。`inbox/` 是暂存区，认领后图片会进 `console/public/parts/` 并纳入版本管理。
-暂存区留在本地，避免把「还没确认的图」也提交进去。
-
-## 已经认领过的
-
-认领后文件名会被规范成 `<零件id>.jpg`，落在 `console/public/parts/`。
-映射关系写在 `data/part_images.json`，谁都能查「这张图对应哪个零件」。
+做法与缺图清单见 [docs/missing-images.md](../docs/missing-images.md)。

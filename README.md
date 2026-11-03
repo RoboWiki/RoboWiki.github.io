@@ -36,7 +36,7 @@ python -m pipeline build
    A 级数字能追回厂商手册，B 级标公开网页来源；查不到就写 `null`，不用「约」「大概」糊过去。
 
 2. **维护开源生态的可用性。**
-   整机页标了 URDF / 仓库线索与「开源生态 ×N」（19/21 台至少有一项）—— 判断一套方案能不能借现成工程，
+   整机页标了 URDF / 仓库线索与「开源生态 ×N」（20/21 台至少有一项）—— 判断一套方案能不能借现成工程，
    比看参数表更硬。链接打不开就不写，写了就要能打开。
 
 3. **把结构材料与加工工艺放上同一张表。**
@@ -59,6 +59,8 @@ python -m pipeline build
 
 审核通过不等于生效，合并并发布 release 才生效。后台只读 `parts`，写入入口只有
 提案；每条提案保留依据、来源、字段级旧值与新值。UGC（评价、评论、投票）走 `/api/v1` 写 Postgres，不回写 git。
+
+> 当前评价入口仍是 GitHub issue 表单 → 快照；站内账号用于纠错、评论与提案。两条评价数据流尚未合并，页面上的评分只来自 issue 快照。
 
 ## 多端与分享
 
@@ -107,6 +109,8 @@ python -m pipeline build
 ```bash
 git clone https://github.com/RoboWiki/RoboWiki.github.io
 cd RoboWiki.github.io
+python -m pip install -e ".[dev]"    # Python 3.11+；数据闸门/构建依赖
+python -m pip install -r backend/requirements.txt
 bash scripts/fetch-data-release.sh   # 下载 data.lock.json 锁定的核心仓 release
 export ROBOWIKI_DATA_DIR="$PWD/.data/data"
 export ROBOWIKI_SCHEMA_DIR="$PWD/.data/schema"
@@ -127,8 +131,8 @@ uvicorn app.main:app --reload      # http://127.0.0.1:8000/api/docs（开发环�
 cd deploy && cp .env.example .env && docker compose up -d --build
 ```
 
-改一个型号的参数 = 去核心仓改一个 JSON，或走站内提案/控制台；核心仓发布新 `data-v*` 后更新 `data.lock.json`。数据闸门会拦住三类错：A 级键集不一致、来源等级越级、
-厂商未登记；构建阶段再拦页面死链。**后台不改 `parts`**：提案审核通过后由 worker 开 PR。
+改一个型号的参数 = 去核心仓改一个 JSON，或走站内提案/控制台；核心仓发布新 `data-v*` 后更新 `data.lock.json`。数据闸门/测试会拦住三类错：A 级键集不一致、来源等级越级、
+厂商未登记（taxonomy 测试）；构建阶段再拦页面死链。**后台不改 `parts`**：提案审核通过后由 worker 开 PR。
 
 ## 目录
 
@@ -176,7 +180,7 @@ GitHub API 统计不到，所以不会因为「没有 PR」就被记成 0。
 原发布方所有。若仓库内任何内容存在侵权、不当公开或其他问题，请通过 Issue 或直接联系维护者，
 我们将第一时间核实并处理。细节见 [`NOTICE.md`](https://github.com/RoboWiki/RoboWiki.github.io/blob/main/NOTICE.md)。
 
-> 厂商手册、商品图、第三方仓库代码的版权归原方。手册只给链接；**产品图是随条目托管在本仓库的**
+> 厂商手册、商品图、第三方仓库代码的版权归原方。手册原则上只给链接；**产品图随条目托管在核心仓 `assets/parts/`**
 > （`assets/parts/`，出处记在每条数据的 `image_source`），权利人要求撤下就撤下。
 > 每条数据都标了来源等级（A/B/C）与核对日期。
 

@@ -22,7 +22,7 @@ description: "脉塔 MyActuator X4-10（关节电机）：峰值扭矩 10 N·m�
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -34,7 +34,7 @@ description: "脉塔 MyActuator X4-10（关节电机）：峰值扭矩 10 N·m�
 <div class="part-src">
 来源：<a href="https://www.myactuator.com/x4-10details">https://www.myactuator.com/x4-10details</a><br/>
 收录：Seeed wiki zh-CN《脉塔 X 系列》规格表（2026-10-31 抓取）；原厂表交叉核对<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>

@@ -22,7 +22,7 @@ description: "CubeMars AK40-10 KV170（关节电机）：峰值扭矩 4.1 N·m�
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -34,7 +34,7 @@ description: "CubeMars AK40-10 KV170（关节电机）：峰值扭矩 4.1 N·m�
 <div class="part-src">
 来源：<a href="https://www.cubemars.com/cn/product/ak40-10-robotic-actuator.html">https://www.cubemars.com/cn/product/ak40-10-robotic-actuator.html</a><br/>
 收录：CubeMars 官网产品对比表（cubemars.com/cn，2026-10-31 抓取）<br/>
-核对：2026-11-02
+最近查阅：2026-11-02
 </div>
 
 </div>
