@@ -151,7 +151,6 @@ Page({
   shareBits() {
     const p = this.data.part || {}
     const bits = [p.model || p.title || '部件']
-    if (this.data.priceLabel && this.data.priceLabel !== '价格未公布') bits.push(this.data.priceLabel)
     if (p.source_tier) bits.push(p.source_tier + ' 级')
     if (this.data.keySpecs && this.data.keySpecs.length) bits.push(this.data.keySpecs[0])
     return bits

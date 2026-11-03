@@ -255,7 +255,7 @@ def _card_specs(category: str, specs: dict) -> list[dict]:
         for k, v in params.items():
             if v is None or v == "":
                 continue
-            out.append({"key": f"param:{k}", "label": str(k), "value": str(v)})
+            out.append({"key": str(k), "label": str(k), "value": str(v)})
             if len(out) >= 3:
                 break
     return out

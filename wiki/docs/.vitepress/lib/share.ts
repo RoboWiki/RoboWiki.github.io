@@ -11,6 +11,16 @@ export type ShareEntry = {
   verified?: boolean
   last_checked?: string
   data_version: string
+  copy_text?: string
+}
+
+/** 详情页分享卡的直查路径：/parts/<cat>/<slug>.html → /share/parts/<cat>/<slug>.json */
+export function shareJsonPath(pathname: string): string | null {
+  const part = pathname.match(/^\/parts\/([^/]+)\/([^/]+)\.html$/)
+  if (part) return `/share/parts/${part[1]}/${part[2]}.json`
+  const material = pathname.match(/^\/materials\/([^/]+)\.html$/)
+  if (material) return `/share/materials/${material[1]}.json`
+  return null
 }
 
 export function normalize(path: string) {

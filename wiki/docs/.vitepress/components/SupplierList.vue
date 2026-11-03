@@ -20,13 +20,15 @@ interface Sup {
 }
 
 const all = ref<Sup[]>(suppliersData.suppliers || [])
-const initialQ = typeof window !== 'undefined'
-  ? (new URLSearchParams(window.location.search).get('q') || '').trim()
-  : ''
-const q = ref(initialQ)
+// 同 PartExplorer：URL 状态放 onMounted，避免 SSR/首帧 hydration mismatch。
+const q = ref('')
 const sortKey = ref('price')
 const active = ref<Record<string, string>>({})
 const expanded = ref<string | null>(null)
+
+onMounted(() => {
+  q.value = (new URLSearchParams(window.location.search).get('q') || '').trim()
+})
 
 const hasNote = (s: Sup) => !!s.notes
 
@@ -67,7 +69,8 @@ const rows = computed(() => {
       if (f !== active.value.fine) return false
     }
     if (!kw) return true
-    return [s.name, s.process, s.quality, s.punctual, s.price_level, s.materials, s.notes]
+    return [s.name, s.category, s.fine, s.reason, s.process, s.quality,
+      s.punctual, s.price_level, s.materials, s.notes]
       .filter(Boolean).join(' ').toLowerCase().includes(kw)
   })
   const BOARD: Record<string, number> = { 黑榜: 0, 红榜: 1 }

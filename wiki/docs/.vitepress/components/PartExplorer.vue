@@ -72,10 +72,9 @@ const all = ref<Part[]>(catalogData.parts || [])
 const loading = ref(false)
 const fail = ref('')
 
-const urlParams = typeof window !== 'undefined'
-  ? new URLSearchParams(window.location.search)
-  : new URLSearchParams()
-const q = ref(urlParams.get('q') || '')
+// URL 状态在 onMounted 里读：SSR 与首帧客户端渲染必须一致，
+// 否则 GitHub Pages 对每个查询串都吐同一份 HTML 时会 hydration mismatch。
+const q = ref('')
 //: 精选：白名单来自 public/catalog.json 的 featured.ids（构建时读 data/featured.json）
 const featuredIds = ref<Set<string>>(new Set(catalogData.featured?.ids || []))
 const featuredOnly = ref(
@@ -87,16 +86,14 @@ const hasCuration = computed(() => featuredIds.value.size > 0)
 /** 精选清单等于全库时，开关是死控件；直接藏起来，别给一个没用的按钮。 */
 const hasRealCuration = computed(() =>
   featuredIds.value.size > 0 && featuredIds.value.size < all.value.length)
-/** 首页品类卡带 ?category=<id> 进来：先按参数选中，加载 taxonomy 后再校验。 */
-const initialCat = (() => {
-  if (typeof window === 'undefined') return ''
-  return new URLSearchParams(window.location.search).get('category')?.trim() || ''
-})()
-const cat = ref(initialCat || 'actuator')
-const vendor = ref(urlParams.get('vendor') || '')
-const sensorType = ref(urlParams.get('subtype') || '')
-const sort = ref<string>(urlParams.get('sort') || 'tau_peak_Nm')
-const order = ref<'desc' | 'asc'>((urlParams.get('order') as 'desc' | 'asc') || 'desc')
+const cat = ref('actuator')
+const vendor = ref('')
+const sensorType = ref('')
+const sort = ref<string>('tau_peak_Nm')
+const order = ref<'desc' | 'asc'>('desc')
+/** 品类是否被「显式选中」过（点卡片或 URL 带 category）。
+#  没选中过时，搜索跨全库——否则 `?q=XT30` 会被默认品类挡成 0 结果。 */
+const catPinned = ref(false)
 const picked = ref<Part[]>([])
 const detail = ref<Part | null>(null)
 
@@ -186,6 +183,18 @@ const FALLBACK_SORTS = [{ k: 'price', label: '价格' }, { k: 'rating', label: '
 // 数据在构建期由 pipeline 写进 public/catalog.json；这里静态导入，
 // 让 VitePress SSG 直接把首屏卡片烘进 HTML——群链接首访客不再看空白页。
 onMounted(() => {
+  const params = new URLSearchParams(window.location.search)
+  const urlCat = params.get('category')?.trim() || ''
+  if (urlCat) {
+    cat.value = urlCat
+    catPinned.value = true
+  }
+  q.value = params.get('q') || ''
+  vendor.value = params.get('vendor') || ''
+  sensorType.value = params.get('subtype') || ''
+  sort.value = params.get('sort') || 'tau_peak_Nm'
+  order.value = (params.get('order') as 'desc' | 'asc') || 'desc'
+
   if (!CATS.value.some(c => c.v === cat.value)) cat.value = CATS.value[0].v
   if (!sortOpts.value.some(o => o.k === sort.value)) sort.value = defaultSortFor(cat.value)
   syncFiltersUrl()
@@ -203,6 +212,7 @@ function toggleFeatured() {
 
 function setCat(v: string) {
   cat.value = v
+  catPinned.value = true
   vendor.value = ''
   sensorType.value = ''
   q.value = ''
@@ -220,16 +230,17 @@ function defaultSortFor(v: string) {
 function syncFiltersUrl() {
   if (typeof window === 'undefined') return
   const url = new URL(window.location.href)
-  const set = (k: string, v: string) => {
-    if (v) url.searchParams.set(k, v)
+  const defaultCat = CATS.value[0]?.v || 'actuator'
+  const set = (k: string, v: string, isDefault = false) => {
+    if (v && !isDefault) url.searchParams.set(k, v)
     else url.searchParams.delete(k)
   }
-  set('category', cat.value)
+  set('category', cat.value, !catPinned.value && cat.value === defaultCat)
   set('q', q.value.trim())
   set('vendor', vendor.value)
   set('subtype', sensorType.value)
-  set('sort', sort.value)
-  set('order', order.value)
+  set('sort', sort.value, sort.value === defaultSortFor(cat.value))
+  set('order', order.value, order.value === 'desc')
   history.replaceState(history.state, '', url)
 }
 
@@ -322,7 +333,7 @@ const rows = computed(() => {
   // 精选门：开关打开且白名单非空时才过滤
   const gate = featuredOnly.value && hasCuration.value
   let out = all.value.filter(
-    p => p.category === cat.value
+    p => (p.category === cat.value || (!!q.value && !catPinned.value))
       && (!gate || featuredIds.value.has(p.id))
       && (!vendor.value || p.vendor === vendor.value)
       && (!sensorType.value || p.subtype === sensorType.value)
@@ -411,7 +422,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
       <div class="ex-kicker">机器人部件</div>
       <h1>选部件，先看参数，再看用过的人怎么说。</h1>
       <p class="ex-lead">
-        每个部件一页：左边是<strong>官方参数</strong>（带来来源等级与口径），右边是<strong>真实使用者的评分与评价</strong>。
+        每个部件一页：左边是<strong>官方参数</strong>（带来来源等级与口径），右边是<strong>真实使用者的评分与评价</strong>（评分入口刚开放，暂无量）。
         有优惠条件、有资料链接、能按任意列排序。
       </p>
       <div class="ex-note">
@@ -544,6 +555,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
                 <span class="list">{{ money(p.price) ?? '询价' }}</span>
                 <template v-if="p.offer?.price != null">
                   <span class="promo">{{ money(p.offer.price) }}</span>
+                  <span v-if="p.offer?.condition" class="hint" :title="p.offer.condition">需资格</span>
                 </template>
               </div>
               <div class="card-rate">
