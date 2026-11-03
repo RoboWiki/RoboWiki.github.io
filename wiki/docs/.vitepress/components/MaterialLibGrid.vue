@@ -7,6 +7,7 @@
  */
 import { computed, onMounted, ref } from 'vue'
 import ExplorerShell from './ExplorerShell.vue'
+import materialsData from '../../public/materials.json'
 
 interface Sup {
   id: string; name: string; category?: string | null; fine?: string | null
@@ -26,7 +27,7 @@ interface Item {
   _processes?: Ref[]; _materials?: Ref[]; _suppliers?: Sup[]
 }
 
-const all = ref<Item[]>([])
+const all = ref<Item[]>([...materialsData.materials || [], ...materialsData.processes || []])
 const q = ref('')
 const sortKey = ref('group')
 const active = ref<Record<string, string>>({})
@@ -40,13 +41,6 @@ const FAMILY_ORDER = [
   'silicone', 'epdm', 'tpu',
   'machining', 'additive', 'molding', 'casting', 'composite',
 ]
-
-onMounted(async () => {
-  const r = await fetch(`${import.meta.env.BASE_URL}materials.json`)
-  if (!r.ok) return
-  const data = await r.json()
-  all.value = [...(data.materials || []), ...(data.processes || [])]
-})
 
 const groupRank = (g: string) => {
   const i = GROUP_ORDER.indexOf(g)
@@ -84,6 +78,28 @@ const asc = (v: any) => (typeof v === 'number' ? v : Infinity)
 const desc = (v: any) => (typeof v === 'number' ? v : -Infinity)
 const PRICE: Record<string, number> = { 低: 1, '低-中': 1.5, 中: 2, 中高: 3, 高: 4 }
 
+function specValues(specs: Record<string, any> | undefined): string[] {
+  if (!specs) return []
+  const out: string[] = []
+  for (const [k, v] of Object.entries(specs)) {
+    if (v === null || v === undefined || v === '') continue
+    if (Array.isArray(v)) out.push(`${k} ${v.join(' ')}`)
+    else if (typeof v === 'object') out.push(`${k} ${Object.values(v).join(' ')}`)
+    else out.push(`${k} ${v}`)
+  }
+  return out
+}
+
+/** 多词 AND：搜「CNC 铝」「PEEK 耐温」都应窄化结果，而不是把整页匹配出去。 */
+function matchesQuery(x: Item, kw: string): boolean {
+  const terms = kw.split(/\s+/).filter(Boolean)
+  if (!terms.length) return true
+  const hay = [x.name, x.name_en, x.model, x.group_label, x.family_label,
+    ...(x.aliases || []), ...(x.applications || []), x.notes,
+    ...specValues(x.specs)].filter(Boolean).join(' ').toLowerCase()
+  return terms.every(t => hay.includes(t))
+}
+
 const rows = computed(() => {
   const kw = q.value.trim().toLowerCase()
   const kind = active.value.kind
@@ -92,9 +108,7 @@ const rows = computed(() => {
     if (kind && x.group !== kind) return false
     if (fam && x.family !== fam) return false
     if (!kw) return true
-    return [x.name, x.name_en, x.model, x.group_label, x.family_label,
-      ...(x.aliases || []), ...(x.applications || []), x.notes]
-      .filter(Boolean).join(' ').toLowerCase().includes(kw)
+    return matchesQuery(x, kw)
   })
   out = [...out].sort((a, b) => {
     const sa = a.specs || {}

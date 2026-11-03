@@ -229,6 +229,7 @@ export default withPwa(defineConfig({
     manifest: {
       name: 'RoboWiki',
       short_name: 'RoboWiki',
+      id: '/',
       description: SITE_DESC,
       lang: 'zh-CN',
       start_url: '/',
@@ -243,9 +244,10 @@ export default withPwa(defineConfig({
     },
     workbox: {
       // 只预缓存外壳；页面与图片按访问缓存，避免把 100+ MB 目录塞进安装包
-      globPatterns: ['**/*.{css,js,ico,svg,woff2}'],
-      // 本地搜索索引 2.3 MB；预缓存它，离线也能用搜索
-      maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
+      // 只预缓存真正的壳（入口 + 图标/字体）。CSS/JS/搜索索引按访问走 runtimeCaching，
+      // 否则 547 个页面 chunk + 2.3MB 搜索索引会把安装包撑到 8MB 以上。
+      globPatterns: ['*.html', '**/*.{ico,svg,woff2}'],
+      maximumFileSizeToCacheInBytes: 2 * 1024 * 1024,
       // 静态站是多页：不要把所有导航都回退到首页，按访问缓存真实页面
       navigateFallback: null,
       cleanupOutdatedCaches: true,
@@ -271,6 +273,23 @@ export default withPwa(defineConfig({
           options: {
             cacheName: 'share',
             expiration: { maxEntries: 400, maxAgeSeconds: 30 * 86400 },
+          },
+        },
+        {
+          // 列表数据虽在构建期打进页面，ShareBox/评分仍会取 JSON；离线时不空白。
+          urlPattern: ({ url }) => url.pathname.endsWith('.json'),
+          handler: 'StaleWhileRevalidate',
+          options: {
+            cacheName: 'data-json',
+            expiration: { maxEntries: 40, maxAgeSeconds: 7 * 86400 },
+          },
+        },
+        {
+          urlPattern: ({ url }) => /\.(?:js|css)$/.test(url.pathname),
+          handler: 'StaleWhileRevalidate',
+          options: {
+            cacheName: 'assets',
+            expiration: { maxEntries: 160, maxAgeSeconds: 30 * 86400 },
           },
         },
         {

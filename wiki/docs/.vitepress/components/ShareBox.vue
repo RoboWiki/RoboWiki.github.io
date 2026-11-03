@@ -10,7 +10,10 @@ const qrEl = ref<HTMLCanvasElement | null>(null)
 const drawing = ref(false)
 
 onMounted(async () => {
-  entry.value = await findShareEntry(window.location.pathname)
+  // 只有部件/材质页有分享卡；别的页面别拖 165KB 的 share/index.json。
+  const p = window.location.pathname
+  if (!p.startsWith('/parts/') && !p.startsWith('/materials/')) return
+  entry.value = await findShareEntry(p)
 })
 
 watch([entry, qrEl], async ([e, el]) => {

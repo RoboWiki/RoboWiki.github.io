@@ -5,7 +5,7 @@
   "description": "RoboWiki 选型文档（VitePress）",
   "scripts": {
     "dev": "vitepress dev docs",
-    "build": "vitepress build docs",
+    "build": "vitepress build docs && node scripts/postbuild.mjs",
     "preview": "vitepress preview docs"
   },
   "devDependencies": {
