@@ -203,7 +203,62 @@ def public_part(p: Part) -> dict:
         "notes": p.notes,
         "image_url": (p.specs or {}).get("image_url"),
         "web_path": part_web_path(p),
+        "key_specs": _card_specs(p.category, p.specs or {}),
     }
+
+
+
+#: 列表卡片用关键参数：按品类取 3 个，宁缺毋滥。
+#: 不把整个 specs 塞进卡片——那是详情页的事。
+_CARD_FACTS = {
+    "actuator": [("峰值", "tau_peak_Nm", " N·m"), ("额定", "tau_rated_Nm", " N·m"),
+                 ("电压", "voltage_V", " V"), ("质量", "mass_kg", " kg")],
+    "controller_high": [("NPU", "npu_tops", " TOPS"), ("内存", "ram_gb", " GB"),
+                        ("功耗", "power_max_w", " W")],
+    "controller_low": [("MCU", "mcu", ""), ("CAN", "can", ""),
+                       ("电压", "voltage_in_V", " V")],
+    "imu": [("陀螺", "gyro_range_dps", " °/s"), ("接口", "iface", "")],
+    "camera": [("深度", "depth_range_m", " m"), ("视场", "fov", ""),
+               ("帧率", "fps", " fps")],
+    "lidar": [("量程", "range_m", " m"), ("视场", "fov", ""),
+              ("点频", "points_per_s", " pts/s")],
+    "connector": [("位数", "positions", " pin"), ("间距", "pitch_mm", " mm"),
+                  ("电流", "current_rated_A", " A")],
+    "module": [("接口", "iface", ""), ("CAN", "can", ""),
+               ("电压", "voltage_V", " V")],
+    "chip": [("封装", "package", ""), ("料号", "lcsc_part", "")],
+}
+_CARD_GENERIC = [("电压", "voltage_V", " V"), ("接口", "iface", ""),
+                 ("CAN", "can", "")]
+
+
+def _card_specs(category: str, specs: dict) -> list[dict]:
+    def val(v: object, unit: str) -> str:
+        if isinstance(v, bool):
+            return "是" if v else "否"
+        if isinstance(v, (int, float)):
+            return f"{v:g}{unit}"
+        return f"{v}{unit}" if unit and isinstance(v, str) else str(v)
+
+    out: list[dict] = []
+    for label, key, unit in _CARD_FACTS.get(category, []) + _CARD_GENERIC:
+        v = specs.get(key)
+        if v is None or v == "":
+            continue
+        out.append({"key": key, "label": label, "value": val(v, unit)})
+        if len(out) >= 3:
+            return out
+
+    # 传感器 / 芯片的结构化参数在 specs.params；分享卡已经这么读，列表卡保持一致。
+    params = specs.get("params")
+    if isinstance(params, dict):
+        for k, v in params.items():
+            if v is None or v == "":
+                continue
+            out.append({"key": f"param:{k}", "label": str(k), "value": str(v)})
+            if len(out) >= 3:
+                break
+    return out
 
 
 def public_part_card(p: Part) -> dict:
@@ -227,6 +282,7 @@ def public_part_card(p: Part) -> dict:
         "price_cny": p.price_cny,
         "image_url": (p.specs or {}).get("image_url"),
         "web_path": part_web_path(p),
+        "key_specs": _card_specs(p.category, p.specs or {}),
     }
 
 

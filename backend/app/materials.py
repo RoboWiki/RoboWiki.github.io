@@ -9,7 +9,25 @@ from pathlib import Path
 
 from .core.config import settings
 
-_cache: dict[str, object] = {"stamp": None, "rows": []}
+_cache: dict[str, object] = {"stamp": None, "rows": [], "suppliers": None}
+
+
+def _supplier_names() -> dict[str, str]:
+    """渠道 id → 名称。材质 API 不把 suppliers.json 烤进响应，但引用要能显示人名。"""
+    if _cache["suppliers"] is not None:
+        return _cache["suppliers"]  # type: ignore[return-value]
+    out: dict[str, str] = {}
+    p = Path(settings.data_dir) / "suppliers.json"
+    try:
+        rows = json.loads(p.read_text(encoding="utf-8"))
+        if isinstance(rows, list):
+            for r in rows:
+                if isinstance(r, dict) and r.get("id"):
+                    out[str(r["id"])] = str(r.get("name") or r["id"])
+    except (OSError, json.JSONDecodeError):
+        out = {}
+    _cache["suppliers"] = out
+    return out
 
 
 def _stamp(d: Path) -> tuple:
@@ -63,6 +81,15 @@ def material_web_path(r: dict) -> str:
 
 def public_material(r: dict) -> dict:
     """白名单投影：保留来源、规格、关联，不暴露内部缓存字段。"""
+    names = _supplier_names()
+    suppliers = []
+    for s in r.get("suppliers") or []:
+        sid = s.get("supplier_id") or s.get("id")
+        suppliers.append({
+            **s,
+            "id": sid,
+            "name": names.get(str(sid)) or s.get("name") or sid,
+        })
     return {
         "id": r.get("id"),
         "category": r.get("category"),
@@ -87,7 +114,7 @@ def public_material(r: dict) -> dict:
         "cons": r.get("cons") or [],
         "notes": r.get("notes") or "",
         "processes": r.get("processes") or [],
-        "suppliers": r.get("suppliers") or [],
+        "suppliers": suppliers,
         "web_path": material_web_path(r),
     }
 

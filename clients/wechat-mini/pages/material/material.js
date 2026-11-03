@@ -3,6 +3,16 @@ const F = require('../../utils/format')
 const L = require('../../utils/labels')
 const { text } = require('../../utils/text')
 
+function formatForms(forms) {
+  if (!Array.isArray(forms) || !forms.length) return ''
+  return forms.map(f => {
+    if (!f || typeof f !== 'object') return text(f)
+    const spec = f.spec ? `：${text(f.spec)}` : ''
+    const note = f.note ? `（${text(f.note)}）` : ''
+    return `${text(f.form)}${spec}${note}`
+  }).join('；')
+}
+
 Page({
   data: {
     item: null,
@@ -20,10 +30,12 @@ Page({
     version: '',
     loading: true,
     error: '',
+    timelinePreview: false,
   },
 
   onLoad(query) {
     this.id = decodeURIComponent(query.id || '')
+    this.setData({ timelinePreview: Number(query.scene) === 1154 })
     this.load()
   },
 
@@ -47,8 +59,7 @@ Page({
         checked: s.checked_on || '',
       }))
       const suppliers = (r.suppliers || []).map(s => ({
-        name: s.name || s.id || '供应商',
-        price: s.price_level || '',
+        name: s.name || s.supplier_id || s.id || '供应商',
         role: s.role || '',
         note: s.note || '',
       }))
@@ -58,7 +69,7 @@ Page({
         rows,
         related: r.related || [],
         sources,
-        formsText: text(r.forms),
+        formsText: formatForms(r.forms),
         prosText: text(r.pros),
         consText: text(r.cons),
         suppliers,

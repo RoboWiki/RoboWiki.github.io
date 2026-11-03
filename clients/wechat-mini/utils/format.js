@@ -20,9 +20,10 @@ function price(v) {
   if (v === null || v === undefined || v === '') return '价格未公布'
   const n = Number(v)
   if (!isFinite(n)) return '价格未公布'
-  const digits = n >= 100 ? 0 : n >= 10 ? 1 : n >= 1 ? 2 : 4
-  // 只去掉小数末尾的 0；直接对整串 replace 会把 1290 变成 129。
-  return '¥' + String(Number(n.toFixed(digits)))
+  const digits = n >= 1000 ? 0 : n >= 1 ? 2 : 4
+  // 低于千元保留到分；千元以上加千分位，和网页价格口径一致。
+  const s = String(Number(n.toFixed(digits))).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  return '¥' + s
 }
 
 function short(text, n) {

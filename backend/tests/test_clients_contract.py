@@ -49,6 +49,8 @@ def test_part_list_has_share_fields_and_compact_shape(client):
     item = d["items"][0]
     assert "specs" not in item
     assert "rating_count" in item and "rating_avg" in item
+    assert 0 < len(item["key_specs"]) <= 3
+    assert all(x.get("label") and x.get("value") for x in item["key_specs"])
     assert item["web_path"].startswith("/parts/")
     assert item["web_path"].endswith(".html")
     assert item["web_path"].count(".html") == 1
@@ -74,6 +76,7 @@ def test_material_list_and_detail_have_web_path(client):
     detail = client.get(f"/api/v1/materials/{first['id']}").json()
     assert detail["web_path"] == first["web_path"]
     assert detail["site_url"] and detail["data_version"]
+    assert all(s.get("name") for s in detail["suppliers"])
 
 
 def test_material_web_path_matches_category_prefix(client):

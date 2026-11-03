@@ -3,7 +3,7 @@
     <view class="hero-kicker">ROBOWIKI · 只读目录</view>
     <view class="hero-title">机器人硬件，先查清再买</view>
     <view class="hero-sub">参数有来源，未知就写未知；不卖零件、不收佣金。</view>
-    <view class="hero-note">A 级逐项核对 · B 级公开资料汇编 · 缺失写「—」</view>
+    <view class="hero-note">A 级逐项核对 · B 级公开资料汇编 · 未公布不猜</view>
     <view class="hero-meta">
       <text>{{partCount || '—'}} 件部件</text>
       <text>{{materialCount || '—'}} 材料 / 工艺</text>
@@ -11,67 +11,115 @@
     </view>
   </view>
 
-  <view class="search-box">
-    <input class="search" placeholder="搜型号 / 厂商 / 材料 / 工艺"
-      value="{{q}}" bindinput="onSearch" bindconfirm="onSearchConfirm"
-      confirm-type="search" />
-    <text wx:if="{{q}}" class="search-clear" bindtap="clearSearch">×</text>
-  </view>
+  <view wx:if="{{timelinePreview}}" class="note timeline-note">预览模式：点右下角「前往小程序」可进入完整目录</view>
 
-  <view class="tabs">
-    <view class="tab {{tab === 'parts' ? 'on' : ''}}" data-tab="parts" bindtap="switchTab">部件库</view>
-    <view class="tab {{tab === 'materials' ? 'on' : ''}}" data-tab="materials" bindtap="switchTab">材质库</view>
-  </view>
-
-  <view class="share-row">
-    <button class="btn share-btn" open-type="share">分享当前筛选</button>
-  </view>
-
-  <scroll-view class="cats" scroll-x enable-flex>
-    <view wx:for="{{categories}}" wx:key="id"
-      class="cat {{category === item.id ? 'on' : ''}}"
-      data-id="{{item.id}}" bindtap="selectCategory">
-      {{item.label}}<text wx:if="{{item.n}}"> {{item.n}}</text>
+  <view class="toolbar">
+    <view class="search-box">
+      <input class="search" placeholder="搜型号 / 厂商 / 材料 / 工艺"
+        value="{{q}}" bindinput="onSearch" bindconfirm="onSearchConfirm"
+        confirm-type="search" />
+      <text wx:if="{{q}}" class="search-clear" bindtap="clearSearch">×</text>
     </view>
-  </scroll-view>
 
-  <scroll-view wx:if="{{tab === 'materials' && materialGroups.length}}" class="cats" scroll-x enable-flex>
-    <view class="cat {{materialGroup === item.id ? 'on' : ''}}"
-      data-id="{{item.id}}" bindtap="selectMaterialGroup">
-      {{item.label}} {{item.count}}
+    <view class="tabs">
+      <view class="tab {{tab === 'parts' ? 'on' : ''}}" data-tab="parts" bindtap="switchTab">部件库</view>
+      <view class="tab {{tab === 'materials' ? 'on' : ''}}" data-tab="materials" bindtap="switchTab">材质库</view>
     </view>
-  </scroll-view>
 
-  <scroll-view wx:elif="{{tab === 'parts'}}" class="cats" scroll-x enable-flex>
-    <view class="cat {{sort === 'featured' ? 'on' : ''}}" data-sort="featured" bindtap="selectSort">推荐</view>
-    <view class="cat {{sort === 'price_asc' ? 'on' : ''}}" data-sort="price_asc" bindtap="selectSort">价格从低</view>
-    <view class="cat {{sort === 'price_desc' ? 'on' : ''}}" data-sort="price_desc" bindtap="selectSort">价格从高</view>
-  </scroll-view>
-
-  <scroll-view wx:if="{{tab === 'materials'}}" class="cats" scroll-x enable-flex>
-    <view class="cat {{materialSort === 'default' ? 'on' : ''}}" data-sort="default" bindtap="selectMaterialSort">默认</view>
-    <view class="cat {{materialSort === 'density' ? 'on' : ''}}" data-sort="density" bindtap="selectMaterialSort">密度从高</view>
-    <view class="cat {{materialSort === 'modulus' ? 'on' : ''}}" data-sort="modulus" bindtap="selectMaterialSort">模量从高</view>
-    <view class="cat {{materialSort === 'tensile' ? 'on' : ''}}" data-sort="tensile" bindtap="selectMaterialSort">抗拉从高</view>
-  </scroll-view>
-
-  <view wx:if="{{error}}" class="error">
-    {{error}}
-    <text class="retry" bindtap="onSearchConfirm">重试</text>
+    <view class="toolbar-meta">
+      <text class="count">{{total ? total + ' 条' : (loading ? '加载中' : '—')}}</text>
+      <button class="btn share-btn" open-type="share">分享当前筛选</button>
+    </view>
   </view>
-  <view wx:if="{{loading}}" class="empty">加载中…</view>
+
+  <view class="filters">
+    <view class="filter-row">
+      <text class="chip-label">{{tab === 'parts' ? '分类' : '类型'}}</text>
+      <scroll-view class="chips" scroll-x enable-flex>
+        <view wx:for="{{categories}}" wx:key="id"
+          class="cat {{category === item.id ? 'on' : ''}}"
+          data-id="{{item.id}}" bindtap="selectCategory">
+          {{item.label}}<text wx:if="{{item.n}}"> {{item.n}}</text>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view wx:if="{{tab === 'parts' && subtypes.length}}" class="filter-row">
+      <text class="chip-label">子类</text>
+      <scroll-view class="chips" scroll-x enable-flex>
+        <view class="cat {{subtype === '' ? 'on' : ''}}" data-id="" bindtap="selectSubtype">全部</view>
+        <view wx:for="{{subtypes}}" wx:key="id"
+          class="cat {{subtype === item.id ? 'on' : ''}}"
+          data-id="{{item.id}}" bindtap="selectSubtype">
+          {{item.label}} {{item.n}}
+        </view>
+      </scroll-view>
+    </view>
+
+    <view wx:if="{{tab === 'materials' && materialGroups.length}}" class="filter-row">
+      <text class="chip-label">分组</text>
+      <scroll-view class="chips" scroll-x enable-flex>
+        <view class="cat {{materialGroup === '' ? 'on' : ''}}" data-id="" bindtap="selectMaterialGroup">全部</view>
+        <view wx:for="{{materialGroups}}" wx:key="id"
+          class="cat {{materialGroup === item.id ? 'on' : ''}}"
+          data-id="{{item.id}}" bindtap="selectMaterialGroup">
+          {{item.label}} {{item.count}}
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="filter-row">
+      <text class="chip-label">排序</text>
+      <scroll-view class="chips" scroll-x enable-flex>
+        <block wx:if="{{tab === 'parts'}}">
+          <view class="cat {{sort === 'featured' ? 'on' : ''}}" data-sort="featured" bindtap="selectSort">推荐</view>
+          <view class="cat {{sort === 'price_asc' ? 'on' : ''}}" data-sort="price_asc" bindtap="selectSort">价格从低</view>
+          <view class="cat {{sort === 'price_desc' ? 'on' : ''}}" data-sort="price_desc" bindtap="selectSort">价格从高</view>
+        </block>
+        <block wx:else>
+          <view class="cat {{materialSort === 'default' ? 'on' : ''}}" data-sort="default" bindtap="selectMaterialSort">默认</view>
+          <view class="cat {{materialSort === 'density' ? 'on' : ''}}" data-sort="density" bindtap="selectMaterialSort">密度从高</view>
+          <view class="cat {{materialSort === 'modulus' ? 'on' : ''}}" data-sort="modulus" bindtap="selectMaterialSort">模量从高</view>
+          <view class="cat {{materialSort === 'tensile' ? 'on' : ''}}" data-sort="tensile" bindtap="selectMaterialSort">抗拉从高</view>
+        </block>
+      </scroll-view>
+    </view>
+  </view>
+
+  <view wx:if="{{error}}" class="card error-card">
+    <view class="error">{{error}}</view>
+    <view class="actions">
+      <button class="btn" bindtap="retry">重试</button>
+      <button class="btn primary" bindtap="resetFilters">重置筛选</button>
+    </view>
+  </view>
+
+  <view wx:if="{{loading && !items.length}}" class="skeleton">
+    <view class="sk-card" wx:for="{{[1, 2, 3]}}" wx:key="*this">
+      <view class="sk-thumb"></view>
+      <view class="sk-lines">
+        <view class="sk-line w70"></view>
+        <view class="sk-line w45"></view>
+        <view class="sk-line w30"></view>
+      </view>
+    </view>
+  </view>
+
   <view wx:elif="{{!items.length && !error}}" class="empty">
-    没有结果；换个关键词，或切回「全部」
+    <view class="empty-title">没有结果</view>
+    <view class="muted">换个关键词，或重置筛选条件</view>
+    <button class="btn" bindtap="resetFilters">重置筛选</button>
   </view>
 
   <block wx:for="{{items}}" wx:key="id">
     <view class="card item" data-id="{{item.id}}" bindtap="openItem">
       <image wx:if="{{item.image}}" class="thumb" src="{{item.image}}"
-        mode="aspectFill" lazy-load data-index="{{index}}" binderror="onImageError" />
+        mode="aspectFit" lazy-load data-index="{{index}}" binderror="onImageError" />
       <view wx:else class="glyph">{{item.glyph || 'R'}}</view>
       <view class="item-body">
         <view class="title">{{item.title || item.name}}</view>
         <view class="subline">{{item.subline}}</view>
+        <view wx:if="{{item.keySpecs}}" class="specs-line">{{item.keySpecs}}</view>
         <view class="tags">
           <text class="tag {{item.tierColor}}">{{item.tierLabel}}</text>
           <text wx:if="{{item.verifiedLabel}}" class="tag a">{{item.verifiedLabel}}</text>
