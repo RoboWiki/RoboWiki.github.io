@@ -126,18 +126,35 @@ export ROBOWIKI_ASSETS_DIR="$PWD/.data/assets/parts"
 
 python -m pipeline build          # 校验数据 + 生成站点内容
 python -m pytest                  # 构建链 + API 测试
-cd wiki && npm i && npm run dev    # 本地起站（VitePress 默认 5173）
+cd wiki && npm ci && npm run dev    # 本地起站（VitePress 默认 5173）
 ```
 
-只读静态站不需要后端。需要登录、评价、提案与审核时（沿用上面的 `ROBOWIKI_*` 环境变量）：
+只读静态站不需要后端。需要登录、评价、提案与审核时，二选一：
+
+**A. 直接跑 uvicorn（8000）**
 
 ```bash
 cd backend && pip install -r requirements.txt
-uvicorn app.main:app --reload      # http://127.0.0.1:8000/api/docs（开发环境）
+uvicorn app.main:app --reload
+```
 
-# 或整套容器（Caddy + API + Postgres + worker）
-# 完整步骤（数据 release → 静态站构建 → 密钥 → compose → 验收）见 deploy/README.md
+在仓库根目录另开终端，把站点 dev 的 `/api` 指到 8000：
+
+```bash
+cd wiki && ROBOWIKI_API_ORIGIN=http://127.0.0.1:8000 npm run dev
+```
+
+**B. 后端整套容器（API 默认 127.0.0.1:8080）**
+
+```bash
+# 公网入口是 1Panel OpenResty；完整步骤见 deploy/README.md
 cd deploy && cp .env.example .env && docker compose up -d --build
+```
+
+在仓库根目录另开终端：
+
+```bash
+cd wiki && npm run dev          # /api 默认代理到 8080
 ```
 
 改一个型号的参数 = 去`RoboWiki` 仓改一个 JSON，或走站内提案/控制台；`RoboWiki` 仓发布新 `data-v*` 后更新 `data.lock.json`。数据闸门/测试会拦住三类错：A 级键集不一致、来源等级越级、
@@ -149,7 +166,7 @@ cd deploy && cp .env.example .env && docker compose up -d --build
 wiki/       VitePress 站点（纯静态 + PWA，静态部署不需要后端）
 backend/    FastAPI + SQLModel：/api/v1、UGC、提案与 outbox worker
 console/    React 控制台：提案审核、举报处置、数据缺口、社区
-deploy/     Docker Compose（Caddy + API + Postgres + migrate + worker）
+deploy/     Docker Compose（API + Postgres + migrate + worker）与 1Panel 反代模板
 clients/    多端适配：QQ 机器人；小程序/App/SDK 的契约与目录
 pipeline/   页面与分享产物生成（数据从`RoboWiki` 仓 release 读取）
 docs/       站点架构、决策记录、历史归档

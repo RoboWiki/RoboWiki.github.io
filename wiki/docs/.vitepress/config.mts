@@ -143,10 +143,11 @@ export default withPwa(defineConfig({
   sitemap: {
     hostname: SITE,
   },
-  // dev 模式下把 /api 代理到 FastAPI（评分/评论/控制台都要它）
+  // dev 模式下把 /api 代理到 FastAPI（评分/评论/控制台都要它）。
+  // 默认对齐 Docker 的 127.0.0.1:8080；直接跑 uvicorn 时用 ROBOWIKI_API_ORIGIN 覆盖。
   vite: {
     server: {
-      proxy: { '/api': { target: 'http://127.0.0.1:8000', changeOrigin: true } },
+      proxy: { '/api': { target: process.env.ROBOWIKI_API_ORIGIN || 'http://127.0.0.1:8080', changeOrigin: true } },
     },
   },
   head: [

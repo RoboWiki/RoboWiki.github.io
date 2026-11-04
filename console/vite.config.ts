@@ -10,7 +10,8 @@ export default defineConfig({
     host: '127.0.0.1',
     port: 5180,
     strictPort: true,
-    proxy: { '/api': { target: 'http://127.0.0.1:8000', changeOrigin: true } },
+    // 默认对齐 Docker API；直接跑 uvicorn 时用 ROBOWIKI_API_ORIGIN 覆盖。
+    proxy: { '/api': { target: process.env.ROBOWIKI_API_ORIGIN || 'http://127.0.0.1:8080', changeOrigin: true } },
   },
   build: {
     outDir: 'dist',

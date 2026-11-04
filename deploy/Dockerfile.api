@@ -30,6 +30,7 @@ USER app
 
 EXPOSE 8000
 
-# API 只在内网，Caddy 是唯一入口；信任其 X-Forwarded-For 才能按真实客户端限流
+# API 只在内网（宿主机回环），1Panel OpenResty 是唯一入口；
+# 信任其 X-Forwarded-For 才能按真实客户端限流
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", \
      "--proxy-headers", "--forwarded-allow-ips=*"]

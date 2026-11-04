@@ -40,7 +40,7 @@ Node 版本以仓库根 `.nvmrc` 为准（22），CI（`pages.yml` / `pr-gate.ym
 | 改页面文案、导航、样式、组件 | 本仓 `wiki/` |
 | 改 API / 提案审核 / outbox worker | 本仓 `backend/` |
 | 改控制台 | 本仓 `console/` |
-| 改部署 / Caddy / Compose | 本仓 `deploy/` |
+| 改部署 / 1Panel 反代 / Compose | 本仓 `deploy/` |
 | 改多端契约 / QQ 机器人 | 本仓 `clients/` |
 | 导入竞赛文档 | 本仓 `tools/site/` |
 

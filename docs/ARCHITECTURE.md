@@ -11,7 +11,7 @@
 | 仓 | 负责 | 不负责 |
 |---|---|---|
 | `RoboWiki/RoboWiki` | `data/`、`schema/`、`assets/`、校验、`data-v*` release | 页面、API、UGC |
-| `RoboWiki/RoboWiki.github.io`（本仓） | VitePress、FastAPI、控制台、Docker/Caddy、分享/PWA、客户端契约 | 数据副本、schema 修改、产品图副本 |
+| `RoboWiki/RoboWiki.github.io`（本仓） | VitePress、FastAPI、控制台、Docker Compose、1Panel 反代、分享/PWA、客户端契约 | 数据副本、schema 修改、产品图副本 |
 
 文档与命令统一使用这两个仓库名，不另起别名；clone 后目录名与仓库名一致。
 
@@ -59,13 +59,13 @@
 
 ### 部署
 
-- `deploy/compose.yml`：Caddy + API + Postgres + migrate + worker。
-- 两种形态：Caddy 全栈（80/443 由 Caddy 终结）；或 `compose.1panel.yml` 只发布 API，由 1Panel 反代 `/api /mcp /console`，静态继续走 Pages。
-- Caddy 负责静态、TLS、反代、缓存与安全头；API 只在内网。
+- `deploy/compose.yml`：API + Postgres + migrate + worker；API 只发布到宿主机回环 `127.0.0.1:8080`。
+- 唯一公网入口是 1Panel 的 OpenResty：静态继续由 Pages/1Panel 提供，`/api /mcp /console` 反代到本机 API；模板见 `deploy/1panel-site.conf`。
+- TLS、静态与安全头统一在 1Panel 站点配置里维护，不再使用 Caddy；API 只在内网。
 - 启动守卫：生产模式（`AUTO_CREATE_TABLES=false`）下 `/data` 没有 `catalog/*.json` 会拒绝启动，防止空挂载清空部件表；`/schema` 缺 `semantics.json` 在导入期直接报错。
-- 构建静态站必须先 `python -m pipeline build` 再 `npm run build`，否则部件页、产品图与分享产物缺失。
-- 生产必须设置域名、`AUTO_HTTPS=on`、管理员账号和强密码；GitHub Pages 只做静态镜像。
-- 完整 runbook（首次部署、数据升级、回滚、备份、排错、验收）见 `deploy/README.md`。
+- 静态站由 Pages 的 CI 构建：先 `python -m pipeline build` 再 `npm run build`，否则部件页、产品图与分享产物缺失；服务器只跑 API，不构建静态站。
+- 生产必须设置管理员账号和强密码；`SITE_URL` 指向主域；GitHub Pages 只做静态镜像。
+- 完整 runbook（首次部署、1Panel 反代、数据升级、回滚、备份、排错、验收）见 `deploy/README.md`。
 
 ## 数据与版本
 
@@ -86,7 +86,7 @@
 wiki/        VitePress、组件、主题、生成页与 public 产物
 backend/     FastAPI、模型、Alembic、worker、publisher
 console/     React 控制台（/console/）
-deploy/      Compose、Caddy、Dockerfile、备份
+deploy/      Compose、1Panel 反代模板、Dockerfile、备份
 clients/     多端契约；QQ 机器人参考实现
 pipeline/    页面/分享/材质/站点构建（不产生事实）
 tests/       站点构建、治理、导出测试
@@ -104,6 +104,6 @@ docs/        架构、ADR、版本化、CI
 
 - 静态站与 API 都可单机运行；当前 326 件入库部件 + 36 个材料/工艺页，构建约 35 秒。
 - 搜索先用 VitePress 本地索引与 Postgres 子串；文档 >20 万或 p95 >300ms 再上 Meilisearch。
-- 多副本前把进程内限流换成 Redis；当前单副本 + Caddy 已足够。
+- 多副本前把进程内限流换成 Redis；当前单副本 + 1Panel 反代已足够。
 - 微信小程序只读壳已实现（`clients/wechat-mini/`）；App 与小程序写操作未实现，
   契约见 `clients/README.md`；不要为每个端复制业务逻辑。

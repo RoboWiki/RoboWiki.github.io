@@ -1,42 +1,46 @@
 # RoboWiki 容器部署
 
-一套 Compose：Caddy（TLS + 静态 + 反代）+ FastAPI + Postgres + migrate + worker。
-数据与静态都不进镜像，换机器只换环境。
+**唯一生产形态：1Panel OpenResty + GitHub Pages 静态站 + 本机 API。**
+
+```
+浏览器 / 小程序 / QQ 机器人
+        │
+        ▼
+1Panel OpenResty（80/443，TLS + 静态 + 安全头）
+        ├─ /                    → GitHub Pages（静态站）
+        └─ /api /mcp /console   → 127.0.0.1:8080
+                                      │
+                                      ▼
+                         api / worker / migrate / db（Compose）
+```
+
+`deploy/compose.yml` 只跑后端四件套：`api`、`worker`、`migrate`、`db`。
+**不再使用 Caddy**：TLS、静态、安全头统一在 1Panel 站点配置里维护，模板见
+[1panel-site.conf](1panel-site.conf)。
 
 > 实测基线：2026-11-04，Docker 27.3.1 / Compose v2.29.7，数据集 `data-v2026.11.2`。
-> 干净重建后 `/api/v1/ready`、326 部件、36 材质、产品图、`/console/`、404 页、
-> CSP 与安全头全部通过；api 以 uid 10001 非 root 运行。
+> 公网 `/api/v1/ready`、`/api/v1/meta`、`/console/`、`/mcp` 均通过；静态站 326 部件、
+> 36 个材料/工艺页、产品图与安全头正常；api 以 uid 10001 非 root 运行。
 
 ---
 
-## 1. 选择部署形态
-
-| 形态 | 谁终结 TLS | 静态站来源 | 适用 |
-|---|---|---|---|
-| **A. 单机全栈** | Caddy（自动证书） | 本机 `dist/` | 想完全自主、可接受静态也走本机 |
-| **B. 1Panel + Pages** | 1Panel OpenResty | GitHub Pages | 静态继续吃 Pages CDN，只把 API 放本机（推荐给现状） |
-| **C. 本地联调** | 无（明文） | 本机 `dist/` | 开发、小程序真机联调 |
-
-形态 B 不会让站点「割裂」：静态与 API 同域，浏览器同源请求，不需要 CORS。
-
----
-
-## 2. 前置条件
+## 1. 前置条件
 
 | 项 | 要求 | 说明 |
 |---|---|---|
-| 系统 | Linux x86_64（Windows 仅用于本地联调） | 2C / 4G 起；磁盘 ≥ 3GB |
+| 系统 | Linux x86_64 | 2C / 4G 起；磁盘 ≥ 3GB |
 | Docker | 24+，Compose v2 | 生产不要用 `docker-compose` v1 |
-| DNS | A 记录指向服务器 | 形态 A 必须；形态 B 由 1Panel 站点负责 |
-| 端口 | 80/443 可达 | 形态 A：Caddy 需要；形态 B：只给 1Panel |
+| 1Panel | 已装好 OpenResty，站点已备案并配好证书 | 80/443 只给 1Panel |
+| 域名 | A 记录指向服务器 | `robowiki.org.cn` |
 | gh CLI / curl | 二者有其一即可；public release 不需要登录 | 下载 `RoboWiki` 仓数据 release；脚本优先用 `gh`，否则 `curl` |
-| Node.js | 22 | 仅形态 A 构建 VitePress 与 console 需要；形态 B 不需要 |
-| Python | 3.11+（Ubuntu/Debian 用 `python3`） | 取 release 的脚本只用标准库，会自动选 `python3`/`python` |
+| Python | 3.11+（Ubuntu/Debian 用 `python3`） | 取 release 的脚本只用标准库 |
 | 防火墙 | 只开 22/80/443 | API 与 DB 端口一律不对外开放 |
+
+服务器上**不需要 Node.js**：静态站由 GitHub Pages 的 CI 构建，服务器只跑 API。
 
 ---
 
-## 3. 首次部署（形态 A：全部容器）
+## 2. 首次部署
 
 > 仓库与目录：本仓是 `RoboWiki.github.io`，clone 后目录同名。数据仓 `RoboWiki`
 > 不在服务器上 clone，只下载它的 release。Compose 项目名固定为 `robowiki`
@@ -52,44 +56,89 @@ cp deploy/.env.example deploy/.env
 #      POSTGRES_PASSWORD=$(openssl rand -base64 24)
 #      SECRET_KEY=$(openssl rand -hex 32)
 #      ADMIN_PASSWORD=$(openssl rand -base64 18)
-#    生产：SITE_DOMAIN=robowiki.org.cn  AUTO_HTTPS=on
+#    生产把 SITE_URL 和 CORS_ORIGINS 改成主域；EMAIL_MODE 改 smtp。
 
 # 2) 数据 release（校验 SHA-256 与 MANIFEST 计数）
 bash scripts/fetch-data-release.sh
 
-# 3) 静态站：先生成站点内容，再构建 VitePress
-export ROBOWIKI_DATA_DIR="$PWD/.data/data"
-export ROBOWIKI_SCHEMA_DIR="$PWD/.data/schema"
-export ROBOWIKI_ASSETS_DIR="$PWD/.data/assets/parts"
-python -m pipeline build          # 生成部件页、catalog.json、分享 JSON、产品图
-cd wiki && npm ci && npm run build && cd ..
+# 3) worker 的 outbox 目录（Linux 宿主必需）
+mkdir -p deploy/var/outbox
+chown -R 10001:10001 deploy/var/outbox
 
-# 4) 起服务（migrate 跑完 api 才启动；caddy 等 api healthy）
-cd deploy && docker compose up -d --build
-docker compose ps                 # 期望 db/api 为 healthy
-
-# 5) 验证
-curl -fsS http://localhost/api/v1/ready
-curl -fsS http://localhost/api/v1/meta
-curl -fsS -o /dev/null -w '%{http_code}\n' http://localhost/
+# 4) 起服务（migrate 跑完 api 才启动）
+cd deploy
+docker compose up -d --build
+docker compose ps
 ```
 
-> **第 3 步不能省。** `wiki/docs/parts/`、`public/parts/`、`public/catalog.json`、
-> `public/share/` 都是 `pipeline build` 的产物且不入库；只跑 `npm run build`
-> 会得到「参数页是旧稿、产品图 404」的站。
+期望：`db` healthy、`api` healthy、`worker` Up、`migrate` **Exited (0)**。
+`migrate` 是一次性迁移任务，`Exited (0)` 是成功，不是故障。
 
-### 本地联调（形态 C）
+本机验证：
 
 ```bash
-cd deploy
-# .env: SITE_DOMAIN=:80  AUTO_HTTPS=off  HTTP_PORT=8080
-docker compose up -d --build db migrate api worker caddy
 curl -fsS http://127.0.0.1:8080/api/v1/ready
-# 小程序 config.js 的 LOCAL 指向 http://127.0.0.1:8080
+curl -fsS http://127.0.0.1:8080/api/v1/meta
 ```
 
-`SITE_DOMAIN=localhost` + `AUTO_HTTPS=off` **不会监听 80**（Caddy 把站点地址
-当作 `https://localhost:443`）。明文必须写 `:80`。
+期望 `data_version=data-v2026.11.2`、`site_url=https://robowiki.org.cn`。
+
+---
+
+## 3. 1Panel 反代（唯一公网入口）
+
+当前 1Panel 的 OpenResty 是 **host 网络**（可用
+`docker inspect 1Panel-openresty-OhRj --format '{{.HostConfig.NetworkMode}}'` 确认），
+所以直接反代宿主机回环 `127.0.0.1:8080`，**不需要** `docker network connect`。
+
+1. 打开 [1panel-site.conf](1panel-site.conf)，整段复制。
+2. 1Panel → 网站 → `robowiki.org.cn` → 配置文件，**整段替换** server 块。
+3. 保存并重载：
+
+```bash
+OPENRESTY=$(docker ps --format '{{.Names}}' | grep -i openresty | head -1)
+docker exec "$OPENRESTY" nginx -t
+docker exec "$OPENRESTY" nginx -s reload
+```
+
+模板已经包含：
+
+- `/api` → 308 `/api/`；
+- `/api/`、`/mcp`、`/mcp/`、`/console/` → `127.0.0.1:8080`；
+- `client_max_body_size 10m`；
+- HSTS / CSP / nosniff / frame-ancestors / Referrer-Policy / Permissions-Policy；
+- CSP 放行 `giscus.app`（文档评论）和 `avatars.githubusercontent.com`（贡献者头像）。
+
+> 如果 OpenResty 是 bridge 网络：先
+> `docker network connect robowiki_default <openresty容器名>`，
+> 再把模板里的 `127.0.0.1:8080` 改成 `api:8000`。
+>
+> 1Panel 在改站点设置时可能重写整份配置。若出现，重新套用模板，或把模板放进
+> 1Panel 的「自定义配置 / 额外 location」入口。
+
+公网验收：
+
+```bash
+curl -fsS https://robowiki.org.cn/api/v1/ready
+curl -fsS https://robowiki.org.cn/api/v1/meta
+curl -fsS "https://robowiki.org.cn/api/v1/parts?limit=1"
+curl -fsS "https://robowiki.org.cn/api/v1/materials?limit=1"
+curl -s -o /dev/null -w '%{http_code}\n' https://robowiki.org.cn/console/
+curl -s -o /dev/null -w '%{http_code}\n' https://robowiki.org.cn/mcp
+```
+
+安全头：
+
+```bash
+curl -sSI https://robowiki.org.cn/ | grep -iE \
+ 'content-security-policy|x-content-type-options|x-frame-options|referrer-policy|permissions-policy|strict-transport-security'
+```
+
+浏览器再确认三处没被 CSP 误伤：
+
+1. `/contributors` 的 GitHub 头像能显示；
+2. 任意文档页评论区 giscus 能加载；
+3. `/console/` 登录页正常、控制台无 CSP 报错。
 
 ---
 
@@ -97,9 +146,7 @@ curl -fsS http://127.0.0.1:8080/api/v1/ready
 
 | 变量 | 作用 | 生产值 |
 |---|---|---|
-| `SITE_DOMAIN` | Caddy 站点地址 | `robowiki.org.cn`；本地 `:80` |
-| `AUTO_HTTPS` | 自动证书 | 生产 `on`，本地 `off` |
-| `HTTP_PORT` / `HTTPS_PORT` | 宿主端口 | 默认 80/443 |
+| `API_PORT` | API 发布到宿主机回环的端口 | `8080`；只绑 `127.0.0.1` |
 | `POSTGRES_PASSWORD` | 数据库密码 | 随机；必填 |
 | `SECRET_KEY` | JWT 签名 | ≥32 字节随机；必填 |
 | `SITE_URL` | canonical / 邮件链接 / 机器人回复 | `https://robowiki.org.cn` |
@@ -112,83 +159,88 @@ curl -fsS http://127.0.0.1:8080/api/v1/ready
 | `PUBLISH_MODE` | `dryrun` / `github` | 先 `dryrun`，验证后再 `github` |
 | `GITHUB_TOKEN` | 开`RoboWiki` 仓 PR | 细粒度 token，仅 contents/pull_requests 写 |
 | `DATA_DIR` / `SCHEMA_DIR` | 数据 release 路径 | `../.data/data` / `../.data/schema` |
-| `STATIC_DIR` | 静态站 dist | `../wiki/docs/.vitepress/dist` |
+| `TAG` | 镜像 tag | 生产建议用发布日期，不用 `dev` |
+
+`/api/openapi.json` 在 `EXPOSE_DOCS=false` 时仍可访问，这是给 SDK 生成用的；
+`/api/docs` 会 404，符合预期。
 
 ---
 
-## 5. 形态 B：1Panel 共存（只反代 API）
+## 5. 本地开发
 
-1Panel 的 OpenResty 占着 80/443 时，不要让 Caddy 也去抢：
+### 5.1 只跑 API + 数据库（Docker）
 
 ```bash
 cd deploy
-docker compose -f compose.yml -f compose.1panel.yml up -d db migrate api worker
+cp .env.example .env
+# 填 POSTGRES_PASSWORD / SECRET_KEY / ADMIN_PASSWORD
+docker compose up -d --build
+curl -fsS http://127.0.0.1:8080/api/v1/ready
 ```
 
-`compose.1panel.yml` 只给 api 加 `127.0.0.1:8080:8000`，不启动 caddy。
-然后 1Panel → 网站 → `robowiki.org.cn` → 配置文件，在原有静态 `location /`
-**之前**加：
+### 5.2 站点热更（VitePress）
 
-```nginx
-location = /api { return 308 /api/; }
-location /api/ {
-    proxy_pass http://api:8000;          # 见下方网络说明
-    proxy_http_version 1.1;
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;   # 必须追加
-    proxy_set_header X-Forwarded-Proto $scheme;
-    proxy_read_timeout 60s;
-    proxy_buffering off;
-}
-location /mcp/     { proxy_pass http://api:8000; proxy_set_header Host $host; }
-location /console/ { proxy_pass http://api:8000; proxy_set_header Host $host; }
+```bash
+cd wiki
+npm ci
+npm run dev          # 5173；/api 代理到 127.0.0.1:8080
 ```
 
-**网络坑（最重要）**：1Panel 的 OpenResty 在容器里，`127.0.0.1` 指的是
-OpenResty 自己，不是宿主机。二选一：
+如果 API 是用 `uvicorn` 直接跑的（8000）：
 
-- **做法 A（推荐）**：把 OpenResty 接进本项目的网络，然后 `proxy_pass http://api:8000;`
-  ```bash
-  docker network connect robowiki_default <openresty容器名>   # docker ps 查名字
-  ```
-- **做法 B**：把 override 改成 `"0.0.0.0:8080:8000"`（防火墙不要放开 8080），
-  nginx 写 `proxy_pass http://172.17.0.1:8080;`（以 `ip route | grep docker0` 为准）。
+```bash
+cd backend && uvicorn app.main:app --reload --port 8000
+cd wiki && ROBOWIKI_API_ORIGIN=http://127.0.0.1:8000 npm run dev
+```
 
-反代完成后，`https://robowiki.org.cn/api/v1/meta` 应返回数据版本；此时微信小程序
-后台把 `https://robowiki.org.cn` 加入 request 合法域名即可提审（域名需已备案）。
+### 5.3 控制台热更
+
+```bash
+cd console
+npm ci
+npm run dev          # 5180；/api 代理到 127.0.0.1:8080
+```
+
+`npm run preview` 只是静态预览，没有 `/api` 代理；要测评论、评分、提案，用 `npm run dev`。
+
+### 5.4 小程序联调
+
+开发版连本机 Docker API `http://127.0.0.1:8080/api/v1`（见 `clients/wechat-mini/config.js`）。
+真机预览时把 `LOCAL` 改成电脑局域网地址；体验版/正式版直接走主域。
 
 ---
 
 ## 6. 数据升级（换 `data-v*`）
 
+静态站和 API 都从 `RoboWiki` 仓的 release 取数，但更新路径不同：
+
+1. `RoboWiki` 仓发 `data-v*` release；
+2. 本仓更新 `data.lock.json` 并推送，GitHub Pages 的 CI 重新构建静态站；
+3. 服务器拉新锁并重启 API：
+
 ```bash
-git pull                                   # 拿到新的 data.lock.json
-bash scripts/fetch-data-release.sh         # 重新下载并校验 release
-
-export ROBOWIKI_DATA_DIR="$PWD/.data/data"
-export ROBOWIKI_SCHEMA_DIR="$PWD/.data/schema"
-export ROBOWIKI_ASSETS_DIR="$PWD/.data/assets/parts"
-python -m pipeline build
-cd wiki && npm ci && npm run build && cd ..
-
+git pull
+bash scripts/fetch-data-release.sh
 cd deploy
-docker compose up -d --build api worker caddy migrate
-curl -fsS http://localhost/api/v1/ready    # 确认 data_version 已变化
+docker compose up -d --force-recreate api worker
+curl -fsS http://127.0.0.1:8080/api/v1/ready
 ```
 
-顺序不能反：**先换数据与静态，再重启 API**。反向操作会让 API 先看到旧目录。
+顺序不能反：**先换数据，再重启 API**。反向操作会让 API 先看到旧目录。
+服务器不跑 `pipeline build`，静态页由 Pages 构建。
 
-升级后抽查：`/api/v1/meta` 的 `data_version`、任意 3 个部件页、`/api/v1/parts?limit=1`
-的 `total` 与 `MANIFEST.json` 计数一致。
+升级后抽查：`/api/v1/meta` 的 `data_version`、任意 3 个部件页、
+`/api/v1/parts?limit=1` 的 `total` 与 `MANIFEST.json` 计数一致。
 
 ---
 
 ## 7. 镜像升级与回滚
 
 ```bash
-# 升级
-docker compose up -d --build api worker caddy
+cd deploy
+
+# 升级：重新构建并重建 api/worker，migrate 会随 up 跑一次
+docker compose up -d --build
 
 # 回滚：保留上一版镜像，按需重新 tag
 docker images | grep robowiki/api
@@ -199,12 +251,16 @@ docker compose up -d --no-build api worker
 滚动更新不会丢数据：`pgdata` 是命名卷，数据目录只读挂载，migrate 先于 api。
 代价是单机有秒级中断；要零中断需多副本 + 共享会话（当前未做）。
 
+> 镜像回滚不会自动回滚数据库迁移。如果新版本改过 schema，先确认迁移可兼容；
+> 不兼容就恢复备份，或手动 `alembic downgrade`。
+
 ---
 
 ## 8. 备份与恢复
 
 ```bash
-bash deploy/backup/backup.sh               # pg_dump 到 deploy/backup/
+# 在仓库根目录执行（脚本内部会用 deploy/compose.yml）
+bash deploy/backup/backup.sh
 ```
 
 - 备份含邮箱、密码哈希、举报记录（PII）：**不要进 git**，复制到异地并加密。
@@ -212,11 +268,12 @@ bash deploy/backup/backup.sh               # pg_dump 到 deploy/backup/
 - 恢复：
 
 ```bash
+cd deploy
 docker compose up -d db migrate
 docker compose stop api worker
 docker compose exec -T db pg_restore -U robowiki -d robowiki --clean --if-exists < backup/xxx.dump
 docker compose start api worker
-curl -fsS http://localhost/api/v1/ready
+curl -fsS http://127.0.0.1:8080/api/v1/ready
 ```
 
 每季度做一次恢复演练；没演练过的备份不算备份。
@@ -229,15 +286,16 @@ curl -fsS http://localhost/api/v1/ready
 |---|---|---|
 | api `Restarting`，日志 `找不到 semantics.json` | `/schema` 空（没跑 fetch 或路径写错） | 重新执行第 2 步；检查 `SCHEMA_DIR` |
 | api 拒绝启动，`没有 catalog/*.json` | `/data` 空；新守卫阻止清空部件表 | 同上看 `DATA_DIR`；这是保护不是故障 |
-| 全站 502 | api 未 healthy | `docker compose logs api`；看 `/ready` |
-| 404 是纯文本 | 旧 Caddyfile | 已改为返回站点 404 页；`docker compose restart caddy` |
-| 本地 `http://localhost` 无响应 | `SITE_DOMAIN=localhost` + `AUTO_HTTPS=off` | 改成 `SITE_DOMAIN=:80` |
+| 公网 `/api` 502 | 1Panel 反代不到本机 API | 先 `curl http://127.0.0.1:8080/api/v1/ready`；再查模板 upstream |
+| 公网 `/api` 404（VitePress 页面） | `/api/` 的 location 没放在 catch-all 之前，或没 reload | 套用 `1panel-site.conf`，`nginx -t` 后 reload |
+| `/console/` 404 或空白 | 镜像里没有 `console/dist` | `docker compose up -d --build api`；确认 Dockerfile 的 console stage |
+| 评论区/头像被 CSP 拦截 | CSP 没放行 giscus 或 GitHub 头像 | 用 `1panel-site.conf` 里的 CSP，不要照搬旧 Caddy 版本 |
 | worker 发布失败 `目录里找不到部件` | worker 缺 `/data` 挂载 | 已修复；确认 `docker inspect` 有 `/data` |
 | worker `PermissionError` 写 outbox | Linux 宿主目录属主不是 10001 | `sudo chown -R 10001:10001 deploy/var/outbox` |
-| Caddy 证书申请失败 | DNS 未指向本机 / 80、443 不可达 | 查 DNS、防火墙、云安全组 |
+| 静态页产品图 404 | Pages 构建没跑 `pipeline build` | 看 Pages workflow；不要只跑 `npm run build` |
+| 小程序请求 404 | 主域没反代 `/api/` 或 request 域名没配 | 先 `curl` 公网，再查小程序后台 |
 | `docker compose build` 卡在 registry | Docker Hub 不可达 | 配镜像加速，或改用已缓存镜像 |
-| 小程序请求 404 | 主域没有反代 `/api/` | 按第 5 节配置；先 `curl` 验证 |
-| 页面产品图 404 | 漏跑 `pipeline build` | 重新执行第 3 步 |
+| 1Panel 配置被站点设置覆盖 | 1Panel 重写了 server 块 | 重新套用 `1panel-site.conf`；或用自定义配置入口 |
 
 ---
 
@@ -245,10 +303,11 @@ curl -fsS http://localhost/api/v1/ready
 
 - [ ] `POSTGRES_PASSWORD` / `SECRET_KEY` / `ADMIN_PASSWORD` 都是随机值，非示例值
 - [ ] `.env` 未被提交；`deploy/backup/`、`.data/` 在 `.gitignore` 内
-- [ ] api、db 没有公网端口；只有 Caddy / 1Panel 能访问
+- [ ] api 只绑 `127.0.0.1:${API_PORT}`，db 没有宿主机端口；只有 1Panel 能访问
+- [ ] 80/443 只由 1Panel OpenResty 监听，没有第二个入口（Caddy 已移除）
 - [ ] `EXPOSE_DOCS=false`；`EMAIL_MODE=smtp`（生产）
 - [ ] `CORS_ORIGINS` 是明确域名，不含 `*`
-- [ ] HSTS / CSP / nosniff / frame-ancestors 已在响应头中（`curl -sI`）
+- [ ] HSTS / CSP / nosniff / frame-ancestors 已在公网响应头中（`curl -sI`）
 - [ ] 备份文件权限 600 且异地留存
 - [ ] `GITHUB_TOKEN` 只给`RoboWiki` 仓 contents + pull_requests 写权限
 - [ ] 服务器防火墙只放行 22/80/443
@@ -259,16 +318,17 @@ curl -fsS http://localhost/api/v1/ready
 ## 11. 验收清单（部署完成）
 
 ```bash
-curl -fsS  http://localhost/api/v1/ready        # {"ok":true,"db":"ok","data_version":...}
-curl -fsS  http://localhost/api/v1/meta         # site_url 为主域
-curl -fsS  http://localhost/api/v1/parts?limit=1
-curl -fsS  http://localhost/api/v1/materials?limit=1
-curl -sI   http://localhost/ | grep -i content-security-policy
-curl -s -o /dev/null -w '%{http_code}\n' http://localhost/console/
-curl -s -o /dev/null -w '%{http_code}\n' http://localhost/no-such-page   # 404 + HTML
+curl -fsS https://robowiki.org.cn/api/v1/ready
+curl -fsS https://robowiki.org.cn/api/v1/meta
+curl -fsS "https://robowiki.org.cn/api/v1/parts?limit=1"
+curl -fsS "https://robowiki.org.cn/api/v1/materials?limit=1"
+curl -sI  https://robowiki.org.cn/ | grep -i content-security-policy
+curl -s -o /dev/null -w '%{http_code}\n' https://robowiki.org.cn/console/
+curl -s -o /dev/null -w '%{http_code}\n' https://robowiki.org.cn/no-such-page
 ```
 
-页面抽查：首页、`/catalog`、任意部件页（图片与参数）、材质页、分享卡二维码。
+页面抽查：首页、`/catalog`、任意部件页（图片与参数）、材质页、分享卡二维码、
+`/contributors` 头像、文档页评论区。
 后台抽查：`/console/` 登录、一条提案的审核与 outbox 状态。
 
 ---
@@ -279,8 +339,9 @@ curl -s -o /dev/null -w '%{http_code}\n' http://localhost/no-such-page   # 404 +
 - `ADMIN_PASSWORD` 每次启动都会重置库里的站务密码；改密要改 env 再重启。改密后旧登录令牌立即失效，需要重新登录。
 - `EMAIL_MODE=log` 会把验证/重置令牌打进容器日志，只允许开发环境使用。
 - 评分 / 实测的社区快照归**本仓** `data/`，由 GitHub issue 聚合 workflow 产出；`RoboWiki` 仓 release 只装目录数据。首次需要一次 issue 事件或手动 dispatch 聚合，页面才带评分。
-- 基础镜像使用浮动 tag（`python:3.12-slim` 等），构建可复现性依赖上游；
-  需要强复现时钉 digest。
-- 镜像由本机 `docker compose build` 构建，CI 不构建镜像（见根 README 说明）。
-- 静态站产物（部件页、`public/catalog.json`、产品图）不入库，必须 `pipeline build`。
-- 1Panel 的 OpenResty 重建容器后会丢失 `docker network connect`，需要重连。
+- 基础镜像使用浮动 tag（`python:3.12-slim` 等），构建可复现性依赖上游；需要强复现时钉 digest。
+- 镜像由本机 `docker compose build` 构建，CI 不构建镜像。
+- 静态站产物（部件页、`public/catalog.json`、产品图）不入库，由 Pages 的 `pipeline build` 生成。
+- 1Panel 站点设置可能重写 server 块；`deploy/1panel-site.conf` 是唯一模板，改完要重新套用。
+- 当前 OpenResty 是 host 网络，不需要 `docker network connect`；如果以后改成 bridge 网络，容器重建后需要重连 `robowiki_default`。
+- CSP 必须保留 `giscus.app` 与 `avatars.githubusercontent.com` 两个外部源，否则评论区和贡献者头像会被拦。

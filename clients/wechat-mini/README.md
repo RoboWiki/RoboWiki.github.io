@@ -28,16 +28,16 @@ A 级 = 逐项核对官方资料；B 级 = 公开资料汇编，购买/设计前
 1. 微信开发者工具 → 导入本目录；`project.config.json` 已写入 AppID。
 2. **开发版**默认连本机 Docker API `http://127.0.0.1:8080/api/v1`（见 `config.js`）。
    - 本机 Docker：在 `deploy/` 放 `.env`，至少设置
-     `HTTP_PORT=8080`、`AUTO_HTTPS=off`、`SECRET_KEY=<32 字节以上>`、`POSTGRES_PASSWORD=...`，
-     然后 `docker compose up -d --build`。Caddy 会把 `/api/v1` 暴露到 8080。
+     `SECRET_KEY=<32 字节以上>`、`POSTGRES_PASSWORD=...`、`ADMIN_PASSWORD=...`，
+     然后 `docker compose up -d --build`。API 默认只绑 `127.0.0.1:8080`。
    - 开发者工具「详情 → 本地设置」勾选「不校验合法域名」；也可在本目录新建
      `project.private.config.json` 写入 `{"setting":{"urlCheck":false}}`（已被 gitignore，
      新克隆不会自带）。
-   - 真机预览开发版/体验版时，把 `config.js` 的 `LOCAL` 改成电脑局域网地址，
+   - 真机调试开发版时，把 `config.js` 的 `LOCAL` 改成电脑局域网地址，
      例如 `http://192.168.1.5:8080`；手机与电脑需同一网段。
-3. **正式版**使用 `https://robowiki.org.cn/api/v1`。上线前必须：
-   - 主域已完成 ICP 备案，并按 `deploy/README.md` 第 5 节把 `/api/` 反代到本机 API；
-     当前 `robowiki.org.cn` 只反代了静态站，`/api/v1` 还是 404，不能直接提审；
+3. **体验版 / 正式版**使用 `https://robowiki.org.cn/api/v1`。上线前必须：
+   - 主域已完成 ICP 备案，并按 `deploy/README.md` 第 3 节把 `/api/`、`/mcp/`、`/console/`
+     反代到本机 API（公网 `/api/v1/ready` 应返回 JSON）；
    - 小程序后台把 `https://robowiki.org.cn` 配到 request 合法域名；
    - 确认 HTTPS 证书有效。
 4. 预览/上传也可用官方 `miniprogram-ci`（需要上传密钥与 IP 白名单）。

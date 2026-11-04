@@ -11,7 +11,8 @@
  * 探测走同源 `/api/v1/health`（不拼 base、不读环境变量）：
  *   · 静态站上是 404，捕获后返回 false
  *   · 主站上由反向代理转给 FastAPI，返回 {ok: true}
- *   · 本地 `npm run dev` 由 vite proxy 转到 127.0.0.1:8000
+ *   · 本地 `npm run dev` 由 vite proxy 转到 127.0.0.1:8080（Docker API；
+ *     直接跑 uvicorn 时用 ROBOWIKI_API_ORIGIN 覆盖）
  */
 
 /** 有后端的主站；镜像端只做跳转，不做请求 */
