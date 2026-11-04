@@ -3,7 +3,7 @@
 以 `data-v2026.11.2` 为准：**目录内只有 1 件没有产品图**（乐动 LD14）；
 另有 2 条 C 级电池线索没有图，它们不投影进站点目录。
 
-> 补图在核心仓做：图片放核心仓 `inbox/`，在核心仓根目录跑
+> 补图在`RoboWiki` 仓做：图片放`RoboWiki` 仓 `inbox/`，在`RoboWiki` 仓根目录跑
 > `python tools/import_from_inbox.py`，产物写入 `assets/parts/`，
 > 并在条目的 `specs.image_source` 写清出处。不要在本仓提交图片副本。
 
@@ -18,7 +18,7 @@
 ## 补图流程
 
 ```bash
-# 在核心仓根目录
+# 在`RoboWiki` 仓根目录
 # 1) 把图片放进 inbox/（文件名用零件 id 或型号）
 python tools/import_from_inbox.py     # 认领 + 登记 image_source
 python tools/normalize_images.py      # 统一白底/尺寸

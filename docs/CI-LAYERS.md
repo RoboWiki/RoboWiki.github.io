@@ -1,4 +1,4 @@
-# CI 分层：站点仓
+# CI 分层：RoboWiki.github.io
 
 本仓的 PR 门禁按路径分流，稳定入口是汇总 job **`pr-gate`**：
 
@@ -6,7 +6,7 @@
 changes（算层） → validate（数据闸门，必跑） → 按层跑 test / backend / console / clients / build → pr-gate
 ```
 
-数据与 schema 在核心仓；本仓只保留 `data.lock.json` 与消费逻辑。
+数据与 schema 在`RoboWiki` 仓；本仓只保留 `data.lock.json` 与消费逻辑。
 判据真相在 `.github/workflows/pr-gate.yml` 的 `LAYERS` 列表。
 
 ## 判据
@@ -17,7 +17,7 @@ changes（算层） → validate（数据闸门，必跑） → 按层跑 test /
 | `wiki/**`、`frontend/**` | `site` | validate + 生成器 + VitePress |
 | `console/**` | `console` | validate + `tsc -b && vite build` |
 | `backend/**` | `backend` | validate + import 冒烟 + 后端 pytest |
-| `data/**`、`schema/**`（历史路径，现应改核心仓） | `data` | validate + 数据测试 + 生成器 |
+| `data/**`、`schema/**`（历史路径，现应改`RoboWiki` 仓） | `data` | validate + 数据测试 + 生成器 |
 | `clients/**` | `clients` | validate + 小程序 JS/JSON/WXML 静态检查 |
 | 其他（`deploy/**`、`docs/**`、根配置等） | `full` | 全部 |
 
@@ -50,6 +50,6 @@ cd ../clients/wechat-mini/tests && node check.js
 ## 注意
 
 - 纯文档 PR 目前走全量；为省时间可后续加 `docs` 层，但不要牺牲 `validate`。
-- 数据改动不要在站点仓做：改核心仓 → 发 release → 更新 `data.lock.json`。
+- 数据改动不要在本仓做：改`RoboWiki` 仓 → 发 release → 更新 `data.lock.json`。
 - `backend` 与 `test` 有重叠；pipeline 层的改动跑 `test` 时已包含后端用例。
 - 新增目录时同步更新 `pr-gate.yml` 的 `LAYERS`、汇总 job 和本表。

@@ -9,7 +9,7 @@
 cd backend
 pip install -r requirements.txt
 
-# 数据/ schema 来自核心仓 release；站点仓的 scripts/fetch-data-release.sh 会下载到 .data/
+# 数据/schema 来自 `RoboWiki` 仓 release；本仓的 scripts/fetch-data-release.sh 会下载到 .data/
 export ROBOWIKI_DATA_DIR="$PWD/../.data/data"
 export ROBOWIKI_SCHEMA_DIR="$PWD/../.data/schema"
 export ROBOWIKI_SECRET_KEY="dev-secret-at-least-32-bytes-long-0000"

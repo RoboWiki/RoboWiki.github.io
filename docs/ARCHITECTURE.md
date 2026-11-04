@@ -1,9 +1,9 @@
 # 架构：站点、后端与多端
 
-一句话：**核心仓管事实，本仓管交付**。本仓不改目录数据，只消费核心仓的
+一句话：**`RoboWiki` 管数据与管线，`RoboWiki.github.io` 管站点与服务**。本仓不改目录数据，只消费 `RoboWiki` 仓的
 `data-v*` release，并把同一份数据渲染成静态站、API、分享卡和群机器人回答。
 
-> 拆仓前的单仓架构已废弃，见核心仓 [ADR-006](https://github.com/RoboWiki/RoboWiki/blob/main/docs/ADR-006-split-repos-2026-11-02.md)。
+> 拆仓前的单仓架构已废弃，见 `RoboWiki` 仓 [ADR-006](https://github.com/RoboWiki/RoboWiki/blob/main/docs/ADR-006-split-repos-2026-11-02.md)。
 > 本文取代本仓旧的 `docs/ARCHITECTURE.md`。
 
 ## 两仓边界
@@ -12,6 +12,8 @@
 |---|---|---|
 | `RoboWiki/RoboWiki` | `data/`、`schema/`、`assets/`、校验、`data-v*` release | 页面、API、UGC |
 | `RoboWiki/RoboWiki.github.io`（本仓） | VitePress、FastAPI、控制台、Docker/Caddy、分享/PWA、客户端契约 | 数据副本、schema 修改、产品图副本 |
+
+文档与命令统一使用这两个仓库名，不另起别名；clone 后目录名与仓库名一致。
 
 本仓通过 `data.lock.json` 锁定 release；构建时下载 tar.gz、校验 SHA-256、解压到 `.data/`。
 页面和 API 都从同一份快照读取，不各自维护副本。
@@ -26,7 +28,7 @@
         └─ 动态写：/api/v1  ──► FastAPI ──► Postgres（UGC / 提案 / outbox）
                                       │
                                       ├─ 控制台 /console/
-                                      ├─ worker：outbox → 核心仓 PR
+                                      ├─ worker：outbox → `RoboWiki` 仓 PR
                                       └─ bot：只读型号问答
 ```
 
@@ -52,21 +54,25 @@
 ### 控制台与 worker
 
 - `console/`：提案审核、举报处置、发布队列、数据缺口、社区管理。
-- `worker/`：消费 outbox；默认 dry-run 写产物，配置 GitHub token 后开核心仓 PR。
+- `worker/`：消费 outbox；默认 dry-run 写产物，配置 GitHub token 后开`RoboWiki` 仓 PR。
 - 审核通过 ≠ 生效：合并并发布 `data-v*`、站点更新 `data.lock` 后才更新页面。
 
 ### 部署
 
 - `deploy/compose.yml`：Caddy + API + Postgres + migrate + worker。
+- 两种形态：Caddy 全栈（80/443 由 Caddy 终结）；或 `compose.1panel.yml` 只发布 API，由 1Panel 反代 `/api /mcp /console`，静态继续走 Pages。
 - Caddy 负责静态、TLS、反代、缓存与安全头；API 只在内网。
+- 启动守卫：生产模式（`AUTO_CREATE_TABLES=false`）下 `/data` 没有 `catalog/*.json` 会拒绝启动，防止空挂载清空部件表；`/schema` 缺 `semantics.json` 在导入期直接报错。
+- 构建静态站必须先 `python -m pipeline build` 再 `npm run build`，否则部件页、产品图与分享产物缺失。
 - 生产必须设置域名、`AUTO_HTTPS=on`、管理员账号和强密码；GitHub Pages 只做静态镜像。
+- 完整 runbook（首次部署、数据升级、回滚、备份、排错、验收）见 `deploy/README.md`。
 
 ## 数据与版本
 
 | 版本 | 位置 | 消费者 |
 |---|---|---|
-| release tag `data-v*` | 核心仓 + `data.lock.json` | 静态站、API、分享、MCP |
-| `catalog_schema` / `semantics.version` | 核心仓 `schema/` | 构建、API、文档 |
+| release tag `data-v*` | `RoboWiki` 仓 + `data.lock.json` | 静态站、API、分享、MCP |
+| `catalog_schema` / `semantics.version` | `RoboWiki` 仓 `schema/` | 构建、API、文档 |
 | `artifact_schema` | `pipeline/meta.py` | 前端解析产物 |
 | API `v1` | `/api/v1` + OpenAPI | Web、小程序、机器人、App |
 | DB revision | `backend/alembic/versions/` | 后端部署 |
@@ -89,7 +95,7 @@ docs/        架构、ADR、版本化、CI
 
 ## 三条硬规则
 
-1. **一个字段一个写入方**：目录只由核心仓 release 写；UGC 只由 API 写。
+1. **一个字段一个写入方**：目录只由`RoboWiki` 仓 release 写；UGC 只由 API 写。
 2. **不在本仓保存数据副本**；不手改 `wiki/docs/parts/`、`public/*.json`、`sidebar.json`。
 3. **一套 API、一套身份**：Web/PWA/小程序/机器人/App 共用 `/api/v1` 与 `users`；
    外部身份绑定（GitHub/微信）尚未建表，当前为 Bearer 令牌。

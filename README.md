@@ -11,19 +11,21 @@
 
 ## 数据来源与拆分
 
-数据、schema 和产品图在核心仓 [RoboWiki/RoboWiki](https://github.com/RoboWiki/RoboWiki)；
-本仓只负责站点渲染。`data.lock.json` 锁定核心仓的 `data-v*` 发布物，Pages 构建时下载、
-校验 SHA-256 后再生成页面。
+RoboWiki 由两个仓库组成：
 
-本地从核心仓构建（先 `gh auth login`，下载公开 release 需要登录态）：
+- **`RoboWiki`**：`data/`、`schema/`、`assets/`、校验与 `data-v*` release；
+- **`RoboWiki.github.io`**（本仓）：VitePress 站点、FastAPI、控制台、部署与多端客户端。
+
+数据、schema 和产品图只在 `RoboWiki` 仓；本仓只负责站点与服务。`data.lock.json`
+锁定 `RoboWiki` 的 `data-v*` 发布物，Pages 构建时下载、校验 SHA-256 后再生成页面。
+
+本地准备数据与页面（脚本优先用 `gh`，没有就用 `curl`；公开 release 不需要登录）：
 
 ```bash
-gh release download "$(python -c "import json;print(json.load(open('data.lock.json'))['data_version'])")" \
-  -R RoboWiki/RoboWiki -p "$(python -c "import json;print(json.load(open('data.lock.json'))['release_asset'])")" -D .data --clobber
-tar -xzf .data/robowiki-data-*.tar.gz -C .data
-ROBOWIKI_DATA_DIR="$PWD/.data/data" \
-ROBOWIKI_SCHEMA_DIR="$PWD/.data/schema" \
-ROBOWIKI_ASSETS_DIR="$PWD/.data/assets/parts" \
+bash scripts/fetch-data-release.sh
+export ROBOWIKI_DATA_DIR="$PWD/.data/data"
+export ROBOWIKI_SCHEMA_DIR="$PWD/.data/schema"
+export ROBOWIKI_ASSETS_DIR="$PWD/.data/assets/parts"
 python -m pipeline build
 ```
 
@@ -50,7 +52,7 @@ python -m pipeline build
 
 ## 数据怎么变
 
-目录字段**只从核心仓 release 来**，后台不直接改 `parts`：
+目录字段**只从`RoboWiki` 仓 release 来**，后台不直接改 `parts`：
 
 ```
 站内/控制台纠错 → submissions → staff 审核 → outbox → worker 开 PR
@@ -117,7 +119,7 @@ git clone https://github.com/RoboWiki/RoboWiki.github.io
 cd RoboWiki.github.io
 python -m pip install -e ".[dev]"    # Python 3.11+；数据闸门/构建依赖
 python -m pip install -r backend/requirements.txt
-bash scripts/fetch-data-release.sh   # 下载 data.lock.json 锁定的核心仓 release
+bash scripts/fetch-data-release.sh   # 下载 data.lock.json 锁定的`RoboWiki` 仓 release
 export ROBOWIKI_DATA_DIR="$PWD/.data/data"
 export ROBOWIKI_SCHEMA_DIR="$PWD/.data/schema"
 export ROBOWIKI_ASSETS_DIR="$PWD/.data/assets/parts"
@@ -134,10 +136,11 @@ cd backend && pip install -r requirements.txt
 uvicorn app.main:app --reload      # http://127.0.0.1:8000/api/docs（开发环境）
 
 # 或整套容器（Caddy + API + Postgres + worker）
+# 完整步骤（数据 release → 静态站构建 → 密钥 → compose → 验收）见 deploy/README.md
 cd deploy && cp .env.example .env && docker compose up -d --build
 ```
 
-改一个型号的参数 = 去核心仓改一个 JSON，或走站内提案/控制台；核心仓发布新 `data-v*` 后更新 `data.lock.json`。数据闸门/测试会拦住三类错：A 级键集不一致、来源等级越级、
+改一个型号的参数 = 去`RoboWiki` 仓改一个 JSON，或走站内提案/控制台；`RoboWiki` 仓发布新 `data-v*` 后更新 `data.lock.json`。数据闸门/测试会拦住三类错：A 级键集不一致、来源等级越级、
 厂商未登记（taxonomy 测试）；构建阶段再拦页面死链。**后台不改 `parts`**：提案审核通过后由 worker 开 PR。
 
 ## 目录
@@ -148,13 +151,13 @@ backend/    FastAPI + SQLModel：/api/v1、UGC、提案与 outbox worker
 console/    React 控制台：提案审核、举报处置、数据缺口、社区
 deploy/     Docker Compose（Caddy + API + Postgres + migrate + worker）
 clients/    多端适配：QQ 机器人；小程序/App/SDK 的契约与目录
-pipeline/   页面与分享产物生成（数据从核心仓 release 读取）
+pipeline/   页面与分享产物生成（数据从`RoboWiki` 仓 release 读取）
 docs/       站点架构、决策记录、历史归档
-tools/      站点专用脚本；数据工具在核心仓
-inbox/      产品图暂存区（认领后进核心仓 assets/parts）
+tools/      站点专用脚本；数据工具在`RoboWiki` 仓
+inbox/      产品图暂存区（认领后进`RoboWiki` 仓 assets/parts）
 ```
 
-**数据、schema、产品图不在本仓**：它们在
+**数据、schema、产品图不在本仓**：它们在 `RoboWiki` 仓
 [RoboWiki/RoboWiki](https://github.com/RoboWiki/RoboWiki)，由 `data.lock.json`
 锁定版本。`wiki/docs/` 下的页面全部由 release 数据生成，不手改。
 
@@ -164,7 +167,7 @@ inbox/      产品图暂存区（认领后进核心仓 assets/parts）
 
 | 想做的事 | 怎么进 |
 |---|---|
-| 纠参数 / 补数据 | 核心仓 issue / PR，或站内提案；维护者审核后由 worker 开 PR，合并并 release 后生效 |
+| 纠参数 / 补数据 | `RoboWiki` 仓 issue / PR，或站内提案；维护者审核后由 worker 开 PR，合并并 release 后生效 |
 | 写评价（含四维打分） | 部件页的「写评价」→ GitHub issue 表单。一人一件一票，改主意就编辑原 issue |
 | 写文章 / 教程 | 本仓学习栏目 + 投稿页；转载规范见「分享与转载」 |
 
@@ -186,7 +189,7 @@ GitHub API 统计不到，所以不会因为「没有 PR」就被记成 0。
 原发布方所有。若仓库内任何内容存在侵权、不当公开或其他问题，请通过 Issue 或直接联系维护者，
 我们将第一时间核实并处理。细节见 [`NOTICE.md`](https://github.com/RoboWiki/RoboWiki.github.io/blob/main/NOTICE.md)。
 
-> 厂商手册、商品图、第三方仓库代码的版权归原方。手册原则上只给链接；**产品图随条目托管在核心仓 `assets/parts/`**
+> 厂商手册、商品图、第三方仓库代码的版权归原方。手册原则上只给链接；**产品图随条目托管在`RoboWiki` 仓 `assets/parts/`**
 > （`assets/parts/`，出处记在每条数据的 `image_source`），权利人要求撤下就撤下。
 > 每条数据都标了来源等级（A/B/C）与核对日期。
 

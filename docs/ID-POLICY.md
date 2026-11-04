@@ -210,5 +210,5 @@ python tools/id_registry.py --check && python -m pipeline validate
 
 - 注册表**只管 id 的存在与格式**，不管数据内容对不对（那是 `pipeline/validate.py` 的其它检查）。
 - `--tombstone` 不会替你从数据里删条目，`--alias` 不会替你改数据 —— 它们只记账，数据改动仍由人/脚本做，闸门负责事后对账。
-- 三处口径必须同时改：`tools/id_registry.py::check()`、`pipeline/validate.py::check_id_registry()`、站点仓 `tests/test_data_governance.py`。测试侧负责三件事：`_all_rows()` 要读全 6 个数据源（catalog/robots/materials/software/suppliers/protocols，漏一个就会把新命名空间判成「消失」）；`gone` 的过滤要放行 `removed` **和** `alias_of`；`test_registry_has_no_duplicate_targets()` 卡住 alias 指向（断掉的 alias 等于静默删除）。
+- 三处口径必须同时改：`tools/id_registry.py::check()`、`pipeline/validate.py::check_id_registry()`、本仓 `tests/test_data_governance.py`。测试侧负责三件事：`_all_rows()` 要读全 6 个数据源（catalog/robots/materials/software/suppliers/protocols，漏一个就会把新命名空间判成「消失」）；`gone` 的过滤要放行 `removed` **和** `alias_of`；`test_registry_has_no_duplicate_targets()` 卡住 alias 指向（断掉的 alias 等于静默删除）。
 - `pipeline/validate.py` 里 `check_id_registry()` 之后不要再加「ids 都在 catalog 里」这类只认单一数据源的新检查，否则新命名空间会被误判。

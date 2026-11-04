@@ -11,7 +11,7 @@
 | Web | `wiki/`（VitePress） | 主站；静态读 + `/api/v1` 写 |
 | PWA | 同一构建产物 | 可安装；外壳与访问过的页面离线可读 |
 | robowiki.org.cn | 同一构建产物反代 | 当前主域；canonical 与分享链接都指向这里 |
-| github.io | 同一构建产物 | 海外镜像/备份；canonical 指回主域 |
+| robowiki.github.io | 同一构建产物 | `RoboWiki.github.io` 部署的镜像/灾备；canonical 指回主域 |
 | 控制台 | `console/` | 内部审核；改数只生成 submission，不直接写目录 |
 | 材质库 | `wiki/docs/materials/` + `/api/v1/materials` | 27 种材料 + 9 种工艺；静态页与 API 同源 |
 | 微信小程序 | `clients/wechat-mini/`（AppID `wx13bffd77b0b597e2`） | 只读：部件/材质搜索、筛选、详情、分享；不登录不写入 |

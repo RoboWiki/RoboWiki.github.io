@@ -1,17 +1,23 @@
-# 贡献指南（站点仓）
+# 贡献指南（RoboWiki.github.io）
 
-RoboWiki 拆成两个仓：
+RoboWiki 由两个仓库组成：
 
-- **数据、schema、产品图** → [RoboWiki/RoboWiki](https://github.com/RoboWiki/RoboWiki)
-- **站点、页面、后端、控制台** → 本仓
+- **`RoboWiki`**（[RoboWiki/RoboWiki](https://github.com/RoboWiki/RoboWiki)）：数据、schema、产品图；
+- **`RoboWiki.github.io`**（本仓）：站点、页面、后端、控制台、部署、客户端。
 
-改数据请去核心仓；本仓只处理展示、交互、页面内容与后端。
+改数据请去 `RoboWiki` 仓；本仓只处理展示、交互、页面内容与后端。
+
+克隆本仓（目录名就是仓库名，不再另起别名）：
+
+```bash
+git clone https://github.com/RoboWiki/RoboWiki.github.io.git
+cd RoboWiki.github.io
+```
 
 ## 先跑一次
 
 ```bash
-gh auth login                          # 下载核心仓 release 需要登录态
-bash scripts/fetch-data-release.sh   # 下载 data.lock.json 锁定的核心仓 release
+bash scripts/fetch-data-release.sh   # 下载 data.lock.json 锁定的 release（gh/curl 均可，公开 release 免登录）
 export ROBOWIKI_DATA_DIR="$PWD/.data/data"
 export ROBOWIKI_SCHEMA_DIR="$PWD/.data/schema"
 export ROBOWIKI_ASSETS_DIR="$PWD/.data/assets/parts"
@@ -20,13 +26,17 @@ python -m pytest                     # 测试（需先装 backend/requirements.t
 cd wiki && npm ci && npm run dev      # 本地起站
 ```
 
+Node 版本以仓库根 `.nvmrc` 为准（22），CI（`pages.yml` / `pr-gate.yml`）与
+`deploy/Dockerfile.api` 用的是同一版；站点构建统一走 `npm run build`
+（`vitepress build docs` + `scripts/postbuild.mjs`），不要直接调 `npx vitepress build`。
+
 ## 改什么 → 去哪
 
 | 我要… | 去哪 |
 |---|---|
-| 加/改部件、整机、材料、工艺、软件、渠道、参数 | 核心仓 `data/` |
-| 改字段口径、schema | 核心仓 `schema/` |
-| 加产品图 | 核心仓 `assets/parts/` |
+| 加/改部件、整机、材料、工艺、软件、渠道、参数 | `RoboWiki` 仓 `data/` |
+| 改字段口径、schema | `RoboWiki` 仓 `schema/` |
+| 加产品图 | `RoboWiki` 仓 `assets/parts/` |
 | 改页面文案、导航、样式、组件 | 本仓 `wiki/` |
 | 改 API / 提案审核 / outbox worker | 本仓 `backend/` |
 | 改控制台 | 本仓 `console/` |
@@ -39,10 +49,10 @@ cd wiki && npm ci && npm run dev      # 本地起站
 
 ## 数据版本
 
-本仓通过 `data.lock.json` 锁定核心仓的 `data-v*` 发布物；Pages 构建会下载 release、
+本仓通过 `data.lock.json` 锁定`RoboWiki` 仓的 `data-v*` 发布物；Pages 构建会下载 release、
 校验 SHA-256 后生成页面。数据更新流程：
 
-1. 核心仓改数据 → 跑 `python -m pipeline validate` → 发 `data-v*` release；
+1. `RoboWiki` 仓改数据 → 跑 `python -m pipeline validate` → 发 `data-v*` release；
 2. 本仓更新 `data.lock.json` 的版本、asset 名、`sha256`、`manifest_sha256` 与 counts；
 3. 本地 `fetch-data-release.sh` + `pipeline build` + `pytest`；
 4. 提 PR → CI 会重新下载新 release 构建。
@@ -51,4 +61,4 @@ cd wiki && npm ci && npm run dev      # 本地起站
 
 1. 不把数据副本提交回本仓；
 2. 不改生成物；
-3. 数据问题去核心仓，页面/API/部署问题留本仓；C 级线索不会进站点目录，但可在核心仓保留并注明来源。
+3. 数据问题去`RoboWiki` 仓，页面/API/部署问题留本仓；C 级线索不会进站点目录，但可在`RoboWiki` 仓保留并注明来源。

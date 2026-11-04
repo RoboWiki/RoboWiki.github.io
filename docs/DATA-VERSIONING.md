@@ -1,7 +1,7 @@
-# 数据版本化：站点如何消费核心仓 release
+# 数据版本化：站点如何消费 `RoboWiki` 仓 release
 
-本仓不发布数据，只消费核心仓 `RoboWiki/RoboWiki` 的 `data-vYYYY.MM.N`。
-事实源的版本规则、导出脚本与 MANIFEST 字段见核心仓
+本仓（`RoboWiki.github.io`）不发布数据，只消费 `RoboWiki` 仓的 `data-vYYYY.MM.N`。
+事实源的版本规则、导出脚本与 MANIFEST 字段见 `RoboWiki` 仓
 [docs/DATA-VERSIONING.md](https://github.com/RoboWiki/RoboWiki/blob/main/docs/DATA-VERSIONING.md)。
 
 ## 锁定文件
@@ -44,13 +44,13 @@ cd wiki && npm run build
 
 ## 升级数据版本
 
-1. 核心仓合并数据 → 打 `data-v*` tag → `Data release` 成功；
+1. `RoboWiki` 仓合并数据 → 打 `data-v*` tag → `Data release` 成功；
 2. 记录新 release 的 `SHA256SUMS.txt` 与 `MANIFEST.json`；
 3. 更新本仓 `data.lock.json`（版本、附件名、两个 sha256、counts）；
 4. 本地跑 `fetch-data-release.sh`、`pipeline build`、`pytest`；
 5. 提 PR，CI 会重新下载新 release 并构建站点。
 
-**不要**只改 `data_version` 不改 sha256；也不要直接复制核心仓 `data/` 到本仓。
+**不要**只改 `data_version` 不改 sha256；也不要直接复制`RoboWiki` 仓 `data/` 到本仓。
 
 ## 页面与 API 的版本标识
 
@@ -61,13 +61,13 @@ cd wiki && npm run build
 
 ## 回滚
 
-- 数据有问题：把 `data.lock.json` 指回上一版，重新构建；核心仓历史不动。
+- 数据有问题：把 `data.lock.json` 指回上一版，重新构建；`RoboWiki` 仓历史不动。
 - 页面有问题：revert 站点 PR；数据版本不变。
 - 不要移动或覆盖已发布的 `data-v*` tag。
 
 ## 口径与计数
 
-- `parts` 是核心仓数据条数（含 C 级线索）；站点目录只投影 A/B，当前 **326 件入库**。
+- `parts` 是`RoboWiki` 仓数据条数（含 C 级线索）；站点目录只投影 A/B，当前 **326 件入库**。
 - `materials` / `processes` 是材质库条目数；页面 `/materials` 与 `public/materials.json` 同源。
 - `semantics_version` 是字段口径；只增删条目不升它。
 - 任何页面上的“共 N 件”必须来自构建产物，不手写。

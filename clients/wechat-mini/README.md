@@ -36,7 +36,7 @@ A 级 = 逐项核对官方资料；B 级 = 公开资料汇编，购买/设计前
    - 真机预览开发版/体验版时，把 `config.js` 的 `LOCAL` 改成电脑局域网地址，
      例如 `http://192.168.1.5:8080`；手机与电脑需同一网段。
 3. **正式版**使用 `https://robowiki.org.cn/api/v1`。上线前必须：
-   - 主域已完成 ICP 备案并能反向代理到 RoboWiki API；
+   - 主域已完成 ICP 备案，并按 `deploy/README.md` 第 5 节把 `/api/` 反代到本机 API；
      当前 `robowiki.org.cn` 只反代了静态站，`/api/v1` 还是 404，不能直接提审；
    - 小程序后台把 `https://robowiki.org.cn` 配到 request 合法域名；
    - 确认 HTTPS 证书有效。

@@ -328,7 +328,7 @@ html.dark .rl-th { color: #e0b159; }
 
 - `A` 级 = 逐项核对过厂商手册 / 官方文档（下表的「厂商官网 / 官方文档」）
 - `B` 级 = 采自公开商品页或第三方整理，未逐项核对
-- `C` 级 = 转述，仅作线索；默认不参与对比与推荐（当前有 3 条电池线索保留在核心仓，未进站点目录）
+- `C` 级 = 转述，仅作线索；默认不参与对比与推荐（当前有 3 条电池线索保留在 `RoboWiki` 仓，未进站点目录）
 
 ## 厂商官网 / 官方文档
 
@@ -473,7 +473,7 @@ id 一经登记**不改名、不复用**：改名要把旧 id 留作 alias，删
 全挂在 id 上，改一个名字会同时断三处。
 
 **数据快照。** `data/` + `schema/` + `assets/` 打成 tar.gz 发到
-[核心仓 Releases](https://github.com/RoboWiki/RoboWiki/releases)，
+[RoboWiki Releases](https://github.com/RoboWiki/RoboWiki/releases)，
 tag 形如 `data-vYYYY.MM.N`。每次发布带三个附件：
 
 - `robowiki-data-<tag>.tar.gz` —— `data/`、`schema/`、`assets/` 的只读快照
