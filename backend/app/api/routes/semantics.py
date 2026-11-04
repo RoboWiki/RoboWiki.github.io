@@ -58,7 +58,7 @@ def _find_semantics_file(start: Path | None = None) -> Path:
         f"  查找起点：{here}\n"
         "  已从该位置逐级向上查找 schema/semantics.json，全部未命中。\n"
         "这份 JSON 是静态站 / FastAPI / MCP 共用的唯一事实源，缺了不该启动。\n"
-        "  排查：① 拆分后请设置 ROBOWIKI_SCHEMA_DIR 指向核心仓 release 的 schema/；"
+        "  排查：① 拆分后请设置 ROBOWIKI_SCHEMA_DIR 指向`RoboWiki` 仓 release 的 schema/；"
         "② 部署时是否只拷了 backend/；③ 参考 schema/semantics.README.md。"
     )
 

@@ -1,6 +1,6 @@
 """材质库只读投影：从 release 的 data/materials 读取，不落库。
 
-材料不是厂商 SKU，数量小（当前 36 条），按文件 mtime 缓存即可；写入仍走核心仓 PR。
+材料不是厂商 SKU，数量小（当前 36 条），按文件 mtime 缓存即可；写入仍走`RoboWiki` 仓 PR。
 """
 from __future__ import annotations
 

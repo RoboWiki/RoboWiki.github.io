@@ -14,7 +14,10 @@
  *   Issue Forms 还自带身份可信、结构化、Actions 可聚合、可被维护者关闭。
  *   一人一件一票：唯一键 = issue 作者 + 部件 id，改主意就编辑原 issue。
  *
- * 数据降级：后端实时值 → 构建快照 → 「暂无评分」（绝不当成 0 分）。
+ * 数据来源只有一个：构建期快照 `ratings.json`（两端一致）。
+ *   不再读 /api/ratings/{id} —— 那个接口只在主站有，镜像端每次访问都会拿一个 404；
+ *   评分本来也是 Actions 定期聚合的，没有「实时」可言。
+ * 读不到快照就显示「暂无评分」，绝不当成 0 分。
  */
 import { computed, onMounted, ref } from 'vue'
 import { withBase } from 'vitepress'
@@ -45,7 +48,7 @@ const empty: Summary = {
   own_hardware_count: 0,
 }
 const s = ref<Summary>({ ...empty })
-const source = ref<'live' | 'snapshot' | 'none'>('none')
+const source = ref<'snapshot' | 'none'>('none')
 
 /** 全部可能的维度；具体渲染哪些由 props.dims 决定 */
 const DIM_ALL: Record<string, { label: string; hint: string }> = {
@@ -115,18 +118,6 @@ async function load() {
       }
     }
   } catch { /* 没有快照就继续 */ }
-
-  // 静态站没有 /api；只有本地 dev 才探实时值，避免每次访问都下载 40KB 404 页。
-  if (import.meta.env.DEV) {
-    try {
-      const r = await fetch(`/api/ratings/${encodeURIComponent(props.partId)}`)
-      if (r.ok && (r.headers.get('content-type') || '').includes('json')) {
-        const d = await r.json()
-        s.value = { ...empty, ...d }
-        source.value = 'live'
-      }
-    } catch { /* 静态部署：保持快照 */ }
-  }
 }
 
 onMounted(load)

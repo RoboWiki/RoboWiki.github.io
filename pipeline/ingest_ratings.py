@@ -36,6 +36,8 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 OUT = DATA_DIR / "ratings_snapshot.json"
+#: 部件目录只存在于`RoboWiki` 仓的锁定 release 里（本仓没有 data/catalog）。
+#: 用 ROBOWIKI_DATA_DIR 指到解压后的 .data/data，本脚本不复制一份目录逻辑。
 CATALOG = DATA_DIR / "catalog"
 
 TITLE_RE = re.compile(r"^\s*\[评分\]\s*(\S+)")
@@ -57,8 +59,8 @@ def field(body: str, name: str) -> str | None:
 
 
 def main() -> None:
-    # --out 让测试把产物写到临时目录，而不是覆盖 data/ 里的真实快照。
-    # 默认仍写 data/（生产行为不变）。
+    # --out 让聚合产物与目录分开：CI 里目录在 .data/data（release 解压物），
+    # 快照要写回本仓 data/；测试也用它写到临时目录，不覆盖真实快照。
     argv = [a for a in sys.argv[1:]]
     out_dir = DATA_DIR
     if "--out" in argv:
@@ -70,8 +72,19 @@ def main() -> None:
         raise SystemExit(2)
     issues = json.loads(pathlib.Path(argv[0]).read_text(encoding="utf-8"))
 
-    known = {r["id"] for f in CATALOG.glob("*/*.json")
-              for r in json.loads(f.read_text(encoding="utf-8"))}
+    catalog_files = sorted(CATALOG.glob("*/*.json"))
+    if not catalog_files:
+        # 目录读空 = 每条评分都会命中「部件 id 不在目录里」被丢弃，
+        # 产出一份空快照，看起来像「没人评分」。宁可停下，也不静默丢数据。
+        raise SystemExit(
+            f"找不到部件目录：{CATALOG} 下没有 */*.json。\n"
+            "评分要用目录校验部件 id；目录来自`RoboWiki` 仓的锁定 release，不在本仓里。\n"
+            "先取 release 并指向它，再跑聚合：\n"
+            "  bash scripts/fetch-data-release.sh\n"
+            "  export ROBOWIKI_DATA_DIR=\"$PWD/.data/data\"\n"
+        )
+    known = {r["id"] for f in catalog_files
+             for r in json.loads(f.read_text(encoding="utf-8"))}
 
     # (author, part) -> 最新一条
     best: dict[tuple[str, str], dict] = {}

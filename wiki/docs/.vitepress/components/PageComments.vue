@@ -8,16 +8,22 @@
  *
  * 不做成配置开关，是因为**同一个构建要同时服务两种部署形态**。
  * 页面标识两边都用路径（等价 giscus 的 `mapping: pathname`）：改标题不掉讨论，改路径才会。
+ *
+ * 自托管讨论要后端，所以**先探活再决定**：探不到就进入只读镜像态，
+ * 既不发请求，也不显示「加载失败」—— 那是把降级说成故障。
  */
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useData, useRoute } from 'vitepress'
 import { giscus as giscusCfg } from '../giscus'
+import { apiAvailable, PRIMARY_SITE } from '../lib/api'
 
 const { isDark } = useData()
 const route = useRoute()
 
 const giscusHost = ref<HTMLElement | null>(null)
-const mode = ref<'probe' | 'self' | 'giscus'>('probe')
+const mode = ref<'probe' | 'self' | 'giscus' | 'readonly'>('probe')
+/** 后端可用性：null = 还没探完。探不到就是静态镜像，走只读态 */
+const apiUp = ref<boolean | null>(null)
 
 function mountGiscus() {
   if (!giscusCfg || !giscusHost.value) return
@@ -77,7 +83,7 @@ const loading = ref(true)
 const body = ref('')
 const replyTo = ref<Comment | null>(null)
 const error = ref('')
-/** 静态部署（GitHub Pages）没有后端，把「连不上」说清楚，不要显示成红色报错 */
+/** 探活通过但取数失败（后端刚挂 / 网关超时）——这种才叫失败，静态镜像走的是 readonly 态 */
 const offline = ref(false)
 const posting = ref(false)
 
@@ -105,13 +111,18 @@ function token(): string | null {
 }
 
 async function load() {
+  // 探活没通过就一个请求都不发：镜像端这里调一次只会拿到 404 并渲染成故障
+  if (!apiUp.value) return
   loading.value = true
   error.value = ''
+  offline.value = false
   try {
     const r = await fetch(`/api/wiki/comments?page=${encodeURIComponent(pageId.value)}`)
     if (!r.ok) throw new Error(String(r.status))
     items.value = (await r.json()).comments
   } catch (e: any) {
+    // 走到这里说明探活过了但请求失败（后端刚挂 / 网关超时），这才是真的「加载失败」
+    offline.value = true
     error.value = `讨论加载失败（${e.message}）`
   } finally {
     loading.value = false
@@ -167,9 +178,16 @@ function fmt(s: string) {
 /** 决定这一页用哪种后端：配了 giscus 就走 giscus（门槛 = GitHub 账号），否则回落自托管 */
 async function decide() {
   if (giscusCfg) {
+    // giscus 静态可用，两端一致，不需要后端探测
     mode.value = 'giscus'
     await nextTick()
     mountGiscus()
+    return
+  }
+  if (apiUp.value === null) apiUp.value = await apiAvailable()
+  if (!apiUp.value) {
+    // 纯静态镜像：只说清楚现状，不请求、不报错
+    mode.value = 'readonly'
     return
   }
   mode.value = 'self'
@@ -210,7 +228,7 @@ watch(isDark, syncGiscusTheme)
       </p>
 
       <p v-if="offline" class="rsw-muted">
-        讨论加载失败。本地可运行 <code>uvicorn app.main:app --port 8000</code> 后重试。
+        讨论加载失败，请稍后重试。本地开发需先起后端：<code>uvicorn app.main:app --port 8000</code>。
       </p>
       <p v-else-if="loading" class="rsw-muted">加载中…</p>
       <p v-else-if="!items.length" class="rsw-muted">还没有讨论。第一条就由你来写。</p>
@@ -246,7 +264,7 @@ watch(isDark, syncGiscusTheme)
         </li>
       </ul>
 
-      <div class="rsw-form">
+      <div v-if="apiUp" class="rsw-form">
         <div v-if="replyTo" class="rsw-replying">
           正在回复 <strong>{{ replyTo.author?.display_name }}</strong>
           <button class="rsw-link" @click="replyTo = null">取消</button>
@@ -262,6 +280,13 @@ watch(isDark, syncGiscusTheme)
         <p v-if="error" class="rsw-error">{{ error }}</p>
       </div>
     </template>
+
+    <!-- 纯静态镜像（GitHub Pages）：没有后端就没有讨论串。
+         不请求、不报错，一行中性说明 + 主站入口；评论框整个隐藏。 -->
+    <p v-else-if="mode === 'readonly'" class="rsw-muted">
+      评论需要主站服务，当前为只读镜像 ·
+      <a :href="PRIMARY_SITE" target="_blank" rel="noopener">robowiki.org.cn</a>
+    </p>
   </section>
 </template>
 

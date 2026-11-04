@@ -50,7 +50,7 @@ services:
       - caddy_config:/config
     depends_on:
       api:
-        condition: service_started
+        condition: service_healthy
 
   api:
     build:
@@ -101,6 +101,8 @@ services:
       <<: *api-env
     command: ["python", "-m", "app.worker"]
     volumes:
+      - ${DATA_DIR:-../.data/data}:/data:ro
+      - ${SCHEMA_DIR:-../.data/schema}:/schema:ro
       - ./var/outbox:/app/var/outbox
       - ../data.lock.json:/app/data.lock.json:ro
     depends_on:

@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { withBase } from 'vitepress'
 import { findShareEntry, type ShareEntry } from '../lib/share'
+import { apiAvailable, PRIMARY_SITE } from '../lib/api'
 
 type Me = { handle: string; display_name: string; email_verified?: boolean }
 type Mine = { id: number; status: string; payload: Record<string, unknown>; created_at: string }
@@ -63,9 +64,9 @@ async function loadMine() {
 onMounted(async () => {
   entry.value = await findShareEntry(window.location.pathname)
   if (!entry.value) return
-  apiReady.value = await fetch(`${API}/health`, { signal: AbortSignal.timeout(3000) })
-    .then(r => r.ok)
-    .catch(() => false)
+  // 探活统一走 lib/api：模块级缓存，一页里多个组件只探一次；
+  // 探不到就是静态镜像（GitHub Pages），整块交互入口直接不渲染。
+  apiReady.value = await apiAvailable()
   if (!apiReady.value) return
   detail.value = await fetch(withBase(entry.value.json)).then(r => r.ok ? r.json() : null).catch(() => null)
   if (token()) {
@@ -251,14 +252,21 @@ function logout() {
       <span v-if="me">{{ me.display_name }}（{{ me.handle }}）· <a href="#" @click.prevent="logout">退出</a></span>
     </div>
 
+    <!-- 纯静态镜像（GitHub Pages）：交互入口整块不渲染，包括「提交纠错」按钮 ——
+         探不到后端就不要给一个点了必然失败的按钮。只留主站与 GitHub 两条出口。 -->
     <template v-if="apiReady === false">
       <p class="rw-fix-text">
-        当前是只读镜像，登录与站内提交没有后端；可以到 GitHub 用表单纠错，维护者会转成提案。
+        站内提交需要主站服务，当前为只读镜像 ·
+        <a :href="PRIMARY_SITE" target="_blank" rel="noopener">robowiki.org.cn</a>
+      </p>
+      <p class="rw-fix-hint">
+        没有主站账号也可以到 GitHub 用表单纠错，维护者会转成提案。
       </p>
       <a class="rw-fix-alt" :href="issueUrl" target="_blank" rel="noopener">去 GitHub 提交纠错 ↗</a>
     </template>
 
-    <template v-else>
+    <!-- 探测中什么都不渲染：短暂的空白，好过先给表单再收走 -->
+    <template v-else-if="apiReady === true">
     <template v-if="!me">
       <p class="rw-fix-text">
         登录后提交纠错，站务审核通过会转成 PR；合并并发布数据版本后页面才更新。

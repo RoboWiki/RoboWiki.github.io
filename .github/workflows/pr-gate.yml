@@ -280,7 +280,7 @@ jobs:
       - uses: actions/setup-node@v4
         if: env.DO_SITE == 'true'
         with:
-          node-version: '20'
+          node-version: '22'
       # 数据治理/分类测试要 pytest；站点层本来就要装 node，多个 pytest 成本可忽略
       - run: pip install "pydantic>=2.9" pytest
       - name: 生成内容
@@ -290,14 +290,17 @@ jobs:
       - name: 数据治理 / 分类测试
         if: env.DO_DATA == 'true'
         run: python -m pytest tests/test_data_governance.py tests/test_taxonomy.py
+      # 与 pages.yml 完全一致：严格 npm ci（锁文件漂移直接红），不退回 npm install。
       - name: 安装站点依赖
         if: env.DO_SITE == 'true'
-        run: cd wiki && (npm ci || npm install)
-      - name: VitePress 构建（死链会让这里红）
+        run: cd wiki && npm ci
+      # 必须走 npm run build（= vitepress build docs + scripts/postbuild.mjs），
+      # 直接调 npx vitepress 会跳过 postbuild，sitemap 里的 404 不会被删。
+      - name: 站点构建（死链 / 生成物后处理会让这里红）
         if: env.DO_SITE == 'true'
         env:
           WIKI_BASE: /
-        run: cd wiki && npx vitepress build docs
+        run: cd wiki && npm run build
 
   # ── console 层：React 选型台 ─────────────────────────────────────────────
   # 以前 console/ 在 PR 阶段没有任何检查（只在本地 build 过），这里补上同一套命令。
@@ -310,7 +313,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
       - name: 安装依赖
         run: cd console && (npm ci || npm install)
       - name: 类型检查 + 打包
@@ -328,7 +331,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
       - name: JS / JSON / WXML 检查
         run: cd clients/wechat-mini/tests && node check.js
 
@@ -366,7 +369,8 @@ jobs:
 
           # 分层算不出来时这里会是空串。空串绝不能当「全跳过」，必须显式失败。
           for pair in "full:$FULL" "data:$DATA" "pipeline:$PIPELINE" \
-                      "site:$SITE" "console:$CONSOLE" "backend:$BACKEND"; do
+                      "site:$SITE" "console:$CONSOLE" "backend:$BACKEND" \
+                      "clients:$CLIENTS"; do
             key=${pair%%:*}
             value=${pair#*:}
             if [ "$value" != "true" ] && [ "$value" != "false" ]; then

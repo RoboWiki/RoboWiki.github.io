@@ -1,6 +1,6 @@
 """Outbox worker：把审核通过的提案发布成 PR。
 
-默认 dry-run（写本地产物）；`ROBOWIKI_PUBLISH_MODE=github` 时开核心仓 PR。
+默认 dry-run（写本地产物）；`ROBOWIKI_PUBLISH_MODE=github` 时开`RoboWiki` 仓 PR。
 核心保证不变：
 - 只从 `outbox` 取 pending；
 - `idempotency_key` 防重复；

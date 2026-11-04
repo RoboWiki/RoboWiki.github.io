@@ -1,4 +1,5 @@
-# syntax=docker/dockerfile:1.7
+# 使用 Docker 内置的 Dockerfile 前端：这里没有用到 1.7 专有特性，
+# 不写 `# syntax=` 可以少一次对 registry 的前端镜像解析（离线/受限网络更稳）。
 
 # 控制台是前端产物；不打进镜像的话 /console 在生产会是空的
 FROM node:22-slim AS console

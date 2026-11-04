@@ -1,0 +1,13 @@
+# 1Panel / 既有 OpenResty 共存：只把 API 暴露到宿主机回环，静态仍由 Pages 或
+# 1Panel 负责。用法：
+#   docker compose -f compose.yml -f compose.1panel.yml up -d db migrate api worker
+# 然后 1Panel 站点把 /api/、/mcp/、/console/ 反代到 127.0.0.1:8080。
+# 注意 1Panel 的 OpenResty 在容器内，127.0.0.1 指的是 OpenResty 自己：
+#   - 做法 A（推荐）：docker network connect robowiki_default <openresty容器名>
+#     之后 nginx 里写 proxy_pass http://api:8000;
+#   - 做法 B：这里改成 "0.0.0.0:8080:8000" 或 "172.17.0.1:8080:8000"，
+#     nginx 写 proxy_pass http://172.17.0.1:8080;（防火墙不要放开 8080 公网）
+services:
+  api:
+    ports:
+      - "127.0.0.1:${API_PORT:-8080}:8000"

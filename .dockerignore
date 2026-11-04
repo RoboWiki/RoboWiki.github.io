@@ -9,6 +9,8 @@ wiki/docs/.vitepress/cache
 console/node_modules
 console/dist
 .data
-deploy/backup/*.dump
+# 构建上下文只需要 console/ 与 backend/：目录数据、发布物、备份不进上下文
+data
+deploy/backup
 backups
 *.log

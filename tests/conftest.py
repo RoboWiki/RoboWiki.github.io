@@ -17,8 +17,8 @@ import pytest
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 _TMP = ROOT / ".pytest-tmp"
 
-# 站点仓不再保存 data/schema/assets；测试指向 .data（CI 下载）或同级核心仓。
-_CORE = ROOT.parent / "robowiki-core"
+# 本仓不再保存 data/schema/assets；测试指向 .data（CI 下载）或同级 RoboWiki 仓。
+_CORE = ROOT.parent / "RoboWiki"
 _DATA = ROOT / ".data" / "data"
 if not _DATA.exists() and (_CORE / "data").exists():
     _DATA = _CORE / "data"

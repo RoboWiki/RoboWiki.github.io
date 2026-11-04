@@ -9,7 +9,8 @@ from fastapi import APIRouter, HTTPException, Request, status
 from sqlmodel import select
 
 from ...core.config import settings
-from ...core.security import create_token, hash_password, verify_password
+from ...core.security import (create_token, dummy_password_hash, hash_password,
+                              verify_password)
 from ...crud import user_out
 from ...mailer import send_email
 from ...models import EmailToken, User
@@ -19,6 +20,9 @@ from ..deps import CurrentUser, Db, rate_limit
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
+#: 注册失败统一话术。邮箱冲突不再单独报错，否则注册接口就是枚举器。
+_REGISTER_FAILED = "注册未完成，请检查邮箱或稍后再试"
+
 
 @router.post("/register", response_model=TokenOut, status_code=201)
 def register(payload: RegisterIn, request: Request, db: Db):
@@ -26,7 +30,8 @@ def register(payload: RegisterIn, request: Request, db: Db):
     if db.exec(select(User).where(User.handle == payload.handle)).first():
         raise HTTPException(status.HTTP_409_CONFLICT, "这个 handle 已被占用")
     if payload.email and db.exec(select(User).where(User.email == payload.email)).first():
-        raise HTTPException(status.HTTP_409_CONFLICT, "这个邮箱已注册")
+        # 内部照样拦住重复创建，但对外只说「没注册成功」——不能变成邮箱枚举接口
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, _REGISTER_FAILED)
 
     u = User(handle=payload.handle, display_name=payload.display_name,
              email=payload.email, password_hash=hash_password(payload.password),
@@ -34,16 +39,22 @@ def register(payload: RegisterIn, request: Request, db: Db):
     db.add(u)
     db.commit()
     db.refresh(u)
-    return TokenOut(access_token=create_token(u.handle), user=user_out(db, u))
+    return TokenOut(access_token=create_token(u.handle, u.password_hash),
+                    user=user_out(db, u))
 
 
 @router.post("/login", response_model=TokenOut)
 def login(payload: LoginIn, request: Request, db: Db):
     rate_limit(request, "login", 30)
     u = db.exec(select(User).where(User.handle == payload.handle.lower())).first()
-    if u is None or not verify_password(payload.password, u.password_hash):
+    # 用户不存在时也拿固定的哑哈希跑一次 PBKDF2：否则「先查库、有才哈希」
+    # 会让响应时长差出一个数量级，等于把账号是否存在送出去。
+    stored = u.password_hash if u is not None else dummy_password_hash()
+    ok = verify_password(payload.password, stored)
+    if u is None or not ok:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "账号或密码不对")
-    return TokenOut(access_token=create_token(u.handle), user=user_out(db, u))
+    return TokenOut(access_token=create_token(u.handle, u.password_hash),
+                    user=user_out(db, u))
 
 
 @router.get("/me", response_model=UserOut)

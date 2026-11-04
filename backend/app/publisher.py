@@ -1,4 +1,4 @@
-"""Outbox 发布：把审核通过的提案变成核心仓的 PR。
+"""Outbox 发布：把审核通过的提案变成`RoboWiki` 仓的 PR。
 
 默认 dry-run；配置 `ROBOWIKI_PUBLISH_MODE=github` + token 后才真的开 PR。
 只在 worker 里调用，API 请求路径不会碰 GitHub。
@@ -58,7 +58,7 @@ def apply_changes(record: dict, changes: dict[str, Any]) -> tuple[dict, list[dic
 
 
 def dump_like(original: str, value: Any) -> str:
-    """保持核心仓的缩进与换行风格，避免整文件 diff。"""
+    """保持`RoboWiki` 仓的缩进与换行风格，避免整文件 diff。"""
     newline = "\r\n" if "\r\n" in original else "\n"
     m = re.search(r"\n( +)\S", original.replace("\r\n", "\n"))
     indent = len(m.group(1)) if m else 1
@@ -111,7 +111,7 @@ class GitHubPublisher:
     def _get_file(self, path: str, ref: str) -> tuple[dict, str]:
         r = self._client.get(f"/repos/{self.repo}/contents/{path}", params={"ref": ref})
         if r.status_code == 404:
-            raise PublishError(f"核心仓没有文件 {path}")
+            raise PublishError(f"`RoboWiki` 仓没有文件 {path}")
         if r.status_code >= 400:
             raise PublishError(f"读取文件失败：{r.status_code} {r.text[:200]}")
         d = r.json()

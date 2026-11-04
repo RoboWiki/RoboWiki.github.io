@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     api_v1: str = "/api/v1"
     api_legacy: str = "/api"
 
-    #: 种子 JSON 目录（仓库根的 data/；拆分后由核心仓 release 提供）
+    #: 种子 JSON 目录（仓库根的 data/；拆分后由`RoboWiki` 仓 release 提供）
     data_dir: pathlib.Path = ROOT / "data"
     schema_dir: pathlib.Path = ROOT / "schema"
     #: 留空时从仓库根 data.lock.json 读取；显式设置可覆盖

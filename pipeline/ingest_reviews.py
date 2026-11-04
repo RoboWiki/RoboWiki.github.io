@@ -41,6 +41,9 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 OUT = DATA_DIR / "reviews_snapshot.json"
+#: 部件目录只存在于`RoboWiki` 仓的锁定 release 里（本仓没有 data/catalog）。
+#: 用 ROBOWIKI_DATA_DIR 指到解压后的 .data/data，本脚本不复制一份目录逻辑。
+CATALOG = DATA_DIR / "catalog"
 
 FIELD_ALIASES = {
     "part": ["部件 id"],
@@ -105,7 +108,18 @@ def main() -> None:
         print("用法: ingest_reviews.py <issues.json> [--out DIR]")
         raise SystemExit(2)
     issues = json.loads(pathlib.Path(argv[0]).read_text(encoding="utf-8"))
-    known = {r["id"] for f in (DATA_DIR / "catalog").glob("*/*.json")
+    catalog_files = sorted(CATALOG.glob("*/*.json"))
+    if not catalog_files:
+        # 目录读空时每条实测都会被判「部件 id 不在目录里」，汇总变成空表。
+        # 这不是「没人提交」，是链路没接上 —— 直接失败，别产出假空快照。
+        raise SystemExit(
+            f"找不到部件目录：{CATALOG} 下没有 */*.json。\n"
+            "实测要用目录校验部件 id；目录来自`RoboWiki` 仓的锁定 release，不在本仓里。\n"
+            "先取 release 并指向它，再跑聚合：\n"
+            "  bash scripts/fetch-data-release.sh\n"
+            "  export ROBOWIKI_DATA_DIR=\"$PWD/.data/data\"\n"
+        )
+    known = {r["id"] for f in catalog_files
              for r in json.loads(f.read_text(encoding="utf-8"))}
 
     by: dict[str, list[dict]] = {}

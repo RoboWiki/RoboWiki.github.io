@@ -1,7 +1,13 @@
 name: Deploy wiki to GitHub Pages
 
-# 站点只负责渲染：数据从核心仓 RoboWiki/RoboWiki 的锁定 release 取。
-# 不在站点仓保存 data/ schema/ 或产品图副本。
+# 站点只负责渲染：目录数据从 `RoboWiki` 仓的锁定 release 取。
+# 不在本仓保存 schema/、catalog 或产品图副本。
+#
+# 唯一的例外是社区快照（data/ratings_snapshot.json、data/reviews_snapshot.json）：
+#   · 评分 / 实测来自本仓 issue，由 aggregate-ratings.yml 聚合后提交在本仓 data/；
+#   · `RoboWiki` 仓 release 只装目录数据（catalog / taxonomy / schema / assets），
+#     本仓 data/ 才是这两份快照的唯一可写产地。
+#   所以 paths 里要盯着 data/** —— 否则聚合提交后不会触发部署，线上分数永远停在旧值。
 on:
   push:
     branches: [main]
@@ -10,6 +16,7 @@ on:
       - 'pipeline/**'
       - 'console/public/**'
       - 'data.lock.json'
+      - 'data/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -54,6 +61,23 @@ jobs:
           test -f .data/data/taxonomy.json
           test -f .data/schema/semantics.json
           test -d .data/assets/parts
+
+      # pipeline 读的是 $ROBOWIKI_DATA_DIR/ratings_snapshot.json、reviews_snapshot.json。
+      # 这两份社区快照归本仓 data/，release 里即使有同名文件也是发布时的旧值，
+      # 所以用本仓的版本覆盖进解压目录。文件不存在就跳过：
+      # 新 fork、或还没人评分 / 提实测时，构建不能因此中断。
+      - name: overlay community snapshots
+        run: |
+          set -euo pipefail
+          for name in ratings_snapshot.json reviews_snapshot.json; do
+            src="data/$name"
+            if [ -f "$src" ]; then
+              cp "$src" ".data/data/$name"
+              echo "覆盖 .data/data/$name <- $src"
+            else
+              echo "跳过 $src（本仓暂无此快照，构建继续）"
+            fi
+          done
 
       - name: generate wiki pages from pinned data
         env:

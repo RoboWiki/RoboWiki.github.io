@@ -12,7 +12,7 @@ TOP_FIELDS = {
 }
 
 #: specs 里允许提案修改的字段。
-#: 必须与核心仓 pipeline/validate.py::KNOWN_SPEC_KEYS 同步；少一个键，
+#: 必须与`RoboWiki` 仓 pipeline/validate.py::KNOWN_SPEC_KEYS 同步；少一个键，
 #: 对应品类的真实纠错就无法提交（连接器就曾因此被挡在审核队列外）。
 SPEC_KEYS = {
     # 执行器

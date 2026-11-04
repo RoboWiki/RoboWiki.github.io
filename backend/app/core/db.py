@@ -59,6 +59,26 @@ def iter_seed_files():
     return sorted(cat_dir.glob("*/*.json")) if cat_dir.exists() else []
 
 
+def ensure_catalog_present() -> None:
+    """生产模式下空数据目录会清空 parts 表，必须在灌库之前拦住。
+
+    `seed_catalog` 会删除所有不在种子里的部件；空 `/data` 挂载意味着
+    keep=[]，一次启动就能把目录连同评论级联清空。开发模式（自动建表 +
+    sqlite）允许空目录，方便跑测试。
+    """
+    if settings.auto_create_tables:
+        return
+    if iter_seed_files():
+        return
+    raise RuntimeError(
+        "ROBOWIKI_DATA_DIR 下没有 catalog/*.json，拒绝启动以免清空部件表。\n"
+        f"  当前 data_dir：{settings.data_dir}\n"
+        "  排查：① 是否执行了 scripts/fetch-data-release.sh；"
+        "② compose 的 DATA_DIR 是否指向 .data/data（容器内 /data）；"
+        "③ 是否把空目录误挂进了容器。"
+    )
+
+
 def _load_offers() -> list[dict]:
     """读 data/offers/*.json（一家一文件）；没有目录时退回旧的 data/offers.json。"""
     rows: list[dict] = []

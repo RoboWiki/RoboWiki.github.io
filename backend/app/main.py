@@ -19,8 +19,8 @@ from .api.routes import (admin, auth, bot, catalog, community, export, mcp,
                          materials, protocols, ratings, reports, semantics,
                          submissions, wiki)
 from .core.config import ROOT, settings
-from .core.db import (bootstrap_admin, create_tables, seed_catalog,
-                      seed_community, session)
+from .core.db import (bootstrap_admin, create_tables, ensure_catalog_present,
+                      seed_catalog, seed_community, session)
 
 
 @asynccontextmanager
@@ -29,6 +29,7 @@ async def lifespan(_app: FastAPI):
         create_tables()
     db = session()
     try:
+        ensure_catalog_present()
         stats = seed_catalog(db)
         demo = settings.seed_demo if settings.seed_demo is not None \
             else settings.auto_create_tables

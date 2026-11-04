@@ -52,8 +52,15 @@ def _auth(request: Request, token: str | None = None) -> None:
     expected = settings.bot_token
     if not expected:
         raise HTTPException(503, "机器人问答未启用：未配置 ROBOWIKI_BOT_TOKEN")
-    got = token or request.headers.get("X-Bot-Token") or ""
-    if not got or not secrets.compare_digest(got, expected):
+    got = str(token or request.headers.get("X-Bot-Token") or "")
+    # compare_digest 对 str 只接受 ASCII；非 ASCII 入参会抛 TypeError → 500。
+    # 统一按字节比较，非法输入只是「不相等」，不泄露预期值、也不炸栈。
+    try:
+        match = secrets.compare_digest(got.encode("utf-8"),
+                                       str(expected).encode("utf-8"))
+    except (TypeError, UnicodeError):
+        match = False
+    if not got or not match:
         raise HTTPException(401, "机器人令牌无效")
 
 
