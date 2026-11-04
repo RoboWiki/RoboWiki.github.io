@@ -17,8 +17,6 @@ from ..deps import Db, MaybeUser
 router = APIRouter(tags=["catalog"])
 
 #: 品类。顺序即展示顺序：关节电机是重点，放最前。
-#: 机械结构 / 电池 目前**没有收录** —— 不是漏了，是没有可信来源，
-#: 宁可空着也不编（见 README 的口径纪律）。
 def _labels_from_taxonomy() -> dict[str, str]:
     """品类中文名从 data/taxonomy.json 读 —— 与站点、schema 同一份注册表。
 
@@ -70,10 +68,6 @@ _FALLBACK_CATEGORY_LABELS = {
 
 CATEGORY_LABELS = {**_FALLBACK_CATEGORY_LABELS, **_labels_from_taxonomy()}
 
-#: 还没有数据的品类：前端要显示「待补充」，不能当成 500 或空列表了事
-#: 目前确实没有可信来源的品类。归档导入后 lidar/camera/imu/module 已经有数据，
-#: 只剩电池还是空的 —— 它需要电芯规格书，商品页给不了。
-EMPTY_CATEGORIES = {"battery"}
 SUBTYPE_LABELS = {
     "qdd": "准直驱 QDD", "planetary": "行星减速", "harmonic": "谐波减速",
     "direct": "直驱", "sbc": "单板计算机", "mcu": "MCU / 驱动器",
@@ -348,12 +342,18 @@ def _attach_reviews(db, items: list[dict]) -> None:
 @router.get("/catalog")
 def catalog(db: Db, category: str | None = None):
     """分类、子类、厂商。厂商按 category 收窄，避免关节电机页混进传感器厂。"""
+    if category and category not in CATEGORY_LABELS:
+        raise HTTPException(status_code=422, detail="未知品类")
     facets = db.exec(
         select(Part.category, Part.subtype, func.count(Part.id))
         .group_by(Part.category, Part.subtype)).all()
     rows = [{"category": c, "category_label": CATEGORY_LABELS.get(c, c),
              "subtype": s, "subtype_label": subtype_label(c, s), "n": int(n)}
             for c, s, n in facets]
+    # 待补充品类不能手写：数据入库后 battery 已经有 A/B 级条目，
+    # 硬编码集合会和 facets 自相矛盾。每次按实际计数算。
+    present = {c for c, _s, n in facets if int(n) > 0}
+    empty_categories = sorted(set(CATEGORY_LABELS) - present)
     if category:
         vendors = db.exec(select(Part.vendor, func.count(Part.id))
                           .where(Part.category == category)
@@ -368,7 +368,7 @@ def catalog(db: Db, category: str | None = None):
         total = db.exec(select(func.count(Part.id))).one()
     return {"total": int(total), "category": category,
             "categories": CATEGORY_LABELS, "subtypes": SUBTYPE_LABELS,
-            "empty_categories": sorted(EMPTY_CATEGORIES),
+            "empty_categories": empty_categories,
             "facets": rows,
             "vendors": [{"vendor": v, "n": int(n)} for v, n in vendors],
             "sortable": list(SORTABLE)}

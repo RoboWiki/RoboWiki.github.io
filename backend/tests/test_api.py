@@ -74,6 +74,19 @@ def test_catalog_facets_are_scoped(client):
 
 
 
+def test_catalog_empty_categories_match_facets(client):
+    """待补充品类必须由实际计数推导，不能和 facets 自相矛盾。"""
+    d = client.get("/api/catalog").json()
+    present = {f["category"] for f in d["facets"] if f["n"] > 0}
+    assert not (set(d["empty_categories"]) & present)
+    assert set(d["empty_categories"]) <= set(d["categories"])
+
+
+def test_catalog_rejects_unknown_category(client):
+    r = client.get("/api/catalog", params={"category": "not_a_category"})
+    assert r.status_code == 422
+
+
 def test_parts_pagination(client):
     a = client.get("/api/parts", params={"category": "actuator", "limit": 5}).json()
     b = client.get("/api/parts", params={"category": "actuator", "limit": 5,
