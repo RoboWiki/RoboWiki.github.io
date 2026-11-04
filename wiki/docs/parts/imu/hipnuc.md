@@ -1,5 +1,6 @@
 ---
 title: 超核电子 HiPNUC
+image: "/og-default.png"
 ---
 
 

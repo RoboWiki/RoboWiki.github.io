@@ -1,5 +1,6 @@
 ---
 title: 压力 / 气压传感器
+image: "/og-default.png"
 ---
 
 

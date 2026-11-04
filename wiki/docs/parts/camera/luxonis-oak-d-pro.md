@@ -1,6 +1,7 @@
 ---
 title: Luxonis OAK-D Pro
 description: "Luxonis OAK-D Pro（深度相机）：额定 5 V、分辨率 深度 1280×800；RGB 4056×3040、视场 80°×55°；来源 A 级、2026-10-28 核对。"
+image: "/parts/luxonis-oak-d-pro.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "Luxonis OAK-D Pro（深度相机）：额定 5 V、分辨率 深�
       <span class="part-tag soft">深度相机</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥3,060</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

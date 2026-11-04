@@ -1,5 +1,6 @@
 ---
 title: 激光雷达
+image: "/og-default.png"
 ---
 
 

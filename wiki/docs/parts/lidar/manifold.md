@@ -1,5 +1,6 @@
 ---
 title: Manifold Tech
+image: "/og-default.png"
 ---
 
 

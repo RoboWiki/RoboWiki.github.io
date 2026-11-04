@@ -1,5 +1,6 @@
 ---
 title: 宇树 Unitree
+image: "/og-default.png"
 ---
 
 

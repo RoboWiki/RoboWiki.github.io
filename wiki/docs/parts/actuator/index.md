@@ -1,5 +1,6 @@
 ---
 title: 关节电机
+image: "/og-default.png"
 ---
 
 

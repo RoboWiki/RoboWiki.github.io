@@ -1,5 +1,6 @@
 ---
 title: mjbots
+image: "/og-default.png"
 ---
 
 

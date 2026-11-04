@@ -1,5 +1,6 @@
 ---
 title: TDK InvenSense(应美盛)
+image: "/og-default.png"
 ---
 
 

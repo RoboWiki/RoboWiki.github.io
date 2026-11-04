@@ -1,6 +1,7 @@
 ---
 title: 达妙 DAMIAO DM-MC-Board02
 description: "达妙 DAMIAO DM-MC-Board02（下位机）：质量 0.019 kg；来源 A 级、2026-10-31 核对。"
+image: "/parts/damiao-dm-mc-board02.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "达妙 DAMIAO DM-MC-Board02（下位机）：质量 0.019 kg；来
       <span class="part-tag soft">主控板</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥199</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

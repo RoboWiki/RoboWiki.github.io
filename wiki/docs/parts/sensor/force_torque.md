@@ -1,5 +1,6 @@
 ---
 title: 力矩传感器
+image: "/og-default.png"
 ---
 
 

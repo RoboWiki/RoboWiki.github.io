@@ -1,5 +1,6 @@
 ---
 title: High Torque Robotics 高擎动力
+image: "/og-default.png"
 ---
 
 

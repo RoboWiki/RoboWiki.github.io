@@ -1,5 +1,6 @@
 ---
 title: 大疆 DJI
+image: "/og-default.png"
 ---
 
 

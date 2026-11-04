@@ -1,5 +1,6 @@
 ---
 title: 西安航天民芯
+image: "/og-default.png"
 ---
 
 

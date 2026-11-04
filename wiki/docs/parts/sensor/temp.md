@@ -1,5 +1,6 @@
 ---
 title: 温度传感器
+image: "/og-default.png"
 ---
 
 

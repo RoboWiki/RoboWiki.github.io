@@ -1,5 +1,6 @@
 ---
 title: TOREX
+image: "/og-default.png"
 ---
 
 

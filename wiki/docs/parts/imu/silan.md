@@ -1,5 +1,6 @@
 ---
 title: SILAN(士兰微)
+image: "/og-default.png"
 ---
 
 

@@ -1,5 +1,6 @@
 ---
 title: 位置 / 角度传感器
+image: "/og-default.png"
 ---
 
 

@@ -1,5 +1,6 @@
 ---
 title: ADI
+image: "/og-default.png"
 ---
 
 

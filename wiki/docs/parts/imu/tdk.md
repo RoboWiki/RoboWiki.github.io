@@ -1,5 +1,6 @@
 ---
 title: TDK InvenSense
+image: "/og-default.png"
 ---
 
 

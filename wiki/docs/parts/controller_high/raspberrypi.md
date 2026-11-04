@@ -1,5 +1,6 @@
 ---
 title: 树莓派
+image: "/og-default.png"
 ---
 
 

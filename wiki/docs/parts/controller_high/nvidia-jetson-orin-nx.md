@@ -1,6 +1,7 @@
 ---
 title: NVIDIA Jetson Orin NX
 description: "NVIDIA Jetson Orin NX（上位机）：Orin；来源 B 级、2026-10-28 最近查阅。"
+image: "/parts/jetson-orin-nx-16gb.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "NVIDIA Jetson Orin NX（上位机）：Orin；来源 B 级、2026-
       <span class="part-tag soft">计算模组</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

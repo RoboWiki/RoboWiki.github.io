@@ -1,6 +1,7 @@
 ---
 title: ST VL53L4CDV0DH/1
 description: "ST VL53L4CDV0DH/1（传感器）：公开页面参数；来源 B 级、2026-10-31 最近查阅。"
+image: "/parts/jlc-c3178291.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "ST VL53L4CDV0DH/1（传感器）：公开页面参数；来源 B �
       <span class="part-tag soft">ToF 测距传感器</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥19.5</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

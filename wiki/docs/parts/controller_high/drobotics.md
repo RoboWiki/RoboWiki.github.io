@@ -1,5 +1,6 @@
 ---
 title: 地平线 D-Robotics
+image: "/og-default.png"
 ---
 
 

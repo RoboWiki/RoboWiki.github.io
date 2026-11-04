@@ -1,6 +1,7 @@
 ---
 title: 大疆 DJI RC 2
 description: "大疆 DJI RC 2（遥控器）：公开页面参数；来源 B 级、2026-11-01 最近查阅。"
+image: "/parts/dji-rc-2.png"
 ---
 
 
@@ -17,6 +18,11 @@ description: "大疆 DJI RC 2（遥控器）：公开页面参数；来源 B 级
       <span class="part-tag soft">手柄式</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

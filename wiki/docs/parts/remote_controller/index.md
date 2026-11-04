@@ -1,5 +1,6 @@
 ---
 title: 遥控器
+image: "/og-default.png"
 ---
 
 

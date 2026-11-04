@@ -1,5 +1,6 @@
 ---
 title: JSMSEMI
+image: "/og-default.png"
 ---
 
 

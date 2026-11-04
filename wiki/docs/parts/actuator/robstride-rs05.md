@@ -1,6 +1,7 @@
 ---
 title: 灵足 RobStride RS05
 description: "灵足 RobStride RS05（关节电机）：峰值扭矩 5.5 N·m、额定 1.8 N·m、减速比 7.75:1；来源 A 级、2026-10-31 核对。"
+image: "/parts/robstride-rs05.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "灵足 RobStride RS05（关节电机）：峰值扭矩 5.5 N·m、
       <span class="part-tag soft">准直驱 QDD</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥499</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

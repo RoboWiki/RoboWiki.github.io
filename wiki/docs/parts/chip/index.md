@@ -1,5 +1,6 @@
 ---
 title: 硬件芯片
+image: "/og-default.png"
 ---
 
 

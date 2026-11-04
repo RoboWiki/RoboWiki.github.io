@@ -1,5 +1,6 @@
 ---
 title: TI
+image: "/og-default.png"
 ---
 
 

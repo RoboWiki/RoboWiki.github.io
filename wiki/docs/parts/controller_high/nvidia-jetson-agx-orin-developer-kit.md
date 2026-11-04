@@ -1,6 +1,7 @@
 ---
 title: NVIDIA Jetson AGX Orin Developer Kit
 description: "NVIDIA Jetson AGX Orin Developer Kit（上位机）：Tegra Orin (AGX Orin 64GB)；来源 A 级、2026-10-28 核对。"
+image: "/parts/jetson-agx-orin-64gb.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "NVIDIA Jetson AGX Orin Developer Kit（上位机）：Tegra Orin (
       <span class="part-tag soft">单板计算机</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag muted">无公开报价</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

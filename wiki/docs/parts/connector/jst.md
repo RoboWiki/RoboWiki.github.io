@@ -1,5 +1,6 @@
 ---
 title: JST
+image: "/og-default.png"
 ---
 
 

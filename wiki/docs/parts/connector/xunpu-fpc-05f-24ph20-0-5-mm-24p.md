@@ -1,6 +1,7 @@
 ---
 title: XUNPU 讯普 FPC-05F-24PH20 0.5 mm 24P
 description: "XUNPU 讯普 FPC-05F-24PH20 0.5 mm 24P（连接器）：公开页面参数；来源 B 级、2026-10-31 最近查阅。"
+image: "/parts/xunpu-fpc-05-24p.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "XUNPU 讯普 FPC-05F-24PH20 0.5 mm 24P（连接器）：公开页�
       <span class="part-tag soft">FFC / FPC</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥0.59</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

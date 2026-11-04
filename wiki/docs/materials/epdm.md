@@ -1,6 +1,7 @@
 ---
 title: "EPDM 三元乙丙橡胶"
 description: "材料 EPDM 三元乙丙橡胶：三元乙丙橡胶"
+image: "/og-default.png"
 ---
 
 # EPDM 三元乙丙橡胶

@@ -1,5 +1,6 @@
 ---
 title: 振动传感器
+image: "/og-default.png"
 ---
 
 

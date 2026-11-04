@@ -1,5 +1,6 @@
 ---
 title: STMicroelectronics
+image: "/og-default.png"
 ---
 
 

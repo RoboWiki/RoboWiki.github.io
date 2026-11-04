@@ -1,6 +1,7 @@
 ---
 title: "3D 打印 SLM"
 description: "加工工艺 3D 打印 SLM：金属粉末床激光熔化"
+image: "/og-default.png"
 ---
 
 # 3D 打印 SLM

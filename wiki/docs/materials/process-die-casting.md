@@ -1,6 +1,7 @@
 ---
 title: "压铸（高压）"
 description: "加工工艺 压铸（高压）：批量铝合金/镁合金件的首选成型方式"
+image: "/og-default.png"
 ---
 
 # 压铸（高压）

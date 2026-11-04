@@ -1,5 +1,6 @@
 ---
 title: 达妙 DAMIAO
+image: "/og-default.png"
 ---
 
 

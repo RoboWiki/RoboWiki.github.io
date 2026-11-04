@@ -1,5 +1,6 @@
 ---
 title: 灵足 RobStride
+image: "/og-default.png"
 ---
 
 

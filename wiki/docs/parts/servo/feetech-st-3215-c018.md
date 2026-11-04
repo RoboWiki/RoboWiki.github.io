@@ -1,6 +1,7 @@
 ---
 title: Feetech 飞特 ST-3215-C018
 description: "Feetech 飞特 ST-3215-C018（舵机）：减速比 钢齿:1、质量 0.055 kg、额定 12 V；来源 A 级、2026-10-31 核对。"
+image: "/parts/feetech-st-3215-c018.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "Feetech 飞特 ST-3215-C018（舵机）：减速比 钢齿:1、质
       <span class="part-tag soft">bus</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag muted">无公开报价</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

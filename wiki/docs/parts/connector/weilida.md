@@ -1,5 +1,6 @@
 ---
 title: 伟利达 WLD
+image: "/og-default.png"
 ---
 
 

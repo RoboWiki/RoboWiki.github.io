@@ -1,6 +1,7 @@
 ---
 title: 大疆 DJI GM6020
 description: "大疆 DJI GM6020（关节电机）：额定 1.2 N·m、减速比 1:1、质量 0.468 kg；来源 A 级、2026-10-31 核对。"
+image: "/parts/dji-robomaster-gm6020.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "大疆 DJI GM6020（关节电机）：额定 1.2 N·m、减速比 
       <span class="part-tag soft">直驱</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥899</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

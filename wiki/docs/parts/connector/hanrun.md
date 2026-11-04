@@ -1,5 +1,6 @@
 ---
 title: HANRUN 汉仁
+image: "/og-default.png"
 ---
 
 

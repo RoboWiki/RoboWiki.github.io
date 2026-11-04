@@ -1,6 +1,7 @@
 ---
 title: "PPS GF40 聚苯硫醚"
 description: "材料 PPS GF40 聚苯硫醚：40% 玻纤增强的聚苯硫醚"
+image: "/og-default.png"
 ---
 
 # PPS GF40 聚苯硫醚
@@ -23,25 +24,26 @@ description: "材料 PPS GF40 聚苯硫醚：40% 玻纤增强的聚苯硫醚"
 
 | 字段 | 值 |
 |---|---|
-| 密度 (g/cm³) | 1.65 |
-| 弹性模量 (GPa) | 15 |
-| 抗拉强度 (MPa) | 190 |
+| 密度 (g/cm³) | 1.66 |
+| 弯曲模量 (GPa) | 15.5 |
+| 抗拉强度 (MPa) | 200 |
 | 断裂延伸率 (%) | 1.8 |
+| 硬度 | Rockwell R122 |
 | 长期工作温度 (°C) | 220 |
 | 熔点 (°C) | 278 |
 | 导热系数 (W/(m·K)) | 0.3 |
-| 线膨胀系数 (µm/(m·K)) | 3 |
+| 线膨胀系数 (µm/(m·K)) | 23 |
 | 参考价格档 | 中高 |
 
 ### MuJoCo / 动力学仿真换算
 
 | 参数 | 数据表值 | SI（MuJoCo 等） |
 |---|---|---|
-| 密度 | 1.65 g/cm³ | 1650 kg/m³ |
-| 弹性模量 | 15 GPa | 1.5e+10 Pa |
-| 抗拉强度 | 190 MPa | 1.9e+08 Pa |
+| 密度 | 1.66 g/cm³ | 1660 kg/m³ |
+| 弯曲模量 | 15.5 GPa | 1.55e+10 Pa |
+| 抗拉强度 | 200 MPa | 2e+08 Pa |
 
-<p class="mt-note">密度 1650 kg/m³；弯曲模量约 15 GPa（玻纤方向）。各向异性明显，仿真取流动方向值要注明。</p>
+<p class="mt-note">密度 1660 kg/m³；弯曲模量约 15.5 GPa（玻纤方向）。CLTE 23 µm/(m·K)（流动）/31（垂直）；各向异性明显，仿真取流动方向值要注明。</p>
 
 ## 形态与规格
 
@@ -74,9 +76,10 @@ description: "材料 PPS GF40 聚苯硫醚：40% 玻纤增强的聚苯硫醚"
 
 ## 来源
 
-- 数据整理：Toray PPS 公开资料 + 40% 玻纤增强牌号典型值整理（2026-11-02）；不同厂家/牌号数值有差异
+- 数据整理：Toray Torelina A504X90（PPS-GF40）数据表 + 公开资料整理（2026-11-02）；不同厂家/牌号数值有差异
 - 等级：B · 最近核对：2026-11-02
-- 主要来源：<https://www.toray.jp/plastics/en/pps/>
-- reference：<https://www.toray.jp/plastics/en/pps/>（2026-11-02）
+- 主要来源：<https://www.plastics.toray/zh/technical/torelina/tec_006.html>
+- datasheet：<https://www.plastics.toray/zh/technical/torelina/tec_006.html>（2026-11-02）
+- reference：<https://www.plastics.toray/>（2026-11-02）
 
 > 表中物理量是常温典型值；热处理状态、纤维方向、含水率与批次都会让实际值偏离。选型与仿真请以供应商实测报告为准。

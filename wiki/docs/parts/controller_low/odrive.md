@@ -1,5 +1,6 @@
 ---
 title: ODrive Robotics
+image: "/og-default.png"
 ---
 
 

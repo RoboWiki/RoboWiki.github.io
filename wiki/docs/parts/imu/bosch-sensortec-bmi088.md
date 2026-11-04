@@ -1,6 +1,7 @@
 ---
 title: Bosch Sensortec BMI088
 description: "Bosch Sensortec BMI088（IMU）：额定 3.3 V、分辨率 16-bit、输出 2,000 Hz；来源 A 级、2026-10-31 核对。"
+image: "/parts/bosch-bmi088.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "Bosch Sensortec BMI088（IMU）：额定 3.3 V、分辨率 16-bit�
       <span class="part-tag soft">IMU 芯片</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag muted">无公开报价</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

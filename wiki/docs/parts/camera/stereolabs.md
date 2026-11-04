@@ -1,5 +1,6 @@
 ---
 title: Stereolabs
+image: "/og-default.png"
 ---
 
 

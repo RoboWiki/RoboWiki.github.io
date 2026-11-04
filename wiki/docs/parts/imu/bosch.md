@@ -1,5 +1,6 @@
 ---
 title: Bosch Sensortec
+image: "/og-default.png"
 ---
 
 

@@ -1,5 +1,6 @@
 ---
 title: CJT 长江连接器
+image: "/og-default.png"
 ---
 
 

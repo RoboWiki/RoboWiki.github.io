@@ -1,6 +1,7 @@
 ---
 title: TI REF3033AIDBZR
 description: "TI REF3033AIDBZR（硬件芯片）：公开页面参数；来源 B 级、2026-10-31 最近查阅。"
+image: "/parts/jlc-c36658.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "TI REF3033AIDBZR（硬件芯片）：公开页面参数；来源 B
       <span class="part-tag soft">电压基准</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥2.81</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

@@ -1,5 +1,6 @@
 ---
 title: 乐动 LDROBOT
+image: "/og-default.png"
 ---
 
 

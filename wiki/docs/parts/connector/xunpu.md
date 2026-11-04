@@ -1,5 +1,6 @@
 ---
 title: XUNPU 讯普
+image: "/og-default.png"
 ---
 
 

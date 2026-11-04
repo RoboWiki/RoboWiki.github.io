@@ -1,5 +1,6 @@
 ---
 title: NTC 热敏电阻
+image: "/og-default.png"
 ---
 
 

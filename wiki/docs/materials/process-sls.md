@@ -1,6 +1,7 @@
 ---
 title: "3D 打印 SLS"
 description: "加工工艺 3D 打印 SLS：粉末床激光烧结"
+image: "/og-default.png"
 ---
 
 # 3D 打印 SLS

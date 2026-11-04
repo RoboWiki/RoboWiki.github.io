@@ -1,5 +1,6 @@
 ---
 title: Slamtec
+image: "/og-default.png"
 ---
 
 

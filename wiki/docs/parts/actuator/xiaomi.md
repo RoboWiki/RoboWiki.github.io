@@ -1,5 +1,6 @@
 ---
 title: 小米 Xiaomi
+image: "/og-default.png"
 ---
 
 

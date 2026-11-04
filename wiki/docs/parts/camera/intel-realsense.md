@@ -1,5 +1,6 @@
 ---
 title: Intel RealSense
+image: "/og-default.png"
 ---
 
 

@@ -1,6 +1,7 @@
 ---
 title: ADI(亚德诺)/MAXIM(美信) DS18B20+
 description: "ADI(亚德诺)/MAXIM(美信) DS18B20+（传感器）：公开页面参数；来源 B 级、2026-10-31 最近查阅。"
+image: "/parts/jlc-c9753.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "ADI(亚德诺)/MAXIM(美信) DS18B20+（传感器）：公开页�
       <span class="part-tag soft">温度传感器</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥7.47</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

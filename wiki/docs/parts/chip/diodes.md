@@ -1,5 +1,6 @@
 ---
 title: DIODES
+image: "/og-default.png"
 ---
 
 

@@ -1,5 +1,6 @@
 ---
 title: JTL 景泰隆
+image: "/og-default.png"
 ---
 
 

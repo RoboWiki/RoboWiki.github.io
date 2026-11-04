@@ -1,6 +1,7 @@
 ---
 title: 元生创新 Yesense YIS320
 description: "元生创新 Yesense YIS320（IMU）：额定 5 V、输出 400 Hz；来源 B 级、2026-10-31 最近查阅。"
+image: "/parts/imu-yesense-yis320.png"
 ---
 
 
@@ -17,6 +18,11 @@ description: "元生创新 Yesense YIS320（IMU）：额定 5 V、输出 400 Hz�
       <span class="part-tag soft">IMU 模组</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

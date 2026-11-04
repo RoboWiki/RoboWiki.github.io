@@ -1,6 +1,7 @@
 ---
 title: "注塑成型"
 description: "加工工艺 注塑成型：批量塑料件的首选"
+image: "/og-default.png"
 ---
 
 # 注塑成型

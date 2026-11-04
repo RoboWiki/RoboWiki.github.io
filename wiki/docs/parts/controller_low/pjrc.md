@@ -1,5 +1,6 @@
 ---
 title: PJRC
+image: "/og-default.png"
 ---
 
 

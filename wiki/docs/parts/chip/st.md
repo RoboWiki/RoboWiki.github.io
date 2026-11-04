@@ -1,5 +1,6 @@
 ---
 title: ST
+image: "/og-default.png"
 ---
 
 

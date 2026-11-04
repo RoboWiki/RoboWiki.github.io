@@ -1,5 +1,6 @@
 ---
 title: QST(上海矽睿)
+image: "/og-default.png"
 ---
 
 

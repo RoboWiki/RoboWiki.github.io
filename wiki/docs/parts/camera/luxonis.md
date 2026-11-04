@@ -1,5 +1,6 @@
 ---
 title: Luxonis
+image: "/og-default.png"
 ---
 
 

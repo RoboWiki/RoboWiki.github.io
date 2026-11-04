@@ -1,5 +1,6 @@
 ---
 title: OrangePi
+image: "/og-default.png"
 ---
 
 

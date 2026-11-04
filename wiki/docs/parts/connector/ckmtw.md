@@ -1,5 +1,6 @@
 ---
 title: Ckmtw 灿科盟
+image: "/og-default.png"
 ---
 
 

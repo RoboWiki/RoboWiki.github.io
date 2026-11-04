@@ -1,6 +1,7 @@
 ---
 title: "POM 聚甲醛"
 description: "材料 POM 聚甲醛：俗称赛钢的工程塑料"
+image: "/og-default.png"
 ---
 
 # POM 聚甲醛

@@ -1,6 +1,7 @@
 ---
 title: Feetech 飞特 STS3215（7.4V 19 kg·cm）
 description: "Feetech 飞特 STS3215（7.4V 19 kg·cm）（舵机）：额定 7.4 V；来源 A 级、2026-10-31 核对。"
+image: "/parts/feetech-sts3215-7v4.png"
 ---
 
 
@@ -17,6 +18,11 @@ description: "Feetech 飞特 STS3215（7.4V 19 kg·cm）（舵机）：额定 7.
       <span class="part-tag soft">serial</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag muted">无公开报价</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

@@ -1,5 +1,6 @@
 ---
 title: MaxLinear
+image: "/og-default.png"
 ---
 
 

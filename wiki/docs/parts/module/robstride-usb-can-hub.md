@@ -1,6 +1,7 @@
 ---
 title: 灵足 RobStride USB-CAN HUB
 description: "灵足 RobStride USB-CAN HUB（其余模块）：额定 5 V；来源 A 级、2026-10-29 核对。"
+image: "/parts/lingzu-robstride-usb-can-hub.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "灵足 RobStride USB-CAN HUB（其余模块）：额定 5 V；来�
       <span class="part-tag soft">CAN 模块</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag muted">无公开报价</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

@@ -1,6 +1,7 @@
 ---
 title: CubeMars AK70-9 V3.0 KV60
 description: "CubeMars AK70-9 V3.0 KV60（关节电机）：峰值扭矩 29.2 N·m、额定 8.5 N·m、减速比 9:1；来源 B 级、2026-11-02 最近查阅。"
+image: "/parts/cubemars-ak70-9-v3-0-kv60.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "CubeMars AK70-9 V3.0 KV60（关节电机）：峰值扭矩 29.2 N�
       <span class="part-tag soft">行星减速</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

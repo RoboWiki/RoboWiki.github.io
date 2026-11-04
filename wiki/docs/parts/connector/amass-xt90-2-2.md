@@ -1,6 +1,7 @@
 ---
 title: Amass 艾迈斯 XT90(2+2)
 description: "Amass 艾迈斯 XT90(2+2)（连接器）：官方参数；来源 A 级、2026-10-31 核对。"
+image: "/parts/amass-xt90-2p2.png"
 ---
 
 
@@ -17,6 +18,11 @@ description: "Amass 艾迈斯 XT90(2+2)（连接器）：官方参数；来源 A
       <span class="part-tag soft">电源+信号混合</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥4.6</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

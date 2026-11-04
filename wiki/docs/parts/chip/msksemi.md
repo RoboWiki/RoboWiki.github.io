@@ -1,5 +1,6 @@
 ---
 title: MSKSEMI
+image: "/og-default.png"
 ---
 
 

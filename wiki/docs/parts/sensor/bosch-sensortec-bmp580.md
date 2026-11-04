@@ -1,6 +1,7 @@
 ---
 title: Bosch Sensortec BMP580
 description: "Bosch Sensortec BMP580（传感器）：公开页面参数；来源 B 级、2026-10-31 最近查阅。"
+image: "/parts/jlc-c22391138.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "Bosch Sensortec BMP580（传感器）：公开页面参数；来�
       <span class="part-tag soft">压力 / 气压传感器</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥7.41</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

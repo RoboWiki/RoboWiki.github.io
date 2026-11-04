@@ -1,6 +1,7 @@
 ---
 title: Intel RealSense D455
 description: "Intel RealSense D455（深度相机）：额定 5 V、分辨率 深度 1280×720；RGB 1280×800、视场 87°×58°；来源 A 级、2026-10-31 核对。"
+image: "/parts/intel-d455.png"
 ---
 
 
@@ -17,6 +18,11 @@ description: "Intel RealSense D455（深度相机）：额定 5 V、分辨率 �
       <span class="part-tag soft">双目</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥3,570</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

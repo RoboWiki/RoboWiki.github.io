@@ -1,5 +1,6 @@
 ---
 title: WitMotion 维特智能
+image: "/og-default.png"
 ---
 
 

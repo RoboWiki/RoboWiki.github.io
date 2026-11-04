@@ -1,6 +1,7 @@
 ---
 title: TDK InvenSense(应美盛) ICM-42670-P
 description: "TDK InvenSense(应美盛) ICM-42670-P（IMU）：公开页面参数；来源 B 级、2026-10-31 最近查阅。"
+image: "/parts/jlc-c3288646.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "TDK InvenSense(应美盛) ICM-42670-P（IMU）：公开页面参�
       <span class="part-tag soft">IMU 芯片</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥11.3</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

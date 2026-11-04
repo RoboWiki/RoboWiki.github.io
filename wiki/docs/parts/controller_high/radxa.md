@@ -1,5 +1,6 @@
 ---
 title: 瑞莎 Radxa
+image: "/og-default.png"
 ---
 
 

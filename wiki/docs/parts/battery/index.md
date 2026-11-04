@@ -1,5 +1,6 @@
 ---
 title: 电池
+image: "/og-default.png"
 ---
 
 

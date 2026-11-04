@@ -1,6 +1,7 @@
 ---
 title: mjbots moteus r4.11
 description: "mjbots moteus r4.11（下位机）：质量 0.014 kg；来源 A 级、2026-11-01 核对。"
+image: "/parts/mjbots-moteus-r4-11.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "mjbots moteus r4.11（下位机）：质量 0.014 kg；来源 A �
       <span class="part-tag soft">驱动板</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag muted">无公开报价</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

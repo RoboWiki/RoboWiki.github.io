@@ -1,5 +1,6 @@
 ---
 title: 乐迪 RadioLink
+image: "/og-default.png"
 ---
 
 

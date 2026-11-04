@@ -1,6 +1,7 @@
 ---
 title: RoboSense Airy
 description: "RoboSense Airy（激光雷达）：额定 12 V、分辨率 0.4°×0.947°、量程 30 m；来源 A 级、2026-10-28 核对。"
+image: "/parts/robosense-airy.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "RoboSense Airy（激光雷达）：额定 12 V、分辨率 0.4°×
       <span class="part-tag soft">激光雷达</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥4,078</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

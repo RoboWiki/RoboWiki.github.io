@@ -1,5 +1,6 @@
 ---
 title: CubeMars
+image: "/og-default.png"
 ---
 
 

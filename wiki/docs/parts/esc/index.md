@@ -1,5 +1,6 @@
 ---
 title: 电调
+image: "/og-default.png"
 ---
 
 

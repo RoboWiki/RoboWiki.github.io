@@ -1,6 +1,7 @@
 ---
 title: "PC/ABS 合金"
 description: "材料 PC/ABS 合金：PC 与 ABS 的共混材料，兼顾 PC 的韧性和 ABS 的加工性"
+image: "/og-default.png"
 ---
 
 # PC/ABS 合金
@@ -30,7 +31,7 @@ description: "材料 PC/ABS 合金：PC 与 ABS 的共混材料，兼顾 PC 的�
 | 断裂延伸率 (%) | 50 |
 | 长期工作温度 (°C) | 100 |
 | 导热系数 (W/(m·K)) | 0.2 |
-| 线膨胀系数 (µm/(m·K)) | 70 |
+| 线膨胀系数 (µm/(m·K)) | 55 |
 | 参考价格档 | 低-中 |
 
 ### MuJoCo / 动力学仿真换算
@@ -41,7 +42,7 @@ description: "材料 PC/ABS 合金：PC 与 ABS 的共混材料，兼顾 PC 的�
 | 弹性模量 | 3.35 GPa | 3.35e+09 Pa |
 | 抗拉强度 | 66 MPa | 6.6e+07 Pa |
 
-<p class="mt-note">密度 1240 kg/m³；模量约 3.35 GPa。共混物韧性好但模量随温度下降，仿真用常温等温线弹性值即可。</p>
+<p class="mt-note">密度 1240 kg/m³；拉伸模量约 3.35 GPa。CLTE 55 µm/(m·K)（流动）/65（垂直）；HDT/B 124°C、HDT/A 136°C，100°C 是长期使用上限。共混物韧性好但模量随温度下降，仿真用常温等温线弹性值即可。</p>
 
 ## 形态与规格
 
@@ -74,7 +75,7 @@ description: "材料 PC/ABS 合金：PC 与 ABS 的共混材料，兼顾 PC 的�
 
 ## 来源
 
-- 数据整理：Covestro Bayblend 系列公开资料 + PC/ABS 典型值整理（2026-11-02）；PC/ABS 配比不同，韧性与耐热随之变化
+- 数据整理：Covestro Bayblend T95 MF 数据表 + PC/ABS 典型值整理（2026-11-02）；PC/ABS 配比不同，韧性与耐热随之变化
 - 等级：B · 最近核对：2026-11-02
 - 主要来源：<https://solutions.covestro.com/en/brands/bayblend>
 - reference：<https://solutions.covestro.com/en/brands/bayblend>（2026-11-02）

@@ -1,6 +1,7 @@
 ---
 title: "铺层/缠绕成型"
 description: "加工工艺 铺层/缠绕成型：铺层和缠绕是复材的通用成型方式"
+image: "/og-default.png"
 ---
 
 # 铺层/缠绕成型

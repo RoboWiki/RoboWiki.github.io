@@ -1,5 +1,6 @@
 ---
 title: ToF 测距传感器
+image: "/og-default.png"
 ---
 
 

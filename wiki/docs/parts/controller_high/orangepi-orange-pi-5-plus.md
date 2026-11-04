@@ -1,6 +1,7 @@
 ---
 title: OrangePi Orange Pi 5 Plus
 description: "OrangePi Orange Pi 5 Plus（上位机）：Rockchip RK3588；来源 A 级、2026-10-31 核对。"
+image: "/parts/orangepi-5-plus-8gb.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "OrangePi Orange Pi 5 Plus（上位机）：Rockchip RK3588；来�
       <span class="part-tag soft">单板计算机</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥795</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

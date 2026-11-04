@@ -1,5 +1,6 @@
 ---
 title: Degson 高正
+image: "/og-default.png"
 ---
 
 

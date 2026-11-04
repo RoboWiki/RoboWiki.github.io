@@ -1,5 +1,6 @@
 ---
 title: 霍尔 / 磁传感器
+image: "/og-default.png"
 ---
 
 

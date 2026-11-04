@@ -1,5 +1,6 @@
 ---
 title: SimpleFOC Team
+image: "/og-default.png"
 ---
 
 

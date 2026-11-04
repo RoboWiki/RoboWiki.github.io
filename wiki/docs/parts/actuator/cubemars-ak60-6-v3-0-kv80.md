@@ -1,6 +1,7 @@
 ---
 title: CubeMars AK60-6 V3.0 KV80
 description: "CubeMars AK60-6 V3.0 KV80（关节电机）：峰值扭矩 9 N·m、额定 3 N·m、减速比 6:1；来源 B 级、2026-11-02 最近查阅。"
+image: "/parts/cubemars-ak60-6.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "CubeMars AK60-6 V3.0 KV80（关节电机）：峰值扭矩 9 N·m�
       <span class="part-tag soft">行星减速</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

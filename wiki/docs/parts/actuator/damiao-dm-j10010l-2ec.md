@@ -1,6 +1,7 @@
 ---
 title: 达妙 DAMIAO DM-J10010L-2EC
 description: "达妙 DAMIAO DM-J10010L-2EC（关节电机）：峰值扭矩 120 N·m、额定 40 N·m、减速比 10:1；来源 A 级、2026-10-31 核对。"
+image: "/parts/dm-dm-j10010l-2ec.jpeg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "达妙 DAMIAO DM-J10010L-2EC（关节电机）：峰值扭矩 120 
       <span class="part-tag soft">行星减速</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥1,199</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

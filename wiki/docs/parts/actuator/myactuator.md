@@ -1,5 +1,6 @@
 ---
 title: 脉塔 MyActuator
+image: "/og-default.png"
 ---
 
 

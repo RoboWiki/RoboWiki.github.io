@@ -1,6 +1,7 @@
 ---
 title: "PETG 线材"
 description: "材料 PETG 线材：PETG 是 FDM 的常用韧性材料"
+image: "/og-default.png"
 ---
 
 # PETG 线材
@@ -28,7 +29,6 @@ description: "材料 PETG 线材：PETG 是 FDM 的常用韧性材料"
 | 抗拉强度 (MPa) | 30 |
 | 断裂延伸率 (%) | 8 |
 | 长期工作温度 (°C) | 65 |
-| 熔点 (°C) | 230 |
 | 导热系数 (W/(m·K)) | 0.2 |
 | 线膨胀系数 (µm/(m·K)) | 70 |
 | 参考价格档 | 低 |
@@ -41,7 +41,7 @@ description: "材料 PETG 线材：PETG 是 FDM 的常用韧性材料"
 | 弹性模量 | 2.05 GPa | 2.05e+09 Pa |
 | 抗拉强度 | 30 MPa | 3e+07 Pa |
 
-<p class="mt-note">密度 1270 kg/m³；模量约 2.05 GPa。PETG 韧性好于 PLA 但刚度略低，仿真按打印方向取等效值。</p>
+<p class="mt-note">密度 1270 kg/m³；模量约 2.05 GPa。PETG 是非晶聚合物，没有明确熔点，打印温度约 230–250°C；仿真按打印方向取等效值。</p>
 
 ## 形态与规格
 

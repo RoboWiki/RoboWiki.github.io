@@ -1,6 +1,7 @@
 ---
 title: 地平线 D-Robotics RDK X5
 description: "地平线 D-Robotics RDK X5（上位机）：Sunrise 5；来源 B 级、2026-10-28 最近查阅。"
+image: "/parts/rdk-x5-8gb.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "地平线 D-Robotics RDK X5（上位机）：Sunrise 5；来源 B 
       <span class="part-tag soft">单板计算机</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

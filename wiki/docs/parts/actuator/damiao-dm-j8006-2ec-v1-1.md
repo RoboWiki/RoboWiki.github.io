@@ -1,6 +1,7 @@
 ---
 title: 达妙 DAMIAO DM-J8006-2EC V1.1
 description: "达妙 DAMIAO DM-J8006-2EC V1.1（关节电机）：峰值扭矩 20 N·m、额定 8 N·m、减速比 6:1；来源 A 级、2026-10-31 核对。"
+image: "/parts/dm-dm-j8006-2ec-v1-1.jpeg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "达妙 DAMIAO DM-J8006-2EC V1.1（关节电机）：峰值扭矩 2
       <span class="part-tag soft">行星减速</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥999</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

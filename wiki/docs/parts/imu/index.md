@@ -1,5 +1,6 @@
 ---
 title: IMU
+image: "/og-default.png"
 ---
 
 

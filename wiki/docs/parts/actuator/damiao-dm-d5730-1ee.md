@@ -1,6 +1,7 @@
 ---
 title: 达妙 DAMIAO DM-D5730 -1EE
 description: "达妙 DAMIAO DM-D5730 -1EE（关节电机）：峰值扭矩 1.9 N·m、额定 0.65 N·m、减速比 1:1；来源 A 级、2026-10-31 核对。"
+image: "/parts/dm-dm-d5730-1ee.jpeg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "达妙 DAMIAO DM-D5730 -1EE（关节电机）：峰值扭矩 1.9 N
       <span class="part-tag soft">直驱</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag muted">无公开报价</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

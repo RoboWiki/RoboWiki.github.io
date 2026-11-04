@@ -1,5 +1,6 @@
 ---
 title: CJ
+image: "/og-default.png"
 ---
 
 

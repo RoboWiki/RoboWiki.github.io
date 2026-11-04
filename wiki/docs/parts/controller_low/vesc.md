@@ -1,5 +1,6 @@
 ---
 title: VESC Labs
+image: "/og-default.png"
 ---
 
 

@@ -1,5 +1,6 @@
 ---
 title: MICRONE
+image: "/og-default.png"
 ---
 
 

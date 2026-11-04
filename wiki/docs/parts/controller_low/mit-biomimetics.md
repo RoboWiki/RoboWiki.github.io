@@ -1,5 +1,6 @@
 ---
 title: MIT Biomimetics Robotics Lab
+image: "/og-default.png"
 ---
 
 

@@ -1,5 +1,6 @@
 ---
 title: HOLTEK
+image: "/og-default.png"
 ---
 
 

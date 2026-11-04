@@ -1,5 +1,6 @@
 ---
 title: Amass 艾迈斯
+image: "/og-default.png"
 ---
 
 

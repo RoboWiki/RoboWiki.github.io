@@ -1,6 +1,7 @@
 ---
 title: "ABS 线材"
 description: "材料 ABS 线材：ABS 是 FDM 的功能材料"
+image: "/og-default.png"
 ---
 
 # ABS 线材
@@ -28,7 +29,6 @@ description: "材料 ABS 线材：ABS 是 FDM 的功能材料"
 | 抗拉强度 (MPa) | 40 |
 | 断裂延伸率 (%) | 20 |
 | 长期工作温度 (°C) | 85 |
-| 熔点 (°C) | 220 |
 | 导热系数 (W/(m·K)) | 0.18 |
 | 线膨胀系数 (µm/(m·K)) | 80 |
 | 参考价格档 | 低 |
@@ -41,7 +41,7 @@ description: "材料 ABS 线材：ABS 是 FDM 的功能材料"
 | 弹性模量 | 2.3 GPa | 2.3e+09 Pa |
 | 抗拉强度 | 40 MPa | 4e+07 Pa |
 
-<p class="mt-note">密度 1040 kg/m³；模量约 2.3 GPa。ABS 打印件层间弱、收缩大，仿真按打印方向取等效值。</p>
+<p class="mt-note">密度 1040 kg/m³；模量约 2.3 GPa。ABS 是非晶聚合物，没有明确熔点，打印温度约 230–260°C；打印件层间弱、收缩大，仿真按打印方向取等效值。</p>
 
 ## 形态与规格
 

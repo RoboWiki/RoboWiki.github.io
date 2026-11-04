@@ -1,6 +1,7 @@
 ---
 title: DIODES AP63203WU-7
 description: "DIODES AP63203WU-7（硬件芯片）：公开页面参数；来源 B 级、2026-10-31 最近查阅。"
+image: "/parts/jlc-c780769.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "DIODES AP63203WU-7（硬件芯片）：公开页面参数；来源
       <span class="part-tag soft">DC-DC 开关电源</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥7.48</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

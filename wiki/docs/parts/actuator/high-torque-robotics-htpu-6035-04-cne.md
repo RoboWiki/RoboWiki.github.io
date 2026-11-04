@@ -1,6 +1,7 @@
 ---
 title: High Torque Robotics 高擎动力 HTPU-6035-04-CNE
 description: "High Torque Robotics 高擎动力 HTPU-6035-04-CNE（关节电机）：峰值扭矩 36 N·m、额定 10 N·m、减速比 35:1；来源 A 级、2026-10-31 核对。"
+image: "/parts/hightorque-htpu-6035-04-cne.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "High Torque Robotics 高擎动力 HTPU-6035-04-CNE（关节电机�
       <span class="part-tag soft">行星减速</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag muted">无公开报价</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

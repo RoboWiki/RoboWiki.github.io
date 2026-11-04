@@ -1,6 +1,7 @@
 ---
 title: STMicroelectronics B-G431B-ESC1
 description: "STMicroelectronics B-G431B-ESC1（下位机）：质量 9.20e-03 kg；来源 A 级、2026-11-01 核对。"
+image: "/parts/st-b-g431b-esc1.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "STMicroelectronics B-G431B-ESC1（下位机）：质量 9.20e-03 k
       <span class="part-tag soft">驱动板</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag muted">无公开报价</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

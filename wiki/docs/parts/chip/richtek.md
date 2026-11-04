@@ -1,5 +1,6 @@
 ---
 title: RICHTEK
+image: "/og-default.png"
 ---
 
 

@@ -1,5 +1,6 @@
 ---
 title: 下位机
+image: "/og-default.png"
 ---
 
 

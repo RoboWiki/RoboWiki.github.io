@@ -1,5 +1,6 @@
 ---
 title: UTC
+image: "/og-default.png"
 ---
 
 

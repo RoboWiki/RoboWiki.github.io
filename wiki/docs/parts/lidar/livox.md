@@ -1,5 +1,6 @@
 ---
 title: Livox
+image: "/og-default.png"
 ---
 
 

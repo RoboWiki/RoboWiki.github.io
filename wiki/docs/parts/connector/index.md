@@ -1,5 +1,6 @@
 ---
 title: 连接器
+image: "/og-default.png"
 ---
 
 

@@ -1,6 +1,7 @@
 ---
 title: 大疆 DJI RoboMaster 开发板 A 型
 description: "大疆 DJI RoboMaster 开发板 A 型（下位机）：官方参数；来源 A 级、2026-10-31 核对。"
+image: "/parts/dji-rm-board-a.png"
 ---
 
 
@@ -17,6 +18,11 @@ description: "大疆 DJI RoboMaster 开发板 A 型（下位机）：官方参�
       <span class="part-tag soft">主控板</span>
       <span class="part-tag tierA">来源 A ✓ 已核对</span>
       <span class="part-tag">¥429</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

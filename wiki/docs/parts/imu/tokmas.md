@@ -1,5 +1,6 @@
 ---
 title: Tokmas(托克马斯)
+image: "/og-default.png"
 ---
 
 

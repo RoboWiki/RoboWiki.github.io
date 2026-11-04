@@ -1,5 +1,6 @@
 ---
 title: 触摸传感器
+image: "/og-default.png"
 ---
 
 

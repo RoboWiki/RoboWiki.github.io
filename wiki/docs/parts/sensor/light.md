@@ -1,5 +1,6 @@
 ---
 title: 光照传感器
+image: "/og-default.png"
 ---
 
 

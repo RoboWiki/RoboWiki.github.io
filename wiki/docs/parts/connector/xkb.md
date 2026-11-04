@@ -1,5 +1,6 @@
 ---
 title: XKB 星坤
+image: "/og-default.png"
 ---
 
 

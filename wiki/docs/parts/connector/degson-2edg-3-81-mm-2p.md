@@ -1,6 +1,7 @@
 ---
 title: Degson 高正 2EDG 3.81 mm 插拔端子 2P
 description: "Degson 高正 2EDG 3.81 mm 插拔端子 2P（连接器）：公开页面参数；来源 B 级、2026-10-31 最近查阅。"
+image: "/parts/degson-2edg-381-2p.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "Degson 高正 2EDG 3.81 mm 插拔端子 2P（连接器）：公开
       <span class="part-tag soft">接线端子</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

@@ -1,5 +1,6 @@
 ---
 title: STACKFORCE
+image: "/og-default.png"
 ---
 
 

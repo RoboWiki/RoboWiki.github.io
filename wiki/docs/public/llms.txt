@@ -1,12 +1,12 @@
 # RoboWiki
 
-> 机器人开发的开放资料底稿：326 个部件的可核对参数、21 台整机、软件库与采购渠道。每个数字都带来源与口径，缺的字段写「—」，不猜、不用同类填补。站点不卖零件、不收佣金。
+> 机器人开发的开放资料底稿：338 个部件的可核对参数、21 台整机、软件库与采购渠道。每个数字都带来源与口径，缺的字段写「—」，不猜、不用同类填补。站点不卖零件、不收佣金。
 
 站点：https://robowiki.org.cn/　中文为主，英文是子集（/en/）。
 
 ## 机器可读数据（首选入口）
 
-- [catalog.json](https://robowiki.org.cn/catalog.json)：全部 326 个部件的结构化数据（id、slug、品类、厂商、型号、关键参数、来源等级、价格、优惠、评分），字段名即参数名。
+- [catalog.json](https://robowiki.org.cn/catalog.json)：全部 338 个部件的结构化数据（id、slug、品类、厂商、型号、关键参数、来源等级、价格、优惠、评分），字段名即参数名。
 - [robots.json](https://robowiki.org.cn/robots.json)：21 台整机（自由度、质量、负载、续驶、URDF / 仓库链接、开源生态）。
 - [materials.json](https://robowiki.org.cn/materials.json)：27 种结构材料 + 9 种加工工艺（密度、弹性模量、抗拉强度、形态规格与渠道引用）。
 - [software.json](https://robowiki.org.cn/software.json)：软件库（仿真 / 训练 / 部署 / 算法，含仓库与许可）。
@@ -16,7 +16,7 @@
 
 ## 主要页面
 
-- [部件库](https://robowiki.org.cn/catalog.html)：按列排序 / 筛选的交互式选型台（326 件；纯前端渲染，抓 HTML 请改读 catalog.json 或下面的型号页）。
+- [部件库](https://robowiki.org.cn/catalog.html)：按列排序 / 筛选的交互式选型台（338 件；纯前端渲染，抓 HTML 请改读 catalog.json 或下面的型号页）。
 - [关节电机总览](https://robowiki.org.cn/parts/actuator/index.html)：按峰值扭矩降序的跨厂商速览。
 - [整机库](https://robowiki.org.cn/robots.html)：选方案（几自由度、带不带算力、有没有 URDF）。
 - [材质库](https://robowiki.org.cn/materials.html)：材料物理属性、形态规格与加工工艺；密度 / 模量 / 强度带 SI 换算。
@@ -355,10 +355,12 @@ NTC / 温湿度 / 温度 / 压力 / 光照 / ToF / 力矩。
 - [伟利达 WLD 5264 3P 端子线](https://robowiki.org.cn/parts/connector/wld-5264-3p.html)：接口 5264 3P、来源 B 级
 - [电蜂优选 Elecbee GX12-2P 2芯航空插头](https://robowiki.org.cn/parts/connector/elecbee-gx12-2p-2.html)：接口 GX12-2P、来源 B 级
 
-### 其余模块（3 件）
+### 其余模块（5 件）
 
-CAN 通信 / 力触觉 / 编码器。
+CAN 通信 / 电源管理 / 力触觉 / 编码器。
 
+- [大疆 DJI RoboMaster PM01](https://robowiki.org.cn/parts/module/dji-robomaster-pm01.html)：额定电压 24 V、接口 输入 XT60；输出 4× XT30 + 5V/12V/24V 裁判系统供电、来源 A 级、¥620
+- [大疆 DJI RoboMaster PM02](https://robowiki.org.cn/parts/module/dji-robomaster-pm02.html)：额定电压 24 V、接口 输入 XT60；输出 4× XT30 + 5V/12V/24V 裁判系统供电、来源 A 级、¥620
 - [灵足 RobStride USB-CAN HUB](https://robowiki.org.cn/parts/module/robstride-usb-can-hub.html)：额定电压 5 V、接口 USB 2.0 Type-C（5 V）/ MX1.25-4P、来源 A 级
 - [达妙 DAMIAO DM-USB2CANFD](https://robowiki.org.cn/parts/module/damiao-dm-usb2canfd.html)：额定电压 5 V、接口 USB Type-C、来源 A 级
 - [达妙 DAMIAO DM-USB2CANFD Dual](https://robowiki.org.cn/parts/module/damiao-dm-usb2canfd-dual.html)：额定电压 5 V、接口 USB 2.0 High-Speed（Type-C）、来源 A 级
@@ -427,6 +429,21 @@ CAN 通信 / 力触觉 / 编码器。
 - [西安航天民芯 MT3608](https://robowiki.org.cn/parts/chip/mt3608.html)：来源 B 级、¥0.5833
 - [西安航天民芯 MT9700-N](https://robowiki.org.cn/parts/chip/mt9700-n.html)：来源 B 级、¥0.348
 
+### 开源硬件（10 件）
+
+分电 / 稳压 / 储能 / 控制扩展。
+
+- [RobotIC 机器人实验室 MP2980 电脑供电模块](https://robowiki.org.cn/parts/open_hw/robotic-mp2980.html)：工作电压 6~36 V（页面摘要；封面标 24 V 输入）、输出电压 19 V（封面；页面摘要写 19.5 V）、输出电流 12.5 A 连续（页面摘要写 13 A）、来源 A 级
+- [RobotIC 机器人实验室 ROBOCON 常备 STM32 主控扩展板](https://robowiki.org.cn/parts/open_hw/robotic-robocon-stm32.html)：工作电压 12 V、输出电压 5 V / 3.3 V、接口 PWM / UART / CAN / IIC / SPI / ADC / ESP01S、来源 A 级
+- [RobotIC 机器人实验室 ROBOCON 无缝换电分电板](https://robowiki.org.cn/parts/open_hw/robotic-robocon.html)：工作电压 12~24 V（3~6S 锂电）、输出电压 随电池电压（6 路直出）、输出电流 12 A（建议；芯片上限 15 A）、来源 A 级
+- [fengl MP2980 超小 BUCK-BOOST 升降压模块](https://robowiki.org.cn/parts/open_hw/fengl-mp2980-buck-boost.html)：工作电压 6~36 V（板载 26 V TVS）、输出电压 0.5~28 V 可调、输出电流 10 A 最大（受 MOS、散热和限流采样电阻限制）、来源 A 级、¥55
+- [huashuo0804 TPS5450DDAR 可调降压电源模块](https://robowiki.org.cn/parts/open_hw/huashuo0804-tps5450ddar.html)：工作电压 10~31 V 推荐（芯片 5.5~36 V）、输出电压 1.221~31.32 V 可调、输出电流 4 A 设计；5 A 最大（峰值 6 A）、来源 A 级、¥5
+- [infinite_future RoboMaster C 型控制板（仿制版）](https://robowiki.org.cn/parts/open_hw/infinite-future-robomaster-c.html)：输出电流 5 A（舵机电源）、接口 6× UART；2× CAN（8 接口）；I2C；D-Bus；USB、来源 B 级、¥50
+- [linxiwei ROBOCON 算力设备供电模块（MP2980）](https://robowiki.org.cn/parts/open_hw/linxiwei-robocon-mp2980.html)：工作电压 22~26 V 建议（17 V 可 boost 维持 19 V）、输出电压 19 V、输出电流 10 A 连续（13.74 A 平均限流）、来源 A 级、¥60
+- [oneasone LM5148 48V-24V 降压模块](https://robowiki.org.cn/parts/open_hw/oneasone-lm5148-48v-24v.html)：工作电压 30~60 V、输出电压 24 V、输出电流 15 A 连续以上；输出可到 20 A 以上、来源 A 级、¥40
+- [群星战队 RM2024 7S3V1890J 超级电容组](https://robowiki.org.cn/parts/open_hw/rm2024-7s3v1890j.html)：工作电压 21 V（7S，单体 3 V）、输出电压 21 V、接口 7S 电容组（含被动均衡与 NTC）、来源 A 级、¥120
+- [鸟哥 Qmini 关节电机电源转换分电板](https://robowiki.org.cn/parts/open_hw/qmini.html)：工作电压 24 V、输出电压 24 V 直出；12 V；5 V、接口 4× RS-485 独立输入；4× 24 V 关节电机输出；12 V / 5 V 降压输出、来源 A 级、¥60
+
 ## 整机
 
 - [K-Scale Labs Stompy](https://robowiki.org.cn/robots/kscale-stompy.html)：人形、来源 A 级
@@ -460,23 +477,23 @@ CAN 通信 / 力触觉 / 编码器。
 - [EPDM 三元乙丙橡胶](https://robowiki.org.cn/materials/epdm.html)：弹性体、EPDM、密度 1.15 g/cm³、弹性模量 0.008 GPa、抗拉 15 MPa、耐温 120 °C、来源 B 级
 - [TPU 热塑性聚氨酯](https://robowiki.org.cn/materials/tpu.html)：弹性体、TPU、密度 1.2 g/cm³、弹性模量 0.05 GPa、抗拉 40 MPa、耐温 90 °C、来源 B 级
 - [6061-T6 铝合金](https://robowiki.org.cn/materials/alu-6061-t6.html)：金属材料、铝合金、密度 2.7 g/cm³、弹性模量 68.9 GPa、抗拉 310 MPa、耐温 150 °C、来源 B 级
-- [7075-T6 铝合金](https://robowiki.org.cn/materials/alu-7075-t6.html)：金属材料、铝合金、密度 2.81 g/cm³、弹性模量 71 GPa、抗拉 524 MPa、耐温 150 °C、来源 B 级
+- [7075-T6 铝合金](https://robowiki.org.cn/materials/alu-7075-t6.html)：金属材料、铝合金、密度 2.81 g/cm³、弹性模量 71 GPa、抗拉 572 MPa、耐温 150 °C、来源 B 级
 - [TC4 钛合金](https://robowiki.org.cn/materials/ti-tc4.html)：金属材料、钛合金、密度 4.43 g/cm³、弹性模量 113.8 GPa、抗拉 950 MPa、耐温 350 °C、来源 B 级
 - [42CrMo 合金钢](https://robowiki.org.cn/materials/steel-42crmo.html)：金属材料、合金钢、密度 7.85 g/cm³、弹性模量 205 GPa、抗拉 1080 MPa、耐温 400 °C、来源 B 级
 - [ADC12 压铸铝合金](https://robowiki.org.cn/materials/alu-adc12.html)：金属材料、铝合金、密度 2.7 g/cm³、弹性模量 71 GPa、抗拉 230 MPa、耐温 150 °C、来源 B 级
 - [AlSi10Mg 铝合金（SLM）](https://robowiki.org.cn/materials/alu-alsi10mg.html)：金属材料、铝合金、密度 2.67 g/cm³、弹性模量 75 GPa、抗拉 460 MPa、耐温 150 °C、来源 B 级
 - [40CrNiMoA 合金钢](https://robowiki.org.cn/materials/steel-40crnimoa.html)：金属材料、合金钢、密度 7.85 g/cm³、弹性模量 205 GPa、抗拉 980 MPa、耐温 400 °C、来源 B 级
-- [SUS304 不锈钢](https://robowiki.org.cn/materials/steel-sus304.html)：金属材料、不锈钢、密度 7.93 g/cm³、弹性模量 193 GPa、抗拉 515 MPa、耐温 800 °C、来源 B 级
+- [SUS304 不锈钢](https://robowiki.org.cn/materials/steel-sus304.html)：金属材料、不锈钢、密度 7.93 g/cm³、弹性模量 193 GPa、抗拉 515 MPa、耐温 400 °C、来源 B 级
 - [440C 马氏体不锈钢](https://robowiki.org.cn/materials/steel-440c.html)：金属材料、不锈钢、密度 7.7 g/cm³、弹性模量 215 GPa、抗拉 758 MPa、耐温 250 °C、来源 B 级
 - [AZ91D 镁合金](https://robowiki.org.cn/materials/mg-az91d.html)：金属材料、镁合金、密度 1.82 g/cm³、弹性模量 45 GPa、抗拉 250 MPa、耐温 120 °C、来源 B 级
 - [PEEK 450G](https://robowiki.org.cn/materials/peek-450g.html)：工程塑料、PEEK、密度 1.3 g/cm³、弹性模量 4 GPa、抗拉 98 MPa、耐温 250 °C、来源 B 级
-- [PPS GF40 聚苯硫醚](https://robowiki.org.cn/materials/pps-gf40.html)：工程塑料、PPS、密度 1.65 g/cm³、弹性模量 15 GPa、抗拉 190 MPa、耐温 220 °C、来源 B 级
+- [PPS GF40 聚苯硫醚](https://robowiki.org.cn/materials/pps-gf40.html)：工程塑料、PPS、密度 1.66 g/cm³、弯曲模量 15.5 GPa、抗拉 200 MPa、耐温 220 °C、来源 B 级
 - [PA66 尼龙](https://robowiki.org.cn/materials/pa66.html)：工程塑料、尼龙 PA、密度 1.14 g/cm³、弹性模量 3.1 GPa、抗拉 82 MPa、耐温 100 °C、来源 B 级
 - [PA12 尼龙](https://robowiki.org.cn/materials/pa12.html)：工程塑料、尼龙 PA、密度 1.01 g/cm³、弹性模量 1.6 GPa、抗拉 48 MPa、耐温 90 °C、来源 B 级
 - [PC/ABS 合金](https://robowiki.org.cn/materials/pc-abs.html)：工程塑料、PC/ABS、密度 1.24 g/cm³、弹性模量 3.35 GPa、抗拉 66 MPa、耐温 100 °C、来源 B 级
 - [POM 聚甲醛](https://robowiki.org.cn/materials/pom.html)：工程塑料、POM、密度 1.41 g/cm³、弹性模量 2.8 GPa、抗拉 65 MPa、耐温 95 °C、来源 B 级
 - [PLA 聚乳酸](https://robowiki.org.cn/materials/pla.html)：3D 打印材料、PLA、密度 1.24 g/cm³、弹性模量 2.75 GPa、抗拉 35 MPa、耐温 55 °C、来源 B 级
-- [PLA-CF 碳纤维增强线材](https://robowiki.org.cn/materials/pla-cf.html)：3D 打印材料、PLA、密度 1.22 g/cm³、弹性模量 3.95 GPa、抗拉 38 MPa、耐温 55 °C、来源 B 级
+- [PLA-CF 碳纤维增强线材](https://robowiki.org.cn/materials/pla-cf.html)：3D 打印材料、PLA、密度 1.22 g/cm³、弯曲模量 3.95 GPa、抗拉 38 MPa、耐温 55 °C、来源 B 级
 - [PETG 线材](https://robowiki.org.cn/materials/petg.html)：3D 打印材料、PETG、密度 1.27 g/cm³、弹性模量 2.05 GPa、抗拉 30 MPa、耐温 65 °C、来源 B 级
 - [ABS 线材](https://robowiki.org.cn/materials/abs-fdm.html)：3D 打印材料、ABS、密度 1.04 g/cm³、弹性模量 2.3 GPa、抗拉 40 MPa、耐温 85 °C、来源 B 级
 - [光敏树脂](https://robowiki.org.cn/materials/photopolymer.html)：3D 打印材料、光敏树脂、密度 1.13 g/cm³、弹性模量 2.8 GPa、抗拉 65 MPa、耐温 60 °C、来源 B 级
@@ -527,5 +544,5 @@ CAN 通信 / 力触觉 / 编码器。
 ## 引用与许可
 
 - 内容许可 GPL-3.0；数据可转载，但请保留来源链接与核对日期（型号页底部有）。
-- 数据快照带版本：2026-11-04T14:03:34.094978+00:00，源提交 b84747c8d080457b700b78c078e1517444ecdbdf。
+- 数据快照带版本：2026-11-04T17:43:28.090271+00:00，源提交 9bd96250c14993009b507cea784447c08c82cc4b。
 - 参数口径（峰值 / 额定、转子 / 输出惯量）不统一时不能横向比，先读 /semantics。

@@ -1,5 +1,6 @@
 ---
 title: 电蜂优选 Elecbee
+image: "/og-default.png"
 ---
 
 

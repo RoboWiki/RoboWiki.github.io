@@ -1,5 +1,6 @@
 ---
 title: Movella Xsens
+image: "/og-default.png"
 ---
 
 

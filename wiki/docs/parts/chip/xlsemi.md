@@ -1,5 +1,6 @@
 ---
 title: XLSEMI
+image: "/og-default.png"
 ---
 
 

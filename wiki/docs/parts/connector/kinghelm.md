@@ -1,5 +1,6 @@
 ---
 title: Kinghelm 金航标
+image: "/og-default.png"
 ---
 
 

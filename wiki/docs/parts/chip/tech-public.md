@@ -1,5 +1,6 @@
 ---
 title: TECH PUBLIC
+image: "/og-default.png"
 ---
 
 

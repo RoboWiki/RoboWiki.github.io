@@ -1,6 +1,7 @@
 ---
 title: "UHMWPE 超高分子量聚乙烯"
 description: "材料 UHMWPE 超高分子量聚乙烯：超高分子量聚乙烯"
+image: "/og-default.png"
 ---
 
 # UHMWPE 超高分子量聚乙烯
@@ -81,5 +82,6 @@ description: "材料 UHMWPE 超高分子量聚乙烯：超高分子量聚乙烯"
 - 等级：B · 最近核对：2026-11-02
 - 主要来源：<https://m.11467.com/product/d6764298.htm>
 - reference：<https://m.11467.com/product/d6764298.htm>（2026-11-02）
+- reference：<https://en.wikipedia.org/wiki/Ultra-high-molecular-weight_polyethylene>（2026-11-02）
 
 > 表中物理量是常温典型值；热处理状态、纤维方向、含水率与批次都会让实际值偏离。选型与仿真请以供应商实测报告为准。

@@ -1,5 +1,6 @@
 ---
 title: Advanced Monolithic Systems
+image: "/og-default.png"
 ---
 
 

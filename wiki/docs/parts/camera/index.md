@@ -1,5 +1,6 @@
 ---
 title: 深度相机
+image: "/og-default.png"
 ---
 
 

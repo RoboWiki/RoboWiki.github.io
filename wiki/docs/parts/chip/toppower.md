@@ -1,5 +1,6 @@
 ---
 title: TOPPOWER
+image: "/og-default.png"
 ---
 
 

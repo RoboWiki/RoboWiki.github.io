@@ -1,6 +1,7 @@
 ---
 title: "42CrMo 合金钢"
 description: "材料 42CrMo 合金钢：中碳合金钢，调质后强度与韧性兼顾"
+image: "/og-default.png"
 ---
 
 # 42CrMo 合金钢
@@ -73,7 +74,7 @@ description: "材料 42CrMo 合金钢：中碳合金钢，调质后强度与韧�
 
 | 渠道 | 角色 | 品类 | 备注 |
 |---|---|---|---|
-| <a href="../suppliers.html?q=%E9%94%90%E5%92%8C%E7%B2%BE%E5%AF%86%E4%BA%94%E9%87%91">锐和精密五金</a> | CNC/车铣 | 机械加工 · CNC/车铣 | 重载轴类建议先确认材料、热处理与检测口径 |
+| <a href="../suppliers.html?q=%E9%94%90%E5%92%8C%E7%B2%BE%E5%AF%86%E4%BA%94%E9%87%91&amp;mat=mat-steel-42crmo">锐和精密五金</a> | CNC/车铣 | 机械加工 · CNC/车铣 | 重载轴类建议先确认材料、热处理与检测口径 |
 
 ## 来源
 

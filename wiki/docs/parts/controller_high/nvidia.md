@@ -1,5 +1,6 @@
 ---
 title: NVIDIA
+image: "/og-default.png"
 ---
 
 

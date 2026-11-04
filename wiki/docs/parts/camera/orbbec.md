@@ -1,5 +1,6 @@
 ---
 title: 奥比中光 Orbbec
+image: "/og-default.png"
 ---
 
 

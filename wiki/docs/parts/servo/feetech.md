@@ -1,5 +1,6 @@
 ---
 title: Feetech 飞特
+image: "/og-default.png"
 ---
 
 

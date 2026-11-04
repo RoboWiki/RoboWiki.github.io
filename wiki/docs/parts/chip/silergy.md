@@ -1,5 +1,6 @@
 ---
 title: Silergy
+image: "/og-default.png"
 ---
 
 

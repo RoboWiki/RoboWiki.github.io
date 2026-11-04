@@ -1,6 +1,7 @@
 ---
 title: "PEEK 450G"
 description: "材料 PEEK 450G：高性能半结晶工程塑料"
+image: "/og-default.png"
 ---
 
 # PEEK 450G
@@ -73,7 +74,7 @@ description: "材料 PEEK 450G：高性能半结晶工程塑料"
 
 | 渠道 | 角色 | 品类 | 备注 |
 |---|---|---|---|
-| <a href="../suppliers.html?q=%E9%94%90%E5%92%8C%E7%B2%BE%E5%AF%86%E4%BA%94%E9%87%91">锐和精密五金</a> | CNC 加工 | 机械加工 · CNC/车铣 | 先确认 PEEK 加工经验与退火条件；他家价格低但交期要催 |
+| <a href="../suppliers.html?q=%E9%94%90%E5%92%8C%E7%B2%BE%E5%AF%86%E4%BA%94%E9%87%91&amp;mat=mat-peek-450g">锐和精密五金</a> | CNC 加工 | 机械加工 · CNC/车铣 | 先确认 PEEK 加工经验与退火条件；他家价格低但交期要催 |
 
 ## 来源
 

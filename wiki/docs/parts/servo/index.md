@@ -1,5 +1,6 @@
 ---
 title: 舵机
+image: "/og-default.png"
 ---
 
 

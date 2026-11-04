@@ -1,6 +1,7 @@
 ---
 title: SILAN(士兰微) SC7A20HTR
 description: "SILAN(士兰微) SC7A20HTR（IMU）：公开页面参数；来源 B 级、2026-10-31 最近查阅。"
+image: "/parts/jlc-c19274408.jpg"
 ---
 
 
@@ -17,6 +18,11 @@ description: "SILAN(士兰微) SC7A20HTR（IMU）：公开页面参数；来源 
       <span class="part-tag soft">加速度计芯片</span>
       <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥1.75</span>
+    </div>
+    <div class="part-jump">
+      <a href="#评分">评分</a>
+      <a href="#纠错">纠错</a>
+      <a href="#这一页的讨论">讨论</a>
     </div>
 
 <div class="part-split">

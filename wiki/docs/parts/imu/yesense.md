@@ -1,5 +1,6 @@
 ---
 title: 元生创新 Yesense
+image: "/og-default.png"
 ---
 
 

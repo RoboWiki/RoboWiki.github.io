@@ -1,5 +1,6 @@
 ---
 title: UMW
+image: "/og-default.png"
 ---
 
 

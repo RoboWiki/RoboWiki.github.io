@@ -1,6 +1,7 @@
 ---
 title: "拉挤成型"
 description: "加工工艺 拉挤成型：连续拉挤成型，适合碳纤维圆管、方管、棒和等截面型材"
+image: "/og-default.png"
 ---
 
 # 拉挤成型
