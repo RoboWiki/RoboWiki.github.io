@@ -72,7 +72,7 @@ description: "Livox Mid-70（激光雷达）：额定 12 V、量程 90 m、视�
 | 接口 | 以太网 |
 | 质量 (kg) | — |
 | blind_m | 0.05 |
-| voltage_range | DC 10–15 V |
+| 电压范围 | DC 10–15 V |
 | 绝对式 | ≤2 cm @20 m (1σ) |
 | 官方手册 (PDF) | https://cdn.shopify.com/s/files/1/0673/6848/5000/files/Livox_Mid-70_User_Manual.pdf |
 | 工作温度 | -20~65 |

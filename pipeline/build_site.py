@@ -1100,6 +1100,14 @@ def main() -> None:
         "battery_type": "电池类型",
         "cells": "电池节数",
         "switch_type": "类型",
+        # 舵机 / 执行器补充字段
+        "stall_torque_Nm": "堵转扭矩 (N·m)", "rated_torque_Nm": "额定扭矩 (N·m)",
+        "torque_raw": "原始扭矩标注", "speed_rpm": "转速 (rpm)",
+        "speed_s_60deg": "速度 (s/60°)", "i_stall_A": "堵转电流 (A)",
+        "i_rated_mA": "额定电流 (mA)", "i_noload_mA": "空载电流 (mA)",
+        "voltage_range": "电压范围", "case": "外壳", "motor": "电机",
+        "feedback": "反馈", "spline": "花键", "limit_angle": "限位角度",
+        "connector_wire": "线长",
         # 电池
         "capacity_mah": "容量 (mAh)", "energy_wh": "能量 (Wh)",
         "discharge_rate_c": "额定放电倍率 (C)", "current_rated_A": "额定放电电流 (A)",

@@ -1,9 +1,9 @@
 # RoboWiki —— 机器人开发的开放资料底稿
-# https://robowiki.github.io/
+# https://robowiki.org.cn/
 #
 # 全站可抓。特意不 Disallow /assets/：CSS/JS 拿不到，渲染型页面在索引里会变残。
 # 站点地图由 VitePress 构建期生成（config.mts 的 sitemap.hostname）。
-# 给 AI 助手的纯文本索引在 https://robowiki.github.io/llms.txt
+# 给 AI 助手的纯文本索引在 https://robowiki.org.cn/llms.txt
 
 User-agent: *
 Allow: /
@@ -11,4 +11,4 @@ Allow: /
 # 旧型号页 URL 已改成静态跳转页（200 + meta refresh + canonical），
 # 不要在这里再拦一遍，否则权重归并不过去。
 
-Sitemap: https://robowiki.github.io/sitemap.xml
+Sitemap: https://robowiki.org.cn/sitemap.xml

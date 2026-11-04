@@ -112,6 +112,10 @@ html.dark .part-gallery-img { background: #f4f4f4; }
   .part-split { grid-template-columns: 1fr; }
 }
 
+/* 窄屏下官方参数表可能被长值撑宽；让表格在自己的列里横向滚动，
+   不要把整页推出 390px 视口。 */
+.part-official { min-width: 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
 .part-official h4,
 .part-comm-title {
   font-size: 0.82rem;

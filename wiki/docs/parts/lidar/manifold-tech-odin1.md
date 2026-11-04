@@ -89,7 +89,7 @@ description: "Manifold Tech Odin1（激光雷达）：质量 0.28 kg、额定 24
 | power_peak_w | 24 |
 | 防护等级 | IP66 |
 | 额定电压 (V) | 24 |
-| voltage_range | 9–24 V |
+| 电压范围 | 9–24 V |
 | 工作温度 | -20 ~ 55 ℃（存储 -25 ~ 60 ℃） |
 | output | 真彩 SLAM 点云 / 原始点云 / 原始 RGB / 高频 IMU / 位姿 |
 | 官方文档 | https://manifoldtechltd.github.io/wiki/odin_series/odin1/14.%20Technical%20Specifications_.html |

@@ -26,10 +26,10 @@ description: "Feetech 飞特 STS3215（7.4V 19 kg·cm）（舵机）：额定 7.
 
 | 字段 | 值 |
 |---|---|
-| stall_torque_Nm | 1.912 |
-| rated_torque_Nm | 0.49 |
+| 堵转扭矩 (N·m) | 1.912 |
+| 额定扭矩 (N·m) | 0.49 |
 | 额定电压 (V) | 7.4 |
-| speed_rpm | 52 |
+| 转速 (rpm) | 52 |
 
 <div class="part-src">
 来源：<a href="https://www.feetech.cn/74v-19-kgcm-plastic-case-metal-tooth-magnetic-code-double-axis-ttl-series-steering-gear">https://www.feetech.cn/74v-19-kgcm-plastic-case-metal-tooth-magnetic-code-double-axis-ttl-series-steering-gear</a><br/>
@@ -63,25 +63,25 @@ description: "Feetech 飞特 STS3215（7.4V 19 kg·cm）（舵机）：额定 7.
 
 | 字段 | 值 |
 |---|---|
-| stall_torque_Nm | 1.912 |
-| rated_torque_Nm | 0.49 |
+| 堵转扭矩 (N·m) | 1.912 |
+| 额定扭矩 (N·m) | 0.49 |
 | 额定电压 (V) | 7.4 |
-| speed_rpm | 52 |
+| 转速 (rpm) | 52 |
 | 协议 | — |
 | 质量 (kg) | — |
-| torque_raw | 19.5 kg·cm 堵转 / 5 kg·cm 额定 @7.4 V（6 V 为 16.5 / 4） |
-| voltage_range | 4–7.4 V |
+| 原始扭矩标注 | 19.5 kg·cm 堵转 / 5 kg·cm 额定 @7.4 V（6 V 为 16.5 / 4） |
+| 电压范围 | 4–7.4 V |
 | speed_raw | 0.192 s/60°（52 RPM）@7.4 V；0.238 s/60°（42 RPM）@6 V |
-| i_stall_A | 2.5 |
-| i_rated_mA | 650 |
-| i_noload_mA | 150 |
+| 堵转电流 (A) | 2.5 |
+| 额定电流 (mA) | 650 |
+| 空载电流 (mA) | 150 |
 | i_idle_mA | 21 |
 | 转矩常数 (N·m/A) | 0.765 |
 | 重量 (g) | 55 |
 | 编码器 | 12 bit 磁编码，360°，精度 ≤0.5° |
 | 接口 | TTL 半双工异步串行（数字包） |
 | 轴承 | 滚珠轴承 |
-| case | PA+GF 塑料壳 + 金属齿 |
+| 外壳 | PA+GF 塑料壳 + 金属齿 |
 | 官方文档 | https://www.feetech.cn/74v-19-kgcm-plastic-case-metal-tooth-magnetic-code-double-axis-ttl-series-steering-gear |
 | 官方手册 (PDF) | https://files.seeedstudio.com/products/Feetech/108090023_STS3215-C001_Datasheet.pdf |
 

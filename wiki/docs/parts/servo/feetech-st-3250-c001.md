@@ -26,10 +26,10 @@ description: "Feetech 飞特 ST-3250-C001（舵机）：减速比 钢齿:1、质
 
 | 字段 | 值 |
 |---|---|
-| stall_torque_Nm | 4.903 |
-| rated_torque_Nm | 1.569 |
+| 堵转扭矩 (N·m) | 4.903 |
+| 额定扭矩 (N·m) | 1.569 |
 | 额定电压 (V) | 12 |
-| speed_rpm | — |
+| 转速 (rpm) | — |
 | 协议 | TTL 半双工异步串口（数字包），38400 bps–1 Mbps，ID 0–253 |
 | 质量 (kg) | 0.0745 |
 
@@ -65,28 +65,28 @@ description: "Feetech 飞特 ST-3250-C001（舵机）：减速比 钢齿:1、质
 
 | 字段 | 值 |
 |---|---|
-| stall_torque_Nm | 4.903 |
-| rated_torque_Nm | 1.569 |
+| 堵转扭矩 (N·m) | 4.903 |
+| 额定扭矩 (N·m) | 1.569 |
 | 额定电压 (V) | 12 |
-| speed_rpm | — |
+| 转速 (rpm) | — |
 | 协议 | TTL 半双工异步串口（数字包），38400 bps–1 Mbps，ID 0–253 |
 | 质量 (kg) | 0.0745 |
-| torque_raw | 50 kg·cm 堵转 / 16 kg·cm 额定 @12 V |
-| voltage_range | 6–12 V |
-| i_stall_A | 4.2 |
+| 原始扭矩标注 | 50 kg·cm 堵转 / 16 kg·cm 额定 @12 V |
+| 电压范围 | 6–12 V |
+| 堵转电流 (A) | 4.2 |
 | 分辨率 | 12 位磁编码（0–4096） |
 | 减速比 | 钢齿 |
 | 工作温度 | 运行 -20～60 ℃ |
-| case | 全铝合金 |
-| motor | 空心杯 |
-| speed_s_60deg | 0.133 s/60° @12 V |
-| i_noload_mA | 280 |
-| feedback | 负载 / 位置 / 速度 / 输入电压 / 温度 |
-| spline | 25T / OD5.9 mm |
+| 外壳 | 全铝合金 |
+| 电机 | 空心杯 |
+| 速度 (s/60°) | 0.133 s/60° @12 V |
+| 空载电流 (mA) | 280 |
+| 反馈 | 负载 / 位置 / 速度 / 输入电压 / 温度 |
+| 花键 | 25T / OD5.9 mm |
 | 轴承 | 滚珠轴承 |
 | 尺寸 (mm) | 45.2 × 24.7 × 35 |
-| connector_wire | 15 cm |
-| limit_angle | 无机械限位（360°） |
+| 线长 | 15 cm |
+| 限位角度 | 无机械限位（360°） |
 | 官方文档 | https://wiki.seeedstudio.com/cn/feetech_servo/ |
 | 官方手册 (PDF) | https://www.feetech.cn/Data/feetechrc/upload/file/20260622/6391772424007467984928587.pdf |
 

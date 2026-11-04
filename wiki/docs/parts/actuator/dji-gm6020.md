@@ -99,7 +99,7 @@ description: "大疆 DJI GM6020（关节电机）：额定 1.2 N·m、减速比 
 | 编码器 | 13 bit 绝对值 |
 | 通信 | CAN |
 | 内置驱动 | 1 |
-| i_stall_A | 0.9 |
+| 堵转电流 (A) | 0.9 |
 | 工作温度 | 0–55 ℃ |
 | 尺寸 | Ø66.7×45 mm，空心轴内径 18 mm |
 | 官方手册 (PDF) | https://rm-static.djicdn.com/tem/17348/RoboMaster%20GM6020%E7%9B%B4%E6%B5%81%E6%97%A0%E5%88%B7%E7%94%B5%E6%9C%BA%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E20231013.pdf |
