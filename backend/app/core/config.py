@@ -65,7 +65,13 @@ class Settings(BaseSettings):
     #: 生产必须覆盖：ROBOWIKI_SECRET_KEY=...（≥32 字节，否则 PyJWT 会告警）
     #: 同一个值也给 SessionMiddleware（OAuth state cookie）签名。
     secret_key: str = "dev-only-change-me-please-set-ROBOWIKI_SECRET_KEY"
-    token_hours: int = 24 * 7
+    #: access token 有效期（小时）。短寿命 + refresh 轮换，泄露面更小。
+    #: 旧部署如设置了 ROBOWIKI_TOKEN_HOURS 仍可覆盖（不建议超过 24）。
+    token_hours: int = 2
+    #: refresh token 有效期（天）。每次使用都轮换，旧值复用即撤销整条会话链。
+    refresh_token_days: int = 30
+    #: GitHub 登录回跳的一次性 handoff code 有效期（秒）。
+    handoff_seconds: int = 60
 
     # ── 第三方身份 ──────────────────────────────────────────────────────────
     #: GitHub OAuth App。未配置时 /auth/github/* 一律 503，本地开发不需要它。
@@ -85,9 +91,21 @@ class Settings(BaseSettings):
     #: OAuth state cookie 是否只走 https；None = 跟随 site_url 协议
     session_https_only: bool | None = None
 
-    #: 前端 dev server
-    cors_origins: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173",
-                               "http://127.0.0.1:8000"]
+    #: 前端 dev server + 两个对外站点。
+    #: 主站（FastAPI 自身）与 GitHub Pages 静态镜像都要能跨域用 Bearer 调动态接口。
+    #: 生产用 ROBOWIKI_CORS_ORIGINS 覆盖时，这里只是默认值。
+    cors_origins: list[str] = [
+        "http://localhost:5173", "http://127.0.0.1:5173", "http://127.0.0.1:8000",
+        "https://robowiki.org.cn", "https://www.robowiki.org.cn",
+        "https://robowiki.github.io",
+    ]
+    #: GitHub 登录 `return_to` 白名单（origin，不含路径）。
+    #: 回跳后拿一次性 code 换 token，JWT 不进 Location；localhost 任意端口放行。
+    oauth_return_origins: list[str] = [
+        "https://robowiki.org.cn",
+        "https://www.robowiki.org.cn",
+        "https://robowiki.github.io",
+    ]
 
     #: 社区
     post_max_len: int = 20000
@@ -96,6 +114,14 @@ class Settings(BaseSettings):
     rate_max_posts: int = 10
     rate_max_comments: int = 40
     rate_max_reports: int = 10
+    #: 用户上传图片（评论配图）。容器里由 compose 覆盖为 /app/var/media，
+    #: 并挂载宿主机目录；本地默认在仓库根的 var/media（不入库）。
+    media_dir: pathlib.Path = ROOT / "var" / "media"
+    #: 单张图上限 5 MB。与前端提示保持一致，改这里要同时改提示文案。
+    media_max_bytes: int = 5 * 1024 * 1024
+    #: 内容安全：msgSecCheck 需要 AppID/Secret + 用户 openid；缺任一项直接放行。
+    #: 关闭开关只用于排查（设为 false 时即使配好了也不调用微信）。
+    content_check_enabled: bool = True
 
     @model_validator(mode="after")
     def _fill_data_version(self):

@@ -73,8 +73,185 @@ function main() {
   }
 
   checkConfigAndShare()
+  checkNoSecrets(files)
 
-  console.log(`mini check ok: ${js} JS, ${json} JSON, ${wxml} WXML, appid ${project.appid}`)
+  return checkApiAuth().then(() => {
+    console.log(`mini check ok: ${js} JS, ${json} JSON, ${wxml} WXML, appid ${project.appid}`)
+  })
+}
+
+function assert(ok, message) {
+  if (!ok) throw new Error(message)
+}
+
+/**
+ * Bearer / refresh / 统一错误是写入路径的地基，不该只靠人工点。
+ * 这里用假 wx 走真实 api.js：401 → 只刷新一次 → 重放一次；刷新失败清会话。
+ */
+function checkApiAuth() {
+  const store = {}
+  const calls = []
+  let refreshMode = 'ok'
+  global.wx = {
+    getStorageSync(key) {
+      return Object.prototype.hasOwnProperty.call(store, key) ? store[key] : ''
+    },
+    setStorageSync(key, value) { store[key] = value },
+    removeStorageSync(key) { delete store[key] },
+    getAccountInfoSync() { return { miniProgram: { envVersion: 'develop' } } },
+    login(opts) { opts.success({ code: 'wx-code-1' }) },
+    request(opts) {
+      const auth = (opts.header && (opts.header.Authorization || opts.header.authorization)) || ''
+      calls.push({ url: opts.url, method: opts.method, auth, data: opts.data })
+      if (/\/auth\/wechat\/mini$/.test(opts.url)) {
+        opts.success({
+          statusCode: 200,
+          data: {
+            access_token: 'access-login',
+            refresh_token: 'refresh-login',
+            user: { handle: 'wx-1', display_name: '微信用户' },
+          },
+          header: {},
+        })
+        return
+      }
+      if (/\/auth\/logout$/.test(opts.url)) {
+        opts.success({ statusCode: 200, data: { ok: true, revoked: 1 }, header: {} })
+        return
+      }
+      if (/\/auth\/refresh$/.test(opts.url)) {
+        if (refreshMode === 'fail') {
+          opts.success({ statusCode: 401, data: { detail: '登录会话已失效' }, header: {} })
+        } else {
+          opts.success({
+            statusCode: 200,
+            data: {
+              access_token: 'access-2',
+              refresh_token: 'refresh-2',
+              user: { handle: 'wx-mini', display_name: '微信用户' },
+            },
+            header: {},
+          })
+        }
+        return
+      }
+      if (opts.method === 'POST' && /\/ratings\//.test(opts.url)) {
+        opts.success({ statusCode: 201, data: { created: true }, header: {} })
+      } else if (opts.method === 'DELETE') {
+        opts.success({ statusCode: 204, data: '', header: {} })
+      } else if (auth === 'Bearer access-2') {
+        opts.success({ statusCode: 200, data: { ok: true }, header: {} })
+      } else if (auth === 'Bearer access-1') {
+        opts.success({ statusCode: 401, data: { detail: '过期' }, header: {} })
+      } else {
+        opts.success({ statusCode: 401, data: { detail: '未登录' }, header: {} })
+      }
+    },
+  }
+
+  const apiPath = path.join(ROOT, 'utils', 'api.js')
+  delete require.cache[require.resolve(apiPath)]
+  const api = require(apiPath)
+
+  api.setSession({ access_token: 'access-1', refresh_token: 'refresh-1', user: { handle: 'wx-mini' } })
+  return api.get('/parts/x')
+    .then(got => {
+      assert(got && got.ok, '401 后 refresh 重试没有成功')
+      assert(calls.length === 3, `401 重试应发出 3 个请求，实际 ${calls.length}`)
+      assert(calls[0].auth === 'Bearer access-1', '第一次请求没有带旧 Bearer')
+      assert(!calls[1].auth, '/auth/refresh 不应带 Bearer')
+      assert(calls[1].data.refresh_token === 'refresh-1', 'refresh 没有带轮换前的 token')
+      assert(calls[2].auth === 'Bearer access-2', '重放请求没有换成新 Bearer')
+      assert(api.getSession().access_token === 'access-2', '新 access 没有写入 Storage')
+      assert(api.getSession().refresh_token === 'refresh-2', '轮换后的 refresh 没有写入 Storage')
+      assert(api.getSession().user.handle === 'wx-mini', '用户资料没有保留')
+      console.log('api: Bearer + 401 refresh 单次重试通过')
+
+      calls.length = 0
+      return api.post('/ratings/cubemars-ak80-6', { score: 5, own_hardware: true, note: '好' })
+    })
+    .then(posted => {
+      assert(posted && posted.created === true, 'POST 响应没有透传')
+      assert(calls[0].method === 'POST', 'POST 方法没有发出去')
+      assert(calls[0].data.score === 5 && calls[0].data.own_hardware === true, 'POST body 不完整')
+      calls.length = 0
+      return api.del('/ratings/cubemars-ak80-6')
+    })
+    .then(() => {
+      assert(calls[0].method === 'DELETE', 'DELETE 方法没有发出去')
+      console.log('api: POST / DELETE 通过')
+
+      // 并发 401 必须共用同一次 refresh：后端 refresh 是一次性轮换，
+      // 各刷一次会触发复用检测、整条会话链被撤销。
+      api.setSession({ access_token: 'access-old', refresh_token: 'refresh-old' })
+      refreshMode = 'ok'
+      calls.length = 0
+      return Promise.all([api.get('/parts/a'), api.get('/parts/b')])
+    })
+    .then(() => {
+      const refreshes = calls.filter(c => /\/auth\/refresh$/.test(c.url))
+      assert(refreshes.length === 1, `并发 401 应只刷新一次，实际 ${refreshes.length}`)
+      console.log('api: 并发 401 共用一次 refresh')
+
+      api.setSession({ access_token: 'access-1', refresh_token: 'refresh-bad' })
+      refreshMode = 'fail'
+      return api.get('/parts/z').then(
+        () => { throw new Error('refresh 失败时不应成功') },
+        err => err,
+      )
+    })
+    .then(err => {
+      assert(err && err.status === 401, 'refresh 失败应返回 401')
+      assert(/登录/.test(err.message), 'refresh 失败提示应说明需要重新登录')
+      const s = api.getSession()
+      assert(!s.access_token && !s.refresh_token, 'refresh 失败应清空本地会话')
+      console.log('api: refresh 失败清理会话')
+      return checkAuthLogin(store, calls, api)
+    })
+}
+
+/** 登录只该写 access / refresh / user；不保存微信会话密钥或 openid 原文。 */
+function checkAuthLogin(store, calls, api) {
+  Object.keys(store).forEach(k => delete store[k])
+  calls.length = 0
+  const authPath = path.join(ROOT, 'utils', 'auth.js')
+  delete require.cache[require.resolve(authPath)]
+  const auth = require(authPath)
+
+  return auth.login()
+    .then(user => {
+      assert(user && user.handle === 'wx-1', '登录后没有返回用户资料')
+      assert(calls[0] && /\/auth\/wechat\/mini$/.test(calls[0].url), '没有调用 /auth/wechat/mini')
+      assert(calls[0].data.code === 'wx-code-1', 'wx.login 的 code 没有带进请求')
+      assert(!calls[0].auth, '登录请求不该带 Bearer')
+      const s = api.getSession()
+      assert(s.access_token === 'access-login', '登录后 access 没写入 Storage')
+      assert(s.refresh_token === 'refresh-login', '登录后 refresh 没写入 Storage')
+      const keys = Object.keys(store).sort()
+      assert(keys.length === 3, `登录只应存 3 个键，实际 ${keys.join(',')}`)
+      assert(!keys.some(k => /secret|session_key|openid/i.test(k)), 'Storage 出现不该保存的密钥字段')
+      return auth.logout()
+    })
+    .then(() => {
+      const logout = calls.find(c => /\/auth\/logout$/.test(c.url))
+      assert(logout && logout.data.refresh_token === 'refresh-login', '退出没有撤销当前 refresh')
+      const s = api.getSession()
+      assert(!s.access_token && !s.refresh_token && !s.user, '退出后本地会话没有清空')
+      console.log('auth: wx.login → /auth/wechat/mini，只存 3 键；退出撤销 refresh')
+    })
+}
+
+/** 小程序包是公开的：任何应用密钥、微信会话密钥都不该出现在源码里。 */
+function checkNoSecrets(files) {
+  const bad = /(appsecret|app_secret|wechat_mp_secret|session_key)/i
+  for (const file of files) {
+    if (!/\.(js|json|wxml)$/i.test(file)) continue
+    if (file.split(path.sep).includes('tests')) continue
+    const src = fs.readFileSync(file, 'utf8')
+    if (bad.test(src)) {
+      throw new Error(`${file} 含有不该进客户端的密钥 / 会话字段`)
+    }
+  }
 }
 
 /** 环境映射与分享 URL 是契约，不该只靠 README 口述。 */
@@ -114,4 +291,7 @@ function checkConfigAndShare() {
   }
 }
 
-main()
+main().catch(err => {
+  console.error('mini check failed:', err && err.message ? err.message : err)
+  process.exit(1)
+})

@@ -80,6 +80,10 @@ Discourse 有自己的 users、groups、trust levels；要共享账号必须上 
 只满足内容一条时，先在现有 `Post` 模型上加长帖/版块字段与列表，不换运行时。Answer、NodeBB
 的运维面与 Discourse 同类，不构成「换一个就便宜」的理由。
 
+> P2 实际选定的卫星论坛是 **NodeBB**（GPL-3.0）：资源门槛、与 FastAPI 的边界、OIDC SSO
+> 与 webhook 回写 outbox 见 `COMMUNITY-NODEBB.md`、部署模板 `../deploy/compose.community.yml`。
+> 本节的判断对 NodeBB 同样成立，只是运行时从 Ruby/Sidekiq 换成 Node/Redis。
+
 ## 5. 为什么不是从零造轮子
 
 ### 5.1 用成熟框架与模式，不自写通用能力

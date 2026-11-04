@@ -12,16 +12,22 @@
  * 自托管讨论要后端，所以**先探活再决定**：探不到就进入只读镜像态，
  * 既不发请求，也不显示「加载失败」—— 那是把降级说成故障。
  *
- * 评论树参考 Artalk（MIT）的「一次性取回、前端组树」：
- *   · 后端 WikiComment API 一次返回整页线程（已做 root + 后代批量查询）
- *   · 前端按 parent_id 组树，根讨论分页显示；回复可以继续往下展开，不会丢节点
- *   · 举报复用现有 /reports 契约（target_kind=wiki_comment），不在前端自研审核
+ * P1 契约（backend/app/api/routes/wiki.py）：
+ *   · 分页按根讨论做：`root_limit` / `root_offset`，回复随根一起返回；
+ *   · `root_id` 把整棵子树绑在同一个根上，回复的回复不会再变成孤儿；
+ *   · `status=visible|pending|hidden`：pending 只有作者与站务可见；
+ *   · 删除是软删除：`deleted=true` 的占位节点保留线程形状，正文不再返回。
+ * 前端组树仍按 parent_id；`root_id` 只用于「刷新某一棵子树」与通知锚点定位。
+ *
+ * 评论树参考 Artalk（MIT）的「一次取回、前端组树」；P1 起改成
+ * 「按根分页、按根刷新」—— 根多了不会一次拉整页，回复后也只重取那一棵。
+ * 举报复用现有 /reports 契约（target_kind=wiki_comment），不在前端自研审核。
  */
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useData, useRoute } from 'vitepress'
 import { giscus as giscusCfg } from '../giscus'
-import { apiAvailable, PRIMARY_SITE } from '../lib/api'
-import { authHeaders, clearToken, getToken } from '../lib/auth'
+import { ApiError, apiAvailable, apiErrorMessage, apiFetch, apiUrl, isConnectivityError, isMirror, MIRROR_READONLY_NOTE, PRIMARY_SITE } from '../lib/api'
+import { clearToken, getToken } from '../lib/auth'
 
 const { isDark } = useData()
 const route = useRoute()
@@ -69,6 +75,7 @@ function syncGiscusTheme() {
 }
 
 interface Author {
+  id?: number
   handle: string
   display_name: string
   avatar_hue: number
@@ -80,19 +87,38 @@ interface Comment {
   page: string
   body: string
   parent_id: number | null
+  /** P1：整棵子树共享的根 id；旧后端没有该字段 */
+  root_id?: number | null
+  /** P1：visible | pending | hidden */
+  status?: string
+  /** P1 软删除：占位节点，body 为空 */
+  deleted?: boolean
+  deleted_at?: string | null
+  hidden?: boolean
   created_at: string
   author: Author | null
 }
+interface CommentPage {
+  comments?: Comment[]
+  count?: number
+  total?: number
+  root_total?: number
+  root_limit?: number
+  root_offset?: number
+}
+type CommentState = 'visible' | 'pending' | 'deleted' | 'hidden'
+type TreeNode = Comment & { children: TreeNode[] }
+
 interface Me {
   id: number
   handle: string
   display_name: string
   is_staff: boolean
 }
-type TreeNode = Comment & { children: TreeNode[] }
 
 const items = ref<Comment[]>([])
 const loading = ref(true)
+const loadingMore = ref(false)
 const body = ref('')
 const replyTo = ref<Comment | null>(null)
 const error = ref('')
@@ -103,9 +129,36 @@ const posting = ref(false)
 const loggedIn = ref(false)
 const me = ref<Me | null>(null)
 
-/** 根讨论分页：后端一次给整页线程，前端只先渲染前 N 条根，避免长页首屏过重 */
+/** 根讨论分页：每页 24 条根，回复随根返回，不单独分页 */
 const PAGE_SIZE = 24
+/** 旧后端没有根分页参数时，limit 仍按 API 上限取回整页，再由前端截根 */
+const ROW_LIMIT = 200
+/** P1：服务端返回 root_total 时按 root_offset 翻页；否则退回前端截根 */
+const serverPaged = ref(false)
+const rootTotal = ref<number | null>(null)
+/** 服务端已加载的根数（root_offset 的游标）；本地上屏的新根不计入 */
+const rootsLoaded = ref(0)
+/** 旧后端的前端截根数量 */
 const visibleRoots = ref(PAGE_SIZE)
+/** 通知链接 #comment-<id> 定位到的评论 */
+const highlightId = ref<number | null>(null)
+/** 已经按锚点翻过页；避免同一条通知反复触发翻页 */
+let hashHandled = ''
+
+/* ── 评论配图 ──────────────────────────────────────────────────────────── */
+/** 与后端 settings.media_max_bytes 一致；改这里要同时改后端与提示文案 */
+const MEDIA_MAX_BYTES = 5 * 1024 * 1024
+const MEDIA_TYPES = ['image/jpeg', 'image/png', 'image/webp']
+const mediaReady = ref(false)
+const uploading = ref(false)
+const fileInput = ref<HTMLInputElement | null>(null)
+const uploads = ref<{ id: string; url: string }[]>([])
+/**
+ * /media 是否存在：每个浏览器会话只探一次。
+ * GET /media 需要登录且返回自己的上传列表 —— 200 即接口已就绪；
+ * 404/405/501 说明后端版本还没有媒体路由，按钮直接隐藏，不影响文字评论。
+ */
+let mediaProbe: Promise<boolean> | null = null
 
 /** 举报只走现有 /reports 契约：reason 必须是 spam / abuse / misinfo / other */
 const REPORT_REASONS = [
@@ -153,67 +206,198 @@ async function refreshSession() {
   me.value = null
   if (!loggedIn.value || !apiUp.value) return
   try {
-    const r = await fetch('/api/v1/auth/me', { headers: authHeaders() })
-    if (r.status === 401) {
-      clearSession()
-      return
+    me.value = await apiFetch<Me>('/auth/me')
+    loggedIn.value = true
+  } catch (e) {
+    // 401 已由 apiFetch 清 token；其它错误（断网/CORS）保留 token，写操作时再判
+    if (!getToken()) {
+      loggedIn.value = false
+      me.value = null
     }
-    if (r.ok) me.value = await r.json() as Me
-  } catch {
-    // 网络抖动：保留 token；真正写操作时后端会再判一次 401
   }
 }
 
-async function readDetail(r: Response, fallback: string): Promise<string> {
-  const d = await r.json().catch(() => ({})) as { detail?: unknown }
-  if (typeof d.detail === 'string') return d.detail
-  if (Array.isArray(d.detail) && d.detail.length) {
-    const first = d.detail[0] as { msg?: unknown }
-    if (typeof first?.msg === 'string') return first.msg
+/** 镜像站断网时切成只读快照，不把「主站暂时连不上」说成故障 */
+function goReadonlyIfMirror(e: unknown): boolean {
+  if (isMirror() && isConnectivityError(e)) {
+    mode.value = 'readonly'
+    error.value = ''
+    offline.value = false
+    return true
   }
-  return fallback
+  return false
+}
+
+/* ── 取数与组树 ────────────────────────────────────────────────────────── */
+
+function commentState(c: Comment): CommentState {
+  if (c.deleted || c.deleted_at) return 'deleted'
+  if (c.status === 'pending') return 'pending'
+  if (c.status === 'hidden' || c.hidden) return 'hidden'
+  return 'visible'
+}
+
+function countRoots(list: Comment[]): number {
+  return list.filter(c => c.parent_id == null).length
+}
+
+function fetchComments(opts: { rootOffset?: number; rootId?: number } = {}) {
+  const params = new URLSearchParams({
+    page: pageId.value,
+    limit: String(ROW_LIMIT),
+    root_limit: String(PAGE_SIZE),
+  })
+  if (opts.rootOffset != null) params.set('root_offset', String(opts.rootOffset))
+  if (opts.rootId != null) params.set('root_id', String(opts.rootId))
+  return apiFetch<CommentPage>(`/wiki/comments?${params.toString()}`)
+}
+
+/** P1 返回 root_total 才走服务端根分页；旧后端继续用前端截根 */
+function applyPaging(page: CommentPage | null | undefined) {
+  const total = page?.root_total
+  serverPaged.value = typeof total === 'number'
+  rootTotal.value = serverPaged.value ? Number(total) : null
 }
 
 async function load() {
-  // 探活没通过就一个请求都不发：镜像端这里调一次只会拿到 404 并渲染成故障
+  // 探活没通过就一个请求都不发：镜像端这里调一次只会拿到失败并渲染成故障
   if (!apiUp.value) return
   loading.value = true
   error.value = ''
   offline.value = false
+  loadingMore.value = false
   try {
-    // limit 取 API 上限：一次拿回整页线程，前端再按 parent_id 组树、根分页
-    const r = await fetch(
-      `/api/v1/wiki/comments?page=${encodeURIComponent(pageId.value)}&limit=200`)
-    if (!r.ok) throw new Error(String(r.status))
-    items.value = (await r.json()).comments
+    const d = await fetchComments()
+    const list = Array.isArray(d?.comments) ? d.comments : []
+    items.value = list
+    applyPaging(d)
+    rootsLoaded.value = countRoots(list)
+    visibleRoots.value = PAGE_SIZE
+    await focusHashComment()
   } catch (e: any) {
+    if (goReadonlyIfMirror(e)) return
     // 走到这里说明探活过了但请求失败（后端刚挂 / 网关超时），这才是真的「加载失败」
     offline.value = true
-    error.value = `讨论加载失败（${e.message}）`
+    error.value = apiErrorMessage(e, '讨论加载失败，请稍后重试')
   } finally {
     loading.value = false
   }
 }
 
-/** 让某条回复所属的根讨论出现在当前分页里（否则发完回复看不到自己） */
-function revealThreadOf(id: number) {
-  let cur = items.value.find(c => c.id === id)
-  const seen = new Set<number>()
-  while (cur?.parent_id != null && !seen.has(cur.id)) {
-    seen.add(cur.id)
-    cur = items.value.find(c => c.id === cur!.parent_id)
+/** 继续加载下一批根讨论（服务端分页）；旧后端只增加前端截根数量。返回是否成功 */
+async function loadMore(silent = false): Promise<boolean> {
+  if (!silent) error.value = ''
+  if (!serverPaged.value) {
+    visibleRoots.value += PAGE_SIZE
+    return true
   }
-  if (!cur) return
-  const idx = tree.value.findIndex(r => r.id === cur!.id)
-  if (idx >= visibleRoots.value) visibleRoots.value = idx + 1
+  if (loadingMore.value) return false
+  if (rootTotal.value != null && rootsLoaded.value >= rootTotal.value) return false
+  loadingMore.value = true
+  try {
+    const d = await fetchComments({ rootOffset: rootsLoaded.value })
+    const list = Array.isArray(d?.comments) ? d.comments : []
+    const known = new Set(items.value.map(c => c.id))
+    items.value = items.value.concat(list.filter(c => !known.has(c.id)))
+    rootsLoaded.value += countRoots(list)
+    applyPaging(d)
+    return true
+  } catch (e: any) {
+    if (!goReadonlyIfMirror(e)) {
+      error.value = apiErrorMessage(e, '加载更多讨论失败，请稍后重试')
+    }
+    return false
+  } finally {
+    loadingMore.value = false
+  }
 }
+
+/* ── 根定位 ────────────────────────────────────────────────────────────── */
+
+/** 沿 parent 链找根；优先用 P1 的 root_id（父节点可能不在当前页） */
+function rootKeyOf(c: Comment, index?: Map<number, Comment>): number | null {
+  const byId = index ?? new Map(items.value.map(x => [x.id, x]))
+  if (c.parent_id == null) return c.id
+  if (c.root_id != null) return c.root_id
+  let cur: Comment | undefined = c
+  const seen = new Set<number>()
+  while (cur && cur.parent_id != null && !seen.has(cur.id)) {
+    seen.add(cur.id)
+    if (cur.root_id != null) return cur.root_id
+    cur = byId.get(cur.parent_id)
+  }
+  return cur && cur.parent_id == null ? cur.id : null
+}
+
+/**
+ * 只刷新一棵子树：回复 / 删除后不需要重新拉整页，
+ * 也从通知锚点定位时避免把用户已经翻到的页重置回第一页。
+ */
+async function refreshRoot(rootId: number | null) {
+  if (rootId == null || !serverPaged.value) {
+    await load()
+    return
+  }
+  const d = await fetchComments({ rootId })
+  const list = Array.isArray(d?.comments) ? d.comments : []
+  const index = new Map(items.value.map(c => [c.id, c]))
+  // 原位替换，别把刚回复过的根讨论挪到列表末尾
+  const at = items.value.findIndex(c => rootKeyOf(c, index) === rootId)
+  const keep = items.value.filter(c => rootKeyOf(c, index) !== rootId)
+  const known = new Set(keep.map(c => c.id))
+  const added = list.filter(c => !known.has(c.id))
+  const insertAt = at >= 0 ? Math.min(at, keep.length) : keep.length
+  items.value = keep.slice(0, insertAt).concat(added, keep.slice(insertAt))
+  if (!list.length) {
+    // 整棵根被隐藏且没有可见后代：服务端不再返回它
+    if (rootTotal.value != null) rootTotal.value = Math.max(0, rootTotal.value - 1)
+    rootsLoaded.value = Math.max(0, rootsLoaded.value - 1)
+  }
+}
+
+function scrollToComment(id: number) {
+  const el = document.getElementById(`comment-${id}`)
+  if (el) el.scrollIntoView({ block: 'center', behavior: 'smooth' })
+}
+
+/**
+ * 通知里的 `link` 是 `/{page}#comment-<id>`：
+ * 目标可能不在第一页根讨论里，按需往后翻（最多 20 页，避免坏锚点把整线程拉完）。
+ */
+async function focusHashComment() {
+  if (typeof window === 'undefined') return
+  const m = /^#comment-(\d+)$/.exec(window.location.hash)
+  if (!m) return
+  if (hashHandled === window.location.hash) return
+  const id = Number(m[1])
+  if (!Number.isFinite(id)) return
+  hashHandled = window.location.hash
+  highlightId.value = id
+  let guard = 0
+  while (serverPaged.value && rootTotal.value != null
+    && !items.value.some(c => c.id === id)
+    && rootsLoaded.value < rootTotal.value && guard < 20) {
+    const ok = await loadMore(true)
+    if (!ok) break
+    guard += 1
+  }
+  await nextTick()
+  if (items.value.some(c => c.id === id)) scrollToComment(id)
+}
+
+function onHashChange() {
+  hashHandled = ''
+  void focusHashComment()
+}
+
+/* ── 写操作 ────────────────────────────────────────────────────────────── */
 
 async function submit() {
   if (!loggedIn.value) {
     error.value = '请先登录再发言'
     return
   }
-  // 与后端 WikiComment CommentIn 一致：1–4000 字。前端先拦一道，省一次必然 422 的请求
+  // 与后端 WikiCommentIn 一致：1–4000 字。前端先拦一道，省一次必然 422 的请求
   const text = body.value.trim()
   if (text.length < 2) {
     error.value = '至少写 2 个字'
@@ -224,29 +408,50 @@ async function submit() {
   notice.value = ''
   const parentId = replyTo.value?.id ?? null
   try {
-    const r = await fetch('/api/v1/wiki/comments', {
+    const created = await apiFetch<Comment>('/wiki/comments', {
       method: 'POST',
-      headers: { ...authHeaders(), 'Content-Type': 'application/json' },
       body: JSON.stringify({
         page: pageId.value,
         body: text,
         parent_id: parentId,
       }),
     })
-    if (r.status === 401) {
+    body.value = ''
+    replyTo.value = null
+    notice.value = commentState(created) === 'pending'
+      ? '已提交，审核通过后公开'
+      : '已发表'
+
+    if (parentId == null) {
+      // 新根按时间正序排在最后，可能不在当前已加载的根里：先本地补上，
+      // 保证作者立刻能看到自己刚发的内容（下次翻页按 id 去重）。
+      if (!items.value.some(c => c.id === created.id)) {
+        items.value = items.value.concat(created)
+      }
+    } else {
+      // 已经发成功了：刷新失败不能再报「发言失败」
+      try {
+        await refreshRoot(created.root_id ?? null)
+      } catch (e2: any) {
+        if (goReadonlyIfMirror(e2)) return
+        notice.value = '已发表；列表刷新失败，请手动刷新页面'
+      }
+    }
+    highlightId.value = created.id
+    await nextTick()
+    scrollToComment(created.id)
+  } catch (e: any) {
+    if (e instanceof ApiError && e.status === 401) {
       clearSession()
       error.value = '登录已过期，请重新登录后再发言'
       return
     }
-    if (!r.ok) throw new Error(await readDetail(r, '发言失败'))
-    body.value = ''
-    replyTo.value = null
-    notice.value = '已发表'
-    await load()
-    if (parentId != null) revealThreadOf(parentId)
-    else visibleRoots.value = Math.max(visibleRoots.value, tree.value.length)
-  } catch (e: any) {
-    error.value = e.message
+    if (goReadonlyIfMirror(e)) {
+      notice.value = ''
+      error.value = MIRROR_READONLY_NOTE
+      return
+    }
+    error.value = apiErrorMessage(e, '发言失败，请稍后重试')
   } finally {
     posting.value = false
   }
@@ -257,14 +462,24 @@ function startReply(c: Comment) {
     error.value = '请先登录再回复'
     return
   }
+  if (commentState(c) !== 'visible') {
+    error.value = commentState(c) === 'pending'
+      ? '这条讨论正在审核，暂不能回复'
+      : '这条讨论已被删除'
+    return
+  }
   replyTo.value = c
   error.value = ''
   notice.value = ''
 }
 
 function canDelete(c: Comment): boolean {
-  if (!me.value) return false
-  return me.value.is_staff || (!!c.author && c.author.handle === me.value.handle)
+  if (!me.value || commentState(c) === 'deleted') return false
+  if (me.value.is_staff) return true
+  const author = c.author
+  if (!author) return false
+  return author.handle === me.value.handle
+    || (typeof author.id === 'number' && author.id === me.value.id)
 }
 
 async function remove(c: Comment) {
@@ -272,39 +487,41 @@ async function remove(c: Comment) {
     error.value = '请先登录'
     return
   }
+  const rootId = rootKeyOf(c)
   const hasReplies = items.value.some(x => x.parent_id === c.id)
   if (hasReplies && typeof window !== 'undefined'
-      && !window.confirm('这条讨论下还有回复，删除会一并移除。确定删除？')) {
+      && !window.confirm('删除后这条内容会变成「已删除」占位，下面的回复仍会保留。确定删除？')) {
     return
   }
   error.value = ''
   notice.value = ''
   try {
-    const r = await fetch(`/api/v1/wiki/comments/${c.id}`, {
-      method: 'DELETE', headers: authHeaders(),
-    })
-    if (r.status === 401) {
-      clearSession()
-      error.value = '登录已过期，请重新登录'
-      return
-    }
-    if (r.status === 403) {
-      error.value = '只能删除自己的讨论'
-      return
-    }
-    if (r.status === 404) {
-      notice.value = '这条讨论已经不在了'
-      await load()
-      return
-    }
-    if (!r.ok) {
-      error.value = '删除失败，请稍后重试'
-      return
-    }
+    await apiFetch(`/wiki/comments/${c.id}`, { method: 'DELETE' })
     notice.value = '已删除'
-    await load()
-  } catch {
-    error.value = '网络异常，删除未完成'
+    try {
+      await refreshRoot(rootId)
+    } catch (e2: any) {
+      if (goReadonlyIfMirror(e2)) return
+      notice.value = '已删除；列表刷新失败，请手动刷新页面'
+    }
+  } catch (e: any) {
+    if (e instanceof ApiError) {
+      if (e.status === 401) {
+        clearSession()
+        error.value = '登录已过期，请重新登录'
+        return
+      }
+      if (e.status === 404) {
+        notice.value = '这条讨论已经不在了'
+        await refreshRoot(rootId)
+        return
+      }
+    }
+    if (goReadonlyIfMirror(e)) {
+      error.value = MIRROR_READONLY_NOTE
+      return
+    }
+    error.value = apiErrorMessage(e, '删除失败，请稍后重试')
   }
 }
 
@@ -313,6 +530,7 @@ function toggleReport(c: Comment) {
     error.value = '举报需要登录，请先登录'
     return
   }
+  if (commentState(c) !== 'visible') return
   error.value = ''
   notice.value = ''
   reportFor.value = reportFor.value === c.id ? null : c.id
@@ -329,9 +547,8 @@ async function submitReport(c: Comment) {
   error.value = ''
   notice.value = ''
   try {
-    const r = await fetch('/api/v1/reports', {
+    await apiFetch('/reports', {
       method: 'POST',
-      headers: { ...authHeaders(), 'Content-Type': 'application/json' },
       body: JSON.stringify({
         target_kind: 'wiki_comment',
         target_id: c.id,
@@ -339,29 +556,149 @@ async function submitReport(c: Comment) {
         detail: reportDetail.value.trim(),
       }),
     })
-    if (r.status === 201) {
-      notice.value = '已提交举报，站务会审核'
-      reportFor.value = null
-      reportDetail.value = ''
+    notice.value = '已提交举报，站务会审核'
+    reportFor.value = null
+    reportDetail.value = ''
+  } catch (e: any) {
+    if (e instanceof ApiError) {
+      if (e.status === 409) {
+        notice.value = '你已经举报过这条，站务会处理'
+        reportFor.value = null
+        return
+      }
+      if (e.status === 401) {
+        clearSession()
+        error.value = '登录已过期，请重新登录后再举报'
+        return
+      }
+    }
+    if (goReadonlyIfMirror(e)) {
+      error.value = MIRROR_READONLY_NOTE
       return
     }
-    if (r.status === 409) {
-      notice.value = '你已经举报过这条，站务会处理'
-      reportFor.value = null
-      return
-    }
-    if (r.status === 401) {
-      clearSession()
-      error.value = '登录已过期，请重新登录后再举报'
-      return
-    }
-    error.value = await readDetail(r, '举报未提交，请稍后再试')
-  } catch {
-    error.value = '网络异常，举报未提交'
+    error.value = apiErrorMessage(e, '举报未提交，请稍后再试')
   } finally {
     reportBusy.value = false
   }
 }
+
+/* ── 评论配图 ──────────────────────────────────────────────────────────── */
+
+async function probeMedia(): Promise<boolean> {
+  if (mediaProbe) return mediaProbe
+  mediaProbe = (async () => {
+    try {
+      await apiFetch('/media')
+      return true
+    } catch (e) {
+      // 404/405/501：后端没有媒体路由；401/断网也不该把按钮亮出来
+      return false
+    }
+  })()
+  return mediaProbe
+}
+
+/** 后端的媒体 URL 是 `/api/v1/media/<id>`；镜像端要按当前 API base 重写 */
+function resolveMediaUrl(url: string): string {
+  if (!url) return ''
+  if (/^https?:\/\//i.test(url)) return url
+  const idx = url.indexOf('/media/')
+  return idx >= 0 ? apiUrl(url.slice(idx)) : url
+}
+
+function pickMedia() {
+  if (uploading.value) return
+  fileInput.value?.click()
+}
+
+function insertMediaUrl(url: string) {
+  const needsNewline = !!body.value && !body.value.endsWith('\n')
+  body.value += `${needsNewline ? '\n' : ''}${url}\n`
+}
+
+async function onMediaChange(evt: Event) {
+  const input = evt.target as HTMLInputElement
+  const file = input.files?.[0]
+  // 清空 value，允许连续选同一个文件
+  input.value = ''
+  if (!file) return
+  await uploadMedia(file)
+}
+
+async function uploadMedia(file: File) {
+  if (uploading.value) return
+  error.value = ''
+  notice.value = ''
+  if (!loggedIn.value) {
+    error.value = '请先登录再上传图片'
+    return
+  }
+  if (!MEDIA_TYPES.includes(file.type)) {
+    error.value = '只支持 JPEG / PNG / WebP 图片'
+    return
+  }
+  if (file.size > MEDIA_MAX_BYTES) {
+    error.value = '图片不能超过 5 MB'
+    return
+  }
+  uploading.value = true
+  try {
+    const form = new FormData()
+    form.append('file', file)
+    const r = await apiFetch<{ id: string; url: string }>('/media', {
+      method: 'POST',
+      body: form,
+    })
+    const url = resolveMediaUrl(r.url)
+    uploads.value = uploads.value.concat({ id: r.id, url })
+    // 正文上限 4000：放不下就不插，保留预览让用户自己决定
+    if (body.value.length + url.length + 1 > 4000) {
+      notice.value = '图片已上传；正文接近 4000 字，请手动插入链接'
+      return
+    }
+    insertMediaUrl(url)
+    notice.value = '图片已上传，链接已插入正文'
+  } catch (e: any) {
+    if (e instanceof ApiError) {
+      if (e.status === 401) {
+        clearSession()
+        error.value = '登录已过期，请重新登录'
+        return
+      }
+      if (e.status === 404 || e.status === 405 || e.status === 501) {
+        mediaReady.value = false
+        mediaProbe = Promise.resolve(false)
+        return
+      }
+    }
+    if (goReadonlyIfMirror(e)) {
+      error.value = MIRROR_READONLY_NOTE
+      return
+    }
+    // 后端 413/415 已给中文原因（超 5MB / 格式不支持），统一走 apiErrorMessage
+    error.value = apiErrorMessage(e, '图片上传失败，请稍后重试')
+  } finally {
+    uploading.value = false
+  }
+}
+
+function insertUpload(u: { id: string; url: string }) {
+  if (body.value.includes(u.url)) return
+  if (body.value.length + u.url.length + 1 > 4000) {
+    error.value = '正文已到 4000 字上限，无法再插入图片链接'
+    return
+  }
+  insertMediaUrl(u.url)
+  notice.value = '链接已插入正文'
+}
+
+function removeUpload(u: { id: string; url: string }) {
+  uploads.value = uploads.value.filter(x => x.id !== u.id)
+  // 只移除完整 URL（含可能的换行），不动用户自己写的内容
+  body.value = body.value.split(u.url).join('').replace(/\n{3,}/g, '\n\n')
+}
+
+/* ── 树与计数 ──────────────────────────────────────────────────────────── */
 
 const tree = computed<TreeNode[]>(() => {
   const map = new Map<number, TreeNode>()
@@ -373,31 +710,41 @@ const tree = computed<TreeNode[]>(() => {
       continue
     }
     const parent = map.get(node.parent_id)
-    // 父节点被站务隐藏时，API 不会返回它，但更深的回复可能还在。
-    // 不能把孤儿回复提升成根（那会把被隐藏的线程重新顶到页面上）；
-    // 直接不渲染，等站务恢复父节点后整条线程一起回来。
-    if (parent) parent.children.push(node)
+    if (parent) {
+      parent.children.push(node)
+      continue
+    }
+    // 父节点不在当前页时，用 root_id 挂回所属根，避免通知定位到的回复凭空消失。
+    const rootId = node.root_id
+    const root = rootId != null && rootId !== node.id ? map.get(rootId) : undefined
+    if (root) root.children.push(node)
+    // 父节点被站务隐藏且没有可见后代时整支不渲染，等恢复后一起回来。
   }
   return roots
 })
 
-/** 根分页 + 后代一次展开：只限制根的数量，回复始终跟着父节点 */
+/** 根分页 + 后代一次展开：服务端分页时已加载的根全部展示；旧后端仍前端截根 */
 const visible = computed<Array<{ c: TreeNode; depth: number }>>(() => {
   const out: Array<{ c: TreeNode; depth: number }> = []
   const walk = (n: TreeNode, depth: number) => {
     out.push({ c: n, depth })
     for (const child of n.children) walk(child, depth + 1)
   }
-  for (const root of tree.value.slice(0, visibleRoots.value)) walk(root, 0)
+  const roots = serverPaged.value ? tree.value : tree.value.slice(0, visibleRoots.value)
+  for (const root of roots) walk(root, 0)
   return out
 })
-const remainingRoots = computed(() =>
-  Math.max(0, tree.value.length - visibleRoots.value))
-/** 实际渲染的条数（父节点被隐藏的孤儿回复不算） */
-const treeCount = computed(() => {
+const remainingRoots = computed(() => {
+  if (serverPaged.value && rootTotal.value != null) {
+    return Math.max(0, rootTotal.value - rootsLoaded.value)
+  }
+  return Math.max(0, tree.value.length - visibleRoots.value)
+})
+/** 实际渲染的条数（已删除占位不算讨论数，父节点被隐藏的孤儿回复不算） */
+const commentCount = computed(() => {
   let n = 0
   const walk = (node: TreeNode) => {
-    n += 1
+    if (commentState(node) !== 'deleted') n += 1
     for (const child of node.children) walk(child)
   }
   for (const root of tree.value) walk(root)
@@ -414,6 +761,10 @@ async function decide() {
   if (apiUp.value) {
     mode.value = 'self'
     await refreshSession()
+    if (loggedIn.value) {
+      // 配图是否可用不阻塞讨论加载；探测失败就永远隐藏按钮
+      void probeMedia().then(ok => { mediaReady.value = ok })
+    }
     await load()
     return
   }
@@ -428,7 +779,13 @@ async function decide() {
   mode.value = 'readonly'
 }
 
-onMounted(decide)
+onMounted(() => {
+  if (typeof window !== 'undefined') window.addEventListener('hashchange', onHashChange)
+  void decide()
+})
+onUnmounted(() => {
+  if (typeof window !== 'undefined') window.removeEventListener('hashchange', onHashChange)
+})
 watch(() => route.path, () => {
   mode.value = 'probe'
   items.value = []
@@ -437,6 +794,12 @@ watch(() => route.path, () => {
   notice.value = ''
   error.value = ''
   visibleRoots.value = PAGE_SIZE
+  serverPaged.value = false
+  rootTotal.value = null
+  rootsLoaded.value = 0
+  highlightId.value = null
+  uploads.value = []
+  hashHandled = ''
   decide()
 })
 watch(isDark, syncGiscusTheme)
@@ -448,7 +811,7 @@ watch(isDark, syncGiscusTheme)
   <section id="这一页的讨论" class="rsw">
     <h2 class="rsw-title">
       这一页的讨论
-      <span v-if="mode === 'self'" class="rsw-count">{{ treeCount }}</span>
+      <span v-if="mode === 'self'" class="rsw-count">{{ commentCount }}</span>
     </h2>
 
     <!-- 静态站：giscus（GitHub Discussions）。写评论要 GitHub 账号，读不用。 -->
@@ -468,37 +831,52 @@ watch(isDark, syncGiscusTheme)
       </p>
 
       <p v-if="offline" class="rsw-muted">
-        讨论加载失败，请稍后重试。本地开发需先起后端：<code>uvicorn app.main:app --port 8000</code>。
+        讨论加载失败，请稍后重试。本地开发需先起后端：
+        <code>uvicorn app.main:app --port 8000</code>。
       </p>
       <p v-else-if="loading" class="rsw-muted">加载中…</p>
       <p v-else-if="!tree.length" class="rsw-muted">还没有讨论。第一条就由你来写。</p>
 
       <template v-else>
         <ul class="rsw-list">
-          <li v-for="node in visible" :key="node.c.id" class="rsw-item"
-              :class="{ 'rsw-child': node.depth > 0 }"
+          <li v-for="node in visible" :id="`comment-${node.c.id}`" :key="node.c.id" class="rsw-item"
+              :class="{ 'rsw-child': node.depth > 0, 'rsw-target': highlightId === node.c.id }"
               :style="{ marginLeft: Math.min(node.depth, 4) * 1.1 + 'rem' }">
             <div class="rsw-head">
               <span class="rsw-avatar"
                     :class="{ sm: node.depth > 0 }"
                     :style="{ background: `hsl(${node.c.author?.avatar_hue ?? 160} 55% 55%)` }">
-                {{ node.c.author?.display_name?.slice(0, 1) ?? '?' }}
+                {{ node.c.author?.display_name?.slice(0, 1) ?? (commentState(node.c) === 'deleted' ? '·' : '?') }}
               </span>
-              <span class="rsw-name">{{ node.c.author?.display_name ?? '匿名' }}</span>
+              <span class="rsw-name">
+                {{ node.c.author?.display_name
+                  ?? (commentState(node.c) === 'deleted' ? '已删除' : '匿名') }}
+              </span>
               <span v-if="node.c.author?.is_staff" class="rsw-badge">站方</span>
+              <span v-if="commentState(node.c) === 'pending'" class="rsw-badge rsw-badge-pending">待审核</span>
               <span class="rsw-time">{{ fmt(node.c.created_at) }}</span>
               <span class="rsw-actions-inline">
-                <button v-if="loggedIn" type="button" class="rsw-link"
-                        @click="startReply(node.c)">回复</button>
+                <button v-if="loggedIn && commentState(node.c) === 'visible'" type="button"
+                        class="rsw-link" @click="startReply(node.c)">回复</button>
                 <button v-if="canDelete(node.c)" type="button" class="rsw-link"
-                        @click="remove(node.c)">删除</button>
-                <button v-if="loggedIn" type="button" class="rsw-link"
-                        @click="toggleReport(node.c)">
+                        @click="remove(node.c)">
+                  {{ commentState(node.c) === 'pending' ? '撤回' : '删除' }}
+                </button>
+                <button v-if="loggedIn && commentState(node.c) === 'visible'" type="button"
+                        class="rsw-link" @click="toggleReport(node.c)">
                   {{ reportFor === node.c.id ? '收起举报' : '举报' }}
                 </button>
               </span>
             </div>
-            <div class="rsw-body">{{ node.c.body }}</div>
+
+            <!-- P1：待审核 / 已删除只给占位，不渲染正文 -->
+            <div v-if="commentState(node.c) === 'pending'" class="rsw-placeholder">
+              待审核，通过后公开（仅你与站务可见）
+            </div>
+            <div v-else-if="commentState(node.c) === 'deleted'" class="rsw-placeholder">
+              已删除
+            </div>
+            <div v-else class="rsw-body">{{ node.c.body }}</div>
 
             <!-- 举报：只调用现有 /reports，不在前端做审核或折叠逻辑 -->
             <div v-if="reportFor === node.c.id" class="rsw-report">
@@ -529,8 +907,10 @@ watch(isDark, syncGiscusTheme)
           </li>
         </ul>
         <button v-if="remainingRoots" type="button" class="rsw-more"
-                @click="visibleRoots += PAGE_SIZE">
-          显示更多讨论（还有 {{ remainingRoots }} 条根讨论）
+                :disabled="loadingMore" @click="loadMore()">
+          {{ loadingMore
+            ? '加载中…'
+            : `显示更多讨论（还有 ${remainingRoots} 条根讨论）` }}
         </button>
       </template>
 
@@ -548,16 +928,38 @@ watch(isDark, syncGiscusTheme)
         </div>
         <label class="rsw-label" for="rsw-input">写下你的实测 / 核对结果</label>
         <textarea id="rsw-input" v-model="body" rows="3" class="rsw-input" maxlength="4000"
-                  :disabled="posting"
+                  :disabled="posting || uploading"
                   :aria-describedby="error ? 'rsw-error' : undefined"
                   :aria-invalid="!!error"
                   placeholder="写下你的实测/核对结果，附工况" />
         <div class="rsw-actions">
-          <button type="button" class="rsw-btn" :disabled="!body.trim() || posting"
+          <button type="button" class="rsw-btn" :disabled="!body.trim() || posting || uploading"
                   @click="submit">
             {{ posting ? '发送中…' : '发表讨论' }}
           </button>
           <span class="rsw-count-inline">{{ body.length }}/4000</span>
+        </div>
+
+        <!-- 配图：后端没有 /media 时整块不渲染，文本评论完全不受影响 -->
+        <div v-if="mediaReady" class="rsw-media">
+          <button type="button" class="rsw-upload" :disabled="uploading || posting"
+                  @click="pickMedia">
+            {{ uploading ? '上传中…' : '上传图片' }}
+          </button>
+          <input ref="fileInput" class="rsw-file" type="file" accept="image/*"
+                 :disabled="uploading || posting" @change="onMediaChange" />
+          <span class="rsw-media-hint">JPEG / PNG / WebP，≤ 5 MB；上传后链接插入正文</span>
+          <ul v-if="uploads.length" class="rsw-previews">
+            <li v-for="u in uploads" :key="u.id" class="rsw-preview">
+              <img :src="u.url" alt="已上传图片预览" loading="lazy" />
+              <span class="rsw-preview-actions">
+                <button type="button" class="rsw-link" :disabled="posting"
+                        @click="insertUpload(u)">插入正文</button>
+                <button type="button" class="rsw-link" :disabled="posting"
+                        @click="removeUpload(u)">移除</button>
+              </span>
+            </li>
+          </ul>
         </div>
       </div>
 
@@ -568,7 +970,7 @@ watch(isDark, syncGiscusTheme)
     <!-- 纯静态镜像（GitHub Pages）：没有后端就没有讨论串。
          不请求、不报错，一行中性说明 + 主站入口；评论框整个隐藏。 -->
     <p v-else-if="mode === 'readonly'" class="rsw-muted">
-      评论需要主站服务，当前为只读镜像 ·
+      {{ MIRROR_READONLY_NOTE }} ·
       <a :href="PRIMARY_SITE" target="_blank" rel="noopener">robowiki.org.cn</a>
     </p>
   </section>
@@ -618,6 +1020,13 @@ watch(isDark, syncGiscusTheme)
 .rsw-item {
   padding: 0.7rem 0;
   border-bottom: 1px solid var(--vp-c-divider);
+  /* 通知 #comment-<id> 跳转时不要被吸顶导航盖住 */
+  scroll-margin-top: calc(var(--vp-nav-height, 64px) + 16px);
+  border-radius: 4px;
+}
+.rsw-item.rsw-target {
+  background: var(--vp-c-brand-soft);
+  box-shadow: 0 0 0 2px var(--vp-c-brand-soft);
 }
 .rsw-item.rsw-child {
   border-left: 2px solid var(--vp-c-divider);
@@ -660,6 +1069,11 @@ watch(isDark, syncGiscusTheme)
   background: var(--vp-c-brand-soft);
   color: var(--vp-c-brand-1);
 }
+.rsw-badge-pending {
+  background: transparent;
+  border: 1px solid var(--rw-accent-1);
+  color: var(--rw-accent-1);
+}
 .rsw-time {
   font-variant-numeric: tabular-nums;
 }
@@ -688,7 +1102,14 @@ watch(isDark, syncGiscusTheme)
   line-height: 1.7;
   margin-top: 0.3rem;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
   color: var(--vp-c-text-1);
+}
+.rsw-placeholder {
+  margin-top: 0.3rem;
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--vp-c-text-3);
 }
 .rsw-login {
   display: flex;
@@ -771,6 +1192,57 @@ watch(isDark, syncGiscusTheme)
   opacity: 0.45;
   cursor: not-allowed;
 }
+/* ── 配图 ─────────────────────────────────────────────────────────────── */
+.rsw-media {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
+}
+.rsw-upload {
+  min-height: 34px;
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--vp-c-text-2);
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+.rsw-upload:hover:not(:disabled) {
+  border-color: var(--vp-c-brand-1);
+  color: var(--vp-c-brand-1);
+}
+.rsw-upload:disabled { opacity: 0.5; cursor: default; }
+.rsw-file { display: none; }
+.rsw-media-hint { font-size: 0.72rem; color: var(--vp-c-text-3); }
+.rsw-previews {
+  list-style: none;
+  margin: 0.2rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  width: 100%;
+}
+.rsw-preview {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  padding: 0.3rem 0.45rem;
+  background: var(--vp-c-bg);
+}
+.rsw-preview img {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 6px;
+  display: block;
+}
+.rsw-preview-actions { display: flex; flex-direction: column; gap: 0.2rem; }
 .rsw-report {
   margin-top: 0.55rem;
   padding: 0.6rem 0.7rem;
@@ -818,10 +1290,11 @@ watch(isDark, syncGiscusTheme)
   font-size: 0.8rem;
   cursor: pointer;
 }
-.rsw-more:hover {
+.rsw-more:hover:not(:disabled) {
   border-color: var(--vp-c-brand-1);
   color: var(--vp-c-brand-1);
 }
+.rsw-more:disabled { opacity: 0.5; cursor: default; }
 .rsw-notice {
   font-size: 0.78rem;
   color: var(--vp-c-brand-1);

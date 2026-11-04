@@ -118,7 +118,8 @@ def test_only_author_or_staff_can_delete(client):
     assert client.get("/api/wiki/comments", params={"page": "parts/actuator/dji-robomaster"}).json()["count"] == 0
 
 
-def test_delete_parent_removes_children(client):
+def test_delete_parent_keeps_children(client):
+    """P1 起删除是软删除：父节点变占位，子节点不物理删，线程形状保留。"""
     h = login(client)
     p = client.post("/api/wiki/comments", headers=h,
                     json={"page": "parts/controller_low", "body": "父"}).json()
@@ -126,7 +127,10 @@ def test_delete_parent_removes_children(client):
                 json={"page": "parts/controller_low", "body": "子", "parent_id": p["id"]})
     assert client.get("/api/wiki/comments", params={"page": "parts/controller_low"}).json()["count"] == 2
     client.delete(f"/api/wiki/comments/{p['id']}", headers=h)
-    assert client.get("/api/wiki/comments", params={"page": "parts/controller_low"}).json()["count"] == 0
+    d = client.get("/api/wiki/comments", params={"page": "parts/controller_low"}).json()
+    assert d["count"] == 2, "子节点必须保留，父节点变成占位"
+    parent = next(c for c in d["comments"] if c["id"] == p["id"])
+    assert parent["deleted"] is True and parent["body"] == ""
 
 
 def test_comment_counts(client):

@@ -1,0 +1,172 @@
+# ── 可选 P2 卫星社区：NodeBB + Redis + Postgres ─────────────────────────────
+#
+# 这是一个**独立 Compose 项目**，不要 include 进 deploy/compose.yml，
+# 也不要接进 robowiki_default 网络。命令行单独用它：
+#
+#   cd deploy
+#   # 在 deploy/.env 里追加（变量名与主站不同，不会覆盖主站口令）：
+#   #   NODEBB_DB_PASSWORD=...      # 必填，论坛库专用
+#   #   NODEBB_REDIS_PASSWORD=...   # 必填，Redis 认证
+#   #   NODEBB_TAG=4.16.7           # 固定版本，不要 latest
+#   docker compose -f compose.community.yml up -d
+#
+# 触发条件（三条同时满足才启动，见 docs/COMMUNITY-NODEBB.md）：
+#   1. 长帖 / 版块分区 / 邮件摘要成为主要诉求，页尾讨论已不够；
+#   2. 宿主机内存 ≥ 8GB，或本文件整份放到**独立机器**上；
+#   3. 有可维护的 OIDC SSO，账号不靠手工双写。
+# 本机 2C/4G 的 API 机器不要跑这份文件：NodeBB 常驻 1.5–2.5GB，
+# 加上 Postgres/Redis/构建缓存会直接把 API 的迁移与备份挤到 OOM。
+#
+# 角色边界：NodeBB 只做论坛与长帖。用户、评分、投稿、审核仍在 FastAPI；
+# 两个库不共享表，不跨库外键，只通过 OIDC 与 webhook 交互。
+#
+# 数据卷（都要进备份）：
+#   nodebb-config   /opt/config                 config.json（含 secret）+ 安装哈希
+#   nodebb-build    /usr/src/app/build          构建产物，可重建，不必备份
+#   nodebb-uploads  /usr/src/app/public/uploads 用户上传，必须备份
+#   community-pg    /var/lib/postgresql/data    论坛帖/用户/设置，必须备份
+#   community-redis /data                       会话与 AOF，必须备份或接受掉线
+#
+# 首次启动（交互式安装向导，密码只输进容器，不写进本文件）：
+#   docker compose -f compose.community.yml run --rm nodebb
+#   数据库选 postgres，host 填 community-db，port 5432，库/用户 nodebb，
+#   密码填 .env 里的 NODEBB_DB_PASSWORD。
+#   向导写出的 config.json 落在 nodebb-config 卷里，权限 600。
+#   完成后 Ctrl-D / 退出，再 `up -d`。
+#
+# Redis 默认没有接进 NodeBB：安装向导只配主数据库（Postgres）。要让 Redis
+# 承载会话，装完后在 config.json 顶层补上（值换成 .env 里的真实口令，
+# 不要把真实口令写回仓库）：
+#   "session_store": {
+#     "name": "redis", "host": "community-redis", "port": 6379,
+#     "password": "<NODEBB_REDIS_PASSWORD>", "database": 0
+#   }
+#   不补也能跑，但 NodeBB 重启会丢登录会话；补完重启 nodebb 生效。
+#
+# 升级：先备份，再改 NODEBB_TAG 并 `pull` + `up -d`。
+#   镜像入口检测到 package.json 变化会执行 `nodebb upgrade`；NodeBB 的库迁移
+#   通常不可逆，回滚 = 旧 tag + 恢复升级前的 Postgres/Redis/上传卷。
+#
+# 备份（在宿主机执行，输出不要进 git）：
+#   docker compose -f compose.community.yml exec -T community-db \
+#     pg_dump -U nodebb -d nodebb -Fc > nodebb-$(date -u +%Y%m%dT%H%M%SZ).dump
+#   docker run --rm -v robowiki-community_community-redis:/data -v "$PWD":/backup alpine \
+#     tar czf /backup/community-redis.tgz -C /data .
+#   docker run --rm -v robowiki-community_nodebb-uploads:/data -v "$PWD":/backup alpine \
+#     tar czf /backup/nodebb-uploads.tgz -C /data .
+#   # config.json 里有 secret 与数据库口令，单独 600 保存
+#   恢复顺序：停 nodebb → 恢复 Postgres/Redis/上传卷 → 起旧 tag → 验证登录与发帖。
+#
+# OIDC SSO 占位（NodeBB 核心不含 OIDC，需装维护中的 SSO 插件；本文件不预装）：
+#   插件配置在 ACP → Plugins → SSO，值从环境/密钥管理读取，不要提交：
+#     issuer        = ${NODEBB_OIDC_ISSUER}
+#     client_id     = ${NODEBB_OIDC_CLIENT_ID}
+#     client_secret = ${NODEBB_OIDC_CLIENT_SECRET}
+#     scopes        = openid profile email
+#     callback      = https://community.example.org/auth/<plugin>/callback
+#   上线前确认插件支持 PKCE 与 stable `sub`；不支持就换插件，不要自己改核心。
+#
+# 反向代理：NodeBB 只发布到宿主机回环 127.0.0.1:4567，由 1Panel OpenResty
+# 以独立子域（如 community.example.org）反代；需要 WebSocket upgrade 与
+# 至少 20m 的 client_max_body_size（头像/附件上传）。不要把 4567 暴露公网。
+
+name: robowiki-community
+
+x-logging: &default-logging
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  nodebb:
+    image: ghcr.io/nodebb/nodebb:${NODEBB_TAG:-4.16.7}
+    restart: unless-stopped
+    logging: *default-logging
+    # NodeBB 退出时要收完 socket 与队列，给足时间
+    stop_grace_period: 30s
+    # 只绑回环：公网入口统一走 1Panel，不在这里开第二个 443
+    ports:
+      - "127.0.0.1:${NODEBB_PORT:-4567}:4567"
+    environment:
+      # 首次安装或升级时，让入口脚本知道配置目录（镜像默认就是 /opt/config）
+      CONFIG_DIR: /opt/config
+      # 可选插件由入口脚本安装；OIDC 插件先在测试环境验证再填这里
+      NODEBB_ADDITIONAL_PLUGINS: ${NODEBB_ADDITIONAL_PLUGINS:-}
+    volumes:
+      - nodebb-config:/opt/config
+      - nodebb-build:/usr/src/app/build
+      - nodebb-uploads:/usr/src/app/public/uploads
+    depends_on:
+      community-db:
+        condition: service_healthy
+      community-redis:
+        condition: service_healthy
+    healthcheck:
+      # node:lts 自带 fetch；/api/config 是 NodeBB 的公开配置端点
+      test: ["CMD", "node", "-e",
+             "fetch('http://127.0.0.1:4567/api/config').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 120s
+    # 单实例上限；整机门槛仍按 ≥8GB 算（OS + 构建 + 备份峰值）
+    mem_limit: ${NODEBB_MEM_LIMIT:-2g}
+
+  community-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    logging: *default-logging
+    environment:
+      POSTGRES_DB: nodebb
+      POSTGRES_USER: nodebb
+      # 必填；与主站 robowiki 库完全独立，不复用 POSTGRES_PASSWORD
+      POSTGRES_PASSWORD: ${NODEBB_DB_PASSWORD:?set NODEBB_DB_PASSWORD (not the site DB password)}
+      # 单机小库，别让默认值吃掉内存
+      POSTGRES_INITDB_ARGS: "--data-checksums"
+    command:
+      - postgres
+      - -c
+      - shared_buffers=256MB
+      - -c
+      - max_connections=60
+    volumes:
+      - community-pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nodebb -d nodebb"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+    mem_limit: ${COMMUNITY_DB_MEM_LIMIT:-1g}
+
+  community-redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    logging: *default-logging
+    environment:
+      # redis-cli 从环境读口令，避免出现在 ps/healthcheck 参数里
+      REDISCLI_AUTH: ${NODEBB_REDIS_PASSWORD:?set NODEBB_REDIS_PASSWORD}
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+      - --requirepass
+      - ${NODEBB_REDIS_PASSWORD:?set NODEBB_REDIS_PASSWORD}
+      - --loglevel
+      - warning
+    volumes:
+      - community-redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+    mem_limit: ${COMMUNITY_REDIS_MEM_LIMIT:-512m}
+
+volumes:
+  nodebb-config:
+  nodebb-build:
+  nodebb-uploads:
+  community-pg:
+  community-redis:

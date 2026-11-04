@@ -11,6 +11,7 @@ from fastapi import APIRouter, HTTPException, Query, Request
 from sqlalchemy import func
 from sqlmodel import select
 
+from ...content_safety import check_user_text
 from ...core.config import settings
 from ...crud import (apply_vote, comments_out, posts_out, touch_comment_count,
                      user_out)
@@ -18,6 +19,7 @@ from ...models import Comment, Part, Post, Rating, User, utcnow
 from ...schemas import (CommentIn, CommentOut, PostIn, PostListOut, PostOut,
                         UserOut, VoteIn, VoteOut)
 from ..deps import CurrentUser, Db, MaybeUser, rate_limit
+from .notifications import create_notification
 
 router = APIRouter(tags=["community"])
 
@@ -160,12 +162,28 @@ def create_comment(post_id: int, payload: CommentIn, request: Request, db: Db,
         if parent.parent_id is not None:
             raise HTTPException(422, "只支持两级回复")
 
+    # 内容安全：未配置微信时放行；配置且判定违规时直接拒收（社区评论没有
+    # pending 态，宁可不发也不把未审内容放进公开信息流）。
+    safety = check_user_text(db, user.id, payload.body)
+    if not safety.passed:
+        raise HTTPException(422, "内容可能包含违规信息，请修改后再试")
+
     c = Comment(post_id=post_id, parent_id=payload.parent_id,
                 author_id=user.id, body=payload.body.strip())
     db.add(c)
-    db.commit()
-    db.refresh(c)
+    db.flush()                       # 拿 id 拼通知链接，主事务稍后一起提交
+
+    # 通知：回复通知父评论作者；直接评论帖子通知楼主。自己回自己不通知。
+    target_id = parent.author_id if payload.parent_id is not None else post.author_id
+    snippet = c.body if len(c.body) <= 80 else c.body[:80] + "…"
+    create_notification(
+        db, target_id, type="reply",
+        subject="有人回复了你的帖子" if payload.parent_id is None else "有人回复了你的评论",
+        body=snippet, link=f"/community/post/{post_id}#c{c.id}",
+        actor_id=user.id)
+
     touch_comment_count(db, post_id)
+    db.refresh(c)
     return CommentOut(id=c.id or 0, post_id=c.post_id, parent_id=c.parent_id,
                       body=c.body, score=c.score, created_at=c.created_at,
                       author=user_out(db, user), my_vote=0, replies=[])

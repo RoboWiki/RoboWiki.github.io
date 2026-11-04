@@ -23,8 +23,9 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'reka-ui'
-import { apiAvailable, PRIMARY_SITE } from '../lib/api'
-import { clearToken, consumeHashToken, getToken, setToken } from '../lib/auth'
+import { ApiError, apiAvailable, apiBase, apiErrorMessage, apiFetch, isMirror, MIRROR_READONLY_NOTE, PRIMARY_SITE } from '../lib/api'
+import { clearAuth, clearHashAuth, getRefreshToken, getToken, readHashAuth, setRefreshToken, setToken } from '../lib/auth'
+import NotificationList from './NotificationList.vue'
 
 type Me = {
   handle: string
@@ -40,11 +41,7 @@ type Identity = {
   email?: string | null
   created_at: string
 }
-type AccountTab = 'profile' | 'security' | 'identities'
-/** fetch 失败时带上 HTTP 状态：409（最后一种登录方式）要单独说人话 */
-type RequestError = Error & { status?: number }
-
-const API = '/api/v1'
+type AccountTab = 'profile' | 'security' | 'notifications' | 'identities'
 
 /** 与后端 RegisterIn 完全一致的约束 */
 const HANDLE_RE = /^[A-Za-z0-9][A-Za-z0-9_-]*$/
@@ -116,28 +113,32 @@ const unbindBusy = ref<string | null>(null)
 const changeError = ref('')
 const changeNotice = ref('')
 
-/** 后端 detail 可能是字符串，也可能是 pydantic 的 [{msg}] 数组 */
-function apiError(detail: unknown): string {
-  if (typeof detail === 'string') return detail
-  if (Array.isArray(detail)) return detail.map((x: any) => x.msg || String(x)).join('；')
-  return '请求失败，请稍后再试'
+/* ── 通知 ──────────────────────────────────────────────────────────────── */
+/** 未读角标：由 NotificationList 拉完列表后回传，退出/401 时清零 */
+const unreadCount = ref(0)
+
+/** 401：apiFetch 已清 token，这里把界面退回登录态，不要让「账号中心」继续挂着 */
+function onNotificationAuthExpired(message: string) {
+  me.value = null
+  identities.value = []
+  identitiesLoaded.value = false
+  unreadCount.value = 0
+  notice.value = message || '登录已过期，请重新登录'
 }
 
+/** 后端 detail 的解析与 401/429/断网文案统一收在 lib/api */
 async function req<T>(path: string, init?: RequestInit): Promise<T> {
-  const headers: Record<string, string> = { ...(init?.headers as any) }
-  if (init?.body) headers['Content-Type'] = 'application/json'
-  const token = getToken()
-  if (token) headers.Authorization = `Bearer ${token}`
-  const r = await fetch(`${API}${path}`, { ...init, headers })
-  const text = await r.text()
-  const data = text ? JSON.parse(text) : null
-  if (!r.ok) {
-    const err = new Error(apiError(data?.detail)) as RequestError
-    err.status = r.status
-    throw err
-  }
-  return data as T
+  return apiFetch<T>(path, init)
 }
+
+/**
+ * GitHub 登录必须回主站：OAuth 的 redirect_uri 绑在主域，
+ * 成功后由后端把一次性 code 送回 return_to（当前站点 origin）。
+ */
+const githubHref = computed(() => {
+  const origin = typeof window !== 'undefined' ? window.location.origin : PRIMARY_SITE
+  return `${apiBase()}/auth/github/login?return_to=${encodeURIComponent(origin)}`
+})
 
 /** 只接受站内相对路径，避免 ?redirect=https://… 变成开放跳转 */
 function goAfterLogin() {
@@ -181,11 +182,12 @@ const onAccountSubmit = onAccountSubmitRaw(async values => {
       body.display_name = values.displayName
       if (values.email) body.email = values.email
     }
-    const r = await req<{ access_token: string; user: Me }>(
+    const r = await req<{ access_token: string; refresh_token?: string; user: Me }>(
       mode.value === 'login' ? '/auth/login' : '/auth/register',
       { method: 'POST', body: JSON.stringify(body) },
     )
     setToken(r.access_token)
+    setRefreshToken(r.refresh_token)
     me.value = r.user
     password.value = ''
     notice.value = mode.value === 'login' ? '登录成功' : '注册成功'
@@ -193,7 +195,7 @@ const onAccountSubmit = onAccountSubmitRaw(async values => {
     void loadIdentities()
     goAfterLogin()
   } catch (e: any) {
-    serverError.value = e.message || '请求失败，请稍后再试'
+    serverError.value = apiErrorMessage(e, '请求失败，请稍后再试')
   }
 })
 
@@ -227,7 +229,7 @@ const onResetSubmit = onResetSubmitRaw(async values => {
     mode.value = 'login'
     resetCtx.resetForm()
   } catch (e: any) {
-    serverError.value = e.message || '请求失败，请稍后再试'
+    serverError.value = apiErrorMessage(e, '请求失败，请稍后再试')
   }
 })
 
@@ -258,7 +260,7 @@ async function requestVerify() {
     verifySent.value = true
     notice.value = '验证邮件已发送；开发环境可在服务端日志看到令牌'
   } catch (e: any) {
-    serverError.value = e.message || '请求失败，请稍后再试'
+    serverError.value = apiErrorMessage(e, '请求失败，请稍后再试')
   } finally {
     verifyRequestBusy.value = false
   }
@@ -275,7 +277,7 @@ const onVerifySubmit = onVerifySubmitRaw(async values => {
     verifyCtx.resetForm()
     notice.value = '邮箱已验证'
   } catch (e: any) {
-    serverError.value = e.message || '请求失败，请稍后再试'
+    serverError.value = apiErrorMessage(e, '请求失败，请稍后再试')
   }
 })
 
@@ -308,7 +310,7 @@ const onChangeSubmit = onChangeSubmitRaw(async values => {
   changeError.value = ''
   changeNotice.value = ''
   try {
-    const r = await req<{ access_token: string; user: Me }>('/auth/password/change', {
+    const r = await req<{ access_token: string; refresh_token?: string; user: Me }>('/auth/password/change', {
       method: 'POST',
       body: JSON.stringify({
         current_password: values.currentPassword,
@@ -317,13 +319,14 @@ const onChangeSubmit = onChangeSubmitRaw(async values => {
     })
     // 旧 token 因 pv 变化立即失效；换上新 token，当前会话无缝继续。
     setToken(r.access_token)
+    setRefreshToken(r.refresh_token)
     me.value = r.user
     resetChange()
     changeNotice.value = '密码已更新，本设备已换用新令牌；其他设备的登录已失效'
   } catch (e: any) {
     changeError.value = e.status === 403
       ? '当前密码不正确'
-      : e.message || '修改失败，请稍后再试'
+      : apiErrorMessage(e, '修改失败，请稍后再试')
   }
 })
 
@@ -365,7 +368,7 @@ async function loadIdentities() {
   try {
     identities.value = await req<Identity[]>('/auth/identities')
   } catch (e: any) {
-    identityError.value = e.message || '无法读取已绑定身份，请稍后重试'
+    identityError.value = apiErrorMessage(e, '无法读取已绑定身份，请稍后重试')
   } finally {
     identitiesBusy.value = false
     identitiesLoaded.value = true
@@ -390,7 +393,7 @@ async function confirmUnbind(provider: string) {
   } catch (e: any) {
     identityError.value = e.status === 409
       ? '至少保留一种登录方式：请先设置本站密码，或保留另一种已绑定身份。'
-      : e.message || '解绑失败，请稍后再试'
+      : apiErrorMessage(e, '解绑失败，请稍后再试')
   } finally {
     unbindBusy.value = null
     pendingUnbind.value = null
@@ -419,8 +422,12 @@ function onTabKey(evt: KeyboardEvent) {
   nextTick(() => tabEls.value[next]?.focus())
 }
 
-function logout() {
-  clearToken()
+async function logout() {
+  try {
+    const refresh = getRefreshToken()
+    if (refresh) await apiFetch('/auth/logout', { method: 'POST', body: JSON.stringify({ refresh_token: refresh }) })
+  } catch { /* 本地仍要退出 */ }
+  clearAuth()
   me.value = null
   identities.value = []
   identitiesLoaded.value = false
@@ -429,6 +436,7 @@ function logout() {
   pendingUnbind.value = null
   changeError.value = ''
   changeNotice.value = ''
+  unreadCount.value = 0
   accountTab.value = 'profile'
   // 用 resetForm 清值 + 清错误；直接改 password 会让表单在重新挂载时闪一条「至少 6 位」
   resetAccount()
@@ -437,12 +445,49 @@ function logout() {
 }
 
 onMounted(async () => {
-  // GitHub OAuth 回调把 token 放在 #token=…：先落盘再从地址栏抹掉，
-  // 避免刷新/分享时把 JWT 留在历史记录里。
-  const hashToken = consumeHashToken()
-  if (hashToken) setToken(hashToken)
+  // OAuth 回调有两种：
+  //   · #token=<jwt>  旧形式，直接落盘
+  //   · #code=<code>  新形式（主站 → github.io 跨域），先 POST /auth/handoff 换 token
+  // 读取与清理分开：code 是一次性的，兑成功后再抹 fragment，避免失败时连重试机会都没有。
+  const hash = readHashAuth()
+  if (hash.error) {
+    serverError.value = hash.errorDescription || `GitHub 登录未完成（${hash.error}）`
+    clearHashAuth()
+  }
+  if (hash.token) {
+    setToken(hash.token)
+    clearHashAuth()
+    notice.value = '登录成功'
+  }
+
   apiReady.value = await apiAvailable()
-  if (!apiReady.value) return
+  if (!apiReady.value) {
+    // 镜像站主站暂时探不到：清掉一次性 code，只展示只读说明
+    if (hash.code) clearHashAuth()
+    return
+  }
+
+  if (hash.code) {
+    try {
+      const r = await req<{ access_token?: string; token?: string; user?: Me }>('/auth/handoff', {
+        method: 'POST',
+        body: JSON.stringify({ code: hash.code }),
+      })
+      const issued = r?.access_token || r?.token
+      if (!issued) throw new Error('主站没有返回登录令牌，请重新登录')
+      setToken(issued)
+      setRefreshToken(r.refresh_token)
+      if (r.user) me.value = r.user
+      notice.value = '登录成功'
+    } catch (e: any) {
+      // handoff 的 401 是「code 过期/已用」，比通用「登录已过期」更准确
+      const detail = e instanceof ApiError && typeof e.detail === 'string' ? e.detail : ''
+      serverError.value = detail || apiErrorMessage(e, '登录未能完成，请重新点击 GitHub 登录')
+    } finally {
+      clearHashAuth()
+    }
+  }
+
   // 先问服务端能开哪些渠道：未配置的 GitHub 不渲染链接，也就不发无效请求
   try {
     providers.value = await req<Providers>('/auth/providers')
@@ -456,7 +501,8 @@ onMounted(async () => {
     me.value = await req<Me>('/auth/me')
     await loadIdentities()
   } catch {
-    clearToken()
+    // 401 已由 apiFetch 清 token；网络抖动不要误清
+    if (!getToken()) me.value = null
   }
 })
 </script>
@@ -464,8 +510,9 @@ onMounted(async () => {
 <template>
   <section class="auth-page">
     <div v-if="apiReady === false" class="auth-card">
-      <h1>当前是只读镜像</h1>
-      <p>登录、评分、评论与纠错需要主站服务。请到主站操作：</p>
+      <h1>当前为只读快照</h1>
+      <p>{{ isMirror() ? MIRROR_READONLY_NOTE : '主站服务暂时不可达，当前显示构建快照。' }}</p>
+      <p>登录、评分、评论与纠错需要主站服务，可以稍后重试，或直接到主站操作：</p>
       <a class="auth-primary" :href="`${PRIMARY_SITE}/login`">去 {{ PRIMARY_SITE }} 登录 ↗</a>
     </div>
 
@@ -475,10 +522,17 @@ onMounted(async () => {
       <h1>账号中心</h1>
       <p class="auth-lead">管理账号资料、邮箱验证、本站密码与第三方登录方式。</p>
 
-      <TabsRoot v-model="accountTab" class="acct">
+      <TabsRoot v-model="accountTab" class="acct" :unmount-on-hide="false">
         <TabsList class="acct-tabs" aria-label="账号设置">
           <TabsTrigger value="profile" class="acct-tab">账号信息</TabsTrigger>
           <TabsTrigger value="security" class="acct-tab">修改密码</TabsTrigger>
+          <TabsTrigger value="notifications" class="acct-tab">
+            通知
+            <span v-if="unreadCount > 0" class="acct-tab-count">
+              {{ unreadCount > 99 ? '99+' : unreadCount }}
+              <span class="acct-sr">条未读</span>
+            </span>
+          </TabsTrigger>
           <TabsTrigger value="identities" class="acct-tab">登录方式</TabsTrigger>
         </TabsList>
 
@@ -614,6 +668,13 @@ onMounted(async () => {
           </template>
         </TabsContent>
 
+        <!-- 通知：被回复 / 举报处置结果，登录后自动加载 -->
+        <TabsContent value="notifications" class="acct-panel">
+          <NotificationList :active="accountTab === 'notifications'"
+            @unread="unreadCount = $event"
+            @unauthorized="onNotificationAuthExpired" />
+        </TabsContent>
+
         <!-- 已绑定身份 -->
         <TabsContent value="identities" class="acct-panel">
           <p v-if="identitiesBusy" class="auth-hint" role="status">正在读取已绑定身份…</p>
@@ -677,7 +738,7 @@ onMounted(async () => {
 
       <!-- 渠道能力由服务端 /auth/providers 决定：未配置时不渲染链接，避免 503 -->
       <div v-if="mode !== 'forgot'" class="auth-provider">
-        <a v-if="providers?.github" class="auth-gh" href="/api/v1/auth/github/login">
+        <a v-if="providers?.github" class="auth-gh" :href="githubHref">
           使用 GitHub 登录 ↗
         </a>
         <button v-else type="button" class="auth-gh" disabled aria-describedby="auth-gh-note">
@@ -884,6 +945,15 @@ onMounted(async () => {
 }
 .acct-tab[data-state="active"] { color: var(--vp-c-brand-1); border-bottom-color: var(--vp-c-brand-1); }
 .acct-tab:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: -2px; }
+.acct-tab-count {
+  display: inline-block; margin-left: 0.2rem; padding: 0 0.35rem;
+  border-radius: 999px; font-size: 0.68rem; font-weight: 700;
+  color: var(--rw-on-brand); background: var(--vp-c-brand-1);
+}
+.acct-sr {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
 .acct-panel:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 3px; }
 .acct-facts { display: grid; gap: 0.55rem; margin: 0 0 1rem; }
 .acct-fact { display: grid; grid-template-columns: 5.5rem 1fr; gap: 0.6rem; align-items: baseline; }

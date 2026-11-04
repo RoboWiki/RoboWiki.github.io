@@ -13,7 +13,7 @@ from sqlmodel import Session, select
 
 from ..core.config import settings
 from ..core.db import session
-from ..core.security import decode_token, password_fingerprint
+from ..core.security import decode_token_payload, password_fingerprint
 from ..models import User
 
 
@@ -47,6 +47,15 @@ def _token_matches(user: User | None, pv: str) -> bool:
     return secrets.compare_digest(pv, password_fingerprint(user.password_hash))
 
 
+def _epoch_matches(user: User, se: int) -> bool:
+    """`se` 是签 token 时的会话代次；`logout-all` 自增 epoch 即全量撤销。
+
+    旧 token 没有 `se` 时 `decode_token_payload` 补 0，因此与 epoch=0 的
+    存量账号（以及所有现有测试）保持兼容。
+    """
+    return int(se) == int(user.session_epoch or 0)
+
+
 def current_user(
     db: Db,
     credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer_scheme)] = None,
@@ -55,9 +64,10 @@ def current_user(
     if not token:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "需要登录",
                             headers={"WWW-Authenticate": "Bearer"})
-    handle, pv = decode_token(token)
+    payload = decode_token_payload(token)
+    handle, pv = payload["sub"], payload["pv"]
     user = db.exec(select(User).where(User.handle == handle)).first()
-    if not _token_matches(user, pv):
+    if not _token_matches(user, pv) or not _epoch_matches(user, payload["se"]):
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "令牌无效或已过期",
                             headers={"WWW-Authenticate": "Bearer"})
     return user
@@ -71,11 +81,14 @@ def optional_user(
     if not token:
         return None
     try:
-        handle, pv = decode_token(token)
+        payload = decode_token_payload(token)
     except HTTPException:
         return None
-    user = db.exec(select(User).where(User.handle == handle)).first()
-    return user if _token_matches(user, pv) else None
+    user = db.exec(select(User).where(User.handle == payload["sub"])).first()
+    if user is None:
+        return None
+    return user if (_token_matches(user, payload["pv"])
+                     and _epoch_matches(user, payload["se"])) else None
 
 
 CurrentUser = Annotated[User, Depends(current_user)]

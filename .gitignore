@@ -72,9 +72,15 @@ console/tsconfig.tsbuildinfo
 deploy/backup/*.dump
 deploy/backup/*.dump.tmp
 
+# 可选卫星社区（NodeBB）的本地配置：含 secret 与数据库口令
+deploy/community/
+
 # outbox 运行时产物（测试/生产）
 deploy/var/outbox/*.json
 
 # 微信开发者工具个人设置（关闭域名校验等，不入库）
 clients/wechat-mini/project.private.config.json
 clients/wechat-mini/tests/node_modules/
+
+# 评论配图（P1 媒体上传）
+deploy/var/media/

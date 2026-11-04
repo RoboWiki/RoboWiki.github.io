@@ -17,7 +17,7 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
 import { findShareEntry, type ShareEntry } from '../lib/share'
-import { apiAvailable, PRIMARY_SITE } from '../lib/api'
+import { ApiError, apiAvailable, apiErrorMessage, apiFetch, isMirror, MIRROR_READONLY_NOTE, PRIMARY_SITE } from '../lib/api'
 import { clearToken, getToken } from '../lib/auth'
 
 type Me = { handle: string; display_name: string; email_verified?: boolean }
@@ -31,9 +31,6 @@ type Mine = {
   created_at: string
   reviews?: Review[]
 }
-
-const API = ((import.meta.env.VITE_ROBOWIKI_API as string | undefined) || '/api/v1')
-  .replace(/\/$/, '')
 
 const entry = ref<ShareEntry | null>(null)
 const detail = ref<{ params?: { key: string; label: string; value: string }[] } | null>(null)
@@ -113,22 +110,9 @@ const loginHref = computed(() => {
 
 const token = () => getToken()
 
-function apiError(detail: unknown): string {
-  if (typeof detail === 'string') return detail
-  if (Array.isArray(detail)) return detail.map((x: any) => x.msg || String(x)).join('；')
-  return '请求失败，请稍后再试'
-}
-
+/** detail 解析 + 401/429/断网文案统一在 lib/api，组件不再自己拼 base */
 async function req<T>(path: string, init?: RequestInit): Promise<T> {
-  const headers: Record<string, string> = { ...(init?.headers as any) }
-  if (init?.body) headers['Content-Type'] = 'application/json'
-  const t = token()
-  if (t) headers['Authorization'] = `Bearer ${t}`
-  const r = await fetch(`${API}${path}`, { ...init, headers })
-  const text = await r.text()
-  const data = text ? JSON.parse(text) : null
-  if (!r.ok) throw new Error(apiError(data?.detail))
-  return data as T
+  return apiFetch<T>(path, init)
 }
 
 async function loadMine() {
@@ -145,8 +129,9 @@ onMounted(async () => {
   if (!apiReady.value) return
   detail.value = await fetch(withBase(entry.value.json)).then(r => r.ok ? r.json() : null).catch(() => null)
   if (token()) {
-    me.value = await req<Me>('/auth/me').catch(() => {
-      clearToken()
+    me.value = await req<Me>('/auth/me').catch((e) => {
+      // 只有 401 才清 token；断网/CORS 不要把用户踢下线
+      if (e instanceof ApiError && e.status === 401) clearToken()
       return null
     })
     await loadMine()
@@ -257,7 +242,7 @@ const onFixSubmit = onFixSubmitRaw(async values => {
     } })
     await loadMine()
   } catch (e: any) {
-    serverError.value = e.message || '请求失败，请稍后再试'
+    serverError.value = apiErrorMessage(e, '请求失败，请稍后再试')
   }
 })
 
@@ -285,7 +270,7 @@ async function requestVerify() {
     verifySent.value = true
     notice.value = '验证邮件已发送；开发环境可在服务端日志看到令牌'
   } catch (e: any) {
-    serverError.value = e.message || '请求失败，请稍后再试'
+    serverError.value = apiErrorMessage(e, '请求失败，请稍后再试')
   }
 }
 
@@ -300,7 +285,7 @@ const onVerifySubmit = onVerifySubmitRaw(async values => {
     verifyCtx.resetForm()
     notice.value = '邮箱已验证'
   } catch (e: any) {
-    serverError.value = e.message || '请求失败，请稍后再试'
+    serverError.value = apiErrorMessage(e, '请求失败，请稍后再试')
   }
 })
 
@@ -325,7 +310,7 @@ function logout() {
          探不到后端就不要给一个点了必然失败的按钮。只留主站与 GitHub 两条出口。 -->
     <template v-if="apiReady === false">
       <p class="rw-fix-text">
-        站内提交需要主站服务，当前为只读镜像 ·
+        {{ isMirror() ? MIRROR_READONLY_NOTE : '主站服务暂时不可达，当前显示构建快照（只读）' }} ·
         <a :href="PRIMARY_SITE" target="_blank" rel="noopener">robowiki.org.cn</a>
       </p>
       <p class="rw-fix-hint">

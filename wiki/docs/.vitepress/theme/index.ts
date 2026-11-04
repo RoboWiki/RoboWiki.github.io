@@ -6,6 +6,7 @@ import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import PageComments from '../components/PageComments.vue'
 import AuthPanel from '../components/AuthPanel.vue'
+import NotificationList from '../components/NotificationList.vue'
 import ContributorGrid from '../components/ContributorGrid.vue'
 import ShareBox from '../components/ShareBox.vue'
 import DataFix from '../components/DataFix.vue'
@@ -24,6 +25,7 @@ export default {
   enhanceApp({ app }) {
     app.component('PageComments', PageComments)
     app.component('AuthPanel', AuthPanel)
+    app.component('NotificationList', NotificationList)
     app.component('PartExplorer', defineAsyncComponent(() => import('../components/PartExplorer.vue')))
     app.component('SupplierList', defineAsyncComponent(() => import('../components/SupplierList.vue')))
     app.component('ContributorGrid', ContributorGrid)

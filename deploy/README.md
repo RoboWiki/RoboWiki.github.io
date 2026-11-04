@@ -62,8 +62,8 @@ cp deploy/.env.example deploy/.env
 bash scripts/fetch-data-release.sh
 
 # 3) worker 的 outbox 目录（Linux 宿主必需）
-mkdir -p deploy/var/outbox
-chown -R 10001:10001 deploy/var/outbox
+mkdir -p deploy/var/outbox deploy/var/media
+chown -R 10001:10001 deploy/var/outbox deploy/var/media
 
 # 4) 起服务（migrate 跑完 api 才启动）
 cd deploy
@@ -426,5 +426,7 @@ curl -s -o /dev/null -w '%{http_code}\n' https://robowiki.org.cn/no-such-page
 - 镜像由本机 `docker compose build` 构建，CI 不构建镜像。
 - 静态站产物（部件页、`public/catalog.json`、产品图）不入库，由 Pages 的 `pipeline build` 生成。
 - 1Panel 站点设置可能重写 server 块；`deploy/1panel-site.conf` 是唯一模板，改完要重新套用。
+- 卫星论坛 NodeBB 是**独立 Compose 项目**（`deploy/compose.community.yml`），不随本文件启动，
+  也不要接进 `robowiki_default`；触发条件与边界见 `docs/COMMUNITY-NODEBB.md`。
 - 当前 OpenResty 是 host 网络，不需要 `docker network connect`；如果以后改成 bridge 网络，容器重建后需要重连 `robowiki_default`。
 - CSP 必须保留 `giscus.app` 与 `avatars.githubusercontent.com` 两个外部源，否则评论区和贡献者头像会被拦。

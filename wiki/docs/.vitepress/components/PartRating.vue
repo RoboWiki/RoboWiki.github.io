@@ -21,8 +21,8 @@
 import { computed, onMounted, ref } from 'vue'
 import { withBase } from 'vitepress'
 import { RadioGroupItem, RadioGroupRoot } from 'reka-ui'
-import { apiAvailable } from '../lib/api'
-import { authHeaders, clearToken, getToken } from '../lib/auth'
+import { ApiError, apiAvailable, apiErrorMessage, apiFetch, isConnectivityError, isMirror, MIRROR_READONLY_NOTE } from '../lib/api'
+import { getToken } from '../lib/auth'
 
 interface Dims { spec_trust?: number; build?: number; docs?: number; value?: number; compat?: number }
 
@@ -183,11 +183,7 @@ async function loadLive() {
   loggedIn.value = !!getToken()
   if (!apiUp.value) return
   try {
-    const r = await fetch(`/api/v1/ratings/${encodeURIComponent(props.partId)}`,
-      { headers: authHeaders() })
-    if (r.status === 401) { clearToken(); loggedIn.value = false; return }
-    if (!r.ok) return
-    const d = await r.json()
+    const d = await apiFetch<any>(`/ratings/${encodeURIComponent(props.partId)}`)
     mine.value = d.mine || null
     if (mine.value) {
       score.value = mine.value.score
@@ -196,7 +192,11 @@ async function loadLive() {
     }
     // 站内还没有票时保留 GitHub 快照，避免把已有评价显示成 0。
     if (d.count > 0 || !s.value.count) mergeLive(d)
-  } catch { /* 后端暂时不可用时保留快照 */ }
+  } catch (e) {
+    // 断网/主站不可达：保留构建快照（镜像端就是这样工作的）
+    if (isMirror() && isConnectivityError(e)) source.value = s.value.count ? 'snapshot' : 'none'
+    // 失败不清 token：GET 评分公开，401 只可能是服务端异常配置
+  }
 }
 
 async function submitRating() {
@@ -206,13 +206,10 @@ async function submitRating() {
   if (!score.value) { ratingError.value = '请选择 1–5 分'; return }
   submitting.value = true
   try {
-    const r = await fetch(`/api/v1/ratings/${encodeURIComponent(props.partId)}`, {
+    const d = await apiFetch<any>(`/ratings/${encodeURIComponent(props.partId)}`, {
       method: 'POST',
-      headers: { ...authHeaders(), 'Content-Type': 'application/json' },
       body: JSON.stringify({ score: score.value, own_hardware: own.value, note: note.value.trim() }),
     })
-    const d = await r.json().catch(() => ({}))
-    if (!r.ok) throw new Error(typeof d.detail === 'string' ? d.detail : '评分失败')
     loggedIn.value = true
     mine.value = d.mine || null
     mergeLive(d)
@@ -220,7 +217,12 @@ async function submitRating() {
       ? '评分已保存；对应评价帖已被隐藏，暂不计入公开均分'
       : mine.value ? '已更新你的评分' : '评分已记录'
   } catch (e: any) {
-    ratingError.value = e.message
+    if (e instanceof ApiError && e.status === 401) {
+      loggedIn.value = false
+      ratingError.value = '登录已过期，请重新登录'
+      return
+    }
+    ratingError.value = apiErrorMessage(e, '评分失败，请稍后重试')
   } finally {
     submitting.value = false
   }
@@ -231,10 +233,7 @@ async function removeRating() {
   ratingNotice.value = ''
   submitting.value = true
   try {
-    const r = await fetch(`/api/v1/ratings/${encodeURIComponent(props.partId)}`, {
-      method: 'DELETE', headers: authHeaders(),
-    })
-    if (!r.ok && r.status !== 404) throw new Error('撤销失败')
+    await apiFetch(`/ratings/${encodeURIComponent(props.partId)}`, { method: 'DELETE' })
     mine.value = null
     score.value = 0
     own.value = false
@@ -242,7 +241,19 @@ async function removeRating() {
     ratingNotice.value = '已撤销评分'
     await loadLive()
   } catch (e: any) {
-    ratingError.value = e.message
+    if (e instanceof ApiError && e.status === 404) {
+      // 已经没有这票，按成功处理
+      mine.value = null
+      score.value = 0
+      ratingNotice.value = '已撤销评分'
+      return
+    }
+    if (e instanceof ApiError && e.status === 401) {
+      loggedIn.value = false
+      ratingError.value = '登录已过期，请重新登录'
+      return
+    }
+    ratingError.value = apiErrorMessage(e, '撤销失败，请稍后重试')
   } finally {
     submitting.value = false
   }
@@ -359,6 +370,7 @@ onMounted(async () => {
     </div>
 
     <p v-if="!apiUp" class="rt-hint">
+      <template v-if="s.count"><strong>{{ isMirror() ? MIRROR_READONLY_NOTE : '主站服务暂时不可达，这里显示构建快照' }}</strong>。<br /></template>
       在 GitHub 上开一条 <strong>issue</strong>（表单，约 1 分钟）：三项必填（总分 / 是否用过 / 一句话理由），分维度选填。
       <strong>一人一件一票</strong>，改主意就编辑那条 issue。汇总由 Actions 自动跑：不是实时，但每一条都能查到是谁、凭什么。
     </p>

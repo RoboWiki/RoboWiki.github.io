@@ -15,6 +15,54 @@ const SITE_DESC = 'RoboWiki —— 机器人开发的开放资料底稿：可核
 const DEFAULT_OG_PATH = '/og-default.png'
 const DEFAULT_OG_IMAGE = `${SITE}${DEFAULT_OG_PATH}`
 
+// API 主域：github.io 镜像跨域调用登录/评论/评分/纠错。CSP 与 PWA 都要放行它。
+const API_ORIGIN = 'https://robowiki.org.cn'
+
+/**
+ * 每页注入的 CSP（meta 形式；frame-ancestors 在 meta 里无效，交给反代）。
+ *
+ * 为什么必须放 `'unsafe-inline'`：
+ *   · VitePress 在 <head> 内联暗色模式初始化脚本与 JSON-LD
+ *   · 页面样式以内联 <style> 注入
+ * 为什么 connect-src 要含 localhost：
+ *   · `npm run dev` 的 HMR 走 ws，本地 API 走 vite proxy
+ * 为什么 script-src 要有 giscus.app：
+ *   · 纯静态镜像的降级评论由 giscus 的 client.js 挂载
+ * dev 额外放 `'unsafe-eval'`（Vite 的 HMR/调试需要），生产不给。
+ */
+function cspContent(): string {
+  const dev = process.env.NODE_ENV !== 'production'
+  const script = ["'self'", "'unsafe-inline'", 'https://giscus.app']
+  if (dev) script.push("'unsafe-eval'")
+  const connect = [
+    "'self'",
+    API_ORIGIN,
+    'http://localhost:*',
+    'http://127.0.0.1:*',
+    'ws://localhost:*',
+    'ws://127.0.0.1:*',
+    'https://giscus.app',
+  ]
+  return [
+    "default-src 'self'",
+    `script-src ${script.join(' ')}`,
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: blob: https:",
+    "font-src 'self' data:",
+    `connect-src ${connect.join(' ')}`,
+    'frame-src https://giscus.app',
+    "media-src 'self' https:",
+    "worker-src 'self' blob:",
+    "manifest-src 'self'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    `form-action 'self' ${API_ORIGIN}`,
+  ].join('; ')
+}
+
+const CSP = cspContent()
+const CSP_META: HeadConfig = ['meta', { 'http-equiv': 'Content-Security-Policy', content: CSP }]
+
 /** frontmatter.image 可以是 /parts/x.jpg，也可以是完整 URL；输出必须是绝对地址。 */
 function absoluteImage(src: string): string {
   return /^https?:\/\//i.test(src) ? src : `${SITE}/${src.replace(/^\/+/, '')}`
@@ -198,6 +246,7 @@ export default withPwa(defineConfig({
     // 404 页不该被索引，也不该把 canonical 指到自己；群里的坏链会固化错误 URL。
     if (isNotFound) {
       return [
+        CSP_META,
         ['meta', { name: 'robots', content: 'noindex, nofollow' }],
         ['meta', { property: 'og:image', content: DEFAULT_OG_IMAGE }],
         ['meta', { property: 'og:image:alt', content: 'RoboWiki · 机器人开发的开放资料底稿' }],
@@ -216,6 +265,7 @@ export default withPwa(defineConfig({
     }
 
     const head: HeadConfig[] = [
+      CSP_META,
       ['link', { rel: 'canonical', href: url }],
       ['meta', { property: 'og:type', content: isHome ? 'website' : 'article' }],
       ['meta', { property: 'og:title', content: title }],
@@ -291,8 +341,24 @@ export default withPwa(defineConfig({
       clientsClaim: true,
       skipWaiting: true,
       runtimeCaching: [
+        // ── API 一律 NetworkOnly ─────────────────────────────────────────
+        // 动态请求（登录态、评论、评分、纠错）缓存一次就会串号/串页：
+        // 换账号后看到上一个人的 /auth/me，或在 A 页看到 B 页的评论。
         {
+          // 同源 API（主站 robowiki.org.cn 自己）
           urlPattern: ({ url }) => url.pathname.startsWith('/api/'),
+          handler: 'NetworkOnly',
+        },
+        {
+          // 镜像站（github.io）跨域调主站 API —— 必须显式按 origin 再拦一次。
+          // 注意：urlPattern 会被 workbox 序列化进 sw.js，闭包变量在那里不存在，
+          // 必须写字面量，不能引用 API_ORIGIN。
+          urlPattern: ({ url }) => url.origin === 'https://robowiki.org.cn' && url.pathname.startsWith('/api/'),
+          handler: 'NetworkOnly',
+        },
+        {
+          // 任何落到 /auth/ 的请求（/auth/me、handoff、identities…）永不缓存
+          urlPattern: ({ url }) => url.pathname.includes('/auth/'),
           handler: 'NetworkOnly',
         },
         {
@@ -314,7 +380,9 @@ export default withPwa(defineConfig({
         },
         {
           // 列表数据虽在构建期打进页面，ShareBox/评分仍会取 JSON；离线时不空白。
-          urlPattern: ({ url }) => url.pathname.endsWith('.json'),
+          // 只缓存本站静态 JSON，别把跨域 API 响应卷进来。
+          urlPattern: ({ url }) =>
+            url.origin === self.location.origin && url.pathname.endsWith('.json'),
           handler: 'StaleWhileRevalidate',
           options: {
             cacheName: 'data-json',

@@ -4,8 +4,8 @@
 于是社区信息流、零件评价、整机方案共用同一套 Post / Comment / Vote，
 只差 `kind` 与 `part_id`。少一套机制，少一处漂移。
 
-实体取自开源社区项目的标准骨架（user / post / comment / vote / report / badge …），
-精简掉本轮不需要的通知、收藏、修订。
+实体取自开源社区项目的标准骨架（user / post / comment / vote / report / notification …），
+收藏、修订仍不在本轮范围内。
 """
 from __future__ import annotations
 
@@ -80,6 +80,9 @@ class User(SQLModel, table=True):
     avatar_hue: int = 160                              # 头像底色，免上传
     is_staff: bool = False
     reputation: int = 0                                # 收到的赞之和，冗余字段
+    #: 会话代次。access JWT 的 `se` 必须等于它；`logout-all` 自增一次即可
+    #: 让该账号此前签发的**所有** access token 立刻失效（无需黑名单）。
+    session_epoch: int = 0
     created_at: datetime = Field(default_factory=utcnow)
 
     #: 帖子数 / 评论数在个人页按需聚合，不落库
@@ -95,6 +98,55 @@ class EmailToken(SQLModel, table=True):
     user_id: int = Field(foreign_key="users.id", index=True)
     purpose: str = Field(index=True)          # verify | reset
     token_hash: str = Field(index=True, unique=True)
+    expires_at: datetime = Field(index=True)
+    used_at: datetime | None = None
+    created_at: datetime = Field(default_factory=utcnow)
+
+
+class RefreshToken(SQLModel, table=True):
+    """一枚 refresh token（只存 hash）。一次登录 = 一个 family。
+
+    轮换规则：每次 `/auth/refresh` 都把当前行标记 `used_at` 并签发同一
+    family 的新行。若一个已用过的 refresh 再次出现，说明它被复制/窃取了，
+    整条 family 立即撤销并 401 —— 正常客户端只会持有一条链的末端。
+    """
+
+    __tablename__ = "refresh_tokens"
+    __table_args__ = (
+        Index("ix_refresh_user_family", "user_id", "family"),
+        Index("ix_refresh_expires", "expires_at"),
+    )
+
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="users.id", index=True)
+    #: sha256(raw)；原文只回给客户端一次，不落库
+    token_hash: str = Field(index=True, unique=True)
+    #: 同一次登录轮换出来的 token 共享一个 family；复用检测按它整组撤销
+    family: str = Field(index=True)
+    #: 来源标签（web / console / mirror / mini / 来源 host），仅用于会话列表
+    client: str = "web"
+    expires_at: datetime = Field(index=True)
+    used_at: datetime | None = None
+    revoked_at: datetime | None = None
+    created_at: datetime = Field(default_factory=utcnow)
+
+
+class HandoffCode(SQLModel, table=True):
+    """GitHub 回跳的一次性 code。
+
+    OAuth 回调不再把 JWT 放进 Location（那会进浏览器历史与反代日志）；
+    改为 302 带一个 60 秒、只能换一次的 code，静态端用
+    `POST /auth/handoff` 换 TokenOut。这里同样只存 hash。
+    """
+
+    __tablename__ = "auth_handoffs"
+    __table_args__ = (Index("ix_handoff_expires", "expires_at"),)
+
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="users.id", index=True)
+    code_hash: str = Field(index=True, unique=True)
+    #: 校验过白名单的 origin（scheme://host[:port]）
+    return_to: str
     expires_at: datetime = Field(index=True)
     used_at: datetime | None = None
     created_at: datetime = Field(default_factory=utcnow)
@@ -182,6 +234,50 @@ class Comment(SQLModel, table=True):
     created_at: datetime = Field(default_factory=utcnow, index=True)
 
 
+class Notification(SQLModel, table=True):
+    """站内通知：被回复、举报处置结果。
+
+    刻意只做「写入即读」的最小集：不建订阅表、不发推送。通知是**结果**，
+    不是事实源 —— 主流程（发评论/处置举报）必须先成功，通知写失败只记日志。
+    `read_at` 为空即未读；列表与 unread_count 都按它过滤。
+    """
+
+    __tablename__ = "notifications"
+    __table_args__ = (
+        Index("ix_notifications_user_read", "user_id", "read_at"),
+        Index("ix_notifications_user_created", "user_id", "created_at"),
+    )
+
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="users.id", index=True)   # 收件人
+    type: str = Field(index=True)                              # reply | moderation
+    subject: str = ""                                          # 一句话标题
+    body: str = ""                                             # 摘要，不含全文
+    #: 站内相对链接（例：/parts/actuator/cubemars#comment-12）
+    link: str | None = None
+    read_at: datetime | None = Field(default=None, index=True)
+    created_at: datetime = Field(default_factory=utcnow, index=True)
+
+
+class Media(SQLModel, table=True):
+    """用户上传的图片（评论配图）。
+
+    只存元数据，文件落在 `settings.media_dir`；id 是 32 位 uuid hex，
+    既是主键也是文件名（扩展名按实际类型补），不做目录分片 —— 单机
+    规模用不上，分片会让备份和迁移多一层映射。
+    """
+
+    __tablename__ = "media"
+
+    id: str = Field(primary_key=True)
+    user_id: int = Field(foreign_key="users.id", index=True)
+    filename: str                                      # 磁盘文件名（id + 扩展名）
+    original_name: str = ""                            # 客户端原名，仅用于展示
+    content_type: str                                  # image/jpeg | image/png | image/webp
+    size: int = 0
+    created_at: datetime = Field(default_factory=utcnow, index=True)
+
+
 class Vote(SQLModel, table=True):
     __tablename__ = "votes"
     __table_args__ = (
@@ -247,17 +343,36 @@ class WikiComment(SQLModel, table=True):
     形态参考 YunQianDoc（VitePress + giscus）：每篇文章底下就能说话，
     不需要先进「论坛」再找板块。这里用自托管实现，因为 giscus 需要
     一个公开的 GitHub 仓库并开启 Discussions。
+
+    三级字段各管一件事，互不替代：
+      · `parent_id` —— 回复谁（直接父节点，前端据此组树）；
+      · `root_id`   —— 属于哪条根讨论（分页、跨层回复、通知去重都按它）；
+      · `status`    —— visible / pending / hidden。pending 只有作者与站务
+                       能看到（内容安全拦截或待人工复核）；
+      · `deleted_at`—— 软删除。删父节点不动子节点，页面用占位节点保留线程。
+    `hidden` 保留为站务处置的兼容字段：hide 时同时写 status=hidden，
+    旧的只读 `hidden == False` 的查询不会因此放出已处置内容。
     """
 
     __tablename__ = "wiki_comments"
-    __table_args__ = (Index("ix_wiki_page_created", "page", "created_at"),)
+    __table_args__ = (
+        Index("ix_wiki_page_created", "page", "created_at"),
+        Index("ix_wiki_root_created", "root_id", "created_at"),
+        Index("ix_wiki_page_status", "page", "status"),
+    )
 
     id: int | None = Field(default=None, primary_key=True)
     page: str = Field(index=True)                      # 例：parts/actuator/cubemars
     user_id: int = Field(foreign_key="users.id", index=True)
     body: str
     parent_id: int | None = Field(default=None, foreign_key="wiki_comments.id")
-    hidden: bool = Field(default=False, index=True)
+    #: 根讨论 id；根节点为 NULL（读取时按 parent 链回填，兼容旧数据）
+    root_id: int | None = Field(default=None, foreign_key="wiki_comments.id",
+                                index=True)
+    status: str = Field(default="visible", index=True)  # visible | pending | hidden
+    hidden: bool = Field(default=False, index=True)     # 兼容：站务处置标记
+    deleted_at: datetime | None = Field(default=None, index=True)
+    deleted_by: int | None = Field(default=None, foreign_key="users.id")
     created_at: datetime = Field(default_factory=utcnow)
 
 

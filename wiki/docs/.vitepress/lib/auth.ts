@@ -10,6 +10,7 @@
  */
 const TOKEN_KEY = 'roboselect.token'
 const LEGACY_KEY = 'robowiki.token'
+const REFRESH_KEY = 'roboselect.refresh'
 
 export function getToken(): string | null {
   try {
@@ -30,6 +31,17 @@ export function setToken(token: string): void {
   } catch { /* ignore */ }
 }
 
+export function getRefreshToken(): string | null {
+  try { return localStorage.getItem(REFRESH_KEY) } catch { return null }
+}
+
+export function setRefreshToken(token: string | null | undefined): void {
+  try {
+    if (token) localStorage.setItem(REFRESH_KEY, token)
+    else localStorage.removeItem(REFRESH_KEY)
+  } catch { /* ignore */ }
+}
+
 export function clearToken(): void {
   try {
     localStorage.removeItem(TOKEN_KEY)
@@ -37,28 +49,71 @@ export function clearToken(): void {
   } catch { /* ignore */ }
 }
 
+/** 退出 / refresh 失效：access 与 refresh 一起清，避免半登录状态。 */
+export function clearAuth(): void {
+  clearToken()
+  setRefreshToken(null)
+}
+
 export function authHeaders(): Record<string, string> {
   const token = getToken()
   return token ? { Authorization: `Bearer ${token}` } : {}
 }
 
-/**
- * OAuth 回调把令牌放在 `#token=<jwt>`。取出后**立刻**从地址栏抹掉：
- * fragment 不会发给服务器，但留在历史记录里会随刷新/分享泄露。
- *
- * 只认 `#token=` 开头（`#` 可有可无），其余 hash（文档锚点）原样保留。
- * 在 SSR / 非浏览器环境返回 null。
- */
-export function consumeHashToken(): string | null {
-  if (typeof window === 'undefined') return null
-  const m = window.location.hash.match(/^#?token=([^&]+)/)
-  if (!m) return null
-  let token = m[1]
+export type HashAuth = {
+  /** 兼容旧回调：`#token=<jwt>` 直接就是登录令牌 */
+  token?: string
+  /** 新回调（跨域镜像）：`#code=<一次性兑换码>`，需 POST /auth/handoff */
+  code?: string
+  /** OAuth 失败时后端/网关带回的 `#error=` */
+  error?: string
+  errorDescription?: string
+}
+
+function decode(value: string | null): string | undefined {
+  if (!value) return undefined
   try {
-    token = decodeURIComponent(token)
-  } catch { /* 不是合法编码就按原文用 */ }
-  if (!token) return null
+    return decodeURIComponent(value) || undefined
+  } catch {
+    return value || undefined
+  }
+}
+
+/**
+ * 读取地址栏 fragment 里的登录结果，**不改地址栏**。
+ * 解析失败（比如文档锚点 `#section`）返回空对象。
+ */
+export function readHashAuth(): HashAuth {
+  if (typeof window === 'undefined') return {}
+  const raw = window.location.hash.replace(/^#/, '')
+  if (!raw) return {}
+  const params = new URLSearchParams(raw)
+  const result: HashAuth = {
+    token: decode(params.get('token')),
+    code: decode(params.get('code')),
+    error: decode(params.get('error')) || decode(params.get('error_code')),
+    errorDescription: decode(params.get('error_description')),
+  }
+  return result.token || result.code || result.error ? result : {}
+}
+
+/** 把登录结果从地址栏抹掉：fragment 不发服务器，但会留在历史/分享链接里 */
+export function clearHashAuth(): void {
+  if (typeof window === 'undefined') return
+  const auth = readHashAuth()
+  if (!auth.token && !auth.code && !auth.error) return
   window.history.replaceState(
     null, '', window.location.pathname + window.location.search)
+}
+
+/**
+ * 兼容入口：OAuth 回调用 `#token=<jwt>` 时取令牌并清理 fragment。
+ * 新代码请用 readHashAuth() / clearHashAuth()，把「读」和「清理」分开 ——
+ * `#code=` 要先换 token 成功再清理，不能读到就抹。
+ */
+export function consumeHashToken(): string | null {
+  const { token } = readHashAuth()
+  if (!token) return null
+  clearHashAuth()
   return token
 }

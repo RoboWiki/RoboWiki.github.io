@@ -12,22 +12,26 @@ import re
 import secrets
 import warnings
 from datetime import datetime, timedelta, timezone
+from urllib.parse import urlparse
 
 import httpx
 from fastapi import APIRouter, HTTPException, Request, status
 from fastapi.responses import JSONResponse, RedirectResponse
+from sqlalchemy import update
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, select
 
 from ...core.config import settings
 from ...core.security import (create_token, dummy_password_hash, hash_password,
+                              hash_secret, new_handoff_code, new_refresh_token,
                               unusable_password_hash, verify_password)
 from ...crud import user_out
 from ...mailer import MailError, send_email
-from ...models import EmailToken, Identity, User
-from ...schemas import (AccountOut, ForgotIn, IdentityOut, LoginIn,
-                        PasswordChangeIn, ProvidersOut, RegisterIn,
-                        ResetPasswordIn, TokenOut, VerifyEmailIn, WechatMiniIn)
+from ...models import EmailToken, HandoffCode, Identity, RefreshToken, User
+from ...schemas import (AccountOut, ForgotIn, HandoffIn, IdentityOut, LoginIn,
+                        LogoutIn, PasswordChangeIn, ProvidersOut, RefreshIn,
+                        RegisterIn, ResetPasswordIn, SessionOut, TokenOut,
+                        VerifyEmailIn, WechatMiniIn)
 from ..deps import CurrentUser, Db, rate_limit
 
 # OAuth/OIDC 的协议细节（授权码、state、PKCE）全部交给 Authlib。
@@ -90,9 +94,7 @@ def register(payload: RegisterIn, request: Request, db: Db):
     db.add(u)
     db.commit()
     db.refresh(u)
-    return TokenOut(access_token=create_token(u.handle, u.password_hash,
-                                              scopes=("password",)),
-                    user=_account_out(db, u))
+    return _issue_session(db, u, request, scopes=("password",))
 
 
 @router.post("/login", response_model=TokenOut)
@@ -105,9 +107,7 @@ def login(payload: LoginIn, request: Request, db: Db):
     ok = verify_password(payload.password, stored)
     if u is None or not ok:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "账号或密码不对")
-    return TokenOut(access_token=create_token(u.handle, u.password_hash,
-                                              scopes=("password",)),
-                    user=_account_out(db, u))
+    return _issue_session(db, u, request, scopes=("password",))
 
 
 @router.get("/me", response_model=AccountOut)
@@ -117,6 +117,237 @@ def me(user: CurrentUser, db: Db):
 
 def _hash(raw: str) -> str:
     return hashlib.sha256(raw.encode()).hexdigest()
+
+
+# ── 会话：access 短寿命 + refresh 轮换 ───────────────────────────────────────
+def _utcnow() -> datetime:
+    return datetime.now(timezone.utc)
+
+
+def _client_label(request: Request) -> str:
+    """会话列表里显示的来源。优先显式 X-Client（console/mirror/mini）。"""
+    raw = (request.headers.get("x-client") or "").strip().lower()
+    if raw:
+        cleaned = re.sub(r"[^a-z0-9_-]+", "-", raw)[:24].strip("-")
+        if cleaned:
+            return cleaned
+    host = urlparse(request.headers.get("origin") or "").netloc.lower()
+    return host[:32] or "web"
+
+
+def _issue_session(db: Session, user: User, request: Request, *,
+                   scopes: tuple[str, ...] | None = None,
+                   family: str | None = None,
+                   client: str | None = None) -> TokenOut:
+    """签一对 access + refresh；登录 / 刷新 / handoff 全走这一条路。
+
+    refresh 原文只在这里返回一次，库里只留 sha256。`family` 相同即同一条
+    会话链；刷新时传旧 family，复用检测才能整链撤销。
+    """
+    raw_refresh = new_refresh_token()
+    db.add(RefreshToken(
+        user_id=user.id,
+        token_hash=hash_secret(raw_refresh),
+        family=family or secrets.token_hex(16),
+        client=(client or _client_label(request))[:32],
+        expires_at=_utcnow() + timedelta(days=settings.refresh_token_days),
+    ))
+    db.commit()
+    return TokenOut(
+        access_token=create_token(user.handle, user.password_hash,
+                                  scopes=scopes,
+                                  session_epoch=int(user.session_epoch or 0)),
+        refresh_token=raw_refresh,
+        user=_account_out(db, user),
+    )
+
+
+def _revoke_family(db: Session, user_id: int, family: str) -> int:
+    """撤销一条会话链（refresh 复用 / 单端登出）。返回受影响行数。"""
+    result = db.execute(update(RefreshToken).where(
+        RefreshToken.user_id == user_id,
+        RefreshToken.family == family,
+        RefreshToken.revoked_at.is_(None),
+    ).values(revoked_at=_utcnow()))
+    db.commit()
+    return result.rowcount or 0
+
+
+def _revoke_all_sessions(db: Session, user_id: int) -> int:
+    result = db.execute(update(RefreshToken).where(
+        RefreshToken.user_id == user_id,
+        RefreshToken.revoked_at.is_(None),
+    ).values(revoked_at=_utcnow()))
+    db.commit()
+    return result.rowcount or 0
+
+
+def _refresh_rejected() -> HTTPException:
+    return HTTPException(status.HTTP_401_UNAUTHORIZED,
+                         "登录会话已失效，请重新登录",
+                         headers={"WWW-Authenticate": "Bearer"})
+
+
+@router.post("/refresh", response_model=TokenOut)
+def refresh_session(payload: RefreshIn, request: Request, db: Db):
+    """用 refresh 换新的一对 token。每次都轮换，旧值立刻作废。
+
+    旧 refresh 被再次使用 = 它已落到第二个人手里 → 整条 family 撤销并 401。
+    正常客户端只持有链末端，不会踩到这条分支。
+    """
+    rate_limit(request, "auth-refresh", 120)
+    token_hash = hash_secret(payload.refresh_token)
+    # 条件 UPDATE 保证「一次性」：并发两个请求只有一个能把 used_at 从 NULL 改掉。
+    claimed = db.execute(update(RefreshToken).where(
+        RefreshToken.token_hash == token_hash,
+        RefreshToken.used_at.is_(None),
+        RefreshToken.revoked_at.is_(None),
+        RefreshToken.expires_at > _utcnow(),
+    ).values(used_at=_utcnow()))
+    if claimed.rowcount == 1:
+        db.commit()
+        row = db.exec(select(RefreshToken).where(
+            RefreshToken.token_hash == token_hash)).first()
+        user = db.get(User, row.user_id) if row is not None else None
+        if user is None:
+            raise _refresh_rejected()
+        return _issue_session(db, user, request, family=row.family,
+                             client=row.client)
+    db.rollback()
+    row = db.exec(select(RefreshToken).where(
+        RefreshToken.token_hash == token_hash)).first()
+    if row is not None and row.used_at is not None and row.revoked_at is None:
+        # 复用：把同 family 里已签发的新 token 一起废掉
+        _revoke_family(db, row.user_id, row.family)
+    raise _refresh_rejected()
+
+
+@router.get("/sessions", response_model=list[SessionOut])
+def list_sessions(user: CurrentUser, db: Db):
+    """当前账号仍可用（未撤销、未轮换、未过期）的 refresh 会话。"""
+    rows = db.exec(select(RefreshToken).where(
+        RefreshToken.user_id == user.id,
+        RefreshToken.revoked_at.is_(None),
+        RefreshToken.used_at.is_(None),
+        RefreshToken.expires_at > _utcnow(),
+    ).order_by(RefreshToken.created_at.desc(), RefreshToken.id.desc())).all()
+    return [SessionOut(id=r.id, client=r.client, created_at=r.created_at,
+                       expires_at=r.expires_at) for r in rows]
+
+
+@router.post("/logout")
+def logout(request: Request, user: CurrentUser, db: Db,
+           payload: LogoutIn | None = None):
+    """退出：带 refresh_token 撤销那条会话链，不带则撤销本账号全部 refresh。
+
+    只动 refresh / access 的有效性由 pv + se 决定；`logout` 不 bump epoch，
+    其他设备上的 access token 仍可用到自然过期。
+    """
+    rate_limit(request, "auth-logout", 60, user.id)
+    token = (payload.refresh_token if payload else None) or ""
+    if token:
+        row = db.exec(select(RefreshToken).where(
+            RefreshToken.user_id == user.id,
+            RefreshToken.token_hash == hash_secret(token))).first()
+        revoked = _revoke_family(db, user.id, row.family) if row else 0
+    else:
+        revoked = _revoke_all_sessions(db, user.id)
+    return {"ok": True, "revoked": revoked}
+
+
+@router.post("/logout-all")
+def logout_all(request: Request, user: CurrentUser, db: Db):
+    """全端退出：撤销所有 refresh，并自增 session_epoch 让所有 access 失效。"""
+    rate_limit(request, "auth-logout-all", 30, user.id)
+    revoked = _revoke_all_sessions(db, user.id)
+    user.session_epoch = int(user.session_epoch or 0) + 1
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return {"ok": True, "revoked": revoked, "session_epoch": user.session_epoch}
+
+
+# ── GitHub 回跳：一次性 handoff code ────────────────────────────────────────
+_LOOPBACK_HOSTS = {"localhost", "127.0.0.1", "::1"}
+
+
+def _allowed_return_origins() -> set[str]:
+    """配置白名单 + site_url 自身。统一成 scheme://host[:port]。"""
+    allowed = {o.strip().rstrip("/").lower()
+               for o in settings.oauth_return_origins if o.strip()}
+    site = urlparse(settings.site_url.strip())
+    if site.scheme and site.netloc:
+        allowed.add(f"{site.scheme}://{site.netloc.lower()}")
+    return allowed
+
+
+def _normalize_return_to(value: str | None) -> str | None:
+    """`return_to` → 规范化 origin；未提供返回 None，非法抛 400。
+
+    只接受纯 origin（不带 path / query / fragment）：拼接目标是
+    `{origin}/login#code=...`，放路径进来等于开了开放重定向的口子。
+    localhost / 127.0.0.1 允许任意端口（本地开发），其余必须精确命中白名单。
+    """
+    if value is None or not value.strip():
+        return None
+    parsed = urlparse(value.strip())
+    try:
+        parsed.port          # 越界/非数字端口会在这里抛 ValueError
+    except ValueError as exc:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST,
+                            "return_to 不是合法的地址") from exc
+    if parsed.scheme not in ("http", "https") or not parsed.hostname:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST,
+                            "return_to 不是合法的地址")
+    if parsed.username or parsed.password:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST,
+                            "return_to 不是合法的地址")
+    if parsed.query or parsed.fragment or parsed.path not in ("", "/"):
+        raise HTTPException(status.HTTP_400_BAD_REQUEST,
+                            "return_to 只能是站点 origin，不能带路径")
+    host = parsed.hostname.lower()
+    origin = f"{parsed.scheme}://{parsed.netloc.lower()}"
+    if host in _LOOPBACK_HOSTS:
+        return origin
+    if origin in _allowed_return_origins():
+        return origin
+    raise HTTPException(status.HTTP_400_BAD_REQUEST, "return_to 不在白名单")
+
+
+def _create_handoff(db: Session, user: User, return_to: str) -> str:
+    raw = new_handoff_code()
+    db.add(HandoffCode(
+        user_id=user.id,
+        code_hash=hash_secret(raw),
+        return_to=return_to,
+        expires_at=_utcnow() + timedelta(seconds=settings.handoff_seconds),
+    ))
+    db.commit()
+    return raw
+
+
+@router.post("/handoff", response_model=TokenOut)
+def exchange_handoff(payload: HandoffIn, request: Request, db: Db):
+    """一次性 code → TokenOut（60 秒有效，只能换一次）。"""
+    rate_limit(request, "auth-handoff", 60)
+    code_hash = hash_secret(payload.code)
+    claimed = db.execute(update(HandoffCode).where(
+        HandoffCode.code_hash == code_hash,
+        HandoffCode.used_at.is_(None),
+        HandoffCode.expires_at > _utcnow(),
+    ).values(used_at=_utcnow()))
+    if claimed.rowcount != 1:
+        db.rollback()
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED,
+                            "登录凭证无效或已过期")
+    db.commit()
+    row = db.exec(select(HandoffCode).where(
+        HandoffCode.code_hash == code_hash)).first()
+    user = db.get(User, row.user_id) if row is not None else None
+    if user is None:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED,
+                            "登录凭证无效或已过期")
+    return _issue_session(db, user, request)
 
 
 def _issue(db: Db, user: User, purpose: str) -> str:
@@ -206,12 +437,16 @@ def reset_password(payload: ResetPasswordIn, db: Db):
     user.password_hash = hash_password(payload.password)
     # 找回密码 = 账号重新拥有可用口令；第三方登录建出来的账号从此也能口令登录
     user.password_set = True
+    # 口令被重置意味着「可能有别人拿到过账号」：所有旧会话（access + refresh）
+    # 一并作废，不能留下一条能用 refresh 续出 access 的漏网链。
+    user.session_epoch = int(user.session_epoch or 0) + 1
     db.add(user)
     for t in db.exec(select(EmailToken).where(
             EmailToken.user_id == user.id, EmailToken.used_at.is_(None))).all():
         t.used_at = datetime.now(timezone.utc)
         db.add(t)
     db.commit()
+    _revoke_all_sessions(db, user.id)
     return {"ok": True}
 
 
@@ -220,9 +455,9 @@ def change_password(payload: PasswordChangeIn, request: Request,
                     user: CurrentUser, db: Db):
     """改密：验当前口令 → 写新哈希 → **当场签发新 token**。
 
-    旧 token 的 `pv` 绑定的是旧哈希，改完立刻失效；而调用方此刻明明
-    已经通过验证，不该被自己的改密操作踢下线，所以响应里直接给新 token，
-    前端换掉本地存储即可继续用（其他设备上的旧 token 仍然全部失效）。
+    旧 token 的 `pv` 绑定的是旧哈希，改完立刻失效；refresh 也全部撤销
+    （改密后旧设备的刷新链不该继续活着）。调用方已通过验证，所以响应里
+    直接给一对新 token，其他设备上的旧 token / refresh 全部失效。
     """
     rate_limit(request, "password-change", 20, user.id)
     # 统一跑一次 PBKDF2 再判结果，失败原因只有一种话术：不区分
@@ -233,13 +468,12 @@ def change_password(payload: PasswordChangeIn, request: Request,
     user.password_hash = hash_password(payload.new_password)
     # 改密成功即代表这个账号有一条自己知道的口令（第三方建号也可以借此设口令）
     user.password_set = True
+    user.session_epoch = int(user.session_epoch or 0) + 1
     db.add(user)
     db.commit()
     db.refresh(user)
-    return TokenOut(
-        access_token=create_token(user.handle, user.password_hash,
-                                  scopes=("password",)),
-        user=_account_out(db, user))
+    _revoke_all_sessions(db, user.id)
+    return _issue_session(db, user, request, scopes=("password",))
 
 
 # ══ 第三方身份 ═══════════════════════════════════════════════════════════════
@@ -339,20 +573,33 @@ async def _github_profile(client, token: dict) -> dict:
 
 
 @router.get("/github/login", name="github_login")
-async def github_login(request: Request):
-    """跳到 GitHub 授权页。state 由 Authlib 写进签名 cookie。"""
+async def github_login(request: Request, return_to: str | None = None):
+    """跳到 GitHub 授权页。state 由 Authlib 写进签名 cookie。
+
+    `return_to` 是登录完成后要回去的站点 origin（主域 / GitHub Pages 镜像 /
+    localhost）。先在这里校验白名单并存进 OAuth session，回调时再取出；
+    回调只 302 一个一次性 code，JWT 不出现在 Location。
+    """
     client = _github_client()          # 未配置 → 503
     rate_limit(request, "oauth-login", 30)
+    origin = _normalize_return_to(return_to)
+    if origin:
+        request.session["oauth_return_to"] = origin
+    else:
+        request.session.pop("oauth_return_to", None)
     return await client.authorize_redirect(request, _github_redirect_uri(request))
 
 
 @router.get("/github/callback")
 async def github_callback(request: Request, db: Db):
-    """回调：换 token → 取资料 → 找/建用户 → 签 JWT → 回登录页。
+    """回调：换 token → 取资料 → 找/建用户 → 发放会话 → 回登录页。
 
-    `Accept: application/json` 时直接返回 TokenOut（给 H5/小程序自己处理跳转）；
-    否则 302 回 `settings.site_url/login#token=<jwt>`。放 fragment 而不是
-    query，是因为 fragment 不会发给服务器，也就不会进反代访问日志。
+    三条出口：
+      · `Accept: application/json` → 直接返回 TokenOut（H5/小程序自己跳转）；
+      · 授权时带了 `return_to` → 302 `{return_to}/login#code=<一次性 code>`，
+        静态镜像再用 `POST /auth/handoff` 换 TokenOut；JWT 不落 Location；
+      · 未带 `return_to`（旧客户端/主站直连）→ 保持原有
+        `site_url/login#token=<jwt>`，避免破坏既有调用方。
     """
     client = _github_client()          # 未配置 → 503
     rate_limit(request, "oauth-callback", 60)
@@ -380,13 +627,17 @@ async def github_callback(request: Request, db: Db):
         handle_hint=_slug(login or subject, prefix="gh-"),
         raw=info.get("raw") or {},
     )
-    access = create_token(user.handle, user.password_hash,
-                          scopes=(PROVIDER_GITHUB,))
+    return_to = request.session.pop("oauth_return_to", None)
+    out = _issue_session(db, user, request, scopes=(PROVIDER_GITHUB,),
+                         client="github")
     if _wants_json(request):
-        return JSONResponse(
-            TokenOut(access_token=access, user=_account_out(db, user))
-            .model_dump(mode="json"))
-    return RedirectResponse(_login_redirect(access),
+        return JSONResponse(out.model_dump(mode="json"))
+    if return_to:
+        # 静态镜像：Location 里只有 60 秒、一次性的 code，没有 JWT
+        code = _create_handoff(db, user, return_to)
+        return RedirectResponse(f"{return_to.rstrip('/')}/login#code={code}",
+                                status_code=status.HTTP_302_FOUND)
+    return RedirectResponse(_login_redirect(out.access_token),
                             status_code=status.HTTP_302_FOUND)
 
 
@@ -437,10 +688,8 @@ async def wechat_mini(payload: WechatMiniIn, request: Request, db: Db):
         # session_key 是解密用户资料的密钥，不落库
         raw={"unionid": unionid} if unionid else {},
     )
-    return TokenOut(
-        access_token=create_token(user.handle, user.password_hash,
-                                  scopes=(PROVIDER_WECHAT_MINI,)),
-        user=_account_out(db, user))
+    return _issue_session(db, user, request,
+                          scopes=(PROVIDER_WECHAT_MINI,), client="mini")
 
 
 # ── 身份管理 ────────────────────────────────────────────────────────────────

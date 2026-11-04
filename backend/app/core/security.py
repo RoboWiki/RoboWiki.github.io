@@ -72,26 +72,35 @@ def password_fingerprint(password_hash: str) -> str:
 
 # ── 令牌 ────────────────────────────────────────────────────────────────────
 def create_token(sub: str, password_hash: str,
-                 scopes: tuple[str, ...] | None = None) -> str:
-    """签 token。`pv` 绑定当前口令哈希，改密即撤销。
+                 scopes: tuple[str, ...] | None = None,
+                 session_epoch: int = 0,
+                 ttl_hours: int | None = None) -> str:
+    """签 access token。`pv` 绑定当前口令哈希，改密即撤销。
 
     `scope` 是可选的**来源声明**（空格分隔，沿用 RFC 6749 的写法）：
     `password` / `github` / `wechat_mini`。它只说明「这枚 token 是用哪种方式
     换来的」，不参与授权判断 —— 老客户端忽略它、`decode_token` 也不读它，
     所以加上它不改变任何现有契约。
+
+    `se` 是账号当前的会话代次（`users.session_epoch`）。`logout-all` 把它
+    自增一次，此前签发的所有 access token 立刻失效。没有 `se` 的旧 token
+    视为 0，与全新账号（epoch=0）兼容。
     """
+    expires = now() + timedelta(hours=max(1, int(ttl_hours if ttl_hours is not None
+                                             else settings.token_hours)))
     payload: dict = {"sub": sub, "pv": password_fingerprint(password_hash),
-                     "exp": now() + timedelta(hours=settings.token_hours),
-                     "iat": now()}
+                     "se": int(session_epoch or 0),
+                     "exp": expires, "iat": now()}
     if scopes:
         payload["scope"] = " ".join(scopes)
     return jwt.encode(payload, settings.secret_key, algorithm=_ALGO)
 
 
-def decode_token(token: str) -> tuple[str, str]:
-    """解 token，返回 (handle, pv)。
+def decode_token_payload(token: str) -> dict:
+    """解 token，返回完整 payload（含可选 `se`）。
 
-    没有 `pv` 的旧 token 一律视为无效（生产尚未上线，不保留兼容）。
+    `sub` / `pv` 仍是硬性要求：没有 `pv` 的旧 token 一律无效（生产尚未上线，
+    不保留兼容）。`se` 缺失时补 0 —— 这是给已签发 token 的兼容路径。
     """
     try:
         data = jwt.decode(token, settings.secret_key, algorithms=[_ALGO])
@@ -105,4 +114,29 @@ def decode_token(token: str) -> tuple[str, str]:
     if not isinstance(sub, str) or not isinstance(pv, str) or not pv:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED,
                             detail="令牌无效或已过期")
-    return sub, pv
+    se = data.get("se", 0)
+    if isinstance(se, bool) or not isinstance(se, int) or se < 0:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED,
+                            detail="令牌无效或已过期")
+    data["se"] = se
+    return data
+
+
+def decode_token(token: str) -> tuple[str, str]:
+    """解 token，返回 (handle, pv)。保留旧签名，供调用方渐进迁移。"""
+    data = decode_token_payload(token)
+    return data["sub"], data["pv"]
+
+
+# ── refresh / handoff：只存 hash，原文只回客户端一次 ─────────────────────────
+def hash_secret(raw: str) -> str:
+    """一次性凭据（refresh / handoff）落库前的摘要。"""
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()
+
+
+def new_refresh_token() -> str:
+    return secrets.token_urlsafe(48)
+
+
+def new_handoff_code() -> str:
+    return secrets.token_urlsafe(32)

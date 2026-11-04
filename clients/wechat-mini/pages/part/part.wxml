@@ -31,18 +31,70 @@
       </view>
     </view>
 
+    <view class="card account">
+      <view wx:if="{{loggedIn}}" class="account-main">
+        <view class="title">{{me && (me.display_name || me.handle) || '已登录'}}</view>
+        <view class="muted">评分与讨论以这个微信账号发言</view>
+      </view>
+      <view wx:else class="account-main">
+        <view class="title">登录后可评分、参与讨论</view>
+        <view class="muted">只读取 openid 建号，不读取头像昵称，不保存微信会话密钥</view>
+      </view>
+      <button wx:if="{{!loggedIn}}" class="btn primary account-btn" loading="{{loginBusy}}"
+        bindtap="login">微信登录</button>
+      <button wx:else class="btn account-btn" bindtap="logout">退出</button>
+    </view>
+    <view wx:if="{{authError}}" class="error">{{authError}}</view>
+
     <image wx:if="{{image}}" class="detail-image" src="{{image}}" mode="aspectFit"
       binderror="onImageError" />
 
-    <view class="card" wx:if="{{rating}}">
-      <view class="title">真实评分 {{rating.avg}} / 5</view>
-      <view class="muted">{{rating.count}} 人评分 · {{rating.own_hardware_count}} 人装过机</view>
-      <view class="rating-row" wx:for="{{rating.bars}}" wx:key="score">
-        <text class="rating-score">{{item.score}} 星</text>
-        <view class="rating-bar"><view class="rating-fill" style="width:{{item.n / rating.count * 100}}%"></view></view>
-        <text class="rating-n">{{item.n}}</text>
+    <view class="card">
+      <view class="title">
+        真实评分
+        <text wx:if="{{rating && rating.count}}" class="rating-avg">{{rating.avgLabel}} / 5</text>
+        <text wx:else class="muted">暂无评分</text>
       </view>
-      <view wx:if="{{rating.count < 5}}" class="note">样本量少于 5 人，均分只作参考，不代表稳定性。</view>
+      <view wx:if="{{rating && rating.count}}" class="muted">
+        {{rating.count}} 人评分 · {{rating.own_hardware_count}} 人装过机
+      </view>
+      <block wx:if="{{rating && rating.bars.length}}">
+        <view class="rating-row" wx:for="{{rating.bars}}" wx:key="score">
+          <text class="rating-score">{{item.score}} 星</text>
+          <view class="rating-bar"><view class="rating-fill" style="width:{{item.n / rating.count * 100}}%"></view></view>
+          <text class="rating-n">{{item.n}}</text>
+        </view>
+      </block>
+      <view wx:if="{{rating && rating.count && rating.low_sample}}" class="note">样本量少于 5 人，均分只作参考，不代表稳定性。</view>
+      <view wx:if="{{ratingMine}}" class="note">
+        你的评分：{{ratingMine.score}} 分<text wx:if="{{ratingMine.own_hardware}}"> · 装过机</text><text wx:if="{{ratingMine.hidden}}"> · 评价帖被隐藏，暂不计入公开均分</text>
+      </view>
+
+      <view class="form-row">
+        <text class="form-label">打 1–5 分</text>
+        <text class="muted">同一件可改分，不重复计票</text>
+      </view>
+      <view class="score-row">
+        <view wx:for="{{scoreOptions}}" wx:key="*this"
+          class="score-opt {{score === item ? 'on' : ''}}"
+          data-score="{{item}}" bindtap="pickScore">{{item}} 分</view>
+      </view>
+      <view class="form-row">
+        <text class="form-label">我实际装过 / 用过这个件</text>
+        <switch checked="{{ownHardware}}" color="#0b1220" bindchange="toggleOwnHardware" />
+      </view>
+      <textarea class="form-textarea" value="{{ratingNote}}" maxlength="200"
+        placeholder="可选备注：负载、发热、装配问题（200 字内）"
+        bindinput="onRatingNote"></textarea>
+      <view class="form-foot">
+        <text class="muted">{{ratingNote.length || 0}}/200</text>
+        <button class="btn primary form-btn" loading="{{ratingBusy}}" bindtap="submitRating">
+          {{ratingMine ? '更新评分' : '提交评分'}}
+        </button>
+      </view>
+      <view wx:if="{{ratingError}}" class="error">{{ratingError}}</view>
+      <view wx:if="{{ratingNotice}}" class="note">{{ratingNotice}}</view>
+      <view wx:if="{{!loggedIn}}" class="muted">未登录时提交会先走微信登录。</view>
     </view>
 
     <view class="card">
@@ -93,6 +145,49 @@
     </view>
 
     <view class="card">
+      <view class="title">
+        讨论
+        <text wx:if="{{comments.length}}" class="muted">{{comments.length}} 条</text>
+      </view>
+      <view wx:if="{{commentsLoading}}" class="muted">加载中…</view>
+      <view wx:elif="{{commentsReadonly}}" class="note">
+        讨论接口暂不可用，页面保持只读：{{commentError || '稍后再试'}}
+      </view>
+      <view wx:elif="{{!comments.length}}" class="muted">还没有讨论，登录后来说第一句。</view>
+      <view wx:for="{{comments}}" wx:key="id" class="comment"
+        style="margin-left:{{item.depth * 24}}rpx">
+        <view class="comment-head">
+          <text class="comment-author">{{item.authorName}}</text>
+          <text wx:if="{{item.parentName}}" class="muted">回复 {{item.parentName}}</text>
+          <text class="muted">{{item.date}}</text>
+        </view>
+        <view class="comment-body">{{item.body}}</view>
+        <view class="comment-actions">
+          <text class="link" data-id="{{item.id}}" data-name="{{item.authorName}}"
+            bindtap="startReply">回复</text>
+        </view>
+      </view>
+
+      <view wx:if="{{!commentsReadonly}}" class="comment-form">
+        <view wx:if="{{replyTo}}" class="note">
+          回复 {{replyTo.name}}
+          <text class="link" bindtap="cancelReply">取消</text>
+        </view>
+        <textarea class="form-textarea" value="{{commentBody}}" maxlength="4000"
+          placeholder="{{replyTo ? '写下你的回复…' : '写下你的使用经验或问题…'}}"
+          bindinput="onCommentInput"></textarea>
+        <view class="form-foot">
+          <text class="muted">{{commentBody.length || 0}}/4000</text>
+          <button class="btn primary form-btn" loading="{{commentBusy}}"
+            bindtap="submitComment">{{replyTo ? '发表回复' : '发表讨论'}}</button>
+        </view>
+        <view wx:if="{{!loggedIn}}" class="muted">未登录时发表会先走微信登录；内容安全由服务端校验。</view>
+        <view wx:if="{{commentError}}" class="error">{{commentError}}</view>
+        <view wx:if="{{commentNotice}}" class="note">{{commentNotice}}</view>
+      </view>
+    </view>
+
+    <view class="card">
       <view class="title">来源</view>
       <view wx:if="{{!sources.length}}" class="muted">未登记外部来源</view>
       <view class="source-line" wx:for="{{sources}}" wx:key="url" data-url="{{item.url}}" bindtap="copySource">
@@ -102,7 +197,7 @@
     </view>
 
     <view class="footer">
-      {{version ? '数据版本 ' + version + ' · ' : ''}}{{part.source_tier}} 级来源 · 只读目录
+      {{version ? '数据版本 ' + version + ' · ' : ''}}{{part.source_tier}} 级来源 · 目录由站内编辑维护，评分与讨论来自登录用户
     </view>
   </block>
 </view>

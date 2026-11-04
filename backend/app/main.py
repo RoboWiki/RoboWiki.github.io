@@ -17,8 +17,8 @@ from sqlalchemy import text
 from starlette.middleware.sessions import SessionMiddleware
 
 from .api.routes import (admin, auth, bot, catalog, community, export, mcp,
-                         materials, protocols, ratings, reports, semantics,
-                         submissions, wiki)
+                         materials, media, notifications, protocols, ratings,
+                         reports, semantics, submissions, wiki)
 from .core.config import ROOT, settings
 from .core.db import (bootstrap_admin, create_tables, ensure_catalog_present,
                       seed_catalog, seed_community, session)
@@ -68,16 +68,22 @@ app.add_middleware(
 
 app.add_middleware(
     CORSMiddleware,
+    # 主域 + GitHub Pages 静态镜像 + 本地开发；生产用 ROBOWIKI_CORS_ORIGINS 覆盖。
     allow_origins=settings.cors_origins,
+    # Bearer 走 Authorization 头，不依赖跨站 cookie；但主站自己的登录页要带 cookie，
+    # 所以保留 credentials（白名单是显式 origin，不会退化成 "*"）。
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["X-Request-ID", "X-RoboWiki-API-Version",
+                    "X-RoboWiki-Data-Version", "Retry-After"],
+    max_age=600,
 )
 
 _ROUTERS = (auth.router, catalog.router, community.router, export.router,
             semantics.router, admin.router, protocols.router, wiki.router,
             ratings.router, submissions.router, bot.router, materials.router,
-            reports.router)
+            reports.router, notifications.router, media.router)
 
 # 规范前缀 /api/v1；/api 只作旧客户端别名，不进入 OpenAPI。
 for r in _ROUTERS:

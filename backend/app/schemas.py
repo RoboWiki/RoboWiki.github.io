@@ -108,7 +108,35 @@ class AccountOut(UserOut):
 class TokenOut(BaseModel):
     access_token: str
     token_type: str = "bearer"
+    #: 长寿命轮换凭据；每次刷新都会换新，旧值复用即撤销整条会话链。
+    #: 可选默认值是为了兼容只返回 access_token 的内部构造（如独立脚本）。
+    refresh_token: str | None = None
     user: AccountOut
+
+
+class RefreshIn(BaseModel):
+    refresh_token: str = Field(min_length=16, max_length=512)
+
+
+class LogoutIn(BaseModel):
+    """退出登录：带 refresh_token 只撤销那一条会话链，否则撤销全部。"""
+
+    refresh_token: str | None = Field(default=None, max_length=512)
+
+
+class HandoffIn(BaseModel):
+    """GitHub 回跳拿到的一次性 code（60 秒、只能换一次）。"""
+
+    code: str = Field(min_length=8, max_length=256)
+
+
+class SessionOut(BaseModel):
+    """`GET /auth/sessions`：仍可用的 refresh 会话。"""
+
+    id: int
+    client: str = "web"
+    created_at: datetime
+    expires_at: datetime
 
 
 class ProvidersOut(BaseModel):
@@ -235,6 +263,57 @@ class VoteIn(BaseModel):
 class VoteOut(BaseModel):
     score: int
     my_vote: int
+
+
+# ── 文档页评论（/wiki/comments）────────────────────────────────────────────
+class WikiCommentIn(BaseModel):
+    page: str = Field(min_length=1, max_length=200)
+    body: str = Field(min_length=1, max_length=4000)
+    parent_id: int | None = None
+
+
+class WikiCommentOut(BaseModel):
+    """一条讨论。字段只增不删：前端已按 id/page/body/parent_id/created_at/author 组树。"""
+
+    id: int
+    page: str
+    body: str
+    parent_id: int | None = None
+    root_id: int | None = None
+    status: str = "visible"
+    deleted: bool = False
+    deleted_at: datetime | None = None
+    created_at: datetime
+    author: UserOut | None = None
+    #: 兼容旧字段：站务是否已处置（status=hidden 时为 true）
+    hidden: bool = False
+
+
+# ── 通知 ────────────────────────────────────────────────────────────────────
+class NotificationOut(BaseModel):
+    id: int
+    type: str
+    subject: str = ""
+    body: str = ""
+    link: str | None = None
+    read_at: datetime | None = None
+    created_at: datetime
+
+
+class NotificationListOut(BaseModel):
+    total: int
+    unread: int
+    limit: int
+    offset: int
+    items: list[NotificationOut]
+
+
+# ── 媒体 ────────────────────────────────────────────────────────────────────
+class MediaOut(BaseModel):
+    id: str
+    url: str
+    content_type: str
+    size: int
 
 
 # ── 数据变更提案 ────────────────────────────────────────────────────────────

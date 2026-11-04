@@ -12,6 +12,7 @@ x-api-env: &api-env
   ROBOWIKI_DATABASE_URL: postgresql+psycopg://robowiki:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}@db:5432/robowiki
   ROBOWIKI_DATA_DIR: /data
   ROBOWIKI_SCHEMA_DIR: /schema
+  ROBOWIKI_MEDIA_DIR: /app/var/media
   ROBOWIKI_DATA_VERSION: ${DATA_VERSION:-}
   ROBOWIKI_AUTO_CREATE_TABLES: "false"
   ROBOWIKI_SEED_DEMO: "false"
@@ -20,7 +21,7 @@ x-api-env: &api-env
   ROBOWIKI_ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
   ROBOWIKI_ADMIN_DISPLAY_NAME: ${ADMIN_DISPLAY_NAME:-站务}
   ROBOWIKI_SECRET_KEY: ${SECRET_KEY:?set SECRET_KEY (>=32 bytes)}
-  ROBOWIKI_CORS_ORIGINS: '${CORS_ORIGINS:-["http://localhost:5173"]}'
+  ROBOWIKI_CORS_ORIGINS: '${CORS_ORIGINS:-["http://localhost:5173","https://robowiki.org.cn","https://robowiki.github.io"]}'
   ROBOWIKI_SITE_URL: ${SITE_URL:-https://robowiki.org.cn}
   ROBOWIKI_BOT_TOKEN: ${BOT_TOKEN:-}
   ROBOWIKI_EMAIL_MODE: ${EMAIL_MODE:-log}
@@ -56,6 +57,7 @@ services:
     volumes:
       - ${DATA_DIR:-../.data/data}:/data:ro
       - ${SCHEMA_DIR:-../.data/schema}:/schema:ro
+      - ${MEDIA_DIR:-./var/media}:/app/var/media
       - ../data.lock.json:/app/data.lock.json:ro
     depends_on:
       db:

@@ -17,6 +17,7 @@ from ...core.config import settings
 from ...crud import touch_comment_count
 from ...models import Comment, Post, Report, User, WikiComment
 from ..deps import CurrentUser, Db, rate_limit
+from .notifications import create_notification
 
 router = APIRouter(tags=["reports"])
 
@@ -77,19 +78,38 @@ def _snapshot(db, kind: str, target_id: int) -> dict | None:
         if c is None:
             return None
         return {"body": c.body[:300], "page": c.page, "hidden": c.hidden,
+                "status": c.status, "deleted": c.deleted_at is not None,
                 "author": _brief(db.get(User, c.user_id))}
     return None
 
 
+def _wiki_thread_ids(db, root_id: int) -> list[int]:
+    """整棵子树的 id（含根）。P1 之后回复可以多层，处置必须覆盖所有层。"""
+    ids: list[int] = []
+    seen: set[int] = set()
+    frontier = [root_id]
+    while frontier:
+        cid = frontier.pop()
+        if cid in seen:
+            continue
+        seen.add(cid)
+        ids.append(cid)
+        frontier.extend(db.exec(
+            select(WikiComment.id).where(WikiComment.parent_id == cid)).all())
+    return ids
+
+
 def _set_hidden(db, kind: str, target_id: int, hidden: bool) -> None:
-    """评论按线程处置：隐藏根评论时，回复也不应单独留在页面上。"""
+    """评论按线程处置：隐藏根评论时，回复（含多层）也不应单独留在页面上。"""
     if kind == "wiki_comment":
-        rows = [db.get(WikiComment, target_id)]
-        rows += db.exec(select(WikiComment).where(
-            WikiComment.parent_id == target_id)).all()
-        for row in rows:
+        for cid in _wiki_thread_ids(db, target_id):
+            row = db.get(WikiComment, cid)
             if row is not None:
                 row.hidden = hidden
+                # status 与 hidden 同步：旧查询只看 hidden，新查询看 status，
+                # 两套读法必须给出同一个可见性结论。已软删的行不改状态。
+                if row.deleted_at is None:
+                    row.status = "hidden" if hidden else "visible"
                 db.add(row)
         return
 
@@ -109,6 +129,31 @@ def _set_hidden(db, kind: str, target_id: int, hidden: bool) -> None:
     if row is not None:
         row.hidden = hidden
         db.add(row)
+
+
+def _author_id(db, kind: str, target_id: int) -> int | None:
+    if kind == "post":
+        p = db.get(Post, target_id)
+        return p.author_id if p is not None else None
+    if kind == "comment":
+        c = db.get(Comment, target_id)
+        return c.author_id if c is not None else None
+    if kind == "wiki_comment":
+        c = db.get(WikiComment, target_id)
+        return c.user_id if c is not None else None
+    return None
+
+
+def _target_link(db, kind: str, target_id: int) -> str | None:
+    if kind == "wiki_comment":
+        c = db.get(WikiComment, target_id)
+        return f"/{c.page}#comment-{target_id}" if c is not None else None
+    if kind == "post":
+        return f"/community/post/{target_id}"
+    if kind == "comment":
+        c = db.get(Comment, target_id)
+        return f"/community/post/{c.post_id}#c{target_id}" if c is not None else None
+    return None
 
 
 @router.post("/reports", status_code=201)
@@ -202,6 +247,21 @@ def resolve_report(report_id: int, payload: ResolveIn, user: CurrentUser, db: Db
     r.resolver_id = user.id
     r.resolved_at = datetime.now(timezone.utc)
     db.add(r)
+
+    # 通知处置结果：隐藏/恢复通知内容作者；驳回通知举报人。
+    # 通知不阻塞处置本身 —— 写失败只会少一条提醒，举报状态照常提交。
+    link = _target_link(db, r.target_kind, r.target_id)
+    if payload.action == "dismiss":
+        create_notification(
+            db, r.reporter_id, type="moderation", subject="你的举报已处理",
+            body=r.resolution_note, link=link, actor_id=user.id)
+    else:
+        author_id = _author_id(db, r.target_kind, r.target_id)
+        subject = "你的内容已被隐藏" if payload.action == "hide" else "你的内容已恢复"
+        create_notification(
+            db, author_id, type="moderation", subject=subject,
+            body=r.resolution_note, link=link, actor_id=user.id)
+
     db.commit()
     db.refresh(r)
     return {"id": r.id, "status": r.status,

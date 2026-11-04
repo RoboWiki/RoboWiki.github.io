@@ -1,5 +1,5 @@
 {
-    "description": "RoboWiki 只读目录（微信小程序）",
+    "description": "RoboWiki 目录（微信小程序）：只读查询 + 登录评分/讨论",
     "compileType": "miniprogram",
     "setting": {
         "urlCheck": true,
