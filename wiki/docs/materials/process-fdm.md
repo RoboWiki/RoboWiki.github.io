@@ -1,8 +1,11 @@
 ---
 title: "3D 打印 FDM"
+description: "加工工艺 3D 打印 FDM：熔融沉积打印"
 ---
 
 # 3D 打印 FDM
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>加工工艺</span>
@@ -21,7 +24,7 @@ title: "3D 打印 FDM"
 
 | 字段 | 值 |
 |---|---|
-| 可达公差 (mm) | 0.3 |
+| 可达公差 (mm) | ±0.3 |
 | 公差说明 | 常见 ±0.2–0.5 mm，视机台、材料与摆放方向 |
 | 表面粗糙度 Ra (µm) | 15 |
 | 层高 (mm) | 0.2 |

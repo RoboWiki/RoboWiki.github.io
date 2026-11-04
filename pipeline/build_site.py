@@ -13,6 +13,7 @@ from __future__ import annotations
 import hashlib
 import html
 import json
+import os
 import pathlib
 import re
 import shutil
@@ -39,6 +40,7 @@ from .build_competitions import build as build_competitions
 from .build_robots import build as build_robots
 from .build_materials import build as build_materials
 from .build_software import build as build_software
+from .build_share import build as build_share
 from .contrib_page import build as build_contributors
 from .load import cat_dims, load_taxonomy, vendor_slug
 
@@ -268,7 +270,7 @@ def load() -> list[dict]:
 
 
 def tier_badge(t: str, verified) -> str:
-    mark = "✓" if verified else ""
+    mark = "✓" if (verified and t == "A") else ""
     return f"`{t}{mark}`"
 
 
@@ -480,13 +482,27 @@ def part_description(r: dict) -> str:
             bits.append(fmt.format(num(v)))
     cat = CAT_LABEL.get(r.get("category") or "", "")
     head = f'{r.get("vendor")} {r.get("model")}' + (f"（{cat}）" if cat else "")
-    return (f"{head}：{'、'.join(bits[:3]) or '官方参数'}；"
-            f"来源 {r.get('source_tier') or '—'} 级、{r.get('last_checked') or '—'} 核对。")
+    tier = r.get("source_tier") or "—"
+    fallback = "官方参数" if tier == "A" else "公开页面参数"
+    check = "核对" if tier == "A" else "最近查阅"
+    return (f"{head}：{'、'.join(bits[:3]) or fallback}；"
+            f"来源 {tier} 级、{r.get('last_checked') or '—'} {check}。")
 
 
 #: 站点对外域名（organization pages，站点在域名根）。canonical 与旧 URL 跳转页都要
 #: 绝对地址，而 base 可被 WIKI_BASE 改成子路径（自托管），所以不能从 base 推。
-SITE_URL = "https://robowiki.github.io"
+SITE_URL = os.environ.get("ROBOWIKI_SITE_URL", "https://robowiki.org.cn").rstrip("/")
+
+
+def _data_version() -> str:
+    env = os.environ.get("ROBOWIKI_DATA_VERSION")
+    if env:
+        return env
+    try:
+        lock = json.loads((ROOT / "data.lock.json").read_text(encoding="utf-8"))
+        return lock.get("data_version") or "dev"
+    except Exception:
+        return "dev"
 
 #: 旧型号页 URL → 现在的型号页。
 #:
@@ -864,6 +880,9 @@ def main() -> None:
     for r in rows:
         HREF[r["id"]] = f'/parts/{r["category"]}/{slugs[r["id"]]}'
 
+    n_share = build_share(rows, slugs, OUT, SITE_URL, _data_version())
+    print(f"  分享卡 {n_share} 条 -> public/share")
+
     # ── 静态目录快照：让静态站也能做交互式检索 ────────────────────────
     # 数据本来就是静态的（data/*.json），排序 / 筛选 / 搜索都是客户端计算，
     # 浏览器做比 API 做更合适，而且静态站能深链、能被收录、不用养服务器。
@@ -1115,6 +1134,19 @@ def main() -> None:
         "instantaneous_current_A": "瞬时电流 (A)", "use_cases": "适用场景",
         "impedance_ohm": "阻抗 (Ω)", "freq_max_ghz": "最高频率 (GHz)",
         "length_m": "长度 (m)", "awg": "线规",
+        # 归档/采集字段的中文标签：不再把原始键名直接暴露给读者
+        "size_mm": "尺寸 (mm)", "weight_g": "重量 (g)", "power_w": "功耗 (W)",
+        "power_idle_w": "待机功耗 (W)", "storage_gb": "存储 (GB)",
+        "cpu_arch": "CPU 架构", "cores": "核心数", "os": "系统",
+        "cuda": "CUDA", "ros2": "ROS 2", "eth": "以太网", "usb": "USB",
+        "csi": "CSI", "pcie": "PCIe", "noise": "噪声",
+        "repo_urls": "开源仓库", "repo_license": "仓库许可",
+        "range_note": "量程说明", "absolute": "绝对式",
+        "meas_range": "测量范围", "response_time": "响应时间",
+        "storage_temp_range": "存储温度", "motor_type": "电机类型",
+        "gear_material": "齿轮材料", "housing_material": "外壳材料",
+        "bearing": "轴承", "mounting": "安装方式", "backlash_arcmin": "背隙 (arcmin)",
+        "protocol": "协议", "mass_g": "质量 (g)", "params": "参数",
     }
 
     _TAX_BY_CAT = {c["id"]: [k["k"] for k in (c.get("keys") or [])]
@@ -1286,7 +1318,7 @@ def main() -> None:
         src = r.get("_file")
         if src:
             rows.append(("在 GitHub 上编辑这条数据",
-                         f"https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/{src}",
+                         f"https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/{src}",
                          f"文件 data/catalog/{src}"))
 
         body = []
@@ -1598,14 +1630,14 @@ def main() -> None:
     <div class="part-tags">
       <span class="part-tag">{CAT_LABEL.get(cat, cat)}</span>
       <span class="part-tag soft">{r.get("subtype_label") or r["subtype"]}</span>
-      <span class="part-tag tier{r["source_tier"]}">来源 {r["source_tier"]}{" ✓ 已核对" if r["verified"] else ""}</span>
+      <span class="part-tag tier{r["source_tier"]}">来源 {r["source_tier"]}{" ✓ 已核对" if (r["verified"] and r["source_tier"] == "A") else ""}</span>
       {f'<span class="part-tag">{money(r["price_cny"])}</span>' if r.get("price_cny") else '<span class="part-tag muted">无公开报价</span>'}
     </div>
 
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### {"官方参数" if r["source_tier"] == "A" else "公开页面参数"}
 
 | 字段 | 值 |
 |---|---|
@@ -1614,7 +1646,7 @@ def main() -> None:
 <div class="part-src">
 来源：<a href="{r.get("url") or "#"}">{r.get("url") or "—"}</a><br/>
 收录：{r.get("origin") or "—"}<br/>
-核对：{r.get("last_checked") or "—"}
+{"核对" if r["source_tier"] == "A" else "最近查阅"}：{r.get("last_checked") or "—"}
 </div>
 
 </div>
@@ -1657,7 +1689,7 @@ def main() -> None:
 
 {en_todo(r)}
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。
 """, encoding="utf-8")
         n_part += 1
@@ -2063,7 +2095,7 @@ html.dark .rl-th {{ color: #e0b159; }}
           f"{len(learn.get('articles', []))} 篇 -> public/learn.json")
 
     build_robots(ROOT, OUT, pub)
-    build_materials(ROOT, OUT, pub)
+    build_materials(ROOT, OUT, pub, SITE_URL, _data_version())
     build_software(OUT, ROOT)
     build_contributors(ROOT, OUT, pub)
 
@@ -2083,7 +2115,7 @@ html.dark .rl-th {{ color: #e0b159; }}
     # 渠道库（原「供应商」）：页头由 ExplorerShell 提供
     (OUT / "suppliers.md").write_text(f"""---
 title: 渠道库
-description: "{len(sups)} 个机器人零件与加工的采购渠道：按品类、地区、是否接小批量筛选，标了来源与核对日期。"
+description: "{len(sups)} 个机器人零件与加工的采购渠道：按品类与工艺筛选，标了来源与社区反馈。"
 layout: page
 sidebar: false
 outline: false
@@ -2095,13 +2127,13 @@ outline: false
 
 
     (OUT / "sources.md").write_text(FRONT.format(title="数据来源") + f"""
-# 数据来源
+## 数据来源
 
 判定一条数据够不够格进目录，只看一件事：**它能不能指回一手来源。**
 
 - `A` 级 = 逐项核对过厂商手册 / 官方文档（下表的「厂商官网 / 官方文档」）
 - `B` 级 = 采自公开商品页或第三方整理，未逐项核对
-- `C` 级 = 转述，仅作线索
+- `C` 级 = 转述，仅作线索；默认不参与对比与推荐（当前有 3 条电池线索保留在核心仓，未进站点目录）
 
 ## 厂商官网 / 官方文档
 
@@ -2131,7 +2163,7 @@ outline: false
 
 ## 每个数字的追溯链
 
-零件的每次字段改动都写进 `part_edits` 表（旧值、新值、依据、来源链接、谁改的、何时）。
+零件的每次字段改动先成为提案（旧值、新值、依据、来源链接、谁提交的），审核通过后由 worker 开 PR；合并并发布 `data-v*` release 后才更新目录。
 于是任何一个数都能回答：**它什么时候、被谁、凭什么被改成了现在这样。**
 """, encoding="utf-8")
 
@@ -2158,7 +2190,7 @@ outline: false
 每张图的下方「资料与链接」里都写着 `产品图出处`，可以逐张核对。
 
 - 图**只用来说明「这个件长什么样」**，不用于售卖、不用于背书
-- 版权归原厂商或原拍摄方；本站不做商业使用，也不授权他人商业使用
+- 版权归原厂商或原拍摄方；本站只作展示与索引，不转授图片的商业使用权；商用请向权利方取得授权
 - 找不到合适图片时宁可留空显示「暂无产品图」，也不拿宣传图、整机图或同系列图凑数
 - 例外：同型号不同包装的实拍（例如某个订单号无图时取同型号另一包装的图），
   会在 `产品图出处` 里明确写出，不让读者以为是同一个料号
@@ -2298,13 +2330,13 @@ id 一经登记**不改名、不复用**：改名要把旧 id 留作 alias，删
 留 tombstone（`removed`）。原因不抽象 —— 评分唯一键、外部引用、型号页 URL
 全挂在 id 上，改一个名字会同时断三处。
 
-**数据快照。** `data/` + `schema/` 打成 tar.gz 发到
-[GitHub Releases](https://github.com/RoboWiki/RoboWiki.github.io/releases)，
-tag 形如 `data-YYYY.MM.DD`。每次发布带三个附件：
+**数据快照。** `data/` + `schema/` + `assets/` 打成 tar.gz 发到
+[核心仓 Releases](https://github.com/RoboWiki/RoboWiki/releases)，
+tag 形如 `data-vYYYY.MM.N`。每次发布带三个附件：
 
-- `robowiki-data-<tag>.tar.gz` —— `data/` 与 `schema/` 的只读快照
-- `MANIFEST.json` —— 条数、`ids` 数量、`semantics_version`、生成时间
-- `SHA256SUMS.txt` —— 上面那个 tar.gz 的 SHA-256
+- `robowiki-data-<tag>.tar.gz` —— `data/`、`schema/`、`assets/` 的只读快照
+- `MANIFEST.json` —— parts / robots / software / materials / processes / ids / assets 与 `semantics_version`
+- `SHA256SUMS.txt` —— tar.gz 与 MANIFEST 的 SHA-256
 
 打 `data-v*` tag，或在 Actions 里手动触发 `Data release` 生成。发布前先跑
 `python -m pipeline validate`，不通过就不发 —— 快照发出去就是对外承诺了一个版本。

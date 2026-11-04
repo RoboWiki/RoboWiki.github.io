@@ -1,6 +1,6 @@
 ---
 title: CubeMars AK80-6
-description: "CubeMars AK80-6（关节电机）：峰值扭矩 12 N·m、额定 6 N·m、减速比 6:1；来源 B 级、2026-10-31 核对。"
+description: "CubeMars AK80-6（关节电机）：峰值扭矩 12 N·m、额定 6 N·m、减速比 6:1；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 
@@ -15,14 +15,14 @@ description: "CubeMars AK80-6（关节电机）：峰值扭矩 12 N·m、额定 
     <div class="part-tags">
       <span class="part-tag">关节电机</span>
       <span class="part-tag soft">行星减速</span>
-      <span class="part-tag tierB">来源 B ✓ 已核对</span>
+      <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥3,288</span>
     </div>
 
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -36,7 +36,7 @@ description: "CubeMars AK80-6（关节电机）：峰值扭矩 12 N·m、额定 
 <div class="part-src">
 来源：<a href="https://www.cubemars.com/cn/product/ak80-6-kv100-robotic-actuator.html">https://www.cubemars.com/cn/product/ak80-6-kv100-robotic-actuator.html</a><br/>
 收录：CubeMars 官网 AK80-6 KV100 产品页与产品对比表（2026-10-31 核对）<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>
@@ -102,7 +102,7 @@ description: "CubeMars AK80-6（关节电机）：峰值扭矩 12 N·m、额定 
 | 质量 (kg) | 0.485 |
 | 转子惯量 (kg·m²) | — |
 | 额定电压 (V) | 48 |
-| power_w | 340 |
+| 功耗 (W) | 340 |
 | 额定电流 (A) | 9.7 |
 | 额定转速 (rpm) | 603 |
 | 峰值电流 (A) | 20 |
@@ -133,7 +133,7 @@ description: "CubeMars AK80-6（关节电机）：峰值扭矩 12 N·m、额定 
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.cubemars.com/cn/product/ak80-6-kv100-robotic-actuator.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.cubemars.com/data/cms/202605/ak-series-driver-manual-v1-0-18-for-ak-2-0-robotic-actuator-cn.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>CubeMars 官方产品图（cubemars.com，AK80-6 KV100）</td></tr><tr><td class="rs-plain">收录说明</td><td>CubeMars 官网 AK80-6 KV100 产品页与产品对比表（2026-10-31 核对）</td></tr><tr><td><a href="https://www.google.com/search?q=CubeMars+AK80-6+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=AK80-6&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=CubeMars+AK80-6+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/actuator/cubemars.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/cubemars.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.cubemars.com/cn/product/ak80-6-kv100-robotic-actuator.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.cubemars.com/data/cms/202605/ak-series-driver-manual-v1-0-18-for-ak-2-0-robotic-actuator-cn.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>CubeMars 官方产品图（cubemars.com，AK80-6 KV100）</td></tr><tr><td class="rs-plain">收录说明</td><td>CubeMars 官网 AK80-6 KV100 产品页与产品对比表（2026-10-31 核对）</td></tr><tr><td><a href="https://www.google.com/search?q=CubeMars+AK80-6+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=AK80-6&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=CubeMars+AK80-6+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/actuator/cubemars.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/cubemars.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -141,5 +141,5 @@ description: "CubeMars AK80-6（关节电机）：峰值扭矩 12 N·m、额定 
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

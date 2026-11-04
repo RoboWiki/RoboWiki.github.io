@@ -1,8 +1,11 @@
 ---
 title: "ADC12 压铸铝合金"
+description: "材料 ADC12 压铸铝合金：最常用的压铸铝合金之一，适合批量做复杂外壳、底座和关节壳体"
 ---
 
 # ADC12 压铸铝合金
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>金属材料</span>

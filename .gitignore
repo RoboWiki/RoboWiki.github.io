@@ -35,6 +35,7 @@ wiki/docs/.vitepress/cache/
 # 文档站的产品图由 pipeline/build_site.py 从 console/public/parts 同步
 wiki/docs/public/parts/
 wiki/docs/public/catalog.json
+wiki/docs/public/share/
 # 派生的归档 JSONL（10.4 MB）：可由 tools/inventory_archive.py + normalize_archive.py
 # 从本地归档重建，不入库。词表与报告留着小，方便直接读。
 data/_inventory/*.jsonl
@@ -63,3 +64,17 @@ ui-*.png
 # 走 GitHub Release 分发，不进仓库历史。规则见 docs/DATA-VERSIONING.md
 dist/
 .tmp-data-export/
+
+# TypeScript 增量构建缓存
+console/tsconfig.tsbuildinfo
+
+# 数据备份（可能含 PII）
+deploy/backup/*.dump
+deploy/backup/*.dump.tmp
+
+# outbox 运行时产物（测试/生产）
+deploy/var/outbox/*.json
+
+# 微信开发者工具个人设置（关闭域名校验等，不入库）
+clients/wechat-mini/project.private.config.json
+clients/wechat-mini/tests/node_modules/

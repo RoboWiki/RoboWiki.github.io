@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "RoboWiki",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark",
+  "enableShareAppMessage": true,
+  "enableShareTimeline": true
+}

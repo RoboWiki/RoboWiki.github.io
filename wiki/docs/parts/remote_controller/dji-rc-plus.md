@@ -1,6 +1,6 @@
 ---
 title: 大疆 DJI RC Plus
-description: "大疆 DJI RC Plus（遥控器）：官方参数；来源 B 级、2026-11-01 核对。"
+description: "大疆 DJI RC Plus（遥控器）：公开页面参数；来源 B 级、2026-11-01 最近查阅。"
 ---
 
 
@@ -15,14 +15,14 @@ description: "大疆 DJI RC Plus（遥控器）：官方参数；来源 B 级、
     <div class="part-tags">
       <span class="part-tag">遥控器</span>
       <span class="part-tag soft">手柄式</span>
-      <span class="part-tag tierB">来源 B ✓ 已核对</span>
+      <span class="part-tag tierB">来源 B</span>
       <span class="part-tag">¥9,000</span>
     </div>
 
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -36,7 +36,7 @@ description: "大疆 DJI RC Plus（遥控器）：官方参数；来源 B 级、
 <div class="part-src">
 来源：<a href="https://store.dji.com/cn/product/dji-rc-plus-inspire-3">https://store.dji.com/cn/product/dji-rc-plus-inspire-3</a><br/>
 收录：DJI RC Plus（Inspire 3）商品页 + Inspire 3 技术参数页（2026-11-01 核对）<br/>
-核对：2026-11-01
+最近查阅：2026-11-01
 </div>
 
 </div>
@@ -75,7 +75,7 @@ description: "大疆 DJI RC Plus（遥控器）：官方参数；来源 B 级、
 | 重量 (g) | — |
 | 官方文档 | https://www.dji.com/cn/inspire-3/specs |
 | 官方手册 (PDF) | https://dl.djicdn.com/downloads/inspire_3/20241016UM/DJI_Inspire_3_User_Manual_V3.0_CHS_.pdf |
-| repo_urls | — |
+| 开源仓库 | — |
 
 ## 优惠与获取条件
 
@@ -92,7 +92,7 @@ description: "大疆 DJI RC Plus（遥控器）：官方参数；来源 B 级、
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://store.dji.com/cn/product/dji-rc-plus-inspire-3" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.dji.com/cn/inspire-3/specs" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://dl.djicdn.com/downloads/inspire_3/20241016UM/DJI_Inspire_3_User_Manual_V3.0_CHS_.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>大疆商城 DJI RC Plus（Inspire 3）商品页产品图（2026-11-01 下载）</td></tr><tr><td class="rs-plain">收录说明</td><td>DJI RC Plus（Inspire 3）商品页 + Inspire 3 技术参数页（2026-11-01 核对）</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+RC+Plus+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=RC+Plus&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+RC+Plus+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/remote_controller/dji.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/remote_controller/dji.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://store.dji.com/cn/product/dji-rc-plus-inspire-3" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.dji.com/cn/inspire-3/specs" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://dl.djicdn.com/downloads/inspire_3/20241016UM/DJI_Inspire_3_User_Manual_V3.0_CHS_.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>大疆商城 DJI RC Plus（Inspire 3）商品页产品图（2026-11-01 下载）</td></tr><tr><td class="rs-plain">收录说明</td><td>DJI RC Plus（Inspire 3）商品页 + Inspire 3 技术参数页（2026-11-01 核对）</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+RC+Plus+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=RC+Plus&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+RC+Plus+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/remote_controller/dji.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/remote_controller/dji.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -100,5 +100,5 @@ description: "大疆 DJI RC Plus（遥控器）：官方参数；来源 B 级、
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

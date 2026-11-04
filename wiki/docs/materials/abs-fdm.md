@@ -1,8 +1,11 @@
 ---
 title: "ABS 线材"
+description: "材料 ABS 线材：ABS 是 FDM 的功能材料"
 ---
 
 # ABS 线材
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>3D 打印材料</span>

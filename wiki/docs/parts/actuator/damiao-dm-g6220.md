@@ -1,6 +1,6 @@
 ---
 title: 达妙 DAMIAO DM-G6220
-description: "达妙 DAMIAO DM-G6220（关节电机）：峰值扭矩 2.7 N·m、额定 1.3 N·m、减速比 1:1；来源 B 级、2026-10-31 核对。"
+description: "达妙 DAMIAO DM-G6220（关节电机）：峰值扭矩 2.7 N·m、额定 1.3 N·m、减速比 1:1；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 
@@ -22,7 +22,7 @@ description: "达妙 DAMIAO DM-G6220（关节电机）：峰值扭矩 2.7 N·m�
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -35,7 +35,7 @@ description: "达妙 DAMIAO DM-G6220（关节电机）：峰值扭矩 2.7 N·m�
 <div class="part-src">
 来源：<a href="https://www.damiaokeji.com/index.php?c=show&id=119">https://www.damiaokeji.com/index.php?c=show&id=119</a><br/>
 收录：达妙官网产品页 + 官方 Gitee 仓库（kit-miao）说明书 V1.1（2026-09-07），2026-10-31 核对<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>
@@ -130,7 +130,7 @@ description: "达妙 DAMIAO DM-G6220（关节电机）：峰值扭矩 2.7 N·m�
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.damiaokeji.com/index.php?c=show&id=119" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="http://www.damiaokeji.com/index.php?c=show&id=119" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://gitee.com/kit-miao/DM-G6220/raw/master/%E8%AF%B4%E6%98%8E%E4%B9%A6/DM-G6220%E4%B8%AD%E7%A9%BA%E4%BA%91%E5%8F%B0%E7%94%B5%E6%9C%BA%E8%AF%B4%E6%98%8E%E4%B9%A6%20V1.1.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>达妙官网产品图（damiaokeji.com 产品页 id=119）</td></tr><tr><td class="rs-plain">收录说明</td><td>达妙官网产品页 + 官方 Gitee 仓库（kit-miao）说明书 V1.1（2026-09-07），2026-10-31 核对</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-G6220+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=DM-G6220&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-G6220+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/actuator/damiao.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/damiao.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.damiaokeji.com/index.php?c=show&id=119" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="http://www.damiaokeji.com/index.php?c=show&id=119" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://gitee.com/kit-miao/DM-G6220/raw/master/%E8%AF%B4%E6%98%8E%E4%B9%A6/DM-G6220%E4%B8%AD%E7%A9%BA%E4%BA%91%E5%8F%B0%E7%94%B5%E6%9C%BA%E8%AF%B4%E6%98%8E%E4%B9%A6%20V1.1.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>达妙官网产品图（damiaokeji.com 产品页 id=119）</td></tr><tr><td class="rs-plain">收录说明</td><td>达妙官网产品页 + 官方 Gitee 仓库（kit-miao）说明书 V1.1（2026-09-07），2026-10-31 核对</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-G6220+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=DM-G6220&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-G6220+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/actuator/damiao.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/damiao.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -138,5 +138,5 @@ description: "达妙 DAMIAO DM-G6220（关节电机）：峰值扭矩 2.7 N·m�
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

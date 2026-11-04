@@ -1,199 +1,103 @@
-# 架构：GitHub 与服务器怎么共存
+# 架构：站点、后端与多端
 
-一句话：**GitHub 管「事实」，服务器管「流量与实时」**。两者共享同一份 schema
-与同一批构建产物，所以永远只有一个真相源。
+一句话：**核心仓管事实，本仓管交付**。本仓不改目录数据，只消费核心仓的
+`data-v*` release，并把同一份数据渲染成静态站、API、分享卡和群机器人回答。
 
-```
-                     ┌───────────────────────────────────────┐
-  写侧（少、要身份）    │  GitHub                                 │
-  ─────────────────  │  · PR      → 部件参数 / 优惠（内容层）      │
-                     │  · issue   → 评分 / 实测 / 纠错（行为层）    │
-                     │  · Actions → 聚合 → 写回 snapshot         │
-                     └──────────────────┬────────────────────┘
-                                        │ 构建产物 = 唯一契约
-                    catalog.json · ratings_snapshot.json
-                    reviews_snapshot.json · offers.json
-                                        │
-                     ┌──────────────────┴────────────────────┐
-  读侧（多、只读）      │  静态站（VitePress，构建期消费）           │
-  ─────────────────  │  API（FastAPI，运行期消费同一产物）         │
-                     └───────────────────────────────────────┘
-```
+> 拆仓前的单仓架构已废弃，见核心仓 [ADR-006](https://github.com/RoboWiki/RoboWiki/blob/main/docs/ADR-006-split-repos-2026-11-02.md)。
+> 本文取代本仓旧的 `docs/ARCHITECTURE.md`。
 
-## 三条不可违反的约定
+## 两仓边界
 
-### 1. 读侧只读产物，不读 `data/catalog/`
+| 仓 | 负责 | 不负责 |
+|---|---|---|
+| `RoboWiki/RoboWiki` | `data/`、`schema/`、`assets/`、校验、`data-v*` release | 页面、API、UGC |
+| `RoboWiki/RoboWiki.github.io`（本仓） | VitePress、FastAPI、控制台、Docker/Caddy、分享/PWA、客户端契约 | 数据副本、schema 修改、产品图副本 |
 
-`data/catalog/**` 是**人写的内容**，`catalog.json` 等是**机器产物**。
-站点和 API 都只消费后者。这样静态站与 API 对内容的理解不可能漂移，
-而且迁移服务器时产物一个字都不用改。
+本仓通过 `data.lock.json` 锁定 release；构建时下载 tar.gz、校验 SHA-256、解压到 `.data/`。
+页面和 API 都从同一份快照读取，不各自维护副本。
 
-> **catalog/ 是唯一事实源**（2026-10-28 起）。旧的扁平采集文件
-> （`motors.json` / `controllers_*.json` / `sensors.json`）与历史归档
-> `data/_backup/` 已全部出库；loader / validate / 后端种子不再保留对它们的
-> 兼容分支。贡献者只改 `catalog/<品类>/<厂商>.json` 一个文件即可生效。
-
-### 2. 只有 `pipeline/` 能产生产物
+## 运行时分层
 
 ```
-pipeline/  确定性构建（每次必跑，纯函数，产物可 diff）
-  load.py         读 data/，统一结构
-  validate.py     数据闸门：口径、量程、键集、跨行不变量
-  build_site.py   生成 VitePress 内容与静态产物
-  ingest_*.py     GitHub issue → 快照
-
-tools/     一次性迁移（跑一次就归档，不参与构建）
-  见 tools/README.md —— 里面的脚本会改数据，别在别人改完之后跑
-```
-
-### 3. 缺失写 `null`，不省略 key
-
-读侧要能区分「厂商没公布」和「这个属性不存在」。这也是 `schema/` 里
-`part.schema.json` 把大部分字段标成 `["number", "null"]` 的原因。
-
-## 贡献分层
-
-| 层 | 通道 | 门槛 | 谁把关 |
-|---|---|---|---|
-| 内容（参数/优惠） | PR | 会改 JSON | CI 闸门 + CODEOWNERS |
-| 行为（评分/实测） | issue 表单 | 有 GitHub 账号 | Actions 聚合 |
-| 行为（将来高并发） | API | 同 schema | 服务端限流 |
-
-内容层用 PR 而不是表单，因为它需要**可评审的 diff**；
-行为层用表单，因为它量大、单条价值低、评审不划算。
-
-## 部署形态与迁移
-
-现在是**纯静态**：Pages 托管 VitePress，评分/实测靠 issue + Actions 聚合。
-这是最省钱也最省事的一档，只要投稿量还是「天」为单位就够了。
-
-要往上走时（有人天天来打分、需要实时显示），只动这三处：
-
-```
-SQLite → Postgres（一个 DSN）
-uvicorn 单进程 → gunicorn -k uvicorn.workers.UvicornWorker -w 4
-内存限流器 → Redis（现有实现是进程内，多副本会失效）
-```
-
-不动：`data/`、`schema/`、`pipeline/`、组件、issue 链路、构建产物。
-
-<details>
-<summary>更远的一档（>1000 件 / 多实例）时再考虑</summary>
-
-- 图片从 repo 搬到对象存储 / CDN（当前 350 张、约 20 MB；千件量级会到 100 MB+）
-- 静态站只留「品类页 + 精选部件页」，全量检索走后端 API
-- 构建拆页（每品类独立构建），避免单次构建超过 5 分钟
-
-**现在不要做。** 那会把复杂度花在还没出现的问题上。
-
-</details>
-
-### L0 → L1 迁移清单
-
-```
-必改  SQLite → Postgres（一个 DSN）
-      uvicorn 单进程 → gunicorn -k uvicorn.workers.UvicornWorker -w 4
-      内存限流器 → Redis（现有实现是进程内，多副本会失效）
-      图片 repo → 对象存储/CDN
-不改  data/、schema/、pipeline/、组件、issue 链路、构建产物
-```
-
-## 为什么构建产物要「可 diff」
-
-```
-python -m pipeline build     # 同样输入 → 字节级同样的输出
-```
-
-只有这样，PR 里「产物也跟着变了」才有意义 —— 评审能直接看到
-「这个型号的峰值扭矩从 40 变成 45」。如果构建不确定，产物 diff 就是噪音，
-最后只能靠人肉点页面确认。
-
-## 规模判断（先算再造）
-
-按「1000 注册用户 / 每天 200 次评分 + 20 条实测」：
-
-```
-写 QPS ≈ 0.003   → Postgres 单实例绰绰有余
-读 QPS：静态站 99% 命中 CDN → 源站 ≈ 0
-构建：当前 311 件约 20–30 s；1000 件预计 4–6 min → 超过 5 min 再拆页构建
-```
-
-**真正的瓶颈是构建时间和仓库体积，不是数据库。** 所以在有 1000 个部件之前，
-不要引入微服务、消息队列或 Redis——那会把复杂度花在不会出问题的地方。
-
----
-
-## 信息架构与展示层（2026-10 重构）
-
-### 一、为什么只有六类页面
-
-```
-首页 · 学习路线 · 机器人整机 · 机器人部件 · 加工与采购 · 贡献者 · 投稿
-```
-
-判断标准是**「读者心里的问题」**，不是「数据表有几张」：
-
-| 页面 | 回答的问题 |
-|---|---|
-| 学习路线 | 我该怎么开始 |
-| 机器人整机 | 这套方案能不能直接拿来做 |
-| 机器人部件 | 这个关节/相机/芯片选哪个 |
-| 加工与采购 | 零件做出来了，活找谁做 |
-| 贡献者 | 这些数据是谁核的 |
-| 投稿 | 我想补一条，怎么进 |
-
-原来「参数口径」与「数据来源」是两页，已合并为 `/method`：拆开会让读者以为
-「口径」和「来源」是两件事，其实是一件事的两面。原来「部件详情」目录页也删了 ——
-部件库本身就是入口，品类/厂商索引只作为详情页的面包屑保留。
-
-### 二、三类列表共用一套壳（`ExplorerShell.vue` + `theme/explorer.css`）
-
-整机 / 部件 / 加工采购本质是同一件事：**一堆东西，按维度筛，看卡片，进详情**。
-之前三套组件各写各的，页头样式、chip 尺寸、卡片高度、「共 N 件」的位置全不一样，
-读者在页间跳会以为换了个站。
-
-现在外层统一，内层各自决定「比什么」：
-
-```
-ExplorerShell  页头（kicker/h1/lead/note）+ 工具条（搜索/排序/计数/分面）+ 卡片网格 + 空态
-卡片内容       由页面用 slot 决定 —— 部件比扭矩，整机比负载，加工商比交期
-```
-
-部件库（`PartExplorer.vue`）交互最复杂（精选白名单、对比、优惠并列），
-这轮只对齐页头、工具条顺序与页宽，逻辑没动。
-
-### 三、评分是四个维度，不是一个总分
-
-单个总分说不清问题在哪：同样 4 分，「参数靠谱、文档稀烂」和「文档齐全、做工一般」
-对下一个人是完全不同的信息。所以：
-
-```
-score        总分（1–5，必填）
-dims         spec_trust / build / docs / value（选填，缺项不补 0）
-usage        duration / load / batch（工况）
-own_hardware 是否装过机（单独统计）
-```
-
-聚合时每个维度给出各自的样本量 `dims_n`，页面显示成 `4.6/5` 而不是一个假精确的均值。
-`n < 3` 标「样本不足」。反刷靠三件事：一人一件一票（唯一键 = 账号 + 部件 id）、
-必须有 GitHub 账号、维护者可关闭 issue（关闭即不参与聚合）。
-
-### 四、生成链
-
-```
-data/                        唯一事实源
-  catalog/<品类>/<厂商>.json   部件
-  robots/<厂商>.json           整机
-  suppliers.json              加工与采购
-  learn.json                  学习路线的路线图与文章索引
-  featured.json               精选白名单（人工筛）
+浏览器 / 小程序 / QQ 机器人 / 未来 App
         │
-        ├─ pipeline/validate.py        闸门：A 级键集 / 等级越级 / 厂商登记
-        ├─ pipeline/build_site.py      部件页 + 列表快照 + /method + 侧边栏
-        ├─ pipeline/build_robots.py    整机页（含 URDF / 仓库链接）
-        └─ pipeline/contrib_page.py    贡献者（初始贡献 + GitHub 叠加）
+        ├─ 静态读：VitePress HTML + /catalog.json + /share/*.json + PWA 缓存
         │
-        └─ wiki/docs/public/*.json  →  VitePress 静态站
+        └─ 动态写：/api/v1  ──► FastAPI ──► Postgres（UGC / 提案 / outbox）
+                                      │
+                                      ├─ 控制台 /console/
+                                      ├─ worker：outbox → 核心仓 PR
+                                      └─ bot：只读型号问答
 ```
 
-**页面永远由数据生成**，`wiki/docs/` 下的 md 不手改（`learn/*.md` 除外 —— 那是编辑内容）。
+### 静态站（主体）
+
+- `wiki/`：VitePress 生成首页、部件/整机/材质/软件/渠道、方法、投稿、贡献者。
+- 目录、参数、来源、分享文案全部在构建期来自 release；静态站不依赖 API 才能读。
+- PWA：外壳、访问过的页面、搜索索引与分享 JSON 可离线；`/api` 永远走网络。
+- 分享卡：浏览器用同一份 `share/*.json` 画 1080×1440 PNG + 二维码。
+
+### 后端（可选但生产需要）
+
+- `backend/`：FastAPI + SQLModel + Alembic。
+- `users` 管身份，`posts/comments/votes` 管社区，`reports` 管举报与处置，
+  `submissions/reviews/outbox` 管目录提案。
+- 隐藏是软操作：被处置内容不进公开列表/详情/评分聚合，站务仍可在后台查看与恢复。
+- `/api/v1` 是唯一规范前缀；`/api` 只作旧客户端别名。
+- 目录 `parts` 是 release 的只读投影；后台不直接写。
+- 材质 `/api/v1/materials` 直接从 release 的 `data/materials` 读取（36 条，按文件 mtime 缓存），不落库。
+- 移动端列表用 `GET /parts?compact=true`（仅卡片字段）；详情用 `GET /parts/{id}?posts_kind=review&posts_limit=5`，避免把整包 specs 与全部帖子塞进小程序。`/parts` 与 `/materials` 的列表/详情响应体会带 `data_version`。
+- 邮箱验证/找回密码用一次性 token 表；开发 `EMAIL_MODE=log`，生产 SMTP。
+
+### 控制台与 worker
+
+- `console/`：提案审核、举报处置、发布队列、数据缺口、社区管理。
+- `worker/`：消费 outbox；默认 dry-run 写产物，配置 GitHub token 后开核心仓 PR。
+- 审核通过 ≠ 生效：合并并发布 `data-v*`、站点更新 `data.lock` 后才更新页面。
+
+### 部署
+
+- `deploy/compose.yml`：Caddy + API + Postgres + migrate + worker。
+- Caddy 负责静态、TLS、反代、缓存与安全头；API 只在内网。
+- 生产必须设置域名、`AUTO_HTTPS=on`、管理员账号和强密码；GitHub Pages 只做静态镜像。
+
+## 数据与版本
+
+| 版本 | 位置 | 消费者 |
+|---|---|---|
+| release tag `data-v*` | 核心仓 + `data.lock.json` | 静态站、API、分享、MCP |
+| `catalog_schema` / `semantics.version` | 核心仓 `schema/` | 构建、API、文档 |
+| `artifact_schema` | `pipeline/meta.py` | 前端解析产物 |
+| API `v1` | `/api/v1` + OpenAPI | Web、小程序、机器人、App |
+| DB revision | `backend/alembic/versions/` | 后端部署 |
+
+版本只写一处、其余由构建生成；manifest 记录 release 与 counts，页面/API 响应回显
+`X-RoboWiki-Data-Version`。详见 [DATA-VERSIONING](DATA-VERSIONING.md)。
+
+## 目录
+
+```
+wiki/        VitePress、组件、主题、生成页与 public 产物
+backend/     FastAPI、模型、Alembic、worker、publisher
+console/     React 控制台（/console/）
+deploy/      Compose、Caddy、Dockerfile、备份
+clients/     多端契约；QQ 机器人参考实现
+pipeline/    页面/分享/材质/站点构建（不产生事实）
+tests/       站点构建、治理、导出测试
+docs/        架构、ADR、版本化、CI
+```
+
+## 三条硬规则
+
+1. **一个字段一个写入方**：目录只由核心仓 release 写；UGC 只由 API 写。
+2. **不在本仓保存数据副本**；不手改 `wiki/docs/parts/`、`public/*.json`、`sidebar.json`。
+3. **一套 API、一套身份**：Web/PWA/小程序/机器人/App 共用 `/api/v1` 与 `users`；
+   外部身份绑定（GitHub/微信）尚未建表，当前为 Bearer 令牌。
+
+## 规模与演进
+
+- 静态站与 API 都可单机运行；当前 326 件入库部件 + 36 个材料/工艺页，构建约 35 秒。
+- 搜索先用 VitePress 本地索引与 Postgres 子串；文档 >20 万或 p95 >300ms 再上 Meilisearch。
+- 多副本前把进程内限流换成 Redis；当前单副本 + Caddy 已足够。
+- 微信小程序只读壳已实现（`clients/wechat-mini/`）；App 与小程序写操作未实现，
+  契约见 `clients/README.md`；不要为每个端复制业务逻辑。

@@ -1,8 +1,11 @@
 ---
 title: "3D 打印 SLM"
+description: "加工工艺 3D 打印 SLM：金属粉末床激光熔化"
 ---
 
 # 3D 打印 SLM
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>加工工艺</span>
@@ -20,7 +23,7 @@ title: "3D 打印 SLM"
 
 | 字段 | 值 |
 |---|---|
-| 可达公差 (mm) | 0.1 |
+| 可达公差 (mm) | ±0.1 |
 | 公差说明 | 常见 ±0.1 mm，视尺寸与摆放方向；配合面通常要 CNC 后加工 |
 | 表面粗糙度 Ra (µm) | 8 |
 | 层高 (mm) | 0.03 |

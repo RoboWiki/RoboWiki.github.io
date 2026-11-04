@@ -71,14 +71,14 @@ description: "TDK InvenSense ICM-42688-P（IMU）：额定 3.3 V、分辨率 16-
 | 封装 | — |
 | 库存 | — |
 | ODR (Hz) | 32,000 |
-| noise | 2.8 mdps/√Hz；70 µg/√Hz |
+| 噪声 | 2.8 mdps/√Hz；70 µg/√Hz |
 | 电压范围 | 1.71–3.6 |
-| power_w | 3.00e-03 |
+| 功耗 (W) | 3.00e-03 |
 | 工作温度 | -40~85 |
-| size_mm | 2.5×3×0.91 |
+| 尺寸 (mm) | 2.5×3×0.91 |
 | 分辨率 | 16-bit |
 | 官方文档 | https://invensense.tdk.com/products/motion-tracking/6-axis/icm-42688-p/ |
-| repo_urls | — |
+| 开源仓库 | — |
 
 ## 优惠与获取条件
 
@@ -95,7 +95,7 @@ description: "TDK InvenSense ICM-42688-P（IMU）：额定 3.3 V、分辨率 16-
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://invensense.tdk.com/products/motion-tracking/6-axis/icm-42688-p/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>TDK InvenSense ICM-42688-P 产品页 + DS-000347 数据手册核对（2026-10-28）</td></tr><tr><td><a href="https://www.google.com/search?q=TDK+InvenSense+ICM-42688-P+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=ICM-42688-P&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=TDK+InvenSense+ICM-42688-P+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/imu/tdk.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/imu/tdk.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://invensense.tdk.com/products/motion-tracking/6-axis/icm-42688-p/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>TDK InvenSense ICM-42688-P 产品页 + DS-000347 数据手册核对（2026-10-28）</td></tr><tr><td><a href="https://www.google.com/search?q=TDK+InvenSense+ICM-42688-P+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=ICM-42688-P&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=TDK+InvenSense+ICM-42688-P+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/imu/tdk.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/imu/tdk.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -103,5 +103,5 @@ description: "TDK InvenSense ICM-42688-P（IMU）：额定 3.3 V、分辨率 16-
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

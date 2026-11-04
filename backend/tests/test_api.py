@@ -16,6 +16,7 @@ import tempfile
 _TMP = tempfile.mkdtemp(prefix="roboselect-test-")
 os.environ["ROBOWIKI_DB_PATH"] = str(pathlib.Path(_TMP) / "test.db")
 os.environ["ROBOWIKI_SECRET_KEY"] = "test-secret-key-at-least-32-bytes-long-0000"
+os.environ["ROBOWIKI_BOT_TOKEN"] = "test-bot-token"
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
@@ -91,9 +92,9 @@ def test_nulls_sort_last_both_directions(client):
         assert all(v is None for v in vals[len(vals) - n_null:]), "null 必须排最后"
 
 
-def test_sort_whitelist_falls_back(client):
+def test_sort_whitelist_rejects_unknown(client):
     r = client.get("/api/parts", params={"sort": "id;DROP TABLE parts"})
-    assert r.status_code == 200
+    assert r.status_code == 422
     assert client.get("/api/health").status_code == 200
 
 
@@ -302,3 +303,390 @@ def test_site_root_is_the_wiki(client):
 
 def test_api_unknown_path_404(client):
     assert client.get("/api/nope").status_code == 404
+
+
+# ── v1 契约 ─────────────────────────────────────────────────────────────────
+def test_api_v1_meta_and_release_header(client):
+    r = client.get("/api/v1/meta")
+    assert r.status_code == 200
+    d = r.json()
+    assert d["api_version"] == "v1"
+    assert "data_version" in d
+    assert r.headers["X-RoboWiki-API-Version"] == "v1"
+    assert r.headers["X-RoboWiki-Data-Version"] == d["data_version"]
+
+
+def test_api_legacy_alias_still_works(client):
+    assert client.get("/api/meta").json()["api_version"] == "v1"
+    assert client.get("/api/parts", params={"limit": 1}).status_code == 200
+
+
+def test_bootstrap_admin_creates_staff(client, monkeypatch):
+    from app.core.config import settings
+    from app.core.db import bootstrap_admin, session
+    monkeypatch.setattr(settings, "admin_handle", "opsadmin")
+    monkeypatch.setattr(settings, "admin_password", "secret12345")
+    db = session()
+    try:
+        assert bootstrap_admin(db) == "opsadmin"
+    finally:
+        db.close()
+    r = client.post("/api/auth/login", json={"handle": "opsadmin",
+                                            "password": "secret12345"})
+    assert r.status_code == 200
+    assert r.json()["user"]["is_staff"] is True
+
+
+def test_openapi_has_security_schemes(client):
+    r = client.get("/api/v1/openapi.json")
+    assert r.status_code == 200
+    d = r.json()
+    assert "bearerAuth" in d["components"]["securitySchemes"]
+    assert "botToken" in d["components"]["securitySchemes"]
+    assert d["paths"]["/api/v1/bot/answer"]["get"]["security"] == [{"botToken": []}]
+    assert d["paths"]["/api/v1/submissions"]["post"]["security"] == [{"bearerAuth": []}]
+
+
+def test_ready_checks_database_and_request_id(client):
+    r = client.get("/api/v1/ready")
+    assert r.status_code == 200
+    assert r.json()["db"] == "ok"
+    assert r.headers["X-Request-ID"]
+
+    r = client.get("/api/v1/health", headers={"X-Request-ID": "trace-123"})
+    assert r.headers["X-Request-ID"] == "trace-123"
+
+
+def test_parts_sort_price_and_reject_unknown(client):
+    r = client.get("/api/v1/parts", params={"sort": "price", "order": "desc", "limit": 3})
+    assert r.status_code == 200
+    prices = [x["price_cny"] for x in r.json()["items"] if x["price_cny"] is not None]
+    assert prices == sorted(prices, reverse=True)
+    assert client.get("/api/v1/parts", params={"sort": "typo"}).status_code == 422
+
+
+def test_register_rejects_non_ascii_handle(client):
+    r = client.post("/api/auth/register", json={
+        "handle": "管理员", "display_name": "x", "password": "testpass123",
+    })
+    assert r.status_code == 422
+    r = client.post("/api/auth/register", json={
+        "handle": "abcｄ", "display_name": "x", "password": "testpass123",
+    })
+    assert r.status_code == 422
+
+
+def test_public_part_hides_internal_fields(client):
+    d = client.get("/api/v1/parts", params={"category": "actuator", "limit": 1}).json()
+    assert d["items"]
+    item = d["items"][0]
+    assert "source_tier" in item
+    for internal in ("origin", "search"):
+        assert internal not in item
+
+
+# ── 数据提案 / outbox ───────────────────────────────────────────────────────
+def test_submission_review_enqueues_outbox(client):
+    h = auth_header(client)  # robowiki / staff
+    r = client.post("/api/v1/submissions", headers=h, json={
+        "kind": "part_patch",
+        "target_id": "cubemars-ak80-6",
+        "payload": {"price_cny": 3288.0},
+        "evidence": {"source_url": "https://example.com/manual", "note": "test"},
+    })
+    assert r.status_code == 201, r.text
+    sid = r.json()["id"]
+    assert r.json()["status"] == "pending"
+    preview = r.json()["evidence"]["preview"][0]
+    assert preview["field"] == "price_cny"
+    assert preview["new_value"] == 3288.0
+
+    r = client.post(f"/api/v1/submissions/{sid}/review", headers=h, json={
+        "decision": "accepted", "reason_code": "ok", "note": "test",
+    })
+    assert r.status_code == 200, r.text
+    assert r.json()["status"] == "accepted"
+    assert r.json()["reviews"][0]["decision"] == "accepted"
+
+    r = client.get("/api/v1/submissions/outbox", headers=h)
+    assert r.status_code == 200
+    assert any(x["submission_id"] == sid and x["status"] == "pending"
+               for x in r.json())
+
+    import os
+    import shutil
+    from app.worker import process_one
+    outdir = ROOT / "backend" / ".tmp-outbox"
+    shutil.rmtree(outdir, ignore_errors=True)
+    outdir.mkdir(parents=True)
+    os.environ["ROBOWIKI_OUTBOX_DIR"] = str(outdir)
+    assert process_one() is True
+    assert list(outdir.glob("submission-*.json"))
+    shutil.rmtree(outdir, ignore_errors=True)
+
+
+def test_submission_requires_evidence(client):
+    h = auth_header(client)
+    r = client.post("/api/v1/submissions", headers=h, json={
+        "kind": "part_patch", "target_id": "cubemars-ak80-6",
+        "payload": {"price_cny": 1.0}, "evidence": {},
+    })
+    assert r.status_code == 422
+
+
+def test_submission_preview_is_server_generated(client):
+    h = auth_header(client)
+    r = client.post("/api/v1/submissions", headers=h, json={
+        "kind": "part_patch", "target_id": "cubemars-ak80-6",
+        "payload": {"price_cny": 1.0},
+        "evidence": {"note": "test preview", "source_url": "https://example.com",
+                     "preview": [{"field": "notes", "old_value": "a", "new_value": "b"}]},
+    })
+    assert r.status_code == 201
+    preview = r.json()["evidence"]["preview"]
+    assert preview[0]["field"] == "price_cny"
+    assert preview[0]["new_value"] == 1.0
+
+
+def test_submission_rejects_bad_value_shapes(client):
+    h = auth_header(client)
+    for payload in ({"price_cny": [1, 2, 3]},
+                    {"specs.tau_peak_Nm": {"x": 1}},
+                    {"specs.use_cases": [{"x": 1}]}):
+        r = client.post("/api/v1/submissions", headers=h, json={
+            "kind": "part_patch", "target_id": "cubemars-ak80-6",
+            "payload": payload,
+            "evidence": {"note": "shape test", "source_url": "https://example.com"},
+        })
+        assert r.status_code == 422, payload
+
+
+def test_submission_rejects_non_http_source(client):
+    h = auth_header(client)
+    r = client.post("/api/v1/submissions", headers=h, json={
+        "kind": "part_patch", "target_id": "cubemars-ak80-6",
+        "payload": {"price_cny": 1.0},
+        "evidence": {"note": "测试来源校验", "source_url": "javascript:alert(1)"},
+    })
+    assert r.status_code == 422
+    r = client.post("/api/v1/submissions", headers=h, json={
+        "kind": "part_patch", "target_id": "cubemars-ak80-6",
+        "payload": {"price_cny": 1.0},
+        "evidence": {"note": "", "source_url": "https://example.com"},
+    })
+    assert r.status_code == 422
+
+
+def test_non_staff_cannot_review(client):
+    h = auth_header(client, "demo1", "robowiki")
+    r = client.post("/api/v1/submissions/1/review", headers=h, json={
+        "decision": "accepted",
+    })
+    assert r.status_code == 403
+
+
+# ── 群机器人只读问答 ────────────────────────────────────────────────────────
+BOT = {"X-Bot-Token": "test-bot-token"}
+
+
+def test_bot_answer_is_one_line_with_url_and_version(client):
+    r = client.get("/api/v1/bot/answer", params={"q": "cubemars ak80"}, headers=BOT)
+    assert r.status_code == 200, r.text
+    d = r.json()
+    assert d["found"] is True
+    assert d["part"]["model"].lower().startswith("ak80")
+    assert d["url"].endswith(".html")
+    assert d["data_version"]
+    assert "\n" not in d["answer"]
+    assert d["part"]["model"] in d["answer"]
+    assert "已核对" not in d["answer"]  # B 级不显示核对信号
+
+
+def test_bot_answer_uses_connector_rated_fields(client):
+    r = client.get("/api/v1/bot/answer", params={"q": "xt30"}, headers=BOT)
+    assert r.status_code == 200
+    d = r.json()
+    assert d["part"]["id"] == "amass-xt30"
+    assert "20 A" in d["answer"] and "500 V" in d["answer"]
+
+
+def test_bot_wildcards_do_not_match_everything(client):
+    r = client.get("/api/v1/bot/answer", params={"q": "%"}, headers=BOT)
+    assert r.status_code == 200
+    assert r.json()["found"] is False
+
+
+def test_bot_requires_token(client):
+    assert client.get("/api/v1/bot/answer", params={"q": "ak80"}).status_code == 401
+    assert client.get("/api/v1/bot/answer", params={"q": "ak80"},
+                      headers={"X-Bot-Token": "wrong"}).status_code == 401
+
+
+def test_bot_not_found_returns_search_hint(client):
+    r = client.get("/api/v1/bot/answer", params={"q": "不存在型号zzz"}, headers=BOT)
+    assert r.status_code == 200
+    d = r.json()
+    assert d["found"] is False
+    assert d["url"].endswith("/catalog")
+    assert "没找到" in d["answer"]
+
+
+def test_worker_retries_failed_job(client, monkeypatch):
+    from datetime import datetime, timedelta, timezone
+    from app import worker
+    from app.core.db import session
+    from app.models import Outbox
+
+    db = session()
+    job = Outbox(action="part_patch", payload={"target_id": "x", "changes": {}},
+                 idempotency_key="retry-test")
+    db.add(job)
+    db.commit()
+    db.refresh(job)
+    jid = job.id
+    db.close()
+
+    calls: list[int] = []
+
+    def flaky(_job, _data_dir):
+        calls.append(1)
+        if len(calls) == 1:
+            raise RuntimeError("boom")
+        return {"dry_run": True, "file": "x.json"}
+
+    monkeypatch.setattr(worker, "publish_job", flaky)
+    assert worker.process_one() is True
+    db = session()
+    j = db.get(Outbox, jid)
+    assert j.status == "pending" and j.attempts == 1 and "boom" in (j.last_error or "")
+    j.next_at = datetime.now(timezone.utc) - timedelta(seconds=1)
+    db.add(j)
+    db.commit()
+    db.close()
+
+    assert worker.process_one() is True
+    db = session()
+    j = db.get(Outbox, jid)
+    assert j.status == "done" and j.attempts == 2 and j.result["dry_run"] is True
+    db.close()
+
+
+def test_staff_can_retry_failed_outbox(client):
+    from app.core.db import session
+    from app.models import Outbox
+
+    db = session()
+    row = Outbox(action="part_patch", payload={}, idempotency_key="retry-api",
+                 status="failed", attempts=5, last_error="boom")
+    db.add(row)
+    db.commit()
+    db.refresh(row)
+    oid = row.id
+    db.close()
+
+    h = auth_header(client)
+    r = client.post(f"/api/v1/submissions/outbox/{oid}/retry", headers=h)
+    assert r.status_code == 200
+    assert r.json()["status"] == "pending" and r.json()["last_error"] is None
+
+
+# ── 材质库 API ──────────────────────────────────────────────────────────────
+def test_materials_list_and_meta(client):
+    r = client.get("/api/v1/materials", params={"limit": 200})
+    assert r.status_code == 200
+    d = r.json()
+    assert d["total"] == 36 and len(d["items"]) == 36
+    assert d["data_version"]
+    assert {x["category"] for x in d["items"]} == {"material", "process"}
+
+    m = client.get("/api/v1/materials/meta").json()
+    assert m["materials"] == 27 and m["processes"] == 9
+    assert len(m["groups"]) >= 5
+
+
+def test_material_detail_and_related(client):
+    r = client.get("/api/v1/materials/proc-cnc")
+    assert r.status_code == 200
+    d = r.json()
+    assert d["category"] == "process"
+    assert d["specs"]["tolerance_mm"] == 0.05
+    assert d["related"] and all(x["category"] == "material" for x in d["related"])
+
+    r = client.get("/api/v1/materials/mat-alu-6061-t6")
+    assert r.status_code == 200
+    assert r.json()["related"]
+    assert client.get("/api/v1/materials/nope").status_code == 404
+
+
+def test_materials_search_and_filters(client):
+    d = client.get("/api/v1/materials", params={"q": "CNC"}).json()
+    assert d["total"] >= 1
+    assert any(x["id"] == "proc-cnc" for x in d["items"])
+    d = client.get("/api/v1/materials", params={"category": "material",
+                                                "group": "metal"}).json()
+    assert d["total"] >= 1
+    assert all(x["category"] == "material" and x["group"] == "metal"
+               for x in d["items"])
+
+
+# ── 邮箱验证 / 找回密码 ─────────────────────────────────────────────────────
+def test_email_verify_and_password_reset(client, monkeypatch):
+    import re
+    from app.api.routes import auth as auth_route
+
+    sent: list[tuple[str, str, str]] = []
+    monkeypatch.setattr(auth_route, "send_email",
+                        lambda to, subject, text: sent.append((to, subject, text)))
+    r = client.post("/api/auth/register", json={
+        "handle": "mailuser", "display_name": "Mail User",
+        "email": "mailuser@example.com", "password": "oldpass123",
+    })
+    assert r.status_code == 201, r.text
+    h = {"Authorization": f"Bearer {r.json()['access_token']}"}
+    assert r.json()["user"]["email_verified"] is False
+
+    r = client.post("/api/auth/email/verify/request", headers=h)
+    assert r.status_code == 200 and sent
+    token = re.search(r"令牌：(\S+)", sent[-1][2]).group(1)
+    r = client.post("/api/auth/email/verify", json={"token": token})
+    assert r.status_code == 200 and r.json()["email_verified"] is True
+    assert client.post("/api/auth/email/verify", json={"token": token}).status_code == 400
+
+    r = client.post("/api/auth/password/forgot", json={"email": "mailuser@example.com"})
+    assert r.status_code == 202 and len(sent) == 2
+    token = re.search(r"令牌：(\S+)", sent[-1][2]).group(1)
+    r = client.post("/api/auth/password/reset",
+                    json={"token": token, "password": "newpass123"})
+    assert r.status_code == 200
+    assert client.post("/api/auth/login", json={
+        "handle": "mailuser", "password": "oldpass123"}).status_code == 401
+    assert client.post("/api/auth/login", json={
+        "handle": "mailuser", "password": "newpass123"}).status_code == 200
+
+    before = len(sent)
+    r = client.post("/api/auth/password/forgot", json={"email": "none@example.com"})
+    assert r.status_code == 202 and len(sent) == before
+    assert client.post("/api/auth/password/reset",
+                       json={"token": "x" * 20, "password": "newpass123"}).status_code == 400
+
+
+# ── 移动端轻量接口 ───────────────────────────────────────────────────────────
+def test_compact_part_list_omits_specs_for_mobile(client):
+    full = client.get("/api/v1/parts", params={"limit": 3}).json()
+    assert full.get("data_version")
+    assert "specs" in full["items"][0]
+
+    card = client.get("/api/v1/parts", params={"limit": 3, "compact": "true"}).json()
+    assert card["total"] == full["total"]
+    item = card["items"][0]
+    assert "specs" not in item and "derived" not in item
+    assert "title" in item and "image_url" in item and "price_cny" in item
+    assert item["web_path"].startswith("/parts/") and item["web_path"].endswith(".html")
+    assert item["web_path"].count(".html") == 1
+
+
+def test_material_detail_carries_data_version(client):
+    rows = client.get("/api/v1/materials", params={"limit": 1}).json()
+    mid = rows["items"][0]["id"]
+    detail = client.get(f"/api/v1/materials/{mid}").json()
+    assert detail.get("data_version")

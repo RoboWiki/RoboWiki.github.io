@@ -1,6 +1,6 @@
 ---
 title: 地平线 D-Robotics RDK X5
-description: "地平线 D-Robotics RDK X5（上位机）：Sunrise 5；来源 B 级、2026-10-28 核对。"
+description: "地平线 D-Robotics RDK X5（上位机）：Sunrise 5；来源 B 级、2026-10-28 最近查阅。"
 ---
 
 
@@ -22,7 +22,7 @@ description: "地平线 D-Robotics RDK X5（上位机）：Sunrise 5；来源 B 
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -34,7 +34,7 @@ description: "地平线 D-Robotics RDK X5（上位机）：Sunrise 5；来源 B 
 <div class="part-src">
 来源：<a href="https://developer.d-robotics.cc/rdk_x_doc/RDK?v=3.5.0&p=RDK+X5">https://developer.d-robotics.cc/rdk_x_doc/RDK?v=3.5.0&p=RDK+X5</a><br/>
 收录：厂商公开资料（待逐项核对）<br/>
-核对：2026-10-28
+最近查阅：2026-10-28
 </div>
 
 </div>
@@ -71,21 +71,21 @@ description: "地平线 D-Robotics RDK X5（上位机）：Sunrise 5；来源 B 
 | 峰值功耗 (W) | — |
 | 接口 | USB 3.0 / GbE / MIPI CSI |
 | cpu | 8×Cortex-A55 |
-| os | Ubuntu 22.04 |
+| 系统 | Ubuntu 22.04 |
 | ram_options | 8 |
-| cores | 8 |
-| cpu_arch | arm64 |
+| 核心数 | 8 |
+| CPU 架构 | arm64 |
 | GPU | 32 GFLOPS |
-| cuda | 0 |
-| ros2 | 1 |
-| eth | 1× GbE (PoE) |
-| usb | 4× USB 3.0 Type-A + 1× USB 2.0 Type-C |
+| CUDA | 0 |
+| ROS 2 | 1 |
+| 以太网 | 1× GbE (PoE) |
+| USB | 4× USB 3.0 Type-A + 1× USB 2.0 Type-C |
 | CAN 路数 | 1 |
-| csi | 2 |
-| size_mm | 85×56 |
+| CSI | 2 |
+| 尺寸 (mm) | 85×56 |
 | 官方文档 | https://developer.d-robotics.cc/rdkx5 |
-| repo_urls | https://github.com/D-Robotics/rdk_model_zoo、https://github.com/D-Robotics/hobot_dnn |
-| repo_license | NO-LICENSE,Apache-2.0 |
+| 开源仓库 | https://github.com/D-Robotics/rdk_model_zoo、https://github.com/D-Robotics/hobot_dnn |
+| 仓库许可 | NO-LICENSE,Apache-2.0 |
 
 ## 优惠与获取条件
 
@@ -102,7 +102,7 @@ description: "地平线 D-Robotics RDK X5（上位机）：Sunrise 5；来源 B 
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://developer.d-robotics.cc/rdk_x_doc/RDK?v=3.5.0&p=RDK+X5" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://developer.d-robotics.cc/rdkx5" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://github.com/D-Robotics/rdk_model_zoo" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NO-LICENSE · Apache-2.0（⚠ 仓库里没有 LICENSE 文件 —— 默认保留所有权利，转载资产或商用前先问作者）</td></tr><tr><td><a href="https://github.com/D-Robotics/hobot_dnn" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NO-LICENSE · Apache-2.0（⚠ 仓库里没有 LICENSE 文件 —— 默认保留所有权利，转载资产或商用前先问作者）</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商公开资料（待逐项核对）</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%9C%B0%E5%B9%B3%E7%BA%BF+D-Robotics+RDK+X5+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=RDK+X5&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%9C%B0%E5%B9%B3%E7%BA%BF+D-Robotics+RDK+X5+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/controller_high/drobotics.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_high/drobotics.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://developer.d-robotics.cc/rdk_x_doc/RDK?v=3.5.0&p=RDK+X5" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://developer.d-robotics.cc/rdkx5" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://github.com/D-Robotics/rdk_model_zoo" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NO-LICENSE · Apache-2.0（⚠ 仓库里没有 LICENSE 文件 —— 默认保留所有权利，转载资产或商用前先问作者）</td></tr><tr><td><a href="https://github.com/D-Robotics/hobot_dnn" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NO-LICENSE · Apache-2.0（⚠ 仓库里没有 LICENSE 文件 —— 默认保留所有权利，转载资产或商用前先问作者）</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商公开资料（待逐项核对）</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%9C%B0%E5%B9%B3%E7%BA%BF+D-Robotics+RDK+X5+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=RDK+X5&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%9C%B0%E5%B9%B3%E7%BA%BF+D-Robotics+RDK+X5+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/controller_high/drobotics.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_high/drobotics.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -110,5 +110,5 @@ description: "地平线 D-Robotics RDK X5（上位机）：Sunrise 5；来源 B 
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

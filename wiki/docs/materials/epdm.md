@@ -1,8 +1,11 @@
 ---
 title: "EPDM 三元乙丙橡胶"
+description: "材料 EPDM 三元乙丙橡胶：三元乙丙橡胶"
 ---
 
 # EPDM 三元乙丙橡胶
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>弹性体</span>

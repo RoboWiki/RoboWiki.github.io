@@ -1,6 +1,6 @@
 ---
 title: 脉塔 MyActuator X4-36
-description: "脉塔 MyActuator X4-36（关节电机）：峰值扭矩 34 N·m、额定 10.5 N·m、减速比 36:1；来源 B 级、2026-10-31 核对。"
+description: "脉塔 MyActuator X4-36（关节电机）：峰值扭矩 34 N·m、额定 10.5 N·m、减速比 36:1；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 
@@ -22,7 +22,7 @@ description: "脉塔 MyActuator X4-36（关节电机）：峰值扭矩 34 N·m�
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -34,7 +34,7 @@ description: "脉塔 MyActuator X4-36（关节电机）：峰值扭矩 34 N·m�
 <div class="part-src">
 来源：<a href="https://www.myactuator.com/x4-36details">https://www.myactuator.com/x4-36details</a><br/>
 收录：Seeed wiki zh-CN《脉塔 X 系列》规格表（2026-10-31 抓取）；原厂表交叉核对<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>
@@ -112,7 +112,7 @@ description: "脉塔 MyActuator X4-36（关节电机）：峰值扭矩 34 N·m�
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.myactuator.com/x4-36details" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.myactuator.com/" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td class="rs-plain">产品图出处</td><td>MyActuator 官网产品图（myactuator.com）</td></tr><tr><td class="rs-plain">收录说明</td><td>Seeed wiki zh-CN《脉塔 X 系列》规格表（2026-10-31 抓取）；原厂表交叉核对</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%84%89%E5%A1%94+MyActuator+X4-36+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=X4-36&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%84%89%E5%A1%94+MyActuator+X4-36+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/actuator/myactuator.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/myactuator.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.myactuator.com/x4-36details" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.myactuator.com/" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td class="rs-plain">产品图出处</td><td>MyActuator 官网产品图（myactuator.com）</td></tr><tr><td class="rs-plain">收录说明</td><td>Seeed wiki zh-CN《脉塔 X 系列》规格表（2026-10-31 抓取）；原厂表交叉核对</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%84%89%E5%A1%94+MyActuator+X4-36+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=X4-36&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%84%89%E5%A1%94+MyActuator+X4-36+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/actuator/myactuator.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/myactuator.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -120,5 +120,5 @@ description: "脉塔 MyActuator X4-36（关节电机）：峰值扭矩 34 N·m�
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

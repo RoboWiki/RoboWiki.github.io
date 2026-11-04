@@ -1,8 +1,11 @@
 ---
 title: "玻璃纤维环氧复合材料"
+description: "材料 玻璃纤维环氧复合材料：E 玻璃纤维增强环氧复合材料"
 ---
 
 # 玻璃纤维环氧复合材料
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>复合材料</span>

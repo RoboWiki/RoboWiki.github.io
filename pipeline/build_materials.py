@@ -8,6 +8,7 @@
 from __future__ import annotations
 
 from .paths import DATA_DIR
+from .build_share import build_materials as build_material_shares
 
 import html
 import json
@@ -166,6 +167,18 @@ def _source_block(r: dict) -> str:
     return "\n".join(lines)
 
 
+def _page_desc(r: dict) -> str:
+    """一句话描述：给 og:description / 分享卡用，避免材质页沿用站点通用文案。"""
+    name = r.get("name") or r["id"]
+    note = (r.get("notes") or "").strip()
+    first = re.split(r"[。！？]", note)[0].strip() if note else ""
+    kind = "加工工艺" if r.get("category") == "process" else "材料"
+    desc = f"{kind} {name}"
+    if first:
+        desc += f"：{first}"
+    return desc[:110]
+
+
 def _material_page(r: dict, procs_by_id: dict[str, dict], sup_map: dict[str, dict]) -> str:
     s = r.get("specs") or {}
     pairs = []
@@ -173,16 +186,20 @@ def _material_page(r: dict, procs_by_id: dict[str, dict], sup_map: dict[str, dic
         v = s.get(key)
         if v is None or v == "":
             continue
-        pairs.append((label + (f" ({unit})" if unit else ""), _fmt(v)))
+        value = f"±{_fmt(v)}" if key == "tolerance_mm" else _fmt(v)
+        pairs.append((label + (f" ({unit})" if unit else ""), value))
     pairs.append(("参考价格档", _fmt(s.get("price_level"))))
     proc_items = [procs_by_id[p] for p in (r.get("processes") or []) if p in procs_by_id]
     price_note = s.get("price_note") or "价格随牌号、形态、批量与表面处理浮动，采购前先询价。"
     sim_note = s.get("sim_note") or ""
     return f"""---
 title: {json.dumps(r.get('name') or r['id'], ensure_ascii=False)}
+description: {json.dumps(_page_desc(r), ensure_ascii=False)}
 ---
 
 # {r.get('name') or r['id']}
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>{_fmt(r.get('group_label'))}</span>
@@ -238,13 +255,17 @@ def _process_page(r: dict, mats_by_id: dict[str, dict], sup_map: dict[str, dict]
         v = s.get(key)
         if v is None or v == "":
             continue
-        pairs.append((label + (f" ({unit})" if unit else ""), _fmt(v)))
+        value = f"±{_fmt(v)}" if key == "tolerance_mm" else _fmt(v)
+        pairs.append((label + (f" ({unit})" if unit else ""), value))
     mat_items = [mats_by_id[m] for m in (s.get("materials") or []) if m in mats_by_id]
     return f"""---
 title: {json.dumps(r.get('name') or r['id'], ensure_ascii=False)}
+description: {json.dumps(_page_desc(r), ensure_ascii=False)}
 ---
 
 # {r.get('name') or r['id']}
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>加工工艺</span>
@@ -285,7 +306,8 @@ title: {json.dumps(r.get('name') or r['id'], ensure_ascii=False)}
 """
 
 
-def build(root: pathlib.Path, out: pathlib.Path, pub: pathlib.Path) -> None:
+def build(root: pathlib.Path, out: pathlib.Path, pub: pathlib.Path,
+          site_url: str, data_version: str) -> None:
     src = DATA_DIR / "materials"
     rows: list[dict] = []
     if src.exists():
@@ -378,5 +400,6 @@ outline: false
         (ddir / f"process-{r['_slug']}.md").write_text(
             _process_page(r, id_index, sup_map), encoding="utf-8")
 
+    n_share = build_material_shares(rows, pub, site_url, data_version)
     print(f"  材质 {len(mats)} 条 + 工艺 {len(procs)} 条 -> materials.md + "
-          f"materials/*.md（{len(rows)} 页）")
+          f"materials/*.md（{len(rows)} 页）；分享卡 {n_share} 张")

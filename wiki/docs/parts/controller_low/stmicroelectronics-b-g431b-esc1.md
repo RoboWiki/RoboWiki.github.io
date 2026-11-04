@@ -82,7 +82,7 @@ description: "STMicroelectronics B-G431B-ESC1（下位机）：质量 9.20e-03 k
 | 尺寸 | 30×41 mm（含 ST-LINK 子板） |
 | 官方文档 | https://www.st.com/en/evaluation-tools/b-g431b-esc1.html |
 | 官方手册 (PDF) | https://www.st.com/resource/en/user_manual/um2516-electronic-speed-controller-discovery-kit-for-drones-with-stm32g431cb-stmicroelectronics.pdf |
-| repo_urls | — |
+| 开源仓库 | — |
 
 ## 优惠与获取条件
 
@@ -99,7 +99,7 @@ description: "STMicroelectronics B-G431B-ESC1（下位机）：质量 9.20e-03 k
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.st.com/en/evaluation-tools/b-g431b-esc1.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.st.com/resource/en/user_manual/um2516-electronic-speed-controller-discovery-kit-for-drones-with-stm32g431cb-stmicroelectronics.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>ST 官方 B-G431B-ESC1 产品页产品图</td></tr><tr><td class="rs-plain">收录说明</td><td>ST B-G431B-ESC1 产品页 + UM2516 用户手册 Rev 4 + DB3787 数据简介（2026-11-01）</td></tr><tr><td><a href="https://www.google.com/search?q=STMicroelectronics+B-G431B-ESC1+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=B-G431B-ESC1&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=STMicroelectronics+B-G431B-ESC1+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/controller_low/st.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_low/st.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.st.com/en/evaluation-tools/b-g431b-esc1.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.st.com/resource/en/user_manual/um2516-electronic-speed-controller-discovery-kit-for-drones-with-stm32g431cb-stmicroelectronics.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>ST 官方 B-G431B-ESC1 产品页产品图</td></tr><tr><td class="rs-plain">收录说明</td><td>ST B-G431B-ESC1 产品页 + UM2516 用户手册 Rev 4 + DB3787 数据简介（2026-11-01）</td></tr><tr><td><a href="https://www.google.com/search?q=STMicroelectronics+B-G431B-ESC1+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=B-G431B-ESC1&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=STMicroelectronics+B-G431B-ESC1+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/controller_low/st.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_low/st.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -107,5 +107,5 @@ description: "STMicroelectronics B-G431B-ESC1（下位机）：质量 9.20e-03 k
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

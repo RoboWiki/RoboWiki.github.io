@@ -5,10 +5,13 @@
   "description": "RoboWiki 选型文档（VitePress）",
   "scripts": {
     "dev": "vitepress dev docs",
-    "build": "vitepress build docs",
+    "build": "vitepress build docs && node scripts/postbuild.mjs",
     "preview": "vitepress preview docs"
   },
   "devDependencies": {
+    "@types/qrcode": "^1.5.6",
+    "@vite-pwa/vitepress": "^0.5.0",
+    "qrcode": "^1.5.4",
     "vitepress": "^1.6.4",
     "vue": "^3.5.40"
   }

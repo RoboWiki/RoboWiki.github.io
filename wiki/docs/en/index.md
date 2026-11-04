@@ -2,6 +2,7 @@
 layout: page
 sidebar: false
 outline: false
+titleTemplate: false
 ---
 
 <div class="en-home">

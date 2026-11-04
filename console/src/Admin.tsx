@@ -110,7 +110,9 @@ function EditModal({ partId, onClose }: { partId: string; onClose: () => void })
       body: JSON.stringify({ changes: draft, note, source_url: srcUrl || null }),
     }),
     onSuccess: (r: any) => {
-      message.success(r.changed ? `已改 ${r.changed} 个字段，留痕 ${r.changed} 条` : '没有实际变化')
+      message.success(r.changed
+        ? `已提交审核 #${r.submission_id}（${r.changed} 个字段）`
+        : '没有实际变化')
       qc.invalidateQueries({ queryKey: ['admin-part', partId] })
       qc.invalidateQueries({ queryKey: ['admin-stats'] })
       qc.invalidateQueries({ queryKey: ['admin-parts'] })
@@ -183,21 +185,40 @@ function EditModal({ partId, onClose }: { partId: string; onClose: () => void })
                 disabled={!Object.keys(draft).length || save.isPending}
                 className="rounded-md bg-blue-600 px-3 py-1.5 text-[12.5px] font-semibold
                            text-white disabled:opacity-40">
-                保存 {Object.keys(draft).length ? `(${Object.keys(draft).length} 个字段)` : ''}
+                提交审核 {Object.keys(draft).length ? `(${Object.keys(draft).length} 个字段)` : ''}
               </button>
               <button onClick={() => setDraft({})}
                 className="rounded-md border border-slate-200 px-3 py-1.5 text-[12.5px] text-slate-600">
                 撤销改动
               </button>
-              <span className="text-[11px] text-slate-400">保存后 last_checked 自动更新为今天</span>
+              <span className="text-[11px] text-slate-400">提交后进审核队列，release 后才更新目录</span>
             </div>
           </div>
 
+          {(p as any).proposals?.length ? (
+            <div className="mb-4">
+              <div className="mb-1.5 text-[11px] uppercase tracking-wider text-slate-400">
+                待处理提案（{(p as any).proposals.length}）
+              </div>
+              <div className="max-h-[150px] overflow-y-auto">
+                {(p as any).proposals.map((s: any) => (
+                  <div key={s.submission_id} className="border-b border-slate-100 py-1.5 text-[11.5px]">
+                    <span className="text-slate-500">{s.created_at.slice(0, 16).replace('T', ' ')}</span>
+                    <span className="mx-1.5 text-slate-400">·</span>
+                    <Tag color={s.status === 'pending' ? 'gold' : 'blue'}>#{s.submission_id} {s.status}</Tag>
+                    <code className="ml-1.5 text-[11px] text-sky-700">{s.fields.join(', ')}</code>
+                    <div className="text-slate-400">{s.note}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
           <div>
             <div className="mb-1.5 text-[11px] uppercase tracking-wider text-slate-400">
-              修改记录（{p.history.length}）
+              已发布修改（{p.history.length}）
             </div>
-            {!p.history.length ? <div className="text-[12px] text-slate-400">还没有改动记录</div> : (
+            {!p.history.length ? <div className="text-[12px] text-slate-400">还没有已发布的改动记录</div> : (
               <div className="max-h-[190px] overflow-y-auto">
                 {p.history.map(h => (
                   <div key={h.id} className="border-b border-slate-100 py-1.5 text-[11.5px]">

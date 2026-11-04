@@ -1,6 +1,6 @@
 ---
 title: STACKFORCE 6010
-description: "STACKFORCE 6010（关节电机）：峰值扭矩 11 N·m、额定 5 N·m、减速比 8:1；来源 B 级、2026-10-31 核对。"
+description: "STACKFORCE 6010（关节电机）：峰值扭矩 11 N·m、额定 5 N·m、减速比 8:1；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 
@@ -22,7 +22,7 @@ description: "STACKFORCE 6010（关节电机）：峰值扭矩 11 N·m、额定 
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -35,7 +35,7 @@ description: "STACKFORCE 6010（关节电机）：峰值扭矩 11 N·m、额定 
 <div class="part-src">
 来源：<a href="https://github.com/Seeed-Projects/Stackforce-Motor-SDK">https://github.com/Seeed-Projects/Stackforce-Motor-SDK</a><br/>
 收录：Seeed wiki zh-CN《Stackforce 系列电机》+ 厂商 PDF《新版6010关节电机用户文档V1.1》（2026-10-31）；原厂官网规格页未取到<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>
@@ -90,7 +90,7 @@ description: "STACKFORCE 6010（关节电机）：峰值扭矩 11 N·m、额定 
 | 转子惯量 (kg·m²) | — |
 | 额定电压 (V) | 24 |
 | 额定电流 (A) | 10.5 |
-| power_w | 240 |
+| 功耗 (W) | 240 |
 | 扭矩口径 | peak |
 | 额定转速 (rpm) | 120 |
 | 空载转速 (rpm) | 270 |
@@ -117,7 +117,7 @@ description: "STACKFORCE 6010（关节电机）：峰值扭矩 11 N·m、额定 
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://github.com/Seeed-Projects/Stackforce-Motor-SDK" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://wiki.seeedstudio.com/cn/stackforce_series/" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://files.seeedstudio.com/products/stackforce/%E6%96%B0%E7%89%886010%E5%85%B3%E8%8A%82%E7%94%B5%E6%9C%BA%E7%94%A8%E6%88%B7%E6%96%87%E6%A1%A3V1.1.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>Seeed Studio 官方产品页图（seeedstudio.com；原厂页无产品图）</td></tr><tr><td class="rs-plain">收录说明</td><td>Seeed wiki zh-CN《Stackforce 系列电机》+ 厂商 PDF《新版6010关节电机用户文档V1.1》（2026-10-31）；原厂官网规格页未取到</td></tr><tr><td><a href="https://www.google.com/search?q=STACKFORCE+6010+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=6010&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=STACKFORCE+6010+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/actuator/stackforce.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/stackforce.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://github.com/Seeed-Projects/Stackforce-Motor-SDK" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://wiki.seeedstudio.com/cn/stackforce_series/" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://files.seeedstudio.com/products/stackforce/%E6%96%B0%E7%89%886010%E5%85%B3%E8%8A%82%E7%94%B5%E6%9C%BA%E7%94%A8%E6%88%B7%E6%96%87%E6%A1%A3V1.1.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>Seeed Studio 官方产品页图（seeedstudio.com；原厂页无产品图）</td></tr><tr><td class="rs-plain">收录说明</td><td>Seeed wiki zh-CN《Stackforce 系列电机》+ 厂商 PDF《新版6010关节电机用户文档V1.1》（2026-10-31）；原厂官网规格页未取到</td></tr><tr><td><a href="https://www.google.com/search?q=STACKFORCE+6010+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=6010&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=STACKFORCE+6010+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/actuator/stackforce.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/stackforce.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -125,5 +125,5 @@ description: "STACKFORCE 6010（关节电机）：峰值扭矩 11 N·m、额定 
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

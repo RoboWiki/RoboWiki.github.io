@@ -1,6 +1,6 @@
 ---
 title: NVIDIA Jetson Orin NX
-description: "NVIDIA Jetson Orin NX（上位机）：Orin；来源 B 级、2026-10-28 核对。"
+description: "NVIDIA Jetson Orin NX（上位机）：Orin；来源 B 级、2026-10-28 最近查阅。"
 ---
 
 
@@ -22,7 +22,7 @@ description: "NVIDIA Jetson Orin NX（上位机）：Orin；来源 B 级、2026-
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -35,7 +35,7 @@ description: "NVIDIA Jetson Orin NX（上位机）：Orin；来源 B 级、2026-
 <div class="part-src">
 来源：<a href="https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/">https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/</a><br/>
 收录：厂商公开资料（待逐项核对）<br/>
-核对：2026-10-28
+最近查阅：2026-10-28
 </div>
 
 </div>
@@ -74,18 +74,18 @@ description: "NVIDIA Jetson Orin NX（上位机）：Orin；来源 B 级、2026-
 | 接口 | — |
 | cpu | 6×Cortex-A78AE |
 | GPU | 1024-core Ampere |
-| os | JetPack 6 |
-| cuda | 1 |
-| cores | 8 |
-| cpu_arch | arm64 |
+| 系统 | JetPack 6 |
+| CUDA | 1 |
+| 核心数 | 8 |
+| CPU 架构 | arm64 |
 | CUDA 核 | 1,024 |
-| ros2 | 1 |
-| pcie | 1× PCIe Gen4 x4 + 3× PCIe Gen4 x1（载板决定） |
-| size_mm | 69.6×45 |
+| ROS 2 | 1 |
+| PCIe | 1× PCIe Gen4 x4 + 3× PCIe Gen4 x1（载板决定） |
+| 尺寸 (mm) | 69.6×45 |
 | 官方文档 | https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/ |
-| repo_urls | https://github.com/NVIDIA/jetson-gpio、https://github.com/NVIDIA-AI-IOT/ros2_jetson |
+| 开源仓库 | https://github.com/NVIDIA/jetson-gpio、https://github.com/NVIDIA-AI-IOT/ros2_jetson |
 | ram_options | 16 |
-| repo_license | NO-LICENSE,MIT |
+| 仓库许可 | NO-LICENSE,MIT |
 
 ## 优惠与获取条件
 
@@ -102,7 +102,7 @@ description: "NVIDIA Jetson Orin NX（上位机）：Orin；来源 B 级、2026-
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://github.com/NVIDIA/jetson-gpio" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NO-LICENSE · MIT（⚠ 仓库里没有 LICENSE 文件 —— 默认保留所有权利，转载资产或商用前先问作者）</td></tr><tr><td><a href="https://github.com/NVIDIA-AI-IOT/ros2_jetson" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NO-LICENSE · MIT（⚠ 仓库里没有 LICENSE 文件 —— 默认保留所有权利，转载资产或商用前先问作者）</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商公开资料（待逐项核对）</td></tr><tr><td><a href="https://www.google.com/search?q=NVIDIA+Jetson+Orin+NX+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Jetson+Orin+NX&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=NVIDIA+Jetson+Orin+NX+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/controller_high/nvidia.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_high/nvidia.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-orin/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://github.com/NVIDIA/jetson-gpio" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NO-LICENSE · MIT（⚠ 仓库里没有 LICENSE 文件 —— 默认保留所有权利，转载资产或商用前先问作者）</td></tr><tr><td><a href="https://github.com/NVIDIA-AI-IOT/ros2_jetson" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NO-LICENSE · MIT（⚠ 仓库里没有 LICENSE 文件 —— 默认保留所有权利，转载资产或商用前先问作者）</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商公开资料（待逐项核对）</td></tr><tr><td><a href="https://www.google.com/search?q=NVIDIA+Jetson+Orin+NX+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Jetson+Orin+NX&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=NVIDIA+Jetson+Orin+NX+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/controller_high/nvidia.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_high/nvidia.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -110,5 +110,5 @@ description: "NVIDIA Jetson Orin NX（上位机）：Orin；来源 B 级、2026-
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

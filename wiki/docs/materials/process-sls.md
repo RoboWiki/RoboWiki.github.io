@@ -1,8 +1,11 @@
 ---
 title: "3D 打印 SLS"
+description: "加工工艺 3D 打印 SLS：粉末床激光烧结"
 ---
 
 # 3D 打印 SLS
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>加工工艺</span>
@@ -21,7 +24,7 @@ title: "3D 打印 SLS"
 
 | 字段 | 值 |
 |---|---|
-| 可达公差 (mm) | 0.3 |
+| 可达公差 (mm) | ±0.3 |
 | 公差说明 | 常见 ±0.3 mm 或 ±0.3%，视尺寸与摆放方向 |
 | 表面粗糙度 Ra (µm) | 10 |
 | 层高 (mm) | 0.1 |

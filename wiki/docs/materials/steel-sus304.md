@@ -1,8 +1,11 @@
 ---
 title: "SUS304 不锈钢"
+description: "材料 SUS304 不锈钢：通用奥氏体不锈钢"
 ---
 
 # SUS304 不锈钢
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>金属材料</span>

@@ -56,6 +56,7 @@ jobs:
       site: ${{ steps.classify.outputs.site }}
       console: ${{ steps.classify.outputs.console }}
       backend: ${{ steps.classify.outputs.backend }}
+      clients: ${{ steps.classify.outputs.clients }}
       layers: ${{ steps.classify.outputs.layers }}
     steps:
       - uses: actions/checkout@v4
@@ -85,8 +86,9 @@ jobs:
               ("frontend/", ["site"]),
               ("console/", ["console"]),
               ("backend/", ["backend"]),
+              ("clients/", ["clients"]),   # 小程序壳：只跑静态检查，不装 IDE
           ]
-          KEYS = ["data", "pipeline", "site", "console", "backend"]
+          KEYS = ["data", "pipeline", "site", "console", "backend", "clients"]
 
 
           def changed_files():
@@ -265,6 +267,7 @@ jobs:
     env:
       # 站点层才装 node 依赖 / 跑 vitepress；数据层只跑生成器
       DO_SITE: ${{ needs.changes.outputs.full == 'true' || needs.changes.outputs.pipeline == 'true' || needs.changes.outputs.site == 'true' }}
+      DO_DATA: ${{ needs.changes.outputs.full == 'true' || needs.changes.outputs.data == 'true' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -278,9 +281,15 @@ jobs:
         if: env.DO_SITE == 'true'
         with:
           node-version: '20'
-      - run: pip install "pydantic>=2.9"
+      # 数据治理/分类测试要 pytest；站点层本来就要装 node，多个 pytest 成本可忽略
+      - run: pip install "pydantic>=2.9" pytest
       - name: 生成内容
         run: python -m pipeline build
+      # 数据层的测试放在 build 里：它和生成器共用同一份锁定数据，
+      # 且不该为了 12 条数据用例把 backend 全量 pytest 拉起来。
+      - name: 数据治理 / 分类测试
+        if: env.DO_DATA == 'true'
+        run: python -m pytest tests/test_data_governance.py tests/test_taxonomy.py
       - name: 安装站点依赖
         if: env.DO_SITE == 'true'
         run: cd wiki && (npm ci || npm install)
@@ -307,12 +316,28 @@ jobs:
       - name: 类型检查 + 打包
         run: cd console && npm run build
 
+  # ── clients 层：微信小程序壳的静态检查 ───────────────────────────────────
+  # 小程序没有 npm 构建，但 JS/JSON/WXML 写错在本地开发者工具之外看不出来。
+  # 这里用 node + python 标准库做语法/闭合/AppID 检查，零第三方依赖。
+  clients:
+    name: 小程序静态检查
+    needs: [changes]
+    if: needs.changes.outputs.full == 'true' || needs.changes.outputs.clients == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: JS / JSON / WXML 检查
+        run: cd clients/wechat-mini/tests && node check.js
+
   # ── 汇总：分支保护的稳定入口 ─────────────────────────────────────────────
   # 只做一件事：任何一个需要跑的 job 没成功，这里就红。
   # skipped 视为「这一层没被触发」= 通过；「输出缺失」不能当跳过放行。
   gate:
     name: pr-gate
-    needs: [changes, validate, test, backend, build, console]
+    needs: [changes, validate, test, backend, build, console, clients]
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -325,16 +350,18 @@ jobs:
           SITE: ${{ needs.changes.outputs.site }}
           CONSOLE: ${{ needs.changes.outputs.console }}
           BACKEND: ${{ needs.changes.outputs.backend }}
+          CLIENTS: ${{ needs.changes.outputs.clients }}
           R_CHANGES: ${{ needs.changes.result }}
           R_VALIDATE: ${{ needs.validate.result }}
           R_TEST: ${{ needs.test.result }}
           R_BACKEND: ${{ needs.backend.result }}
           R_BUILD: ${{ needs.build.result }}
           R_CONSOLE: ${{ needs.console.result }}
+          R_CLIENTS: ${{ needs.clients.result }}
         run: |
           set -u
           fail=0
-          echo "分层：full=$FULL data=$DATA pipeline=$PIPELINE site=$SITE console=$CONSOLE backend=$BACKEND"
+          echo "分层：full=$FULL data=$DATA pipeline=$PIPELINE site=$SITE console=$CONSOLE backend=$BACKEND clients=$CLIENTS"
           echo "命中：$LAYERS"
 
           # 分层算不出来时这里会是空串。空串绝不能当「全跳过」，必须显式失败。
@@ -366,6 +393,7 @@ jobs:
           backend|$R_BACKEND
           build|$R_BUILD
           console|$R_CONSOLE
+          clients|$R_CLIENTS
           EOF
 
           if [ "$fail" -ne 0 ]; then

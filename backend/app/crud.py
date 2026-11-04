@@ -41,7 +41,8 @@ def user_out(db: Session, u: User) -> UserOut:
         select(func.count(Comment.id)).where(Comment.author_id == u.id)).one()
     return UserOut(
         id=u.id or 0, handle=u.handle, display_name=u.display_name, bio=u.bio,
-        avatar_hue=u.avatar_hue, is_staff=u.is_staff, reputation=u.reputation,
+        avatar_hue=u.avatar_hue, is_staff=u.is_staff,
+        email_verified=u.email_verified, reputation=u.reputation,
         created_at=u.created_at, post_count=int(posts or 0),
         comment_count=int(comments or 0),
         badges=badges_for(db, u, int(posts or 0), int(comments or 0)),
@@ -78,7 +79,7 @@ def apply_vote(db: Session, user: User, kind: str, target_id: int, value: int) -
     """
     model = Post if kind == "post" else Comment
     target = db.get(model, target_id)
-    if target is None:
+    if target is None or getattr(target, "hidden", False):
         raise LookupError("目标不存在")
 
     existing = db.exec(select(Vote).where(Vote.user_id == user.id,
@@ -147,8 +148,9 @@ def posts_out(db: Session, posts: list[Post], viewer_id: int | None = None) -> l
 
 # ── 评论序列化（两级）───────────────────────────────────────────────────────
 def comments_out(db: Session, post_id: int, viewer_id: int | None = None) -> list[CommentOut]:
-    rows = db.exec(select(Comment).where(Comment.post_id == post_id)
-                   .order_by(Comment.created_at)).all()
+    rows = db.exec(select(Comment).where(
+        Comment.post_id == post_id, Comment.hidden == False)  # noqa: E712
+        .order_by(Comment.created_at)).all()
     authors = users_out(db, {c.author_id for c in rows})
     votes = my_votes(db, viewer_id, "comment", [c.id for c in rows if c.id])
     flat: dict[int, CommentOut] = {}
@@ -166,10 +168,12 @@ def comments_out(db: Session, post_id: int, viewer_id: int | None = None) -> lis
     return roots
 
 
-def touch_comment_count(db: Session, post_id: int) -> None:
-    n = db.exec(select(func.count(Comment.id)).where(Comment.post_id == post_id)).one()
+def touch_comment_count(db: Session, post_id: int, commit: bool = True) -> None:
+    n = db.exec(select(func.count(Comment.id)).where(
+        Comment.post_id == post_id, Comment.hidden == False)).one()  # noqa: E712
     post = db.get(Post, post_id)
     if post is not None:
         post.comment_count = int(n or 0)
         db.add(post)
-        db.commit()
+        if commit:
+            db.commit()

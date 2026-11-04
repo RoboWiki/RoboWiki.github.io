@@ -1,8 +1,11 @@
 ---
 title: "碳纤维 T300 复合材料"
+description: "材料 碳纤维 T300 复合材料：T300 级碳纤维增强环氧复合材料"
 ---
 
 # 碳纤维 T300 复合材料
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>复合材料</span>

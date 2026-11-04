@@ -1,6 +1,8 @@
 """目录：目录结构、零件列表、零件详情。"""
 from __future__ import annotations
 
+import re
+from datetime import date
 from typing import Annotated, Any, Literal
 
 from fastapi import APIRouter, HTTPException, Query
@@ -8,7 +10,7 @@ from sqlalchemy import func
 from sqlmodel import select
 
 from ...crud import posts_out
-from ...models import Offer, Part, Post
+from ...models import Offer, Part, Post, Rating
 from ...core.config import settings
 from ..deps import Db, MaybeUser
 
@@ -94,6 +96,7 @@ def subtype_label(category: str, subtype: str) -> str:
 #: 允许排序的字段 → JSON 路径。白名单，用户输入不进 SQL。
 SORTABLE = {
     "featured": None, "vendor": None, "model": None, "price": None, "verified": None,
+
     "tau_peak": "tau_peak_Nm", "tau_rated": "tau_rated_Nm", "gear": "gear",
     "mass": "mass_kg", "speed": "speed_noload_rpm",
     "armature": "armature_kgm2", "rotor_inertia": "rotor_inertia_kgm2",
@@ -102,6 +105,8 @@ SORTABLE = {
     "channels": "channels", "control_range": "control_range_m",
     "can": "can", "can_speed": "can_speed_mbps",
 }
+#: 前端排序名与真实列名不一致的，单独映射，避免 getattr(Part, "price") 爆炸
+SORT_COLUMNS = {"price": "price_cny"}
 
 
 def derive(specs: dict) -> dict[str, Any]:
@@ -129,18 +134,31 @@ def derive(specs: dict) -> dict[str, Any]:
     return out
 
 
-def _offer_ok(offer, part_id: str, today: str) -> bool:
+def _offer_ok(offer, part_id: str, today: str, vendor: str | None = None) -> bool:
     """优惠是否适用于该零件：未过期、有条件、且不在排除名单里。
 
     排除列表是给「厂商级优惠但有例外」用的 —— 例：灵足教育 9 折适用范围是
     RS 全系，EL05 因成本原因不参与（官方口径）。没有这条，卡片上会给 EL05
     显示一个它其实拿不到的价。
     """
-    if (offer.expires_on or "9999") >= today and not (offer.detail or ""):
+    if (offer.expires_on or "9999") < today or not (offer.detail or ""):
+        return False
+    if offer.part_id is None and vendor and offer.vendor and offer.vendor != vendor:
         return False
     if part_id in (getattr(offer, "exclude_parts", None) or []):
         return False
     return True
+
+
+def part_web_path(p: Part) -> str:
+    """与 pipeline/build_site.py 的 part_slug 同规则：厂商+型号的 ASCII 形式。
+
+    目录 id 可能含中文，直接拼 URL 会被百分号编码；web_path 由服务端给出，
+    小程序/分享卡不再自己猜 slug。
+    """
+    base = re.sub(r"[^A-Za-z0-9]+", "-", f"{p.vendor}-{p.model}").strip("-").lower()
+    base = re.sub(r"-+", "-", base)[:60] or "part"
+    return f"/parts/{p.category}/{base}.html"
 
 
 def part_out(p: Part, viewer: bool = False) -> dict:
@@ -159,13 +177,141 @@ def part_out(p: Part, viewer: bool = False) -> dict:
     }
 
 
+def public_part(p: Part) -> dict:
+    """对外白名单投影。
+
+    内部字段（search / origin / 编辑备注）不进入公开 API；字段只增不删，
+    破坏性变更走 /api/v2。
+    """
+    return {
+        "id": p.id,
+        "category": p.category,
+        "category_label": CATEGORY_LABELS.get(p.category, p.category),
+        "subtype": p.subtype,
+        "subtype_label": subtype_label(p.category, p.subtype),
+        "vendor": p.vendor,
+        "vendor_cn": p.vendor_cn,
+        "model": p.model,
+        "title": p.title,
+        "url": p.url,
+        "source_tier": p.source_tier,
+        "verified": p.verified,
+        "last_checked": p.last_checked,
+        "price_cny": p.price_cny,
+        "specs": p.specs,
+        "derived": derive(p.specs),
+        "notes": p.notes,
+        "image_url": (p.specs or {}).get("image_url"),
+        "web_path": part_web_path(p),
+        "key_specs": _card_specs(p.category, p.specs or {}),
+    }
+
+
+
+#: 列表卡片用关键参数：按品类取 3 个，宁缺毋滥。
+#: 不把整个 specs 塞进卡片——那是详情页的事。
+_CARD_FACTS = {
+    "actuator": [("峰值", "tau_peak_Nm", " N·m"), ("额定", "tau_rated_Nm", " N·m"),
+                 ("电压", "voltage_V", " V"), ("质量", "mass_kg", " kg")],
+    "controller_high": [("NPU", "npu_tops", " TOPS"), ("内存", "ram_gb", " GB"),
+                        ("功耗", "power_max_w", " W")],
+    "controller_low": [("MCU", "mcu", ""), ("CAN", "can", ""),
+                       ("电压", "voltage_in_V", " V")],
+    "imu": [("陀螺", "gyro_range_dps", " °/s"), ("接口", "iface", "")],
+    "camera": [("深度", "depth_range_m", " m"), ("视场", "fov", ""),
+               ("帧率", "fps", " fps")],
+    "lidar": [("量程", "range_m", " m"), ("视场", "fov", ""),
+              ("点频", "points_per_s", " pts/s")],
+    "connector": [("位数", "positions", " pin"), ("间距", "pitch_mm", " mm"),
+                  ("电流", "current_rated_A", " A")],
+    "module": [("接口", "iface", ""), ("CAN", "can", ""),
+               ("电压", "voltage_V", " V")],
+    "chip": [("封装", "package", ""), ("料号", "lcsc_part", "")],
+}
+_CARD_GENERIC = [("电压", "voltage_V", " V"), ("接口", "iface", ""),
+                 ("CAN", "can", "")]
+
+
+def _card_specs(category: str, specs: dict) -> list[dict]:
+    def val(v: object, unit: str) -> str:
+        if isinstance(v, bool):
+            return "是" if v else "否"
+        if isinstance(v, (int, float)):
+            return f"{v:g}{unit}"
+        return f"{v}{unit}" if unit and isinstance(v, str) else str(v)
+
+    out: list[dict] = []
+    for label, key, unit in _CARD_FACTS.get(category, []) + _CARD_GENERIC:
+        v = specs.get(key)
+        if v is None or v == "":
+            continue
+        out.append({"key": key, "label": label, "value": val(v, unit)})
+        if len(out) >= 3:
+            return out
+
+    # 传感器 / 芯片的结构化参数在 specs.params；分享卡已经这么读，列表卡保持一致。
+    params = specs.get("params")
+    if isinstance(params, dict):
+        for k, v in params.items():
+            if v is None or v == "":
+                continue
+            out.append({"key": str(k), "label": str(k), "value": str(v)})
+            if len(out) >= 3:
+                break
+    return out
+
+
+def public_part_card(p: Part) -> dict:
+    """移动端列表用的轻量投影：只保留卡片会渲染的字段。
+
+    完整 `specs` 只给详情页。列表一次 20~30 条，把几百个参数塞进小程序
+    `setData` 既浪费流量，也容易触发单次数据量上限。
+    """
+    return {
+        "id": p.id,
+        "category": p.category,
+        "category_label": CATEGORY_LABELS.get(p.category, p.category),
+        "subtype_label": subtype_label(p.category, p.subtype),
+        "vendor": p.vendor,
+        "vendor_cn": p.vendor_cn,
+        "model": p.model,
+        "title": p.title,
+        "source_tier": p.source_tier,
+        "verified": p.verified,
+        "last_checked": p.last_checked,
+        "price_cny": p.price_cny,
+        "image_url": (p.specs or {}).get("image_url"),
+        "web_path": part_web_path(p),
+        "key_specs": _card_specs(p.category, p.specs or {}),
+    }
+
+
+def _attach_rating_cards(db, items: list[dict]) -> None:
+    """给一页零件挂上真实评分摘要；没评过的件 count=0、avg=null。
+
+    均分和样本量必须一起给：1 条 5 分和 20 条 5 分不是一个确定程度。
+    """
+    ids = [i["id"] for i in items]
+    if not ids:
+        return
+    rows = db.exec(select(Rating).where(Rating.part_id.in_(ids))).all()
+    by: dict[str, list[Rating]] = {}
+    for r in rows:
+        by.setdefault(r.part_id, []).append(r)
+    for item in items:
+        rs = by.get(item["id"]) or []
+        item["rating_count"] = len(rs)
+        item["rating_avg"] = round(sum(r.score for r in rs) / len(rs), 2) if rs else None
+
+
 def _attach_reviews(db, items: list[dict]) -> None:
     """给一页零件挂上「最高赞评价」与评价统计（一次查询，不 N+1）。"""
     ids = [i["id"] for i in items]
     if not ids:
         return
     rows = db.exec(
-        select(Post).where(Post.part_id.in_(ids), Post.kind == "review")
+        select(Post).where(Post.part_id.in_(ids), Post.kind == "review",
+                           Post.hidden == False)  # noqa: E712
         .order_by(Post.score.desc(), Post.created_at.desc())).all()
     best: dict[str, Post] = {}
     agg: dict[str, list[float]] = {}
@@ -243,6 +389,7 @@ def list_parts(
     order: Literal["asc", "desc"] = "asc",
     limit: Annotated[int, Query(ge=1, le=200)] = 60,
     offset: Annotated[int, Query(ge=0)] = 0,
+    compact: bool = False,
 ):
     stmt = select(Part)
     if category:
@@ -258,51 +405,71 @@ def list_parts(
     if q:
         stmt = stmt.where(Part.search.contains(q.lower()))
     if has_armature:
-        stmt = stmt.where(func.json_extract(Part.specs, "$.armature_kgm2").isnot(None))
+        stmt = stmt.where(Part.specs["armature_kgm2"].as_string().isnot(None))
     if in_stock:
         stmt = stmt.where(Part.price_cny.isnot(None))
 
     total = db.exec(select(func.count()).select_from(stmt.subquery())).one()
 
-    key = sort if sort in SORTABLE else "vendor"
+    if sort not in SORTABLE:
+        raise HTTPException(422, f"不支持的排序字段：{sort}")
+    key = sort
     if key == "featured":
         # 首页默认口径：有评价的排前面（按最高赞评价的分数），其余按厂商
         best = (select(func.max(Post.score))
-                .where(Post.part_id == Part.id, Post.kind == "review")
+                .where(Post.part_id == Part.id, Post.kind == "review",
+                       Post.hidden == False)  # noqa: E712
                 .correlate(Part).scalar_subquery())
         stmt = stmt.order_by(best.is_(None), best.desc(), Part.vendor, Part.model)
     elif SORTABLE.get(key) is None:
-        col = getattr(Part, key)
+        col = getattr(Part, SORT_COLUMNS.get(key, key))
         stmt = stmt.order_by(col.is_(None), col.desc() if order == "desc" else col.asc(),
                              Part.vendor, Part.model)
     else:
-        col = func.json_extract(Part.specs, f"$.{SORTABLE[key]}")
+        col = Part.specs[SORTABLE[key]].as_float()
         # NULL 永远排最后，两个方向一致
         stmt = stmt.order_by(col.is_(None), col.desc() if order == "desc" else col.asc(),
                              Part.vendor, Part.model)
     stmt = stmt.offset(offset).limit(limit)
 
-    items = [part_out(p) for p in db.exec(stmt).all()]
-    _attach_reviews(db, items)
+    if compact:
+        items = [public_part_card(p) for p in db.exec(stmt).all()]
+        _attach_rating_cards(db, items)
+    else:
+        items = [public_part(p) for p in db.exec(stmt).all()]
+        _attach_reviews(db, items)
+        _attach_rating_cards(db, items)
     return {"total": int(total), "limit": limit, "offset": offset,
-            "sort": key, "order": order, "items": items}
+            "sort": key, "order": order,
+            "data_version": settings.data_version,
+            "site_url": settings.site_url, "items": items}
 
 
 @router.get("/parts/{part_id}")
-def get_part(part_id: str, db: Db, user: MaybeUser):
+def get_part(part_id: str, db: Db, user: MaybeUser,
+             posts_kind: Literal["review", "discussion", "build"] | None = None,
+             posts_limit: Annotated[int, Query(ge=1, le=50)] = 50):
     p = db.get(Part, part_id)
     if p is None:
         raise HTTPException(404, "零件不存在")
-    offers = db.exec(select(Offer).where((Offer.part_id == part_id)
-                                         | (Offer.part_id.is_(None)))).all()
-    posts = db.exec(select(Post).where(Post.part_id == part_id)
-                    .order_by(Post.pinned.desc(), Post.created_at.desc()).limit(50)).all()
-    out = part_out(p)
+    today = date.today().isoformat()
+    offers = [o for o in db.exec(select(Offer).where(
+        (Offer.part_id == part_id) | (Offer.part_id.is_(None)))).all()
+        if not o.demo and _offer_ok(o, part_id, today, p.vendor)]
+    post_stmt = select(Post).where(
+        Post.part_id == part_id, Post.hidden == False)  # noqa: E712
+    if posts_kind:
+        post_stmt = post_stmt.where(Post.kind == posts_kind)
+    posts = db.exec(post_stmt.order_by(Post.pinned.desc(), Post.created_at.desc())
+                    .limit(posts_limit)).all()
+    out = public_part(p)
     out["offers"] = [{"id": o.id, "kind": o.kind, "title": o.title,
                       "detail": o.detail, "url": o.url, "vendor": o.vendor,
                       "expires_on": o.expires_on, "demo": o.demo} for o in offers]
     out["posts"] = [x.model_dump() for x in
                     posts_out(db, list(posts), user.id if user else None)]
+    out["data_version"] = settings.data_version
+    out["site_url"] = settings.site_url
     return out
 
 
@@ -310,9 +477,9 @@ def get_part(part_id: str, db: Db, user: MaybeUser):
 def stats(db: Db):
     n = int(db.exec(select(func.count(Part.id))).one())
     arm = int(db.exec(select(func.count(Part.id)).where(
-        func.json_extract(Part.specs, "$.armature_kgm2").isnot(None))).one())
+        Part.specs["armature_kgm2"].as_string().isnot(None))).one())
     rated = int(db.exec(select(func.count(Part.id)).where(
-        func.json_extract(Part.specs, "$.tau_rated_Nm").isnot(None))).one())
+        Part.specs["tau_rated_Nm"].as_string().isnot(None))).one())
     priced = int(db.exec(select(func.count(Part.id)).where(
         Part.price_cny.isnot(None))).one())
     from ...models import Comment, User
@@ -321,6 +488,8 @@ def stats(db: Db):
         "with_price": priced,
         "armature_coverage": round(arm / n, 3) if n else 0,
         "users": int(db.exec(select(func.count(User.id))).one()),
-        "posts": int(db.exec(select(func.count(Post.id))).one()),
-        "comments": int(db.exec(select(func.count(Comment.id))).one()),
+        "posts": int(db.exec(select(func.count(Post.id)).where(
+            Post.hidden == False)).one()),  # noqa: E712
+        "comments": int(db.exec(select(func.count(Comment.id)).where(
+            Comment.hidden == False)).one()),  # noqa: E712
     }

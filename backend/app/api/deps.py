@@ -5,7 +5,8 @@ import time
 from collections import defaultdict, deque
 from typing import Annotated, Optional
 
-from fastapi import Depends, Header, HTTPException, Request, status
+from fastapi import Depends, HTTPException, Request, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlmodel import Session, select
 
 from ..core.config import settings
@@ -25,20 +26,19 @@ def get_db() -> Session:
 Db = Annotated[Session, Depends(get_db)]
 
 
-def _bearer(authorization: str | None) -> str | None:
-    if not authorization:
-        return None
-    parts = authorization.split()
-    if len(parts) == 2 and parts[0].lower() == "bearer":
-        return parts[1]
-    return None
+bearer_scheme = HTTPBearer(auto_error=False, scheme_name="bearerAuth",
+                         description="JWT access token")
+
+
+def _bearer(credentials: HTTPAuthorizationCredentials | None) -> str | None:
+    return credentials.credentials if credentials else None
 
 
 def current_user(
     db: Db,
-    authorization: Annotated[str | None, Header()] = None,
+    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer_scheme)] = None,
 ) -> User:
-    token = _bearer(authorization)
+    token = _bearer(credentials)
     if not token:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "需要登录",
                             headers={"WWW-Authenticate": "Bearer"})
@@ -51,9 +51,9 @@ def current_user(
 
 def optional_user(
     db: Db,
-    authorization: Annotated[str | None, Header()] = None,
+    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer_scheme)] = None,
 ) -> User | None:
-    token = _bearer(authorization)
+    token = _bearer(credentials)
     if not token:
         return None
     try:
@@ -71,16 +71,30 @@ MaybeUser = Annotated[Optional[User], Depends(optional_user)]
 _buckets: dict[tuple[str, str], deque] = defaultdict(deque)
 
 
-def rate_limit(request: Request, bucket: str, limit: int) -> None:
-    ip = (request.client.host if request.client else "?") or "?"
-    key = (bucket, ip)
+def _client_ip(request: Request) -> str:
+    """反代后取真实客户端 IP；API 只在内网，可信 X-Forwarded-For。"""
+    xff = request.headers.get("x-forwarded-for")
+    if xff:
+        return xff.split(",")[0].strip() or "?"
+    return (request.client.host if request.client else "?") or "?"
+
+
+def rate_limit(request: Request, bucket: str, limit: int,
+               identity: int | str | None = None) -> None:
+    who = f"u:{identity}" if identity is not None else f"ip:{_client_ip(request)}"
+    key = (bucket, who)
     now = time.time()
     q = _buckets[key]
     while q and now - q[0] > settings.rate_window_s:
         q.popleft()
     if len(q) >= limit:
-        raise HTTPException(status.HTTP_429_TOO_MANY_REQUESTS,
-                            f"操作太频繁（{settings.rate_window_s}s 内最多 {limit} 次）")
+        retry = max(1, int(settings.rate_window_s - (now - q[0])) + 1)
+        raise HTTPException(
+            status.HTTP_429_TOO_MANY_REQUESTS,
+            f"操作太频繁（{settings.rate_window_s}s 内最多 {limit} 次），"
+            f"请 {retry}s 后再试",
+            headers={"Retry-After": str(retry)},
+        )
     q.append(now)
 
 

@@ -1,8 +1,11 @@
 ---
 title: "POM 聚甲醛"
+description: "材料 POM 聚甲醛：俗称赛钢的工程塑料"
 ---
 
 # POM 聚甲醛
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>工程塑料</span>

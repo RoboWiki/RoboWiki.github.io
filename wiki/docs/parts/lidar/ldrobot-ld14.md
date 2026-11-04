@@ -1,6 +1,6 @@
 ---
 title: 乐动 LDROBOT LD14
-description: "乐动 LDROBOT LD14（激光雷达）：额定 5 V、量程 8 m、视场 360°；来源 B 级、2026-10-31 核对。"
+description: "乐动 LDROBOT LD14（激光雷达）：额定 5 V、量程 8 m、视场 360°；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 
@@ -21,7 +21,7 @@ description: "乐动 LDROBOT LD14（激光雷达）：额定 5 V、量程 8 m、
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -34,7 +34,7 @@ description: "乐动 LDROBOT LD14（激光雷达）：额定 5 V、量程 8 m、
 <div class="part-src">
 来源：<a href="https://www.waveshare.net/wiki/Triangulation_LiDAR_LD14">https://www.waveshare.net/wiki/Triangulation_LiDAR_LD14</a><br/>
 收录：微雪 Wiki《Triangulation LiDAR LD14》产品参数表（2026-10-31 抓取）；型号属乐动 LDROBOT<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>
@@ -69,10 +69,10 @@ description: "乐动 LDROBOT LD14（激光雷达）：额定 5 V、量程 8 m、
 | 帧率 (fps) | 6 |
 | 接口 | UART 115200 |
 | 质量 (kg) | — |
-| range_note | 0.15–8 m（三角测距，无反射率分档） |
+| 量程说明 | 0.15–8 m（三角测距，无反射率分档） |
 | 额定电压 (V) | 5 |
-| power_w | 1.3 |
-| size_mm | 96.3×59.8×38.8 |
+| 功耗 (W) | 1.3 |
+| 尺寸 (mm) | 96.3×59.8×38.8 |
 | 精度 | 5 mm(<1 m)；1.5% 实际距离(1–6 m)；2%(6–8 m) |
 | 工作温度 | -10~40 |
 | 官方文档 | https://www.waveshare.net/wiki/Triangulation_LiDAR_LD14 |
@@ -92,7 +92,7 @@ description: "乐动 LDROBOT LD14（激光雷达）：额定 5 V、量程 8 m、
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.waveshare.net/wiki/Triangulation_LiDAR_LD14" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>微雪 Wiki《Triangulation LiDAR LD14》产品参数表（2026-10-31 抓取）；型号属乐动 LDROBOT</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E5%8A%A8+LDROBOT+LD14+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=LD14&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E5%8A%A8+LDROBOT+LD14+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/lidar/ldrobot.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/ldrobot.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.waveshare.net/wiki/Triangulation_LiDAR_LD14" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>微雪 Wiki《Triangulation LiDAR LD14》产品参数表（2026-10-31 抓取）；型号属乐动 LDROBOT</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E5%8A%A8+LDROBOT+LD14+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=LD14&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E5%8A%A8+LDROBOT+LD14+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/lidar/ldrobot.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/ldrobot.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -100,5 +100,5 @@ description: "乐动 LDROBOT LD14（激光雷达）：额定 5 V、量程 8 m、
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

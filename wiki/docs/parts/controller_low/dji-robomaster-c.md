@@ -83,12 +83,12 @@ description: "大疆 DJI RoboMaster 开发板 C 型（下位机）：质量 0.03
 | 保护 | 防反接 / 防过压 / 硅胶外壳 |
 | comm_upper | USB / CAN / UART / DBUS |
 | 官方手册 (PDF) | https://rm-static.djicdn.com/tem/35228/RoboMaster%20%20%E5%BC%80%E5%8F%91%E6%9D%BF%20C%20%E5%9E%8B%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C.pdf |
-| weight_g | 38 |
+| 重量 (g) | 38 |
 | 最高电压 (V) | 28 |
-| size_mm | 60×41×16 |
+| 尺寸 (mm) | 60×41×16 |
 | 官方文档 | https://www.robomaster.com/zh-CN/products/components/general/development-board-type-c |
-| repo_urls | https://github.com/RoboMaster/Development-Board-C-Examples |
-| repo_license | NOASSERTION |
+| 开源仓库 | https://github.com/RoboMaster/Development-Board-C-Examples |
+| 仓库许可 | NOASSERTION |
 
 ## 优惠与获取条件
 
@@ -105,7 +105,7 @@ description: "大疆 DJI RoboMaster 开发板 C 型（下位机）：质量 0.03
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.robomaster.com/zh-CN/products/components/general/development-board-type-c" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://rm-static.djicdn.com/tem/35228/RoboMaster%20%20%E5%BC%80%E5%8F%91%E6%9D%BF%20C%20%E5%9E%8B%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://github.com/RoboMaster/Development-Board-C-Examples" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NOASSERTION（⚠ 有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍）</td></tr><tr><td class="rs-plain">产品图出处</td><td>RoboMaster 开发板 C 型用户手册 第 3 页接口线稿</td></tr><tr><td class="rs-plain">收录说明</td><td>《RoboMaster 开发板 C 型用户手册》(2020) 特征参数页 + 官方产品页技术参数</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+RoboMaster+%E5%BC%80%E5%8F%91%E6%9D%BF+C+%E5%9E%8B+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=RoboMaster+%E5%BC%80%E5%8F%91%E6%9D%BF+C+%E5%9E%8B&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+RoboMaster+%E5%BC%80%E5%8F%91%E6%9D%BF+C+%E5%9E%8B+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/controller_low/dji.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_low/dji.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.robomaster.com/zh-CN/products/components/general/development-board-type-c" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://rm-static.djicdn.com/tem/35228/RoboMaster%20%20%E5%BC%80%E5%8F%91%E6%9D%BF%20C%20%E5%9E%8B%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://github.com/RoboMaster/Development-Board-C-Examples" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NOASSERTION（⚠ 有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍）</td></tr><tr><td class="rs-plain">产品图出处</td><td>RoboMaster 开发板 C 型用户手册 第 3 页接口线稿</td></tr><tr><td class="rs-plain">收录说明</td><td>《RoboMaster 开发板 C 型用户手册》(2020) 特征参数页 + 官方产品页技术参数</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+RoboMaster+%E5%BC%80%E5%8F%91%E6%9D%BF+C+%E5%9E%8B+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=RoboMaster+%E5%BC%80%E5%8F%91%E6%9D%BF+C+%E5%9E%8B&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%A4%A7%E7%96%86+DJI+RoboMaster+%E5%BC%80%E5%8F%91%E6%9D%BF+C+%E5%9E%8B+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/controller_low/dji.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_low/dji.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -113,5 +113,5 @@ description: "大疆 DJI RoboMaster 开发板 C 型（下位机）：质量 0.03
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

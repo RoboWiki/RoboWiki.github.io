@@ -4,8 +4,8 @@
 于是社区信息流、零件评价、整机方案共用同一套 Post / Comment / Vote，
 只差 `kind` 与 `part_id`。少一套机制，少一处漂移。
 
-实体取自开源社区项目的标准骨架（user / post / comment / vote / badge …），
-精简掉本轮不需要的通知、收藏、举报、修订。
+实体取自开源社区项目的标准骨架（user / post / comment / vote / report / badge …），
+精简掉本轮不需要的通知、收藏、修订。
 """
 from __future__ import annotations
 
@@ -70,6 +70,7 @@ class User(SQLModel, table=True):
     handle: str = Field(index=True, unique=True)       # 登录名 / URL
     display_name: str
     email: str | None = Field(default=None, unique=True)
+    email_verified: bool = False
     password_hash: str
     bio: str = ""
     avatar_hue: int = 160                              # 头像底色，免上传
@@ -78,6 +79,21 @@ class User(SQLModel, table=True):
     created_at: datetime = Field(default_factory=utcnow)
 
     #: 帖子数 / 评论数在个人页按需聚合，不落库
+
+
+class EmailToken(SQLModel, table=True):
+    """邮箱验证 / 找回密码的一次性令牌；只存 hash，不存原文。"""
+
+    __tablename__ = "email_tokens"
+    __table_args__ = (Index("ix_email_tokens_user_purpose", "user_id", "purpose"),)
+
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="users.id", index=True)
+    purpose: str = Field(index=True)          # verify | reset
+    token_hash: str = Field(index=True, unique=True)
+    expires_at: datetime = Field(index=True)
+    used_at: datetime | None = None
+    created_at: datetime = Field(default_factory=utcnow)
 
 
 class Post(SQLModel, table=True):
@@ -112,6 +128,8 @@ class Post(SQLModel, table=True):
     comment_count: int = 0
     view_count: int = 0
     pinned: bool = False
+    #: 站务处置后隐藏；列表、详情与评分聚合都不再返回，站务仍可在后台查看
+    hidden: bool = Field(default=False, index=True)
     created_at: datetime = Field(default_factory=utcnow, index=True)
     updated_at: datetime = Field(default_factory=utcnow)
 
@@ -125,6 +143,7 @@ class Comment(SQLModel, table=True):
     author_id: int = Field(foreign_key="users.id", index=True)
     body: str
     score: int = 0
+    hidden: bool = Field(default=False, index=True)
     created_at: datetime = Field(default_factory=utcnow, index=True)
 
 
@@ -140,6 +159,30 @@ class Vote(SQLModel, table=True):
     target_id: int = Field(index=True)
     value: int = 1                                     # +1 / -1
     created_at: datetime = Field(default_factory=utcnow)
+
+
+class Report(SQLModel, table=True):
+    """用户举报。举报不改可见性；站务处置（hide/dismiss）才产生状态变更。"""
+
+    __tablename__ = "reports"
+    __table_args__ = (
+        UniqueConstraint("reporter_id", "target_kind", "target_id",
+                         name="uq_report_once"),
+        Index("ix_reports_status_created", "status", "created_at"),
+        Index("ix_reports_target", "target_kind", "target_id"),
+    )
+
+    id: int | None = Field(default=None, primary_key=True)
+    reporter_id: int = Field(foreign_key="users.id", index=True)
+    target_kind: str                                   # post | comment | wiki_comment
+    target_id: int = Field(index=True)
+    reason: str                                        # spam | abuse | misinfo | other
+    detail: str = ""
+    status: str = Field(default="open", index=True)    # open | resolved | dismissed
+    resolution_note: str = ""
+    resolver_id: int | None = Field(default=None, foreign_key="users.id")
+    created_at: datetime = Field(default_factory=utcnow, index=True)
+    resolved_at: datetime | None = None
 
 
 class PartEdit(SQLModel, table=True):
@@ -179,6 +222,7 @@ class WikiComment(SQLModel, table=True):
     user_id: int = Field(foreign_key="users.id", index=True)
     body: str
     parent_id: int | None = Field(default=None, foreign_key="wiki_comments.id")
+    hidden: bool = Field(default=False, index=True)
     created_at: datetime = Field(default_factory=utcnow)
 
 
@@ -207,3 +251,60 @@ class Rating(SQLModel, table=True):
     note: str = ""                                      # 一句话理由，可空
     created_at: datetime = Field(default_factory=utcnow)
     updated_at: datetime = Field(default_factory=utcnow)
+
+
+# ── 数据变更：提交 → 审核 → outbox ───────────────────────────────────────────
+class Submission(SQLModel, table=True):
+    """目录字段的变更提案。审核通过也不直接改库；由 outbox 走 PR → release。"""
+
+    __tablename__ = "submissions"
+    __table_args__ = (Index("ix_submissions_status_created", "status", "created_at"),)
+
+    id: int | None = Field(default=None, primary_key=True)
+    kind: str = Field(default="part_patch", index=True)
+    target_id: str | None = Field(default=None, index=True)
+    payload: dict = Field(default_factory=dict, sa_column=Column(JSON))
+    evidence: dict = Field(default_factory=dict, sa_column=Column(JSON))
+    submitter_id: int | None = Field(default=None, foreign_key="users.id", index=True)
+    status: str = Field(default="pending", index=True)
+    revision: int = 1
+    created_at: datetime = Field(default_factory=utcnow, index=True)
+    updated_at: datetime = Field(default_factory=utcnow)
+
+
+class SubmissionReview(SQLModel, table=True):
+    """审核记录：只追加，不覆盖。"""
+
+    __tablename__ = "submission_reviews"
+    __table_args__ = (Index("ix_subreview_submission", "submission_id", "created_at"),)
+
+    id: int | None = Field(default=None, primary_key=True)
+    submission_id: int = Field(foreign_key="submissions.id", index=True)
+    reviewer_id: int | None = Field(default=None, foreign_key="users.id")
+    decision: str                                      # accepted | rejected
+    reason_code: str = ""
+    note: str = ""
+    created_at: datetime = Field(default_factory=utcnow)
+
+
+class Outbox(SQLModel, table=True):
+    """DB → GitHub 的可靠副作用。idempotency_key 防止重复开 PR。"""
+
+    __tablename__ = "outbox"
+    __table_args__ = (
+        UniqueConstraint("idempotency_key", name="uq_outbox_idempotency"),
+        Index("ix_outbox_status_next", "status", "next_at"),
+    )
+
+    id: int | None = Field(default=None, primary_key=True)
+    submission_id: int | None = Field(default=None, foreign_key="submissions.id", index=True)
+    action: str = "part_patch"
+    payload: dict = Field(default_factory=dict, sa_column=Column(JSON))
+    idempotency_key: str = Field(index=True)
+    status: str = Field(default="pending", index=True)
+    attempts: int = 0
+    next_at: datetime = Field(default_factory=utcnow, index=True)
+    last_error: str | None = None
+    #: 发布结果（PR URL / dry-run 产物路径 / 提交 SHA）
+    result: dict = Field(default_factory=dict, sa_column=Column(JSON))
+    created_at: datetime = Field(default_factory=utcnow)

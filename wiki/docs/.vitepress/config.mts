@@ -1,11 +1,12 @@
 import { defineConfig } from 'vitepress'
 import type { HeadConfig } from 'vitepress'
+import { withPwa } from '@vite-pwa/vitepress'
 import sidebar from './sidebar.json' with { type: 'json' }
 
 // 站点对外域名（organization pages，站点在域名根）。
 // canonical / og:url / sitemap 三处必须用同一个值，否则搜索引擎会把
 // /catalog 与 /catalog.html 当成两个页面各收一次。
-const SITE = 'https://robowiki.github.io'
+const SITE = 'https://robowiki.org.cn'
 const SITE_DESC = 'RoboWiki —— 机器人开发的开放资料底稿：可核对的参数、可追溯的来源、真实使用者的经验。'
 
 //: 页面 → 规范 URL。cleanUrls 关着（产物是 .html），所以路径要带 .html；
@@ -121,9 +122,9 @@ const enTheme = {
   },
 }
 
-export default defineConfig({
+export default withPwa(defineConfig({
   title: 'RoboWiki',
-  // 标签页统一成「页面 · RoboWiki」；首页只有 RoboWiki，不重复
+  // 标签页统一成「页面 · RoboWiki」；首页/404/英文首页用各自 frontmatter 关掉模板。
   titleTemplate: ':title · RoboWiki',
   description: 'RoboWiki —— 机器人开发的开放资料底稿：可核对的参数、可追溯的来源、真实使用者的经验。',
   // 仓库是 organization pages（RoboWiki.github.io）→ 站点在域名根，base 用 /。
@@ -156,8 +157,11 @@ export default defineConfig({
     ['meta', { name: 'theme-color', content: '#0078d4' }],
     // 分享卡片（微信 / Slack / X 都要这张图，否则链接只有一行灰字）
     ['meta', { property: 'og:site_name', content: 'RoboWiki' }],
-    ['meta', { property: 'og:image', content: `${SITE}/icon-192.png` }],
-    ['meta', { name: 'twitter:card', content: 'summary' }],
+    ['meta', { property: 'og:image', content: `${SITE}/og-default.png` }],
+    ['meta', { property: 'og:image:width', content: '1200' }],
+    ['meta', { property: 'og:image:height', content: '630' }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { name: 'twitter:image', content: `${SITE}/og-default.png` }],
   ],
   // 每页的 canonical / og:url / 结构化数据。VitePress 原来只给全站一句描述，
   // 311 个型号页在搜索结果里长得一模一样；canonical 也缺，/catalog 与
@@ -166,8 +170,16 @@ export default defineConfig({
     const url = canonicalPath(pageData.relativePath)
     const isHome = pageData.relativePath === 'index.md'
     const isEn = pageData.relativePath.startsWith('en/')
+    const isNotFound = pageData.relativePath === '404.md'
+      || pageData.frontmatter.title === '404'
+      || pageData.title === '404'
     const title = pageData.frontmatter.title || pageData.title || 'RoboWiki'
     const description = pageData.frontmatter.description || SITE_DESC
+
+    // 404 页不该被索引，也不该把 canonical 指到自己；群里的坏链会固化错误 URL。
+    if (isNotFound) {
+      return [['meta', { name: 'robots', content: 'noindex, nofollow' }]]
+    }
 
     const webPage = {
       '@context': 'https://schema.org',
@@ -194,6 +206,8 @@ export default defineConfig({
   themeConfig: {
     // 品牌标：不再叫「文档」—— 这是个社区，不是一个说明书
     siteTitle: 'RoboWiki',
+    // 英文站只有少数页面；不要让语言切换链到不存在的对应路径（404）。
+    i18nRouting: false,
     // 站内搜索：local = 构建期生成本地索引，浏览器内检索，不需要后端也不需要 Algolia。
     // 243 部件 / 21 整机 / 207 渠道 + 全部文章，靠点导航找不到时这是唯一入口。
     search: {
@@ -210,4 +224,85 @@ export default defineConfig({
       },
     },
   },
-})
+
+  pwa: {
+    registerType: 'autoUpdate',
+    includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png'],
+    manifest: {
+      name: 'RoboWiki',
+      short_name: 'RoboWiki',
+      id: '/',
+      description: SITE_DESC,
+      lang: 'zh-CN',
+      start_url: '/',
+      scope: '/',
+      display: 'standalone',
+      background_color: '#0b1220',
+      theme_color: '#0078d4',
+      icons: [
+        { src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+        { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
+      ],
+    },
+    workbox: {
+      // 只预缓存外壳；页面与图片按访问缓存，避免把 100+ MB 目录塞进安装包
+      // 只预缓存真正的壳（入口 + 图标/字体）。CSS/JS/搜索索引按访问走 runtimeCaching，
+      // 否则 547 个页面 chunk + 2.3MB 搜索索引会把安装包撑到 8MB 以上。
+      globPatterns: ['*.html', '**/*.{ico,svg,woff2}'],
+      maximumFileSizeToCacheInBytes: 2 * 1024 * 1024,
+      // 静态站是多页：不要把所有导航都回退到首页，按访问缓存真实页面
+      navigateFallback: null,
+      cleanupOutdatedCaches: true,
+      clientsClaim: true,
+      skipWaiting: true,
+      runtimeCaching: [
+        {
+          urlPattern: ({ url }) => url.pathname.startsWith('/api/'),
+          handler: 'NetworkOnly',
+        },
+        {
+          urlPattern: ({ request }) => request.mode === 'navigate',
+          handler: 'NetworkFirst',
+          options: {
+            cacheName: 'pages',
+            networkTimeoutSeconds: 3,
+            expiration: { maxEntries: 60, maxAgeSeconds: 7 * 86400 },
+          },
+        },
+        {
+          urlPattern: ({ url }) => url.pathname.startsWith('/share/'),
+          handler: 'StaleWhileRevalidate',
+          options: {
+            cacheName: 'share',
+            expiration: { maxEntries: 400, maxAgeSeconds: 30 * 86400 },
+          },
+        },
+        {
+          // 列表数据虽在构建期打进页面，ShareBox/评分仍会取 JSON；离线时不空白。
+          urlPattern: ({ url }) => url.pathname.endsWith('.json'),
+          handler: 'StaleWhileRevalidate',
+          options: {
+            cacheName: 'data-json',
+            expiration: { maxEntries: 40, maxAgeSeconds: 7 * 86400 },
+          },
+        },
+        {
+          urlPattern: ({ url }) => /\.(?:js|css)$/.test(url.pathname),
+          handler: 'StaleWhileRevalidate',
+          options: {
+            cacheName: 'assets',
+            expiration: { maxEntries: 160, maxAgeSeconds: 30 * 86400 },
+          },
+        },
+        {
+          urlPattern: ({ request }) => request.destination === 'image',
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'images',
+            expiration: { maxEntries: 200, maxAgeSeconds: 30 * 86400 },
+          },
+        },
+      ],
+    },
+  },
+}))

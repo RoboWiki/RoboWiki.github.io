@@ -1,8 +1,11 @@
 ---
 title: "PETG 线材"
+description: "材料 PETG 线材：PETG 是 FDM 的常用韧性材料"
 ---
 
 # PETG 线材
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>3D 打印材料</span>

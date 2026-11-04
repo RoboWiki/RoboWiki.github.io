@@ -25,7 +25,7 @@
 
 1. **评分唯一键 = 账号 + id。** 一人一件一票，票挂在 `(账号, id)` 上。id 一改，历史评分全部指错地方 —— 而且不会报错，只会静默算错（`data/ratings_snapshot.json` 现在 `total_ratings: 0`，这是**唯一**的零损失窗口，窗口一关就没有第二次）。
 2. **外链与 URL 挂 id。** 部件页、对比页、API `/api/parts/{id}`、MCP 工具返回的 `id`，都被别人收藏、引用、写进文档。改 id 等于批量 404。
-3. **数据版本引用。** `data-vYYYY.MM.DD` 发布物之间要能做差分：同一个 id 在 v1 和 v2 里必须是同一件东西，否则「这件部件涨价了」和「这件部件被删了、另一件新增了」在下游看起来一模一样。
+3. **数据版本引用。** `data-vYYYY.MM.N` 发布物之间要能做差分：同一个 id 在 v1 和 v2 里必须是同一件东西，否则「这件部件涨价了」和「这件部件被删了、另一件新增了」在下游看起来一模一样。
 
 改名的成本不在改那一刻，在于**你永远不知道有多少外部引用**。所以规则不区分「大改」「小改」：**一律走 alias**。
 
@@ -48,6 +48,8 @@
 | `data/software.json` | `software:` | `software:mujoco` |
 | `data/suppliers.json` | `supplier:` | `supplier:sup-6ee93e06` |
 | `data/protocols.json` | `protocol:` | `protocol:dji-c620` |
+| `data/materials/*.json`（材料） | 裸 id，必须以 `mat-` 开头 | `mat-alu-6061-t6` |
+| `data/materials/*.json`（工艺） | 裸 id，必须以 `proc-` 开头 | `proc-cnc` |
 
 前缀不是「好认」，是**防撞**：`protocols.json` 里的 `dji-c610`/`dji-c620`（驱动协议条目）与 `catalog` 里的 `dji-c610`（C610 电调）是**两个不同实体**。不加前缀，注册表会把它们当成同一条，一次改名就会互相顶掉、历史评价串门。闸门对「同一个 id 被两个来源产出」直接报 error，逼你加前缀。
 
@@ -183,6 +185,7 @@ python tools/id_registry.py --check && python -m pipeline validate
 | 软件 `data/software.json` | ✅ `software:` | 有 `id` 字段、被 `/api/software` 与生态引用 |
 | 供应商 `data/suppliers.json` | ✅ `supplier:`（本次新增） | 149 条全带 `id: sup-<8hex>`（哈希生成、天然 ASCII、唯一）；供应商页/画像/后续「按供应商聚合评价」都要按它连边 |
 | 协议 `data/protocols.json` | ✅ `protocol:`（本次新增） | 5 条 `id`（`dji-c610`/`dji-c620`/`dji-gm6020`/`dm-mit`/`dm-1to4`）被 `/api/protocols` 与口径页引用；**且与 catalog 的部件 id 撞名**，必须上命名空间 |
+| 材料 / 工艺 `data/materials` | ✅ 裸 id（`mat-` / `proc-` 前缀即命名空间） | 材料与工艺会被页面、对比和未来 API 引用；`mat-` / `proc-` 前缀防撞，且必须走 `tools/id_registry.py` 登记 |
 | 贡献者 `data/contributors.json` | ❌ 不加 | 只有 `handle` / `name` / `role` / `did` / `links`，**没有 `id` 字段**；`handle` 是平台账号名（`Dichen33`、`Beni-537`，大小写混合，不合 §3 规则），GitHub 侧可随时改名；人不是被评分/版本引用指向的数据实体，署名靠 `handle`+`links` 已足够。硬造一个 `person:` id 只会多一套要对齐的键 |
 | 学习内容 `data/learn.json` | ❌ 不加 | 只有 `articles[].slug`（URL 片段）与 `routes`（当前为空）；文章身份等于 wiki markdown 的文件路径，`slug` 改就得连 URL 一起改、且没有历史评价挂靠。内容不是可评分实体，纳进来只会让「文件改名」和「id 改名」两套规则互相打架 |
 | 词表 `data/taxonomy.json` / `rating_dims.json` | ❌ 不加 | 它们是**枚举值**（`actuator`、`value`），被 schema 与后端当常量消费；改枚举值是一次代码级迁移（要同改 schema/后端/页面），不是数据条目改名。等真要做「品类改名不破坏 URL」时再走独立迁移 |
@@ -207,5 +210,5 @@ python tools/id_registry.py --check && python -m pipeline validate
 
 - 注册表**只管 id 的存在与格式**，不管数据内容对不对（那是 `pipeline/validate.py` 的其它检查）。
 - `--tombstone` 不会替你从数据里删条目，`--alias` 不会替你改数据 —— 它们只记账，数据改动仍由人/脚本做，闸门负责事后对账。
-- 三处口径必须同时改：`tools/id_registry.py::check()`、`pipeline/validate.py::check_id_registry()`、`tests/test_data_governance.py`。测试侧负责三件事：`_all_rows()` 要读全 5 个数据源（catalog/robots/software/suppliers/protocols，漏一个就会把新命名空间判成「消失」）；`gone` 的过滤要放行 `removed` **和** `alias_of`；`test_registry_has_no_duplicate_targets()` 卡住 alias 指向（断掉的 alias 等于静默删除）。
+- 三处口径必须同时改：`tools/id_registry.py::check()`、`pipeline/validate.py::check_id_registry()`、站点仓 `tests/test_data_governance.py`。测试侧负责三件事：`_all_rows()` 要读全 6 个数据源（catalog/robots/materials/software/suppliers/protocols，漏一个就会把新命名空间判成「消失」）；`gone` 的过滤要放行 `removed` **和** `alias_of`；`test_registry_has_no_duplicate_targets()` 卡住 alias 指向（断掉的 alias 等于静默删除）。
 - `pipeline/validate.py` 里 `check_id_registry()` 之后不要再加「ids 都在 catalog 里」这类只认单一数据源的新检查，否则新命名空间会被误判。

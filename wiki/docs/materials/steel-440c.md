@@ -1,8 +1,11 @@
 ---
 title: "440C 马氏体不锈钢"
+description: "材料 440C 马氏体不锈钢：高碳马氏体不锈钢，淬火回火后可达 HRC 57–60"
 ---
 
 # 440C 马氏体不锈钢
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>金属材料</span>

@@ -30,7 +30,7 @@ description: "Feetech 飞特 ST-3250-C001（舵机）：减速比 钢齿:1、质
 | rated_torque_Nm | 1.569 |
 | 额定电压 (V) | 12 |
 | speed_rpm | — |
-| protocol | TTL 半双工异步串口（数字包），38400 bps–1 Mbps，ID 0–253 |
+| 协议 | TTL 半双工异步串口（数字包），38400 bps–1 Mbps，ID 0–253 |
 | 质量 (kg) | 0.0745 |
 
 <div class="part-src">
@@ -69,7 +69,7 @@ description: "Feetech 飞特 ST-3250-C001（舵机）：减速比 钢齿:1、质
 | rated_torque_Nm | 1.569 |
 | 额定电压 (V) | 12 |
 | speed_rpm | — |
-| protocol | TTL 半双工异步串口（数字包），38400 bps–1 Mbps，ID 0–253 |
+| 协议 | TTL 半双工异步串口（数字包），38400 bps–1 Mbps，ID 0–253 |
 | 质量 (kg) | 0.0745 |
 | torque_raw | 50 kg·cm 堵转 / 16 kg·cm 额定 @12 V |
 | voltage_range | 6–12 V |
@@ -83,8 +83,8 @@ description: "Feetech 飞特 ST-3250-C001（舵机）：减速比 钢齿:1、质
 | i_noload_mA | 280 |
 | feedback | 负载 / 位置 / 速度 / 输入电压 / 温度 |
 | spline | 25T / OD5.9 mm |
-| bearing | 滚珠轴承 |
-| size_mm | 45.2 × 24.7 × 35 |
+| 轴承 | 滚珠轴承 |
+| 尺寸 (mm) | 45.2 × 24.7 × 35 |
 | connector_wire | 15 cm |
 | limit_angle | 无机械限位（360°） |
 | 官方文档 | https://wiki.seeedstudio.com/cn/feetech_servo/ |
@@ -105,7 +105,7 @@ description: "Feetech 飞特 ST-3250-C001（舵机）：减速比 钢齿:1、质
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.feetech.cn/562636" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://wiki.seeedstudio.com/cn/feetech_servo/" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://www.feetech.cn/Data/feetechrc/upload/file/20260622/6391772424007467984928587.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商官网产品图（https://www.feetech.cn/562636）</td></tr><tr><td class="rs-plain">收录说明</td><td>飞特官网产品页参数表（2026-10-31 逐项核对）</td></tr><tr><td><a href="https://www.google.com/search?q=Feetech+%E9%A3%9E%E7%89%B9+ST-3250-C001+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=ST-3250-C001&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Feetech+%E9%A3%9E%E7%89%B9+ST-3250-C001+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/servo/feetech.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/servo/feetech.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.feetech.cn/562636" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://wiki.seeedstudio.com/cn/feetech_servo/" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://www.feetech.cn/Data/feetechrc/upload/file/20260622/6391772424007467984928587.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商官网产品图（https://www.feetech.cn/562636）</td></tr><tr><td class="rs-plain">收录说明</td><td>飞特官网产品页参数表（2026-10-31 逐项核对）</td></tr><tr><td><a href="https://www.google.com/search?q=Feetech+%E9%A3%9E%E7%89%B9+ST-3250-C001+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=ST-3250-C001&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Feetech+%E9%A3%9E%E7%89%B9+ST-3250-C001+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/servo/feetech.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/servo/feetech.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -113,5 +113,5 @@ description: "Feetech 飞特 ST-3250-C001（舵机）：减速比 钢齿:1、质
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

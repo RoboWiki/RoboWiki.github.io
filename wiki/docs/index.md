@@ -19,7 +19,7 @@ titleTemplate: false
       <a class="rw-home-btn ghost" href="/learn/">从零开始学</a>
     </div>
     <div class="rw-home-stats">
-      <div><b>329</b><span>在库部件</span></div>
+      <div><b>326</b><span>在库部件</span></div>
       <div><b>14</b><span>在库品类</span></div>
       <div><b>114</b><span>A 级：逐项对过厂商手册</span></div>
       <div><b>21</b><span>整机（19 台带 URDF / 仓库）</span></div>
@@ -57,7 +57,7 @@ titleTemplate: false
       </a>
       <a class="rw-home-task" href="/submit">
         <b>我想分享 / 纠错</b>
-        <span>补数据、写评价、写实测、投文章，全是 GitHub 表单</span>
+        <span>补数据、写评价、写实测、投文章；纠错也可在部件页站内提交</span>
       </a>
     </div>
   </section>
@@ -85,7 +85,7 @@ titleTemplate: false
     <h2>七个入口</h2>
     <div class="rw-home-entries">
       <a class="rw-home-entry" href="/catalog">
-        <b>部件库 · 329 件</b>
+        <b>部件库 · 326 件</b>
         <p>比参数：按任意列排序、可对比、带来源等级与真实评分。</p>
         <span>A 级 114 件逐项对过手册</span>
       </a>
@@ -130,7 +130,7 @@ titleTemplate: false
         <ul>
           <li><code>A</code> 逐项核对过厂商手册 / 官方文档 —— 每个字段都能指回手册或官方页面</li>
           <li><code>B</code> 采自公开商品页或第三方整理 —— 未逐项核对，<b>不做视觉强调</b></li>
-          <li><code>C</code> 转述，仅作线索 —— 不进目录，只出现在讨论里</li>
+          <li><code>C</code> 转述，仅作线索 —— 不进推荐与对比，库内保留时明确标注</li>
         </ul>
       </div>
       <div>
@@ -191,8 +191,8 @@ titleTemplate: false
       <a class="rw-home-cat" href="/catalog?category=controller_high"><b>上位机</b><span>9</span><em>推理与感知</em></a>
       <a class="rw-home-cat" href="/catalog?category=remote_controller"><b>遥控器</b><span>9</span><em>手柄 / 板控 / 遥操作</em></a>
       <a class="rw-home-cat" href="/catalog?category=camera"><b>深度相机</b><span>9</span><em>视觉感知</em></a>
-      <a class="rw-home-cat" href="/catalog?category=battery"><b>电池</b><span>7</span><em>智能电池 / 动力电池</em></a>
       <a class="rw-home-cat" href="/catalog?category=servo"><b>舵机</b><span>4</span><em>串行总线 / PWM</em></a>
+      <a class="rw-home-cat" href="/catalog?category=battery"><b>电池</b><span>4</span><em>智能电池 / 动力电池</em></a>
       <a class="rw-home-cat" href="/catalog?category=esc"><b>电调</b><span>3</span><em>驱动器 / 调速器</em></a>
       <a class="rw-home-cat" href="/catalog?category=module"><b>其余模块</b><span>3</span><em>CAN 通信 / 力触觉 / 编码器</em></a>
     </div>

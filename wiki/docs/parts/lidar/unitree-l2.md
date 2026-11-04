@@ -71,7 +71,7 @@ description: "宇树 Unitree L2（激光雷达）：额定 12 V、量程 30 m、
 | 帧率 (fps) | 5.55 |
 | 接口 | ENET UDP + TTL UART 4 Mbps |
 | 质量 (kg) | — |
-| range_note | 30 m@90%、15 m@10% |
+| 量程说明 | 30 m@90%、15 m@10% |
 | effective_points_per_s | 64,000 |
 | blind_m | 0.05 |
 | 精度 | ≤2.0 cm |
@@ -86,16 +86,16 @@ description: "宇树 Unitree L2（激光雷达）：额定 12 V、量程 30 m、
 | data_4d | 3D 位置 + 1D 灰度（支持 2D 模式） |
 | 额定电压 (V) | 12 |
 | power_note | 12 V / 1 A |
-| absolute | ±2 cm |
+| 绝对式 | ±2 cm |
 | 工作温度 | -10~50 |
-| size_mm | 75×75×65 |
-| weight_g | 230 |
-| power_w | 10 |
+| 尺寸 (mm) | 75×75×65 |
+| 重量 (g) | 230 |
+| 功耗 (W) | 10 |
 | 额定电压 (V) | 12 |
 | 官方文档 | https://support.unitree.com/home/zh/developer |
-| repo_urls | https://github.com/unitreerobotics/unilidar_sdk2 |
+| 开源仓库 | https://github.com/unitreerobotics/unilidar_sdk2 |
 | 官方手册 (PDF) | https://cdn.shopify.com/s/files/1/0673/6848/5000/files/Unitree_4D_LiDAR_L2_User_Manual.pdf |
-| repo_license | BSD-3-Clause |
+| 仓库许可 | BSD-3-Clause |
 
 ## 优惠与获取条件
 
@@ -121,7 +121,7 @@ description: "宇树 Unitree L2（激光雷达）：额定 12 V、量程 30 m、
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.unitree.com/cn/L2" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://support.unitree.com/home/zh/developer" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://cdn.shopify.com/s/files/1/0673/6848/5000/files/Unitree_4D_LiDAR_L2_User_Manual.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://github.com/unitreerobotics/unilidar_sdk2" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 BSD-3-Clause</td></tr><tr><td class="rs-plain">产品图出处</td><td>《Unitree 4D LiDAR L2 用户手册》参数规格页（内嵌线稿）</td></tr><tr><td class="rs-plain">收录说明</td><td>《Unitree 4D LiDAR L2 用户手册》参数规格页；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%AE%87%E6%A0%91+Unitree+L2+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=L2&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%AE%87%E6%A0%91+Unitree+L2+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/lidar/unitree.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/unitree.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.unitree.com/cn/L2" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://support.unitree.com/home/zh/developer" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://cdn.shopify.com/s/files/1/0673/6848/5000/files/Unitree_4D_LiDAR_L2_User_Manual.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://github.com/unitreerobotics/unilidar_sdk2" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 BSD-3-Clause</td></tr><tr><td class="rs-plain">产品图出处</td><td>《Unitree 4D LiDAR L2 用户手册》参数规格页（内嵌线稿）</td></tr><tr><td class="rs-plain">收录说明</td><td>《Unitree 4D LiDAR L2 用户手册》参数规格页；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%AE%87%E6%A0%91+Unitree+L2+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=L2&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%AE%87%E6%A0%91+Unitree+L2+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/lidar/unitree.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/unitree.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -129,5 +129,5 @@ description: "宇树 Unitree L2（激光雷达）：额定 12 V、量程 30 m、
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

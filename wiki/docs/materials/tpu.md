@@ -1,8 +1,11 @@
 ---
 title: "TPU 热塑性聚氨酯"
+description: "材料 TPU 热塑性聚氨酯：热塑性聚氨酯"
 ---
 
 # TPU 热塑性聚氨酯
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>弹性体</span>

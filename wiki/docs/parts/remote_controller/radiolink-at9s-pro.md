@@ -1,6 +1,6 @@
 ---
 title: 乐迪 RadioLink AT9S Pro
-description: "乐迪 RadioLink AT9S Pro（遥控器）：官方参数；来源 B 级、2026-10-31 核对。"
+description: "乐迪 RadioLink AT9S Pro（遥控器）：公开页面参数；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 
@@ -15,14 +15,14 @@ description: "乐迪 RadioLink AT9S Pro（遥控器）：官方参数；来源 B
     <div class="part-tags">
       <span class="part-tag">遥控器</span>
       <span class="part-tag soft">板控</span>
-      <span class="part-tag tierB">来源 B ✓ 已核对</span>
+      <span class="part-tag tierB">来源 B</span>
       <span class="part-tag muted">无公开报价</span>
     </div>
 
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -36,7 +36,7 @@ description: "乐迪 RadioLink AT9S Pro（遥控器）：官方参数；来源 B
 <div class="part-src">
 来源：<a href="https://www.radiolink.com.cn/cn/at9spro">https://www.radiolink.com.cn/cn/at9spro</a><br/>
 收录：乐迪官网产品页 + 在线说明书（2026-10-31 核对）<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>
@@ -76,7 +76,7 @@ description: "乐迪 RadioLink AT9S Pro（遥控器）：官方参数；来源 B
 | 重量 (g) | — |
 | 官方文档 | https://www.radiolink.com.cn/cn/at9spro_manual |
 | 官方手册 (PDF) | https://www.radiolink.com.cn/download/77878dd20417d69faa3da46d3bf5019e.pdf |
-| repo_urls | — |
+| 开源仓库 | — |
 
 ## 优惠与获取条件
 
@@ -93,7 +93,7 @@ description: "乐迪 RadioLink AT9S Pro（遥控器）：官方参数；来源 B
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.radiolink.com.cn/cn/at9spro" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.radiolink.com.cn/cn/at9spro_manual" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://www.radiolink.com.cn/download/77878dd20417d69faa3da46d3bf5019e.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>乐迪官网 AT9S Pro 产品页产品图（2026-10-29 下载）</td></tr><tr><td class="rs-plain">收录说明</td><td>乐迪官网产品页 + 在线说明书（2026-10-31 核对）</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E8%BF%AA+RadioLink+AT9S+Pro+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=AT9S+Pro&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E8%BF%AA+RadioLink+AT9S+Pro+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/remote_controller/radiolink.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/remote_controller/radiolink.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.radiolink.com.cn/cn/at9spro" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.radiolink.com.cn/cn/at9spro_manual" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://www.radiolink.com.cn/download/77878dd20417d69faa3da46d3bf5019e.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>乐迪官网 AT9S Pro 产品页产品图（2026-10-29 下载）</td></tr><tr><td class="rs-plain">收录说明</td><td>乐迪官网产品页 + 在线说明书（2026-10-31 核对）</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E8%BF%AA+RadioLink+AT9S+Pro+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=AT9S+Pro&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E8%BF%AA+RadioLink+AT9S+Pro+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/remote_controller/radiolink.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/remote_controller/radiolink.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -101,5 +101,5 @@ description: "乐迪 RadioLink AT9S Pro（遥控器）：官方参数；来源 B
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

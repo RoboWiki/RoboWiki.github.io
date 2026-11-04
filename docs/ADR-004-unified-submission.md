@@ -1,6 +1,7 @@
 # RoboWiki 统一投稿与数据管理方案（ADR-004）
 
-> 状态：**已裁定 · 待实施** · 日期：2026-10-30
+> 状态：**部分实施** · 日期：2026-10-30
+> 已落地 submissions/reviews/outbox/worker PR、站内纠错与举报处置；评价入口仍以 issue 快照为准。
 > 论证基础：4 个独立智能体（投稿架构 Schrodinger / 工程自动化 Laplace / 贡献者体验 Kuhn）+ 牛顿（竞赛/开发者/爱好者）
 > 上位：ADR-003（最终架构）、ARCHITECTURE.md（贡献分层）
 

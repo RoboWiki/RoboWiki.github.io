@@ -1,6 +1,6 @@
 ---
 title: 元生创新 Yesense YIS320
-description: "元生创新 Yesense YIS320（IMU）：额定 5 V、输出 400 Hz；来源 B 级、2026-10-31 核对。"
+description: "元生创新 Yesense YIS320（IMU）：额定 5 V、输出 400 Hz；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 
@@ -22,7 +22,7 @@ description: "元生创新 Yesense YIS320（IMU）：额定 5 V、输出 400 Hz�
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -34,7 +34,7 @@ description: "元生创新 Yesense YIS320（IMU）：额定 5 V、输出 400 Hz�
 <div class="part-src">
 来源：<a href="https://www.yesense.com/yis320">https://www.yesense.com/yis320</a><br/>
 收录：授权代理规格页（elmak.tech，逐项参数表）+ 官方产品目录标题（2026-10-31）；官方站对抓取返回 429，未经官方手册逐项核对<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>
@@ -73,17 +73,17 @@ description: "元生创新 Yesense YIS320（IMU）：额定 5 V、输出 400 Hz�
 | mag_range_gauss | ±8 |
 | ODR (Hz) | 400 |
 | 输出周期说明 | 可配置，最高 400 Hz |
-| noise | 陀螺 0.015 °/s/√Hz · 加速度 100 μg/√Hz（带宽 50 Hz） |
+| 噪声 | 陀螺 0.015 °/s/√Hz · 加速度 100 μg/√Hz（带宽 50 Hz） |
 | bias_instability | 陀螺 5 °/h · 加速度 0.035 mg（Allan 1σ @25℃） |
 | 姿态输出 | 横滚/俯仰 静 0.05° / 动 0.2°；航向 无参考 0.2°、磁 1°；静态漂移 0.1°/h |
-| power_w | 0.19 |
+| 功耗 (W) | 0.19 |
 | 工作温度 | -40 ~ +85 |
 | shock_g | 2,000 |
-| size_mm | 22.4 × 22.4 × 9 |
-| weight_g | 7.7 |
+| 尺寸 (mm) | 22.4 × 22.4 × 9 |
+| 重量 (g) | 7.7 |
 | 官方文档 | https://www.yesense.com/yis320 |
-| repo_urls | https://github.com/HViktorTsoi/yesense_ros_driver |
-| repo_license | NOASSERTION |
+| 开源仓库 | https://github.com/HViktorTsoi/yesense_ros_driver |
+| 仓库许可 | NOASSERTION |
 
 ## 优惠与获取条件
 
@@ -100,7 +100,7 @@ description: "元生创新 Yesense YIS320（IMU）：额定 5 V、输出 400 Hz�
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.yesense.com/yis320" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://github.com/HViktorTsoi/yesense_ros_driver" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NOASSERTION（⚠ 有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍）</td></tr><tr><td class="rs-plain">产品图出处</td><td>用户提供的官方宣传图（元生创新 Yesense，DM_20261031010724_001.png，2026-10-31 收录）</td></tr><tr><td class="rs-plain">收录说明</td><td>授权代理规格页（elmak.tech，逐项参数表）+ 官方产品目录标题（2026-10-31）；官方站对抓取返回 429，未经官方手册逐项核对</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%85%83%E7%94%9F%E5%88%9B%E6%96%B0+Yesense+YIS320+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=YIS320&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%85%83%E7%94%9F%E5%88%9B%E6%96%B0+Yesense+YIS320+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/imu/yesense.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/imu/yesense.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.yesense.com/yis320" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://github.com/HViktorTsoi/yesense_ros_driver" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NOASSERTION（⚠ 有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍）</td></tr><tr><td class="rs-plain">产品图出处</td><td>用户提供的官方宣传图（元生创新 Yesense，DM_20261031010724_001.png，2026-10-31 收录）</td></tr><tr><td class="rs-plain">收录说明</td><td>授权代理规格页（elmak.tech，逐项参数表）+ 官方产品目录标题（2026-10-31）；官方站对抓取返回 429，未经官方手册逐项核对</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%85%83%E7%94%9F%E5%88%9B%E6%96%B0+Yesense+YIS320+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=YIS320&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E5%85%83%E7%94%9F%E5%88%9B%E6%96%B0+Yesense+YIS320+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/imu/yesense.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/imu/yesense.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -108,5 +108,5 @@ description: "元生创新 Yesense YIS320（IMU）：额定 5 V、输出 400 Hz�
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

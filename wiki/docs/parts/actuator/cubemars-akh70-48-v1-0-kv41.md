@@ -1,6 +1,6 @@
 ---
 title: CubeMars AKH70-48 V1.0 KV41
-description: "CubeMars AKH70-48 V1.0 KV41（关节电机）：峰值扭矩 222 N·m、额定 74 N·m、减速比 48:1；来源 B 级、2026-10-31 核对。"
+description: "CubeMars AKH70-48 V1.0 KV41（关节电机）：峰值扭矩 222 N·m、额定 74 N·m、减速比 48:1；来源 B 级、2026-11-02 最近查阅。"
 ---
 
 
@@ -8,7 +8,8 @@ description: "CubeMars AKH70-48 V1.0 KV41（关节电机）：峰值扭矩 222 N
 
 <div class="part-hero">
   <div class="part-hero-left">
-    
+    <img src="/parts/cubemars-akh70-48-v1-0-kv41.jpg" alt="AKH70-48 V1.0 KV41" class="part-photo" />
+
   </div>
   <div class="part-hero-right">
     <div class="part-tags">
@@ -21,7 +22,7 @@ description: "CubeMars AKH70-48 V1.0 KV41（关节电机）：峰值扭矩 222 N
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -31,9 +32,9 @@ description: "CubeMars AKH70-48 V1.0 KV41（关节电机）：峰值扭矩 222 N
 | 质量 (kg) | 1.396 |
 
 <div class="part-src">
-来源：<a href="https://www.cubemars.com/cn/product/ak80-6-kv100-robotic-actuator.html">https://www.cubemars.com/cn/product/ak80-6-kv100-robotic-actuator.html</a><br/>
+来源：<a href="https://www.cubemars.com/cn/product/akh70-48-v-1-0-kv41-hollow-shaft-planetary-actuator.html">https://www.cubemars.com/cn/product/akh70-48-v-1-0-kv41-hollow-shaft-planetary-actuator.html</a><br/>
 收录：CubeMars 官网产品对比表（cubemars.com/cn，2026-10-31 抓取）<br/>
-核对：2026-10-31
+最近查阅：2026-11-02
 </div>
 
 </div>
@@ -97,7 +98,7 @@ description: "CubeMars AKH70-48 V1.0 KV41（关节电机）：峰值扭矩 222 N
 | 转子惯量 (kg·m²) | — |
 | 额定电压 (V) | — |
 | 电压范围 | 48 |
-| power_w | 217 |
+| 功耗 (W) | 217 |
 | 额定电流 (A) | 6 |
 | 额定转速 (rpm) | 28 |
 | 峰值电流 (A) | 21 |
@@ -106,7 +107,7 @@ description: "CubeMars AKH70-48 V1.0 KV41（关节电机）：峰值扭矩 222 N
 | 长度 (mm) | 81.5 |
 | 编码器 | 双编 |
 | 扭矩口径 | peak |
-| 官方文档 | https://www.cubemars.com/cn/product/ak80-6-kv100-robotic-actuator.html |
+| 官方文档 | https://www.cubemars.com/cn/product/akh70-48-v-1-0-kv41-hollow-shaft-planetary-actuator.html |
 
 ## 优惠与获取条件
 
@@ -123,7 +124,7 @@ description: "CubeMars AKH70-48 V1.0 KV41（关节电机）：峰值扭矩 222 N
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.cubemars.com/cn/product/ak80-6-kv100-robotic-actuator.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">收录说明</td><td>CubeMars 官网产品对比表（cubemars.com/cn，2026-10-31 抓取）</td></tr><tr><td><a href="https://www.google.com/search?q=CubeMars+AKH70-48+V1.0+KV41+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=AKH70-48+V1.0+KV41&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=CubeMars+AKH70-48+V1.0+KV41+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/actuator/cubemars.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/cubemars.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.cubemars.com/cn/product/akh70-48-v-1-0-kv41-hollow-shaft-planetary-actuator.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td class="rs-plain">产品图出处</td><td>CubeMars 官方产品图（cubemars.com，AKH70-48 V1.0 KV41 产品页，2026-11-02）</td></tr><tr><td class="rs-plain">收录说明</td><td>CubeMars 官网产品对比表（cubemars.com/cn，2026-10-31 抓取）</td></tr><tr><td><a href="https://www.google.com/search?q=CubeMars+AKH70-48+V1.0+KV41+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=AKH70-48+V1.0+KV41&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=CubeMars+AKH70-48+V1.0+KV41+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/actuator/cubemars.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/actuator/cubemars.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -131,5 +132,5 @@ description: "CubeMars AKH70-48 V1.0 KV41（关节电机）：峰值扭矩 222 N
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

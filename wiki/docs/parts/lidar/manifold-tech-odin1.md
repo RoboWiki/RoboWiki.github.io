@@ -73,7 +73,7 @@ description: "Manifold Tech Odin1（激光雷达）：质量 0.28 kg、额定 24
 | 质量 (kg) | 0.28 |
 | depth_resolution | 240 × 180 |
 | range_min_m | 0.2 |
-| range_note | 最大 30 m@10% 反射率（<500 lux）/ 70 m@90% 反射率（<500 lux）；视场 120° H × 90° V，角分辨率 0.5° × 0.5° |
+| 量程说明 | 最大 30 m@10% 反射率（<500 lux）/ 70 m@90% 反射率（<500 lux）；视场 120° H × 90° V，角分辨率 0.5° × 0.5° |
 | 精度 | ±3 cm @1σ（室内 80% Lambertian 板，5 m 内；5–30 m 为 <1%） |
 | angular_resolution | 0.5° × 0.5° |
 | wavelength_nm | 940 |
@@ -84,8 +84,8 @@ description: "Manifold Tech Odin1（激光雷达）：质量 0.28 kg、额定 24
 | rgb_fov | 129° H × 104° V × 173° D |
 | rgb_sensor | 1/2.9"，像元 3 µm × 3 µm |
 | slam_accuracy | ±5 cm + 1%（实验室条件） |
-| size_mm | 100 × 62 × 43（主体）/ 46（含航空插头） |
-| power_w | 11 |
+| 尺寸 (mm) | 100 × 62 × 43（主体）/ 46（含航空插头） |
+| 功耗 (W) | 11 |
 | power_peak_w | 24 |
 | 防护等级 | IP66 |
 | 额定电压 (V) | 24 |
@@ -94,8 +94,8 @@ description: "Manifold Tech Odin1（激光雷达）：质量 0.28 kg、额定 24
 | output | 真彩 SLAM 点云 / 原始点云 / 原始 RGB / 高频 IMU / 位姿 |
 | 官方文档 | https://manifoldtechltd.github.io/wiki/odin_series/odin1/14.%20Technical%20Specifications_.html |
 | 官方手册 (PDF) | https://cdn.shopify.com/s/files/1/0673/6848/5000/files/Odin1_User_Manual.pdf |
-| repo_urls | https://github.com/manifoldsdk/odin_ros_driver、https://github.com/ManifoldTechLtd/Odin-Nav-Stack |
-| repo_license | Apache-2.0 |
+| 开源仓库 | https://github.com/manifoldsdk/odin_ros_driver、https://github.com/ManifoldTechLtd/Odin-Nav-Stack |
+| 仓库许可 | Apache-2.0 |
 
 ## 优惠与获取条件
 
@@ -112,7 +112,7 @@ description: "Manifold Tech Odin1（激光雷达）：质量 0.28 kg、额定 24
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://manifoldtechltd.github.io/wiki/odin_series/odin1/14.%20Technical%20Specifications_.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://cdn.shopify.com/s/files/1/0673/6848/5000/files/Odin1_User_Manual.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://github.com/manifoldsdk/odin_ros_driver" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 Apache-2.0</td></tr><tr><td><a href="https://github.com/ManifoldTechLtd/Odin-Nav-Stack" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 Apache-2.0</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商官方 Wiki 产品图（manifoldtechltd.github.io/wiki/odin_series/odin1）</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商官方 Wiki《Odin1 用户手册》14. 技术参数（2026-10-29 逐表读取）；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对</td></tr><tr><td><a href="https://www.google.com/search?q=Manifold+Tech+Odin1+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Odin1&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Manifold+Tech+Odin1+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/lidar/manifold.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/manifold.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://manifoldtechltd.github.io/wiki/odin_series/odin1/14.%20Technical%20Specifications_.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://cdn.shopify.com/s/files/1/0673/6848/5000/files/Odin1_User_Manual.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://github.com/manifoldsdk/odin_ros_driver" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 Apache-2.0</td></tr><tr><td><a href="https://github.com/ManifoldTechLtd/Odin-Nav-Stack" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 Apache-2.0</td></tr><tr><td class="rs-plain">产品图出处</td><td>厂商官方 Wiki 产品图（manifoldtechltd.github.io/wiki/odin_series/odin1）</td></tr><tr><td class="rs-plain">收录说明</td><td>厂商官方 Wiki《Odin1 用户手册》14. 技术参数（2026-10-29 逐表读取）；手册链接转载自 aifitlab 商品页（第三方 CDN，2026-10-31 抓取），未与厂商官网域名核对</td></tr><tr><td><a href="https://www.google.com/search?q=Manifold+Tech+Odin1+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Odin1&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Manifold+Tech+Odin1+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/lidar/manifold.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/manifold.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -120,5 +120,5 @@ description: "Manifold Tech Odin1（激光雷达）：质量 0.28 kg、额定 24
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

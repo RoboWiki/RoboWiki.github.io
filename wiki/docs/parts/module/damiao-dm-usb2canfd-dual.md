@@ -76,7 +76,7 @@ description: "达妙 DAMIAO DM-USB2CANFD Dual（其余模块）：额定 5 V；�
 | 接头 | GH1.25 2P（CAN）×2；GH1.25 3P（UART）×1 |
 | 官方文档 | https://gitee.com/kit-miao/usb2canfd-dual |
 | 官方手册 (PDF) | https://gitee.com/kit-miao/usb2canfd-dual/raw/master/DM-USB2CANFD_Dual%20%E6%A8%A1%E5%9D%97%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E4%B9%A6%20V1.0.pdf |
-| repo_urls | https://gitee.com/kit-miao/dm-device-sdk |
+| 开源仓库 | https://gitee.com/kit-miao/dm-device-sdk |
 
 ## 优惠与获取条件
 
@@ -93,7 +93,7 @@ description: "达妙 DAMIAO DM-USB2CANFD Dual（其余模块）：额定 5 V；�
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://gitee.com/kit-miao/usb2canfd-dual" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://gitee.com/kit-miao/usb2canfd-dual/raw/master/DM-USB2CANFD_Dual%20%E6%A8%A1%E5%9D%97%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E4%B9%A6%20V1.0.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://gitee.com/kit-miao/dm-device-sdk" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现</td></tr><tr><td class="rs-plain">产品图出处</td><td>《DM-USB2CANFD Dual 模块使用说明书 V1.0》产品图（2026-10-29 提取）</td></tr><tr><td class="rs-plain">收录说明</td><td>《DM-USB2CANFD Dual 模块使用说明书 V1.0》（达妙科技）</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-USB2CANFD+Dual+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=DM-USB2CANFD+Dual&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-USB2CANFD+Dual+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/module/damiao.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/module/damiao.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://gitee.com/kit-miao/usb2canfd-dual" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://gitee.com/kit-miao/usb2canfd-dual/raw/master/DM-USB2CANFD_Dual%20%E6%A8%A1%E5%9D%97%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E4%B9%A6%20V1.0.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://gitee.com/kit-miao/dm-device-sdk" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现</td></tr><tr><td class="rs-plain">产品图出处</td><td>《DM-USB2CANFD Dual 模块使用说明书 V1.0》产品图（2026-10-29 提取）</td></tr><tr><td class="rs-plain">收录说明</td><td>《DM-USB2CANFD Dual 模块使用说明书 V1.0》（达妙科技）</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-USB2CANFD+Dual+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=DM-USB2CANFD+Dual&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E8%BE%BE%E5%A6%99+DAMIAO+DM-USB2CANFD+Dual+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/module/damiao.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/module/damiao.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -101,5 +101,5 @@ description: "达妙 DAMIAO DM-USB2CANFD Dual（其余模块）：额定 5 V；�
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

@@ -1,6 +1,7 @@
 # RoboWiki 数据管理与后期迁移总方案（ADR-005）
 
-> 状态：**已裁定 · 待实施** · 日期：2026-10-30
+> 状态：**部分实施** · 日期：2026-10-30
+> 已落地 data-v* release、data.lock、ID 注册表与提案审计；月度 UGC 快照与灾备演练尚未实现。
 > 论证基础：4 个独立智能体（数据架构 Copernicus / 迁移策略 James / 生命周期 Hubble / 开放互操作 Beauvoir）
 > 上位：ADR-002（拆仓）、ADR-003（最终架构）、ADR-004（统一投稿）、ARCHITECTURE.md
 

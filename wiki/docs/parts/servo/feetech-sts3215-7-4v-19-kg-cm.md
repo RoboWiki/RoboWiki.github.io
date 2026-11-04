@@ -67,7 +67,7 @@ description: "Feetech 飞特 STS3215（7.4V 19 kg·cm）（舵机）：额定 7.
 | rated_torque_Nm | 0.49 |
 | 额定电压 (V) | 7.4 |
 | speed_rpm | 52 |
-| protocol | — |
+| 协议 | — |
 | 质量 (kg) | — |
 | torque_raw | 19.5 kg·cm 堵转 / 5 kg·cm 额定 @7.4 V（6 V 为 16.5 / 4） |
 | voltage_range | 4–7.4 V |
@@ -77,10 +77,10 @@ description: "Feetech 飞特 STS3215（7.4V 19 kg·cm）（舵机）：额定 7.
 | i_noload_mA | 150 |
 | i_idle_mA | 21 |
 | 转矩常数 (N·m/A) | 0.765 |
-| weight_g | 55 |
+| 重量 (g) | 55 |
 | 编码器 | 12 bit 磁编码，360°，精度 ≤0.5° |
 | 接口 | TTL 半双工异步串行（数字包） |
-| bearing | 滚珠轴承 |
+| 轴承 | 滚珠轴承 |
 | case | PA+GF 塑料壳 + 金属齿 |
 | 官方文档 | https://www.feetech.cn/74v-19-kgcm-plastic-case-metal-tooth-magnetic-code-double-axis-ttl-series-steering-gear |
 | 官方手册 (PDF) | https://files.seeedstudio.com/products/Feetech/108090023_STS3215-C001_Datasheet.pdf |
@@ -100,7 +100,7 @@ description: "Feetech 飞特 STS3215（7.4V 19 kg·cm）（舵机）：额定 7.
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.feetech.cn/74v-19-kgcm-plastic-case-metal-tooth-magnetic-code-double-axis-ttl-series-steering-gear" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://files.seeedstudio.com/products/Feetech/108090023_STS3215-C001_Datasheet.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>飞特官网产品页图（1.jpg，2026-10-31 经图片代理取回并转 PNG）</td></tr><tr><td class="rs-plain">收录说明</td><td>飞特官方规格书《STS3215 产品规格书 A/1，2023-06-23》（Seeed 文档中心镜像的官网 PDF）；产品页 feetech.cn（本机不可达，链接仅供读者核对）</td></tr><tr><td><a href="https://www.google.com/search?q=Feetech+%E9%A3%9E%E7%89%B9+STS3215%EF%BC%887.4V+19+kg%C2%B7cm%EF%BC%89+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=STS3215%EF%BC%887.4V+19+kg%C2%B7cm%EF%BC%89&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Feetech+%E9%A3%9E%E7%89%B9+STS3215%EF%BC%887.4V+19+kg%C2%B7cm%EF%BC%89+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/servo/feetech.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/servo/feetech.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.feetech.cn/74v-19-kgcm-plastic-case-metal-tooth-magnetic-code-double-axis-ttl-series-steering-gear" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://files.seeedstudio.com/products/Feetech/108090023_STS3215-C001_Datasheet.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td class="rs-plain">产品图出处</td><td>飞特官网产品页图（1.jpg，2026-10-31 经图片代理取回并转 PNG）</td></tr><tr><td class="rs-plain">收录说明</td><td>飞特官方规格书《STS3215 产品规格书 A/1，2023-06-23》（Seeed 文档中心镜像的官网 PDF）；产品页 feetech.cn（本机不可达，链接仅供读者核对）</td></tr><tr><td><a href="https://www.google.com/search?q=Feetech+%E9%A3%9E%E7%89%B9+STS3215%EF%BC%887.4V+19+kg%C2%B7cm%EF%BC%89+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=STS3215%EF%BC%887.4V+19+kg%C2%B7cm%EF%BC%89&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=Feetech+%E9%A3%9E%E7%89%B9+STS3215%EF%BC%887.4V+19+kg%C2%B7cm%EF%BC%89+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/servo/feetech.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/servo/feetech.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -108,5 +108,5 @@ description: "Feetech 飞特 STS3215（7.4V 19 kg·cm）（舵机）：额定 7.
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

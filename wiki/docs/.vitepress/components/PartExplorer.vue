@@ -10,6 +10,7 @@
  */
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { withBase } from 'vitepress'
+import catalogData from '../../public/catalog.json'
 
 interface Offer {
   title: string | null
@@ -62,34 +63,37 @@ const props = withDefaults(defineProps<{ lang?: 'zh' | 'en' }>(), { lang: 'zh' }
 const en = computed(() => props.lang === 'en')
 /** 只翻界面壳；型号与参数值保持原文。 */
 const L = computed(() => en.value
-  ? { featured: 'Featured', search: 'Search model / brand / type', compare: 'Compare', all: 'All params',
+  ? { featured: 'Catalogued', search: 'Search model / brand / type', compare: 'Compare', all: 'All params',
       none: 'No photo yet', count: 'items', sort: 'Sort by', vendor: 'Vendor', type: 'Type' }
-  : { featured: '精选', search: '搜型号 / 品牌 / 类型', compare: '对比', all: '全部参数',
+  : { featured: '入库', search: '搜型号 / 品牌 / 类型', compare: '对比', all: '全部参数',
       none: '暂无产品图', count: '件', sort: '按', vendor: '厂商', type: '类型' })
 
-const all = ref<Part[]>([])
-const loading = ref(true)
+const all = ref<Part[]>(catalogData.parts || [])
+const loading = ref(false)
 const fail = ref('')
 
+// URL 状态在 onMounted 里读：SSR 与首帧客户端渲染必须一致，
+// 否则 GitHub Pages 对每个查询串都吐同一份 HTML 时会 hydration mismatch。
 const q = ref('')
 //: 精选：白名单来自 public/catalog.json 的 featured.ids（构建时读 data/featured.json）
-const featuredIds = ref<Set<string>>(new Set())
+const featuredIds = ref<Set<string>>(new Set(catalogData.featured?.ids || []))
 const featuredOnly = ref(
   typeof localStorage !== 'undefined' && localStorage.getItem('rs.featuredOnly') === '0'
     ? false
     : true,   // 默认开启
 )
 const hasCuration = computed(() => featuredIds.value.size > 0)
-/** 首页品类卡带 ?category=<id> 进来：先按参数选中，加载 taxonomy 后再校验。 */
-const initialCat = (() => {
-  if (typeof window === 'undefined') return ''
-  return new URLSearchParams(window.location.search).get('category')?.trim() || ''
-})()
-const cat = ref(initialCat || 'actuator')
+/** 精选清单等于全库时，开关是死控件；直接藏起来，别给一个没用的按钮。 */
+const hasRealCuration = computed(() =>
+  featuredIds.value.size > 0 && featuredIds.value.size < all.value.length)
+const cat = ref('actuator')
 const vendor = ref('')
 const sensorType = ref('')
 const sort = ref<string>('tau_peak_Nm')
 const order = ref<'desc' | 'asc'>('desc')
+/** 品类是否被「显式选中」过（点卡片或 URL 带 category）。
+#  没选中过时，搜索跨全库——否则 `?q=XT30` 会被默认品类挡成 0 结果。 */
+const catPinned = ref(false)
 const picked = ref<Part[]>([])
 const detail = ref<Part | null>(null)
 
@@ -168,41 +172,38 @@ const FALLBACK_CATS = [
   { v: 'module', t: '其余模块' },
   { v: 'chip', t: '硬件芯片' },
 ]
-const CATS = ref<Cat[]>(FALLBACK_CATS.map(c => ({ ...c, subtypes: {}, keys: [], sorts: [] })))
+const CATS = ref<Cat[]>((catalogData.categories?.length ? catalogData.categories : FALLBACK_CATS).map((c: any) => ({
+  v: c.id || c.v, t: c.name || c.t, subtypes: c.subtypes || {}, keys: c.keys || [], sorts: c.sorts || [],
+})))
 
 //: 排序项按品类来（data/taxonomy.json 的 sorts）。
 //: 「按峰值扭矩」对芯片毫无意义 —— 每类该有自己的默认排序。
 const FALLBACK_SORTS = [{ k: 'price', label: '价格' }, { k: 'rating', label: '评分' }]
 
-onMounted(async () => {
-  try {
-    // no-cache = 每次用 ETag 重新验证，不是禁用缓存。
-    // 静态站的 catalog.json 会随部署变化，纯强缓存会让读者看到上一版的价格/图片。
-    const r = await fetch(withBase('/catalog.json'), { cache: 'no-cache' })
-    if (!r.ok) throw new Error(String(r.status))
-    const d = await r.json()
-    all.value = d.parts
-    const fids = d.featured?.ids
-    if (Array.isArray(fids)) featuredIds.value = new Set(fids)
-    if (Array.isArray(d.categories) && d.categories.length) {
-      CATS.value = d.categories.map((c: any) => ({
-        v: c.id, t: c.name, subtypes: c.subtypes || {}, keys: c.keys || [], sorts: c.sorts || [],
-      }))
-      if (!CATS.value.some(c => c.v === cat.value)) cat.value = CATS.value[0].v
-      sort.value = defaultSortFor(cat.value)
-      if (initialCat) syncCategoryUrl()
-    }
-  } catch (e: any) {
-    fail.value = `部件库加载失败（${e.message}）`
-  } finally {
-    loading.value = false
+// 数据在构建期由 pipeline 写进 public/catalog.json；这里静态导入，
+// 让 VitePress SSG 直接把首屏卡片烘进 HTML——群链接首访客不再看空白页。
+onMounted(() => {
+  const params = new URLSearchParams(window.location.search)
+  const urlCat = params.get('category')?.trim() || ''
+  if (urlCat) {
+    cat.value = urlCat
+    catPinned.value = true
   }
+  q.value = params.get('q') || ''
+  vendor.value = params.get('vendor') || ''
+  sensorType.value = params.get('subtype') || ''
+  sort.value = params.get('sort') || 'tau_peak_Nm'
+  order.value = (params.get('order') as 'desc' | 'asc') || 'desc'
+
+  if (!CATS.value.some(c => c.v === cat.value)) cat.value = CATS.value[0].v
+  if (!sortOpts.value.some(o => o.k === sort.value)) sort.value = defaultSortFor(cat.value)
+  syncFiltersUrl()
 })
 
 /** 换品类时重置筛选与排序。
  *  「按峰值扭矩」对芯片/雷达毫无意义 —— 默认排序应该跟着品类走。 */
 function toggleFeatured() {
-  if (!hasCuration.value) return
+  if (!hasRealCuration.value) return
   featuredOnly.value = !featuredOnly.value
   try {
     localStorage.setItem('rs.featuredOnly', featuredOnly.value ? '1' : '0')
@@ -211,6 +212,7 @@ function toggleFeatured() {
 
 function setCat(v: string) {
   cat.value = v
+  catPinned.value = true
   vendor.value = ''
   sensorType.value = ''
   q.value = ''
@@ -223,14 +225,29 @@ function defaultSortFor(v: string) {
   return m?.sorts?.[0]?.k || 'price'
 }
 
-/** 品类进 URL：刷新/分享能回到同一栏，首页品类卡也靠这个参数落地。 */
-function syncCategoryUrl() {
+/** 筛选状态进 URL：刷新、收藏、贴群都能回到同一视图。
+ *  只写非默认值，避免分享出一串 `?q=&vendor=&sort=` 噪声。 */
+function syncFiltersUrl() {
   if (typeof window === 'undefined') return
   const url = new URL(window.location.href)
-  if (url.searchParams.get('category') === cat.value) return
-  url.searchParams.set('category', cat.value)
+  const defaultCat = CATS.value[0]?.v || 'actuator'
+  const set = (k: string, v: string, isDefault = false) => {
+    if (v && !isDefault) url.searchParams.set(k, v)
+    else url.searchParams.delete(k)
+  }
+  set('category', cat.value, !catPinned.value && cat.value === defaultCat)
+  set('q', q.value.trim())
+  set('vendor', vendor.value)
+  set('subtype', sensorType.value)
+  set('sort', sort.value, sort.value === defaultSortFor(cat.value))
+  set('order', order.value, order.value === 'desc')
   history.replaceState(history.state, '', url)
 }
+
+const syncCategoryUrl = syncFiltersUrl
+
+// 任一变就同步：比在每个 handler 里各写一遍更难漏。
+watch([cat, q, vendor, sensorType, sort, order], syncFiltersUrl)
 
 const catCount = (v: string) => all.value.filter(p => p.category === v).length
 
@@ -261,8 +278,12 @@ const EXTRA_LABELS: Record<string, string> = {
 function labelFor(k: string): string {
   return meta.value?.keys.find(x => x.k === k)?.label || EXTRA_LABELS[k] || k
 }
-const sortOpts = computed(() =>
-  (meta.value?.sorts?.length ? meta.value.sorts : FALLBACK_SORTS))
+const sortOpts = computed(() => {
+  const opts = meta.value?.sorts?.length ? meta.value.sorts : FALLBACK_SORTS
+  // 全库 0 条评分时，「按评分」排序是死选项；藏起来比给了不排好。
+  const anyRating = all.value.some(p => (p.rating?.count || 0) > 0)
+  return anyRating ? opts : opts.filter(o => o.k !== 'rating')
+})
 const vendors = computed(() =>
   [...new Set(all.value.filter(p => p.category === cat.value).map(p => p.vendor))].sort())
 
@@ -288,17 +309,35 @@ function sortValue(p: Part, k: string): any {
   return v === undefined || v === '' ? null : v
 }
 
+function specText(p: Part): string {
+  const specs = p.specs || {}
+  return Object.keys(specs).map(k => {
+    const v = specs[k]
+    if (v === null || v === undefined) return k
+    if (Array.isArray(v)) return `${k} ${v.join(' ')}`
+    if (typeof v === 'object') return `${k} ${Object.values(v).join(' ')}`
+    return `${k} ${v}`
+  }).join(' ')
+}
+
+/** 多词 AND + 规格/备注命中：搜「48V」「IP67」「谐波」都该有结果。 */
+function matchesQuery(p: Part, q: string): boolean {
+  const terms = q.toLowerCase().split(/\s+/).filter(Boolean)
+  if (!terms.length) return true
+  const hay = `${p.model} ${p.vendor} ${(p as any).vendor_cn || ''} ${p.subtypeLabel} ${(p as any).title || ''} ${p.notes || ''} ${specText(p)}`.toLowerCase()
+  return terms.every(t => hay.includes(t))
+}
+
 const rows = computed(() => {
   const key = (p: Part) => sortValue(p, sort.value)
   // 精选门：开关打开且白名单非空时才过滤
   const gate = featuredOnly.value && hasCuration.value
   let out = all.value.filter(
-    p => p.category === cat.value
+    p => (p.category === cat.value || (!!q.value && !catPinned.value))
       && (!gate || featuredIds.value.has(p.id))
       && (!vendor.value || p.vendor === vendor.value)
       && (!sensorType.value || p.subtype === sensorType.value)
-      && (!q.value || `${p.model} ${p.vendor} ${p.subtypeLabel}`
-        .toLowerCase().includes(q.value.toLowerCase())),
+      && (!q.value || matchesQuery(p, q.value)),
   )
   out = [...out].sort((a, b) => {
     const va = key(a), vb = key(b)
@@ -379,15 +418,15 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
 
 <template>
   <div class="pd">
-    <header class="ex-head">
+    <header class="ex-head" v-if="!en">
       <div class="ex-kicker">机器人部件</div>
       <h1>选部件，先看参数，再看用过的人怎么说。</h1>
       <p class="ex-lead">
-        每个部件一页：左边是<strong>官方参数</strong>（带来来源等级与口径），右边是<strong>真实使用者的评分与评价</strong>。
+        每个部件一页：左边是<strong>官方参数</strong>（带来来源等级与口径），右边是<strong>真实使用者的评分与评价</strong>（评分入口刚开放，暂无量）。
         有优惠条件、有资料链接、能按任意列排序。
       </p>
       <div class="ex-note">
-        <b>★ 精选</b> 默认全收录；关掉仍可看全部。
+        <span v-if="hasRealCuration"><b>★ 入库</b> 默认全收录；关掉仍可看全部。</span>
         <b>每一行参数都标了来源等级</b>：A 级逐项对过厂商手册，缺的值写 —，不猜。
       </div>
     </header>
@@ -400,10 +439,9 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
       <!-- 工具条 -->
       <div class="pd-row">
         <input v-model="q" class="pd-input" :placeholder="L.search" aria-label="搜索部件" />
-      <button class="pd-chip pd-featured"
-              :class="{ on: featuredOnly && hasCuration, off: !hasCuration }"
-              :disabled="!hasCuration"
-              :title="hasCuration ? '只看精选（data/featured.json）' : '精选清单还没填：data/featured.json'"
+      <button v-if="hasRealCuration" class="pd-chip pd-featured"
+              :class="{ on: featuredOnly }"
+              title="只看精选（data/featured.json）"
               @click="toggleFeatured()">
         <span class="pd-star">★</span>{{ L.featured }}
         <span class="pd-n">{{ hasCuration ? featuredIds.size : '未筛选' }}</span>
@@ -499,7 +537,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
               </svg>
               <em>{{ L.none }}</em>
             </span>
-            <span :class="['card-tier', p.tier === 'A' ? 'a' : '']">{{ p.tier }}{{ p.verified ? ' ✓' : '' }}</span>
+            <span :class="['card-tier', p.tier === 'A' ? 'a' : '']">{{ p.tier }}{{ p.verified && p.tier === 'A' ? ' ✓' : '' }}</span>
             <span v-if="p.offer?.price != null" class="card-promo">优惠</span>
           </a>
 
@@ -517,6 +555,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
                 <span class="list">{{ money(p.price) ?? '询价' }}</span>
                 <template v-if="p.offer?.price != null">
                   <span class="promo">{{ money(p.offer.price) }}</span>
+                  <span v-if="p.offer?.condition" class="hint" :title="p.offer.condition">需资格</span>
                 </template>
               </div>
               <div class="card-rate">

@@ -1,6 +1,6 @@
 ---
 title: 乐动 LDROBOT LD19
-description: "乐动 LDROBOT LD19（激光雷达）：额定 5 V、量程 12 m；来源 B 级、2026-10-31 核对。"
+description: "乐动 LDROBOT LD19（激光雷达）：额定 5 V、量程 12 m；来源 B 级、2026-10-31 最近查阅。"
 ---
 
 
@@ -22,7 +22,7 @@ description: "乐动 LDROBOT LD19（激光雷达）：额定 5 V、量程 12 m�
 <div class="part-split">
 <div class="part-official">
 
-#### 官方参数
+#### 公开页面参数
 
 | 字段 | 值 |
 |---|---|
@@ -34,7 +34,7 @@ description: "乐动 LDROBOT LD19（激光雷达）：额定 5 V、量程 12 m�
 <div class="part-src">
 来源：<a href="https://www.ldrobot.com/">https://www.ldrobot.com/</a><br/>
 收录：微雪 Wiki / 商城（2026-10-31）；型号属乐动 LDROBOT<br/>
-核对：2026-10-31
+最近查阅：2026-10-31
 </div>
 
 </div>
@@ -69,10 +69,10 @@ description: "乐动 LDROBOT LD19（激光雷达）：额定 5 V、量程 12 m�
 | 帧率 (fps) | 10 |
 | 接口 | UART 230400 |
 | 质量 (kg) | — |
-| range_note | 0.02–12 m @80% 白靶 |
+| 量程说明 | 0.02–12 m @80% 白靶 |
 | 额定电压 (V) | 5 |
-| power_w | 0.9 |
-| size_mm | 38.6×38.6×33.5 |
+| 功耗 (W) | 0.9 |
+| 尺寸 (mm) | 38.6×38.6×33.5 |
 | 精度 | 10 mm @0.3–12 m |
 | 防护等级 | IP54 |
 | 官方文档 | https://www.waveshare.net/wiki/DTOF_LIDAR_LD19 |
@@ -92,7 +92,7 @@ description: "乐动 LDROBOT LD19（激光雷达）：额定 5 V、量程 12 m�
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.ldrobot.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.waveshare.net/wiki/DTOF_LIDAR_LD19" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td class="rs-plain">产品图出处</td><td>乐动雷达官网历史产品图（Wayback 2025-04-30 快照）</td></tr><tr><td class="rs-plain">收录说明</td><td>微雪 Wiki / 商城（2026-10-31）；型号属乐动 LDROBOT</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E5%8A%A8+LDROBOT+LD19+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=LD19&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E5%8A%A8+LDROBOT+LD19+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/lidar/ldrobot.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/ldrobot.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.ldrobot.com/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.waveshare.net/wiki/DTOF_LIDAR_LD19" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td class="rs-plain">产品图出处</td><td>乐动雷达官网历史产品图（Wayback 2025-04-30 快照）</td></tr><tr><td class="rs-plain">收录说明</td><td>微雪 Wiki / 商城（2026-10-31）；型号属乐动 LDROBOT</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E5%8A%A8+LDROBOT+LD19+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=LD19&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=%E4%B9%90%E5%8A%A8+LDROBOT+LD19+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/lidar/ldrobot.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/lidar/ldrobot.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -100,5 +100,5 @@ description: "乐动 LDROBOT LD19（激光雷达）：额定 5 V、量程 12 m�
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

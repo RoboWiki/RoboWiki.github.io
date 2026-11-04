@@ -1,8 +1,11 @@
 ---
 title: "PC/ABS 合金"
+description: "材料 PC/ABS 合金：PC 与 ABS 的共混材料，兼顾 PC 的韧性和 ABS 的加工性"
 ---
 
 # PC/ABS 合金
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>工程塑料</span>

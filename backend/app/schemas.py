@@ -16,9 +16,24 @@ class RegisterIn(BaseModel):
     @field_validator("handle")
     @classmethod
     def _handle_ok(cls, v: str) -> str:
-        if not all(c.isalnum() or c in "-_" for c in v):
-            raise ValueError("handle 只能包含字母、数字、- 和 _")
-        return v.lower()
+        low = v.lower()
+        if not low[0].isascii() or not (low[0].isalnum()) or \
+                any(not (c.isascii() and (c.isalnum() or c in "-_")) for c in low[1:]):
+            raise ValueError("handle 只能使用 a-z、0-9、- 和 _，且以字母或数字开头")
+        return low
+
+
+class VerifyEmailIn(BaseModel):
+    token: str = Field(min_length=10, max_length=200)
+
+
+class ForgotIn(BaseModel):
+    email: str = Field(min_length=3, max_length=200)
+
+
+class ResetPasswordIn(BaseModel):
+    token: str = Field(min_length=10, max_length=200)
+    password: str = Field(min_length=6, max_length=128)
 
 
 class LoginIn(BaseModel):
@@ -33,6 +48,7 @@ class UserOut(BaseModel):
     bio: str = ""
     avatar_hue: int = 160
     is_staff: bool = False
+    email_verified: bool = False
     reputation: int = 0
     created_at: datetime
     post_count: int = 0
@@ -138,3 +154,64 @@ class VoteIn(BaseModel):
 class VoteOut(BaseModel):
     score: int
     my_vote: int
+
+
+# ── 数据变更提案 ────────────────────────────────────────────────────────────
+class SubmissionIn(BaseModel):
+    kind: str = "part_patch"
+    target_id: str | None = None
+    payload: dict = Field(default_factory=dict)
+    evidence: dict = Field(default_factory=dict)
+
+    @field_validator("kind")
+    @classmethod
+    def _kind_ok(cls, v: str) -> str:
+        if v != "part_patch":
+            raise ValueError("当前只接受 part_patch")
+        return v
+
+
+class ReviewIn(BaseModel):
+    decision: str
+    reason_code: str = Field(default="", max_length=80)
+    note: str = Field(default="", max_length=2000)
+
+    @field_validator("decision")
+    @classmethod
+    def _decision_ok(cls, v: str) -> str:
+        if v not in ("accepted", "rejected"):
+            raise ValueError("decision 必须是 accepted / rejected")
+        return v
+
+
+class ReviewOut(BaseModel):
+    id: int
+    decision: str
+    reason_code: str = ""
+    note: str = ""
+    reviewer_id: int | None = None
+    created_at: datetime
+
+
+class SubmissionOut(BaseModel):
+    id: int
+    kind: str
+    target_id: str | None = None
+    payload: dict = {}
+    evidence: dict = {}
+    submitter_id: int | None = None
+    status: str
+    revision: int
+    created_at: datetime
+    reviews: list[ReviewOut] = []
+
+
+class OutboxOut(BaseModel):
+    id: int
+    submission_id: int | None = None
+    action: str
+    status: str
+    attempts: int = 0
+    last_error: str | None = None
+    result: dict = {}
+    created_at: datetime

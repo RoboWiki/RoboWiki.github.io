@@ -1,8 +1,11 @@
 ---
 title: "AlSi10Mg 铝合金（SLM）"
+description: "材料 AlSi10Mg 铝合金（SLM）：SLM 最常用的铝合金之一"
 ---
 
 # AlSi10Mg 铝合金（SLM）
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>金属材料</span>

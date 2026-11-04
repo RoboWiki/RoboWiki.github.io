@@ -1,0 +1,87 @@
+<view class="wrap">
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+  <view wx:elif="{{error}}" class="card">
+    <view class="error">{{error}}</view>
+    <view class="actions">
+      <button class="btn" bindtap="retry">重试</button>
+      <button class="btn primary" bindtap="goHome">回目录</button>
+    </view>
+  </view>
+  <block wx:else>
+    <view wx:if="{{timelinePreview}}" class="note timeline-note">预览模式：点右下角「前往小程序」可进入完整目录</view>
+    <view class="card">
+      <view class="title">{{item.name}}</view>
+      <view class="subline">{{item.group_label}} · {{item.family_label}}</view>
+      <view class="tags" style="margin-top:14rpx">
+        <text class="tag">{{item.category === 'process' ? '加工工艺' : '材料'}}</text>
+        <text class="tag {{tierColor}}">{{tierLabel}}</text>
+        <text class="tag" wx:if="{{item.name_en}}">{{item.name_en}}</text>
+      </view>
+      <view class="note">{{tierNote}}</view>
+      <view class="actions">
+        <button class="btn primary" open-type="share">分享给好友</button>
+        <button class="btn" bindtap="copyLink">复制网页链接</button>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="title">参数</view>
+      <view class="row" wx:for="{{rows}}" wx:key="key">
+        <text class="row-label">{{item.label}}</text>
+        <text class="row-value">{{item.value}}</text>
+      </view>
+      <view wx:if="{{!rows.length}}" class="muted">暂无结构化参数</view>
+    </view>
+
+    <view class="card" wx:if="{{item.applications && item.applications.length}}">
+      <view class="title">适用场景</view>
+      <view class="muted" wx:for="{{item.applications}}" wx:key="*this" style="margin-top:6rpx">· {{item}}</view>
+    </view>
+
+    <view class="card" wx:if="{{formsText}}">
+      <view class="title">供货形态</view>
+      <view class="muted" style="margin-top:8rpx">{{formsText}}</view>
+    </view>
+
+    <view class="card" wx:if="{{prosText || consText}}">
+      <view class="title">优缺点</view>
+      <view class="muted" wx:if="{{prosText}}" style="margin-top:8rpx">优点：{{prosText}}</view>
+      <view class="muted" wx:if="{{consText}}" style="margin-top:6rpx">限制：{{consText}}</view>
+    </view>
+
+    <view class="card" wx:if="{{suppliers.length}}">
+      <view class="title">渠道与价格</view>
+      <view class="source-line" wx:for="{{suppliers}}" wx:key="*this">
+        <text style="font-weight:600">{{item.name}}</text>
+        <text wx:if="{{item.role}}" class="muted"> · {{item.role}}</text>
+        <view wx:if="{{item.note}}" class="muted">{{item.note}}</view>
+      </view>
+      <view class="muted" style="margin-top:8rpx">价格随牌号、形态、批量与表面处理浮动，采购前先询价。</view>
+    </view>
+
+    <view class="card" wx:if="{{item.notes}}">
+      <view class="title">备注</view>
+      <view class="muted" style="margin-top:8rpx">{{item.notes}}</view>
+    </view>
+
+    <view class="card" wx:if="{{related.length}}">
+      <view class="title">相关条目</view>
+      <view class="rel" wx:for="{{related}}" wx:key="id" data-id="{{item.id}}" bindtap="openRelated">
+        <text>{{item.name}}</text>
+        <text class="muted">{{item.category === 'process' ? '工艺' : '材料'}} ›</text>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="title">来源</view>
+      <view wx:if="{{!sources.length}}" class="muted">未登记来源</view>
+      <view class="source-line" wx:for="{{sources}}" wx:key="url" data-url="{{item.url}}" bindtap="copySource">
+        {{item.label}}<text wx:if="{{item.checked}}"> · {{item.checked}}</text>
+        <view class="muted">{{item.url}}</view>
+      </view>
+      <view class="muted" style="margin-top:8rpx">B 级为公开资料汇编；商用或设计前请回原始来源核对。</view>
+    </view>
+
+    <view class="footer">{{version ? '数据版本 ' + version + ' · ' : ''}}只读目录 · 不构成设计认证</view>
+  </block>
+</view>

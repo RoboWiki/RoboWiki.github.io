@@ -6,6 +6,7 @@
  * URDF、仓库这类链接计数放到底部一行 —— 想进仿真的自然会去找。
  */
 import { computed, onMounted, ref, watch } from 'vue'
+import robotsData from '../../public/robots.json'
 import ExplorerShell from './ExplorerShell.vue'
 
 interface Robot {
@@ -30,15 +31,12 @@ const SUB_ORDER = [
 /** 这四个兵种先留入口；还没有整机数据时也显示，点了给空列表与投稿提示。 */
 const ALWAYS_SUBS = new Set(['infantry', 'sentry', 'hero', 'engineer'])
 
-const all = ref<Robot[]>([])
+const all = ref<Robot[]>(robotsData.robots || [])
 const q = ref('')
 const sortKey = ref('vendor')
 const active = ref<Record<string, string>>({})
 
-onMounted(async () => {
-  const r = await fetch(`${import.meta.env.BASE_URL}robots.json`)
-  if (!r.ok) return
-  all.value = (await r.json()).robots || []
+onMounted(() => {
   // 预选必须放在挂载后：构建时 SSR 的 DOM 里没有带种类的 chip，
   // 水合阶段设置的选中态补不上 class，直接刷新就会看起来没选中。
   const wanted = new URLSearchParams(window.location.search).get('subtype')?.trim() || ''

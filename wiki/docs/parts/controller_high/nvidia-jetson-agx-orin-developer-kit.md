@@ -73,24 +73,24 @@ description: "NVIDIA Jetson AGX Orin Developer Kit（上位机）：Tegra Orin (
 | 峰值功耗 (W) | 60 |
 | 接口 | — |
 | cpu | 12× Cortex-A78AE @2.2GHz |
-| cores | 12 |
-| cpu_arch | arm64 |
+| 核心数 | 12 |
+| CPU 架构 | arm64 |
 | GPU | 2048-core Ampere + 64 Tensor Cores |
 | CUDA 核 | 2,048 |
-| storage_gb | 64 |
-| os | JetPack 6 (Ubuntu 22.04) |
-| cuda | 1 |
-| ros2 | 1 |
-| eth | 1× 10GbE + 1× GbE |
-| usb | 2× USB-C 3.2 Gen2 + 2× USB-A 3.2 Gen2 + 2× USB-A 3.2 Gen1 + 1× Micro-USB 2.0 |
+| 存储 (GB) | 64 |
+| 系统 | JetPack 6 (Ubuntu 22.04) |
+| CUDA | 1 |
+| ROS 2 | 1 |
+| 以太网 | 1× 10GbE + 1× GbE |
+| USB | 2× USB-C 3.2 Gen2 + 2× USB-A 3.2 Gen2 + 2× USB-A 3.2 Gen1 + 1× Micro-USB 2.0 |
 | CAN 路数 | 1 |
-| csi | 6 |
-| pcie | 1× PCIe x16 插槽（x8 通道）+ 1× M.2 M-key + 1× M.2 E-key |
-| size_mm | 110×110×71.65 (dev kit) |
+| CSI | 6 |
+| PCIe | 1× PCIe x16 插槽（x8 通道）+ 1× M.2 M-key + 1× M.2 E-key |
+| 尺寸 (mm) | 110×110×71.65 (dev kit) |
 | 官方文档 | https://docs.nvidia.com/jetson/agx-orin-devkit/user-guide/latest/index.html |
-| repo_urls | https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_common、https://github.com/dusty-nv/jetson-containers |
+| 开源仓库 | https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_common、https://github.com/dusty-nv/jetson-containers |
 | ram_options | 64 |
-| repo_license | NOASSERTION |
+| 仓库许可 | NOASSERTION |
 
 ## 优惠与获取条件
 
@@ -107,7 +107,7 @@ description: "NVIDIA Jetson AGX Orin Developer Kit（上位机）：Tegra Orin (
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-agx-orin/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://docs.nvidia.com/jetson/agx-orin-devkit/user-guide/latest/index.html" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_common" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NOASSERTION（⚠ 有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍）</td></tr><tr><td><a href="https://github.com/dusty-nv/jetson-containers" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NOASSERTION（⚠ 有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍）</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>NVIDIA 官网 Jetson AGX Orin 规格表 + Jetson AGX Orin Developer Kit User Guide 核对（2026-10-28）</td></tr><tr><td><a href="https://www.google.com/search?q=NVIDIA+Jetson+AGX+Orin+Developer+Kit+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Jetson+AGX+Orin+Developer+Kit&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=NVIDIA+Jetson+AGX+Orin+Developer+Kit+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/controller_high/nvidia.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_high/nvidia.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-agx-orin/" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://docs.nvidia.com/jetson/agx-orin-devkit/user-guide/latest/index.html" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_common" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NOASSERTION（⚠ 有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍）</td></tr><tr><td><a href="https://github.com/dusty-nv/jetson-containers" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NOASSERTION（⚠ 有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍）</td></tr><tr><td class="rs-plain">产品图出处</td><td>ccc 分支（Dichen33 提交）</td></tr><tr><td class="rs-plain">收录说明</td><td>NVIDIA 官网 Jetson AGX Orin 规格表 + Jetson AGX Orin Developer Kit User Guide 核对（2026-10-28）</td></tr><tr><td><a href="https://www.google.com/search?q=NVIDIA+Jetson+AGX+Orin+Developer+Kit+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Jetson+AGX+Orin+Developer+Kit&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=NVIDIA+Jetson+AGX+Orin+Developer+Kit+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/controller_high/nvidia.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_high/nvidia.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -115,5 +115,5 @@ description: "NVIDIA Jetson AGX Orin Developer Kit（上位机）：Tegra Orin (
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

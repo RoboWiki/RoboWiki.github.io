@@ -77,9 +77,9 @@ description: "PJRC Teensy 4.1（下位机）：官方参数；来源 A 级、202
 | Flash (KB) | 7,936 |
 | PWM 路数 | 35 |
 | RAM (KB) | 1,024 |
-| repo_license | NOASSERTION |
-| repo_urls | https://github.com/PaulStoffregen/cores |
-| size_mm | 60.96×17.78 |
+| 仓库许可 | NOASSERTION |
+| 开源仓库 | https://github.com/PaulStoffregen/cores |
+| 尺寸 (mm) | 60.96×17.78 |
 | UART 路数 | 8 |
 | 额定电压 (V) | 5 |
 
@@ -98,7 +98,7 @@ description: "PJRC Teensy 4.1（下位机）：官方参数；来源 A 级、202
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.pjrc.com/store/teensy41.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.pjrc.com/teensy/card11a_rev4_web.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://github.com/PaulStoffregen/cores" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NOASSERTION（⚠ 有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍）</td></tr><tr><td class="rs-plain">产品图出处</td><td>SparkFun 官方产品页 Teensy 4.1 产品图（16771）</td></tr><tr><td class="rs-plain">收录说明</td><td>PJRC Teensy 4.1 官方产品页 + 官方尺寸图 + SparkFun 官方产品页（2026-11-01）</td></tr><tr><td><a href="https://www.google.com/search?q=PJRC+Teensy+4.1+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Teensy+4.1&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=PJRC+Teensy+4.1+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/controller_low/pjrc.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_low/pjrc.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://www.pjrc.com/store/teensy41.html" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://www.pjrc.com/teensy/card11a_rev4_web.pdf" target="_blank" rel="noopener">官方手册 / 数据手册 (PDF)</a></td><td>参数的值以这份为准</td></tr><tr><td><a href="https://github.com/PaulStoffregen/cores" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 NOASSERTION（⚠ 有 LICENSE 但 GitHub 认不出（多半是自定义文本）—— 用前自己读一遍）</td></tr><tr><td class="rs-plain">产品图出处</td><td>SparkFun 官方产品页 Teensy 4.1 产品图（16771）</td></tr><tr><td class="rs-plain">收录说明</td><td>PJRC Teensy 4.1 官方产品页 + 官方尺寸图 + SparkFun 官方产品页（2026-11-01）</td></tr><tr><td><a href="https://www.google.com/search?q=PJRC+Teensy+4.1+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=Teensy+4.1&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=PJRC+Teensy+4.1+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/controller_low/pjrc.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_low/pjrc.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -106,5 +106,5 @@ description: "PJRC Teensy 4.1（下位机）：官方参数；来源 A 级、202
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

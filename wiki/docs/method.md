@@ -322,13 +322,13 @@ html.dark .rl-th { color: #e0b159; }
 
 
 
-# 数据来源
+## 数据来源
 
 判定一条数据够不够格进目录，只看一件事：**它能不能指回一手来源。**
 
 - `A` 级 = 逐项核对过厂商手册 / 官方文档（下表的「厂商官网 / 官方文档」）
 - `B` 级 = 采自公开商品页或第三方整理，未逐项核对
-- `C` 级 = 转述，仅作线索
+- `C` 级 = 转述，仅作线索；默认不参与对比与推荐（当前有 3 条电池线索保留在核心仓，未进站点目录）
 
 ## 厂商官网 / 官方文档
 
@@ -384,7 +384,7 @@ html.dark .rl-th { color: #e0b159; }
 
 ## 每个数字的追溯链
 
-零件的每次字段改动都写进 `part_edits` 表（旧值、新值、依据、来源链接、谁改的、何时）。
+零件的每次字段改动先成为提案（旧值、新值、依据、来源链接、谁提交的），审核通过后由 worker 开 PR；合并并发布 `data-v*` release 后才更新目录。
 于是任何一个数都能回答：**它什么时候、被谁、凭什么被改成了现在这样。**
 
 
@@ -394,7 +394,7 @@ html.dark .rl-th { color: #e0b159; }
 每张图的下方「资料与链接」里都写着 `产品图出处`，可以逐张核对。
 
 - 图**只用来说明「这个件长什么样」**，不用于售卖、不用于背书
-- 版权归原厂商或原拍摄方；本站不做商业使用，也不授权他人商业使用
+- 版权归原厂商或原拍摄方；本站只作展示与索引，不转授图片的商业使用权；商用请向权利方取得授权
 - 找不到合适图片时宁可留空显示「暂无产品图」，也不拿宣传图、整机图或同系列图凑数
 - 例外：同型号不同包装的实拍（例如某个订单号无图时取同型号另一包装的图），
   会在 `产品图出处` 里明确写出，不让读者以为是同一个料号
@@ -460,7 +460,7 @@ html.dark .rl-th { color: #e0b159; }
 |---|---|
 | 口径版本 | `1.1.0`（`schema/semantics.json` 的 `version`） |
 | 永久 ID | `622` 条已登记，`2` 条 tombstone（`data/_id_registry.json`） |
-| 图片出处 | 有图 `347` 条（部件 `326` + 整机 `21`），全部写了 `image_source` |
+| 图片出处 | 有图 `346` 条（部件 `325` + 整机 `21`），全部写了 `image_source` |
 | 仓库许可 | 引用仓库 `60` 条（部件 `41` + 整机 `19`），许可证已核 `56` 条 |
 
 **口径版本。** 静态站直接读 `schema/semantics.json`；可选后端的 `/api/semantics` 与 MCP 也复用同一份文件。
@@ -472,13 +472,13 @@ id 一经登记**不改名、不复用**：改名要把旧 id 留作 alias，删
 留 tombstone（`removed`）。原因不抽象 —— 评分唯一键、外部引用、型号页 URL
 全挂在 id 上，改一个名字会同时断三处。
 
-**数据快照。** `data/` + `schema/` 打成 tar.gz 发到
-[GitHub Releases](https://github.com/RoboWiki/RoboWiki.github.io/releases)，
-tag 形如 `data-YYYY.MM.DD`。每次发布带三个附件：
+**数据快照。** `data/` + `schema/` + `assets/` 打成 tar.gz 发到
+[核心仓 Releases](https://github.com/RoboWiki/RoboWiki/releases)，
+tag 形如 `data-vYYYY.MM.N`。每次发布带三个附件：
 
-- `robowiki-data-<tag>.tar.gz` —— `data/` 与 `schema/` 的只读快照
-- `MANIFEST.json` —— 条数、`ids` 数量、`semantics_version`、生成时间
-- `SHA256SUMS.txt` —— 上面那个 tar.gz 的 SHA-256
+- `robowiki-data-<tag>.tar.gz` —— `data/`、`schema/`、`assets/` 的只读快照
+- `MANIFEST.json` —— parts / robots / software / materials / processes / ids / assets 与 `semantics_version`
+- `SHA256SUMS.txt` —— tar.gz 与 MANIFEST 的 SHA-256
 
 打 `data-v*` tag，或在 Actions 里手动触发 `Data release` 生成。发布前先跑
 `python -m pipeline validate`，不通过就不发 —— 快照发出去就是对外承诺了一个版本。

@@ -81,8 +81,8 @@ description: "mjbots moteus r4.11（下位机）：质量 0.014 kg；来源 A �
 | 尺寸 | 46×53 mm |
 | 工作温度 | -40–85 ℃ |
 | 官方文档 | https://mjbots.github.io/moteus/ |
-| repo_urls | https://github.com/mjbots/moteus |
-| repo_license | Apache-2.0 |
+| 开源仓库 | https://github.com/mjbots/moteus |
+| 仓库许可 | Apache-2.0 |
 
 ## 优惠与获取条件
 
@@ -99,7 +99,7 @@ description: "mjbots moteus r4.11（下位机）：质量 0.014 kg；来源 A �
 
 ## 资料与链接
 
-<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://mjbots.com/products/moteus-r4-11" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://mjbots.github.io/moteus/" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://github.com/mjbots/moteus" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 Apache-2.0</td></tr><tr><td class="rs-plain">产品图出处</td><td>mjbots 官方商店 moteus r4.11 产品页产品图（Shopify 原图）</td></tr><tr><td class="rs-plain">收录说明</td><td>mjbots moteus 官方文档 + GitHub README 规格表 + 官方商店产品页（2026-11-01）</td></tr><tr><td><a href="https://www.google.com/search?q=mjbots+moteus+r4.11+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=moteus+r4.11&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=mjbots+moteus+r4.11+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki.github.io/edit/main/data/catalog/controller_low/mjbots.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_low/mjbots.json</td></tr></tbody></table>
+<table class="rs-table"><thead><tr><th>资料</th><th>说明</th></tr></thead><tbody><tr><td><a href="https://mjbots.com/products/moteus-r4-11" target="_blank" rel="noopener">官方页面 / 数据出处</a></td><td>本页数字的出处</td></tr><tr><td><a href="https://mjbots.github.io/moteus/" target="_blank" rel="noopener">官方文档页</a></td><td>厂商维护的文档入口</td></tr><tr><td><a href="https://github.com/mjbots/moteus" target="_blank" rel="noopener">官方仓库 / SDK</a></td><td>驱动、例程与协议实现 · 许可 Apache-2.0</td></tr><tr><td class="rs-plain">产品图出处</td><td>mjbots 官方商店 moteus r4.11 产品页产品图（Shopify 原图）</td></tr><tr><td class="rs-plain">收录说明</td><td>mjbots moteus 官方文档 + GitHub README 规格表 + 官方商店产品页（2026-11-01）</td></tr><tr><td><a href="https://www.google.com/search?q=mjbots+moteus+r4.11+datasheet" target="_blank" rel="noopener">datasheet 检索</a></td><td>厂商常把 PDF 放在产品页附件里</td></tr><tr><td><a href="https://github.com/search?q=moteus+r4.11&type=repositories" target="_blank" rel="noopener">SDK / 驱动检索</a></td><td>找现成的 CAN 驱动与示例</td></tr><tr><td><a href="https://www.google.com/search?q=mjbots+moteus+r4.11+%E4%BB%B7%E6%A0%BC" target="_blank" rel="noopener">价格与货期检索</a></td><td>本站不卖货，报价请向厂商确认</td></tr><tr><td><a href="/semantics" target="_blank" rel="noopener">本站口径说明</a></td><td>这些字段什么意思、缺了代表什么</td></tr><tr><td><a href="https://github.com/RoboWiki/RoboWiki/edit/main/data/catalog/controller_low/mjbots.json" target="_blank" rel="noopener">在 GitHub 上编辑这条数据</a></td><td>文件 data/catalog/controller_low/mjbots.json</td></tr></tbody></table>
 
 ## 备注
 
@@ -107,5 +107,5 @@ description: "mjbots moteus r4.11（下位机）：质量 0.014 kg；来源 A �
 
 
 
-> 每个数字都能在后台查到「谁在什么时候、凭什么改成了现在这样」（`part_edits` 表）。
+> 字段修正走「提案 → 审核 → PR → data release」；每次改动的旧值、新值与依据都留在提案与 git 历史里。
 > 缺的字段一律写 `—`，不猜、不用同类填补、不用额定代替峰值。

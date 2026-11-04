@@ -468,3 +468,14 @@ html.dark .ex-plate img {
 /* 有开源生态的那一行用品牌色，突出「能借的东西有多少」 */
 .ex-kv .hi dd { color: var(--vp-c-brand-1); font-weight: 600; }
 .ex-kv .hi dt { color: var(--vp-c-brand-1); }
+
+/* 网页端优化：搜索是主操作，别在工具条里挤成固定小框 */
+.pd-input { flex: 1 1 260px; min-width: 220px; }
+
+/* 网页端优化：详情链接要够到 WCAG 2.5.8 的 24px 最小目标 */
+.ex-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 4px;
+}

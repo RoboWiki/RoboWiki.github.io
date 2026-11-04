@@ -1,8 +1,11 @@
 ---
 title: "光敏树脂"
+description: "材料 光敏树脂：SLA/DLP 用光敏树脂"
 ---
 
 # 光敏树脂
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>3D 打印材料</span>

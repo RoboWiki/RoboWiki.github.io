@@ -1,8 +1,11 @@
 ---
 title: "PPS GF40 聚苯硫醚"
+description: "材料 PPS GF40 聚苯硫醚：40% 玻纤增强的聚苯硫醚"
 ---
 
 # PPS GF40 聚苯硫醚
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>工程塑料</span>

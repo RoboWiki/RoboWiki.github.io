@@ -19,11 +19,11 @@ title: 大疆 DJI
 
 | 型号 | 子类 | 通道 | 频段 GHz | 遥控距离 m | 输出协议 | 价格 ¥ | 来源 |
 |---|---|---|---|---|---|---|---|
-| [**RC-N1**](/parts/remote_controller/dji-rc-n1) | 手柄式 | — | 5.8 | — | DJI O2 / O3 / O3+（随适配机型切换） | 599 | `B✓` |
-| [**RC-N3**](/parts/remote_controller/dji-rc-n3) | 手柄式 | — | — | 10,000 | DJI O4（随适配机型切换） | 699 | `B✓` |
-| [**RC 2**](/parts/remote_controller/dji-rc-2) | 手柄式 | — | 5.8 | 10,000 | DJI O4 图传 | — | `B✓` |
-| [**RC Pro 2**](/parts/remote_controller/dji-rc-pro-2) | 手柄式 | — | 5.8 | 15,000 | DJI O4 / O4+ 图传 | 5,999 | `B✓` |
-| [**RC Plus**](/parts/remote_controller/dji-rc-plus) | 手柄式 | — | 5.8 | 8,000 | DJI O3 Pro 图传 | 9,000 | `B✓` |
+| [**RC-N1**](/parts/remote_controller/dji-rc-n1) | 手柄式 | — | 5.8 | — | DJI O2 / O3 / O3+（随适配机型切换） | 599 | `B` |
+| [**RC-N3**](/parts/remote_controller/dji-rc-n3) | 手柄式 | — | — | 10,000 | DJI O4（随适配机型切换） | 699 | `B` |
+| [**RC 2**](/parts/remote_controller/dji-rc-2) | 手柄式 | — | 5.8 | 10,000 | DJI O4 图传 | — | `B` |
+| [**RC Pro 2**](/parts/remote_controller/dji-rc-pro-2) | 手柄式 | — | 5.8 | 15,000 | DJI O4 / O4+ 图传 | 5,999 | `B` |
+| [**RC Plus**](/parts/remote_controller/dji-rc-plus) | 手柄式 | — | 5.8 | 8,000 | DJI O3 Pro 图传 | 9,000 | `B` |
 
 > 来源等级见行末徽章：`A` = 逐项核对过官方手册，`B` = 公开网页，`C` = 转述线索。采购前请回原厂页面确认。
 

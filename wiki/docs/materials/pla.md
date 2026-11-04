@@ -1,8 +1,11 @@
 ---
 title: "PLA 聚乳酸"
+description: "材料 PLA 聚乳酸：最常用的 FDM 线材"
 ---
 
 # PLA 聚乳酸
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>3D 打印材料</span>

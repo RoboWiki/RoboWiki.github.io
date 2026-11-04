@@ -1,8 +1,11 @@
 ---
 title: "42CrMo 合金钢"
+description: "材料 42CrMo 合金钢：中碳合金钢，调质后强度与韧性兼顾"
 ---
 
 # 42CrMo 合金钢
+
+<p><a href="/materials">← 返回材质库</a></p>
 
 <div class="mt-meta">
   <span>金属材料</span>
