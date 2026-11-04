@@ -5,18 +5,13 @@ title: 开源硬件
 
 # 开源硬件
 
-分电 / 稳压 / 储能 / 控制扩展，共 **10** 件、**8** 家厂商。
+分电 / 稳压 / 储能 / 控制扩展，共 **10** 件、**3** 个类型。
 
-## 厂商
+## 类型
 
-- [RobotIC 机器人实验室](/parts/open_hw/robotic) —— 3 型
-- [fengl](/parts/open_hw/fengl) —— 1 型
-- [huashuo0804](/parts/open_hw/huashuo0804) —— 1 型
-- [infinite_future](/parts/open_hw/infinite-future) —— 1 型
-- [linxiwei](/parts/open_hw/linxiwei) —— 1 型
-- [oneasone](/parts/open_hw/oneasone) —— 1 型
-- [群星战队](/parts/open_hw/qunxing) —— 1 型
-- [鸟哥](/parts/open_hw/birdd) —— 1 型
+- [电源 / 分电模块](/parts/open_hw/power) —— 7 型
+- [控制 / 扩展板](/parts/open_hw/control) —— 2 型
+- [超级电容](/parts/open_hw/supercap) —— 1 型
 
 ## 全部型号
 

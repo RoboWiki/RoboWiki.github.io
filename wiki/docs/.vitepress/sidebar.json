@@ -444,12 +444,12 @@
        "link": "/parts/module/"
       },
       {
-       "text": "灵足 RobStride",
-       "link": "/parts/module/lingzu-robstride"
+       "text": "CAN 模块",
+       "link": "/parts/module/can"
       },
       {
-       "text": "达妙 DAMIAO",
-       "link": "/parts/module/damiao"
+       "text": "电源管理模块",
+       "link": "/parts/module/power"
       }
      ]
     },
@@ -552,36 +552,16 @@
        "link": "/parts/open_hw/"
       },
       {
-       "text": "RobotIC 机器人实验室",
-       "link": "/parts/open_hw/robotic"
+       "text": "电源 / 分电模块",
+       "link": "/parts/open_hw/power"
       },
       {
-       "text": "fengl",
-       "link": "/parts/open_hw/fengl"
+       "text": "控制 / 扩展板",
+       "link": "/parts/open_hw/control"
       },
       {
-       "text": "huashuo0804",
-       "link": "/parts/open_hw/huashuo0804"
-      },
-      {
-       "text": "infinite_future",
-       "link": "/parts/open_hw/infinite-future"
-      },
-      {
-       "text": "linxiwei",
-       "link": "/parts/open_hw/linxiwei"
-      },
-      {
-       "text": "oneasone",
-       "link": "/parts/open_hw/oneasone"
-      },
-      {
-       "text": "群星战队",
-       "link": "/parts/open_hw/qunxing"
-      },
-      {
-       "text": "鸟哥",
-       "link": "/parts/open_hw/birdd"
+       "text": "超级电容",
+       "link": "/parts/open_hw/supercap"
       }
      ]
     }

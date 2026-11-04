@@ -88,7 +88,7 @@ const hasRealCuration = computed(() =>
   featuredIds.value.size > 0 && featuredIds.value.size < all.value.length)
 const cat = ref('actuator')
 const vendor = ref('')
-const sensorType = ref('')
+const typeFilter = ref('')
 const sort = ref<string>('tau_peak_Nm')
 const order = ref<'desc' | 'asc'>('desc')
 /** 品类是否被「显式选中」过（点卡片或 URL 带 category）。
@@ -96,6 +96,12 @@ const order = ref<'desc' | 'asc'>('desc')
 const catPinned = ref(false)
 const picked = ref<Part[]>([])
 const detail = ref<Part | null>(null)
+
+/** 这些品类按「类型 / 功能」筛选，不按厂商：传感器按测量类型，
+ *  模块与开源硬件按功能（CAN / 电源管理 / 分电 / 超级电容 / 扩展板）
+ *  —— 同类跨厂商横向比才有意义。 */
+const TYPE_FILTER_CATS = new Set(['sensor', 'module', 'open_hw'])
+const typeFiltered = computed(() => TYPE_FILTER_CATS.has(cat.value))
 
 /* ── 「全部参数」弹窗的键盘契约 ────────────────────────────────────────
    之前只有 role="dialog" aria-modal="true" 这层声明，行为一条都没有：
@@ -191,8 +197,8 @@ onMounted(() => {
     catPinned.value = true
   }
   q.value = params.get('q') || ''
-  vendor.value = params.get('vendor') || ''
-  sensorType.value = params.get('subtype') || ''
+  vendor.value = typeFiltered.value ? '' : (params.get('vendor') || '')
+  typeFilter.value = params.get('subtype') || ''
   sort.value = params.get('sort') || 'tau_peak_Nm'
   order.value = (params.get('order') as 'desc' | 'asc') || 'desc'
 
@@ -215,7 +221,7 @@ function setCat(v: string) {
   cat.value = v
   catPinned.value = true
   vendor.value = ''
-  sensorType.value = ''
+  typeFilter.value = ''
   q.value = ''
   sort.value = defaultSortFor(v)
   syncCategoryUrl()
@@ -239,7 +245,7 @@ function syncFiltersUrl() {
   set('category', cat.value, !catPinned.value && cat.value === defaultCat)
   set('q', q.value.trim())
   set('vendor', vendor.value)
-  set('subtype', sensorType.value)
+  set('subtype', typeFilter.value)
   set('sort', sort.value, sort.value === defaultSortFor(cat.value))
   set('order', order.value, order.value === 'desc')
   history.replaceState(history.state, '', url)
@@ -248,14 +254,14 @@ function syncFiltersUrl() {
 const syncCategoryUrl = syncFiltersUrl
 
 // 任一变就同步：比在每个 handler 里各写一遍更难漏。
-watch([cat, q, vendor, sensorType, sort, order], syncFiltersUrl)
+watch([cat, q, vendor, typeFilter, sort, order], syncFiltersUrl)
 
 const catCount = (v: string) => all.value.filter(p => p.category === v).length
 
 /** 空列表提示分两种：真没收录，还是收了但筛没了。混成一句会让人以为数据丢了。 */
 const emptyText = computed(() => {
-  const typeEmpty = cat.value === 'sensor' && !!sensorType.value
-    && !all.value.some(p => p.category === 'sensor' && p.subtype === sensorType.value)
+  const typeEmpty = typeFiltered.value && !!typeFilter.value
+    && !all.value.some(p => p.category === cat.value && p.subtype === typeFilter.value)
   return typeEmpty || !catCount(cat.value)
     ? '这一类还没有收录 —— 没有可信来源，宁缺不编'
     : '没有符合条件的部件'
@@ -288,14 +294,14 @@ const sortOpts = computed(() => {
 const vendors = computed(() =>
   [...new Set(all.value.filter(p => p.category === cat.value).map(p => p.vendor))].sort())
 
-/** 传感器按**类型**筛选，不按厂商：同类传感器跨厂商横向比才有意义。
+/** 传感器按**类型**、模块按**功能**筛选，不按厂商：同类跨厂商横向比才有意义。
  *  0 计数的类型照样列出（虚线），让「以后该收什么」显式可见，而不是假装完整。
  *  做法来自 ccc 分支（Dichen33）。 */
-const sensorTypes = computed(() => {
-  if (cat.value !== 'sensor') return []
+const typeOptions = computed(() => {
+  if (!typeFiltered.value) return []
   const items = Object.entries(meta.value?.subtypes || {}).map(([v, label]) => ({
     v, label: String(label),
-    count: all.value.filter(p => p.category === 'sensor' && p.subtype === v).length,
+    count: all.value.filter(p => p.category === cat.value && p.subtype === v).length,
   }))
   const filled = items.filter(x => x.count).sort((a, b) => b.count - a.count)
   return [...filled, ...items.filter(x => !x.count)]
@@ -337,7 +343,7 @@ const rows = computed(() => {
     p => (p.category === cat.value || (!!q.value && !catPinned.value))
       && (!gate || featuredIds.value.has(p.id))
       && (!vendor.value || p.vendor === vendor.value)
-      && (!sensorType.value || p.subtype === sensorType.value)
+      && (!typeFilter.value || p.subtype === typeFilter.value)
       && (!q.value || matchesQuery(p, q.value)),
   )
   out = [...out].sort((a, b) => {
@@ -455,12 +461,12 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
           {{ order === 'desc' ? '↓ 降序' : '↑ 升序' }}
         </button>
         <span class="pd-sep" />
-        <span class="pd-lab">{{ cat === 'sensor' ? L.type : L.vendor }}</span>
-        <template v-if="cat === 'sensor'">
-          <button v-for="t in sensorTypes" :key="t.v"
-                  :class="['pd-chip', 'sm', sensorType === t.v ? 'on' : '', t.count ? '' : 'empty']"
+        <span class="pd-lab">{{ typeFiltered ? L.type : L.vendor }}</span>
+        <template v-if="typeFiltered">
+          <button v-for="t in typeOptions" :key="t.v"
+                  :class="['pd-chip', 'sm', typeFilter === t.v ? 'on' : '', t.count ? '' : 'empty']"
                   :title="t.count ? `${t.count} 件` : '还没有收录（没有可信来源，不编数据）'"
-                  @click="sensorType = sensorType === t.v ? '' : t.v">
+                  @click="typeFilter = typeFilter === t.v ? '' : t.v">
             {{ t.label }}<span class="pd-n">{{ t.count || '—' }}</span>
           </button>
         </template>

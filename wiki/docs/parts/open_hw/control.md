@@ -1,14 +1,15 @@
 ---
-title: infinite_future
+title: 控制 / 扩展板
 ---
 
 
-# infinite_future
+# 控制 / 扩展板
 
-开源硬件 · 共 **1** 型。
+开源硬件 · 共 **2** 型。
 
 | 型号 | 子类 | 输入 | 输出 | 电流 | 接口 | 价格 ¥ | 来源 |
 |---|---|---|---|---|---|---|---|
+| [**ROBOCON 常备 STM32 主控扩展板**](/parts/open_hw/robotic-robocon-stm32) | 控制 / 扩展板 | 12 V | 5 V / 3.3 V | — | PWM / UART / CAN / IIC / SPI / ADC / ESP01S | — | `A✓` |
 | [**RoboMaster C 型控制板（仿制版）**](/parts/open_hw/infinite-future-robomaster-c) | 控制 / 扩展板 | — | — | 5 A（舵机电源） | 6× UART；2× CAN（8 接口）；I2C；D-Bus；USB | 50 | `B` |
 
 > 来源等级见行末徽章：`A` = 逐项核对过官方手册，`B` = 公开网页，`C` = 转述线索。采购前请回原厂页面确认。

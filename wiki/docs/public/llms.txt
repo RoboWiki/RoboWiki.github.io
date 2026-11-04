@@ -1,12 +1,12 @@
 # RoboWiki
 
-> 机器人开发的开放资料底稿：336 个部件的可核对参数、21 台整机、软件库与采购渠道。每个数字都带来源与口径，缺的字段写「—」，不猜、不用同类填补。站点不卖零件、不收佣金。
+> 机器人开发的开放资料底稿：338 个部件的可核对参数、21 台整机、软件库与采购渠道。每个数字都带来源与口径，缺的字段写「—」，不猜、不用同类填补。站点不卖零件、不收佣金。
 
 站点：https://robowiki.org.cn/　中文为主，英文是子集（/en/）。
 
 ## 机器可读数据（首选入口）
 
-- [catalog.json](https://robowiki.org.cn/catalog.json)：全部 336 个部件的结构化数据（id、slug、品类、厂商、型号、关键参数、来源等级、价格、优惠、评分），字段名即参数名。
+- [catalog.json](https://robowiki.org.cn/catalog.json)：全部 338 个部件的结构化数据（id、slug、品类、厂商、型号、关键参数、来源等级、价格、优惠、评分），字段名即参数名。
 - [robots.json](https://robowiki.org.cn/robots.json)：21 台整机（自由度、质量、负载、续驶、URDF / 仓库链接、开源生态）。
 - [materials.json](https://robowiki.org.cn/materials.json)：27 种结构材料 + 9 种加工工艺（密度、弹性模量、抗拉强度、形态规格与渠道引用）。
 - [software.json](https://robowiki.org.cn/software.json)：软件库（仿真 / 训练 / 部署 / 算法，含仓库与许可）。
@@ -16,7 +16,7 @@
 
 ## 主要页面
 
-- [部件库](https://robowiki.org.cn/catalog.html)：按列排序 / 筛选的交互式选型台（336 件；纯前端渲染，抓 HTML 请改读 catalog.json 或下面的型号页）。
+- [部件库](https://robowiki.org.cn/catalog.html)：按列排序 / 筛选的交互式选型台（338 件；纯前端渲染，抓 HTML 请改读 catalog.json 或下面的型号页）。
 - [关节电机总览](https://robowiki.org.cn/parts/actuator/index.html)：按峰值扭矩降序的跨厂商速览。
 - [整机库](https://robowiki.org.cn/robots.html)：选方案（几自由度、带不带算力、有没有 URDF）。
 - [材质库](https://robowiki.org.cn/materials.html)：材料物理属性、形态规格与加工工艺；密度 / 模量 / 强度带 SI 换算。
@@ -355,10 +355,12 @@ NTC / 温湿度 / 温度 / 压力 / 光照 / ToF / 力矩。
 - [伟利达 WLD 5264 3P 端子线](https://robowiki.org.cn/parts/connector/wld-5264-3p.html)：接口 5264 3P、来源 B 级
 - [电蜂优选 Elecbee GX12-2P 2芯航空插头](https://robowiki.org.cn/parts/connector/elecbee-gx12-2p-2.html)：接口 GX12-2P、来源 B 级
 
-### 其余模块（3 件）
+### 其余模块（5 件）
 
-CAN 通信 / 力触觉 / 编码器。
+CAN 通信 / 电源管理 / 力触觉 / 编码器。
 
+- [大疆 DJI RoboMaster PM01](https://robowiki.org.cn/parts/module/dji-robomaster-pm01.html)：额定电压 24 V、接口 输入 XT60；输出 4× XT30 + 5V/12V/24V 裁判系统供电、来源 A 级、¥620
+- [大疆 DJI RoboMaster PM02](https://robowiki.org.cn/parts/module/dji-robomaster-pm02.html)：额定电压 24 V、接口 输入 XT60；输出 4× XT30 + 5V/12V/24V 裁判系统供电、来源 A 级、¥620
 - [灵足 RobStride USB-CAN HUB](https://robowiki.org.cn/parts/module/robstride-usb-can-hub.html)：额定电压 5 V、接口 USB 2.0 Type-C（5 V）/ MX1.25-4P、来源 A 级
 - [达妙 DAMIAO DM-USB2CANFD](https://robowiki.org.cn/parts/module/damiao-dm-usb2canfd.html)：额定电压 5 V、接口 USB Type-C、来源 A 级
 - [达妙 DAMIAO DM-USB2CANFD Dual](https://robowiki.org.cn/parts/module/damiao-dm-usb2canfd-dual.html)：额定电压 5 V、接口 USB 2.0 High-Speed（Type-C）、来源 A 级
@@ -542,5 +544,5 @@ CAN 通信 / 力触觉 / 编码器。
 ## 引用与许可
 
 - 内容许可 GPL-3.0；数据可转载，但请保留来源链接与核对日期（型号页底部有）。
-- 数据快照带版本：2026-11-04T11:56:27.131102+00:00，源提交 82f492ed74361040cbd5266b16ab315584708a14。
+- 数据快照带版本：2026-11-04T12:41:58.397596+00:00，源提交 824f1c65befc6b05be738a8aaa20afb3d6c24de4。
 - 参数口径（峰值 / 额定、转子 / 输出惯量）不统一时不能横向比，先读 /semantics。

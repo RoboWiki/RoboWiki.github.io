@@ -80,15 +80,17 @@ def vendor_slugs(items: list[dict], *, legacy: bool = False) -> dict[str, str]:
     return out
 
 
-def sensor_type_groups(items: list[dict]) -> list[tuple[str, str, list[dict]]]:
-    """传感器按类型分组，顺序与部件库的类型筛选一致。
+def type_groups(items: list[dict], category: str) -> list[tuple[str, str, list[dict]]]:
+    """按子类型分组，顺序与部件库的类型筛选一致。
 
+    传感器按测量类型分，模块按功能分（CAN / 电源管理）—— 这两类里同类
+    跨厂商横向比才有意义，按厂商分会把可比项拆散。
     有数据的类型按数量降序（同数保持 taxonomy 顺序），0 型的排在最后 ——
     部件库把空类型也列出来，让「以后该收什么」显式可见，这里照做。
     """
     labels = dict(next(
         (c.get("subtypes") or {} for c in (load_taxonomy().get("categories") or [])
-         if c.get("id") == "sensor"), {}))
+         if c.get("id") == category), {}))
     for r in items:
         labels.setdefault(r.get("subtype") or "other",
                           r.get("subtype_label") or r.get("subtype") or "其他")
@@ -376,16 +378,39 @@ def generic_table(items: list[dict], cat: str, href: dict[str, str] | None = Non
                     f"| {_price_cell(p.get('price_cny'))} "
                     f"| {tier_badge(p['source_tier'], p['verified'])} |")
     elif cat == "module":
-        head = ("| 型号 | 子类 | CAN 路数 | CAN FD | 速率 Mbps | 接口 | 价格 ¥ | 来源 |\n"
-                "|---|---|---|---|---|---|---|---|")
-        def row(p):
-            s = p["specs"]
-            fd = "—" if s.get("canfd") is None else ("是" if s.get("canfd") else "否")
-            return (f"| {mdl(p, (href or {}).get(p['id']))} | {p.get('subtype_label') or p['subtype']} "
-                    f"| {num(s.get('can'))} | {fd} | {num(s.get('can_speed_mbps'))} "
-                    f"| {s.get('iface') or '—'} "
-                    f"| {_price_cell(p.get('price_cny'))} "
-                    f"| {tier_badge(p['source_tier'], p['verified'])} |")
+        def can_table(rows_):
+            head = ("| 型号 | 子类 | CAN 路数 | CAN FD | 速率 Mbps | 接口 | 价格 ¥ | 来源 |\n"
+                    "|---|---|---|---|---|---|---|---|")
+            def row(p):
+                s = p["specs"]
+                fd = "—" if s.get("canfd") is None else ("是" if s.get("canfd") else "否")
+                return (f"| {mdl(p, (href or {}).get(p['id']))} | {p.get('subtype_label') or p['subtype']} "
+                        f"| {num(s.get('can'))} | {fd} | {num(s.get('can_speed_mbps'))} "
+                        f"| {s.get('iface') or '—'} "
+                        f"| {_price_cell(p.get('price_cny'))} "
+                        f"| {tier_badge(p['source_tier'], p['verified'])} |")
+            return "\n".join([head] + [row(p) for p in sorted(rows_, key=lambda r: r["vendor"])])
+
+        def power_table(rows_):
+            head = ("| 型号 | 子类 | 输入 | 输出 | 电流 | 接口 | 价格 ¥ | 来源 |\n"
+                    "|---|---|---|---|---|---|---|---|")
+            def row(p):
+                s = p["specs"]
+                return (f"| {mdl(p, (href or {}).get(p['id']))} | {p.get('subtype_label') or p['subtype']} "
+                        f"| {s.get('voltage_in') or '—'} | {s.get('voltage_out') or '—'} "
+                        f"| {s.get('current_out') or '—'} | {s.get('iface') or '—'} "
+                        f"| {_price_cell(p.get('price_cny'))} "
+                        f"| {tier_badge(p['source_tier'], p['verified'])} |")
+            return "\n".join([head] + [row(p) for p in sorted(rows_, key=lambda r: r["vendor"])])
+
+        can_items = [p for p in items if p.get("subtype") != "power"]
+        power_items = [p for p in items if p.get("subtype") == "power"]
+        blocks = []
+        if can_items:
+            blocks.append(("**CAN 模块**\n\n" if power_items else "") + can_table(can_items))
+        if power_items:
+            blocks.append(("**电源管理模块**\n\n" if can_items else "") + power_table(power_items))
+        return "\n\n".join(blocks)
     elif cat == "open_hw":
         head = ("| 型号 | 子类 | 输入 | 输出 | 电流 | 接口 | 价格 ¥ | 来源 |\n"
                 "|---|---|---|---|---|---|---|---|")
@@ -1165,9 +1190,15 @@ def main() -> None:
 
     _TAX_BY_CAT = {c["id"]: [k["k"] for k in (c.get("keys") or [])]
                    for c in (load_taxonomy().get("categories") or [])}
+    # 同一品类里字段口径不同的子类：详情页核心参数按子类走。
+    _TAX_BY_SUBTYPE = {
+        ("module", "power"): ["voltage_in", "voltage_out", "current_out",
+                              "channels", "dims", "weight_g"],
+    }
 
     def cat_keys(r: dict) -> list[str]:
-        return _TAX_BY_CAT.get(r.get("category") or "", [])
+        sub = _TAX_BY_SUBTYPE.get((r.get("category") or "", r.get("subtype") or ""))
+        return sub or _TAX_BY_CAT.get(r.get("category") or "", [])
 
     def _val(v) -> str:
         """把任意 specs 值渲染成单元格文本。
@@ -1323,8 +1354,11 @@ def main() -> None:
         # 以下都是**检索入口**，不是官方链接 —— 页面上会标明
         rows.append(("datasheet 检索", f"https://www.google.com/search?q={q}+datasheet",
                      "厂商常把 PDF 放在产品页附件里"))
+        sdk_note = ("找现成的电源管理与监测示例"
+                    if (r.get("category") or "") == "module" and r.get("subtype") == "power"
+                    else "找现成的 CAN 驱动与示例")
         rows.append(("SDK / 驱动检索", f"https://github.com/search?q={qz}&type=repositories",
-                     "找现成的 CAN 驱动与示例"))
+                     sdk_note))
         rows.append(("价格与货期检索", f"https://www.google.com/search?q={q}+%E4%BB%B7%E6%A0%BC",
                      "本站不卖货，报价请向厂商确认"))
         rows.append(("本站口径说明", "/semantics", "这些字段什么意思、缺了代表什么"))
@@ -1441,6 +1475,15 @@ def main() -> None:
             if s.get("battery"):
                 out.append(("电池与续航", f"{s['battery']}。"
                             f"长时间调试建议用可换电池或外接供电，别让电量低时丢信号。"))
+        elif cat == "module" and r.get("subtype") == "power":
+            if s.get("voltage_in") and s.get("voltage_out"):
+                out.append(("输入输出先对上", f"输入 {s['voltage_in']}，输出 {s['voltage_out']}；"
+                            f"接反或超压不会自动保护，上电前先用万用表确认。"))
+            if s.get("current_out"):
+                out.append(("按持续电流选线", f"{s['current_out']}。"
+                            f"线径、XT30/XT60 接头和保险丝都按持续值选，峰值只用于瞬态校核。"))
+            out.append(("它不是无缝换电", "单路 24V 输入，没有双电池切换或 ORing；"
+                        "需要不关机换电要另加理想二极管/ORing 板，或选带双输入的换电分电板。"))
         elif cat == "module":
             if s.get("can"):
                 out.append(("路数按总线负载配", f"{num(s['can'])} 路 CAN。"
@@ -1776,9 +1819,10 @@ def main() -> None:
 """, encoding="utf-8")
         else:
             legend = "> 来源等级见行末徽章：`A` = 逐项核对过官方手册，`B` = 公开网页，`C` = 转述线索。采购前请回原厂页面确认。"
-            if c == "sensor":
-                # 传感器跨厂商比才有意义：第二层按类型分，与部件库的类型筛选一致
-                groups = sensor_type_groups(items)
+            if c in ("sensor", "module", "open_hw"):
+                # 同类跨厂商比才有意义：传感器按测量类型，模块与开源硬件按功能分，
+                # 与部件库的类型筛选一致。
+                groups = type_groups(items, c)
                 count_line = f"{desc}，共 **{len(items)}** 件、**{len(groups)}** 个类型。"
                 group_title = "类型"
             else:
@@ -1804,7 +1848,7 @@ def main() -> None:
 {legend}
 """, encoding="utf-8")
 
-            # 每个分组一页：普通品类按厂商，传感器按类型
+            # 每个分组一页：普通品类按厂商，传感器按类型，模块/开源硬件按功能
             for key, label, sub in groups:
                 empty = "" if sub else "\n> 这一类还没有收录 —— 没有可信来源，宁缺不编。\n"
                 gallery = group_gallery(sub, c, HREF) if sub else ""
@@ -2408,14 +2452,15 @@ tag 形如 `data-vYYYY.MM.N`。每次发布带三个附件：
             {"text": "选型台（全部）", "link": "/catalog"},
         ]},
     ]
-    # 每个品类都按「总览 + 厂商」分组（传感器按类型）；关节电机默认展开，
-    # 其余默认收起，进入某一类时 VitePress 会自动展开当前分组，不会把侧边栏撑成一长条。
-    # 含暂无数据的品类仍生成总览链接：点进去是「未收录」说明页，
-    # 这样读者知道这一类存在但还没收，而不是以为漏了。
+    # 每个品类都按「总览 + 分组」列：普通品类按厂商，传感器按类型，
+    # 模块与开源硬件按功能。关节电机默认展开，其余默认收起，进入某一类时
+    # VitePress 会自动展开当前分组，不会把侧边栏撑成一长条。含暂无数据的品类
+    # 仍生成总览链接：点进去是「未收录」说明页，这样读者知道这一类存在但还没收，
+    # 而不是以为漏了。
     for c, name, _ in CATS:
         items = [r for r in rows if r["category"] == c]
-        if c == "sensor":
-            groups = [(key, label) for key, label, _ in sensor_type_groups(items)]
+        if c in ("sensor", "module", "open_hw"):
+            groups = [(key, label) for key, label, _ in type_groups(items, c)]
         else:
             vs = sorted({r["vendor"] for r in items})
             vslug = vendor_slugs(items, legacy=(c == "actuator"))

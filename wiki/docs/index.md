@@ -19,9 +19,9 @@ titleTemplate: false
       <a class="rw-home-btn ghost" href="/learn/">从零开始学</a>
     </div>
     <div class="rw-home-stats">
-      <div><b>336</b><span>在库部件</span></div>
+      <div><b>338</b><span>在库部件</span></div>
       <div><b>15</b><span>在库品类</span></div>
-      <div><b>123</b><span>A 级：逐项对过厂商手册</span></div>
+      <div><b>125</b><span>A 级：逐项对过厂商手册</span></div>
       <div><b>21</b><span>整机（19 台带 URDF / 仓库）</span></div>
       <div><b>27</b><span>结构材料 + 9 种加工工艺</span></div>
       <div><b>207</b><span>渠道库（加工 / 元件店铺）</span></div>
@@ -85,9 +85,9 @@ titleTemplate: false
     <h2>七个入口</h2>
     <div class="rw-home-entries">
       <a class="rw-home-entry" href="/catalog">
-        <b>部件库 · 336 件</b>
+        <b>部件库 · 338 件</b>
         <p>比参数：按任意列排序、可对比、带来源等级与真实评分。</p>
-        <span>A 级 123 件逐项对过手册</span>
+        <span>A 级 125 件逐项对过手册</span>
       </a>
       <a class="rw-home-entry" href="/robots">
         <b>整机库 · 21 台</b>
@@ -192,10 +192,10 @@ titleTemplate: false
       <a class="rw-home-cat" href="/catalog?category=controller_high"><b>上位机</b><span>9</span><em>推理与感知</em></a>
       <a class="rw-home-cat" href="/catalog?category=remote_controller"><b>遥控器</b><span>9</span><em>手柄 / 板控 / 遥操作</em></a>
       <a class="rw-home-cat" href="/catalog?category=camera"><b>深度相机</b><span>9</span><em>视觉感知</em></a>
+      <a class="rw-home-cat" href="/catalog?category=module"><b>其余模块</b><span>5</span><em>CAN 通信 / 电源管理 / 力触觉 / 编码器</em></a>
       <a class="rw-home-cat" href="/catalog?category=servo"><b>舵机</b><span>4</span><em>串行总线 / PWM</em></a>
       <a class="rw-home-cat" href="/catalog?category=battery"><b>电池</b><span>4</span><em>智能电池 / 动力电池</em></a>
       <a class="rw-home-cat" href="/catalog?category=esc"><b>电调</b><span>3</span><em>驱动器 / 调速器</em></a>
-      <a class="rw-home-cat" href="/catalog?category=module"><b>其余模块</b><span>3</span><em>CAN 通信 / 力触觉 / 编码器</em></a>
     </div>
     <p class="rw-home-note">
       「待收录」不是漏了 —— 是没有可信来源。宁可空着，也不拿论文里的典型值充数。
