@@ -745,6 +745,8 @@ def write_llms_txt(out: pathlib.Path, pub: pathlib.Path, rows: list[dict],
                     ("service_temp_C", "耐温", "°C")):
                 v = s.get(key)
                 if isinstance(v, (int, float)):
+                    if key == "modulus_GPa" and s.get("modulus_kind") == "弯曲":
+                        label = "弯曲模量"
                     bits.append(f"{label} {v:g} {unit}")
             bits.append(f"来源 {m.get('source_tier') or '—'} 级")
             lines.append(f"- [{m.get('name')}]({url('/materials/' + m['_slug'] + '.html')})："
@@ -2107,6 +2109,36 @@ html.dark .rl-th {{ color: #e0b159; }}
         sups = json.loads((DATA_DIR / "suppliers.json").read_text(encoding="utf-8"))
     except Exception:
         sups = []
+    # 反向索引：材质/工艺的 suppliers[] 是唯一来源，渠道库只做展示，不重复存关系。
+    material_refs: dict[str, list[dict]] = {}
+    try:
+        mdata = json.loads((pub / "materials.json").read_text(encoding="utf-8"))
+    except Exception:
+        mdata = {}
+    for key in ("materials", "processes"):
+        for r in mdata.get(key) or []:
+            mid = r.get("id")
+            href = r.get("_href")
+            if not mid or not href:
+                continue
+            for ref in r.get("suppliers") or []:
+                sid = ref.get("supplier_id")
+                if not sid:
+                    continue
+                linked = material_refs.setdefault(sid, [])
+                if any(x["id"] == mid and x.get("role") == ref.get("role") for x in linked):
+                    continue
+                linked.append({
+                    "id": mid,
+                    "name": r.get("name") or mid,
+                    "href": f"materials/{href}.html",
+                    "role": ref.get("role"),
+                    "category": r.get("category"),
+                })
+    for sup in sups:
+        refs = material_refs.get(sup.get("id") or "")
+        if refs:
+            sup["_materials"] = refs
     (pub / "suppliers.json").write_text(
         json.dumps({"meta": _artifact_meta(len(sups)),
                        "count": len(sups), "suppliers": sups},

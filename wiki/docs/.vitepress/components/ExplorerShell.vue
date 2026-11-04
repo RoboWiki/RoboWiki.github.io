@@ -8,7 +8,7 @@
  *
  * 样式全在 theme/explorer.css 的 .ex-* 里 —— 改那里，三页一起变。
  */
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 interface Facet {
   /** 分组键：同一组内互斥 */
@@ -49,6 +49,11 @@ const emit = defineEmits<{
 
 const q = ref(props.initialQuery || '')
 const active = defineModel<Record<string, string>>('active', { default: () => ({}) })
+
+// 父组件从 URL 读到 q 是在 onMounted 之后，这里同步一次，避免「列表被过滤但搜索框为空」。
+watch(() => props.initialQuery, (v) => {
+  if ((v || '') !== q.value) q.value = v || ''
+})
 
 /** 按 group 分组，保持传入顺序 */
 const groups = computed(() => {

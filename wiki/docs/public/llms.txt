@@ -460,23 +460,23 @@ CAN 通信 / 力触觉 / 编码器。
 - [EPDM 三元乙丙橡胶](https://robowiki.org.cn/materials/epdm.html)：弹性体、EPDM、密度 1.15 g/cm³、弹性模量 0.008 GPa、抗拉 15 MPa、耐温 120 °C、来源 B 级
 - [TPU 热塑性聚氨酯](https://robowiki.org.cn/materials/tpu.html)：弹性体、TPU、密度 1.2 g/cm³、弹性模量 0.05 GPa、抗拉 40 MPa、耐温 90 °C、来源 B 级
 - [6061-T6 铝合金](https://robowiki.org.cn/materials/alu-6061-t6.html)：金属材料、铝合金、密度 2.7 g/cm³、弹性模量 68.9 GPa、抗拉 310 MPa、耐温 150 °C、来源 B 级
-- [7075-T6 铝合金](https://robowiki.org.cn/materials/alu-7075-t6.html)：金属材料、铝合金、密度 2.81 g/cm³、弹性模量 71 GPa、抗拉 524 MPa、耐温 150 °C、来源 B 级
+- [7075-T6 铝合金](https://robowiki.org.cn/materials/alu-7075-t6.html)：金属材料、铝合金、密度 2.81 g/cm³、弹性模量 71 GPa、抗拉 572 MPa、耐温 150 °C、来源 B 级
 - [TC4 钛合金](https://robowiki.org.cn/materials/ti-tc4.html)：金属材料、钛合金、密度 4.43 g/cm³、弹性模量 113.8 GPa、抗拉 950 MPa、耐温 350 °C、来源 B 级
 - [42CrMo 合金钢](https://robowiki.org.cn/materials/steel-42crmo.html)：金属材料、合金钢、密度 7.85 g/cm³、弹性模量 205 GPa、抗拉 1080 MPa、耐温 400 °C、来源 B 级
 - [ADC12 压铸铝合金](https://robowiki.org.cn/materials/alu-adc12.html)：金属材料、铝合金、密度 2.7 g/cm³、弹性模量 71 GPa、抗拉 230 MPa、耐温 150 °C、来源 B 级
 - [AlSi10Mg 铝合金（SLM）](https://robowiki.org.cn/materials/alu-alsi10mg.html)：金属材料、铝合金、密度 2.67 g/cm³、弹性模量 75 GPa、抗拉 460 MPa、耐温 150 °C、来源 B 级
 - [40CrNiMoA 合金钢](https://robowiki.org.cn/materials/steel-40crnimoa.html)：金属材料、合金钢、密度 7.85 g/cm³、弹性模量 205 GPa、抗拉 980 MPa、耐温 400 °C、来源 B 级
-- [SUS304 不锈钢](https://robowiki.org.cn/materials/steel-sus304.html)：金属材料、不锈钢、密度 7.93 g/cm³、弹性模量 193 GPa、抗拉 515 MPa、耐温 800 °C、来源 B 级
+- [SUS304 不锈钢](https://robowiki.org.cn/materials/steel-sus304.html)：金属材料、不锈钢、密度 7.93 g/cm³、弹性模量 193 GPa、抗拉 515 MPa、耐温 400 °C、来源 B 级
 - [440C 马氏体不锈钢](https://robowiki.org.cn/materials/steel-440c.html)：金属材料、不锈钢、密度 7.7 g/cm³、弹性模量 215 GPa、抗拉 758 MPa、耐温 250 °C、来源 B 级
 - [AZ91D 镁合金](https://robowiki.org.cn/materials/mg-az91d.html)：金属材料、镁合金、密度 1.82 g/cm³、弹性模量 45 GPa、抗拉 250 MPa、耐温 120 °C、来源 B 级
 - [PEEK 450G](https://robowiki.org.cn/materials/peek-450g.html)：工程塑料、PEEK、密度 1.3 g/cm³、弹性模量 4 GPa、抗拉 98 MPa、耐温 250 °C、来源 B 级
-- [PPS GF40 聚苯硫醚](https://robowiki.org.cn/materials/pps-gf40.html)：工程塑料、PPS、密度 1.65 g/cm³、弹性模量 15 GPa、抗拉 190 MPa、耐温 220 °C、来源 B 级
+- [PPS GF40 聚苯硫醚](https://robowiki.org.cn/materials/pps-gf40.html)：工程塑料、PPS、密度 1.66 g/cm³、弯曲模量 15.5 GPa、抗拉 200 MPa、耐温 220 °C、来源 B 级
 - [PA66 尼龙](https://robowiki.org.cn/materials/pa66.html)：工程塑料、尼龙 PA、密度 1.14 g/cm³、弹性模量 3.1 GPa、抗拉 82 MPa、耐温 100 °C、来源 B 级
 - [PA12 尼龙](https://robowiki.org.cn/materials/pa12.html)：工程塑料、尼龙 PA、密度 1.01 g/cm³、弹性模量 1.6 GPa、抗拉 48 MPa、耐温 90 °C、来源 B 级
 - [PC/ABS 合金](https://robowiki.org.cn/materials/pc-abs.html)：工程塑料、PC/ABS、密度 1.24 g/cm³、弹性模量 3.35 GPa、抗拉 66 MPa、耐温 100 °C、来源 B 级
 - [POM 聚甲醛](https://robowiki.org.cn/materials/pom.html)：工程塑料、POM、密度 1.41 g/cm³、弹性模量 2.8 GPa、抗拉 65 MPa、耐温 95 °C、来源 B 级
 - [PLA 聚乳酸](https://robowiki.org.cn/materials/pla.html)：3D 打印材料、PLA、密度 1.24 g/cm³、弹性模量 2.75 GPa、抗拉 35 MPa、耐温 55 °C、来源 B 级
-- [PLA-CF 碳纤维增强线材](https://robowiki.org.cn/materials/pla-cf.html)：3D 打印材料、PLA、密度 1.22 g/cm³、弹性模量 3.95 GPa、抗拉 38 MPa、耐温 55 °C、来源 B 级
+- [PLA-CF 碳纤维增强线材](https://robowiki.org.cn/materials/pla-cf.html)：3D 打印材料、PLA、密度 1.22 g/cm³、弯曲模量 3.95 GPa、抗拉 38 MPa、耐温 55 °C、来源 B 级
 - [PETG 线材](https://robowiki.org.cn/materials/petg.html)：3D 打印材料、PETG、密度 1.27 g/cm³、弹性模量 2.05 GPa、抗拉 30 MPa、耐温 65 °C、来源 B 级
 - [ABS 线材](https://robowiki.org.cn/materials/abs-fdm.html)：3D 打印材料、ABS、密度 1.04 g/cm³、弹性模量 2.3 GPa、抗拉 40 MPa、耐温 85 °C、来源 B 级
 - [光敏树脂](https://robowiki.org.cn/materials/photopolymer.html)：3D 打印材料、光敏树脂、密度 1.13 g/cm³、弹性模量 2.8 GPa、抗拉 65 MPa、耐温 60 °C、来源 B 级
@@ -527,5 +527,5 @@ CAN 通信 / 力触觉 / 编码器。
 ## 引用与许可
 
 - 内容许可 GPL-3.0；数据可转载，但请保留来源链接与核对日期（型号页底部有）。
-- 数据快照带版本：2026-11-03T20:06:49.530701+00:00，源提交 d2653f387d0d783e3f21df0e94154460485c88da。
+- 数据快照带版本：2026-11-04T06:11:08.317747+00:00，源提交 f1a282f921312c1f83b8e642344d7b17a5fdd8c5。
 - 参数口径（峰值 / 额定、转子 / 输出惯量）不统一时不能横向比，先读 /semantics。

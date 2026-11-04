@@ -17,7 +17,7 @@ description: "材料 碳纤维 T300 复合材料：T300 级碳纤维增强环氧
 <div class="mt-intro">
 <p>T300 级碳纤维增强环氧复合材料。</p>
 <p>拉挤圆管、方管和层压板在机器人上用于轻量化连杆与框架；沿纤维方向比强度/比刚度高，横向和层间弱，连接处要专门设计。</p>
-<p>下表给的是典型拉挤型材口径，铺层不同差异很大。</p>
+<p>T300 纤维本身约 230 GPa 模量、3530 MPa 抗拉，不能直接套到成品复材上；表中 120 GPa / 1000 MPa 是典型拉挤型材口径，铺层不同差异很大。</p>
 </div>
 
 ## 物理属性与仿真
@@ -74,16 +74,16 @@ description: "材料 碳纤维 T300 复合材料：T300 级碳纤维增强环氧
 
 | 渠道 | 角色 | 品类 | 备注 |
 |---|---|---|---|
-| <a href="../suppliers.html?q=%E6%B2%B3%E5%8C%97%E5%A4%9A%E7%82%B9%E7%A2%B3%E7%BA%A4%E7%BB%B4">河北多点碳纤维</a> | 碳板/玻纤加工 | 机械加工 · 碳板/玻纤 | 社区反馈价格偏低、加工快、精度高；具体铺层与树脂体系要问清 |
-| <a href="../suppliers.html?q=%E9%91%AB%E5%88%A9%E7%A2%B3%E7%BA%A4%E7%BB%B4">鑫利碳纤维</a> | 碳纤维切割 | 标准件 · 碳板/玻纤 | 可切割、尺寸精确；适合碳板下料 |
-| <a href="../suppliers.html?q=%E6%98%86%E5%B1%B1%E7%BB%BF%E5%BE%AA%E5%8C%96%E5%B7%A5">昆山绿循化工</a> | 环氧粘结剂 | 杂项 · 碳板/玻纤 | 碳纤维/玻纤粘接用环氧胶，社区称首选 |
+| <a href="../suppliers.html?q=%E6%B2%B3%E5%8C%97%E5%A4%9A%E7%82%B9%E7%A2%B3%E7%BA%A4%E7%BB%B4&amp;mat=mat-cfrp-t300">河北多点碳纤维</a> | 碳板/玻纤加工 | 机械加工 · 碳板/玻纤 | 社区反馈价格偏低、加工快、精度高；具体铺层与树脂体系要问清 |
+| <a href="../suppliers.html?q=%E9%91%AB%E5%88%A9%E7%A2%B3%E7%BA%A4%E7%BB%B4&amp;mat=mat-cfrp-t300">鑫利碳纤维</a> | 碳纤维切割 | 标准件 · 碳板/玻纤 | 可切割、尺寸精确；适合碳板下料 |
+| <a href="../suppliers.html?q=%E6%98%86%E5%B1%B1%E7%BB%BF%E5%BE%AA%E5%8C%96%E5%B7%A5&amp;mat=mat-cfrp-t300">昆山绿循化工</a> | 环氧粘结剂 | 杂项 · 碳板/玻纤 | 碳纤维/玻纤粘接用环氧胶，社区称首选 |
 
 ## 来源
 
-- 数据整理：Toray T300 纤维数据 + 拉挤型材公开资料整理（2026-11-02）；铺层/纤维体积分数不同差异很大
+- 数据整理：T300 级碳纤维/环氧拉挤型材典型值整理（2026-11-02）；T300 是纤维牌号，表中为典型拉挤复材口径，铺层/纤维体积分数不同差异很大
 - 等级：B · 最近核对：2026-11-02
-- 主要来源：<https://www.torayca.com/en/lineup/t300.html>
-- datasheet：<https://www.torayca.com/en/lineup/t300.html>（2026-11-02）
+- 主要来源：<https://www.strongwell.com/the-pultrusion-process/>
 - process：<https://www.strongwell.com/the-pultrusion-process/>（2026-11-02）
+- reference：<https://en.wikipedia.org/wiki/Carbon-fiber-reinforced_polymers>（2026-11-02）
 
 > 表中物理量是常温典型值；热处理状态、纤维方向、含水率与批次都会让实际值偏离。选型与仿真请以供应商实测报告为准。

@@ -50,8 +50,14 @@ Page({
       const t = F.tier(r.source_tier)
       const specs = r.specs || {}
       const rows = Object.keys(specs)
-        .filter(k => specs[k] !== null && specs[k] !== undefined && specs[k] !== '')
-        .map(k => ({ key: k, label: L.materialLabel(k), value: text(specs[k]) }))
+        .filter(k => k !== 'modulus_kind' && specs[k] !== null && specs[k] !== undefined && specs[k] !== '')
+        .map(k => ({
+          key: k,
+          label: k === 'modulus_GPa' && specs.modulus_kind === '弯曲'
+            ? '弯曲模量 (GPa)'
+            : L.materialLabel(k),
+          value: text(specs[k]),
+        }))
 
       const sources = (r.sources || []).map(s => ({
         url: s.url,

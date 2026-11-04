@@ -136,6 +136,7 @@ const rows = computed(() => {
 })
 
 const val = (v: any) => (v === null || v === undefined || v === '' ? '—' : String(v))
+const modLabel = (x: Item) => (x.specs?.modulus_kind === '弯曲' ? '弯曲模量' : '弹性模量')
 function wu(v: any, unit: string): string {
   if (v === null || v === undefined || v === '') return '—'
   const t = String(v)
@@ -149,18 +150,19 @@ function pitch(x: Item): string {
 }
 const href = (x: Item) => (x.category === 'process' ? `./materials/process-${x._slug}.html` : `./materials/${x._slug}.html`)
 const refHref = (r: Ref) => `./materials/${r._href}.html`
+const supHref = (x: Item) => `./suppliers.html?mat=${encodeURIComponent(x.id)}`
 </script>
 
 <template>
   <ExplorerShell
     kicker="机器人结构材料"
     title="先选材料，再谈结构和工艺。"
-    lead="材料比的是物理属性与工艺适配，不是品牌。密度 / 弹性模量 / 抗拉强度直接给 SI 换算，方便进 MuJoCo；形态规格与加工工艺分开看，渠道和价格回链到渠道库。"
+    lead="材料比的是物理属性与工艺适配，不是品牌。密度 / 模量 / 抗拉强度直接给 SI 换算，方便进 MuJoCo；形态规格与加工工艺分开看，渠道和价格回链到渠道库。"
     search-placeholder="搜牌号 / 材料 / 工艺 / 应用"
     :facets="facets"
     :sorts="[
       { k: 'group', label: '按分组' }, { k: 'density', label: '按密度（低→高）' },
-      { k: 'modulus', label: '按弹性模量' }, { k: 'tensile', label: '按抗拉强度' },
+      { k: 'modulus', label: '按模量' }, { k: 'tensile', label: '按抗拉强度' },
       { k: 'temp', label: '按耐温' }, { k: 'price', label: '按价格档' },
       { k: 'name', label: '按名称' },
     ]"
@@ -192,7 +194,7 @@ const refHref = (r: Ref) => `./materials/${r._href}.html`
 
         <dl v-if="x.category === 'material'" class="ex-kv">
           <div><dt>密度</dt><dd>{{ wu(x.specs?.density_g_cm3, 'g/cm³') }}</dd></div>
-          <div><dt>弹性模量</dt><dd>{{ wu(x.specs?.modulus_GPa, 'GPa') }}</dd></div>
+          <div><dt>{{ modLabel(x) }}</dt><dd>{{ wu(x.specs?.modulus_GPa, 'GPa') }}</dd></div>
           <div><dt>抗拉</dt><dd>{{ wu(x.specs?.tensile_MPa, 'MPa') }}</dd></div>
           <div><dt>耐温</dt><dd>{{ wu(x.specs?.service_temp_C, '°C') }}</dd></div>
         </dl>
@@ -210,11 +212,11 @@ const refHref = (r: Ref) => `./materials/${r._href}.html`
             <span v-if="(x._processes || []).length > 2" class="ex-pill off">
               +{{ (x._processes || []).length - 2 }}
             </span>
-            <span v-if="x._suppliers?.length" class="ex-pill off">渠道 ×{{ x._suppliers.length }}</span>
+            <a v-if="x._suppliers?.length" class="ex-pill" :href="supHref(x)">渠道 ×{{ x._suppliers.length }}</a>
           </template>
           <template v-else>
             <span class="ex-pill off">材料 ×{{ x._materials?.length || 0 }}</span>
-            <span v-if="x._suppliers?.length" class="ex-pill off">渠道 ×{{ x._suppliers.length }}</span>
+            <a v-if="x._suppliers?.length" class="ex-pill" :href="supHref(x)">渠道 ×{{ x._suppliers.length }}</a>
           </template>
           <a class="ex-link" :href="href(x)" style="margin-left:auto">详情 →</a>
         </div>
@@ -222,3 +224,8 @@ const refHref = (r: Ref) => `./materials/${r._href}.html`
     </div>
   </ExplorerShell>
 </template>
+
+<style scoped>
+a.ex-pill { text-decoration: none; }
+a.ex-pill:hover { border-color: var(--vp-c-brand-2); color: var(--vp-c-brand-1); }
+</style>

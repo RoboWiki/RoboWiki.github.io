@@ -42,6 +42,8 @@ def _material_facts(r: dict) -> list[dict]:
     for label, key, unit in facts:
         v = _fmt(specs.get(key), unit)
         if v:
+            if key == "modulus_GPa" and specs.get("modulus_kind") == "弯曲":
+                label = "弯曲模量"
             out.append({"key": key, "label": label, "value": v})
     return out
 

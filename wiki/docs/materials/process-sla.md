@@ -28,7 +28,7 @@ description: "加工工艺 3D 打印 SLA：光固化 3D 打印"
 | 表面粗糙度 Ra (µm) | 3.2 |
 | 层高 (mm) | 0.05 |
 | 最小壁厚 (mm) | 0.5 |
-| 最大尺寸 | 标准机 145×145×185 mm；工业机可达 736×635×533 mm |
+| 最大尺寸 | 常见 145×145×185 mm；大幅面机型（Form 4L）353×196×350 mm |
 | 成本档 | 中高 |
 | 参考交期 | 3–7 天 |
 
@@ -59,10 +59,11 @@ description: "加工工艺 3D 打印 SLA：光固化 3D 打印"
 
 ## 来源
 
-- 数据整理：SLA/DLP 公开能力资料 + Formlabs 树脂数据整理（2026-11-02）；机台分辨率与树脂牌号影响实际数值
+- 数据整理：SLA/DLP 公开能力资料 + Formlabs 树脂/机型数据整理（2026-11-02）；机台分辨率与树脂牌号影响实际数值
 - 等级：B · 最近核对：2026-11-02
 - 主要来源：<https://en.wikipedia.org/wiki/Stereolithography>
 - process：<https://en.wikipedia.org/wiki/Stereolithography>（2026-11-02）
 - reference：<https://formlabs.com/products/materials/>（2026-11-02）
+- reference：<https://formlabs3d.cn/3d-printers/form-4l/>（2026-11-02）
 
 > 工艺能力是常见范围；实际公差、表面质量与交期以厂商报价单和试件为准。

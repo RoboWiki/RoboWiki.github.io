@@ -74,8 +74,8 @@ description: "材料 光敏树脂：SLA/DLP 用光敏树脂"
 
 - 数据整理：Formlabs Clear Resin 公开数据 + 光固化树脂典型值整理（2026-11-02）；不同树脂牌号性能跨度很大
 - 等级：B · 最近核对：2026-11-02
-- 主要来源：<https://formlabs.com/products/materials/>
-- datasheet：<https://formlabs.com/products/materials/>（2026-11-02）
-- datasheet：<https://formlabs.com/cn/applications/investment-casting/>（2026-11-02）
+- 主要来源：<https://formlabs.com/materials/standard/clear/>
+- reference：<https://formlabs.com/materials/standard/clear/>（2026-11-02）
+- reference：<https://formlabs.com/products/materials/>（2026-11-02）
 
 > 表中物理量是常温典型值；热处理状态、纤维方向、含水率与批次都会让实际值偏离。选型与仿真请以供应商实测报告为准。

@@ -17,7 +17,7 @@ description: "材料 AlSi10Mg 铝合金（SLM）：SLM 最常用的铝合金之�
 <div class="mt-intro">
 <p>SLM 最常用的铝合金之一。</p>
 <p>EOS 口径沉积态抗拉约 460 MPa、屈服约 270 MPa、延伸率约 9%；去应力或热处理后强度会下降、塑性提高。</p>
-<p>打印方向影响 Z 向性能，承力件要按方向取値。</p>
+<p>打印方向影响 Z 向性能，承力件要按方向取值。</p>
 </div>
 
 ## 物理属性与仿真
@@ -29,7 +29,7 @@ description: "材料 AlSi10Mg 铝合金（SLM）：SLM 最常用的铝合金之�
 | 抗拉强度 (MPa) | 460 |
 | 屈服强度 (MPa) | 270 |
 | 断裂延伸率 (%) | 9 |
-| 硬度 | HB 120 |
+| 硬度 | HB 119±5（沉积态） |
 | 长期工作温度 (°C) | 150 |
 | 熔点 (°C) | 570 |
 | 导热系数 (W/(m·K)) | 120 |
@@ -44,7 +44,7 @@ description: "材料 AlSi10Mg 铝合金（SLM）：SLM 最常用的铝合金之�
 | 弹性模量 | 75 GPa | 7.5e+10 Pa |
 | 抗拉强度 | 460 MPa | 4.6e+08 Pa |
 
-<p class="mt-note">密度 2670 kg/m³；弹性模量约 75 GPa。SLM 件有明显方向性与残余应力，仿真取打印方向对应的等效值。</p>
+<p class="mt-note">密度 2670 kg/m³；弹性模量约 75 GPa。SLM 件有明显方向性与残余应力，仿真取打印方向对应的等效值；570°C 是固相线，完全熔化约 600°C。</p>
 
 ## 形态与规格
 
@@ -76,10 +76,10 @@ description: "材料 AlSi10Mg 铝合金（SLM）：SLM 最常用的铝合金之�
 
 ## 来源
 
-- 数据整理：EOS AlSi10Mg 沉积态数据 + SLM 设备商公开参数整理（2026-11-02）；热处理与打印方向影响数值
+- 数据整理：EOS AlSi10Mg 沉积态数据表（XY 方向）+ 公开资料整理（2026-11-02）；热处理与打印方向影响数值
 - 等级：B · 最近核对：2026-11-02
 - 主要来源：<https://www.3djiagong.com/a/cailiao/587.html>
 - datasheet：<https://www.3djiagong.com/a/cailiao/587.html>（2026-11-02）
-- datasheet：<https://m.wiiboox.net/3d-printer-slm280.php?act=material>（2026-11-02）
+- reference：<https://www.eos.info/zh/metal-solutions/metal-materials/aluminium>（2026-11-02）
 
 > 表中物理量是常温典型值；热处理状态、纤维方向、含水率与批次都会让实际值偏离。选型与仿真请以供应商实测报告为准。
