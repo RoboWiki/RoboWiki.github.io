@@ -107,7 +107,8 @@ docker exec "$OPENRESTY" nginx -s reload
 - `/api/`、`/mcp`、`/mcp/`、`/console/` → `127.0.0.1:8080`；
 - `client_max_body_size 10m`；
 - HSTS / CSP / nosniff / frame-ancestors / Referrer-Policy / Permissions-Policy；
-- CSP 放行 `giscus.app`（文档评论）和 `avatars.githubusercontent.com`（贡献者头像）。
+  用 `header_filter_by_lua_block` 统一补，静态页、API、控制台和 404 都会带上；
+- CSP 放行 `giscus.app`（文档评论）、`github.com` 与 `avatars.githubusercontent.com`（贡献者头像）。
 
 > 如果 OpenResty 是 bridge 网络：先
 > `docker network connect robowiki_default <openresty容器名>`，
@@ -290,6 +291,7 @@ curl -fsS http://127.0.0.1:8080/api/v1/ready
 | 公网 `/api` 404（VitePress 页面） | `/api/` 的 location 没放在 catch-all 之前，或没 reload | 套用 `1panel-site.conf`，`nginx -t` 后 reload |
 | `/console/` 404 或空白 | 镜像里没有 `console/dist` | `docker compose up -d --build api`；确认 Dockerfile 的 console stage |
 | 评论区/头像被 CSP 拦截 | CSP 没放行 giscus 或 GitHub 头像 | 用 `1panel-site.conf` 里的 CSP，不要照搬旧 Caddy 版本 |
+| 静态页缺 CSP/nosniff | 静态 location 自带缓存头，server 级 `add_header` 不继承 | 用 `1panel-site.conf` 的 `header_filter_by_lua_block`，`nginx -t` 后 reload |
 | worker 发布失败 `目录里找不到部件` | worker 缺 `/data` 挂载 | 已修复；确认 `docker inspect` 有 `/data` |
 | worker `PermissionError` 写 outbox | Linux 宿主目录属主不是 10001 | `sudo chown -R 10001:10001 deploy/var/outbox` |
 | 静态页产品图 404 | Pages 构建没跑 `pipeline build` | 看 Pages workflow；不要只跑 `npm run build` |
