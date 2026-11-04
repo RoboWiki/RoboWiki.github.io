@@ -90,7 +90,8 @@ WECHAT_WS=ws://127.0.0.1:9420 npm test
 
 ## 验证记录
 
-- 2026-11-04：体验版/正式版切到 `https://robowiki.org.cn`；`cli preview` 编译成功，主包 **59.8 KB**；`cli upload -v 1.0.1` 上传成功。
+- 2026-11-04：体验版/正式版切到 `https://robowiki.org.cn`；`1.0.1` 首次上传。
+- 2026-11-04：`1.0.2` 修复材质页把 `image_url/doc_url` 当参数行、`doc_url` 改为来源链接、供应商列表改用稳定 `wx:key`；主包 **60.2 KB**，`cli preview` / `cli upload` 均成功。
 - 生产 API 逐项验收：`/meta`、`/materials/meta`、`/catalog`、`/parts?compact=true`、`/parts/{id}`、`/ratings/{id}`、`/materials`、`/materials/{id}` 均 200；目录 326 件、材料/工艺 36 条；产品图与分享 JSON 均 200。
 - 静态检查：`node check.js` 通过（11 JS / 9 JSON / 3 WXML）。
 - 模拟器：首页 326 件部件、36 材料/工艺；品类/子类/价格/材料排序、关键参数、评分标签、详情结构化参数、材质优缺点/渠道均已加载。

@@ -51,7 +51,7 @@
 
     <view class="card" wx:if="{{suppliers.length}}">
       <view class="title">渠道与价格</view>
-      <view class="source-line" wx:for="{{suppliers}}" wx:key="*this">
+      <view class="source-line" wx:for="{{suppliers}}" wx:key="key">
         <text style="font-weight:600">{{item.name}}</text>
         <text wx:if="{{item.role}}" class="muted"> · {{item.role}}</text>
         <view wx:if="{{item.note}}" class="muted">{{item.note}}</view>

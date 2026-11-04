@@ -49,7 +49,10 @@ Page({
       const r = await api.get('/materials/' + encodeURIComponent(this.id))
       const t = F.tier(r.source_tier)
       const specs = r.specs || {}
+      const hidden = ['image_url', 'image_source', 'doc_url', 'doc_pdf',
+        'repo_urls', 'repo_license', 'tags', 'coupon', 'fetched_at', 'category_cn']
       const rows = Object.keys(specs)
+        .filter(k => !hidden.includes(k))
         .filter(k => specs[k] !== null && specs[k] !== undefined && specs[k] !== '')
         .map(k => ({ key: k, label: L.materialLabel(k), value: text(specs[k]) }))
 
@@ -58,7 +61,11 @@ Page({
         label: s.kind || '来源',
         checked: s.checked_on || '',
       }))
-      const suppliers = (r.suppliers || []).map(s => ({
+      if (specs.doc_url && !sources.some(s => s.url === specs.doc_url)) {
+        sources.unshift({ url: specs.doc_url, label: '官方资料', checked: '' })
+      }
+      const suppliers = (r.suppliers || []).map((s, i) => ({
+        key: `${s.supplier_id || s.name || s.id || 'supplier'}-${i}`,
         name: s.name || s.supplier_id || s.id || '供应商',
         role: s.role || '',
         note: s.note || '',
