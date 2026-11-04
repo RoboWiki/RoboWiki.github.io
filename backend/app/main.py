@@ -14,6 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 from fastapi.responses import JSONResponse
 from sqlalchemy import text
+from starlette.middleware.sessions import SessionMiddleware
 
 from .api.routes import (admin, auth, bot, catalog, community, export, mcp,
                          materials, protocols, ratings, reports, semantics,
@@ -48,6 +49,22 @@ app = FastAPI(title="RoboWiki API", version="0.2.0",
               docs_url="/api/docs" if settings.expose_docs else None,
               openapi_url="/api/openapi.json",
               lifespan=lifespan)
+
+# OAuth state 需要一个签名 cookie：Authlib 的 starlette 集成把它放在
+# request.session 里。只给授权跳转/回调这一小段用，所以 cookie 名与
+# 有效期都收窄；`https_only` 跟随 site_url 协议（生产 https，本地 http）。
+# 顺序：先加 Session（内层），再加 CORS（外层），让预检与跨域头始终生效。
+_session_https_only = settings.session_https_only
+if _session_https_only is None:
+    _session_https_only = settings.site_url.startswith("https")
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=settings.secret_key,
+    session_cookie="robowiki_oauth_state",
+    same_site="lax",              # 从 GitHub 跳回来是顶层导航，Lax 足够
+    https_only=_session_https_only,
+    max_age=600,                  # 只覆盖一次授权往返
+)
 
 app.add_middleware(
     CORSMiddleware,

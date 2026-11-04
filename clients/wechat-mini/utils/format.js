@@ -69,6 +69,25 @@ function materialUrl(r) {
   return site() + '/materials/' + slug + '.html'
 }
 
+/** 静态分享 JSON：标题、参数、来源、data_version、canonical_url 都在里面。
+ *  复制链接优先读它的 canonical_url；读不到再退回 API 的 web_path。 */
+function shareMaterialUrl(r) {
+  if (!r) return ''
+  let slug = ''
+  if (r.web_path) {
+    const m = String(r.web_path).match(/\/materials\/(.+)\.html$/)
+    if (m) slug = m[1]
+  }
+  if (!slug) {
+    const id = String(r.id || '')
+    if (!id) return ''
+    slug = r.category === 'process'
+      ? 'process-' + id.replace(/^proc-/, '')
+      : id.replace(/^mat-/, '')
+  }
+  return site() + '/share/materials/' + slug + '.json'
+}
+
 function copy(data, okText) {
   return new Promise((resolve) => {
     wx.setClipboardData({
@@ -84,5 +103,5 @@ function copy(data, okText) {
 
 module.exports = {
   imageUrl, tier, price, short, date,
-  partUrl, sharePartUrl, materialUrl, copy,
+  partUrl, sharePartUrl, materialUrl, shareMaterialUrl, copy,
 }

@@ -157,16 +157,18 @@ def built():
 def test_sidebar_groups_parts(built):
     """回归：口径页的循环变量曾覆盖全局 rows，侧边栏分组全空。
 
-    每个有数据的品类都要有「总览 + 厂商」分组，不能只有关节电机分；
-    传感器按类型分，与部件库的类型筛选一致。
+    每个有数据的品类都要有「总览 + 分组」，不能只有关节电机分；
+    普通品类按厂商，传感器按类型、模块与开源硬件按功能，与部件库的筛选一致。
     """
     from pipeline.load import cat_labels, load_parts, load_taxonomy
     side = json.loads((built / ".vitepress" / "sidebar.json").read_text(encoding="utf-8"))
     top = {i["text"]: i for i in side["/parts/"][0]["items"]}
     rows = load_parts()
-    sensor_types = next(
-        (c.get("subtypes") or {} for c in (load_taxonomy().get("categories") or [])
-         if c.get("id") == "sensor"), {})
+    taxonomy = load_taxonomy().get("categories") or []
+
+    def subtypes(cid: str) -> dict:
+        return next((c.get("subtypes") or {} for c in taxonomy if c.get("id") == cid), {})
+
     for cid, name, _ in cat_labels():
         items = [r for r in rows if r["category"] == cid]
         if not items:
@@ -174,25 +176,26 @@ def test_sidebar_groups_parts(built):
         item = top.get(name)
         assert item and item.get("items"), f"侧边栏缺 {name} 的分组"
         names = [x["text"] for x in item["items"]]
-        if cid == "sensor":
-            for label in sensor_types.values():
-                assert label in names, f"传感器侧边栏缺类型 {label}（共 {names}）"
+        if cid in ("sensor", "module", "open_hw"):
+            for label in subtypes(cid).values():
+                assert label in names, f"{name} 侧边栏缺类型 {label}（共 {names}）"
         else:
             for v in {r["vendor"] for r in items}:
                 assert v in names, f"{name} 侧边栏缺厂商 {v}（共 {names}）"
         assert item["collapsed"] == (cid != "actuator"), f"{name} 分组默认展开状态不对"
 
 
-def test_sensor_pages_grouped_by_type(built):
-    """传感器索引与侧边栏都按类型分，厂商不再作为第二层。"""
-    text = (built / "parts" / "sensor" / "index.md").read_text(encoding="utf-8")
-    assert "## 类型" in text
-    assert "## 厂商" not in text
+def test_type_pages_grouped_by_subtype(built):
+    """传感器按测量类型、模块与开源硬件按功能分，厂商不再作为第二层。"""
     side = json.loads((built / ".vitepress" / "sidebar.json").read_text(encoding="utf-8"))
-    sensor = next(i for i in side["/parts/"][0]["items"] if i["text"] == "传感器")
-    for item in sensor["items"][1:]:
-        page = (built / item["link"].lstrip("/")).with_suffix(".md")
-        assert page.exists(), f"侧边栏类型页不存在：{page}"
+    for cid, name in (("sensor", "传感器"), ("module", "其余模块"), ("open_hw", "开源硬件")):
+        text = (built / "parts" / cid / "index.md").read_text(encoding="utf-8")
+        assert "## 类型" in text
+        assert "## 厂商" not in text
+        group = next(i for i in side["/parts/"][0]["items"] if i["text"] == name)
+        for item in group["items"][1:]:
+            page = (built / item["link"].lstrip("/")).with_suffix(".md")
+            assert page.exists(), f"侧边栏类型页不存在：{page}"
 
 
 def test_group_pages_show_product_gallery(built):

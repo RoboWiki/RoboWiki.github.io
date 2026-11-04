@@ -263,7 +263,7 @@ export function CommunityPage({ onOpenPost, openAuth }: {
       <Col xs={24} lg={7}>
         <Card size="small" title={<span><TrophyOutlined /> 贡献榜</span>}
           extra={<Link to="/top">全部</Link>}>
-          <Space direction="vertical" style={{ width: '100%' }} size={10}>
+          <Space orientation="vertical" style={{ width: '100%' }} size={10}>
             {(board.data || []).map((u, i) => (
               <div key={u.id} style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
                 <Space size={6}>
@@ -332,7 +332,7 @@ export function PostPage() {
             <Tag color={KIND_COLOR[p.kind]}>{KIND_LABEL[p.kind]}</Tag>
             {p.part_title && <Tag>{p.part_title}</Tag>}
             {p.own_hardware && <Tag color="blue">实测</Tag>}
-            {p.tags.map(t => <Tag key={t} bordered={false}>#{t}</Tag>)}
+            {p.tags.map(t => <Tag key={t} variant="filled">#{t}</Tag>)}
           </Space>
           <Title level={3} style={{ marginTop: 0 }}>{p.title}</Title>
           <Space size={12} style={{ marginBottom: 16 }}>
@@ -366,7 +366,7 @@ export function PostPage() {
       </Col>
       <Modal open={reportOpen} title="举报这条内容" onCancel={() => setReportOpen(false)}
         okText="提交举报" onOk={submitReport} destroyOnHidden>
-        <Space direction="vertical" size={10} style={{ width: '100%', paddingTop: 8 }}>
+        <Space orientation="vertical" size={10} style={{ width: '100%', paddingTop: 8 }}>
           <Select value={reason} onChange={setReason} style={{ width: '100%' }}
             options={[
               { value: 'spam', label: '垃圾广告' },
@@ -402,7 +402,7 @@ export function ProfilePage({ onOpenPost }: { onOpenPost: (id: number) => void }
     <Row gutter={20}>
       <Col xs={24} lg={7}>
         <Card>
-          <Space direction="vertical" size={10} style={{ width: '100%' }}>
+          <Space orientation="vertical" size={10} style={{ width: '100%' }}>
             <Space size={12}>
               <span style={{
                 width: 54, height: 54, borderRadius: 27, display: 'inline-flex',

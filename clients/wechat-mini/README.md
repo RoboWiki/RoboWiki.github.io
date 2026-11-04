@@ -8,7 +8,7 @@ AppID：`wx13bffd77b0b597e2`。当前是只读工具型小程序，建议类目�
 
 | 页面 | 能力 |
 |---|---|
-| `pages/index` | 部件/材质切换、搜索、品类/子类/分组筛选、价格与材料排序、分页、下拉刷新、骨架屏、空态重置、单条分享、离线回退、朋友圈预览提示 |
+| `pages/index` | 部件/材质切换、搜索、品类/子类/分组筛选、价格与材料排序、部件分页、下拉刷新、骨架屏、空态重置、单条分享、离线回退、朋友圈预览提示 |
 | `pages/part` | 首屏标题/价格/等级/关键参数、图片、完整参数（含 `params` / `price_tiers` 结构化值）、派生量、真实评分分布、评价、优惠与免责声明、来源、复制网页链接、分享 |
 | `pages/material` | 参数、适用场景、供货形态、优缺点、渠道与价格、相关条目、来源、分享、朋友圈预览提示 |
 
@@ -26,7 +26,17 @@ A 级 = 逐项核对官方资料；B 级 = 公开资料汇编，购买/设计前
 ## 运行
 
 1. 微信开发者工具 → 导入本目录；`project.config.json` 已写入 AppID。
-2. **开发版**默认连本机 Docker API `http://127.0.0.1:8080/api/v1`（见 `config.js`）。
+2. **环境映射固定在 `config.js`**，不按「非正式版」猜：
+
+   | `miniProgram.envVersion` | API / SITE |
+   |---|---|
+   | `develop` | `http://127.0.0.1:8080`（`LOCAL`） |
+   | `trial` | `https://robowiki.org.cn`（`PROD`） |
+   | `release` | `https://robowiki.org.cn`（`PROD`） |
+
+   体验版必须打主域，否则审核/真机预览会连到 127.0.0.1。`tests/check.js` 直接断言
+   `baseFor('develop'|'trial'|'release')`，改错映射会先在这里失败。
+
    - 本机 Docker：在 `deploy/` 放 `.env`，至少设置
      `SECRET_KEY=<32 字节以上>`、`POSTGRES_PASSWORD=...`、`ADMIN_PASSWORD=...`，
      然后 `docker compose up -d --build`。API 默认只绑 `127.0.0.1:8080`。
@@ -65,15 +75,27 @@ WECHAT_WS=ws://127.0.0.1:9420 npm test
 
 ## 分享与传播
 
-- 列表页「分享当前筛选」会把 `tab/q/category/group/sort` 带进 path。
+- 列表页「分享当前筛选」会把 `tab/q/category/subtype/group/msort/sort` 带进 path。
 - 每条卡片有「分享这一条」，直接发部件/材质详情给好友或群。
-- 详情页 `onShareAppMessage` / `onShareTimeline` 标题带型号，`onShareTimeline` 用 `query` 带回当前页。
-- 复制链接优先用静态分享 JSON 的 `canonical_url`；取不到时用 API 返回的 `web_path`。
+- 详情页 `onShareAppMessage` / `onShareTimeline` 标题带型号与来源等级，`onShareTimeline` 用 `query` 带回当前页。
+- 详情页「复制网页链接」先读 `/share/parts/{category}/{slug}.json`（或
+  `/share/materials/{slug}.json`）的 `canonical_url`，读不到才退回 API 的 `web_path`；
+  与网页 canonical / OG 是同一个 URL。
+- 分享 JSON 与网页共用：`title`、`summary`、`params`、`source_tier`、`verified`、
+  `last_checked`、`data_version`、`canonical_url`、`copy_text`。客户端只渲染，不另拼文案。
+- 从分享链接直接打开详情时，数据版本优先取详情响应的 `data_version`，不再依赖首页缓存。
+
+## 分页与空态
+
+- 部件列表 20 条/页，触底增量追加（带请求序号，旧响应不会覆盖新筛选）。
+- 材质/工艺一次取 200 条（API 单页上限），密度/模量/抗拉排序覆盖全量；
+  超过 200 条时列表底部明示「只列出前 N 条」，不把局部排序说成全局排序。
+- 空结果给「重置筛选」；接口失败且有缓存时显示上次成功数据与日期，无缓存时给「重试 / 重置」。
 
 ## 参考与取舍
 
 - [官方 miniprogram-automator](https://developers.weixin.qq.com/miniprogram/dev/devtools/auto/automator.html)：页面级自动化；本目录 `tests/smoke.js` 采用官方 SDK，不手写驱动。
-- [官方性能建议](https://developers.weixin.qq.com/miniprogram/dev/framework/performance/tips.html)：首屏少请求、`setData` 只传差异；列表 20 条/页 + 增量 `setData`，材质 36 条一次取。
+- [官方性能建议](https://developers.weixin.qq.com/miniprogram/dev/framework/performance/tips.html)：首屏少请求、`setData` 只传差异；列表 20 条/页 + 增量 `setData`，材质一次取（上限 200）。
 - [官方图片懒加载](https://developers.weixin.qq.com/miniprogram/dev/component/image.html)：列表缩略图已开 `lazy-load`。
 - [官方朋友圈分享](https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/share-timeline.html)：单页模式只传 `query`，不做自定义页面路径。
 - [WeUI](https://github.com/Tencent/weui-wxss)：空态/加载/错误态的微信原生语义参考；本项目保持零 npm 依赖，只用原生 WXML/WXSS。
@@ -90,9 +112,15 @@ WECHAT_WS=ws://127.0.0.1:9420 npm test
 
 ## 验证记录
 
+- 2026-11-05：`1.0.4` 合并 `data-v2026.11.3`（开源硬件品类、模块电源分组、材质模量口径）；主包 **61.7 KB**，`cli preview` / `cli upload` 成功。
+- 2026-11-05：`1.0.3` 收录选型/分享修复（分页、子类筛选、分享卡、材质分享、复制 canonical）；主包 **61.6 KB**，`cli preview` / `cli upload` 成功。
+- 2026-11-05：`config.js` 抽出 `baseFor(env)`，`node check.js` 断言 develop→LOCAL、
+  trial/release→PROD；详情页复制链接改读分享 JSON 的 `canonical_url`；材质排序改为
+  单次取满 200 条并加截断提示；从材质分享链接切回部件时补拉 `/catalog`；修复
+  `smoke.js` 在部件详情页调用 `switchTab` 的路径错误。静态检查 11 JS / 9 JSON / 3 WXML 通过。
 - 2026-11-04：体验版/正式版切到 `https://robowiki.org.cn`；`1.0.1` 首次上传。
 - 2026-11-04：`1.0.2` 修复材质页把 `image_url/doc_url` 当参数行、`doc_url` 改为来源链接、供应商列表改用稳定 `wx:key`；主包 **60.2 KB**，`cli preview` / `cli upload` 均成功。
-- 生产 API 逐项验收：`/meta`、`/materials/meta`、`/catalog`、`/parts?compact=true`、`/parts/{id}`、`/ratings/{id}`、`/materials`、`/materials/{id}` 均 200；目录 326 件、材料/工艺 36 条；产品图与分享 JSON 均 200。
+- 生产 API 逐项验收：`/meta`、`/materials/meta`、`/catalog`、`/parts?compact=true`、`/parts/{id}`、`/ratings/{id}`、`/materials`、`/materials/{id}` 均 200；目录 338 件、材料/工艺 36 条；产品图与分享 JSON 均 200。
 - 静态检查：`node check.js` 通过（11 JS / 9 JSON / 3 WXML）。
-- 模拟器：首页 326 件部件、36 材料/工艺；品类/子类/价格/材料排序、关键参数、评分标签、详情结构化参数、材质优缺点/渠道均已加载。
+- 模拟器：首页 338 件部件、36 材料/工艺；品类/子类/价格/材料排序、关键参数、评分标签、详情结构化参数、材质优缺点/渠道均已加载。
 - 自动化：`miniprogram-automator` 连接成功但 `App.getCurrentPage` 超时，已在 README 记录为工具链限制。

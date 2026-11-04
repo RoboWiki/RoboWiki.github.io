@@ -190,6 +190,32 @@ code {
   box-shadow: none !important;
 }
 
+/* 表格自己横向滚动；单元格内的长参数 / URL 折行，不把页面推出横向滚动条 */
+.ant-table-wrapper,
+.ant-descriptions-view {
+  max-width: 100%;
+}
+.ant-table-cell,
+.ant-descriptions-item-content,
+.ant-form-item-explain {
+  overflow-wrap: anywhere;
+}
+
+/* 移动端触控目标 ≥40px：small 按钮默认 24px，手指点不准。
+   只在小屏生效，桌面仍是紧凑后台。 */
+@media (max-width: 640px) {
+  .ant-btn {
+    min-height: 40px;
+  }
+  .ant-btn-sm {
+    padding-inline: 12px;
+    font-size: 13px;
+  }
+  .ant-modal {
+    max-width: calc(100vw - 24px);
+  }
+}
+
 /* markdown 正文 */
 .prose-body p:first-child {
   margin-top: 0;

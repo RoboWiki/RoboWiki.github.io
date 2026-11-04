@@ -1,4 +1,4 @@
-import { App as AntApp, Modal, Select, Table, Tag, Empty, Spin } from 'antd'
+import { App as AntApp, Alert, Button, Empty, Modal, Select, Spin, Table, Tag } from 'antd'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
 import { api, auth, type Part } from './api'
@@ -131,7 +131,8 @@ function EditModal({ partId, onClose }: { partId: string; onClose: () => void })
   const set = (path: string, v: any) => setDraft(d => ({ ...d, [path]: v }))
 
   return (
-    <Modal open onCancel={onClose} width={860} title={null} footer={null} destroyOnHidden>
+    <Modal open onCancel={onClose} width={860} title={null} footer={null} destroyOnHidden
+      styles={{ body: { maxHeight: '72vh', overflowY: 'auto' } }}>
       {isLoading || !p ? <Spin /> : (
         <div>
           <div className="mb-3 flex items-baseline gap-2">
@@ -152,7 +153,7 @@ function EditModal({ partId, onClose }: { partId: string; onClose: () => void })
                     <label key={path}
                       className={`flex items-center gap-2 rounded-lg border px-2 py-1
                         ${changed ? 'border-amber-300 bg-amber-50' : 'border-slate-200 bg-slate-50'}`}>
-                      <span className="w-[152px] shrink-0 text-[11.5px] text-slate-500">
+                      <span className="w-[112px] shrink-0 text-[11.5px] text-slate-500 sm:w-[152px]">
                         {label}{unit ? <span className="text-slate-400"> ({unit})</span> : null}
                       </span>
                       <input
@@ -180,15 +181,16 @@ function EditModal({ partId, onClose }: { partId: string; onClose: () => void })
               placeholder="来源链接（建议填官方页面或 PDF 地址）"
               className="mt-1.5 w-full rounded-md border border-slate-200 bg-[var(--surface)] px-2 py-1.5
                          text-[12.5px] text-slate-900 outline-none focus:border-amber-300" />
-            <div className="mt-2 flex items-center gap-2">
+            <div className="mt-2 flex flex-wrap items-center gap-2">
               <button onClick={() => { if (note.trim().length < 2) return message.warning('至少写清依据'); save.mutate() }}
                 disabled={!Object.keys(draft).length || save.isPending}
-                className="rounded-md bg-blue-600 px-3 py-1.5 text-[12.5px] font-semibold
-                           text-white disabled:opacity-40">
+                className="min-h-8 rounded-md bg-blue-600 px-3 py-1.5 text-[12.5px] font-semibold
+                           text-white disabled:opacity-40 max-sm:min-h-10">
                 提交审核 {Object.keys(draft).length ? `(${Object.keys(draft).length} 个字段)` : ''}
               </button>
               <button onClick={() => setDraft({})}
-                className="rounded-md border border-slate-200 px-3 py-1.5 text-[12.5px] text-slate-600">
+                className="min-h-8 rounded-md border border-slate-200 px-3 py-1.5 text-[12.5px]
+                           text-slate-600 max-sm:min-h-10">
                 撤销改动
               </button>
               <span className="text-[11px] text-slate-400">提交后进审核队列，release 后才更新目录</span>
@@ -303,8 +305,8 @@ export default function Admin() {
       title: '', width: 70,
       render: (_: any, r: Part) => (
         <button onClick={() => setEditId(r.id)}
-          className="rounded-md border border-slate-200 px-2 py-0.5 text-[11.5px] text-slate-600
-                     hover:border-blue-300 hover:text-blue-600">
+          className="min-h-7 rounded-md border border-slate-200 px-2 py-0.5 text-[11.5px] text-slate-600
+                     hover:border-blue-300 hover:text-blue-600 max-sm:min-h-10 max-sm:px-3">
           编辑
         </button>
       ),
@@ -312,16 +314,23 @@ export default function Admin() {
   ], [])
 
   if (!user?.is_staff) {
-    return <Empty description={<span className="text-slate-500">需要站务权限（用 lcs 登录）</span>} />
+    return <Empty description={<span className="text-slate-500">需要站务权限（用站务账号如 robowiki 登录）</span>} />
   }
 
   return (
-    <div>
+    <div className="w-full min-w-0">
       <h1 className="text-[20px] font-bold tracking-tight text-slate-900">数据后台</h1>
       <p className="mb-4 mt-1 text-[12.5px] text-slate-500">
         每个字段都能改，但<strong className="text-amber-700">每次改动都要写清依据</strong>
         ——依据和来源会存进修改记录，成为这条数据的可追溯部分。
       </p>
+
+      {stats.isError && (
+        <Alert className="mb-3" type="warning" showIcon
+          title="统计加载失败，缺口数字可能不准"
+          description={(stats.error as any)?.message}
+          action={<Button size="small" onClick={() => stats.refetch()} loading={stats.isFetching}>重试</Button>} />
+      )}
 
       <div className="mb-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
         {GAPS.map(g => (
@@ -333,29 +342,39 @@ export default function Admin() {
         ))}
       </div>
 
-      <div className="mb-3 flex items-center gap-2">
+      <div className="mb-3 flex flex-wrap items-center gap-2">
         <input value={q} onChange={e => { setQ(e.target.value); setPage(1) }}
           placeholder="搜型号 / 厂商"
-          className="w-[240px] rounded-lg border border-slate-200 bg-slate-50 px-3 py-2
+          className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2
                      text-[13px] text-slate-900 placeholder:text-slate-400 outline-none
-                     focus:border-blue-300" />
+                     focus:border-blue-300 sm:w-[240px]" />
         {gap && (
           <button onClick={() => setGap(undefined)}
-            className="rounded-lg border border-amber-300 bg-amber-50 px-2.5 py-1.5 text-[12px] text-amber-600">
+            className="min-h-8 rounded-lg border border-amber-300 bg-amber-50 px-2.5 py-1.5
+                       text-[12px] text-amber-600 max-sm:min-h-10">
             筛选中：{GAPS.find(g => g.k === gap)?.label} ✕
           </button>
         )}
-        <span className="ml-auto text-[12px] text-slate-400">
+        <span className="text-[12px] text-slate-400 sm:ml-auto">
           共 {list.data?.total ?? 0} 项 · 已留痕 {stats.data?.edits ?? 0} 条
         </span>
       </div>
 
-      <Table size="small" rowKey="id" loading={list.isLoading}
-        dataSource={list.data?.items || []} columns={cols as any}
-        pagination={{
-          current: page, pageSize, total: list.data?.total ?? 0, showSizeChanger: false,
-          onChange: setPage, showTotal: t => `共 ${t} 项`,
-        }} />
+      {list.isError ? (
+        <Alert type="error" showIcon
+          title="零件列表加载失败"
+          description={(list.error as any)?.message || '请求出错'}
+          action={<Button size="small" onClick={() => list.refetch()} loading={list.isFetching}>重试</Button>} />
+      ) : (
+        <Table size="small" rowKey="id" loading={list.isLoading}
+          dataSource={list.data?.items || []} columns={cols as any}
+          scroll={{ x: 860 }}
+          locale={{ emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="没有匹配的零件" /> }}
+          pagination={{
+            current: page, pageSize, total: list.data?.total ?? 0, showSizeChanger: false,
+            onChange: setPage, showTotal: t => `共 ${t} 项`,
+          }} />
+      )}
 
       {editId && <EditModal partId={editId} onClose={() => setEditId(null)} />}
     </div>

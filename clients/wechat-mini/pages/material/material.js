@@ -13,6 +13,10 @@ function formatForms(forms) {
   }).join('；')
 }
 
+function safeDecode(v) {
+  try { return decodeURIComponent(v || '') } catch (e) { return String(v || '') }
+}
+
 Page({
   data: {
     item: null,
@@ -34,7 +38,7 @@ Page({
   },
 
   onLoad(query) {
-    this.id = decodeURIComponent(query.id || '')
+    this.id = safeDecode(query.id)
     this.setData({ timelinePreview: Number(query.scene) === 1154 })
     this.load()
   },
@@ -52,9 +56,15 @@ Page({
       const hidden = ['image_url', 'image_source', 'doc_url', 'doc_pdf',
         'repo_urls', 'repo_license', 'tags', 'coupon', 'fetched_at', 'category_cn']
       const rows = Object.keys(specs)
-        .filter(k => !hidden.includes(k))
+        .filter(k => k !== 'modulus_kind' && !hidden.includes(k))
         .filter(k => specs[k] !== null && specs[k] !== undefined && specs[k] !== '')
-        .map(k => ({ key: k, label: L.materialLabel(k), value: text(specs[k]) }))
+        .map(k => ({
+          key: k,
+          label: k === 'modulus_GPa' && specs.modulus_kind === '弯曲'
+            ? '弯曲模量 (GPa)'
+            : L.materialLabel(k),
+          value: text(specs[k]),
+        }))
 
       const sources = (r.sources || []).map(s => ({
         url: s.url,
@@ -93,8 +103,18 @@ Page({
     }
   },
 
-  copyLink() {
-    F.copy(this.data.webUrl, '网页链接已复制')
+  async copyLink() {
+    // 与网页分享卡同一份 JSON：canonical_url / data_version / copy_text 不另拼。
+    const r = this.data.item || {}
+    let url = this.data.webUrl
+    try {
+      const json = F.shareMaterialUrl(r)
+      if (json) {
+        const share = await api.getUrl(json)
+        if (share && share.canonical_url) url = share.canonical_url
+      }
+    } catch (e) {}
+    F.copy(url, '网页链接已复制')
   },
 
   retry() { this.load() },

@@ -142,6 +142,9 @@
   <view wx:if="{{items.length && hasMore}}" class="loadmore" bindtap="onReachBottom">
     {{loadingMore ? '加载中…' : '加载更多'}}
   </view>
+  <view wx:if="{{truncated}}" class="note">
+    条目超过单次上限，当前只列出前 {{items.length}} 条；用搜索或分组收窄后再排序。
+  </view>
   <view wx:if="{{items.length && !hasMore}}" class="footer">
     共 {{total}} 条{{version ? ' · ' + version : ''}}
   </view>

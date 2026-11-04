@@ -36,6 +36,18 @@ def client():
     shutil.rmtree(_TMP, ignore_errors=True)
 
 
+@pytest.fixture(scope="module", autouse=True)
+def _clean_ratings(client):
+    """契约测试要求“未评分”是真空：清掉其它模块留下的评分。"""
+    from sqlmodel import delete
+    from app.core.db import session
+    from app.models import Rating
+    with session() as db:
+        db.exec(delete(Rating))
+        db.commit()
+    yield
+
+
 def test_meta_exposes_site_url_and_version(client):
     d = client.get("/api/v1/meta").json()
     assert d["site_url"].startswith("https://")

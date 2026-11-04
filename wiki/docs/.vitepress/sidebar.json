@@ -444,12 +444,12 @@
        "link": "/parts/module/"
       },
       {
-       "text": "灵足 RobStride",
-       "link": "/parts/module/lingzu-robstride"
+       "text": "CAN 模块",
+       "link": "/parts/module/can"
       },
       {
-       "text": "达妙 DAMIAO",
-       "link": "/parts/module/damiao"
+       "text": "电源管理模块",
+       "link": "/parts/module/power"
       }
      ]
     },
@@ -540,6 +540,28 @@
       {
        "text": "西安航天民芯",
        "link": "/parts/chip/xa-aerospace"
+      }
+     ]
+    },
+    {
+     "text": "开源硬件",
+     "collapsed": true,
+     "items": [
+      {
+       "text": "总览",
+       "link": "/parts/open_hw/"
+      },
+      {
+       "text": "电源 / 分电模块",
+       "link": "/parts/open_hw/power"
+      },
+      {
+       "text": "控制 / 扩展板",
+       "link": "/parts/open_hw/control"
+      },
+      {
+       "text": "超级电容",
+       "link": "/parts/open_hw/supercap"
       }
      ]
     }

@@ -72,6 +72,10 @@ class User(SQLModel, table=True):
     email: str | None = Field(default=None, unique=True)
     email_verified: bool = False
     password_hash: str
+    #: 是否设置过可用口令。第三方登录（GitHub / 小程序）建出来的账号拿着
+    #: 一个没人知道的随机哈希，这里记 False —— 解绑最后一个身份前，
+    #: 必须还有别的登录方式，否则账号就锁死了。
+    password_set: bool = True
     bio: str = ""
     avatar_hue: int = 160                              # 头像底色，免上传
     is_staff: bool = False
@@ -93,6 +97,37 @@ class EmailToken(SQLModel, table=True):
     token_hash: str = Field(index=True, unique=True)
     expires_at: datetime = Field(index=True)
     used_at: datetime | None = None
+    created_at: datetime = Field(default_factory=utcnow)
+
+
+class Identity(SQLModel, table=True):
+    """第三方身份。一个 user 可以绑多个（GitHub / 微信小程序 / 以后更多）。
+
+    为什么是独立一张表而不是往 users 上加 `github_id`、`wechat_openid`：
+    每接一个渠道就多一列、多一次迁移、多一处「这列可能为 NULL」；
+    这里多接一个渠道只是多一行。
+
+    `(provider, subject)` 唯一是整张表的核心约束：
+      · provider —— `github` / `wechat_mini`，是我们自己的枚举；
+      · subject  —— 提供方侧的稳定 ID（GitHub 数字 id / 微信 openid），
+                    改昵称、改邮箱都不会变，所以它才是主键的一半。
+    同一个人重复登录必须落在同一行上，靠数据库保证，而不是靠代码自查。
+    """
+
+    __tablename__ = "identities"
+    __table_args__ = (
+        UniqueConstraint("provider", "subject", name="uq_identity_provider_subject"),
+        Index("ix_identities_user_provider", "user_id", "provider"),
+    )
+
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="users.id", index=True)
+    provider: str = Field(index=True)                  # github | wechat_mini
+    subject: str = Field(index=True)                   # 提供方侧稳定 ID
+    #: 提供方返回的邮箱（可能为空；微信小程序没有邮箱）
+    email: str | None = Field(default=None, index=True)
+    #: 提供方资料快照（不含 token / session_key —— 那是不该落库的密钥）
+    raw: dict = Field(default_factory=dict, sa_column=Column(JSON))
     created_at: datetime = Field(default_factory=utcnow)
 
 

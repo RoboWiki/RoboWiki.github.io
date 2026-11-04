@@ -1,10 +1,11 @@
-// 主题：默认主题 + 每页底部的讨论串（giscus）。
+// 主题：默认主题 + 每页底部的讨论串（主站自托管 / 静态镜像 giscus）。
 // 参考 YunQianDoc 的 theme/index.ts（doc-before / layout-bottom 插槽用法），
 // 这里只占 doc-after 一个插槽，把评论放在正文之后。
 import { defineAsyncComponent, h } from 'vue'
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import PageComments from '../components/PageComments.vue'
+import AuthPanel from '../components/AuthPanel.vue'
 import ContributorGrid from '../components/ContributorGrid.vue'
 import ShareBox from '../components/ShareBox.vue'
 import DataFix from '../components/DataFix.vue'
@@ -22,6 +23,7 @@ export default {
   },
   enhanceApp({ app }) {
     app.component('PageComments', PageComments)
+    app.component('AuthPanel', AuthPanel)
     app.component('PartExplorer', defineAsyncComponent(() => import('../components/PartExplorer.vue')))
     app.component('SupplierList', defineAsyncComponent(() => import('../components/SupplierList.vue')))
     app.component('ContributorGrid', ContributorGrid)

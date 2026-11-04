@@ -129,6 +129,19 @@ html.dark .part-gallery-img { background: #f4f4f4; }
 .part-official table { width: 100%; font-size: 0.8rem; }
 .part-official td:first-child { color: var(--vp-c-text-3); width: 45%; }
 
+#评分,
+#纠错 {
+  scroll-margin-top: calc(var(--vp-nav-height, 64px) + 16px);
+}
+.part-jump {
+  display: flex;
+  gap: 0.9rem;
+  margin: 0.35rem 0 0.6rem;
+  font-size: 0.78rem;
+}
+.part-jump a { color: var(--rw-link); text-decoration: none; }
+.part-jump a:hover { text-decoration: underline; }
+
 .part-src {
   margin-top: 0.5rem;
   font-size: 0.78rem;

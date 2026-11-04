@@ -7,9 +7,18 @@ set -euo pipefail
 # 避免在服务器上因为 `python: command not found` 卡在第一步。
 PY="${PYTHON:-}"
 if [ -z "$PY" ]; then
-  if command -v python3 >/dev/null 2>&1; then PY=python3
-  elif command -v python >/dev/null 2>&1; then PY=python
-  else echo "需要 Python 3.11+（python3 或 python）" >&2; exit 1; fi
+  # Windows 的 python3 可能是 Store 占位符：command -v 能找到，但执行返回 49。
+  # 所以不只看有没有，还要实际跑一次 import。
+  if command -v python3 >/dev/null 2>&1 && python3 -c 'import sys' >/dev/null 2>&1; then
+    PY=python3
+  elif command -v python >/dev/null 2>&1 && python -c 'import sys' >/dev/null 2>&1; then
+    PY=python
+  elif command -v py >/dev/null 2>&1 && py -c 'import sys' >/dev/null 2>&1; then
+    PY=py
+  else
+    echo "需要可用的 Python 3.11+（python3 / python / py）" >&2
+    exit 1
+  fi
 fi
 if ! command -v gh >/dev/null 2>&1 && ! command -v curl >/dev/null 2>&1; then
   echo "需要 gh 或 curl 之一来下载 release" >&2

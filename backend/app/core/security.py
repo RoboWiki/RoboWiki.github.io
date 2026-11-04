@@ -50,6 +50,17 @@ def verify_password(raw: str, stored: str) -> bool:
         return False
 
 
+def unusable_password_hash() -> str:
+    """给「没有口令」的账号一个没人知道的随机哈希。
+
+    `users.password_hash` 非空，第三方登录建出来的账号也必须有一串；
+    用 `secrets.token_urlsafe(32)` 现场生成、不落任何地方，等于这串口令
+    不存在。配合 `users.password_set = False` 表达「这个账号不能口令登录」。
+    注意不要在登录路径上调用它 —— 那会每次登录都多跑一次 PBKDF2。
+    """
+    return hash_password(secrets.token_urlsafe(32))
+
+
 def password_fingerprint(password_hash: str) -> str:
     """password_hash 的 16 位指纹，写进 JWT 的 `pv` 声明。
 
@@ -60,11 +71,20 @@ def password_fingerprint(password_hash: str) -> str:
 
 
 # ── 令牌 ────────────────────────────────────────────────────────────────────
-def create_token(sub: str, password_hash: str) -> str:
-    """签 token。`pv` 绑定当前口令哈希，改密即撤销。"""
-    payload = {"sub": sub, "pv": password_fingerprint(password_hash),
-               "exp": now() + timedelta(hours=settings.token_hours),
-               "iat": now()}
+def create_token(sub: str, password_hash: str,
+                 scopes: tuple[str, ...] | None = None) -> str:
+    """签 token。`pv` 绑定当前口令哈希，改密即撤销。
+
+    `scope` 是可选的**来源声明**（空格分隔，沿用 RFC 6749 的写法）：
+    `password` / `github` / `wechat_mini`。它只说明「这枚 token 是用哪种方式
+    换来的」，不参与授权判断 —— 老客户端忽略它、`decode_token` 也不读它，
+    所以加上它不改变任何现有契约。
+    """
+    payload: dict = {"sub": sub, "pv": password_fingerprint(password_hash),
+                     "exp": now() + timedelta(hours=settings.token_hours),
+                     "iat": now()}
+    if scopes:
+        payload["scope"] = " ".join(scopes)
     return jwt.encode(payload, settings.secret_key, algorithm=_ALGO)
 
 

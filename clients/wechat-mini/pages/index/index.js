@@ -2,6 +2,13 @@ const api = require('../../utils/api')
 const F = require('../../utils/format')
 
 const PAGE_SIZE = 20
+// 材质/工艺总共几十条，API 单页上限 200；一次取完，密度/模量/抗拉排序才是全局排序，
+// 而不是「当前这一页内部排序」。超过 200 条时显式提示，不假装完整。
+const MATERIAL_PAGE_SIZE = 200
+
+function safeDecode(v) {
+  try { return decodeURIComponent(v || '') } catch (e) { return String(v || '') }
+}
 
 Page({
   data: {
@@ -24,6 +31,7 @@ Page({
     partCount: 0,
     materialCount: 0,
     hasMore: false,
+    truncated: false,
     timelinePreview: false,
   },
 
@@ -33,12 +41,12 @@ Page({
     const tab = options.tab === 'materials' ? 'materials' : 'parts'
     this.setData({
       tab,
-      q: options.q ? decodeURIComponent(options.q) : '',
-      category: options.category ? decodeURIComponent(options.category) : '',
-      subtype: options.subtype ? decodeURIComponent(options.subtype) : '',
-      sort: options.sort ? decodeURIComponent(options.sort) : 'featured',
-      materialGroup: options.group ? decodeURIComponent(options.group) : '',
-      materialSort: options.msort ? decodeURIComponent(options.msort) : 'default',
+      q: safeDecode(options.q),
+      category: safeDecode(options.category),
+      subtype: safeDecode(options.subtype),
+      sort: safeDecode(options.sort) || 'featured',
+      materialGroup: safeDecode(options.group),
+      materialSort: safeDecode(options.msort) || 'default',
       categories: this.categoriesFor(tab),
     })
     this.loadMeta()
@@ -53,6 +61,7 @@ Page({
   },
 
   onReachBottom() {
+    if (this.data.tab !== 'parts') return
     if (this.data.hasMore && !this.data.loading && !this.data.loadingMore) this.load(false)
   },
 
@@ -62,8 +71,11 @@ Page({
         api.get('/meta'),
         api.get('/materials/meta'),
       ])
+      const version = meta.data_version || mm.data_version || ''
+      // 详情页从分享链接直接打开时没有列表响应可读，版本只能靠这里缓存。
+      try { getApp().globalData.dataVersion = version } catch (e) {}
       this.setData({
-        version: meta.data_version || '',
+        version,
         materialCount: mm.total || 0,
       })
     } catch (e) {}
@@ -136,6 +148,8 @@ Page({
       total: 0,
       error: '',
     })
+    // 从材质分享链接直接进来时还没请求过 /catalog，切回部件会只剩「全部」。
+    if (tab === 'parts' && !this._partCategories) this.loadCatalog()
     this.load(true)
   },
 
@@ -241,9 +255,11 @@ Page({
     else this.setData({ loadingMore: true })
 
     const isParts = this.data.tab === 'parts'
-    const offset = reset ? 0 : this.data.items.length
+    // 材质一次取 200 条（API 上限），密度/模量/抗拉排序才覆盖全量；部件按 20 条翻页。
+    const offset = isParts ? (reset ? 0 : this.data.items.length) : 0
     const cacheKey = `rw:list:${this.data.tab}:${this.data.category}:${this.data.subtype}:${this.data.q.trim()}:${this.data.sort}:${this.data.materialGroup}:${this.data.materialSort}`
-    const params = { limit: isParts ? PAGE_SIZE : 100, offset }
+    const limit = isParts ? PAGE_SIZE : MATERIAL_PAGE_SIZE
+    const params = { limit, offset }
     const q = this.data.q.trim()
     if (q) params.q = q
     if (this.data.category) params.category = this.data.category
@@ -271,7 +287,11 @@ Page({
         materialGroups: isParts ? this.data.materialGroups : (d.groups || this.data.materialGroups),
         loading: false,
         loadingMore: false,
-        hasMore: (reset ? incoming.length : this.data.items.length + incoming.length) < (d.total || 0),
+        // 材质不分页：超过单次上限时如实提示，不用「加载更多」把局部排序说成全局排序。
+        hasMore: isParts
+          ? (reset ? incoming.length : this.data.items.length + incoming.length) < (d.total || 0)
+          : false,
+        truncated: !isParts && (d.total || 0) > incoming.length,
         error: '',
         version: d.data_version || this.data.version,
       }
@@ -306,6 +326,7 @@ Page({
           loading: false,
           loadingMore: false,
           hasMore: false,
+          truncated: false,
           error: `网络不可用，显示离线数据（${F.date(new Date(cached.savedAt || Date.now()).toISOString())}）`,
         })
         return
@@ -315,6 +336,7 @@ Page({
         loadingMore: false,
         error: e.message,
         hasMore: false,
+        truncated: false,
       })
     }
   },

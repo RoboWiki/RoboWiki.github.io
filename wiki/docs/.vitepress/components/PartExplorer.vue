@@ -64,9 +64,11 @@ const en = computed(() => props.lang === 'en')
 /** 只翻界面壳；型号与参数值保持原文。 */
 const L = computed(() => en.value
   ? { featured: 'Catalogued', search: 'Search model / brand / type', compare: 'Compare', all: 'All params',
-      none: 'No photo yet', count: 'items', sort: 'Sort by', vendor: 'Vendor', type: 'Type' }
+      none: 'No photo yet', count: 'items', sort: 'Sort by', vendor: 'Vendor', type: 'Type',
+      sub: 'Subtype', reset: 'Reset' }
   : { featured: '入库', search: '搜型号 / 品牌 / 类型', compare: '对比', all: '全部参数',
-      none: '暂无产品图', count: '件', sort: '按', vendor: '厂商', type: '类型' })
+      none: '暂无产品图', count: '件', sort: '按', vendor: '厂商', type: '类型',
+      sub: '子类', reset: '重置' })
 
 const all = ref<Part[]>(catalogData.parts || [])
 const loading = ref(false)
@@ -88,7 +90,9 @@ const hasRealCuration = computed(() =>
   featuredIds.value.size > 0 && featuredIds.value.size < all.value.length)
 const cat = ref('actuator')
 const vendor = ref('')
-const sensorType = ref('')
+/** 子类（品类内细分，例如连接器的「线对板」、传感器的「ToF」）。
+ *  之前只有 sensor 有子类筛选，其余品类只能按厂商筛 —— 型号一多就没法收窄。 */
+const subFilter = ref('')
 const sort = ref<string>('tau_peak_Nm')
 const order = ref<'desc' | 'asc'>('desc')
 /** 品类是否被「显式选中」过（点卡片或 URL 带 category）。
@@ -96,6 +100,10 @@ const order = ref<'desc' | 'asc'>('desc')
 const catPinned = ref(false)
 const picked = ref<Part[]>([])
 const detail = ref<Part | null>(null)
+
+/** 一页 24 件：326 件一次渲染在低端手机上要卡 1–2 秒，也让人找不到当前位置。 */
+const PAGE_SIZE = 24
+const page = ref(1)
 
 /* ── 「全部参数」弹窗的键盘契约 ────────────────────────────────────────
    之前只有 role="dialog" aria-modal="true" 这层声明，行为一条都没有：
@@ -171,6 +179,7 @@ const FALLBACK_CATS = [
   { v: 'controller_low', t: '下位机' },
   { v: 'module', t: '其余模块' },
   { v: 'chip', t: '硬件芯片' },
+  { v: 'open_hw', t: '开源硬件' },
 ]
 const CATS = ref<Cat[]>((catalogData.categories?.length ? catalogData.categories : FALLBACK_CATS).map((c: any) => ({
   v: c.id || c.v, t: c.name || c.t, subtypes: c.subtypes || {}, keys: c.keys || [], sorts: c.sorts || [],
@@ -191,7 +200,7 @@ onMounted(() => {
   }
   q.value = params.get('q') || ''
   vendor.value = params.get('vendor') || ''
-  sensorType.value = params.get('subtype') || ''
+  subFilter.value = params.get('subtype') || ''
   sort.value = params.get('sort') || 'tau_peak_Nm'
   order.value = (params.get('order') as 'desc' | 'asc') || 'desc'
 
@@ -200,8 +209,7 @@ onMounted(() => {
   syncFiltersUrl()
 })
 
-/** 换品类时重置筛选与排序。
- *  「按峰值扭矩」对芯片/雷达毫无意义 —— 默认排序应该跟着品类走。 */
+/** 精选开关：白名单没真正收窄全库时，按钮不出现也不生效。 */
 function toggleFeatured() {
   if (!hasRealCuration.value) return
   featuredOnly.value = !featuredOnly.value
@@ -214,9 +222,11 @@ function setCat(v: string) {
   cat.value = v
   catPinned.value = true
   vendor.value = ''
-  sensorType.value = ''
-  q.value = ''
+  subFilter.value = ''
+  // 搜索词保留：点品类是「在结果里收窄」，不是重新开始；
+  // 要全部清掉用「重置」。
   sort.value = defaultSortFor(v)
+  page.value = 1
   syncCategoryUrl()
 }
 
@@ -224,6 +234,23 @@ function defaultSortFor(v: string) {
   const m = CATS.value.find(c => c.v === v)
   return m?.sorts?.[0]?.k || 'price'
 }
+
+/** 清掉全部筛选，回到默认品类 + 默认排序。空态和工具条都用它。 */
+function resetFilters() {
+  cat.value = CATS.value[0]?.v || 'actuator'
+  catPinned.value = false
+  q.value = ''
+  vendor.value = ''
+  subFilter.value = ''
+  sort.value = defaultSortFor(cat.value)
+  order.value = 'desc'
+  page.value = 1
+  syncFiltersUrl()
+}
+
+const filtersActive = computed(() =>
+  !!q.value.trim() || !!vendor.value || !!subFilter.value || catPinned.value
+  || sort.value !== defaultSortFor(cat.value) || order.value !== 'desc')
 
 /** 筛选状态进 URL：刷新、收藏、贴群都能回到同一视图。
  *  只写非默认值，避免分享出一串 `?q=&vendor=&sort=` 噪声。 */
@@ -238,7 +265,7 @@ function syncFiltersUrl() {
   set('category', cat.value, !catPinned.value && cat.value === defaultCat)
   set('q', q.value.trim())
   set('vendor', vendor.value)
-  set('subtype', sensorType.value)
+  set('subtype', subFilter.value)
   set('sort', sort.value, sort.value === defaultSortFor(cat.value))
   set('order', order.value, order.value === 'desc')
   history.replaceState(history.state, '', url)
@@ -246,23 +273,30 @@ function syncFiltersUrl() {
 
 const syncCategoryUrl = syncFiltersUrl
 
-// 任一变就同步：比在每个 handler 里各写一遍更难漏。
-watch([cat, q, vendor, sensorType, sort, order], syncFiltersUrl)
+// 任一变就同步 + 回到第一页：换筛选后还停在第 7 页，看到的是空列表。
+watch([cat, q, vendor, subFilter, sort, order, featuredOnly], () => {
+  page.value = 1
+  syncFiltersUrl()
+})
 
 const catCount = (v: string) => all.value.filter(p => p.category === v).length
 
 /** 空列表提示分两种：真没收录，还是收了但筛没了。混成一句会让人以为数据丢了。 */
 const emptyText = computed(() => {
-  const typeEmpty = cat.value === 'sensor' && !!sensorType.value
-    && !all.value.some(p => p.category === 'sensor' && p.subtype === sensorType.value)
-  return typeEmpty || !catCount(cat.value)
-    ? '这一类还没有收录 —— 没有可信来源，宁缺不编'
-    : '没有符合条件的部件'
+  if (subFilter.value
+      && !all.value.some(p => p.category === cat.value && p.subtype === subFilter.value)) {
+    return '这个子类还没有收录 —— 没有可信来源，宁缺不编'
+  }
+  if (!catCount(cat.value)) return '这一类还没有收录 —— 没有可信来源，宁缺不编'
+  const term = q.value.trim()
+  return term ? `没有匹配「${term}」的部件` : '没有符合条件的部件'
 })
 
 /** 当前品类的元数据：卡片显示哪些参数、能按什么排序，都来自这里。 */
-const meta = computed(() => CATS.value.find(c => c.v === cat.value))
-const catName = computed(() => meta.value?.t || '部件')
+function metaOf(id: string): Cat | undefined {
+  return CATS.value.find(c => c.v === id)
+}
+const meta = computed(() => metaOf(cat.value))
 
 /** 抽屉里给非核心键补中文标签；核心键的标签来自 taxonomy 的 keys。 */
 const EXTRA_LABELS: Record<string, string> = {
@@ -275,8 +309,8 @@ const EXTRA_LABELS: Record<string, string> = {
   freq_max_ghz: '最高频率 (GHz)', length_m: '长度 (m)', awg: '线规',
   positions_options: '可选位数',
 }
-function labelFor(k: string): string {
-  return meta.value?.keys.find(x => x.k === k)?.label || EXTRA_LABELS[k] || k
+function labelFor(k: string, category = cat.value): string {
+  return metaOf(category)?.keys.find(x => x.k === k)?.label || EXTRA_LABELS[k] || k
 }
 const sortOpts = computed(() => {
   const opts = meta.value?.sorts?.length ? meta.value.sorts : FALLBACK_SORTS
@@ -287,14 +321,13 @@ const sortOpts = computed(() => {
 const vendors = computed(() =>
   [...new Set(all.value.filter(p => p.category === cat.value).map(p => p.vendor))].sort())
 
-/** 传感器按**类型**筛选，不按厂商：同类传感器跨厂商横向比才有意义。
- *  0 计数的类型照样列出（虚线），让「以后该收什么」显式可见，而不是假装完整。
+/** 品类内的子类筛选项：**所有品类**通用，不再只给传感器开。
+ *  0 计数的子类照样列出（虚线），让「以后该收什么」显式可见，而不是假装完整。
  *  做法来自 ccc 分支（Dichen33）。 */
-const sensorTypes = computed(() => {
-  if (cat.value !== 'sensor') return []
+const subtypeOptions = computed(() => {
   const items = Object.entries(meta.value?.subtypes || {}).map(([v, label]) => ({
     v, label: String(label),
-    count: all.value.filter(p => p.category === 'sensor' && p.subtype === v).length,
+    count: all.value.filter(p => p.category === cat.value && p.subtype === v).length,
   }))
   const filled = items.filter(x => x.count).sort((a, b) => b.count - a.count)
   return [...filled, ...items.filter(x => !x.count)]
@@ -303,7 +336,8 @@ const sensorTypes = computed(() => {
 /** 排序取值器：specs 里的键、或内置的 price / rating。
  *  空值统一返回 null，排序时沉底（缺失就是缺失，不该混进比较）。 */
 function sortValue(p: Part, k: string): any {
-  if (k === 'price') return p.offer?.price ?? p.price ?? null
+  // 价格排序用公开标价：优惠价要资格，不是人人都能拿到，混进排序会失真。
+  if (k === 'price') return p.price ?? p.offer?.price ?? null
   if (k === 'rating') return p.rating?.avg ?? null
   const v = (p as any).specs?.[k]
   return v === undefined || v === '' ? null : v
@@ -328,18 +362,44 @@ function matchesQuery(p: Part, q: string): boolean {
   return terms.every(t => hay.includes(t))
 }
 
+/** 跨库搜索时的相关度：型号完全命中 > 前缀 > 包含 > 厂商命中。
+ *  全库搜索用的是当前品类（默认关节电机）的参数排序，连接器/芯片的扭矩全是空值，
+ *  不按相关度先排，搜 XT30 会先看到一堆扭矩为空的卡片。 */
+function relevance(p: Part, q: string): number {
+  const terms = q.toLowerCase().split(/\s+/).filter(Boolean)
+  const model = p.model.toLowerCase()
+  const vendor = p.vendor.toLowerCase()
+  let score = 0
+  for (const t of terms) {
+    if (model === t) score += 100
+    else if (model.startsWith(t)) score += 60
+    else if (model.includes(t)) score += 40
+    else if (vendor.includes(t)) score += 20
+    else score += 5
+  }
+  return score
+}
+
+/** 搜索跨全库：没点过品类时，搜型号不被默认品类挡住。 */
+const crossSearch = computed(() => !!q.value.trim() && !catPinned.value)
+
 const rows = computed(() => {
   const key = (p: Part) => sortValue(p, sort.value)
   // 精选门：开关打开且白名单非空时才过滤
   const gate = featuredOnly.value && hasCuration.value
   let out = all.value.filter(
-    p => (p.category === cat.value || (!!q.value && !catPinned.value))
+    p => (p.category === cat.value || crossSearch.value)
       && (!gate || featuredIds.value.has(p.id))
       && (!vendor.value || p.vendor === vendor.value)
-      && (!sensorType.value || p.subtype === sensorType.value)
+      && (!subFilter.value || p.subtype === subFilter.value)
       && (!q.value || matchesQuery(p, q.value)),
   )
   out = [...out].sort((a, b) => {
+    // 全库搜索：先看型号相关度，再按用户选的参数排。
+    if (crossSearch.value) {
+      const ra = relevance(a, q.value), rb = relevance(b, q.value)
+      if (ra !== rb) return rb - ra
+    }
     const va = key(a), vb = key(b)
     // null 永远排最后：缺失就是缺失，不该混进排序
     if (va == null && vb == null) return 0
@@ -351,8 +411,28 @@ const rows = computed(() => {
   return out
 })
 
+const pageCount = computed(() => Math.max(1, Math.ceil(rows.value.length / PAGE_SIZE)))
+const pageRows = computed(() =>
+  rows.value.slice((page.value - 1) * PAGE_SIZE, page.value * PAGE_SIZE))
+watch([rows, pageCount], () => {
+  if (page.value > pageCount.value) page.value = pageCount.value
+})
+
+const listRef = ref<HTMLElement | null>(null)
+async function goPage(n: number) {
+  page.value = Math.min(Math.max(1, n), pageCount.value)
+  await nextTick()
+  listRef.value?.scrollIntoView({ block: 'start', behavior: 'smooth' })
+}
+
 function num(v: any, d = 3): string {
   if (v == null || v === '') return '—'
+  if (typeof v === 'boolean') return v ? '支持' : '否'
+  // 嵌套 specs（params / price_tiers）直接 String() 会变成 [object Object]。
+  if (Array.isArray(v)) return v.map(x => num(x, d)).join(' / ')
+  if (typeof v === 'object') {
+    return Object.entries(v).map(([k, x]) => `${k} ${num(x, d)}`).join('；')
+  }
   const n = Number(v)
   if (!isFinite(n)) return String(v)
   const a = Math.abs(n)
@@ -378,12 +458,12 @@ function money(v: number | null): string | null {
   return `¥${Number(s).toLocaleString('en-US', { maximumFractionDigits: digits })}`
 }
 
-/** 卡片上的 4 个关键参数 —— 按品类取，不是写死关节电机那四个 */
-/** 卡片上的关键参数：完全按品类定义渲染（4–6 个），不再写 if-else 分支。
- *  加品类只需要在 data/taxonomy.json 里写 keys。 */
+/** 卡片上的关键参数：按**该卡片自己的品类**取，不是按当前筛选品类。
+ *  全库搜索时结果是混合品类，用关节电机的标签套在连接器上会指鹿为马。 */
 function chips(p: Part): { k: string; v: string }[] {
+  const m = metaOf(p.category)
   const out: { k: string; v: string }[] = []
-  for (const key of meta.value?.keys || []) {
+  for (const key of m?.keys || []) {
     const raw = sortValue(p, key.k)
     if (raw === null || raw === 0 || raw === '') continue
     if (typeof raw === 'boolean') {
@@ -404,16 +484,34 @@ function toggleCompare(p: Part) {
 }
 const isPicked = (p: Part) => picked.value.some(x => x.id === p.id)
 
-const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
-  { t: '峰值扭矩', f: p => num(p.tauPeak) },
-  { t: '额定扭矩', f: p => num(p.tauRated) },
-  { t: '减速比', f: p => num(p.gear) },
-  { t: '质量', f: p => num(p.mass) },
-  { t: '转子惯量', f: p => num(p.armature) },
-  { t: '空载转速', f: p => num(p.rpm) },
-  { t: '价格', f: p => money(p.offer?.price ?? p.price) ?? '询价' },
-  { t: '评分', f: p => (p.rating.avg == null ? '暂无' : `${p.rating.avg} (${p.rating.count})`) },
-]
+/** 对比表的行跟着所选项的品类走。
+ *  之前写死峰值/额定/减速比/惯量 —— 拿两个连接器对比时整张表全是「—」。 */
+function specCell(p: Part, k: string, unit = ''): string {
+  const v = sortValue(p, k)
+  if (v == null || v === '') return '—'
+  if (typeof v === 'boolean') return v ? '支持' : '否'
+  return `${num(v)}${typeof v === 'number' ? unit : ''}`
+}
+const compareFields = computed(() => {
+  const cats = [...new Set(picked.value.map(p => p.category))]
+  const keys: { k: string; label: string; unit?: string }[] = []
+  const seen = new Set<string>()
+  for (const c of cats) {
+    for (const key of metaOf(c)?.keys || []) {
+      if (seen.has(key.k)) continue
+      seen.add(key.k)
+      keys.push(key)
+    }
+  }
+  return [
+    ...keys.slice(0, 8).map(key => ({
+      t: key.label,
+      f: (p: Part) => specCell(p, key.k, key.unit),
+    })),
+    { t: '价格', f: (p: Part) => money(p.price) ?? '询价' },
+    { t: '评分', f: (p: Part) => (p.rating.avg == null ? '暂无' : `${p.rating.avg} (${p.rating.count})`) },
+  ]
+})
 </script>
 
 <template>
@@ -438,47 +536,64 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
 
       <!-- 工具条 -->
       <div class="pd-row">
-        <input v-model="q" class="pd-input" :placeholder="L.search" aria-label="搜索部件" />
-      <button v-if="hasRealCuration" class="pd-chip pd-featured"
-              :class="{ on: featuredOnly }"
-              title="只看精选（data/featured.json）"
-              @click="toggleFeatured()">
-        <span class="pd-star">★</span>{{ L.featured }}
-        <span class="pd-n">{{ hasCuration ? featuredIds.size : '未筛选' }}</span>
-      </button>
+        <input v-model="q" class="pd-input" :placeholder="L.search" aria-label="搜索部件"
+               type="search" enterkeyhint="search" autocomplete="off" spellcheck="false"
+               @keydown.esc="q = ''" />
+        <button v-if="hasRealCuration" class="pd-chip pd-featured"
+                :class="{ on: featuredOnly }"
+                :aria-pressed="featuredOnly"
+                title="只看精选（data/featured.json）"
+                @click="toggleFeatured()">
+          <span class="pd-star">★</span>{{ L.featured }}
+          <span class="pd-n">{{ hasCuration ? featuredIds.size : '未筛选' }}</span>
+        </button>
 
         <select v-model="sort" class="pd-sel" aria-label="排序方式">
           <option v-for="s in sortOpts" :key="s.k" :value="s.k">按{{ s.label }}</option>
         </select>
-        <button class="pd-btn" @click="order = order === 'desc' ? 'asc' : 'desc'">
+        <button class="pd-btn" :aria-label="order === 'desc' ? '当前降序，切换为升序' : '当前升序，切换为降序'"
+                @click="order = order === 'desc' ? 'asc' : 'desc'">
           {{ order === 'desc' ? '↓ 降序' : '↑ 升序' }}
         </button>
-        <span class="pd-sep" />
-        <span class="pd-lab">{{ cat === 'sensor' ? L.type : L.vendor }}</span>
-        <template v-if="cat === 'sensor'">
-          <button v-for="t in sensorTypes" :key="t.v"
-                  :class="['pd-chip', 'sm', sensorType === t.v ? 'on' : '', t.count ? '' : 'empty']"
-                  :title="t.count ? `${t.count} 件` : '还没有收录（没有可信来源，不编数据）'"
-                  @click="sensorType = sensorType === t.v ? '' : t.v">
-            {{ t.label }}<span class="pd-n">{{ t.count || '—' }}</span>
-          </button>
-        </template>
-        <template v-else>
-          <button v-for="v in vendors" :key="v"
-                  :class="['pd-chip', 'sm', vendor === v ? 'on' : '']"
-                  @click="vendor = vendor === v ? '' : v">{{ v }}</button>
-        </template>
-        <span class="pd-count" role="status">{{ rows.length }} {{ L.count }}</span>
+        <button v-if="filtersActive" class="pd-link pd-reset" @click="resetFilters()">{{ L.reset }}</button>
+        <span class="pd-count" role="status">
+          {{ rows.length }} {{ L.count }}<template v-if="crossSearch"> · 全库</template>
+        </span>
       </div>
+      <p v-if="crossSearch" class="pd-hint">
+        正在全库搜索，点上方品类可收窄范围；卡片的参数标签会跟随各自品类。
+      </p>
 
       <!-- 分类 -->
       <div class="pd-row">
         <button v-for="c in CATS" :key="c.v"
-                :class="['pd-chip', cat === c.v ? 'on' : '', catCount(c.v) ? '' : 'empty']"
+                :class="['pd-chip', cat === c.v && !crossSearch ? 'on' : '', catCount(c.v) ? '' : 'empty']"
+                :aria-pressed="cat === c.v && !crossSearch"
                 :title="catCount(c.v) ? `${catCount(c.v)} 件` : '还没有收录（没有可信来源，不编数据）'"
                 @click="setCat(c.v)">
           {{ c.t }}<span class="pd-n">{{ catCount(c.v) || '—' }}</span>
         </button>
+      </div>
+
+      <!-- 子类：所有品类通用；0 计数的子类也留着入口 -->
+      <div v-if="subtypeOptions.length" class="pd-row">
+        <span class="pd-lab">{{ cat === 'sensor' ? L.type : L.sub }}</span>
+        <button v-for="t in subtypeOptions" :key="t.v"
+                :class="['pd-chip', 'sm', subFilter === t.v ? 'on' : '', t.count ? '' : 'empty']"
+                :aria-pressed="subFilter === t.v"
+                :title="t.count ? `${t.count} 件` : '还没有收录（没有可信来源，不编数据）'"
+                @click="subFilter = subFilter === t.v ? '' : t.v">
+          {{ t.label }}<span class="pd-n">{{ t.count || '—' }}</span>
+        </button>
+      </div>
+
+      <!-- 厂商：传感器跨品牌横向比才有意义，仍按厂商列；其余品类同理 -->
+      <div v-if="cat !== 'sensor' && vendors.length" class="pd-row">
+        <span class="pd-lab">{{ L.vendor }}</span>
+        <button v-for="v in vendors" :key="v"
+                :class="['pd-chip', 'sm', vendor === v ? 'on' : '']"
+                :aria-pressed="vendor === v"
+                @click="vendor = vendor === v ? '' : v">{{ v }}</button>
       </div>
 
       <!-- 对比 -->
@@ -489,7 +604,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
         </div>
         <table>
           <tr><th></th><th v-for="p in picked" :key="p.id">{{ p.model }}</th></tr>
-          <tr v-for="f in COMPARE_FIELDS" :key="f.t">
+          <tr v-for="f in compareFields" :key="f.t">
             <td class="pd-k">{{ f.t }}</td>
             <td v-for="p in picked" :key="p.id">{{ f.f(p) }}</td>
           </tr>
@@ -498,12 +613,12 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
 
       <!-- 卡片：不再给整个网格加 aria-live —— 每次输入都重排 311 张卡，
            读屏会把新子树整个念一遍；改成只播报上面的计数（role="status"）。 -->
-      <div class="pd-grid">
-        <article v-for="p in rows" :key="p.id" class="card">
+      <div ref="listRef" class="pd-grid">
+        <article v-for="p in pageRows" :key="p.id" class="card">
           <a class="card-img" :href="withBase('/parts/' + p.category + '/' + p.slug)">
             <img v-if="p.image" :src="withBase(p.image)" :alt="p.model" loading="lazy" />
             <!-- 没图就如实说没图。错图（整机宣传图）比没图更糟，所以不做抽象方块充数 -->
-            <span v-else class="ph" :aria-label="`暂无${catName}产品图`">
+            <span v-else class="ph" :aria-label="`暂无${metaOf(p.category)?.t || '部件'}产品图`">
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"
                    fill="none" stroke="currentColor" stroke-width="1.6"
                    stroke-linecap="round" stroke-linejoin="round">
@@ -568,15 +683,24 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
             </div>
 
             <div class="card-acts">
-              <button class="pd-link" @click="toggleCompare(p)">{{ isPicked(p) ? '取消对比' : '对比' }}</button>
+              <button class="pd-link" :aria-pressed="isPicked(p)"
+                      @click="toggleCompare(p)">{{ isPicked(p) ? '取消对比' : '对比' }}</button>
               <button class="pd-link" @click="openDetail(p, $event)">{{ L.all }}</button>
             </div>
           </div>
         </article>
       </div>
 
-      <p v-if="!rows.length" class="pd-muted" role="status" style="padding:2rem 0;text-align:center">
+      <!-- 分页：每页 24 件。筛选变化自动回第一页，对比选择跨页保留。 -->
+      <nav v-if="pageCount > 1" class="pd-pager" aria-label="分页">
+        <button class="pd-btn" :disabled="page <= 1" @click="goPage(page - 1)">上一页</button>
+        <span class="pd-page" role="status">第 {{ page }} / {{ pageCount }} 页</span>
+        <button class="pd-btn" :disabled="page >= pageCount" @click="goPage(page + 1)">下一页</button>
+      </nav>
+
+      <p v-if="!rows.length" class="pd-muted pd-empty" role="status">
         {{ emptyText }}
+        <button v-if="filtersActive" class="pd-link" @click="resetFilters()">重置筛选</button>
       </p>
 
       <!-- 全部参数 -->
@@ -591,7 +715,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
           </div>
           <table class="pd-specs">
             <tr v-for="(v, k) in detail.specs" :key="k">
-              <td class="pd-k">{{ labelFor(k) }}</td>
+              <td class="pd-k">{{ labelFor(k, detail.category) }}</td>
               <td>{{ num(v) }}</td>
             </tr>
           </table>
@@ -639,7 +763,7 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
 .pd-chip.on {
   border-color: var(--vp-c-brand-1); background: var(--vp-c-brand-1); color: var(--rw-on-brand); font-weight: 600;
 }
-.pd-chip.empty { border-style: dashed; color: var(--vp-c-text-3); }
+.pd-chip.empty { border-style: dashed; color: var(--vp-c-text-3); opacity: 1; }
 .pd-n { margin-left: 0.35rem; opacity: 0.6; font-variant-numeric: tabular-nums; }
 .pd-sep { width: 1px; height: 18px; background: var(--vp-c-divider); margin: 0 0.25rem; }
 .pd-lab {
@@ -647,6 +771,17 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
   margin: 0 0.1rem 0 0.25rem;
 }
 .pd-count { margin-left: auto; font-size: 0.78rem; color: var(--vp-c-text-3); }
+.pd-hint { margin: -0.2rem 0 0.55rem; font-size: 0.74rem; color: var(--vp-c-text-3); }
+.pd-reset { flex: 0 0 auto; padding: 0.36rem 0.4rem; }
+.pd-pager {
+  display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+  margin: 1.1rem 0 0.4rem;
+}
+.pd-page { font-size: 0.78rem; color: var(--vp-c-text-3); font-variant-numeric: tabular-nums; }
+.pd-pager .pd-btn { min-height: 34px; padding: 0.35rem 0.9rem; }
+.pd-pager .pd-btn:disabled { opacity: 0.45; cursor: default; }
+.pd-empty { padding: 2rem 0; text-align: center; }
+.pd-empty .pd-link { margin-left: 0.5rem; }
 
 /* 卡片网格：固定 4 列。auto-fill 在宽屏会排到 6 列，卡片被压得太窄 ——
    参数两列排不下、型号名折行、价格和「优惠需资格」挤成两行。 */
@@ -654,6 +789,8 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.85rem;
+  /* 翻页后 scrollIntoView 别钻到固定导航下面 */
+  scroll-margin-top: 84px;
 }
 @media (max-width: 1180px) { .pd-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 860px)  { .pd-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

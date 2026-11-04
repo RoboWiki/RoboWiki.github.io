@@ -480,6 +480,49 @@ def test_submission_rejects_bad_value_shapes(client):
         assert r.status_code == 422, payload
 
 
+def test_submission_rejects_bad_value_domains(client):
+    h = auth_header(client)
+    for payload in ({"price_cny": -1}, {"price_cny": "abc"},
+                    {"source_tier": "Z"}, {"last_checked": "not-a-date"},
+                    {"url": "ftp://example.com/file"}):
+        r = client.post("/api/v1/submissions", headers=h, json={
+            "kind": "part_patch", "target_id": "cubemars-ak80-6",
+            "payload": payload,
+            "evidence": {"note": "domain test", "source_url": "https://example.com"},
+        })
+        assert r.status_code == 422, payload
+
+
+def test_review_post_updates_rating_aggregate(client):
+    reg = client.post("/api/v1/auth/register", json={
+        "handle": "reviewrating", "display_name": "Review Rating",
+        "password": "pass1234"})
+    assert reg.status_code == 201, reg.text
+    h = {"Authorization": f"Bearer {reg.json()['access_token']}"}
+    part = "feetech-st-3250-c001"
+    before = client.get(f"/api/v1/ratings/{part}").json()["count"]
+    r = client.post("/api/v1/posts", headers=h, json={
+        "kind": "review", "title": "评价与评分同源测试",
+        "body": "这是一条用于验证评价和评分聚合一致性的测试内容。",
+        "part_id": part, "rating": 5, "own_hardware": True})
+    assert r.status_code == 201, r.text
+    after = client.get(f"/api/v1/ratings/{part}", headers=h).json()
+    assert after["count"] == before + 1
+    assert after["mine"]["score"] == 5
+
+
+def test_cannot_vote_own_content(client):
+    h = auth_header(client)
+    r = client.post("/api/v1/posts", headers=h, json={
+        "kind": "discussion", "title": "自投票拦截测试",
+        "body": "这是一条用于验证不能给自己投票的测试内容。"})
+    assert r.status_code == 201, r.text
+    pid = r.json()["id"]
+    v = client.post("/api/v1/votes", headers=h, json={
+        "target_kind": "post", "target_id": pid, "value": 1})
+    assert v.status_code == 403
+
+
 def test_submission_rejects_non_http_source(client):
     h = auth_header(client)
     r = client.post("/api/v1/submissions", headers=h, json={

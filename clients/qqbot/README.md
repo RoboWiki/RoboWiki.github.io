@@ -37,15 +37,24 @@ X-Bot-Token: <token>
 ```json
 {
   "found": true,
-  "answer": "CubeMars AK80-6 · 额定 6.0 N·m · 峰值 12.0 N·m · 48.0 V（来源 B）",
+  "answer": "CubeMars AK80-6 · 额定 6 N·m · 峰值 12 N·m · 48 V（来源 B）",
   "url": "https://robowiki.org.cn/parts/actuator/cubemars-ak80-6.html",
   "data_version": "data-v2026.11.2",
   "part": { "id": "cubemars-ak80-6", "model": "AK80-6" }
 }
 ```
 
-未配置 `ROBOWIKI_BOT_TOKEN` 时接口返回 503；令牌错误返回 401。
-接口只读、按客户端 IP 限流（反代后取 X-Forwarded-For），不写库，也不依赖用户登录。
+错误与限流（契约与 `backend/app/api/routes/bot.py` 一致）：
+
+| 情况 | 状态码 |
+|---|---|
+| 后端未配置 `ROBOWIKI_BOT_TOKEN` | `503` |
+| `X-Bot-Token` 缺失或不匹配 | `401` |
+| `q` 为空（清洗后无关键词） | `422` |
+| 单 IP 超过窗口内次数 | `429` + `Retry-After` |
+
+接口只读、按客户端 IP 限流（反代后取 `X-Forwarded-For`），不写库，也不依赖用户登录。
+机器人不保存 QQ 用户身份、不做用户态写入（评分/评论/投稿都只在网页端）。
 
 ## 为什么不是自写协议
 

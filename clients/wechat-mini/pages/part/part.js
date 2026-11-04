@@ -3,6 +3,11 @@ const F = require('../../utils/format')
 const L = require('../../utils/labels')
 const { text } = require('../../utils/text')
 
+/** 群里的分享链接可能被手工改坏（% 不完整）。decode 失败时按原文查，别直接崩页面。 */
+function safeDecode(v) {
+  try { return decodeURIComponent(v || '') } catch (e) { return String(v || '') }
+}
+
 Page({
   data: {
     part: null,
@@ -27,7 +32,7 @@ Page({
   },
 
   onLoad(query) {
-    this.id = decodeURIComponent(query.id || '')
+    this.id = safeDecode(query.id)
     this.setData({ timelinePreview: Number(query.scene) === 1154 })
     this.load()
   },
@@ -94,7 +99,8 @@ Page({
         priceLabel: F.price(p.price_cny),
         basis,
         keySpecs: (p.key_specs || []).map(x => `${x.label} ${x.value}`),
-        version: (getApp().globalData || {}).dataVersion || '',
+        // 详情响应自带 data_version；从分享链接直接进来的页面不该显示空版本。
+        version: p.data_version || (getApp().globalData || {}).dataVersion || '',
         loading: false,
       })
       wx.setNavigationBarTitle({ title: p.model || p.title || '部件详情' })
@@ -119,8 +125,17 @@ Page({
   },
 
   async copyLink() {
-    // web_path 由 API 给出，和站点 slug 同规则；不再为拿 canonical 多等一次 /share 请求。
-    F.copy(this.data.webUrl, '网页链接已复制')
+    // 静态分享 JSON 的 canonical_url 与网页 canonical/OG 同源；取不到再退回 API web_path。
+    const p = this.data.part || {}
+    let url = this.data.webUrl
+    try {
+      const json = F.sharePartUrl(p)
+      if (json) {
+        const share = await api.getUrl(json)
+        if (share && share.canonical_url) url = share.canonical_url
+      }
+    } catch (e) {}
+    F.copy(url, '网页链接已复制')
   },
 
   retry() { this.load() },

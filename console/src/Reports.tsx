@@ -1,4 +1,6 @@
-import { App as AntApp, Button, Input, Modal, Segmented, Table, Tag } from 'antd'
+import {
+  Alert, App as AntApp, Button, Empty, Form, Input, Modal, Segmented, Table, Tag,
+} from 'antd'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { v1Req } from './api'
@@ -35,6 +37,8 @@ type Queue = {
   items: Rep[]
 }
 
+type Action = 'hide' | 'restore' | 'dismiss'
+
 const KIND: Record<string, string> = {
   post: '帖子', comment: '评论', wiki_comment: '文档讨论',
 }
@@ -46,16 +50,137 @@ const STATUS: Record<string, { color: string; label: string }> = {
   resolved: { color: 'green', label: '已处置' },
   dismissed: { color: 'default', label: '已驳回' },
 }
+const ACTION_LABEL: Record<Action, string> = {
+  hide: '隐藏', restore: '恢复', dismiss: '驳回',
+}
 
-const when = (s: string) => s.slice(0, 16).replace('T', ' ')
+const when = (s?: string | null) => (s ? s.slice(0, 16).replace('T', ' ') : '—')
+
+/** 站内可点开的原文位置；wiki 评论指向主站页面 */
+function targetHref(r: Rep): string | null {
+  if (r.target_kind === 'post') return `/post/${r.target_id}`
+  if (r.target_kind === 'comment' && r.target?.post_id) return `/post/${r.target.post_id}`
+  if (r.target_kind === 'wiki_comment' && r.target?.page) return `/${r.target.page}`
+  return null
+}
+
+function QueryFail({ what, error, onRetry, loading }: {
+  what: string; error: unknown; onRetry: () => void; loading?: boolean
+}) {
+  return (
+    <Alert
+      type="error"
+      showIcon
+      title={`${what}加载失败`}
+      description={(error as any)?.message || '请求出错'}
+      action={<Button size="small" onClick={onRetry} loading={loading}>重试</Button>}
+    />
+  )
+}
+
+// ── 处置弹窗：必须写依据，提交后同时刷新队列与内容缓存 ─────────────────────
+function ActionModal({ report, action, onClose }: {
+  report: Rep; action: Action; onClose: () => void
+}) {
+  const qc = useQueryClient()
+  const { message } = AntApp.useApp()
+  const [form] = Form.useForm()
+
+  const resolve = useMutation({
+    mutationFn: ({ id, action, note }: { id: number; action: Action; note: string }) =>
+      v1Req(`/admin/reports/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ action, note }),
+      }),
+    onSuccess: () => {
+      message.success('处置已记录')
+      // 举报队列 + 前台内容一起失效：隐藏/恢复会改变帖子和评论的可见性
+      qc.invalidateQueries({ queryKey: ['reports'] })
+      qc.invalidateQueries({ queryKey: ['posts'] })
+      qc.invalidateQueries({ queryKey: ['post'] })
+      qc.invalidateQueries({ queryKey: ['comments'] })
+      onClose()
+    },
+    onError: (e: any) => message.error(e.message),
+  })
+
+  const label = ACTION_LABEL[action]
+  const href = targetHref(report)
+
+  return (
+    <Modal
+      open
+      title={`${label} ${KIND[report.target_kind] || report.target_kind} #${report.target_id}`}
+      width={560}
+      onCancel={onClose}
+      destroyOnHidden
+      okText={`确认${label}`}
+      okButtonProps={{ danger: action === 'hide', type: action === 'restore' ? 'primary' : 'default' }}
+      confirmLoading={resolve.isPending}
+      onOk={async () => {
+        try {
+          const v = await form.validateFields()
+          resolve.mutate({ id: report.id, action, note: (v.note || '').trim() })
+        } catch {
+          // 校验错误已显示在字段下方
+        }
+      }}
+    >
+      <div className="space-y-3 pt-1">
+        <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-[12px] text-slate-600">
+          <div className="mb-1 flex flex-wrap items-center gap-1.5">
+            <Tag style={{ marginInlineEnd: 0 }}>{KIND[report.target_kind] || report.target_kind}</Tag>
+            <span className="text-[11.5px] text-slate-400">#{report.target_id}</span>
+            {report.target?.hidden && <Tag color="red" style={{ marginInlineEnd: 0 }}>当前已隐藏</Tag>}
+            {href && (
+              <a href={href} target="_blank" rel="noreferrer"
+                className="ml-auto text-[11px] text-blue-600 hover:underline">查看原文 ↗</a>
+            )}
+          </div>
+          <div className="line-clamp-3 text-slate-800">
+            {report.target?.title || report.target?.post_title || report.target?.body || '内容已删除'}
+          </div>
+          {report.target?.body && report.target?.title && (
+            <div className="mt-1 line-clamp-2 text-[11.5px] text-slate-500">{report.target.body}</div>
+          )}
+          <div className="mt-2 border-t border-slate-200 pt-1.5 text-[11.5px] text-slate-500">
+            举报理由：{REASON[report.reason] || report.reason}
+            {report.detail ? ` · ${report.detail}` : ''}
+          </div>
+        </div>
+
+        <Form form={form} layout="vertical" initialValues={{ note: '' }}>
+          <Form.Item
+            name="note"
+            label="处置依据（写入留痕，必填）"
+            rules={[
+              {
+                validator: (_, v) => (v || '').trim().length >= 2
+                  ? Promise.resolve()
+                  : Promise.reject(new Error('至少写 2 个字，说明为什么这样处置')),
+              },
+            ]}
+          >
+            <Input.TextArea rows={3} maxLength={500} showCount
+              placeholder={action === 'hide'
+                ? '例如：广告引流，已隐藏；作者可申诉'
+                : action === 'restore'
+                  ? '例如：复核后原文不违规，恢复可见'
+                  : '例如：重复举报，原文不违反社区规则'} />
+          </Form.Item>
+        </Form>
+        <div className="text-[11px] text-slate-400">
+          隐藏是软操作：内容仍在库中，站务可在「已处置」里恢复。举报不会自动下架。
+        </div>
+      </div>
+    </Modal>
+  )
+}
 
 export default function Reports() {
   const { user } = useAuth()
-  const { message } = AntApp.useApp()
-  const qc = useQueryClient()
   const [status, setStatus] = useState<'open' | 'resolved' | 'dismissed'>('open')
-  const [acting, setActing] = useState<{ report: Rep; action: 'hide' | 'dismiss' | 'restore' } | null>(null)
-  const [note, setNote] = useState('')
+  const [acting, setActing] = useState<{ report: Rep; action: Action } | null>(null)
 
   const queue = useQuery({
     queryKey: ['reports', status],
@@ -63,23 +188,10 @@ export default function Reports() {
     enabled: !!user?.is_staff,
   })
 
-  const resolve = useMutation({
-    mutationFn: ({ id, action, note }: { id: number; action: string; note: string }) =>
-      v1Req(`/admin/reports/${id}`, {
-        method: 'PATCH',
-        body: JSON.stringify({ action, note }),
-      }),
-    onSuccess: () => {
-      message.success('处置已记录')
-      setActing(null)
-      setNote('')
-      qc.invalidateQueries({ queryKey: ['reports'] })
-    },
-    onError: (e: any) => message.error(e.message),
-  })
-
   if (!user?.is_staff) {
-    return <div className="mx-auto max-w-[900px] px-5 py-16 text-[13px] text-slate-500">举报队列只有站务可以查看。</div>
+    return <div className="mx-auto max-w-[900px] px-5 py-16 text-[13px] text-slate-500">
+      举报队列只有站务可以查看。
+    </div>
   }
 
   const counts = queue.data?.counts
@@ -88,139 +200,148 @@ export default function Reports() {
     { value: 'resolved', label: `已处置 ${counts?.resolved ?? 0}` },
     { value: 'dismissed', label: `已驳回 ${counts?.dismissed ?? 0}` },
   ]
+  const emptyText = status === 'open'
+    ? '没有待处理举报，队列是空的'
+    : status === 'resolved' ? '还没有处置记录' : '没有已驳回的举报'
 
   return (
-    <div className="mx-auto max-w-[1240px] px-5 py-6">
+    <div className="mx-auto w-full max-w-[1240px] px-0 py-6">
       <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
-        <div>
+        <div className="min-w-0">
           <h1 className="m-0 text-[20px] font-bold text-slate-900">举报与内容处置</h1>
           <p className="m-0 mt-1 text-[12.5px] text-slate-500">
             举报不会自动下架；隐藏与驳回都必须写依据。隐藏是软操作，可恢复。
           </p>
         </div>
-        <Segmented value={status} onChange={v => setStatus(v as typeof status)} options={options} />
+        <div className="flex w-full items-center gap-2 sm:w-auto">
+          <Segmented block value={status} onChange={v => setStatus(v as typeof status)}
+            options={options} className="min-w-0 flex-1 sm:flex-none" />
+          <Button onClick={() => queue.refetch()} loading={queue.isFetching}>刷新</Button>
+        </div>
       </div>
 
-      <Table<Rep>
-        rowKey="id"
-        size="small"
-        loading={queue.isLoading}
-        dataSource={queue.data?.items || []}
-        pagination={{ pageSize: 20, hideOnSinglePage: true }}
-        locale={{ emptyText: status === 'open' ? '没有待处理举报' : '没有记录' }}
-        columns={[
-          { title: '#', dataIndex: 'id', width: 50 },
-          {
-            title: '对象 / 内容', width: 380,
-            render: (_, r) => (
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <Tag>{KIND[r.target_kind] || r.target_kind}</Tag>
-                  <span className="text-[11.5px] text-slate-400">#{r.target_id}</span>
-                  {r.target?.hidden && <Tag color="red">已隐藏</Tag>}
-                </div>
-                <div className="mt-1 line-clamp-2 text-[12px] text-slate-700">
-                  {r.target?.title || r.target?.post_title || r.target?.body || '内容已删除'}
-                </div>
-                {r.target?.body && r.target?.title && (
-                  <div className="mt-0.5 line-clamp-1 text-[11.5px] text-slate-500">{r.target.body}</div>
-                )}
-                {r.target?.page && (
-                  <a href={`/${r.target.page}`} target="_blank" rel="noreferrer"
-                    className="text-[11px] text-blue-600 hover:underline">{r.target.page} ↗</a>
-                )}
-              </div>
-            ),
-          },
-          {
-            title: '举报理由', width: 200,
-            render: (_, r) => (
-              <div className="text-[12px]">
-                <div className="text-slate-700">{REASON[r.reason] || r.reason}</div>
-                {r.detail && <div className="mt-0.5 text-[11.5px] text-slate-500">{r.detail}</div>}
-              </div>
-            ),
-          },
-          {
-            title: '举报人 / 时间', width: 150,
-            render: (_, r) => (
-              <div className="text-[11.5px] text-slate-500">
-                <div className="text-slate-700">@{r.reporter?.handle || '—'}</div>
-                {when(r.created_at)}
-              </div>
-            ),
-          },
-          {
-            title: '状态', width: 90,
-            render: (_, r) => {
-              const s = STATUS[r.status] || { color: 'default', label: r.status }
-              return <Tag color={s.color}>{s.label}</Tag>
-            },
-          },
-          {
-            title: '处置记录', width: 220,
-            render: (_, r) => r.resolution_note
-              ? <div className="text-[11.5px] text-slate-600">{r.resolution_note}</div>
-              : <span className="text-slate-300">—</span>,
-          },
-          {
-            title: '操作', width: 170, fixed: 'right',
-            render: (_, r) => (
-              <div className="flex flex-wrap gap-1.5">
-                {r.status === 'open' && (
-                  <>
-                    <Button size="small" danger
-                      onClick={() => { setActing({ report: r, action: 'hide' }); setNote('') }}>
-                      隐藏
-                    </Button>
-                    <Button size="small"
-                      onClick={() => { setActing({ report: r, action: 'dismiss' }); setNote('') }}>
-                      驳回
-                    </Button>
-                  </>
-                )}
-                {r.status === 'resolved' && r.target?.hidden && (
-                  <Button size="small"
-                    onClick={() => { setActing({ report: r, action: 'restore' }); setNote('') }}>
-                    恢复
-                  </Button>
-                )}
-              </div>
-            ),
-          },
-        ]}
-        scroll={{ x: 1260 }}
-      />
+      <div className="mb-2 text-[11.5px] text-slate-400">
+        共 {queue.data?.total ?? 0} 条{queue.isFetching && !queue.isLoading ? ' · 刷新中…' : ''}
+      </div>
 
-      <Modal
-        open={!!acting}
-        title={acting ? `${acting.action === 'hide' ? '隐藏' : acting.action === 'restore' ? '恢复' : '驳回'} #${acting.report.id}` : ''}
-        onCancel={() => setActing(null)}
-        footer={null}
-        destroyOnHidden
-      >
-        <div className="space-y-3 pt-2">
-          <div className="rounded-md bg-slate-50 px-3 py-2 text-[12px] text-slate-600">
-            对象：{acting ? KIND[acting.report.target_kind] : ''} #{acting?.report.target_id}
-            <br />
-            {acting?.report.target?.title || acting?.report.target?.body || ''}
-          </div>
-          <Input.TextArea rows={3} value={note} onChange={e => setNote(e.target.value)}
-            placeholder="写明依据；这条记录会进入处置留痕" />
-          <Button
-            block
-            danger={acting?.action === 'hide'}
-            type={acting?.action === 'restore' ? 'primary' : undefined}
-            loading={resolve.isPending}
-            disabled={note.trim().length < 2}
-            onClick={() => acting && resolve.mutate({
-              id: acting.report.id, action: acting.action, note,
-            })}
-          >
-            确认{acting?.action === 'hide' ? '隐藏' : acting?.action === 'restore' ? '恢复' : '驳回'}
-          </Button>
-        </div>
-      </Modal>
+      {queue.isError ? (
+        <QueryFail what="举报队列" error={queue.error}
+          onRetry={() => queue.refetch()} loading={queue.isFetching} />
+      ) : (
+        <Table<Rep>
+          rowKey="id"
+          size="small"
+          loading={queue.isLoading}
+          dataSource={queue.data?.items || []}
+          pagination={{ pageSize: 20, hideOnSinglePage: true }}
+          locale={{ emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={emptyText} /> }}
+          columns={[
+            { title: '#', dataIndex: 'id', width: 56 },
+            {
+              title: '对象 / 内容', width: 360,
+              render: (_, r) => {
+                const href = targetHref(r)
+                return (
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <Tag style={{ marginInlineEnd: 0 }}>{KIND[r.target_kind] || r.target_kind}</Tag>
+                      <span className="text-[11.5px] text-slate-400">#{r.target_id}</span>
+                      {r.target?.hidden && <Tag color="red" style={{ marginInlineEnd: 0 }}>已隐藏</Tag>}
+                      {r.target?.author && (
+                        <span className="text-[11px] text-slate-400">@{r.target.author.handle}</span>
+                      )}
+                      {href && (
+                        <a href={href} target="_blank" rel="noreferrer"
+                          className="ml-auto text-[11px] text-blue-600 hover:underline">查看 ↗</a>
+                      )}
+                    </div>
+                    <div className="mt-1 line-clamp-2 break-all text-[12px] text-slate-700">
+                      {r.target?.title || r.target?.post_title || r.target?.body || '内容已删除'}
+                    </div>
+                    {r.target?.body && r.target?.title && (
+                      <div className="mt-0.5 line-clamp-1 text-[11.5px] text-slate-500">{r.target.body}</div>
+                    )}
+                    {r.target?.page && (
+                      <a href={`/${r.target.page}`} target="_blank" rel="noreferrer"
+                        className="break-all text-[11px] text-blue-600 hover:underline">{r.target.page} ↗</a>
+                    )}
+                  </div>
+                )
+              },
+            },
+            {
+              title: '举报理由', width: 180,
+              render: (_, r) => (
+                <div className="text-[12px]">
+                  <div className="text-slate-700">{REASON[r.reason] || r.reason}</div>
+                  {r.detail && <div className="mt-0.5 line-clamp-2 text-[11.5px] text-slate-500">{r.detail}</div>}
+                </div>
+              ),
+            },
+            {
+              title: '举报人 / 时间', width: 140,
+              render: (_, r) => (
+                <div className="text-[11.5px] text-slate-500">
+                  <div className="text-slate-700">@{r.reporter?.handle || '—'}</div>
+                  {when(r.created_at)}
+                </div>
+              ),
+            },
+            {
+              title: '状态', width: 90,
+              render: (_, r) => {
+                const s = STATUS[r.status] || { color: 'default', label: r.status }
+                return <Tag color={s.color} style={{ marginInlineEnd: 0 }}>{s.label}</Tag>
+              },
+            },
+            {
+              title: '处置记录', width: 210,
+              render: (_, r) => r.resolution_note
+                ? (
+                  <div className="text-[11.5px] text-slate-600">
+                    <div className="line-clamp-2 break-words">{r.resolution_note}</div>
+                    {r.resolved_at && <div className="mt-0.5 text-[11px] text-slate-400">{when(r.resolved_at)}</div>}
+                  </div>
+                )
+                : <span className="text-slate-300">—</span>,
+            },
+            {
+              title: '操作', width: 170,
+              render: (_, r) => (
+                <div className="flex flex-wrap gap-1.5">
+                  {r.status === 'open' && (
+                    <>
+                      <Button size="small" danger
+                        onClick={() => setActing({ report: r, action: 'hide' })}>
+                        隐藏
+                      </Button>
+                      <Button size="small"
+                        onClick={() => setActing({ report: r, action: 'dismiss' })}>
+                        驳回
+                      </Button>
+                    </>
+                  )}
+                  {r.status === 'resolved' && r.target?.hidden && (
+                    <Button size="small" type="primary"
+                      onClick={() => setActing({ report: r, action: 'restore' })}>
+                      恢复
+                    </Button>
+                  )}
+                  {r.status !== 'open' && !(r.status === 'resolved' && r.target?.hidden) && (
+                    <span className="text-[11.5px] text-slate-300">已处理</span>
+                  )}
+                </div>
+              ),
+            },
+          ]}
+          scroll={{ x: 1206 }}
+        />
+      )}
+
+      {acting && (
+        <ActionModal report={acting.report} action={acting.action}
+          onClose={() => setActing(null)} />
+      )}
     </div>
   )
 }

@@ -6,7 +6,9 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+import math
+from datetime import date, datetime, timedelta, timezone
+from urllib.parse import urlparse
 
 from fastapi import APIRouter, HTTPException, Request
 from sqlalchemy.exc import IntegrityError
@@ -30,6 +32,50 @@ LIST_FIELDS = {
     "specs.use_cases", "specs.positions_options", "specs.repo_urls",
     "specs.tags", "specs.features", "specs.price_tiers", "specs.params",
 }
+
+#: 审核理由是一份封闭的分类（照 Gitea 的 review 选项）：通过=ok，
+#: 驳回必须落在某个具体原因上，避免出现「驳回但没人知道为什么」。
+ACCEPT_REASONS = {"ok"}
+REJECT_REASONS = {"insufficient_evidence", "wrong_value", "out_of_scope",
+                  "duplicate", "other"}
+
+#: 目录值域：数值上限与 PostIn.total_price_cny 保持同一量级。
+MAX_PRICE_CNY = 10_000_000
+MIN_CHECKED = date(1990, 1, 1)
+
+
+def _http_url(value: str) -> bool:
+    """只收真正的 http(s) 绝对链接：协议对、有主机、没有空白字符。"""
+    if not value.lower().startswith(("http://", "https://")):
+        return False
+    if any(c.isspace() for c in value):
+        return False
+    try:
+        parsed = urlparse(value)
+    except ValueError:
+        return False
+    return bool(parsed.netloc)
+
+
+def _check_review(payload: ReviewIn) -> tuple[str, str, str]:
+    """校验审核决定并归一化 (decision, reason_code, note)。
+
+    通过固定为 ok；驳回必须给出具体原因，「其他」还必须写明说明 ——
+    提交者看到的就是这条理由，空着等于没审。
+    """
+    decision = payload.decision
+    reason = (payload.reason_code or "").strip()
+    note = (payload.note or "").strip()
+    if decision == "accepted":
+        if reason and reason not in ACCEPT_REASONS:
+            raise HTTPException(422, "通过时的 reason_code 只能是 ok")
+        return decision, "ok", note
+    if reason not in REJECT_REASONS:
+        raise HTTPException(422, "驳回理由必须是 insufficient_evidence / wrong_value / "
+                                 "out_of_scope / duplicate / other 之一")
+    if reason == "other" and len(note) < 4:
+        raise HTTPException(422, "选择「其他」时必须写明具体原因（至少 4 个字）")
+    return decision, reason, note
 
 
 def _check_payload(payload: dict, user: User) -> None:
@@ -55,6 +101,28 @@ def _check_payload(payload: dict, user: User) -> None:
             raise HTTPException(422, f"{key} 的值类型不支持")
         if isinstance(value, str) and len(value) > 4000:
             raise HTTPException(422, f"{key} 文本过长（上限 4000 字）")
+
+        # 值域校验放在服务端：UI 的约束可以被绕过，审核通过后会直接进 outbox/PR。
+        if key == "price_cny" and value is not None:
+            if isinstance(value, bool) or not isinstance(value, (int, float)):
+                raise HTTPException(422, "price_cny 必须是数字")
+            if not math.isfinite(float(value)) or not 0 <= value <= MAX_PRICE_CNY:
+                raise HTTPException(422, f"price_cny 必须在 0–{MAX_PRICE_CNY} 之间")
+        if key == "source_tier" and value not in ("A", "B", "C"):
+            raise HTTPException(422, "source_tier 只能是 A/B/C")
+        if key == "last_checked":
+            if not isinstance(value, str):
+                raise HTTPException(422, "last_checked 必须是 YYYY-MM-DD")
+            try:
+                checked = date.fromisoformat(value)
+            except ValueError:
+                raise HTTPException(422, "last_checked 必须是 YYYY-MM-DD") from None
+            # 太早的日期多半是手滑（0199 / 1899），未来的日期则是提前「核对」
+            if checked < MIN_CHECKED or checked > date.today() + timedelta(days=366):
+                raise HTTPException(422, "last_checked 不在合理范围内（1990 之后、一年以内）")
+        if key in ("url", "doc_url", "doc_pdf") and isinstance(value, str):
+            if not _http_url(value):
+                raise HTTPException(422, f"{key} 必须是完整的 http/https 链接")
 
 
 def _out(db: Db, s: Submission) -> SubmissionOut:
@@ -88,8 +156,8 @@ def create_submission(payload: SubmissionIn, request: Request, db: Db,
     src = str(payload.evidence.get("source_url") or "").strip()
     if len(src) > 500:
         raise HTTPException(422, "source_url 过长（上限 500）")
-    if src and not src.lower().startswith(("http://", "https://")):
-        raise HTTPException(422, "source_url 必须是 http/https 链接")
+    if src and not _http_url(src):
+        raise HTTPException(422, "source_url 必须是完整的 http/https 链接")
     if payload.kind == "part_patch":
         if not payload.target_id:
             raise HTTPException(422, "part_patch 需要 target_id")
@@ -189,14 +257,15 @@ def review_submission(submission_id: int, payload: ReviewIn, db: Db,
     if s.status != "pending":
         raise HTTPException(409, f"提案当前状态是 {s.status}，不能重复审核")
 
+    decision, reason, note = _check_review(payload)
     review = SubmissionReview(submission_id=s.id, reviewer_id=user.id,
-                              decision=payload.decision,
-                              reason_code=payload.reason_code, note=payload.note)
+                              decision=decision,
+                              reason_code=reason, note=note)
     db.add(review)
-    s.status = payload.decision
+    s.status = decision
     s.updated_at = review.created_at
 
-    if payload.decision == "accepted":
+    if decision == "accepted":
         db.add(Outbox(
             submission_id=s.id,
             action=s.kind,

@@ -14,7 +14,7 @@ from sqlmodel import select
 from ...core.config import settings
 from ...crud import (apply_vote, comments_out, posts_out, touch_comment_count,
                      user_out)
-from ...models import Comment, Part, Post, User
+from ...models import Comment, Part, Post, Rating, User, utcnow
 from ...schemas import (CommentIn, CommentOut, PostIn, PostListOut, PostOut,
                         UserOut, VoteIn, VoteOut)
 from ..deps import CurrentUser, Db, MaybeUser, rate_limit
@@ -95,6 +95,30 @@ def create_post(payload: PostIn, request: Request, db: Db, user: CurrentUser):
              price_scope=payload.price_scope,
              price_verified=payload.price_verified)
     db.add(p)
+
+    # 评价帖是「评分 + 长评」的另一条入口；它必须和 /ratings 是同一份事实，
+    # 否则页面会显示「有评价、0 人打分」。同一人同一件仍然只保留一票。
+    #
+    # 可见性：Rating 没有 hidden 列（本轮不改 models.py），所以站务隐藏评价帖
+    # 时不能在这里给 Rating 打隐藏标记；读取评分聚合时由
+    # crud.shadowed_review_keys() 按「同一人同一件存在 hidden review」派生，
+    # 评价恢复后该票自动回到公开聚合。
+    if payload.kind == "review" and payload.rating is not None and payload.part_id:
+        row = db.exec(select(Rating).where(
+            Rating.part_id == payload.part_id,
+            Rating.user_id == user.id)).first()
+        if row is None:
+            db.add(Rating(part_id=payload.part_id, user_id=user.id,
+                          score=payload.rating,
+                          own_hardware=payload.own_hardware,
+                          note=(payload.body or "")[:200]))
+        else:
+            row.score = payload.rating
+            row.own_hardware = payload.own_hardware
+            row.note = (payload.body or "")[:200]
+            row.updated_at = utcnow()
+            db.add(row)
+
     db.commit()
     db.refresh(p)
     return posts_out(db, [p], user.id)[0]
@@ -154,6 +178,8 @@ def vote(payload: VoteIn, db: Db, user: CurrentUser):
                                  payload.value)
     except LookupError as exc:
         raise HTTPException(404, str(exc)) from exc
+    except PermissionError as exc:
+        raise HTTPException(403, str(exc)) from exc
     return VoteOut(score=score, my_vote=mine)
 
 

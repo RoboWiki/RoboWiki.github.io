@@ -1,9 +1,25 @@
 """请求 / 响应模型。"""
 from __future__ import annotations
 
+import re
 from datetime import datetime
 
 from pydantic import BaseModel, Field, field_validator
+
+_EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$")
+
+
+def _normalize_email(v: str | None) -> str | None:
+    if v is None:
+        return None
+    v = v.strip().lower()
+    if not v:
+        return None
+    if len(v) > 200:
+        raise ValueError("邮箱过长")
+    if not _EMAIL_RE.match(v):
+        raise ValueError("邮箱格式不正确")
+    return v
 
 
 # ── 认证 ────────────────────────────────────────────────────────────────────
@@ -22,6 +38,11 @@ class RegisterIn(BaseModel):
             raise ValueError("handle 只能使用 a-z、0-9、- 和 _，且以字母或数字开头")
         return low
 
+    @field_validator("email")
+    @classmethod
+    def _email_ok(cls, v: str | None) -> str | None:
+        return _normalize_email(v)
+
 
 class VerifyEmailIn(BaseModel):
     token: str = Field(min_length=10, max_length=200)
@@ -30,10 +51,26 @@ class VerifyEmailIn(BaseModel):
 class ForgotIn(BaseModel):
     email: str = Field(min_length=3, max_length=200)
 
+    @field_validator("email")
+    @classmethod
+    def _email_ok(cls, v: str) -> str:
+        normalized = _normalize_email(v)
+        if normalized is None:
+            raise ValueError("邮箱不能为空")
+        return normalized
+
 
 class ResetPasswordIn(BaseModel):
     token: str = Field(min_length=10, max_length=200)
     password: str = Field(min_length=6, max_length=128)
+
+
+class PasswordChangeIn(BaseModel):
+    """已登录用户改密：必须证明自己知道当前口令。"""
+
+    current_password: str = Field(min_length=1, max_length=128)
+    # 与注册 / 找回保持同一强度下限；太短由 pydantic 直接 422。
+    new_password: str = Field(min_length=6, max_length=128)
 
 
 class LoginIn(BaseModel):
@@ -56,10 +93,54 @@ class UserOut(BaseModel):
     badges: list[str] = []
 
 
+class AccountOut(UserOut):
+    """账号本人视角：比公开的 UserOut 多邮箱与「是否有可用口令」。
+
+    `email` 只出现在 /auth/me、登录响应与邮箱验证结果里。帖子作者、榜单
+    等公开位置仍然用 UserOut —— 那些响应不能带出任何人的邮箱。
+    """
+
+    email: str | None = None
+    #: False = 第三方建号（口令是随机串，没人知道），只能靠绑定的身份进来
+    password_set: bool = False
+
+
 class TokenOut(BaseModel):
     access_token: str
     token_type: str = "bearer"
-    user: UserOut
+    user: AccountOut
+
+
+class ProvidersOut(BaseModel):
+    """服务端当前真正可用的登录渠道；前端据此决定按钮显示/禁用。"""
+
+    email: bool = True
+    github: bool = False
+    wechat_mini: bool = False
+
+
+class WechatMiniIn(BaseModel):
+    """小程序 `wx.login()` 拿到的 code；nickname 只是建号时的展示名。"""
+
+    code: str = Field(min_length=1, max_length=128)
+    nickname: str | None = Field(default=None, max_length=32)
+
+    @field_validator("code")
+    @classmethod
+    def _code_ok(cls, v: str) -> str:
+        v = v.strip()
+        if not v:
+            raise ValueError("code 不能为空")
+        return v
+
+
+class IdentityOut(BaseModel):
+    """一个已绑定的第三方身份。`subject` 是提供方侧的稳定 ID。"""
+
+    provider: str
+    subject: str
+    email: str | None = None
+    created_at: datetime
 
 
 # ── 帖子 ────────────────────────────────────────────────────────────────────

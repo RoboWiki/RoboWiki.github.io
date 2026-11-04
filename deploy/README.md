@@ -18,8 +18,8 @@
 **不再使用 Caddy**：TLS、静态、安全头统一在 1Panel 站点配置里维护，模板见
 [1panel-site.conf](1panel-site.conf)。
 
-> 实测基线：2026-11-04，Docker 27.3.1 / Compose v2.29.7，数据集 `data-v2026.11.2`。
-> 公网 `/api/v1/ready`、`/api/v1/meta`、`/console/`、`/mcp` 均通过；静态站 326 部件、
+> 实测基线：2026-11-04，Docker 27.3.1 / Compose v2.29.7，数据集 `data-v2026.11.3`。
+> 公网 `/api/v1/ready`、`/api/v1/meta`、`/console/`、`/mcp` 均通过；静态站 338 部件、
 > 36 个材料/工艺页、产品图与安全头正常；api 以 uid 10001 非 root 运行。
 
 ---
@@ -81,7 +81,7 @@ curl -fsS http://127.0.0.1:8080/api/v1/ready
 curl -fsS http://127.0.0.1:8080/api/v1/meta
 ```
 
-期望 `data_version=data-v2026.11.2`、`site_url=https://robowiki.org.cn`。
+期望 `data_version=data-v2026.11.3`、`site_url=https://robowiki.org.cn`。
 
 ---
 
@@ -153,7 +153,13 @@ curl -sSI https://robowiki.org.cn/ | grep -iE \
 | `SITE_URL` | canonical / 邮件链接 / 机器人回复 | `https://robowiki.org.cn` |
 | `ADMIN_HANDLE` / `ADMIN_PASSWORD` | 每次启动确保站务账号存在并重置密码 | 必填强密码 |
 | `EMAIL_MODE` | `log`（令牌进日志，仅开发）/ `smtp` | 生产 `smtp` |
-| `SMTP_*` | 发信配置 | 生产必填，密码只进 env |
+| `SMTP_HOST` / `SMTP_PORT` | 发信服务器与端口（587 = STARTTLS） | 生产必填 |
+| `SMTP_FROM` | 发件人（建议与登录账号同域，便于过 SPF） | 生产必填 |
+| `SMTP_USER` / `SMTP_PASSWORD` | 服务商要求认证时填写；密码只进 env | 按服务商要求 |
+| `SMTP_STARTTLS` | 587 端口保持 `true` | `true` |
+| `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | GitHub OAuth App；两项都填才启用 | 可选；留空按钮禁用 |
+| `OAUTH_REDIRECT_BASE` | 反代后回调的对外根 | `https://robowiki.org.cn` |
+| `WECHAT_MP_APPID` / `WECHAT_MP_SECRET` | 小程序 code2session；Secret 只在服务端 | 按需 |
 | `EXPOSE_DOCS` | Swagger UI | `false` |
 | `CORS_ORIGINS` | JSON 数组 | `["https://robowiki.org.cn"]` |
 | `BOT_TOKEN` | QQ 机器人只读问答 | 随机长串；留空则关闭 |
@@ -164,6 +170,66 @@ curl -sSI https://robowiki.org.cn/ | grep -iE \
 
 `/api/openapi.json` 在 `EXPOSE_DOCS=false` 时仍可访问，这是给 SDK 生成用的；
 `/api/docs` 会 404，符合预期。
+
+### 4.1 邮件与第三方登录
+
+**SMTP 必填项（`EMAIL_MODE=smtp`）**
+
+| 变量 | 说明 |
+|---|---|
+| `EMAIL_MODE` | 必须是 `smtp`；`log` 只把令牌打印进容器日志 |
+| `SMTP_HOST` | 发信服务器，例如 `smtp.example.com` |
+| `SMTP_PORT` | `587`（STARTTLS）或服务商指定端口 |
+| `SMTP_FROM` | 发件人，如 `RoboWiki <no-reply@robowiki.org.cn>` |
+| `SMTP_USER` / `SMTP_PASSWORD` | 服务商要求认证时必填；密码只放 env |
+| `SMTP_STARTTLS` | 587 端口保持 `true`；证书会做默认校验 |
+
+缺 `SMTP_HOST`、认证失败、连接失败都会抛 `MailError`：`POST /api/v1/auth/email/verify/request`
+回 **503**，日志里是 `robowiki.mailer` 的明确原因；`POST /api/v1/auth/password/forgot`
+仍回 202（不能让 503/202 变成邮箱枚举信号），失败原因只进日志。
+
+验证 SMTP 是否真的能发（会发真实邮件）：
+
+```bash
+cd deploy
+docker compose exec -T api python -c \
+  "from app.mailer import send_email; send_email('you@example.com','RoboWiki SMTP 测试','ok')"
+```
+
+验证 log 模式能本地取令牌（不发信）：
+
+```bash
+docker compose exec -T api python -c \
+  "from app.mailer import send_email; send_email('dev@example.com','测试','令牌：show-in-log')"
+docker compose logs --tail=20 api | grep '\[email:dev\]'
+```
+
+常见失败：`EMAIL_MODE=smtp 但未配置 SMTP_HOST`（补 host）、
+`SMTP 认证失败`（多半是邮箱「授权码」而非登录密码）、
+`无法连接 SMTP`（端口/防火墙/服务商要求 465 隐式 TLS，当前只支持 STARTTLS）。
+
+**GitHub 登录**
+
+1. GitHub → Settings → Developer settings → OAuth Apps → New OAuth App；
+   Authorization callback URL 填 `https://robowiki.org.cn/api/v1/auth/github/callback`。
+2. `deploy/.env` 填 `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET`（建议同时设
+   `OAUTH_REDIRECT_BASE=https://robowiki.org.cn`），重建 api。
+3. `curl -fsS https://robowiki.org.cn/api/v1/auth/providers` 应返回
+   `{"email":true,"github":true,"wechat_mini":false}`；未配置时是 `github:false`，
+   `/login` 的 GitHub 按钮禁用并说明，不会发起请求。
+4. 登录成功后回跳 `/login#token=<jwt>`，前端落盘并立即清掉 URL fragment。
+
+> **compose 映射**：`deploy/compose.yml` 的 `x-api-env` 目前只映射了邮件/机器人变量。
+> 上面 `GITHUB_*`、`WECHAT_MP_*`、`OAUTH_REDIRECT_BASE` 需要同步加进 `x-api-env`
+> （如 `ROBOWIKI_GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID:-}`），否则容器里读不到，
+> `providers` 会一直显示未配置。本次只改文档与 API，未动 compose。
+
+**微信小程序**
+
+`WECHAT_MP_APPID` / `WECHAT_MP_SECRET` 两项都填后，`providers` 返回
+`wechat_mini:true`；小程序用 `wx.login()` 的 code 调
+`POST /api/v1/auth/wechat/mini` 换本站令牌。AppSecret 只在服务端使用，
+未配置时该接口返回 503。
 
 ---
 
@@ -217,13 +283,24 @@ npm run dev          # 5180；/api 代理到 127.0.0.1:8080
 
 1. `RoboWiki` 仓发 `data-v*` release；
 2. 本仓更新 `data.lock.json` 并推送，GitHub Pages 的 CI 重新构建静态站；
-3. 服务器拉新锁并重启 API：
+3. 服务器拉新锁并重启后端（**不重建镜像，1Panel 反代不用改**）：
+
+```bash
+cd /opt/RoboWiki.github.io
+bash scripts/update-data.sh
+```
+
+脚本做四件事：`git pull --ff-only` → `fetch-data-release.sh`（校验 SHA-256/MANIFEST）→
+`docker compose up -d --no-build --force-recreate migrate api worker` → 轮询 `/ready`。
+数据是挂载进容器的，换 release 不需要重新构建 `robowiki/api` 镜像，也不需要改 1Panel 反代。
+
+手动等价命令：
 
 ```bash
 git pull
 bash scripts/fetch-data-release.sh
 cd deploy
-docker compose up -d --force-recreate api worker
+docker compose up -d --no-build --force-recreate migrate api worker
 curl -fsS http://127.0.0.1:8080/api/v1/ready
 ```
 
@@ -296,6 +373,8 @@ curl -fsS http://127.0.0.1:8080/api/v1/ready
 | worker `PermissionError` 写 outbox | Linux 宿主目录属主不是 10001 | `sudo chown -R 10001:10001 deploy/var/outbox` |
 | 静态页产品图 404 | Pages 构建没跑 `pipeline build` | 看 Pages workflow；不要只跑 `npm run build` |
 | 小程序请求 404 | 主域没反代 `/api/` 或 request 域名没配 | 先 `curl` 公网，再查小程序后台 |
+| 验证邮件接口 503 / 收不到信 | SMTP 未配置、认证失败或连不上 | 按 4.1 的 `send_email` 自测；看 `robowiki.mailer` 日志 |
+| `/login` 的 GitHub 按钮灰色 | `GITHUB_CLIENT_ID/SECRET` 没填，或 compose 没映射 | `curl /api/v1/auth/providers`；补 env 与 `x-api-env` 后重建 api |
 | `docker compose build` 卡在 registry | Docker Hub 不可达 | 配镜像加速，或改用已缓存镜像 |
 | 1Panel 配置被站点设置覆盖 | 1Panel 重写了 server 块 | 重新套用 `1panel-site.conf`；或用自定义配置入口 |
 
@@ -308,6 +387,8 @@ curl -fsS http://127.0.0.1:8080/api/v1/ready
 - [ ] api 只绑 `127.0.0.1:${API_PORT}`，db 没有宿主机端口；只有 1Panel 能访问
 - [ ] 80/443 只由 1Panel OpenResty 监听，没有第二个入口（Caddy 已移除）
 - [ ] `EXPOSE_DOCS=false`；`EMAIL_MODE=smtp`（生产）
+- [ ] `SMTP_HOST` / `SMTP_PORT` / `SMTP_FROM` 已填，且用 4.1 的自测命令真实收到过一封
+- [ ] GitHub/微信 Secret 只在 `.env`，没有进前端包或小程序包；`providers` 与预期一致
 - [ ] `CORS_ORIGINS` 是明确域名，不含 `*`
 - [ ] HSTS / CSP / nosniff / frame-ancestors 已在公网响应头中（`curl -sI`）
 - [ ] 备份文件权限 600 且异地留存

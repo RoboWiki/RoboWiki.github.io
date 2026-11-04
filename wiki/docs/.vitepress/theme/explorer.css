@@ -479,3 +479,12 @@ html.dark .ex-plate img {
   min-height: 24px;
   padding: 0 4px;
 }
+
+/* 部件库小屏：搜索独占一行，筛选标签不再抢右边距，翻页按钮保持 34px 可点区 */
+@media (max-width: 640px) {
+  .pd { padding: 0 1rem 2.5rem; }
+  .pd-input { flex: 1 1 100%; min-width: 0; }
+  .pd-row .pd-lab { margin-left: 0; }
+  .pd-count { margin-left: 0; }
+  .pd .pd-featured { margin-left: 0; }
+}

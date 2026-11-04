@@ -72,7 +72,46 @@ function main() {
     throw new Error(`project.config.json 的 appid 形态不对：${project.appid}`)
   }
 
+  checkConfigAndShare()
+
   console.log(`mini check ok: ${js} JS, ${json} JSON, ${wxml} WXML, appid ${project.appid}`)
+}
+
+/** 环境映射与分享 URL 是契约，不该只靠 README 口述。 */
+function checkConfigAndShare() {
+  const config = require(path.join(ROOT, 'config.js'))
+  const want = [
+    ['develop', config.LOCAL],
+    ['trial', config.PROD],
+    ['release', config.PROD],
+  ]
+  for (const [env, base] of want) {
+    if (config.baseFor(env) !== base) {
+      throw new Error(`config.baseFor(${env}) 应为 ${base}，实际 ${config.baseFor(env)}`)
+    }
+  }
+  if (config.PROD !== 'https://robowiki.org.cn') {
+    throw new Error(`正式版主域应为 https://robowiki.org.cn，实际 ${config.PROD}`)
+  }
+  if (!/^http:\/\/(127\.0\.0\.1|localhost):\d+$/.test(config.LOCAL)) {
+    throw new Error(`开发版应连本机，实际 ${config.LOCAL}`)
+  }
+
+  const F = require(path.join(ROOT, 'utils', 'format.js'))
+  const partJson = F.sharePartUrl({
+    id: 'cubemars-ak80-6', category: 'actuator',
+    web_path: '/parts/actuator/cubemars-ak80-6.html',
+  })
+  if (!/\/share\/parts\/actuator\/cubemars-ak80-6\.json$/.test(partJson)) {
+    throw new Error(`部件分享 JSON 路径不对：${partJson}`)
+  }
+  const matJson = F.shareMaterialUrl({
+    id: 'mat-alu-6061-t6', category: 'material',
+    web_path: '/materials/alu-6061-t6.html',
+  })
+  if (!/\/share\/materials\/alu-6061-t6\.json$/.test(matJson)) {
+    throw new Error(`材质分享 JSON 路径不对：${matJson}`)
+  }
 }
 
 main()

@@ -1,28 +1,100 @@
-"""邮件发送：开发用日志，生产用 SMTP。不在 API 响应里泄露令牌。"""
+"""邮件发送：开发用日志，生产用 SMTP。不在 API 响应里泄露令牌。
+
+失败策略：**不吞异常**。配置缺失、连不上、认证失败、被拒收都会抛
+`MailError`，调用方（认证路由）据此决定回 503 还是只记日志；错误文本只
+描述「哪个环节坏了」，不带口令、邮件正文或收件人地址。
+"""
 from __future__ import annotations
 
+import logging
 import smtplib
+import ssl
 from email.message import EmailMessage
 
 from .core.config import settings
 
+log = logging.getLogger("robowiki.mailer")
+
+#: 连接/读写的总超时；邮件是交互链路，不能把请求拖到网关超时
+_SMTP_TIMEOUT_S = 15.0
+
+#: email_mode 只接受这两个值；写错时宁可显式失败，也不要静默当 log
+_MODES = ("log", "smtp")
+
+
+class MailError(RuntimeError):
+    """发信失败：配置缺失 / SMTP 拒绝 / 网络不可达。"""
+
 
 def send_email(to: str, subject: str, text: str) -> None:
-    if settings.email_mode == "smtp":
-        if not settings.smtp_host:
-            raise RuntimeError("EMAIL_MODE=smtp 但未配置 SMTP_HOST")
-        msg = EmailMessage()
-        msg["From"] = settings.smtp_from
-        msg["To"] = to
-        msg["Subject"] = subject
-        msg.set_content(text)
-        with smtplib.SMTP(settings.smtp_host, settings.smtp_port, timeout=15) as s:
-            if settings.smtp_starttls:
-                s.starttls()
-            if settings.smtp_user:
-                s.login(settings.smtp_user, settings.smtp_password or "")
-            s.send_message(msg)
-        return
+    to = (to or "").strip()
+    if not to:
+        raise MailError("收件人为空，未发送邮件")
 
-    # 开发模式：令牌只写服务端日志，不进 API 响应
-    print(f"[email:dev] to={to} subject={subject}\n{text}")
+    mode = (settings.email_mode or "").strip().lower()
+    if mode == "smtp":
+        _send_smtp(to, subject, text)
+        return
+    if mode == "log":
+        # 开发模式：令牌只写服务端日志，不进 API 响应
+        print(f"[email:dev] to={to} subject={subject}\n{text}", flush=True)
+        return
+    raise MailError(
+        f"EMAIL_MODE={settings.email_mode!r} 不支持；只能是 {' / '.join(_MODES)}")
+
+
+def _send_smtp(to: str, subject: str, text: str) -> None:
+    host = (settings.smtp_host or "").strip()
+    if not host:
+        raise MailError("EMAIL_MODE=smtp 但未配置 SMTP_HOST")
+    port = int(settings.smtp_port or 0)
+    if not 0 < port <= 65535:
+        raise MailError(f"SMTP_PORT 不合法：{settings.smtp_port!r}")
+    sender = (settings.smtp_from or "").strip()
+    if not sender:
+        raise MailError("EMAIL_MODE=smtp 但未配置 SMTP_FROM")
+    user = (settings.smtp_user or "").strip()
+    if user and not settings.smtp_password:
+        raise MailError("配置了 SMTP_USER 但 SMTP_PASSWORD 为空")
+
+    msg = EmailMessage()
+    msg["From"] = sender
+    msg["To"] = to
+    msg["Subject"] = subject
+    msg.set_content(text)
+
+    server: smtplib.SMTP | None = None
+    try:
+        server = smtplib.SMTP(host, port, timeout=_SMTP_TIMEOUT_S)
+        server.ehlo()
+        if settings.smtp_starttls:
+            # 默认上下文会校验证书链；不要用无校验的 _create_unverified_context
+            server.starttls(context=ssl.create_default_context())
+            server.ehlo()
+        if user:
+            server.login(user, settings.smtp_password or "")
+        server.send_message(msg)
+    except MailError:
+        raise
+    except smtplib.SMTPAuthenticationError as exc:
+        raise MailError(
+            f"SMTP 认证失败（{host}:{port}）；检查 SMTP_USER / SMTP_PASSWORD"
+        ) from exc
+    except smtplib.SMTPRecipientsRefused as exc:
+        raise MailError(f"SMTP 拒收收件人（{host}:{port}）；检查邮箱是否存在") from exc
+    except smtplib.SMTPException as exc:
+        raise MailError(
+            f"SMTP 发送失败（{host}:{port}）：{type(exc).__name__}: {exc}"
+        ) from exc
+    except (OSError, ssl.SSLError) as exc:
+        raise MailError(
+            f"无法连接 SMTP（{host}:{port}）：{type(exc).__name__}: {exc}"
+        ) from exc
+    finally:
+        # quit 失败（对方已断）不应盖掉真正的发送结果
+        if server is not None:
+            try:
+                server.quit()
+            except (smtplib.SMTPException, OSError):
+                pass
+    log.info("email sent to=%s subject=%s", to, subject)

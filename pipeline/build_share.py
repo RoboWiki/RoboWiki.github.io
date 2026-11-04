@@ -42,6 +42,8 @@ def _material_facts(r: dict) -> list[dict]:
     for label, key, unit in facts:
         v = _fmt(specs.get(key), unit)
         if v:
+            if key == "modulus_GPa" and specs.get("modulus_kind") == "弯曲":
+                label = "弯曲模量"
             out.append({"key": key, "label": label, "value": v})
     return out
 
@@ -136,6 +138,8 @@ _FACTS: dict[str, list[tuple[str, str, str]]] = {
                ("电压", "voltage_V", " V")],
     "chip": [("封装", "package", ""), ("料号", "lcsc_part", ""),
              ("输入", "voltage_in", ""), ("输出", "voltage_out", "")],
+    "open_hw": [("输入", "voltage_in", ""), ("输出", "voltage_out", ""),
+                ("电流", "current_out", ""), ("接口", "iface", "")],
 }
 _GENERIC = [("电压", "voltage_V", " V"), ("接口", "iface", ""),
             ("CAN", "can", ""), ("通道", "channel", "")]

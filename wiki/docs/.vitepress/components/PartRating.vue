@@ -9,18 +9,20 @@
  *   4. **使用工况**：用了多久、什么负载、什么批量 —— 决定这条评价对你有不有用
  *   5. **分布图**：「5 人 5 分」和「1 人 5 分 + 4 人 1 分」不能只看均分
  *
- * 打分入口仍然只有一个：GitHub issue 表单。
- *   读者本来就有 GitHub 账号，为打分再注册一次是不必要的门槛；
- *   Issue Forms 还自带身份可信、结构化、Actions 可聚合、可被维护者关闭。
- *   一人一件一票：唯一键 = issue 作者 + 部件 id，改主意就编辑原 issue。
+ * 两个打分入口，按部署形态分工：
+ *   · 主站（有后端）：站内 1–5 分，一人一件一票，可改可撤（/api/v1/ratings）
+ *   · 静态镜像 / 需要四维与工况：GitHub issue 表单（读不用账号，写要 GitHub）
  *
- * 数据来源只有一个：构建期快照 `ratings.json`（两端一致）。
- *   不再读 /api/ratings/{id} —— 那个接口只在主站有，镜像端每次访问都会拿一个 404；
- *   评分本来也是 Actions 定期聚合的，没有「实时」可言。
- * 读不到快照就显示「暂无评分」，绝不当成 0 分。
+ * 两个数据源，先快照后实时：
+ *   · 构建期快照 `ratings.json`：镜像端唯一来源，也是主站的兜底
+ *   · /api/v1/ratings/{id}：主站实时值，探活通过才请求；站内还没票时不覆盖快照
+ * 读不到就显示「暂无评分」，绝不当成 0 分。
  */
 import { computed, onMounted, ref } from 'vue'
 import { withBase } from 'vitepress'
+import { RadioGroupItem, RadioGroupRoot } from 'reka-ui'
+import { apiAvailable } from '../lib/api'
+import { authHeaders, clearToken, getToken } from '../lib/auth'
 
 interface Dims { spec_trust?: number; build?: number; docs?: number; value?: number; compat?: number }
 
@@ -34,6 +36,16 @@ interface Summary {
   dims_n?: Record<string, number> | null
   usage_count?: Record<string, Record<string, number>> | null
   low_sample?: boolean
+  /** 贝叶斯收缩后的排序分；只用于排序，不当作「真实均分」展示 */
+  rank_score?: number | null
+}
+
+interface Mine {
+  score: number
+  own_hardware: boolean
+  note: string
+  /** 对应的评价帖被站务隐藏时，这票不计入公开聚合（Rating 本身仍在） */
+  hidden?: boolean
 }
 
 const props = defineProps<{
@@ -48,7 +60,21 @@ const empty: Summary = {
   own_hardware_count: 0,
 }
 const s = ref<Summary>({ ...empty })
-const source = ref<'snapshot' | 'none'>('none')
+const source = ref<'snapshot' | 'live' | 'none'>('none')
+const apiUp = ref<boolean | null>(null)
+const loggedIn = ref(false)
+const score = ref(0)
+const own = ref(false)
+const note = ref('')
+const submitting = ref(false)
+const ratingError = ref('')
+const ratingNotice = ref('')
+const mine = ref<Mine | null>(null)
+
+const loginHref = computed(() => {
+  const path = typeof window !== 'undefined' ? window.location.pathname : '/'
+  return `/login?redirect=${encodeURIComponent(path)}`
+})
 
 /** 全部可能的维度；具体渲染哪些由 props.dims 决定 */
 const DIM_ALL: Record<string, { label: string; hint: string }> = {
@@ -107,6 +133,16 @@ const usageRows = computed(() => {
     }))
 })
 
+/** 方向键 / Home / End：焦点已经被 roving focus 移到目标格，这里把那一格选中。
+ *  reka-ui 自己的「按方向键即选中」是 keydown → focus → setTimeout(click)，
+ *  快速按下并松开时 keyup 可能先到，选中会被吞掉；补一条不依赖时序的路径。 */
+function onStarKey(evt: KeyboardEvent) {
+  if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(evt.key)) return
+  const el = document.activeElement as HTMLElement | null
+  const v = Number(el?.getAttribute('value'))
+  if (Number.isInteger(v) && v >= 1 && v <= 5) score.value = v
+}
+
 async function load() {
   try {
     const r = await fetch(withBase('/ratings.json'))
@@ -120,15 +156,111 @@ async function load() {
   } catch { /* 没有快照就继续 */ }
 }
 
-onMounted(load)
+/**
+ * 合并站内实时聚合。
+ *
+ * 后端 /ratings 现在与快照/排序共用 rating_stats.aggregate，会带
+ * dims_avg / dims_n / usage_count。站内 1–5 分不收集四维与工况，这些字段
+ * 是 null；**不能用 null 覆盖掉 GitHub issue 快照里已有的维度**，否则
+ * 页面上「站内多了一票 → 四维整块消失」。缺失时保留快照值。
+ */
+function mergeLive(d: any) {
+  s.value = {
+    ...s.value,
+    ...d,
+    dims_avg: d.dims_avg ?? s.value.dims_avg ?? null,
+    dims_n: d.dims_n ?? s.value.dims_n ?? null,
+    usage_count: d.usage_count ?? s.value.usage_count ?? null,
+    // 后端 n=0 时 low_sample=true；有票时以接口为准
+    low_sample: typeof d.low_sample === 'boolean'
+      ? d.low_sample : (d.count > 0 && d.count < 3),
+  }
+  source.value = 'live'
+}
+
+async function loadLive() {
+  apiUp.value = await apiAvailable()
+  loggedIn.value = !!getToken()
+  if (!apiUp.value) return
+  try {
+    const r = await fetch(`/api/v1/ratings/${encodeURIComponent(props.partId)}`,
+      { headers: authHeaders() })
+    if (r.status === 401) { clearToken(); loggedIn.value = false; return }
+    if (!r.ok) return
+    const d = await r.json()
+    mine.value = d.mine || null
+    if (mine.value) {
+      score.value = mine.value.score
+      own.value = mine.value.own_hardware
+      note.value = mine.value.note || ''
+    }
+    // 站内还没有票时保留 GitHub 快照，避免把已有评价显示成 0。
+    if (d.count > 0 || !s.value.count) mergeLive(d)
+  } catch { /* 后端暂时不可用时保留快照 */ }
+}
+
+async function submitRating() {
+  ratingError.value = ''
+  ratingNotice.value = ''
+  if (!getToken()) { ratingError.value = '请先登录再打分'; return }
+  if (!score.value) { ratingError.value = '请选择 1–5 分'; return }
+  submitting.value = true
+  try {
+    const r = await fetch(`/api/v1/ratings/${encodeURIComponent(props.partId)}`, {
+      method: 'POST',
+      headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ score: score.value, own_hardware: own.value, note: note.value.trim() }),
+    })
+    const d = await r.json().catch(() => ({}))
+    if (!r.ok) throw new Error(typeof d.detail === 'string' ? d.detail : '评分失败')
+    loggedIn.value = true
+    mine.value = d.mine || null
+    mergeLive(d)
+    ratingNotice.value = mine.value?.hidden
+      ? '评分已保存；对应评价帖已被隐藏，暂不计入公开均分'
+      : mine.value ? '已更新你的评分' : '评分已记录'
+  } catch (e: any) {
+    ratingError.value = e.message
+  } finally {
+    submitting.value = false
+  }
+}
+
+async function removeRating() {
+  ratingError.value = ''
+  ratingNotice.value = ''
+  submitting.value = true
+  try {
+    const r = await fetch(`/api/v1/ratings/${encodeURIComponent(props.partId)}`, {
+      method: 'DELETE', headers: authHeaders(),
+    })
+    if (!r.ok && r.status !== 404) throw new Error('撤销失败')
+    mine.value = null
+    score.value = 0
+    own.value = false
+    note.value = ''
+    ratingNotice.value = '已撤销评分'
+    await loadLive()
+  } catch (e: any) {
+    ratingError.value = e.message
+  } finally {
+    submitting.value = false
+  }
+}
+
+onMounted(async () => {
+  await load()
+  await loadLive()
+})
 </script>
 
 <template>
-  <div class="rt">
+  <div id="评分" class="rt">
     <div class="rt-head">
       <span class="rt-title">实际使用</span>
       <span v-if="!s.count" class="rt-none">暂无评分</span>
       <span v-else-if="s.low_sample" class="rt-warn" title="样本少于 3 条时不显示确定结论">样本不足</span>
+      <span v-else-if="source === 'live'" class="rt-tag">站内实时</span>
       <span v-else-if="source === 'snapshot'" class="rt-tag">快照</span>
     </div>
 
@@ -180,21 +312,60 @@ onMounted(load)
       </div>
     </div>
 
-    <!-- 唯一打分入口 -->
+    <!-- 主站：站内账号直接打分；静态镜像：保留 GitHub 表单 -->
+    <div v-if="apiUp" class="rt-live">
+      <div class="rt-live-head">站内评分</div>
+      <template v-if="loggedIn">
+        <!--
+          星数是**单选组**，不是一排开关：role=radiogroup + role=radio + aria-checked，
+          左右方向键可切换，Tab 只停在选中那一格（roving tabindex）。
+          用 reka-ui 的 RadioGroup 而不是自己拿 <button aria-pressed> 冒充 ——
+          后者在屏幕阅读器里会被念成「切换按钮」，也拿不到方向键行为。
+        -->
+        <RadioGroupRoot v-model="score" class="rt-stars" orientation="horizontal"
+          aria-label="评分（1–5 分）" :disabled="submitting" @keydown="onStarKey">
+          <RadioGroupItem v-for="n in 5" :key="n" :value="n" type="button" class="rt-star"
+            :class="{ on: score >= n }" :aria-label="`${n} 分`">{{ n }}</RadioGroupItem>
+        </RadioGroupRoot>
+        <label class="rt-own">
+          <input v-model="own" type="checkbox" /> 我装过机（这条评分来自真实使用）
+        </label>
+        <label class="rt-note-label" for="rt-note">一句话理由（可选）</label>
+        <input id="rt-note" v-model="note" class="rt-note" maxlength="200"
+          placeholder="一句话理由（可选）" />
+        <div class="rt-live-actions">
+          <button type="button" class="rt-btn" :disabled="!score || submitting" @click="submitRating">
+            {{ submitting ? '提交中…' : mine ? '更新评分' : '提交评分' }}
+          </button>
+          <button v-if="mine" type="button" class="rt-ghost" :disabled="submitting" @click="removeRating">撤销</button>
+          <span v-if="mine" class="rt-mine">你已打分 {{ mine.score }} 分</span>
+        </div>
+        <p v-if="mine?.hidden" class="rt-hidden" role="status">
+          你的评分对应评价帖已被站务隐藏，这票暂不计入公开均分；评价恢复后会重新计入。
+        </p>
+        <p v-if="ratingError" class="rt-err" role="alert">{{ ratingError }}</p>
+        <p v-if="ratingNotice" class="rt-ok" role="status">{{ ratingNotice }}</p>
+      </template>
+      <p v-else class="rt-hint">
+        站内评分需要登录 · <a :href="loginHref">登录 / 注册</a>（不需要 GitHub 账号）。
+      </p>
+    </div>
+
+    <!-- GitHub 表单：静态镜像的主入口；主站保留作多维评分入口 -->
     <div class="rt-gh">
-      <a class="rt-btn" :href="ghUrl" target="_blank" rel="noopener" title="在 GitHub 上开一条评分 issue（表单约 1 分钟）">写评价</a>
+      <a class="rt-btn" :href="ghUrl" target="_blank" rel="noopener"
+        title="在 GitHub 上开一条评分 issue（表单约 1 分钟）">{{ apiUp ? '多维评分（GitHub）' : '写评价' }}</a>
       <a class="rt-gh-link" :href="ghIssues" target="_blank" rel="noopener">看所有评价 →</a>
     </div>
 
-    <p class="rt-hint">
+    <p v-if="!apiUp" class="rt-hint">
       在 GitHub 上开一条 <strong>issue</strong>（表单，约 1 分钟）：三项必填（总分 / 是否用过 / 一句话理由），分维度选填。
-      <strong>一人一件一票</strong>（唯一键 = 你的账号 + 部件 id），改主意就编辑那条 issue，
-      不会被算成两票。汇总由 Actions 自动跑：不是实时，但每一条都能查到是谁、凭什么。
+      <strong>一人一件一票</strong>，改主意就编辑那条 issue。汇总由 Actions 自动跑：不是实时，但每一条都能查到是谁、凭什么。
     </p>
 
     <p class="rt-hint">
-      <strong>想写长一点的实测</strong>就写在下面的评论里（GitHub Discussions）。
-      评分用来排序，评论用来讲清楚为什么。
+      <strong>想写长一点的实测</strong>就写在下面的讨论里。
+      评分用来排序，讨论用来讲清楚为什么。
     </p>
 
     <a class="rt-jump" href="#这一页的讨论">去写评论 ↓</a>
@@ -263,6 +434,41 @@ onMounted(load)
 .rt-usage-v em {
   font-style: normal; font-size: 0.68rem; padding: 0 6px; border-radius: 999px;
   background: var(--vp-c-bg-soft); color: var(--vp-c-text-2);
+}
+
+.rt-live {
+  margin-top: 0.8rem; padding: 0.75rem 0.8rem;
+  border: 1px solid var(--vp-c-divider); border-radius: 10px;
+  background: var(--vp-c-bg);
+}
+.rt-live-head { font-size: 0.78rem; font-weight: 700; color: var(--vp-c-text-2); margin-bottom: 0.5rem; }
+.rt-stars { display: flex; gap: 0.3rem; }
+.rt-stars button {
+  width: 2.5rem; height: 2.5rem; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--vp-c-divider); background: transparent;
+  color: var(--vp-c-text-2); font-size: 0.85rem; font-weight: 700;
+}
+.rt-stars button.on { background: var(--vp-c-brand-1); border-color: var(--vp-c-brand-1); color: var(--rw-on-brand); }
+.rt-stars button:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 2px; }
+.rt-stars button:disabled { opacity: 0.55; cursor: default; }
+.rt-own { display: flex; align-items: center; gap: 0.4rem; margin: 0.55rem 0; font-size: 0.76rem; color: var(--vp-c-text-2); }
+.rt-note-label { display: block; font-size: 0.72rem; color: var(--vp-c-text-3); margin-bottom: 0.2rem; }
+.rt-note {
+  width: 100%; box-sizing: border-box; padding: 0.5rem 0.6rem;
+  border: 1px solid var(--vp-c-divider); border-radius: 8px;
+  background: var(--vp-c-bg); color: var(--vp-c-text-1); font: inherit; font-size: 0.8rem;
+}
+.rt-live-actions { display: flex; align-items: center; gap: 0.6rem; margin-top: 0.55rem; flex-wrap: wrap; }
+.rt-ghost {
+  min-height: 36px; padding: 0.3rem 0.7rem; border-radius: 7px; cursor: pointer;
+  border: 1px solid var(--vp-c-divider); background: transparent; color: var(--vp-c-text-2);
+}
+.rt-mine { font-size: 0.72rem; color: var(--vp-c-text-3); }
+.rt-err { margin: 0.5rem 0 0; font-size: 0.74rem; color: var(--rw-danger); }
+.rt-ok { margin: 0.5rem 0 0; font-size: 0.74rem; color: var(--rw-link); }
+.rt-hidden {
+  margin: 0.5rem 0 0; font-size: 0.72rem; line-height: 1.7;
+  color: var(--vp-c-text-3);
 }
 
 .rt-gh { display: flex; align-items: center; gap: 0.6rem; margin-top: 0.8rem; }

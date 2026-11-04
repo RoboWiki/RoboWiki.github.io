@@ -60,6 +60,10 @@ async function main() {
     console.log(`part: ${part.part.title} · ${part.rows.length} 行参数 · 分享「${share.title}」`)
 
     // 材质库是首页里的 Tab，不再有独立 pages/materials 页。
+    // 先回首页：上一步已经把 page 指向了部件详情页，详情页没有 switchTab。
+    await mini.reLaunch('/pages/index/index')
+    await page.waitFor(1200)
+    page = await mini.currentPage()
     await page.callMethod('switchTab', {
       currentTarget: { dataset: { tab: 'materials' } },
     })

@@ -8,7 +8,7 @@
  *
  * 样式全在 theme/explorer.css 的 .ex-* 里 —— 改那里，三页一起变。
  */
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 interface Facet {
   /** 分组键：同一组内互斥 */
@@ -50,6 +50,12 @@ const emit = defineEmits<{
 const q = ref(props.initialQuery || '')
 const active = defineModel<Record<string, string>>('active', { default: () => ({}) })
 
+// 从别的页面带新的 ?q= 进来时，输入框要跟着变；本地 state 不能只吃首帧。
+watch(() => props.initialQuery, v => {
+  const next = v || ''
+  if (next !== q.value) q.value = next
+})
+
 /** 按 group 分组，保持传入顺序 */
 const groups = computed(() => {
   const m = new Map<string, Facet[]>()
@@ -69,6 +75,12 @@ function pick(f: Facet) {
   emit('select-facet', { group: f.group, value: f.value === cur ? '' : f.value })
 }
 
+/** 「全部」也要通知父级：只改 v-model 不发事件时，父级监听 select-facet 的逻辑会漏。 */
+function clearFacet(group: string) {
+  active.value = { ...(active.value || {}), [group]: '' }
+  emit('select-facet', { group, value: '' })
+}
+
 function onSearch(e: Event) {
   q.value = (e.target as HTMLInputElement).value
   emit('update:q', q.value)
@@ -86,17 +98,18 @@ function onSearch(e: Event) {
 
     <div class="ex-bar">
       <input class="ex-search" type="search" :placeholder="searchPlaceholder || '搜索'"
-             :value="q" @input="onSearch" aria-label="搜索列表" />
+             :value="q" @input="onSearch" aria-label="搜索列表"
+             @keydown.esc="(q = ''), emit('update:q', '')" />
       <slot name="bar" />
       <select v-if="sorts && sorts.length" class="ex-sel" aria-label="排序方式"
               :value="sortKey" @change="emit('update:sortKey', ($event.target as HTMLSelectElement).value)">
         <option v-for="s in sorts" :key="s.k" :value="s.k">{{ s.label }}</option>
       </select>
-      <span class="ex-count">{{ count ?? 0 }} {{ countUnit }}</span>
+      <span class="ex-count" role="status">{{ count ?? 0 }} {{ countUnit }}</span>
     </div>
 
     <div v-for="[group, items] in groups" :key="group" class="ex-facets">
-      <button class="ex-chip" :class="{ on: !active?.[group] }" @click="active = { ...(active || {}), [group]: '' }">
+      <button class="ex-chip" :class="{ on: !active?.[group] }" @click="clearFacet(group)">
         全部
       </button>
       <button v-for="f in items" :key="group + f.value" class="ex-chip"
@@ -107,7 +120,9 @@ function onSearch(e: Event) {
     </div>
     <slot name="facets-extra" />
 
-    <div class="ex-grid" aria-live="polite">
+    <!-- 网格不加 aria-live：每敲一个字都重排全部卡片，读屏会把整块子树重念。
+         让上面的计数用 role="status" 播报条数即可。 -->
+    <div class="ex-grid">
       <slot />
     </div>
     <p v-if="!count" class="ex-empty" role="status">{{ emptyText }}</p>

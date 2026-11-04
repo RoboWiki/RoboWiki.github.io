@@ -63,8 +63,27 @@ class Settings(BaseSettings):
     database_url: str | None = None
 
     #: 生产必须覆盖：ROBOWIKI_SECRET_KEY=...（≥32 字节，否则 PyJWT 会告警）
+    #: 同一个值也给 SessionMiddleware（OAuth state cookie）签名。
     secret_key: str = "dev-only-change-me-please-set-ROBOWIKI_SECRET_KEY"
     token_hours: int = 24 * 7
+
+    # ── 第三方身份 ──────────────────────────────────────────────────────────
+    #: GitHub OAuth App。未配置时 /auth/github/* 一律 503，本地开发不需要它。
+    github_client_id: str | None = None
+    github_client_secret: str | None = None
+    github_oauth_scope: str = "read:user user:email"
+    #: 微信小程序（公众平台 → 开发管理 → 开发设置）。AppSecret 只放后端，
+    #: 绝不进前端包/小程序包。未配置时 /auth/wechat/mini 返回 503。
+    wechat_mp_appid: str | None = None
+    wechat_mp_secret: str | None = None
+    #: jscode2session 的根地址；测试可指向假服务，避免真实网络
+    wechat_api_base: str = "https://api.weixin.qq.com"
+    wechat_timeout_s: float = 6.0
+    #: OAuth 回调的对外根（反代后 request.url 可能是内网地址）。
+    #: 例：https://robowiki.org.cn；留空则用请求自身的 host。
+    oauth_redirect_base: str | None = None
+    #: OAuth state cookie 是否只走 https；None = 跟随 site_url 协议
+    session_https_only: bool | None = None
 
     #: 前端 dev server
     cors_origins: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173",
@@ -95,6 +114,17 @@ class Settings(BaseSettings):
     @property
     def sqlalchemy_url(self) -> str:
         return self.database_url or f"sqlite:///{self.db_path}"
+
+    # ── 第三方身份可用性（路由按此决定 503 还是放行）─────────────────────────
+    @property
+    def github_oauth_enabled(self) -> bool:
+        return bool((self.github_client_id or "").strip()
+                    and (self.github_client_secret or "").strip())
+
+    @property
+    def wechat_mini_enabled(self) -> bool:
+        return bool((self.wechat_mp_appid or "").strip()
+                    and (self.wechat_mp_secret or "").strip())
 
 
 settings = Settings()

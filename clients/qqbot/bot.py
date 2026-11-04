@@ -39,5 +39,9 @@ async def answer(bot: Bot, event: MessageEvent):
     except Exception:
         await matcher.finish("查询服务暂时不可用，稍后再试；站点："
                              f"{API.replace('api.', '')}")
-    text = f"{d['answer']}\n{d['url']}\n数据 {d.get('data_version', '')}".strip()
-    await matcher.finish(MessageSegment.text(text))
+    # 只读契约：answer + url + data_version；缺字段时给兜底，不让整条回复变成 "None"。
+    lines = [str(d.get("answer") or "没找到这个型号"),
+             str(d.get("url") or API)]
+    if d.get("data_version"):
+        lines.append(f"数据 {d['data_version']}")
+    await matcher.finish(MessageSegment.text("\n".join(lines)))

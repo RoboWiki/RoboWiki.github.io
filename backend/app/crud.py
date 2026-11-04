@@ -7,6 +7,26 @@ from .models import Comment, Part, Post, User, Vote
 from .schemas import CommentOut, PostOut, UserOut
 
 
+# ── 评分可见性（派生）──────────────────────────────────────────────────────
+def shadowed_review_keys(db: Session,
+                         part_id: str | None = None) -> set[tuple[str, int]]:
+    """被站务隐藏的评价帖所对应的评分键 `(part_id, user_id)`。
+
+    Rating 模型没有 hidden 列（本轮不改 models.py），但「评价帖隐藏后这票
+    还算不算」不能靠调用方自觉：评价帖与评分是同一份事实。这里在读取时按
+    同源关系派生——同一人同一件存在 hidden review 时，该票不计入公开聚合；
+    站务恢复评价后自动回来，不需要额外的同步任务。
+
+    注意：这是读取侧口径。物理 Rating 行仍在，作者仍可看到/撤销自己的票；
+    其它直接读 Rating 表的投影（如 catalog 卡片）需要调用同一个函数才能一致。
+    """
+    stmt = select(Post.part_id, Post.author_id).where(
+        Post.kind == "review", Post.hidden.is_(True))
+    if part_id is not None:
+        stmt = stmt.where(Post.part_id == part_id)
+    return {(pid, uid) for pid, uid in db.exec(stmt).all() if pid is not None}
+
+
 # ── 徽章（派生，不落库）──────────────────────────────────────────────────────
 def badges_for(db: Session, u: User, post_count: int, comment_count: int) -> list[str]:
     out: list[str] = []
@@ -81,6 +101,8 @@ def apply_vote(db: Session, user: User, kind: str, target_id: int, value: int) -
     target = db.get(model, target_id)
     if target is None or getattr(target, "hidden", False):
         raise LookupError("目标不存在")
+    if getattr(target, "author_id", None) == user.id:
+        raise PermissionError("不能给自己的内容投票")
 
     existing = db.exec(select(Vote).where(Vote.user_id == user.id,
                                           Vote.target_kind == kind,

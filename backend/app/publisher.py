@@ -204,7 +204,9 @@ def publish_job(job, data_dir: Path) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / f"submission-{job.submission_id or job.id}.json"
     path.write_text(json.dumps({
+        "dry_run": True,
         "outbox_id": job.id, "submission_id": job.submission_id,
+        "idempotency_key": job.idempotency_key,
         "action": job.action, "payload": job.payload,
     }, ensure_ascii=False, indent=1), encoding="utf-8")
-    return {"dry_run": True, "file": path.name}
+    return {"dry_run": True, "file": path.name, "path": str(path)}

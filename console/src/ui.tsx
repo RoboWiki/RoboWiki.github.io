@@ -78,7 +78,7 @@ export function PostCard({ post, onOpen }: { post: Post; onOpen: (id: number) =>
           {post.part_title && <Tag color="default">{post.part_title}</Tag>}
           {post.own_hardware && <Tag color="blue">实测</Tag>}
           {post.rating != null && <Rate disabled value={post.rating} style={{ fontSize: 12 }} />}
-          {post.tags.map(t => <Tag key={t} bordered={false} style={{ color: '#7f8fa4' }}>#{t}</Tag>)}
+          {post.tags.map(t => <Tag key={t} variant="filled" style={{ color: '#7f8fa4' }}>#{t}</Tag>)}
         </Space>
         <Typography.Title level={5} style={{ margin: '2px 0 4px', fontSize: 15 }}>
           {post.title}

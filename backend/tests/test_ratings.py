@@ -41,6 +41,18 @@ def client():
     shutil.rmtree(_TMP, ignore_errors=True)
 
 
+@pytest.fixture(scope="module", autouse=True)
+def _clean_ratings(client):
+    """本模块按顺序共享一个库：先清掉其它模块留下的评分，避免串味。"""
+    from sqlmodel import delete
+    from app.core.db import session
+    from app.models import Rating
+    with session() as db:
+        db.exec(delete(Rating))
+        db.commit()
+    yield
+
+
 def login(c, handle="demo1") -> dict:
     r = c.post("/api/auth/login", json={"handle": handle, "password": "robowiki"})
     assert r.status_code == 200, r.text

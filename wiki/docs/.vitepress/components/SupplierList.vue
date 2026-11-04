@@ -9,6 +9,10 @@ import { computed, onMounted, ref } from 'vue'
 import suppliersData from '../../public/suppliers.json'
 import ExplorerShell from './ExplorerShell.vue'
 
+interface MatRef {
+  id: string; name: string; href: string
+  role?: string | null; category?: 'material' | 'process'
+}
 interface Sup {
   id: string; name: string; brand?: string; kind?: 'platform' | 'shop'
   url?: string | null; has_url?: boolean; category?: string | null; fine?: string | null
@@ -17,6 +21,7 @@ interface Sup {
   process?: string | null; quality?: string | null; punctual?: string | null
   price_level?: string | null; invoice?: string | null; materials?: string | null
   lead?: string | null; notes?: string | null; tier?: string | null
+  _materials?: MatRef[]
 }
 
 const all = ref<Sup[]>(suppliersData.suppliers || [])
@@ -27,7 +32,10 @@ const active = ref<Record<string, string>>({})
 const expanded = ref<string | null>(null)
 
 onMounted(() => {
-  q.value = (new URLSearchParams(window.location.search).get('q') || '').trim()
+  const p = new URLSearchParams(window.location.search)
+  q.value = (p.get('q') || '').trim()
+  const mat = (p.get('mat') || '').trim()
+  if (mat) active.value = { ...active.value, mat }
 })
 
 const hasNote = (s: Sup) => !!s.notes
@@ -38,12 +46,18 @@ const facets = computed(() => {
   for (const s of all.value) if (s.listing) board.set(s.listing, (board.get(s.listing) || 0) + 1)
   const cat = new Map<string, number>()
   const fine = new Map<string, number>()
+  const mat = new Map<string, { label: string; count: number }>()
   for (const s of all.value) {
     const c = s.category || '未分类'
     cat.set(c, (cat.get(c) || 0) + 1)
     if (!active.value.cat || active.value.cat === c) {
       const f = s.fine || s.process || '未记工艺'
       fine.set(f, (fine.get(f) || 0) + 1)
+    }
+    for (const m of s._materials || []) {
+      const cur = mat.get(m.id) || { label: m.name, count: 0 }
+      cur.count += 1
+      mat.set(m.id, cur)
     }
   }
   const out = [...board.entries()].sort((a, b) => b[1] - a[1])
@@ -52,6 +66,8 @@ const facets = computed(() => {
     .map(([v, n]) => ({ group: 'cat', value: v, label: v, count: n })))
   out.push(...[...fine.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10)
     .map(([v, n]) => ({ group: 'fine', value: v, label: v, count: n })))
+  out.push(...[...mat.entries()].sort((a, b) => b[1].count - a[1].count).slice(0, 12)
+    .map(([v, n]) => ({ group: 'mat', value: v, label: n.label, count: n.count })))
   return out
 })
 
@@ -68,9 +84,11 @@ const rows = computed(() => {
       const f = s.fine || s.process || '未记工艺'
       if (f !== active.value.fine) return false
     }
+    if (active.value.mat && !(s._materials || []).some((m) => m.id === active.value.mat)) return false
     if (!kw) return true
     return [s.name, s.category, s.fine, s.reason, s.process, s.quality,
-      s.punctual, s.price_level, s.materials, s.notes]
+      s.punctual, s.price_level, s.materials, s.notes,
+      ...(s._materials || []).flatMap((m) => [m.name, m.role])]
       .filter(Boolean).join(' ').toLowerCase().includes(kw)
   })
   const BOARD: Record<string, number> = { 黑榜: 0, 红榜: 1 }
@@ -91,7 +109,7 @@ const rows = computed(() => {
     title="活找谁做。"
     lead="与部件库同一套交互，但比的是另一件事：加工质量、交货准不准、价格档、能不能开票。数据来自社区整理的实战反馈，不是厂商自述。"
     search-placeholder="搜店名 / 工艺 / 点评关键词"
-    :initial-query="initialQ"
+    :initial-query="q"
     :facets="facets"
     :sorts="[{ k: 'board', label: '红黑榜优先' }, { k: 'price', label: '按价格档' }, { k: 'notes', label: '优先有点评' }, { k: 'name', label: '按名称' }]"
     v-model:sort-key="sortKey"
@@ -107,6 +125,8 @@ const rows = computed(() => {
       <strong>已脱敏的是爆料人</strong>：填写人、掌柜 ID、店铺链接（带 spm 与 user_number_id 可反查个人）、
       「学校 + 姓名」署名、联系方式一律去掉，日期只到月 —— 商家名与问题描述保持原样，不软化。
       等级：加工/材料 <code>B</code>，单条社区反馈 <code>C</code>（当线索看）。
+      <strong>与材质库双向联动</strong>：材质页的渠道入口会按 <code>?mat=</code> 筛到这里，
+      卡片上的「相关材料 / 工艺」可直接跳回对应参数页。
     </template>
 
     <div v-for="s in rows" :key="s.id" class="ex-card"
@@ -136,6 +156,13 @@ const rows = computed(() => {
           <div v-if="s.materials"><dt>材料</dt><dd>{{ s.materials }}</dd></div>
           <div v-if="s.lead"><dt>工期</dt><dd>{{ s.lead }}</dd></div>
         </dl>
+        <div v-if="s._materials?.length" class="ex-relations">
+          <span class="ex-muted">相关材料 / 工艺</span>
+          <a v-for="m in s._materials" :key="`${m.id}-${m.role || ''}`"
+             class="ex-pill ex-rel" :href="`./${m.href}`">
+            {{ m.name }}{{ m.role ? ` · ${m.role}` : '' }}
+          </a>
+        </div>
         <p v-if="hasNote(s)" class="ex-sub ex-notes" :class="{ 'note-open': expanded === s.id }"
            style="border-left:2px solid var(--vp-c-divider); padding-left:0.55rem; line-height:1.75; cursor:pointer"
            role="button" tabindex="0" :aria-expanded="expanded === s.id" @click="expanded = expanded === s.id ? null : s.id" @keydown.enter.prevent="expanded = expanded === s.id ? null : s.id" @keydown.space.prevent="expanded = expanded === s.id ? null : s.id">
@@ -174,4 +201,9 @@ const rows = computed(() => {
 /* 红黑榜徽标：黑榜琥珀色（警示，不刺眼），红榜品牌色（推荐） */
 .ex-tag.tag-bad { color: #b45309; border-color: #d97706; font-weight: 600; }
 .ex-tag.tag-good { color: var(--rw-brand-ink); border-color: var(--vp-c-brand-2); font-weight: 600; }
+
+/* 材质库反查：渠道卡片上的材料/工艺回链 */
+.ex-relations { display: flex; flex-wrap: wrap; gap: 0.35rem 0.4rem; align-items: center; margin: 0.55rem 0 0.2rem; }
+.ex-rel { text-decoration: none; }
+.ex-rel:hover { border-color: var(--vp-c-brand-2); color: var(--vp-c-brand-1); }
 </style>

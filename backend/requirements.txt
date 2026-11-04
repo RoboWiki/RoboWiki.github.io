@@ -5,6 +5,10 @@ pydantic>=2.9
 pydantic-settings>=2.4
 PyJWT>=2.9
 httpx>=0.27
+# OAuth2/OIDC 客户端（GitHub 登录）。协议细节不自研：授权码、state、PKCE 都在这。
+authlib>=1.3
+# SessionMiddleware 的签名实现（OAuth state cookie）
+itsdangerous>=2.2
 pytest>=8
 alembic>=1.13
 psycopg[binary]>=3.2

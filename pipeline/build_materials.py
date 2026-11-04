@@ -19,6 +19,9 @@ from urllib.parse import quote
 
 GROUP_ORDER = ["metal", "engineering_plastic", "printing", "composite", "elastomer", "process"]
 
+#: 材质/工艺页没有产品图，分享预览统一用站点的 1200×630 默认图。
+DEFAULT_OG_IMAGE = "/og-default.png"
+
 MAT_LABEL = [
     ("density_g_cm3", "密度", "g/cm³"),
     ("modulus_GPa", "弹性模量", "GPa"),
@@ -120,7 +123,8 @@ def _sim_table(specs: dict) -> str:
         rows.append(f"| 密度 | {d:g} g/cm³ | {d * 1000:.0f} kg/m³ |")
     e = specs.get("modulus_GPa")
     if isinstance(e, (int, float)):
-        rows.append(f"| 弹性模量 | {e:g} GPa | {e * 1e9:.3g} Pa |")
+        mod_label = "弯曲模量" if specs.get("modulus_kind") == "弯曲" else "弹性模量"
+        rows.append(f"| {mod_label} | {e:g} GPa | {e * 1e9:.3g} Pa |")
     t = specs.get("tensile_MPa")
     if isinstance(t, (int, float)):
         rows.append(f"| 抗拉强度 | {t:g} MPa | {t * 1e6:.3g} Pa |")
@@ -139,7 +143,8 @@ def _supplier_block(r: dict, sup_map: dict[str, dict]) -> str:
         sid = ref.get("supplier_id") or ""
         s = sup_map.get(sid) or {}
         name = s.get("name") or sid or "—"
-        link = f'<a href="../suppliers.html?q={quote(str(name))}">{html.escape(str(name))}</a>'
+        link = (f'<a href="../suppliers.html?q={quote(str(name))}'
+                f'&amp;mat={quote(str(r.get("id") or ""))}">{html.escape(str(name))}</a>')
         cat = s.get("category") or "—"
         fine = s.get("fine") or s.get("process") or ""
         cat = f"{cat} · {fine}" if fine else cat
@@ -167,6 +172,15 @@ def _source_block(r: dict) -> str:
     return "\n".join(lines)
 
 
+def _page_image(r: dict) -> str:
+    """页面分享图：材质/工艺目前没有产品图，写默认 OG，别让平台自己猜。
+
+    留出 `image_url` 分支是给以后补实拍图用的，不改变现在的产物。
+    """
+    src = r.get("image_url") or (r.get("specs") or {}).get("image_url")
+    return src.strip() if isinstance(src, str) and src.strip() else DEFAULT_OG_IMAGE
+
+
 def _page_desc(r: dict) -> str:
     """一句话描述：给 og:description / 分享卡用，避免材质页沿用站点通用文案。"""
     name = r.get("name") or r["id"]
@@ -186,6 +200,8 @@ def _material_page(r: dict, procs_by_id: dict[str, dict], sup_map: dict[str, dic
         v = s.get(key)
         if v is None or v == "":
             continue
+        if key == "modulus_GPa" and s.get("modulus_kind") == "弯曲":
+            label = "弯曲模量"
         value = f"±{_fmt(v)}" if key == "tolerance_mm" else _fmt(v)
         pairs.append((label + (f" ({unit})" if unit else ""), value))
     pairs.append(("参考价格档", _fmt(s.get("price_level"))))
@@ -195,6 +211,7 @@ def _material_page(r: dict, procs_by_id: dict[str, dict], sup_map: dict[str, dic
     return f"""---
 title: {json.dumps(r.get('name') or r['id'], ensure_ascii=False)}
 description: {json.dumps(_page_desc(r), ensure_ascii=False)}
+image: {json.dumps(_page_image(r), ensure_ascii=False)}
 ---
 
 # {r.get('name') or r['id']}
@@ -255,12 +272,15 @@ def _process_page(r: dict, mats_by_id: dict[str, dict], sup_map: dict[str, dict]
         v = s.get(key)
         if v is None or v == "":
             continue
+        if key == "modulus_GPa" and s.get("modulus_kind") == "弯曲":
+            label = "弯曲模量"
         value = f"±{_fmt(v)}" if key == "tolerance_mm" else _fmt(v)
         pairs.append((label + (f" ({unit})" if unit else ""), value))
     mat_items = [mats_by_id[m] for m in (s.get("materials") or []) if m in mats_by_id]
     return f"""---
 title: {json.dumps(r.get('name') or r['id'], ensure_ascii=False)}
 description: {json.dumps(_page_desc(r), ensure_ascii=False)}
+image: {json.dumps(_page_image(r), ensure_ascii=False)}
 ---
 
 # {r.get('name') or r['id']}

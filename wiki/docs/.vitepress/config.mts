@@ -9,6 +9,17 @@ import sidebar from './sidebar.json' with { type: 'json' }
 const SITE = 'https://robowiki.org.cn'
 const SITE_DESC = 'RoboWiki —— 机器人开发的开放资料底稿：可核对的参数、可追溯的来源、真实使用者的经验。'
 
+//: 没有产品图的页面（材质/工艺/目录页）共用的 1200×630 分享图。
+//: og:image / twitter:image 只在 transformHead 里输出一次 —— 全局 head 也写一份的话，
+//: 同一页会有两张图，微信/Slack/X 取哪张取决于解析顺序，产品图经常被默认图挤掉。
+const DEFAULT_OG_PATH = '/og-default.png'
+const DEFAULT_OG_IMAGE = `${SITE}${DEFAULT_OG_PATH}`
+
+/** frontmatter.image 可以是 /parts/x.jpg，也可以是完整 URL；输出必须是绝对地址。 */
+function absoluteImage(src: string): string {
+  return /^https?:\/\//i.test(src) ? src : `${SITE}/${src.replace(/^\/+/, '')}`
+}
+
 //: 页面 → 规范 URL。cleanUrls 关着（产物是 .html），所以路径要带 .html；
 //: 目录型页面（index.md）收成以 / 结尾，和 sitemap.xml 里的写法一致。
 function canonicalPath(relativePath: string): string {
@@ -43,6 +54,7 @@ const zhTheme = {
     { text: '软件库', link: '/software' },
     { text: '渠道库', link: '/suppliers' },
     { text: '实战资料', link: '/competitions' },
+    { text: '登录', link: '/login' },
     {
       text: '关于',
       items: [
@@ -156,13 +168,10 @@ export default withPwa(defineConfig({
     ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['link', { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' }],
     ['meta', { name: 'theme-color', content: '#0078d4' }],
-    // 分享卡片（微信 / Slack / X 都要这张图，否则链接只有一行灰字）
+    // 分享卡片只放全站字段；每页的图在 transformHead 里按 frontmatter 输出，
+    // 全局不再写 og:image / twitter:image，避免同页两张图互相覆盖。
     ['meta', { property: 'og:site_name', content: 'RoboWiki' }],
-    ['meta', { property: 'og:image', content: `${SITE}/og-default.png` }],
-    ['meta', { property: 'og:image:width', content: '1200' }],
-    ['meta', { property: 'og:image:height', content: '630' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
-    ['meta', { name: 'twitter:image', content: `${SITE}/og-default.png` }],
   ],
   // 每页的 canonical / og:url / 结构化数据。VitePress 原来只给全站一句描述，
   // 311 个型号页在搜索结果里长得一模一样；canonical 也缺，/catalog 与
@@ -177,9 +186,23 @@ export default withPwa(defineConfig({
     const title = pageData.frontmatter.title || pageData.title || 'RoboWiki'
     const description = pageData.frontmatter.description || SITE_DESC
 
+    // 每页一张图：部件页 frontmatter.image 是产品图，材质/目录页是默认 OG。
+    // pipeline 写根相对路径，这里补成绝对地址，微信 / Slack / X 才能抓到。
+    const fmImage = typeof pageData.frontmatter.image === 'string'
+      ? pageData.frontmatter.image.trim()
+      : ''
+    const image = absoluteImage(fmImage || DEFAULT_OG_PATH)
+    const isDefaultImage = image === DEFAULT_OG_IMAGE
+    const imageAlt = isDefaultImage ? `${title} · RoboWiki` : `${title} 产品图 · RoboWiki`
+
     // 404 页不该被索引，也不该把 canonical 指到自己；群里的坏链会固化错误 URL。
     if (isNotFound) {
-      return [['meta', { name: 'robots', content: 'noindex, nofollow' }]]
+      return [
+        ['meta', { name: 'robots', content: 'noindex, nofollow' }],
+        ['meta', { property: 'og:image', content: DEFAULT_OG_IMAGE }],
+        ['meta', { property: 'og:image:alt', content: 'RoboWiki · 机器人开发的开放资料底稿' }],
+        ['meta', { name: 'twitter:image', content: DEFAULT_OG_IMAGE }],
+      ]
     }
 
     const webPage = {
@@ -199,8 +222,19 @@ export default withPwa(defineConfig({
       ['meta', { property: 'og:description', content: description }],
       ['meta', { property: 'og:url', content: url }],
       ['meta', { property: 'og:locale', content: isEn ? 'en_US' : 'zh_CN' }],
+      ['meta', { property: 'og:image', content: image }],
+      ['meta', { property: 'og:image:alt', content: imageAlt }],
+      ['meta', { name: 'twitter:image', content: image }],
+      ['meta', { name: 'twitter:image:alt', content: imageAlt }],
       ['script', { type: 'application/ld+json' }, JSON.stringify(webPage)],
     ]
+    // 默认图尺寸是确定的；产品图尺寸各不相同，交给平台自己抓，别写错提示。
+    if (isDefaultImage) {
+      head.push(
+        ['meta', { property: 'og:image:width', content: '1200' }],
+        ['meta', { property: 'og:image:height', content: '630' }],
+      )
+    }
     return head
   },
 
