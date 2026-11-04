@@ -140,7 +140,7 @@ def _price_cell(v) -> str:
 
 
 #: 这些品类的备注保持原样：关节电机页面是模板，其余几个也不在这次调整范围内。
-NOTE_PLAIN_CATEGORIES = {"actuator", "chip", "connector", "esc", "sensor", "servo"}
+NOTE_PLAIN_CATEGORIES = {"actuator", "chip", "open_hw", "connector", "esc", "sensor", "servo"}
 
 _NOTE_SCOPE = re.compile(
     r"本站(?:目前只核到|这一条对应|只核到)|产品图待补|规格待补|未提取到|暂留空|"
@@ -386,6 +386,16 @@ def generic_table(items: list[dict], cat: str, href: dict[str, str] | None = Non
                     f"| {s.get('iface') or '—'} "
                     f"| {_price_cell(p.get('price_cny'))} "
                     f"| {tier_badge(p['source_tier'], p['verified'])} |")
+    elif cat == "open_hw":
+        head = ("| 型号 | 子类 | 输入 | 输出 | 电流 | 接口 | 价格 ¥ | 来源 |\n"
+                "|---|---|---|---|---|---|---|---|")
+        def row(p):
+            s = p["specs"]
+            return (f"| {mdl(p, (href or {}).get(p['id']))} | {p.get('subtype_label') or p['subtype']} "
+                    f"| {s.get('voltage_in') or '—'} | {s.get('voltage_out') or '—'} "
+                    f"| {s.get('current_out') or '—'} | {s.get('iface') or '—'} "
+                    f"| {_price_cell(p.get('price_cny'))} "
+                    f"| {tier_badge(p['source_tier'], p['verified'])} |")
     elif cat == "connector":
         head = ("| 型号 | 子类 | 系列 | 关键参数 | 价格 ¥ | 来源 |\n"
                 "|---|---|---|---|---|---|")
@@ -578,6 +588,7 @@ def write_legacy_redirects(out: pathlib.Path, pub: pathlib.Path) -> None:
 #: 不是最全的 —— 全参数在型号页和 catalog.json 里。
 _LLMS_FIELDS = {
     "actuator": ("tau_peak_Nm", "tau_rated_Nm", "gear", "mass_kg", "voltage_V"),
+    "open_hw": ("voltage_in", "voltage_out", "current_out", "iface"),
     "default": ("mass_kg", "voltage_V", "iface", "resolution", "range_m",
                 "odr_hz", "fps", "bits", "soc", "npu_tops", "mcu"),
 }
@@ -1143,6 +1154,7 @@ def main() -> None:
         "cuda": "CUDA", "ros2": "ROS 2", "eth": "以太网", "usb": "USB",
         "csi": "CSI", "pcie": "PCIe", "noise": "噪声",
         "repo_urls": "开源仓库", "repo_license": "仓库许可",
+        "license": "开源协议", "capacity_f": "单节容量 (F)", "energy_j": "储能 (J)",
         "range_note": "量程说明", "absolute": "绝对式",
         "meas_range": "测量范围", "response_time": "响应时间",
         "storage_temp_range": "存储温度", "motor_type": "电机类型",

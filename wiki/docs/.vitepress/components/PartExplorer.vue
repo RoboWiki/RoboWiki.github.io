@@ -171,6 +171,7 @@ const FALLBACK_CATS = [
   { v: 'controller_low', t: '下位机' },
   { v: 'module', t: '其余模块' },
   { v: 'chip', t: '硬件芯片' },
+  { v: 'open_hw', t: '开源硬件' },
 ]
 const CATS = ref<Cat[]>((catalogData.categories?.length ? catalogData.categories : FALLBACK_CATS).map((c: any) => ({
   v: c.id || c.v, t: c.name || c.t, subtypes: c.subtypes || {}, keys: c.keys || [], sorts: c.sorts || [],
@@ -522,6 +523,10 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
                 <template v-else-if="p.category === 'chip'">
                   <rect x="7" y="7" width="10" height="10" rx="1.5" />
                   <path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4" />
+                </template>
+                <template v-else-if="p.category === 'open_hw'">
+                  <rect x="4" y="5" width="16" height="14" rx="2" />
+                  <path d="M13 8l-4 5h3l-1 3 4-5h-3z" />
                 </template>
                 <template v-else-if="p.category === 'connector'">
                   <rect x="3" y="8" width="7" height="8" rx="1" />

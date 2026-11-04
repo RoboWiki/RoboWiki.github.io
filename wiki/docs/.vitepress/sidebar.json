@@ -542,6 +542,48 @@
        "link": "/parts/chip/xa-aerospace"
       }
      ]
+    },
+    {
+     "text": "开源硬件",
+     "collapsed": true,
+     "items": [
+      {
+       "text": "总览",
+       "link": "/parts/open_hw/"
+      },
+      {
+       "text": "RobotIC 机器人实验室",
+       "link": "/parts/open_hw/robotic"
+      },
+      {
+       "text": "fengl",
+       "link": "/parts/open_hw/fengl"
+      },
+      {
+       "text": "huashuo0804",
+       "link": "/parts/open_hw/huashuo0804"
+      },
+      {
+       "text": "infinite_future",
+       "link": "/parts/open_hw/infinite-future"
+      },
+      {
+       "text": "linxiwei",
+       "link": "/parts/open_hw/linxiwei"
+      },
+      {
+       "text": "oneasone",
+       "link": "/parts/open_hw/oneasone"
+      },
+      {
+       "text": "群星战队",
+       "link": "/parts/open_hw/qunxing"
+      },
+      {
+       "text": "鸟哥",
+       "link": "/parts/open_hw/birdd"
+      }
+     ]
     }
    ]
   }

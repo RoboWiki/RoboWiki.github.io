@@ -185,6 +185,7 @@ UI_KEYS = {
     "remote_controller": {"channels", "control_range_m", "image_url"},
     "controller_low": {"image_url"},
     "chip": {"package", "image_url"},
+    "open_hw": {"image_url"},
     "battery": {"capacity_mah", "voltage_V", "image_url"},
     "connector": {"positions", "pitch_mm", "current_rated_A", "voltage_rated_V",
                   "mount_type", "iface", "use_cases", "image_url"},

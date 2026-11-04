@@ -66,6 +66,7 @@ _FALLBACK_CATEGORY_LABELS = {
     "connector": "连接器",
     "module": "其余模块",
     "chip": "硬件芯片",
+    "open_hw": "开源硬件",
 }
 
 CATEGORY_LABELS = {**_FALLBACK_CATEGORY_LABELS, **_labels_from_taxonomy()}
@@ -80,6 +81,7 @@ SUBTYPE_LABELS = {
     "bridge": "调试桥", "imu": "IMU", "camera": "深度相机",
     "lidar": "激光雷达", "force": "力 / 触觉", "encoder": "编码器", "driver": "栅极驱动",
     "transceiver": "收发器", "memory": "存储", "power": "电源",
+    "supercap": "超级电容", "control": "控制 / 扩展板",
     "servo": "舵机", "radio": "板控", "gamepad": "手柄式",
     "wire_to_board": "线对板", "power_signal": "电源+信号混合",
     "board": "板对板 / 排针", "ffc": "FFC / FPC", "terminal": "接线端子",
@@ -227,6 +229,8 @@ _CARD_FACTS = {
     "module": [("接口", "iface", ""), ("CAN", "can", ""),
                ("电压", "voltage_V", " V")],
     "chip": [("封装", "package", ""), ("料号", "lcsc_part", "")],
+    "open_hw": [("输入", "voltage_in", ""), ("输出", "voltage_out", ""),
+                ("电流", "current_out", "")],
 }
 _CARD_GENERIC = [("电压", "voltage_V", " V"), ("接口", "iface", ""),
                  ("CAN", "can", "")]

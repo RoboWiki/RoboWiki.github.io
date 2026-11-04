@@ -8,6 +8,7 @@
 
 | 时间 | 类型 | 分支 / 提交 | 修改内容 | 验证 |
 |---|---|---|---|---|
+| 19:56 | 数据 / 功能 | 数据仓 ccc_dt `d6f50c2` / 站点 ccc（未提交） | 部件库新增「开源硬件」品类（`open_hw`），把此前收录的 10 条 RM/RC 开源模块（分电板、MP2980/LM5148/TPS5450 稳压模块、7S 超级电容、C 板/扩展板）从硬件芯片迁入，按电源/储能/控制拆 3 个子类；同步 taxonomy、schema 枚举、ID 注册表、站点分类表/分享卡/后端标签与前端图标，硬件芯片恢复为 59 条纯芯片 | 核心仓 `pipeline validate` 通过（102 警告、0 错误）、`id_registry --check` 632 条通过、`pytest` 19 passed 1 skipped；站点核心数据源 `pytest` 187 passed、`pipeline build` 557 页、VitePress 19.25s、sitemap 556；`/catalog.html?category=open_hw` 10 卡且含 Qmini/MP2980/超级电容，chip 59 卡无迁移条目，`/parts/open_hw/` 10 页 HTTP 200 |
 | 14:12 | 数据 / 功能 | 数据仓 ccc_dt `3e0e10a` / 站点 ccc `d4b8127` | 材质库复查与渠道联动：修正 7075-T6、440C、SUS304、PPS GF40、PC/ABS、PA12、TPU 等参数与固/液相线口径，新增 `modulus_kind` 区分拉伸/弯曲模量并同步模板、分享卡、小程序；材质卡片与详情页渠道入口按 `?mat=` 回链渠道库，渠道库新增材料/工艺分面、关联搜索与卡片回链，反向索引由材质 `suppliers[]` 构建时生成，不重复存关系 | 核心仓 `pipeline validate` 通过（127 警告、0 错误）、ID 注册表 622 通过；站点 115 tests、`pipeline build` 538 页（27 材料 + 9 工艺、207 渠道）、VitePress 15.29s、sitemap 537 条；`?mat=mat-alu-7075-t6` 筛出锐和 1 家、6061 筛出新大明/勇创 2 家，带 `?q=` 搜索框正确回填，详情页链接含 `q=…&mat=…` |
 
 ## 2026-11-02
