@@ -79,6 +79,9 @@ async def _release_headers(request, call_next):
     response.headers["X-RoboWiki-Data-Version"] = settings.data_version
     response.headers["X-RoboWiki-API-Version"] = "v1"
     response.headers["X-Request-ID"] = request_id
+    # API 响应可能含账号/UGC，禁止浏览器与中间代理缓存；静态与控制台资源不受影响。
+    if request.url.path.startswith("/api"):
+        response.headers.setdefault("Cache-Control", "no-store")
     return response
 
 

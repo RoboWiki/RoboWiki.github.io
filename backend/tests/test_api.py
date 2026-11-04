@@ -80,6 +80,12 @@ def test_catalog_empty_categories_match_facets(client):
     present = {f["category"] for f in d["facets"] if f["n"] > 0}
     assert not (set(d["empty_categories"]) & present)
     assert set(d["empty_categories"]) <= set(d["categories"])
+    assert d["data_version"] and d["site_url"]
+
+
+def test_api_responses_are_not_cacheable(client):
+    r = client.get("/api/meta")
+    assert r.headers["cache-control"] == "no-store"
 
 
 def test_catalog_rejects_unknown_category(client):

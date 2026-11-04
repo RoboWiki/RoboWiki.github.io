@@ -367,6 +367,7 @@ def catalog(db: Db, category: str | None = None):
                           .order_by(func.count(Part.id).desc())).all()
         total = db.exec(select(func.count(Part.id))).one()
     return {"total": int(total), "category": category,
+            "data_version": settings.data_version, "site_url": settings.site_url,
             "categories": CATEGORY_LABELS, "subtypes": SUBTYPE_LABELS,
             "empty_categories": empty_categories,
             "facets": rows,
