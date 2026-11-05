@@ -17,6 +17,6 @@ export function formatPrice(v?: number | null): string {
   return v == null ? '询价' : `¥${v.toLocaleString('zh-CN')}`
 }
 
-export function partHref(p: { category: string; id: string }): string {
-  return withBase(`/parts/${p.category}/${p.id}.html`)
+export function partHref(p: { category: string; slug: string }): string {
+  return withBase(`/parts/${p.category}/${p.slug}.html`)
 }

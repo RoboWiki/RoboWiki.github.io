@@ -19,8 +19,8 @@ import shutil
 import fitz
 
 ROOT = pathlib.Path(r"C:\Users\31560\Documents\00_open\robowiki")
-PDF_OUT = ROOT / "wiki/docs/public/competitions"
-BASE = ROOT / "wiki/docs/competitions"
+PDF_OUT = ROOT / "apps/web/public/competitions"
+BASE = ROOT / "apps/web/src/content/competitions"
 
 WATERMARKS = ["铨洲·智造平台", "铨洲智造平台", "造平台智造平台", "造平台", "铨洲智造", "智造平台"]
 

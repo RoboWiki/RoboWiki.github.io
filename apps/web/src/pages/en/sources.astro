@@ -1,0 +1,30 @@
+---
+import Base from '@/layouts/Base.astro'
+---
+<Base title="Sources · RoboWiki" description="Source tiers and first-party references.">
+  <article class="prose mx-auto max-w-3xl py-6">
+    <h1>Sources</h1>
+    <p>The only test for a number to enter the catalog: <strong>can it be traced back to a first-party source?</strong></p>
+    <ul>
+      <li><code>A</code> — cross-checked against the vendor manual / official document</li>
+      <li><code>B</code> — public product page or third-party compilation, not cross-checked</li>
+      <li><code>C</code> — relayed, lead only</li>
+    </ul>
+    <h2>Vendor sites and official docs</h2>
+    <table>
+      <thead><tr><th>Source</th><th>Type</th><th>Covers</th></tr></thead>
+      <tbody>
+        <tr><td>DAMIAO</td><td>Vendor site</td><td>Joint motors, controller boards</td></tr>
+        <tr><td>Lingzu RobStride</td><td>Vendor site + PDF specs</td><td>Joint motors</td></tr>
+        <tr><td>Unitree</td><td>Vendor site</td><td>Motors, 4D LiDAR</td></tr>
+        <tr><td>DJI RoboMaster</td><td>Vendor site + user manuals</td><td>Boards, motors, ESCs</td></tr>
+        <tr><td>Orbbec</td><td>Vendor site</td><td>Depth cameras</td></tr>
+        <tr><td>Livox</td><td>Vendor site</td><td>LiDAR</td></tr>
+        <tr><td>Intel RealSense (regional distributor)</td><td>Distributor site</td><td>Depth cameras</td></tr>
+        <tr><td>NVIDIA Jetson</td><td>Vendor site</td><td>Compute modules</td></tr>
+        <tr><td>D-Robotics RDK docs</td><td>Official docs</td><td>Edge computers</td></tr>
+      </tbody>
+    </table>
+    <p>Every part row carries <code>source_tier</code>, <code>origin</code> and <code>last_checked</code>.</p>
+  </article>
+</Base>

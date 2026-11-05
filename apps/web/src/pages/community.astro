@@ -1,0 +1,19 @@
+---
+import Base from '@/layouts/Base.astro'
+import Breadcrumbs from '@/components/community/Breadcrumbs.astro'
+import CommunityFeed from '@/components/community/community-feed'
+---
+<Base
+  title="社区 · RoboWiki"
+  description="机器人硬件的真实使用反馈：关节、主控、传感器的实测数据与踩坑记录。"
+>
+  <Breadcrumbs items={[{ label: '首页', href: '/' }, { label: '社区' }]} />
+  <div class="mb-5">
+    <p class="text-xs font-semibold uppercase tracking-wider text-blue-700">社区</p>
+    <h1 class="mt-1 text-3xl font-extrabold tracking-tight text-slate-950">写实测，不写“好用”。</h1>
+    <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+      哪个关节、多大负载、跑多久、出了什么问题。评价挂在零件上，会自动出现在该零件的详情里。
+    </p>
+  </div>
+  <CommunityFeed client:only="react" />
+</Base>

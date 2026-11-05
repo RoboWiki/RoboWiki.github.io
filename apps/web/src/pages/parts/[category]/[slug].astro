@@ -1,0 +1,29 @@
+---
+import GroupPage from '@/components/parts/GroupPage.astro'
+import PartDetail from '@/components/parts/PartDetail.astro'
+import { categoryGroups, parts, type CatalogPart } from '@/lib/catalog'
+
+type Group = { key: string; label: string; slugs: string[] }
+type Props = { kind: 'part'; part: CatalogPart } | { kind: 'group'; category: string; group: Group }
+
+export function getStaticPaths() {
+  const paths: Array<{ params: { category: string; slug: string }; props: Props }> = []
+  const bySlug = new Map(parts.map(p => [`${p.category}/${p.slug}`, p]))
+
+  for (const [category, groups] of Object.entries(categoryGroups)) {
+    for (const group of groups) {
+      if (bySlug.has(`${category}/${group.key}`)) continue
+      paths.push({ params: { category, slug: group.key }, props: { kind: 'group', category, group } })
+    }
+  }
+  for (const part of parts) {
+    paths.push({ params: { category: part.category, slug: part.slug }, props: { kind: 'part', part } })
+  }
+  return paths
+}
+
+const props = Astro.props as Props
+---
+{props.kind === 'group'
+  ? <GroupPage category={props.category} group={props.group} />
+  : <PartDetail part={props.part} />}

@@ -272,7 +272,7 @@ def review_submission(submission_id: int, payload: ReviewIn, db: Db,
         create_notification(
             db, s.submitter_id, type="moderation",
             subject=f"你的参数提案已{verdict}",
-            body=detail[:300], link="/catalog", actor_id=user.id)
+            body=detail[:300], link="/catalog.html", actor_id=user.id)
 
     if decision == "accepted":
         db.add(Outbox(

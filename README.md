@@ -14,7 +14,7 @@
 RoboWiki 由两个仓库组成：
 
 - **`RoboWiki`**：`data/`、`schema/`、`assets/`、校验与 `data-v*` release；
-- **`RoboWiki.github.io`**（本仓）：VitePress 站点、FastAPI、控制台、部署与多端客户端。
+- **`RoboWiki.github.io`**（本仓）：Astro 根站、FastAPI、Taro 互动端、部署与多端客户端。
 
 数据、schema 和产品图只在 `RoboWiki` 仓；本仓只负责站点与服务。`data.lock.json`
 锁定 `RoboWiki` 的 `data-v*` 发布物，Pages 构建时下载、校验 SHA-256 后再生成页面。
@@ -55,7 +55,7 @@ python -m pipeline build
 目录字段**只从`RoboWiki` 仓 release 来**，后台不直接改 `parts`：
 
 ```
-站内/控制台纠错 → submissions → staff 审核 → outbox → worker 开 PR
+站内纠错 → submissions → staff 审核 → outbox → worker 开 PR
       → 合并 → data-v* release → 回灌只读 parts 投影
 ```
 
@@ -66,15 +66,14 @@ python -m pipeline build
 
 ## 多端与分享
 
-- **Web / PWA**：同一份静态构建；可安装，访问过的页面离线可读，本地搜索离线可用。
+- **Web / PWA**：Astro 根站；社区与站务是 React 岛，公开内容静态渲染；可安装，访问过的页面离线可读。
 - **分享卡**：部件页按同一份 `share/*.json` 在浏览器生成 1080×1440 竖版卡与二维码，直接发群。
 - **API**：`/api/v1` 是唯一规范前缀（`/api` 保留为旧客户端别名），响应带
   `X-RoboWiki-API-Version` 与 `X-RoboWiki-Data-Version`。
 - **QQ 群机器人**：`GET /api/v1/bot/answer` 只读问答，回答固定为一句结论 + 链接 +
   数据版本；适配器见 `clients/qqbot/`，只被动回复、不推送。
-- **微信小程序**：`clients/wechat-mini/`（AppID `wx13bffd77b0b597e2`）只读部件/材质搜索、
-  分类筛选、详情、来源与分享；不登录、不写入。开发版连本机 Docker，正式版需已备案 API 域名。
-  列表走 `compact=true` 轻量投影，详情只取 5 条评价；`cli preview` 编译约 48 KB。
+- **微信小程序**：`apps/app/`（Taro，AppID `wx13bffd77b0b597e2`）与 H5 共用一套 React 代码；
+  支持目录、详情、评分、讨论、账号、投稿纠错。开发版连本机 API，正式版需已备案域名。
 - **材质 API**：`/api/v1/materials`、`/materials/meta`、`/materials/{id}`，与静态材质页同源。
 - **举报与处置**：`POST /api/v1/reports` 供登录用户举报帖子/评论/文档讨论；站务在
   `/api/v1/admin/reports` 审核，可隐藏或恢复，所有动作带 note 与处置人留痕。
@@ -124,9 +123,10 @@ export ROBOWIKI_DATA_DIR="$PWD/.data/data"
 export ROBOWIKI_SCHEMA_DIR="$PWD/.data/schema"
 export ROBOWIKI_ASSETS_DIR="$PWD/.data/assets/parts"
 
-python -m pipeline build          # 校验数据 + 生成站点内容
+python -m pipeline build          # 校验数据 + 生成 JSON 并导出到 apps/web
 python -m pytest                  # 构建链 + API 测试
-cd wiki && npm ci && npm run dev    # 本地起站（VitePress 默认 5173）
+pnpm install
+pnpm dev:web                      # Astro 根站（默认 4321）
 ```
 
 只读静态站不需要后端。需要登录、评价、提案与审核时，二选一：
@@ -138,10 +138,10 @@ cd backend && pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-在仓库根目录另开终端，把站点 dev 的 `/api` 指到 8000：
+在仓库根目录另开终端，把 Astro 的 API 指到 8000：
 
 ```bash
-cd wiki && ROBOWIKI_API_ORIGIN=http://127.0.0.1:8000 npm run dev
+PUBLIC_API_BASE=http://127.0.0.1:8000/api/v1 pnpm dev:web
 ```
 
 **B. 后端整套容器（API 默认 127.0.0.1:8080）**
@@ -154,7 +154,7 @@ cd deploy && cp .env.example .env && docker compose up -d --build
 在仓库根目录另开终端：
 
 ```bash
-cd wiki && npm run dev          # /api 默认代理到 8080
+PUBLIC_API_BASE=http://127.0.0.1:8080/api/v1 pnpm dev:web
 ```
 
 改一个型号的参数 = 去`RoboWiki` 仓改一个 JSON，或走站内提案/控制台；`RoboWiki` 仓发布新 `data-v*` 后更新 `data.lock.json`。数据闸门/测试会拦住三类错：A 级键集不一致、来源等级越级、
@@ -163,12 +163,13 @@ cd wiki && npm run dev          # /api 默认代理到 8080
 ## 目录
 
 ```
-wiki/       VitePress 站点（纯静态 + PWA，静态部署不需要后端）
+apps/web/   Astro 根站：全部公开内容、社区/站务 React 岛、PWA
+apps/app/   Taro 互动端：H5 / 微信小程序 / 未来 App
+packages/   共享 API 客户端与设计 token
 backend/    FastAPI + SQLModel：/api/v1、UGC、提案与 outbox worker
-console/    React 控制台：提案审核、举报处置、数据缺口、社区
 deploy/     Docker Compose（API + Postgres + migrate + worker）与 1Panel 反代模板
-clients/    多端适配：QQ 机器人；小程序/App/SDK 的契约与目录
-pipeline/   页面与分享产物生成（数据从`RoboWiki` 仓 release 读取）
+clients/    QQ 机器人、SDK 与 App 契约
+pipeline/   JSON/分享产物生成，经 web_export 写入 apps/web
 docs/       站点架构、决策记录、历史归档
 tools/      站点专用脚本；数据工具在`RoboWiki` 仓
 inbox/      产品图暂存区（认领后进`RoboWiki` 仓 assets/parts）
@@ -176,7 +177,7 @@ inbox/      产品图暂存区（认领后进`RoboWiki` 仓 assets/parts）
 
 **数据、schema、产品图不在本仓**：它们在 `RoboWiki` 仓
 [RoboWiki/RoboWiki](https://github.com/RoboWiki/RoboWiki)，由 `data.lock.json`
-锁定版本。`wiki/docs/` 下的页面全部由 release 数据生成，不手改。
+锁定版本。`apps/web/src/data/` 与 `apps/web/public/{parts,share}` 由 pipeline 生成，不手改。
 
 ## 怎么贡献
 
@@ -184,7 +185,7 @@ inbox/      产品图暂存区（认领后进`RoboWiki` 仓 assets/parts）
 
 | 想做的事 | 怎么进 |
 |---|---|
-| 纠参数 / 补数据 | `RoboWiki` 仓 issue / PR，或站内提案；维护者审核后由 worker 开 PR，合并并 release 后生效 |
+| 纠参数 / 补数据 | `RoboWiki` 仓 issue / PR，或互动端「投稿纠错」；维护者审核后由 worker 开 PR，合并并 release 后生效 |
 | 写评价（含四维打分） | 部件页的「写评价」→ GitHub issue 表单。一人一件一票，改主意就编辑原 issue |
 | 写文章 / 教程 | 本仓学习栏目 + 投稿页；转载规范见「分享与转载」 |
 

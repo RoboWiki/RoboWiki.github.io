@@ -175,9 +175,9 @@ def _params(category: str, specs: dict) -> list[dict]:
     return _spec_lines(category, specs)[:7]
 
 
-def build(rows: list[dict], slugs: dict[str, str], out: Path,
+def build(rows: list[dict], slugs: dict[str, str], pub: Path,
           site_url: str, data_version: str) -> int:
-    base = out / "public" / "share"
+    base = pub / "share"
     if base.exists():
         shutil.rmtree(base)
     (base / "parts").mkdir(parents=True, exist_ok=True)

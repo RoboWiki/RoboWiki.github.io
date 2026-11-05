@@ -1,14 +1,7 @@
 # 使用 Docker 内置的 Dockerfile 前端：这里没有用到 1.7 专有特性，
 # 不写 `# syntax=` 可以少一次对 registry 的前端镜像解析（离线/受限网络更稳）。
 
-# 控制台是前端产物；不打进镜像的话 /console 在生产会是空的
-FROM node:22-slim AS console
-WORKDIR /src
-COPY console/package.json console/package-lock.json ./
-RUN npm ci
-COPY console/ ./
-RUN npm run build
-
+# 前端全部由 GitHub Pages 构建；API 镜像只跑 FastAPI，不再打包 console。
 FROM python:3.12-slim AS runtime
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -22,7 +15,6 @@ COPY backend/requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
 COPY backend /app
-COPY --from=console /src/dist /app/console/dist
 
 RUN useradd --create-home --uid 10001 app \
     && chown -R app:app /app

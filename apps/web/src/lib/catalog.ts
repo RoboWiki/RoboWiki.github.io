@@ -1,7 +1,9 @@
-import raw from '../../../../wiki/docs/public/catalog.json'
+import raw from '@/data/catalog.json'
+import siteMeta from '@/data/site-meta.json'
 
 export type CatalogPart = {
   id: string
+  slug: string
   category: string
   subtype?: string
   subtypeLabel?: string
@@ -12,25 +14,45 @@ export type CatalogPart = {
   price?: number | null
   image?: string | null
   rating?: { avg?: number | null; count?: number }
+  offers?: Array<Record<string, unknown>>
+  offer?: Record<string, unknown> | null
   tauPeak?: number | null
   tauRated?: number | null
   gear?: number | null
   mass?: number | null
   rpm?: number | null
+  od?: number | null
+  len?: number | null
+  soc?: string | null
+  npuTops?: number | null
+  ramGb?: number | null
+  mcu?: string | null
+  can?: number | null
+  iface?: string | null
+  bits?: number | null
+  odrHz?: number | null
+  fps?: number | null
+  depthRange?: number | null
+  rangeM?: number | null
   specs?: Record<string, unknown>
   notes?: string
   featured?: boolean
 }
 
+export type CategoryGroup = { key: string; label: string; slugs: string[] }
+
 export const catalog = raw as {
   meta: { data_version?: string; generated_at?: string; record_count?: number }
   count: number
   parts: CatalogPart[]
+  groups?: Record<string, CategoryGroup[]>
   featured?: { ids?: string[]; updated_at?: string } | string[]
-  categories?: { id: string; name: string; count?: number }[]
+  categories?: { id: string; name: string; hint?: string; subtypes?: Record<string, string> }[]
 }
 
+export const dataVersion = siteMeta.data_version || catalog.meta?.data_version || ''
 export const parts = catalog.parts
+export const categoryGroups = catalog.groups || {}
 
 export const categoryLabel = (id: string) =>
   catalog.categories?.find(c => c.id === id)?.name || id
@@ -41,8 +63,6 @@ export const featuredParts = (() => {
   return (picked.length ? picked : parts.filter(p => p.featured)).slice(0, 8)
 })()
 
-// catalog.json 的 categories 只有 id/name/subtypes，没有逐品类计数；
-// 首页要展示「N 个」，按 parts 现算，避免所有卡片都写 0。
 const categoryCounts = parts.reduce((acc, p) => {
   acc.set(p.category, (acc.get(p.category) || 0) + 1)
   return acc
@@ -53,7 +73,9 @@ export const topCategories = (catalog.categories || [])
   .sort((a, b) => b.count - a.count)
   .slice(0, 8)
 
+/** 产品图随站点一起发布在 public/parts，同源引用即可。 */
 export function imageUrl(p: CatalogPart): string {
-  if (!p.image) return ''
-  return p.image.startsWith('http') ? p.image : `https://robowiki.org.cn${p.image}`
+  const value = String(p.image || '').trim()
+  if (!value) return ''
+  return /^(https?:)?\/\//i.test(value) ? value : value.startsWith('/') ? value : `/${value}`
 }

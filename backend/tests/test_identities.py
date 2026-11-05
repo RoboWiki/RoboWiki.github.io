@@ -286,7 +286,7 @@ def test_github_callback_redirects_to_login_fragment(client, github_configured,
                    follow_redirects=False)
     assert r.status_code == 302, r.text
     location = r.headers["location"]
-    prefix = f"{settings.site_url.rstrip('/')}/login#token="
+    prefix = f"{settings.site_url.rstrip('/')}/login.html#token="
     assert location.startswith(prefix), location
     token = location[len(prefix):]
     assert client.get("/api/auth/me",

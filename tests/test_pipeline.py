@@ -151,7 +151,7 @@ def test_table_builders_take_explicit_href():
 def built():
     r = run("build_site")
     assert r.returncode == 0, r.stdout[-3000:] + r.stderr[-2000:]
-    return ROOT / "wiki" / "docs"
+    return ROOT / ".build" / "legacy-site"
 
 
 def test_sidebar_groups_parts(built):
@@ -231,7 +231,7 @@ def test_group_pages_show_product_gallery(built):
 
 def test_catalog_json_matches_part_count(built):
     from pipeline.load import load_parts
-    d = json.loads((built / "public" / "catalog.json").read_text(encoding="utf-8"))
+    d = json.loads((ROOT / "apps" / "web" / "public" / "catalog.json").read_text(encoding="utf-8"))
     assert len(d["parts"]) == len(load_parts())
     for p in d["parts"]:
         assert {"id", "slug", "category", "vendor", "model", "offers"} <= set(p)
@@ -303,6 +303,8 @@ def _is_page_link(link: str) -> bool:
 
 def _check_link(exists: set[str], link: str) -> bool:
     path = link.split("?", 1)[0].rstrip("/") or "/"
+    if path.endswith(".html"):
+        path = path[:-5]
     return path in exists
 
 
@@ -312,49 +314,3 @@ def _public_file_exists(built, link: str) -> bool:
         return False
     rel = link.lstrip("/").split("#")[0].split("?")[0]
     return (built / rel).exists() or (built / "public" / rel).exists()
-
-
-def test_no_dead_internal_links(built):
-    """生成的 .md 里所有站内页面链接（markdown 链接 + HTML href）都必须有落点。
-
-    旧版只扫 `](...)` 且只看 /parts /learn /api /console 前缀，
-    型号页 hero 卡、首页入口卡、竞赛页卡片里的 href="/xxx" 一个都没测。
-    """
-    exists = _page_paths(built)
-    bad: list[str] = []
-    for p in built.rglob("*.md"):
-        if ".vitepress" in p.parts:
-            continue
-        text = p.read_text(encoding="utf-8")
-        links = [m.group(1) for m in _MD_LINK.finditer(text)]
-        links += [m.group(1) for m in _HTML_HREF.finditer(text)]
-        for link in links:
-            if _public_file_exists(built, link):
-                continue
-            if not _is_page_link(link):
-                continue
-            if not _check_link(exists, link):
-                bad.append(f"{p.relative_to(built).as_posix()} -> {link}")
-    assert not bad, "死链：" + "; ".join(bad[:10])
-
-
-def test_no_dead_links_in_vue_components():
-    """Vue 组件里写死的站内 href/to 路径，必须是文档站里真实存在的页面。
-
-    :to / 动态绑定管不了（值在运行时），但模板里写死的字符串能管。
-    这份清单的路径若改名，组件就得跟着改 —— 测试就是那条保险丝。
-    """
-    comp_dir = ROOT / "wiki" / "docs" / ".vitepress" / "components"
-    if not comp_dir.exists():
-        pytest.skip("没有组件目录")
-    exists = _page_paths(ROOT / "wiki" / "docs")
-    bad: list[str] = []
-    vue_href = re.compile(r"""(?:href|to)=["'](/[^"'#{}:]+)["']""")
-    for f in comp_dir.glob("*.vue"):
-        for m in vue_href.finditer(f.read_text(encoding="utf-8")):
-            link = m.group(1)
-            if not _is_page_link(link):
-                continue
-            if not _check_link(exists, link):
-                bad.append(f"{f.name} -> {link}")
-    assert not bad, "组件里的死链：" + "; ".join(bad[:10])

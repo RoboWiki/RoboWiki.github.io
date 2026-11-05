@@ -56,10 +56,21 @@ export type PartSummary = {
   id: string
   slug?: string
   category: string
+  category_label?: string
   subtype?: string
   subtypeLabel?: string
+  subtype_label?: string
   vendor: string
+  vendor_cn?: string
+  title?: string
   model: string
+  url?: string | null
+  source_tier?: string
+  last_checked?: string | null
+  price_cny?: number | null
+  web_path?: string
+  image_url?: string | null
+  key_specs?: Array<{ key: string; label: string; value: string }>
   tier?: string
   verified?: boolean
   price?: number | null
@@ -86,6 +97,12 @@ export type RatingSummary = {
   count: number
   avg: number | null
   histogram: Record<string, number>
+  dims_avg?: Record<string, number> | null
+  dims_n?: Record<string, number> | null
+  own_hardware_count?: number | null
+  own_hardware_avg?: number | null
+  usage_count?: number | null
+  low_sample?: boolean
   mine?: {
     score: number
     own_hardware: boolean
@@ -111,6 +128,72 @@ export type CommentList = {
   page: string
   count: number
   comments: Comment[]
+}
+
+export type AuthSession = {
+  id: number
+  client: string
+  created_at: string
+  expires_at: string
+}
+
+export type Identity = {
+  provider: string
+  subject: string
+  email?: string | null
+  created_at: string
+}
+
+export type Media = {
+  id: string
+  url: string
+  content_type: string
+  size: number
+}
+
+export type Notification = {
+  id: number
+  type: string
+  subject: string
+  body: string
+  link: string | null
+  read_at: string | null
+  created_at: string
+}
+
+export type NotificationList = {
+  total: number
+  unread: number
+  limit: number
+  offset: number
+  items: Notification[]
+}
+
+export type Submission = {
+  id: number
+  kind: string
+  target_id: string | null
+  payload: Record<string, unknown>
+  evidence: Record<string, unknown>
+  submitter_id?: number | null
+  status: string
+  revision: number
+  created_at: string
+  reviews?: Array<{
+    id: number
+    decision: string
+    reason_code: string
+    note: string
+    reviewer_id?: number | null
+    created_at: string
+  }>
+}
+
+export type SubmissionIn = {
+  kind?: 'part_patch'
+  target_id?: string | null
+  payload: Record<string, unknown>
+  evidence: Record<string, unknown>
 }
 
 export type ApiOptions = {
@@ -201,7 +284,13 @@ export class ApiClient {
     return this.request<{ data_version: string; site_url: string }>('/meta')
   }
 
-  listParts(params: { q?: string; category?: string; limit?: number; offset?: number } = {}) {
+  listParts(params: {
+    q?: string
+    category?: string
+    limit?: number
+    offset?: number
+    compact?: boolean
+  } = {}) {
     const q = new URLSearchParams()
     Object.entries(params).forEach(([k, v]) => {
       if (v !== undefined && v !== '' && v !== null) q.set(k, String(v))
@@ -257,5 +346,83 @@ export class ApiClient {
 
   me() {
     return this.request<User>('/auth/me')
+  }
+
+  updateMe(patch: {
+    display_name?: string
+    bio?: string
+    avatar_hue?: number
+    email_notify?: boolean
+  }) {
+    return this.request<User>('/auth/me', { method: 'PATCH', body: patch })
+  }
+
+  listSessions() {
+    return this.request<AuthSession[]>('/auth/sessions')
+  }
+
+  revokeSession(id: number) {
+    return this.request<void>(`/auth/sessions/${id}`, { method: 'DELETE' })
+  }
+
+  logoutAll() {
+    return this.request<{ ok: boolean }>('/auth/logout-all', { method: 'POST' })
+  }
+
+  listIdentities() {
+    return this.request<Identity[]>('/auth/identities')
+  }
+
+  unlinkIdentity(provider: string) {
+    return this.request<{ ok: boolean; provider: string; remaining: number }>(
+      `/auth/identities/${encodeURIComponent(provider)}`, { method: 'DELETE' })
+  }
+
+  /** 改密会 bump session_epoch：返回的新令牌必须立刻替换本地旧令牌。 */
+  changePassword(currentPassword: string, newPassword: string) {
+    return this.request<TokenPair>('/auth/password/change', {
+      method: 'POST',
+      body: { current_password: currentPassword, new_password: newPassword },
+    })
+  }
+
+  setPassword(password: string) {
+    return this.request<TokenPair>('/auth/password/set', {
+      method: 'POST', body: { password },
+    })
+  }
+
+  requestEmailChange(email: string, password?: string) {
+    return this.request<{ ok: boolean; email: string }>('/auth/email/change/request', {
+      method: 'POST',
+      body: { email, ...(password ? { password } : {}) },
+    })
+  }
+
+  confirmEmailChange(token: string) {
+    return this.request<TokenPair>('/auth/email/change/confirm', {
+      method: 'POST', body: { token },
+    })
+  }
+
+  listNotifications(limit = 20, offset = 0) {
+    return this.request<NotificationList>(
+      `/notifications?limit=${limit}&offset=${offset}`)
+  }
+
+  markNotificationRead(id: number) {
+    return this.request<Notification>(`/notifications/${id}/read`, { method: 'POST' })
+  }
+
+  markNotificationsRead() {
+    return this.request<{ ok: boolean }>('/notifications/read-all', { method: 'POST' })
+  }
+
+  createSubmission(body: SubmissionIn) {
+    return this.request<Submission>('/submissions', { method: 'POST', body })
+  }
+
+  mySubmissions(limit = 10) {
+    return this.request<Submission[]>(`/submissions/mine?limit=${limit}`)
   }
 }

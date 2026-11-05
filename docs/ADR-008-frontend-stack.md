@@ -1,35 +1,27 @@
 # ADR-008：Astro 静态内容 + Taro React 多端交互
 
 日期：2026-11-05  
-状态：已采纳，垂直切片阶段
+状态：已完成（2026-11-05 全部前端收口）
 
 ## 背景
 
-RoboWiki 目前有三个前端：
-
-- `wiki/`：VitePress + Vue，负责文档、目录、型号页和部分互动；
-- `clients/wechat-mini/`：原生 WXML，负责小程序；
-- `console/`：React + Ant Design，负责站务。
-
-这导致同一套账号、评分、评论、通知、投稿逻辑在网页和小程序各写一遍，CSS/交互规范也反复漂移。GitHub Pages 必须保留，因此不能整体换成纯动态论坛系统。
+重构前有三个前端：`wiki/`（VitePress + Vue）、`clients/wechat-mini/`（原生 WXML）、`console/`（React + Ant Design）。同一套账号、评分、评论、通知、投稿逻辑在网页和小程序各写一遍，URL、设计 token 与构建链也反复漂移。GitHub Pages 必须保留，因此不能整体换成纯动态论坛系统。
 
 ## 决策
 
 ```text
-Astro 7 + React islands + Tailwind 4   → 静态内容 / 目录 / 型号页 / SEO
+Astro 7 + React islands + Tailwind 4   → 根站：全部公开内容 + 社区/站务 React 岛 + PWA
 Taro 4 + React 19 + TypeScript         → H5 / 微信小程序 / 未来 App 的交互
 FastAPI + PostgreSQL + worker          → 唯一写域，接口不变
-console/ React + Ant Design            → 站务，不重写
 ```
 
 ### 边界
 
-- Astro 只做**只读**内容：首页、目录、型号详情、材料、文档、OG、sitemap。
-- Taro 负责所有需要登录/写入的界面：登录、账号、评分、评论、通知、投稿、举报。
-- Astro 型号页展示只读评分快照，并通过“打开互动版”跳到 Taro H5，避免在 Web 再实现一套交互。
-- Astro 与 Taro 共享 `packages/core`（API/Auth/类型）和 `packages/tokens`（设计 token），不共享 DOM 组件。
-- 小程序不再新增原生页面；现有原生壳保留为回退，迁完后下线。
-- `wiki/` 保留到 Astro 页面迁移完成；迁移期间两套页面不得同时承载同一写操作。
+- Astro 根站负责全部公开内容：首页、目录、型号、材料、整机、软件、渠道、竞赛、指南、方法、投稿、贡献者、英文页、OG、sitemap、PWA。
+- 社区（帖子/评论/投票/主页/排行榜）与站务（提案审核/举报处置/数据缺口）是 Astro 内的 React 岛，桌面体验保留。
+- Taro 负责移动端登录、账号、评分、评论、通知、投稿纠错与媒体上传。
+- 两边共享 `packages/core`（API/Auth/类型）和 `packages/tokens`（设计 token），不共享 DOM 组件。
+- `wiki/`、`console/`、`clients/wechat-mini/` 已删除；不再保留并行入口。
 
 ### 为什么不选 Next.js
 
@@ -55,18 +47,16 @@ apps/
 packages/
   core/       共享 API 客户端、类型、认证刷新
   tokens/     共享设计 token
-wiki/         旧 VitePress（迁移期保留）
-console/      React + Ant Design 站务
+（根目录只有 apps/、packages/、backend/、pipeline/、deploy/）
 backend/      FastAPI / PostgreSQL / worker
 ```
 
-## 迁移阶段
+## 迁移结果
 
-1. **垂直切片**：Astro 首页/目录/型号详情 + Taro 登录/评分/评论，本地构建通过。
-2. **多端切片**：Taro 同时构建 H5 与微信小程序，接同一 FastAPI。
-3. **内容迁移**：按访问量迁移型号页 → 目录 → 文档；保持旧 URL 和 canonical。
-4. **写操作切换**：Astro 页面全部指向 Taro H5，下线 VitePress 互动组件。
-5. **清理**：删除原生小程序重复页面、VitePress 自定义互动组件，保留数据 pipeline。
+- Astro 生成 570+ 页面：保留 `/catalog.html`、`/parts/<category>/<slug>.html` 等旧 URL，443 个部件/分组/品类页与全部内容栏目。
+- 社区/站务迁入 `apps/web` 的 React 岛；`/console/*` 由 API 308 跳到 `/community.html`、`/admin.html`。
+- Taro 覆盖登录/注册、完整账号页、评分/评论、通知、投稿纠错、媒体上传，H5 与微信小程序同源。
+- `wiki/`、`console/`、`clients/wechat-mini/` 已从仓库删除；Pages 只构建 Astro 根站与 `/app/`。
 
 ## 验证门槛
 
@@ -75,4 +65,4 @@ backend/      FastAPI / PostgreSQL / worker
 - 两种 Web 产物都能直连 `https://robowiki.org.cn/api/v1`；
 - 同一账号在 Web、H5、小程序评分/评论为同一条数据；
 - GitHub Pages 上 404、sitemap、canonical、OG 正常；
-- 旧 VitePress URL 在迁移期 301/200 不丢。
+- 旧 VitePress URL 通过 `.html` 路由与静态跳转页保留。

@@ -1,0 +1,147 @@
+---
+import { getCollection } from 'astro:content'
+import Base from '@/layouts/Base.astro'
+import MaterialGrid from '@/components/prose/MaterialGrid.astro'
+import { withBase } from '@/lib/utils'
+
+const entries = await getCollection('competitions')
+const href = (id: string) => `/competitions/${id}.html`
+
+const groups = [
+  {
+    dir: 'ec',
+    label: '电控',
+    href: '/competitions/ec.html',
+    what: '主控选型与实时性、CAN 总线与频率预算、电机驱动器配置、状态估计与整车状态机、足式 MPC / WBC、赛场调试与日志回放。',
+    when: '入队第一周，或动手画电控板、算总线预算之前。',
+    extra: '另有 2 篇外部材料：达妙《足式机器人控制基础》（飞书）、DM_RS USB-CAN 驱动项目（GitHub）。',
+  },
+  {
+    dir: 'mechanical',
+    label: '机械',
+    href: '/competitions/mechanical/index.html',
+    what: '加工可行性（CNC 能做什么）、传动形式怎么选、结构设计的顺序、功率限制下的轻量化。',
+    when: '方案设计与出图之前 —— 顺序反了，返工最贵。',
+    extra: '',
+  },
+  {
+    dir: 'pm',
+    label: '项目管理',
+    href: '/competitions/pm/index.html',
+    what: '里程碑与冻结点、接口表先行、评审机制、并行与依赖、赛季节奏、复盘。',
+    when: '立项与排期阶段。',
+    extra: '',
+  },
+  {
+    dir: 'hardware',
+    label: '硬件',
+    href: '/competitions/hardware.html',
+    what: '电源树与上下电时序、电机驱动与保护、传感器接口与接地、强电流下的 PCB 布局布线、故障排查。',
+    when: '决定进不进硬件组，以及入队第一个月。',
+    extra: '',
+  },
+  {
+    dir: 'rl',
+    label: '强化学习',
+    href: '/competitions/rl/index.html',
+    what: 'MDP 与动态规划、策略梯度、PPO / SAC / TD3、模仿与特权学习、域随机化与课程学习、Sim-to-Real。',
+    when: '要上足式 RL、准备调训练配置之前。',
+    extra: '另有 1 篇外部材料：达妙《足式强化学习笔记》（飞书）。',
+  },
+]
+
+const articlesOf = (dir: string) =>
+  entries
+    .filter(e => e.id.startsWith(`${dir}/`) && e.id !== `${dir}/index`)
+    .sort((a, b) => a.data.title.localeCompare(b.data.title, 'zh-CN'))
+
+const cards = groups.map(g => {
+  const count = articlesOf(g.dir).length
+  return {
+    title: g.label,
+    href: g.href,
+    meta: `站内 ${count} 篇`,
+    tags: [g.label],
+    what: g.extra ? `${g.what} ${g.extra}` : g.what,
+    when: g.when,
+  }
+})
+---
+
+<Base title="实战资料 · RoboWiki" description="电控、机械、项目管理、硬件与强化学习的比赛实战材料：五块内容，全部标注来源。">
+  <nav aria-label="面包屑" class="mb-4 flex items-center gap-2 text-xs text-slate-500">
+    <a href={withBase('/')} class="hover:text-blue-700">首页</a><span aria-hidden="true">/</span>
+    <span class="text-slate-700" aria-current="page">实战资料</span>
+  </nav>
+
+  <header class="mb-6">
+    <p class="text-xs font-semibold uppercase tracking-wider text-blue-700">实战资料</p>
+    <h1 class="mt-1 text-3xl font-extrabold tracking-tight text-slate-950">五块内容：电控、机械、项目管理、硬件、强化学习。</h1>
+    <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+      竞赛页面不重复收录部件和整机 —— 那在
+      <a href={withBase('/catalog.html')} class="text-blue-700 hover:underline">部件库</a>与
+      <a href={withBase('/robots.html')} class="text-blue-700 hover:underline">整机库</a>里。这里只放打比赛才会用到的做法：
+      怎么加工得出来、传动怎么选、结构按什么顺序设计、项目怎么排期、电控与硬件怎么不翻车。
+      没有一手材料的模块就明说「待补」，不拿 AI 凑篇幅。
+    </p>
+  </header>
+
+  <section aria-labelledby="modules">
+    <h2 id="modules" class="mb-3 text-lg font-bold text-slate-900">五个模块</h2>
+    <MaterialGrid items={cards} />
+  </section>
+
+  <section class="mt-10" aria-labelledby="all-pages">
+    <h2 id="all-pages" class="mb-3 text-lg font-bold text-slate-900">全部页面</h2>
+    <div class="space-y-6">
+      {groups.map(g => {
+        const list = articlesOf(g.dir)
+        return (
+          <div class="rounded-xl border border-slate-200 bg-white p-4">
+            <div class="flex flex-wrap items-baseline justify-between gap-2">
+              <h3 class="text-sm font-bold text-slate-900">
+                <a href={withBase(g.href)} class="hover:text-blue-700">{g.label}总览</a>
+              </h3>
+              <span class="text-xs text-slate-500">{list.length} 篇站内文章</span>
+            </div>
+            {list.length === 0 ? (
+              <p class="mt-2 text-xs text-slate-500">待补：还没有可核材料。</p>
+            ) : (
+              <ul class="mt-3 space-y-2">
+                {list.map(item => (
+                  <li>
+                    <a href={withBase(href(item.id))} class="group block rounded-lg px-2 py-1.5 hover:bg-slate-50">
+                      <span class="text-sm font-medium text-slate-800 group-hover:text-blue-700">{item.data.title}</span>
+                      {item.data.description && (
+                        <span class="mt-0.5 block text-xs leading-5 text-slate-500">{item.data.description}</span>
+                      )}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )
+      })}
+    </div>
+  </section>
+
+  <section class="mt-10 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-5" aria-labelledby="honest">
+    <h2 id="honest" class="text-base font-bold text-slate-900">为什么有些模块还是空的</h2>
+    <p class="mt-2 max-w-3xl text-sm leading-7 text-slate-600">
+      有内容的模块都是有作者的实战材料，我们做的是<b>移植 + 标注来源</b>，不是重写：机械四篇（铨洲智造平台 CNC 指南 + 哈工大竞技机器人队三篇）、
+      电控三篇站内教程与两篇外部材料、硬件两篇（重山战队）、项目管理一篇（RoboParty RP1 白皮书）、强化学习一篇（达妙《足式强化学习笔记》）。
+      飞书文档与 GitHub 项目只做入口与范围说明，不复制正文；其余模块没有可核材料，不拿 AI 凑篇幅。
+    </p>
+    <div class="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium">
+      <a
+        href="https://github.com/RoboWiki/RoboWiki.github.io/issues/new?template=article.yml&labels=article"
+        class="text-blue-700 hover:underline"
+        target="_blank"
+        rel="noopener">投一篇电控 / 硬件实战 →</a>
+      <a href={withBase('/submit.html')} class="text-blue-700 hover:underline">全部投稿入口</a>
+      <a href={withBase('/notice.html')} class="text-blue-700 hover:underline">来源与授权说明</a>
+      <a href={withBase('/sources.html')} class="text-blue-700 hover:underline">来源清单</a>
+    </div>
+  </section>
+</Base>

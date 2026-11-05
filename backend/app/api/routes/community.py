@@ -185,7 +185,7 @@ def create_comment(post_id: int, payload: CommentIn, request: Request, db: Db,
     create_notification(
         db, target_id, type="reply",
         subject="有人回复了你的帖子" if payload.parent_id is None else "有人回复了你的评论",
-        body=snippet, link=f"/console/post/{post_id}#c{c.id}",
+        body=snippet, link=f"/post.html?id={post_id}#c{c.id}",
         actor_id=user.id)
 
     touch_comment_count(db, post_id)

@@ -1,0 +1,132 @@
+---
+import Base from '@/layouts/Base.astro'
+import Breadcrumbs from '@/components/library/Breadcrumbs.astro'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
+import robotsData from '@/data/robots.json'
+import { formatPrice, withBase } from '@/lib/utils'
+
+type Robot = {
+  id: string
+  subtype_label?: string | null
+  vendor: string
+  vendor_cn?: string | null
+  model: string
+  title: string
+  price_cny?: number | null
+  source_tier?: string | null
+  verified?: number
+  specs: Record<string, unknown>
+  _slug: string
+}
+
+const robots = robotsData.robots as unknown as Robot[]
+const groups: Array<{ label: string; items: Robot[] }> = []
+for (const robot of robots) {
+  const label = robot.subtype_label || '其他'
+  const group = groups.find(item => item.label === label)
+  if (group) group.items.push(robot)
+  else groups.push({ label, items: [robot] })
+}
+const verifiedCount = robots.filter(robot => robot.verified).length
+
+const imageSrc = (robot: Robot) =>
+  typeof robot.specs.image_url === 'string' ? withBase(robot.specs.image_url) : ''
+const specText = (robot: Robot, key: string) => {
+  const value = robot.specs[key]
+  return value === null || value === undefined || value === '' ? null : String(value)
+}
+---
+
+<Base
+  title="整机库 · RoboWiki"
+  description={`${robots.length} 台开源与商业整机：自由度、质量、续航、算力与仓库链接，按形态分组。`}
+>
+  <Breadcrumbs items={[{ label: '首页', href: '/' }, { label: '整机库' }]} />
+
+  <header class="mb-6">
+    <p class="text-xs font-semibold uppercase tracking-wider text-blue-700">整机库</p>
+    <h1 class="mt-1 text-3xl font-extrabold tracking-tight text-slate-950">先看能不能买到，再看能不能改。</h1>
+    <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+      收录 {robots.length} 台整机，{verifiedCount} 台已按官方资料核对。参数缺失显示 —；没有公布的价格写询价，不拿渠道报价冒充官方价。
+    </p>
+  </header>
+
+  <nav class="chip-row mb-8" aria-label="整机形态">
+    {groups.map(group => (
+      <a
+        href={`#type-${encodeURIComponent(group.label)}`}
+        class="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-600 hover:border-blue-300 hover:text-blue-700"
+      >
+        {group.label}<span class="tabular-nums text-slate-400">{group.items.length}</span>
+      </a>
+    ))}
+  </nav>
+
+  <div class="space-y-10">
+    {groups.map(group => (
+      <section id={`type-${encodeURIComponent(group.label)}`} aria-labelledby={`type-${encodeURIComponent(group.label)}-title`} class="scroll-mt-20">
+        <div class="mb-3 flex flex-wrap items-baseline justify-between gap-2 border-b border-slate-200 pb-2">
+          <h2 id={`type-${encodeURIComponent(group.label)}-title`} class="text-xl font-bold tracking-tight text-slate-950">{group.label}</h2>
+          <span class="text-xs text-slate-400">{group.items.length} 台</span>
+        </div>
+        <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3" role="list">
+          {group.items.map(robot => (
+            <li>
+              <a
+                href={withBase(`/robots/${robot._slug}.html`)}
+                class="group flex h-full rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              >
+                <Card className="flex h-full w-full flex-col overflow-hidden transition group-hover:-translate-y-0.5 group-hover:shadow-md">
+                  <div class="flex h-36 shrink-0 items-center justify-center bg-gradient-to-br from-slate-100 to-slate-50">
+                    {imageSrc(robot) ? (
+                      <img
+                        src={imageSrc(robot)}
+                        alt={`${robot.vendor} ${robot.model}`}
+                        loading="lazy"
+                        class="h-full w-full object-contain p-3"
+                      />
+                    ) : (
+                      <span class="text-xs text-slate-400">暂无产品图</span>
+                    )}
+                  </div>
+                  <CardContent className="flex flex-1 flex-col gap-2 p-4">
+                    <div class="flex flex-wrap items-center gap-1.5">
+                      {robot.verified ? <Badge variant="success">已核对</Badge> : <Badge variant="secondary">待复核</Badge>}
+                      {robot.source_tier && <Badge variant="outline">来源 {robot.source_tier}</Badge>}
+                    </div>
+                    <div class="min-w-0">
+                      <h3 class="text-sm font-semibold leading-5 text-slate-900">{robot.model}</h3>
+                      <p class="mt-0.5 truncate text-xs text-slate-500">{robot.vendor_cn || robot.vendor}</p>
+                    </div>
+                    <dl class="mt-auto grid grid-cols-3 gap-2 border-t border-slate-100 pt-2 text-xs">
+                      <div>
+                        <dt class="text-slate-400">自由度</dt>
+                        <dd class="font-medium tabular-nums text-slate-700">{specText(robot, 'dof') || '—'}</dd>
+                      </div>
+                      <div>
+                        <dt class="text-slate-400">质量</dt>
+                        <dd class="font-medium tabular-nums text-slate-700">
+                          {specText(robot, 'mass_kg') ? `${specText(robot, 'mass_kg')} kg` : '—'}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt class="text-slate-400">参考价</dt>
+                        <dd class="font-medium tabular-nums text-slate-700">{formatPrice(robot.price_cny)}</dd>
+                      </div>
+                    </dl>
+                  </CardContent>
+                </Card>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+
+  <p class="mt-10 rounded-xl border border-slate-200 bg-white p-4 text-xs leading-6 text-slate-500">
+    参数来自厂商官网、官方仓库与 URDF；同一机型不同配置差异可能很大。价格只在厂商公开标价时展示，其余写询价。
+    <a href={withBase('/method.html')} class="ml-1 text-blue-700 hover:underline">方法与来源 →</a>
+  </p>
+</Base>

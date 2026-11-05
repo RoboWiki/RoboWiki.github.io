@@ -8,8 +8,8 @@
   · 人名 + 学校前缀 → 只删人名
 
 产物：
-  wiki/docs/competitions/<module>/<slug>.md
-  wiki/docs/public/competitions/<slug>.<ext>（原文件，供下载）
+  apps/web/src/content/competitions/<module>/<slug>.md
+  apps/web/public/competitions/<slug>.<ext>（原文件，供下载）
 """
 from __future__ import annotations
 

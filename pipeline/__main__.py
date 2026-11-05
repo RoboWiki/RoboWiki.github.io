@@ -30,8 +30,9 @@ _ENV = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}
 
 STEPS = {
     "validate": ["validate"],
-    "build": ["build_site"],
-    "all": ["validate", "build_site"],
+    "build": ["build_site", "web_export"],
+    "all": ["validate", "build_site", "web_export"],
+    "web_export": ["web_export"],
 }
 
 

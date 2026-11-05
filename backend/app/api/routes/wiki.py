@@ -237,7 +237,7 @@ def create_comment(payload: WikiCommentIn, request: Request,
         create_notification(
             db, parent.user_id, type="reply",
             subject="有人回复了你的讨论",
-            body=snippet, link=f"/{page}#comment-{c.id}", actor_id=user.id)
+            body=snippet, link=f"/{page}.html#comment-{c.id}", actor_id=user.id)
 
     db.commit()
     db.refresh(c)
@@ -268,7 +268,7 @@ def moderate_comment(cid: int, payload: WikiCommentModerationIn,
         db, c.user_id, type="moderation",
         subject="你的讨论已通过审核" if payload.action == "approve" else "你的讨论已被隐藏",
         body=(c.body or "")[:120],
-        link=f"/{c.page}#comment-{c.id}", actor_id=user.id)
+        link=f"/{c.page}.html#comment-{c.id}", actor_id=user.id)
     db.commit()
     db.refresh(c)
     return _out(c, user)

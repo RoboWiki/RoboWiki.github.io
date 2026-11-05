@@ -5,16 +5,16 @@ name: PR 门禁
 # 这些肉眼 review 极容易漏，机器一跑就红。
 #
 # ── 按路径分层（ADR-002 D2「CI 按路径分层」）────────────────────────────────
-# 问题：纯数据 PR（只改 data/*.json）以前也要跑 pytest 全量 + VitePress 构建，
+# 问题：纯数据 PR（只改 data/*.json）以前也要跑 pytest 全量 + 前端构建，
 #       一次 2~3 分钟；而 95% 的 PR 都是数据 PR —— 机器时间全花在「没改的东西」上。
 # 做法：先算这次 PR 动了哪几层（changes job），再只跑该层该跑的检查。
 #       算不出来（非 PR 事件、取不到 base、改了根目录配置）→ 全量兜底（宁可慢，不可漏）。
 #
 # 分层判据（flag 由 changes job 输出，完整表见 docs/CI-LAYERS.md）：
-#   data      data/**  schema/**               → 数据闸门 + 数据测试（不跑 VitePress）
+#   data      data/**  schema/**               → 数据闸门 + 数据测试（不跑前端构建）
 #   pipeline  pipeline/** tools/** tests/**    → 数据闸门 + pytest 全量（含 backend/tests）
-#   site      wiki/** frontend/**              → 数据闸门 + 生成 + VitePress 构建
-#   console   console/**                       → 数据闸门 + 选型台构建（tsc + vite）
+#   web       apps/web/** packages/**           → 数据闸门 + 生成 + Astro 构建
+#   app       apps/app/**                      → Taro 类型检查 + H5 构建
 #   backend   backend/**                       → 数据闸门 + 后端 pytest + import 冒烟
 #   full      以上都不匹配的一切（含 docs/**、.github/**、根目录配置）→ 全部跑
 #
@@ -53,10 +53,9 @@ jobs:
       full: ${{ steps.classify.outputs.full }}
       data: ${{ steps.classify.outputs.data }}
       pipeline: ${{ steps.classify.outputs.pipeline }}
-      site: ${{ steps.classify.outputs.site }}
-      console: ${{ steps.classify.outputs.console }}
+      web: ${{ steps.classify.outputs.web }}
+      app: ${{ steps.classify.outputs.app }}
       backend: ${{ steps.classify.outputs.backend }}
-      clients: ${{ steps.classify.outputs.clients }}
       layers: ${{ steps.classify.outputs.layers }}
     steps:
       - uses: actions/checkout@v4
@@ -82,13 +81,12 @@ jobs:
               ("pipeline/", ["pipeline"]),
               ("tools/", ["pipeline"]),
               ("tests/", ["pipeline"]),
-              ("wiki/", ["site"]),
-              ("frontend/", ["site"]),
-              ("console/", ["console"]),
+              ("apps/web/", ["web"]),
+              ("packages/", ["web"]),
+              ("apps/app/", ["app"]),
               ("backend/", ["backend"]),
-              ("clients/", ["clients"]),   # 小程序壳：只跑静态检查，不装 IDE
           ]
-          KEYS = ["data", "pipeline", "site", "console", "backend", "clients"]
+          KEYS = ["data", "pipeline", "web", "app", "backend"]
 
 
           def changed_files():
@@ -252,21 +250,17 @@ jobs:
       - name: 后端测试
         run: python -m pytest backend/tests
 
-  # ── 站点层：生成器 + VitePress ───────────────────────────────────────────
-  # 纯数据改动只跑生成器（python，十几秒）：新增一条数据把一个值写错时，
-  # 先崩的通常是 build_site 而不是 VitePress。
-  # 死链风险的兜底：删 id / 改名会被 test_data_governance 的「注册表里的 id 消失了」
-  # 和 test_taxonomy 的「精选清单里有不存在的部件」提前拦下，所以数据 PR 不跑前端构建。
+  # ── 前端层：pipeline 产物 → Astro / Taro ──────────────────────────────────
+  # 数据改动也要跑生成器，因为导出的 JSON 直接决定页面数量与链接。
   build:
     name: 站点构建
     needs: [changes]
     if: >-
       needs.changes.outputs.full == 'true' || needs.changes.outputs.data == 'true' ||
-      needs.changes.outputs.pipeline == 'true' || needs.changes.outputs.site == 'true'
+      needs.changes.outputs.pipeline == 'true' || needs.changes.outputs.web == 'true'
     runs-on: ubuntu-latest
     env:
-      # 站点层才装 node 依赖 / 跑 vitepress；数据层只跑生成器
-      DO_SITE: ${{ needs.changes.outputs.full == 'true' || needs.changes.outputs.pipeline == 'true' || needs.changes.outputs.site == 'true' }}
+      DO_WEB: ${{ needs.changes.outputs.full == 'true' || needs.changes.outputs.pipeline == 'true' || needs.changes.outputs.web == 'true' }}
       DO_DATA: ${{ needs.changes.outputs.full == 'true' || needs.changes.outputs.data == 'true' }}
     steps:
       - uses: actions/checkout@v4
@@ -278,69 +272,50 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: bash scripts/fetch-data-release.sh
       - uses: actions/setup-node@v4
-        if: env.DO_SITE == 'true'
+        if: env.DO_WEB == 'true'
         with:
           node-version: '22'
-      # 数据治理/分类测试要 pytest；站点层本来就要装 node，多个 pytest 成本可忽略
+      - uses: pnpm/action-setup@v4
+        if: env.DO_WEB == 'true'
       - run: pip install "pydantic>=2.9" pytest
       - name: 生成内容
         run: python -m pipeline build
-      # 数据层的测试放在 build 里：它和生成器共用同一份锁定数据，
-      # 且不该为了 12 条数据用例把 backend 全量 pytest 拉起来。
       - name: 数据治理 / 分类测试
         if: env.DO_DATA == 'true'
         run: python -m pytest tests/test_data_governance.py tests/test_taxonomy.py
-      # 与 pages.yml 完全一致：严格 npm ci（锁文件漂移直接红），不退回 npm install。
-      - name: 安装站点依赖
-        if: env.DO_SITE == 'true'
-        run: cd wiki && npm ci
-      # 必须走 npm run build（= vitepress build docs + scripts/postbuild.mjs），
-      # 直接调 npx vitepress 会跳过 postbuild，sitemap 里的 404 不会被删。
-      - name: 站点构建（死链 / 生成物后处理会让这里红）
-        if: env.DO_SITE == 'true'
+      - name: 安装工作区依赖
+        if: env.DO_WEB == 'true'
+        run: pnpm install --no-frozen-lockfile
+      - name: Astro 构建
+        if: env.DO_WEB == 'true'
+        run: pnpm --filter @robowiki/web build
+
+  # ── app 层：Taro H5 / 微信小程序 ───────────────────────────────────────────
+  app:
+    name: 互动端构建
+    needs: [changes]
+    if: needs.changes.outputs.full == 'true' || needs.changes.outputs.app == 'true' || needs.changes.outputs.web == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: pnpm/action-setup@v4
+      - run: pnpm install --no-frozen-lockfile
+      - name: Taro 类型检查
+        run: pnpm --filter @robowiki/app typecheck
+      - name: Taro H5 构建
         env:
-          WIKI_BASE: /
-        run: cd wiki && npm run build
-
-  # ── console 层：React 选型台 ─────────────────────────────────────────────
-  # 以前 console/ 在 PR 阶段没有任何检查（只在本地 build 过），这里补上同一套命令。
-  console:
-    name: 选型台构建
-    needs: [changes]
-    if: needs.changes.outputs.full == 'true' || needs.changes.outputs.console == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - name: 安装依赖
-        run: cd console && (npm ci || npm install)
-      - name: 类型检查 + 打包
-        run: cd console && npm run build
-
-  # ── clients 层：微信小程序壳的静态检查 ───────────────────────────────────
-  # 小程序没有 npm 构建，但 JS/JSON/WXML 写错在本地开发者工具之外看不出来。
-  # 这里用 node + python 标准库做语法/闭合/AppID 检查，零第三方依赖。
-  clients:
-    name: 小程序静态检查
-    needs: [changes]
-    if: needs.changes.outputs.full == 'true' || needs.changes.outputs.clients == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - name: JS / JSON / WXML 检查
-        run: cd clients/wechat-mini/tests && node check.js
+          APP_BASE: /app/
+        run: pnpm --filter @robowiki/app build:h5
 
   # ── 汇总：分支保护的稳定入口 ─────────────────────────────────────────────
   # 只做一件事：任何一个需要跑的 job 没成功，这里就红。
   # skipped 视为「这一层没被触发」= 通过；「输出缺失」不能当跳过放行。
   gate:
     name: pr-gate
-    needs: [changes, validate, test, backend, build, console, clients]
+    needs: [changes, validate, test, backend, build, app]
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -350,27 +325,24 @@ jobs:
           FULL: ${{ needs.changes.outputs.full }}
           DATA: ${{ needs.changes.outputs.data }}
           PIPELINE: ${{ needs.changes.outputs.pipeline }}
-          SITE: ${{ needs.changes.outputs.site }}
-          CONSOLE: ${{ needs.changes.outputs.console }}
+          WEB: ${{ needs.changes.outputs.web }}
+          APP: ${{ needs.changes.outputs.app }}
           BACKEND: ${{ needs.changes.outputs.backend }}
-          CLIENTS: ${{ needs.changes.outputs.clients }}
           R_CHANGES: ${{ needs.changes.result }}
           R_VALIDATE: ${{ needs.validate.result }}
           R_TEST: ${{ needs.test.result }}
           R_BACKEND: ${{ needs.backend.result }}
           R_BUILD: ${{ needs.build.result }}
-          R_CONSOLE: ${{ needs.console.result }}
-          R_CLIENTS: ${{ needs.clients.result }}
+          R_APP: ${{ needs.app.result }}
         run: |
           set -u
           fail=0
-          echo "分层：full=$FULL data=$DATA pipeline=$PIPELINE site=$SITE console=$CONSOLE backend=$BACKEND clients=$CLIENTS"
+          echo "分层：full=$FULL data=$DATA pipeline=$PIPELINE web=$WEB app=$APP backend=$BACKEND"
           echo "命中：$LAYERS"
 
           # 分层算不出来时这里会是空串。空串绝不能当「全跳过」，必须显式失败。
           for pair in "full:$FULL" "data:$DATA" "pipeline:$PIPELINE" \
-                      "site:$SITE" "console:$CONSOLE" "backend:$BACKEND" \
-                      "clients:$CLIENTS"; do
+                      "web:$WEB" "app:$APP" "backend:$BACKEND"; do
             key=${pair%%:*}
             value=${pair#*:}
             if [ "$value" != "true" ] && [ "$value" != "false" ]; then
@@ -396,8 +368,7 @@ jobs:
           test|$R_TEST
           backend|$R_BACKEND
           build|$R_BUILD
-          console|$R_CONSOLE
-          clients|$R_CLIENTS
+          app|$R_APP
           EOF
 
           if [ "$fail" -ne 0 ]; then

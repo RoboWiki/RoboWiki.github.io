@@ -1,5 +1,5 @@
 # 生产入口是 1Panel 的 OpenResty：静态站由 Pages/1Panel 提供，
-# /api /mcp /console 反代到本机 API。这里只跑后端四件套，不再带 Caddy。
+# /api /mcp 反代到本机 API；/console 只保留旧链接跳转。这里只跑后端四件套，不再带 Caddy。
 # API 只发布到宿主机回环，不要把 API_PORT 改成 0.0.0.0。
 name: robowiki
 

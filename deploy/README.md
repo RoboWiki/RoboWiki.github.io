@@ -7,8 +7,8 @@
         │
         ▼
 1Panel OpenResty（80/443，TLS + 静态 + 安全头）
-        ├─ /                    → GitHub Pages（静态站）
-        └─ /api /mcp /console   → 127.0.0.1:8080
+        ├─ /                    → GitHub Pages（Astro 根站 + /app/）
+        └─ /api /mcp /console   → 127.0.0.1:8080（/console 只做旧链接跳转）
                                       │
                                       ▼
                          api / worker / migrate / db（Compose）
@@ -19,7 +19,7 @@
 [1panel-site.conf](1panel-site.conf)。
 
 > 实测基线：2026-11-04，Docker 27.3.1 / Compose v2.29.7，数据集 `data-v2026.11.3`。
-> 公网 `/api/v1/ready`、`/api/v1/meta`、`/console/`、`/mcp` 均通过；静态站 338 部件、
+> 公网 `/api/v1/ready`、`/api/v1/meta`、`/community.html`、`/mcp` 均通过；静态站 338 部件、
 > 36 个材料/工艺页、产品图与安全头正常；api 以 uid 10001 非 root 运行。
 
 ---
@@ -108,7 +108,7 @@ docker exec "$OPENRESTY" nginx -s reload
 模板已经包含：
 
 - `/api` → 308 `/api/`；
-- `/api/`、`/mcp`、`/mcp/`、`/console/` → `127.0.0.1:8080`；
+- `/api/`、`/mcp`、`/mcp/` → `127.0.0.1:8080`；`/console/` 也反代到 API，只做旧链接 308 跳转；
 - `client_max_body_size 10m`；
 - HSTS / CSP / nosniff / frame-ancestors / Referrer-Policy / Permissions-Policy；
   用 `header_filter_by_lua_block` 统一补，静态页、API、控制台和 404 都会带上；
@@ -128,7 +128,7 @@ curl -fsS https://robowiki.org.cn/api/v1/ready
 curl -fsS https://robowiki.org.cn/api/v1/meta
 curl -fsS "https://robowiki.org.cn/api/v1/parts?limit=1"
 curl -fsS "https://robowiki.org.cn/api/v1/materials?limit=1"
-curl -s -o /dev/null -w '%{http_code}\n' https://robowiki.org.cn/console/
+curl -s -o /dev/null -w '%{http_code}\n' https://robowiki.org.cn/community.html
 curl -s -o /dev/null -w '%{http_code}\n' https://robowiki.org.cn/mcp
 ```
 
@@ -143,7 +143,7 @@ curl -sSI https://robowiki.org.cn/ | grep -iE \
 
 1. `/contributors` 的 GitHub 头像能显示；
 2. 任意文档页评论区 giscus 能加载；
-3. `/console/` 登录页正常、控制台无 CSP 报错。
+3. `/community.html` 与 `/admin.html` 正常、控制台无 CSP 报错。
 
 ---
 
@@ -262,37 +262,19 @@ docker compose up -d --build
 curl -fsS http://127.0.0.1:8080/api/v1/ready
 ```
 
-### 5.2 站点热更（VitePress）
+### 5.2 站点热更（Astro）
 
 ```bash
-cd wiki
-npm ci
-npm run dev          # 5173；/api 代理到 127.0.0.1:8080
+pnpm install
+PUBLIC_API_BASE=http://127.0.0.1:8080/api/v1 pnpm dev:web   # 4321
 ```
 
 如果 API 是用 `uvicorn` 直接跑的（8000）：
 
 ```bash
 cd backend && uvicorn app.main:app --reload --port 8000
-cd wiki && ROBOWIKI_API_ORIGIN=http://127.0.0.1:8000 npm run dev
+PUBLIC_API_BASE=http://127.0.0.1:8000/api/v1 pnpm dev:web
 ```
-
-### 5.3 控制台热更
-
-```bash
-cd console
-npm ci
-npm run dev          # 5180；/api 代理到 127.0.0.1:8080
-```
-
-`npm run preview` 只是静态预览，没有 `/api` 代理；要测评论、评分、提案，用 `npm run dev`。
-
-### 5.4 小程序联调
-
-开发版连本机 Docker API `http://127.0.0.1:8080/api/v1`（见 `clients/wechat-mini/config.js`）。
-真机预览时把 `LOCAL` 改成电脑局域网地址；体验版/正式版直接走主域。
-
----
 
 ## 6. 数据升级（换 `data-v*`）
 
@@ -398,8 +380,8 @@ curl -fsS http://127.0.0.1:8080/api/v1/ready
 | api `Restarting`，日志 `找不到 semantics.json` | `/schema` 空（没跑 fetch 或路径写错） | 重新执行第 2 步；检查 `SCHEMA_DIR` |
 | api 拒绝启动，`没有 catalog/*.json` | `/data` 空；新守卫阻止清空部件表 | 同上看 `DATA_DIR`；这是保护不是故障 |
 | 公网 `/api` 502 | 1Panel 反代不到本机 API | 先 `curl http://127.0.0.1:8080/api/v1/ready`；再查模板 upstream |
-| 公网 `/api` 404（VitePress 页面） | `/api/` 的 location 没放在 catch-all 之前，或没 reload | 套用 `1panel-site.conf`，`nginx -t` 后 reload |
-| `/console/` 404 或空白 | 镜像里没有 `console/dist` | `docker compose up -d --build api`；确认 Dockerfile 的 console stage |
+| 公网 `/api` 404（静态页面） | `/api/` 的 location 没放在 catch-all 之前，或没 reload | 套用 `1panel-site.conf`，`nginx -t` 后 reload |
+| `/console/` 404 | 旧控制台已删除；确认 1Panel 仍把 `/console` 反代到 API 的 308 跳转 | 重新套用 1panel-site.conf |
 | 评论区/头像被 CSP 拦截 | CSP 没放行 giscus 或 GitHub 头像 | 用 `1panel-site.conf` 里的 CSP，不要照搬旧 Caddy 版本 |
 | 静态页缺 CSP/nosniff | 静态 location 自带缓存头，server 级 `add_header` 不继承 | 用 `1panel-site.conf` 的 `header_filter_by_lua_block`，`nginx -t` 后 reload |
 | worker 发布失败 `目录里找不到部件` | worker 缺 `/data` 挂载 | 已修复；确认 `docker inspect` 有 `/data` |
@@ -439,13 +421,13 @@ curl -fsS https://robowiki.org.cn/api/v1/meta
 curl -fsS "https://robowiki.org.cn/api/v1/parts?limit=1"
 curl -fsS "https://robowiki.org.cn/api/v1/materials?limit=1"
 curl -sI  https://robowiki.org.cn/ | grep -i content-security-policy
-curl -s -o /dev/null -w '%{http_code}\n' https://robowiki.org.cn/console/
+curl -s -o /dev/null -w '%{http_code}\n' https://robowiki.org.cn/community.html
 curl -s -o /dev/null -w '%{http_code}\n' https://robowiki.org.cn/no-such-page
 ```
 
 页面抽查：首页、`/catalog`、任意部件页（图片与参数）、材质页、分享卡二维码、
 `/contributors` 头像、文档页评论区。
-后台抽查：`/console/` 登录、一条提案的审核与 outbox 状态。
+后台抽查：`/admin.html` 登录、一条提案的审核与 outbox 状态。
 
 ---
 

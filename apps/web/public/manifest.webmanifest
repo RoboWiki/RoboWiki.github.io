@@ -1,0 +1,15 @@
+{
+  "name": "RoboWiki",
+  "short_name": "RoboWiki",
+  "description": "机器人硬件选型底稿：参数、来源与真实使用经验。",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7f8fb",
+  "theme_color": "#2563eb",
+  "lang": "zh-CN",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

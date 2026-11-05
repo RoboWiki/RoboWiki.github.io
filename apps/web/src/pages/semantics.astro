@@ -1,0 +1,227 @@
+---
+import Base from '@/layouts/Base.astro'
+import { withBase } from '@/lib/utils'
+import semantics from '@/data/semantics.json'
+import protocolData from '@/data/protocols.json'
+
+type Field = {
+  label: string
+  unit?: string
+  enum?: string[]
+  higher_is_better?: boolean | null
+  meaning: string
+  missing_means: string
+  known_bias?: string
+}
+
+const fields = Object.entries(semantics.field_semantics as Record<string, Field>)
+const protocols = protocolData.protocols
+const steps = [
+  { n: 1, title: '先看来源等级', body: 'A 逐项对过厂商手册；B 来自公开网页；C 转述。等级决定这个数能不能直接拿去做热设计。' },
+  { n: 2, title: '再看口径字段', body: 'tau_basis 是 peak 还是 rated、inertia_basis 是 rotor 还是 output。这两个字段读错，后面全错。' },
+  { n: 3, title: '缺的要当缺的', body: '— 是「没公布」，不是「不支持」，也不是 0。不要用同类件填补，也不要假设额定 = 峰值 / 2。' },
+  { n: 4, title: '最后才比派生量', body: '扭矩密度、峰值/额定比、反射惯量占比是结果不是原因：帮你发现异常，不帮你选型。' },
+]
+const unitOf = (f: Field) => (f.enum ? f.enum.join(' / ') : f.unit || '—')
+---
+
+<Base title="参数口径 · RoboWiki" description="同一句话在不同厂商嘴里不是同一件事：字段定义、缺口含义、物理红线、单位换算、可比性等级与协议语义。">
+  <nav aria-label="面包屑" class="mb-4 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+    <a href={withBase('/')} class="hover:text-blue-700">首页</a><span aria-hidden="true">/</span>
+    <a href={withBase('/method.html')} class="hover:text-blue-700">方法</a><span aria-hidden="true">/</span>
+    <span class="text-slate-700" aria-current="page">参数口径</span>
+  </nav>
+
+  <header class="mb-8 max-w-3xl">
+    <p class="text-xs font-semibold uppercase tracking-wider text-blue-700">参数口径</p>
+    <h1 class="mt-1 text-3xl font-extrabold tracking-tight text-slate-950">同一个数，在不同厂商嘴里不是同一件事。</h1>
+    <p class="mt-2 text-sm leading-6 text-slate-500">
+      「峰值扭矩 40 N·m」可能指瞬时 1 秒、也可能指持续堵转；「质量 0.362 kg」可能含线缆、也可能只是定转子。
+      本页把字段定义、缺口含义与复核阈值写清楚；机器可读版本见
+      <a href={withBase('/api/v1/semantics')} class="font-medium text-blue-700 hover:underline">/api/v1/semantics</a>。
+    </p>
+    <p class="mt-3 rounded-r-lg border-l-4 border-blue-300 bg-slate-50 p-3 text-sm leading-6 text-slate-700">
+      <b>本站统一的一条硬规则：扭矩与转速一律指输出端（含减速箱）。</b>
+      大疆 M3508 手册给的是电机端 0.16 N·m，本站换算成输出端 3.07 N·m（× 19.203208556，协议值 3591/187），
+      原始值与算式保留在该条目的 notes 里。
+    </p>
+  </header>
+
+  <section class="mb-10" aria-labelledby="steps">
+    <h2 id="steps" class="mb-3 text-lg font-bold text-slate-900">读一个数字的四步</h2>
+    <ol class="grid gap-3 sm:grid-cols-2">
+      {steps.map(s => (
+        <li class="rounded-xl border border-slate-200 bg-white p-4">
+          <div class="flex items-baseline gap-2">
+            <span class="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-blue-600 text-xs font-bold text-white" aria-hidden="true">{s.n}</span>
+            <span class="text-sm font-semibold text-slate-900">{s.title}</span>
+          </div>
+          <p class="mt-2 text-xs leading-6 text-slate-600">{s.body}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="mb-10" aria-labelledby="red-lines">
+    <h2 id="red-lines" class="mb-3 text-lg font-bold text-slate-900">六条物理红线</h2>
+    <p class="mb-3 max-w-3xl text-xs leading-6 text-slate-500">超过「需复核」先去要条件；超过「不可信」基本可以认定口径有问题。</p>
+    <div class="grid gap-3 md:grid-cols-2">
+      {semantics.red_lines.map(rl => (
+        <article class="rounded-xl border border-slate-200 bg-white p-4">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h3 class="text-sm font-bold text-slate-900">
+              <span class="mr-1.5 rounded bg-slate-100 px-1.5 py-0.5 text-[11px] font-semibold text-slate-600">{rl.id}</span>
+              {rl.name}
+            </h3>
+            {rl.formula && <code class="rounded bg-slate-50 px-1.5 py-0.5 text-[11px] text-slate-600">{rl.formula}</code>}
+          </div>
+          {rl.review_above != null && (
+            <p class="mt-2 text-[11px] font-medium text-amber-700">
+              {rl.review_above} {rl.unit ?? ''} 需复核{rl.absurd_above != null ? ` · ${rl.absurd_above} ${rl.unit ?? ''} 不可信` : ''}
+            </p>
+          )}
+          <p class="mt-2 text-xs leading-6 text-slate-600">{rl.why}</p>
+          {rl.common_trick && (
+            <p class="mt-2 text-xs leading-6 text-slate-500"><span class="font-medium text-slate-700">常见做法</span>：{rl.common_trick}</p>
+          )}
+          <p class="mt-1 text-xs leading-6 text-slate-500"><span class="font-medium text-slate-700">怎么核</span>：{rl.how_to_check}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="mb-10" aria-labelledby="conversions">
+    <h2 id="conversions" class="mb-3 text-lg font-bold text-slate-900">单位换算</h2>
+    <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+      <table class="w-full text-left text-sm">
+        <thead class="bg-slate-50 text-xs text-slate-600">
+          <tr><th scope="col" class="px-3 py-2 font-semibold">从</th><th scope="col" class="px-3 py-2 font-semibold">到</th><th scope="col" class="px-3 py-2 font-semibold">公式</th><th scope="col" class="px-3 py-2 font-semibold">注意</th></tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          {semantics.conversions.map(c => (
+            <tr class="align-top">
+              <td class="px-3 py-2 text-slate-800">{c.from}</td>
+              <td class="px-3 py-2 text-slate-800">{c.to}</td>
+              <td class="px-3 py-2"><code class="rounded bg-slate-50 px-1.5 py-0.5 text-[11px] text-slate-700">{c.formula}</code></td>
+              <td class="px-3 py-2 text-xs leading-5 text-slate-500">{c.warning ?? '—'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="mb-10" aria-labelledby="comparability">
+    <h2 id="comparability" class="mb-3 text-lg font-bold text-slate-900">可比性等级</h2>
+    <div class="grid gap-3 sm:grid-cols-2">
+      {semantics.comparability.map(g => (
+        <div class="rounded-xl border border-slate-200 bg-white p-4">
+          <div class="flex items-center gap-2">
+            <span class="grid h-7 w-7 place-items-center rounded-lg bg-slate-900 text-xs font-bold text-white" aria-hidden="true">{g.grade}</span>
+            <span class="text-sm font-semibold text-slate-900">{g.name}</span>
+          </div>
+          <p class="mt-2 text-xs leading-6 text-slate-600">{g.condition}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mb-10" aria-labelledby="protocols">
+    <h2 id="protocols" class="mb-1 text-lg font-bold text-slate-900">协议语义：同一个「电流」是四个不同的量</h2>
+    <p class="mb-3 max-w-3xl text-xs leading-6 text-slate-500">{protocolData._meta.why}</p>
+    <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+      <table class="w-full min-w-[46rem] text-left text-sm">
+        <thead class="bg-slate-50 text-xs text-slate-600">
+          <tr>
+            <th scope="col" class="px-3 py-2 font-semibold">驱动</th>
+            <th scope="col" class="px-3 py-2 font-semibold">总线</th>
+            <th scope="col" class="px-3 py-2 font-semibold">控制频率</th>
+            <th scope="col" class="px-3 py-2 font-semibold">电流编码</th>
+            <th scope="col" class="px-3 py-2 font-semibold">满量程</th>
+            <th scope="col" class="px-3 py-2 font-semibold">控制模式</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          {protocols.map(p => (
+            <tr class="align-top">
+              <td class="px-3 py-2">
+                <span class="block text-xs font-semibold text-slate-900">{p.driver}</span>
+                <span class="block text-[11px] text-slate-500">{p.vendor}</span>
+              </td>
+              <td class="px-3 py-2 text-xs text-slate-600">{p.bus}</td>
+              <td class="px-3 py-2 text-xs tabular-nums text-slate-600">{p.ctrl_freq_hz} Hz</td>
+              <td class="px-3 py-2 text-xs leading-5 text-slate-600">{p.current_encoding}</td>
+              <td class="px-3 py-2 text-xs tabular-nums text-slate-700">±{p.current_full_scale_A} A</td>
+              <td class="px-3 py-2 text-xs text-slate-600">{p.control_modes.join('、')}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-3 space-y-2">
+      {protocols.map(p => (
+        <details class="rounded-lg border border-slate-200 bg-white px-3 py-2">
+          <summary class="cursor-pointer text-xs font-semibold text-slate-800">{p.driver}：注意与证据</summary>
+          <p class="mt-2 text-xs leading-6 text-slate-600">{p.notes}</p>
+          <p class="mt-1 font-mono text-[11px] leading-5 text-slate-500">{p.evidence}</p>
+        </details>
+      ))}
+    </div>
+    <h3 class="mb-2 mt-6 text-sm font-bold text-slate-900">对照检查清单</h3>
+    <ul class="grid gap-2 sm:grid-cols-2">
+      {protocolData.checklist.map(item => (
+        <li class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs leading-6 text-slate-700">{item}</li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mb-10" aria-labelledby="fields">
+    <h2 id="fields" class="mb-3 text-lg font-bold text-slate-900">字段口径</h2>
+    <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+      <table class="w-full min-w-[40rem] text-left text-sm">
+        <thead class="bg-slate-50 text-xs text-slate-600">
+          <tr>
+            <th scope="col" class="px-3 py-2 font-semibold">字段</th>
+            <th scope="col" class="px-3 py-2 font-semibold">单位 / 取值</th>
+            <th scope="col" class="px-3 py-2 font-semibold">含义</th>
+            <th scope="col" class="px-3 py-2 font-semibold">缺失时</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          {fields.map(([key, f]) => (
+            <tr class="align-top">
+              <td class="px-3 py-2">
+                <span class="block text-xs font-semibold text-slate-900">{f.label}</span>
+                <code class="block text-[11px] text-slate-500">{key}</code>
+              </td>
+              <td class="px-3 py-2 text-xs text-slate-600">{unitOf(f)}</td>
+              <td class="px-3 py-2 text-xs leading-5 text-slate-600">
+                {f.meaning}
+                {f.known_bias && <span class="mt-1 block text-amber-700">已知偏差：{f.known_bias}</span>}
+              </td>
+              <td class="px-3 py-2 text-xs leading-5 text-slate-500">{f.missing_means}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="trinary">
+    <h2 id="trinary" class="mb-2 text-lg font-bold text-slate-900">判定只有三种结论</h2>
+    <div class="flex flex-wrap gap-2">
+      {semantics.trinary.values.map(v => (
+        <span class="rounded-full border border-slate-300 px-3 py-1 text-xs font-semibold text-slate-700">{v}</span>
+      ))}
+    </div>
+    <p class="mt-2 max-w-3xl text-xs leading-6 text-slate-500">{semantics.trinary.why}</p>
+    <ul class="mt-2 list-disc space-y-1 pl-5 text-xs leading-6 text-slate-600">
+      {semantics.trinary.rules.map(rule => <li>{rule}</li>)}
+    </ul>
+    <p class="mt-4 text-xs text-slate-500">
+      机器可读全文：<a href={withBase('/api/v1/semantics')} class="font-medium text-blue-700 hover:underline">/api/v1/semantics</a>
+      （版本 {semantics.version}）· 来源与溯源规则见
+      <a href={withBase('/sources.html')} class="font-medium text-blue-700 hover:underline">数据来源</a>。
+    </p>
+  </section>
+</Base>

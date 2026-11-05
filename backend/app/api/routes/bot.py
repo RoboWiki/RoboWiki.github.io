@@ -133,7 +133,7 @@ def answer(request: Request, db: Db, q: str, limit: int = 3,
         return {
             "found": False,
             "answer": "请给出型号或厂商关键词，例如 AK80-6、XT30",
-            "url": f"{settings.site_url.rstrip('/')}/catalog",
+            "url": f"{settings.site_url.rstrip('/')}/catalog.html",
             "data_version": settings.data_version,
         }
 
@@ -148,7 +148,7 @@ def answer(request: Request, db: Db, q: str, limit: int = 3,
         return {
             "found": False,
             "answer": f"没找到「{text}」；换个厂商或型号关键词再试",
-            "url": f"{settings.site_url.rstrip('/')}/catalog",
+            "url": f"{settings.site_url.rstrip('/')}/catalog.html",
             "data_version": settings.data_version,
         }
 

@@ -1,0 +1,27 @@
+---
+import Base from '@/layouts/Base.astro'
+import Breadcrumbs from '@/components/community/Breadcrumbs.astro'
+import LoginBridge from '@/components/community/login-bridge'
+---
+<Base
+  title="登录 / 注册 · RoboWiki"
+  description="登录 RoboWiki 社区，或接收 App 与 GitHub 登录回跳的一次性登录凭证。"
+>
+  <Breadcrumbs items={[
+    { label: '首页', href: '/' },
+    { label: '社区', href: '/community.html' },
+    { label: '登录' },
+  ]} />
+  <div class="mx-auto max-w-[420px]">
+    <h1 class="mb-1 text-2xl font-extrabold tracking-tight text-slate-950">登录 / 注册</h1>
+    <p class="mb-4 text-sm leading-6 text-slate-500">
+      账号与 App、GitHub 登录共用一套会话；凭证只用一次，60 秒内有效。
+    </p>
+    <LoginBridge client:only="react" />
+    <noscript>
+      <p class="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+        登录需要启用 JavaScript。也可以直接在 App 里登录后回到社区。
+      </p>
+    </noscript>
+  </div>
+</Base>

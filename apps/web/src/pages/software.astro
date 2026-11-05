@@ -1,0 +1,131 @@
+---
+import Base from '@/layouts/Base.astro'
+import Breadcrumbs from '@/components/library/Breadcrumbs.astro'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
+import softwareData from '@/data/software.json'
+import { withBase } from '@/lib/utils'
+
+type Item = {
+  id: string
+  group: string
+  name: string
+  vendor: string
+  license?: string | null
+  version?: string | null
+  repo?: string | null
+  docs?: string | null
+  lang?: string | null
+  what?: string | null
+  when?: string | null
+  note?: string | null
+}
+
+const items = softwareData.items as unknown as Item[]
+const groups = softwareData.groups
+  .map(group => ({ ...group, items: items.filter(item => item.group === group.id) }))
+  .filter(group => group.items.length > 0)
+---
+
+<Base
+  title="软件与渠道 · RoboWiki"
+  description={`${items.length} 个机器人仿真、训练、中间件与算法工具：按用途分组，标明许可证与官方仓库。`}
+>
+  <Breadcrumbs items={[{ label: '首页', href: '/' }, { label: '软件与渠道' }]} />
+
+  <header class="mb-6">
+    <p class="text-xs font-semibold uppercase tracking-wider text-blue-700">软件库</p>
+    <h1 class="mt-1 text-3xl font-extrabold tracking-tight text-slate-950">先选许可证，再选框架。</h1>
+    <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+      收录 {items.length} 个项目，按「仿真 / 训练 / 方法 / 架构 / 中间件 / 数学 / 模仿学习」分组。许可证取自仓库，商用前请以仓库 LICENSE 为准。
+    </p>
+  </header>
+
+  <nav class="chip-row mb-8" aria-label="软件分组">
+    {groups.map(group => (
+      <a
+        href={`#group-${group.id}`}
+        class="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-600 hover:border-blue-300 hover:text-blue-700"
+      >
+        {group.name}<span class="tabular-nums text-slate-400">{group.items.length}</span>
+      </a>
+    ))}
+  </nav>
+
+  <div class="space-y-10">
+    {groups.map(group => (
+      <section id={`group-${group.id}`} aria-labelledby={`group-${group.id}-title`} class="scroll-mt-20">
+        <div class="mb-3 flex flex-wrap items-baseline justify-between gap-2 border-b border-slate-200 pb-2">
+          <div>
+            <h2 id={`group-${group.id}-title`} class="text-xl font-bold tracking-tight text-slate-950">{group.name}</h2>
+            <p class="mt-0.5 text-xs text-slate-500">{group.hint}</p>
+          </div>
+          <span class="text-xs text-slate-400">{group.items.length} 个</span>
+        </div>
+        <ul class="grid grid-cols-1 gap-3 lg:grid-cols-2" role="list">
+          {group.items.map(item => (
+            <li>
+              <Card className="h-full">
+                <CardContent className="flex h-full flex-col gap-3 p-5">
+                  <div class="flex items-start justify-between gap-3">
+                    <div class="min-w-0">
+                      <h3 class="text-base font-semibold text-slate-900">{item.name}</h3>
+                      <p class="mt-0.5 text-xs text-slate-500">{item.vendor}</p>
+                    </div>
+                    <Badge variant="outline" class="shrink-0 font-semibold">许可 {item.license || '未标注'}</Badge>
+                  </div>
+
+                  <div class="flex flex-wrap gap-1.5">
+                    {item.lang && <Badge variant="secondary">{item.lang}</Badge>}
+                    <Badge variant="secondary">版本 {item.version || '未标注'}</Badge>
+                  </div>
+
+                  <dl class="space-y-2 text-sm leading-6">
+                    {item.what && (
+                      <div>
+                        <dt class="text-xs font-medium text-slate-400">是什么</dt>
+                        <dd class="text-slate-600">{item.what}</dd>
+                      </div>
+                    )}
+                    {item.when && (
+                      <div>
+                        <dt class="text-xs font-medium text-slate-400">什么时候用</dt>
+                        <dd class="text-slate-600">{item.when}</dd>
+                      </div>
+                    )}
+                    {item.note && (
+                      <div>
+                        <dt class="text-xs font-medium text-slate-400">注意</dt>
+                        <dd class="text-slate-500">{item.note}</dd>
+                      </div>
+                    )}
+                  </dl>
+
+                  {(item.repo || item.docs) && (
+                    <div class="mt-auto flex flex-wrap gap-x-4 gap-y-1 border-t border-slate-100 pt-3 text-sm">
+                      {item.repo && (
+                        <a href={item.repo} target="_blank" rel="noopener" class="text-blue-700 hover:underline">
+                          仓库<span class="sr-only">（新窗口打开）</span> ↗
+                        </a>
+                      )}
+                      {item.docs && item.docs !== item.repo && (
+                        <a href={item.docs} target="_blank" rel="noopener" class="text-blue-700 hover:underline">
+                          文档<span class="sr-only">（新窗口打开）</span> ↗
+                        </a>
+                      )}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+
+  <p class="mt-10 rounded-xl border border-slate-200 bg-white p-4 text-xs leading-6 text-slate-500">
+    许可证以各仓库 LICENSE 文件为准；同一项目的子模块、模型权重与数据可能使用不同许可。采购渠道见
+    <a href={withBase('/suppliers.html')} class="mx-1 text-blue-700 hover:underline">渠道库</a>。
+  </p>
+</Base>

@@ -8,20 +8,20 @@
 
 | 端 | 目录/形态 | 说明 |
 |---|---|---|
-| Web | `wiki/`（VitePress） | 主站；静态读 + `/api/v1` 写 |
-| PWA | 同一构建产物 | 可安装；外壳与访问过的页面离线可读 |
+| Web | `apps/web/`（Astro） | 根站；公开内容 + 社区/站务 React 岛 |
+| PWA | `apps/web/` 构建产物 | 可安装；外壳与访问过的页面离线可读 |
 | robowiki.org.cn | 同一构建产物反代 | 当前主域；canonical 与分享链接都指向这里 |
 | robowiki.github.io | 同一构建产物 | `RoboWiki.github.io` 部署的镜像/灾备；canonical 指回主域 |
-| 控制台 | `console/` | 内部审核；改数只生成 submission，不直接写目录 |
-| 材质库 | `wiki/docs/materials/` + `/api/v1/materials` | 27 种材料 + 9 种工艺；静态页与 API 同源 |
-| 微信小程序 | `clients/wechat-mini/`（AppID `wx13bffd77b0b597e2`） | 读 + 登录/评分/讨论：部件/材质搜索、筛选、详情、分享；`wx.login` 换同一 user，Bearer + refresh |
+| 站务 | `apps/web` 的 `/admin.html` | 提案审核、举报处置、数据缺口；改数只生成 submission |
+| 材质库 | `apps/web` 的 `/materials.html` + `/api/v1/materials` | 27 种材料 + 9 种工艺；静态页与 API 同源 |
+| 微信小程序 / H5 | `apps/app/`（Taro，AppID `wx13bffd77b0b597e2`） | 目录、详情、评分/讨论、账号、投稿纠错、媒体上传；`wx.login` 换同一 user，Bearer + refresh |
 
 ## 后续客户端
 
 | 端 | 推荐参考 | 接入方式 | 约束 |
 |---|---|---|---|
 | QQ 群机器人 | **NoneBot2**（Python）或 Koishi（Node） | 调 `/api/v1/bot/answer`，被动回复 | 不能主动推送；URL 预配置；只答高置信问题 |
-| 微信小程序（写入） | 当前原生壳 `wechat-mini/` | `wx.login` → `/auth/wechat/mini`；Bearer + refresh；评分 `/ratings/{id}`、讨论 `/wiki/comments` | 需 ICP 域名、社区类目、服务端内容安全；不存应用密钥 |
+| 微信小程序（写入） | `apps/app/`（Taro） | `wx.login` → `/auth/wechat/mini`；Bearer + refresh；评分 `/ratings/{id}`、讨论 `/wiki/comments` | 需 ICP 域名、社区类目、服务端内容安全；不存应用密钥 |
 | QQ 小程序 | Taro / uni-app | 同上 | 生态较小，优先级低于 QQ 机器人 |
 | App | React Native / Flutter | 同一 `/api/v1`；类型用 `clients/sdk/api.d.ts`；认证后续走 OAuth2 PKCE | 留存数据成立后再做；契约见 [app/README.md](app/README.md) |
 
@@ -60,10 +60,10 @@ OPENAPI_FILE=/path/openapi.json bash scripts/generate-sdk.sh
 ```text
 clients/
   qqbot/          # NoneBot2 / Koishi 适配器
-  wechat-mini/    # 原生壳：读 + 登录/评分/讨论
-  qq-mini/        # 可选
-  app/            # RN / Flutter
+  app/            # App 契约说明
   sdk/            # 生成的 OpenAPI TypeScript 类型（api.d.ts，无运行时）
+
+# H5 / 微信小程序统一在 apps/app/（Taro），不再维护原生小程序壳。
 ```
 
 新增客户端时，先加目录和 README，确认 API 契约够用，再写 UI。不要先复制后端逻辑。

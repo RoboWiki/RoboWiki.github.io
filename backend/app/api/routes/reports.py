@@ -150,12 +150,12 @@ def _author_id(db, kind: str, target_id: int) -> int | None:
 def _target_link(db, kind: str, target_id: int) -> str | None:
     if kind == "wiki_comment":
         c = db.get(WikiComment, target_id)
-        return f"/{c.page}#comment-{target_id}" if c is not None else None
+        return f"/{c.page}.html#comment-{target_id}" if c is not None else None
     if kind == "post":
-        return f"/console/post/{target_id}"
+        return f"/post.html?id={target_id}"
     if kind == "comment":
         c = db.get(Comment, target_id)
-        return f"/console/post/{c.post_id}#c{target_id}" if c is not None else None
+        return f"/post.html?id={c.post_id}#c{target_id}" if c is not None else None
     return None
 
 

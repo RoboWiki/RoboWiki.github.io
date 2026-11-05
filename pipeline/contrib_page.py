@@ -102,7 +102,7 @@ outline: false
     <p class="cd-note">{t['note']}</p>
   </section>
 
-  <p class="cd-foot"><a href="/submit">{t['foot']}</a></p>
+  <p class="cd-foot"><a href="/submit.html">{t['foot']}</a></p>
 </div>
 """
 

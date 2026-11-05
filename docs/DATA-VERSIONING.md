@@ -35,7 +35,7 @@ ROBOWIKI_SCHEMA_DIR="$PWD/.data/schema" \
 ROBOWIKI_ASSETS_DIR="$PWD/.data/assets/parts" \
 python -m pipeline build
 
-cd wiki && npm run build
+pnpm --filter @robowiki/web build
 ```
 
 - `fetch-data-release.sh` 校验 tar.gz 与 MANIFEST 两个 sha256，并把 MANIFEST 计数与 `data.lock.counts` 对表；失败即停止。

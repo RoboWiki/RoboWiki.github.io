@@ -349,7 +349,7 @@ def test_handoff_redirect_carries_code_not_jwt(client, github_configured,
     r = _github_callback(client)
     assert r.status_code == 302, r.text
     location = r.headers["location"]
-    assert location.startswith(f"{MIRROR}/login#code="), location
+    assert location.startswith(f"{MIRROR}/login.html#code="), location
     assert "#token=" not in location, "JWT 绝不能出现在 Location"
     code = location.split("#code=", 1)[1]
     assert len(code) >= 20

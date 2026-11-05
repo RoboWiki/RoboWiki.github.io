@@ -1,0 +1,17 @@
+---
+import { getCollection, render } from 'astro:content'
+import Prose from '@/layouts/Prose.astro'
+
+const entry = (await getCollection('notice')).find(e => e.id === 'notice')
+if (!entry) throw new Error('notice.md 缺失')
+const { Content } = await render(entry)
+---
+
+<Prose
+  title={entry.data.title}
+  description="内容授权、GPL-3.0 许可、产品图托管规则、安全风险与个人信息处理方式。"
+  eyebrow="许可与免责"
+  crumbs={[{ label: '免责声明与许可' }]}
+>
+  <Content />
+</Prose>

@@ -4,10 +4,11 @@
 User-agent: *
 Allow: /
 
-# 不索引的路径（账号、后台接口等；静态站上若不存在也无害）
-Disallow: /login
+Disallow: /admin.html
+Disallow: /login.html
+Disallow: /account.html
+Disallow: /app/
+Disallow: /console
 Disallow: /api/
 
-# 站点地图由 @astrojs/sitemap 生成：dist/sitemap-index.xml -> sitemap-0.xml
-# 若以项目页形式部署（https://<user>.github.io/<repo>/），把下面改成 .../<repo>/sitemap-index.xml
 Sitemap: https://robowiki.org.cn/sitemap-index.xml

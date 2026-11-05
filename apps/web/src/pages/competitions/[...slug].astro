@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content'
+import CompetitionArticle from '@/components/prose/CompetitionArticle.astro'
+
+export async function getStaticPaths() {
+  const entries = await getCollection('competitions')
+  const paths = entries.map(entry => ({ params: { slug: entry.id }, props: { id: entry.id } }))
+  // Astro normalizes /x/index to /x/ while rendering, so the legacy /competitions/<group>/index.html
+  // paths also need an item keyed by the parent slug. Both URLs render the same page.
+  for (const entry of entries) {
+    if (entry.id.endsWith('/index')) {
+      paths.push({ params: { slug: entry.id.slice(0, -'/index'.length) }, props: { id: entry.id } })
+    }
+  }
+  return paths
+}
+
+const { id } = Astro.props
+---
+
+<CompetitionArticle id={id} />

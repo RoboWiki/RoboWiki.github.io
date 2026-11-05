@@ -1,0 +1,177 @@
+---
+import Base from '@/layouts/Base.astro'
+import { withBase } from '@/lib/utils'
+import semantics from '@/data/semantics.json'
+import protocolData from '@/data/protocols.json'
+
+const tiers = [
+  {
+    grade: 'A',
+    name: '一手手册',
+    what: '逐项核对过厂商 datasheet / 官方文档，含页码与型号',
+    use: '可以拿去算热设计、算余量，参与跨厂商比较',
+  },
+  {
+    grade: 'B',
+    name: '公开网页',
+    what: '厂商页面、官方商城或广泛引用，未逐项复核',
+    use: '可作候选与量级判断，关键数字要回手册确认',
+  },
+  {
+    grade: 'C',
+    name: '二手转述',
+    what: '社区文章、第三方整理；只作线索',
+    use: '默认不参与对比与推荐',
+  },
+]
+const rules = [
+  {
+    rule: '每行必带 source_tier',
+    body: 'A / B / C 是核对程度的标记，不是质量评分。删掉它，数字的含义就变了。',
+    why: '让读者知道这个数敢不敢直接用于设计',
+  },
+  {
+    rule: '口径字段必须声明',
+    body: 'tau_basis（peak / rated）、inertia_basis（rotor / output）、current_basis 缺一个，该行就不能参与跨厂商比较。',
+    why: '同一物理量在不同口径下能差 19 倍',
+  },
+  {
+    rule: '缺失写成缺失',
+    body: '未公布记作 —，不是 0、不是「不支持」，也不拿同类件填补；不要假设额定 = 峰值 / 2。',
+    why: '把「不知道」当「0」会让排序失真',
+  },
+  {
+    rule: '同一字段不混源',
+    body: '同一行的数值必须同源；厂商官网与手册冲突时两条都留着，标「来源冲突」，不改数值。',
+    why: '拼出来的峰值/额定比没有物理意义',
+  },
+  {
+    rule: '改动留提案',
+    body: '字段改动先成为提案（旧值、新值、依据、来源链接、提交人），审核通过后由 worker 开 PR，发布 data-v* release 后才更新目录。',
+    why: '任何一个数都能回答「谁、什么时候、凭什么改的」',
+  },
+]
+const refusals = [
+  '不灌示例评价：编出来的「实测」比空着坏得多。',
+  '不改数值来掩盖冲突：两个来源冲突就都留着并标注。',
+  '不为过校验编一个峰值：手册只给额定，峰值就写 —。',
+  '不混用电调口径：不同源的数据不拼成一个「峰值/额定比」。',
+]
+---
+
+<Base title="数据来源 · RoboWiki" description="来源等级 A/B/C、字段溯源规则、缺失语义与拒绝做的事：每个数字都要能指回一手来源。">
+  <nav aria-label="面包屑" class="mb-4 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+    <a href={withBase('/')} class="hover:text-blue-700">首页</a><span aria-hidden="true">/</span>
+    <a href={withBase('/method.html')} class="hover:text-blue-700">方法</a><span aria-hidden="true">/</span>
+    <span class="text-slate-700" aria-current="page">数据来源</span>
+  </nav>
+
+  <header class="mb-8 max-w-3xl">
+    <p class="text-xs font-semibold uppercase tracking-wider text-blue-700">数据来源</p>
+    <h1 class="mt-1 text-3xl font-extrabold tracking-tight text-slate-950">能不能指回一手来源，是唯一的准入条件。</h1>
+    <p class="mt-2 text-sm leading-6 text-slate-500">
+      字段定义与复核阈值见<a href={withBase('/semantics.html')} class="font-medium text-blue-700 hover:underline">参数口径</a>；
+      授权与版权规则见<a href={withBase('/notice.html')} class="font-medium text-blue-700 hover:underline">免责声明与许可</a>。
+    </p>
+  </header>
+
+  <section class="mb-10" aria-labelledby="tiers">
+    <h2 id="tiers" class="mb-3 text-lg font-bold text-slate-900">来源等级</h2>
+    <div class="grid gap-3 sm:grid-cols-3">
+      {tiers.map(t => (
+        <article class="rounded-xl border border-slate-200 bg-white p-4">
+          <div class="flex items-center gap-2">
+            <span class="grid h-7 w-7 place-items-center rounded-lg bg-slate-900 text-xs font-bold text-white" aria-hidden="true">{t.grade}</span>
+            <h3 class="text-sm font-semibold text-slate-900">{t.name}</h3>
+          </div>
+          <p class="mt-2 text-xs leading-6 text-slate-600">{t.what}</p>
+          <p class="mt-2 text-xs leading-6 text-slate-500">{t.use}</p>
+        </article>
+      ))}
+    </div>
+    <p class="mt-2 text-xs text-slate-500">来源不明时记 {semantics.field_semantics.source_tier.missing_means}，不参与比较。</p>
+  </section>
+
+  <section class="mb-10" aria-labelledby="rules">
+    <h2 id="rules" class="mb-3 text-lg font-bold text-slate-900">字段溯源规则</h2>
+    <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+      <table class="w-full min-w-[40rem] text-left text-sm">
+        <thead class="bg-slate-50 text-xs text-slate-600">
+          <tr>
+            <th scope="col" class="px-3 py-2 font-semibold">规则</th>
+            <th scope="col" class="px-3 py-2 font-semibold">怎么做</th>
+            <th scope="col" class="px-3 py-2 font-semibold">为什么</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          {rules.map(r => (
+            <tr class="align-top">
+              <td class="px-3 py-2 text-xs font-semibold text-slate-900">{r.rule}</td>
+              <td class="px-3 py-2 text-xs leading-5 text-slate-600">{r.body}</td>
+              <td class="px-3 py-2 text-xs leading-5 text-slate-500">{r.why}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="mb-10" aria-labelledby="missing">
+    <h2 id="missing" class="mb-2 text-lg font-bold text-slate-900">缺失与三态判定</h2>
+    <div class="flex flex-wrap gap-2">
+      {semantics.trinary.values.map(v => (
+        <span class="rounded-full border border-slate-300 px-3 py-1 text-xs font-semibold text-slate-700">{v}</span>
+      ))}
+    </div>
+    <p class="mt-2 max-w-3xl text-xs leading-6 text-slate-500">{semantics.trinary.why}</p>
+    <ul class="mt-2 list-disc space-y-1 pl-5 text-xs leading-6 text-slate-600">
+      {semantics.trinary.rules.map(rule => <li>{rule}</li>)}
+    </ul>
+  </section>
+
+  <section class="mb-10" aria-labelledby="comparability">
+    <h2 id="comparability" class="mb-3 text-lg font-bold text-slate-900">同一张表里能不能放一起比</h2>
+    <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+      <table class="w-full text-left text-sm">
+        <thead class="bg-slate-50 text-xs text-slate-600">
+          <tr>
+            <th scope="col" class="px-3 py-2 font-semibold">等级</th>
+            <th scope="col" class="px-3 py-2 font-semibold">名称</th>
+            <th scope="col" class="px-3 py-2 font-semibold">条件</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          {semantics.comparability.map(c => (
+            <tr class="align-top">
+              <td class="px-3 py-2 text-xs font-bold text-slate-900">{c.grade}</td>
+              <td class="px-3 py-2 text-xs text-slate-700">{c.name}</td>
+              <td class="px-3 py-2 text-xs leading-5 text-slate-600">{c.condition}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="mb-10" aria-labelledby="refuse">
+    <h2 id="refuse" class="mb-3 text-lg font-bold text-slate-900">我们拒绝做的事</h2>
+    <ul class="grid gap-2 sm:grid-cols-2">
+      {refusals.map(r => (
+        <li class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs leading-6 text-slate-700">{r}</li>
+      ))}
+    </ul>
+    <p class="mt-3 max-w-3xl text-xs leading-6 text-slate-500">
+      协议与总线口径的来源：{protocolData._meta.source}（核对于 {protocolData._meta.checked}），
+      详见<a href={withBase('/semantics.html')} class="font-medium text-blue-700 hover:underline">参数口径 · 协议语义</a>。
+    </p>
+  </section>
+
+  <section aria-labelledby="chain">
+    <h2 id="chain" class="mb-2 text-lg font-bold text-slate-900">每个数字的追溯链</h2>
+    <ol class="grid gap-2 sm:grid-cols-4">
+      {['提案：旧值 / 新值 / 依据 / 来源链接', '审核：口径与来源等级复核', 'PR：worker 自动开、人工合并', '发布：data-v* release 更新目录'].map(step => (
+        <li class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs leading-6 text-slate-600">{step}</li>
+      ))}
+    </ol>
+  </section>
+</Base>

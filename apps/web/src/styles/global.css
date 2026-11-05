@@ -93,3 +93,23 @@ main :where(dd) { min-width: 0; overflow-wrap: anywhere; }
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Long-form content: guides, competitions, notice and English pages. */
+.prose { color: #334155; font-size: 1rem; line-height: 1.85; }
+.prose > :first-child { margin-top: 0; }
+.prose h1 { font-size: 2rem; line-height: 1.25; font-weight: 800; letter-spacing: -0.02em; color: #020617; margin: 2.2rem 0 1rem; }
+.prose h2 { font-size: 1.35rem; font-weight: 700; color: #0f172a; margin: 2rem 0 0.75rem; }
+.prose h3 { font-size: 1.1rem; font-weight: 650; color: #0f172a; margin: 1.5rem 0 0.5rem; }
+.prose p, .prose ul, .prose ol, .prose blockquote, .prose pre, .prose table { margin: 0.9rem 0; }
+.prose ul, .prose ol { padding-left: 1.4rem; }
+.prose ul { list-style: disc; }
+.prose ol { list-style: decimal; }
+.prose a { color: #1d4ed8; text-decoration: underline; text-underline-offset: 2px; }
+.prose blockquote { border-left: 3px solid #cbd5e1; padding-left: 1rem; color: #475569; }
+.prose code { background: #f1f5f9; border-radius: 0.3rem; padding: 0.1rem 0.3rem; font-size: 0.9em; }
+.prose pre { background: #0f172a; color: #e2e8f0; border-radius: 0.75rem; padding: 1rem; overflow-x: auto; }
+.prose pre code { background: transparent; padding: 0; color: inherit; }
+.prose table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.prose th, .prose td { border: 1px solid #e2e8f0; padding: 0.5rem 0.7rem; text-align: left; vertical-align: top; }
+.prose th { background: #f8fafc; font-weight: 600; }
+.prose img { max-width: 100%; height: auto; border-radius: 0.75rem; }

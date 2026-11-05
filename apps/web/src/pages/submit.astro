@@ -1,0 +1,84 @@
+---
+import Base from '@/layouts/Base.astro'
+
+const gh = 'https://github.com/RoboWiki/RoboWiki.github.io'
+const cards = [
+  {
+    title: '写评价 / 打分',
+    desc: '部件页可以直接打 1–5 分，登录后提交，不用 GitHub。需要四维分、使用工况或长实测时，再用 GitHub 表单。',
+    href: '/catalog.html',
+    who: '用过或用过同类件的人 · 约 30 秒',
+    external: false,
+  },
+  {
+    title: '纠参数 / 补数据',
+    desc: '站内纠错表单：登录后写清字段、正确值和依据。批量修改或多个件一起改，走 GitHub 表单。',
+    href: '/app/#/pages/submit/index',
+    who: '任何人 · 约 2 分钟',
+    external: false,
+  },
+  {
+    title: '写实测',
+    desc: '装了多大负载、跑了多久、温升多少、坏没坏。工况比结论重要。',
+    href: `${gh}/issues/new?template=review-part.yml&labels=review`,
+    who: '真装机跑过的人 · 约 5 分钟',
+    external: true,
+  },
+  {
+    title: '写文章 / 教程',
+    desc: '选型方法、踩坑记录、开源项目拆解。要有可核对的数字和适用边界。',
+    href: `${gh}/issues/new?template=article.yml&labels=article`,
+    who: '愿意把经验写清楚的人',
+    external: true,
+  },
+  {
+    title: '加型号 / 改结构',
+    desc: '批量新增、字段结构调整、口径定义，走 PR。CI 会先校验数据格式。',
+    href: `${gh}/blob/main/CONTRIBUTING.md`,
+    who: '愿意改 JSON 的人',
+    external: true,
+  },
+]
+---
+<Base title="投稿 · RoboWiki" description="评分、实测、纠错、文章与数据提案的投稿入口。">
+  <header class="max-w-3xl">
+    <div class="text-xs font-semibold uppercase tracking-wide text-blue-700">投稿</div>
+    <h1 class="mt-2 text-3xl font-extrabold tracking-tight text-slate-950">五种投稿，按你手里的东西选。</h1>
+    <p class="mt-3 text-base leading-7 text-slate-600">
+      有实测就写实测，有证据就纠数据，用过就写评价。评分和单个参数纠错可以在站内完成；
+      写实测、写文章、批量加型号走 GitHub，署名可追溯。
+    </p>
+  </header>
+
+  <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    {cards.map(card => (
+      <a
+        href={card.href}
+        target={card.external ? '_blank' : undefined}
+        rel={card.external ? 'noopener' : undefined}
+        class="rounded-xl border border-slate-200 bg-white p-5 transition hover:border-blue-200 hover:shadow-sm"
+      >
+        <div class="font-semibold text-slate-900">{card.title} →</div>
+        <p class="mt-2 text-sm leading-6 text-slate-600">{card.desc}</p>
+        <p class="mt-3 text-xs text-slate-400">{card.who}</p>
+      </a>
+    ))}
+  </div>
+
+  <section class="prose mt-10 max-w-3xl">
+    <h2>投稿之后会怎样</h2>
+    <ol>
+      <li><strong>评分 / 实测</strong>：站内评分与纠错直接进后台；GitHub 表单由 Actions 聚合成快照。站点在下一次数据发布后更新。</li>
+      <li><strong>纠错</strong>：记录字段旧值、新值与依据；审核通过后由 worker 开 PR。合并并发布 <code>data-v*</code> 后目录才更新。</li>
+      <li><strong>文章</strong>：过编辑评审后进指南，登记难度与预计阅读时长。</li>
+    </ol>
+    <h2>我们不收的东西</h2>
+    <ul>
+      <li>没有实测的「实测」；缺数据宁可空着。</li>
+      <li>只给价格不给条件的优惠。</li>
+      <li>整机宣传图当产品图。</li>
+      <li>买排名：展示位与评分排序完全分开，赞助必须标注。</li>
+      <li>没有适用条件的教程，以及不署名的搬运。</li>
+    </ul>
+  </section>
+</Base>

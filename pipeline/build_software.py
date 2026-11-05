@@ -50,22 +50,12 @@ def _pick_html() -> str:
 
 
 
-def build(out: pathlib.Path, root: pathlib.Path) -> None:
+def build(pub: pathlib.Path, root: pathlib.Path) -> None:
     data = json.loads((DATA_DIR / "software.json").read_text(encoding="utf-8"))
     items = data["items"]
     groups = data["groups"]
 
-    md = """---
-title: 软件库
-layout: page
-sidebar: false
-outline: false
----
-
-<SoftwareGrid />
-"""
-    (out / "software.md").write_text(md, encoding="utf-8")
-    (out / "public" / "software.json").write_text(
+    (pub / "software.json").write_text(
         json.dumps({"count": len(items), "items": items, "groups": groups},
                    ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    print(f"  软件 {len(items)} 个 -> software.md")
+    print(f"  软件 {len(items)} 个 -> public/software.json")

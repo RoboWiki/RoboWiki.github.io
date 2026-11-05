@@ -26,12 +26,12 @@ const description = '这个地址没有对应页面。回到 RoboWiki 首页，�
           <span class="grid h-7 w-7 place-items-center rounded-lg bg-blue-600 text-xs text-white">RW</span>
           <span>RoboWiki</span>
         </a>
-        <nav class="hidden items-center gap-1 md:flex" aria-label="主导航">
+        <nav class="hidden items-center gap-1 lg:flex" aria-label="主导航">
           <a href={homeHref} class="rounded-lg px-3 py-1.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900">首页</a>
           <a href={catalogHref} class="rounded-lg px-3 py-1.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900">部件库</a>
-          <a href="https://robowiki.org.cn/robots" class="rounded-lg px-3 py-1.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900">整机库</a>
-          <a href="https://robowiki.org.cn/materials" class="rounded-lg px-3 py-1.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900">材质库</a>
-          <a href="https://robowiki.org.cn/learn/" class="rounded-lg px-3 py-1.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900">指南</a>
+          <a href={`${base}robots.html`} class="rounded-lg px-3 py-1.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900">整机库</a>
+          <a href={`${base}materials.html`} class="rounded-lg px-3 py-1.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900">材质库</a>
+          <a href={`${base}learn/index.html`} class="rounded-lg px-3 py-1.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900">指南</a>
         </nav>
         <div class="ml-auto flex items-center gap-2">
           <a href="https://github.com/RoboWiki" class="hidden items-center gap-1 rounded-lg px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50 sm:flex" target="_blank" rel="noopener">GitHub</a>
@@ -69,11 +69,11 @@ const description = '这个地址没有对应页面。回到 RoboWiki 首页，�
           <div class="font-semibold text-slate-900">部件库</div>
           <p class="mt-1 text-sm leading-6 text-slate-500">按品类、厂商与参数筛选硬件。</p>
         </a>
-        <a href="https://robowiki.org.cn/robots" class="rounded-xl border border-slate-200 bg-white p-5 transition hover:border-blue-200 hover:shadow-sm">
+        <a href={`${base}robots.html`} class="rounded-xl border border-slate-200 bg-white p-5 transition hover:border-blue-200 hover:shadow-sm">
           <div class="font-semibold text-slate-900">整机库</div>
           <p class="mt-1 text-sm leading-6 text-slate-500">看现成整机的配置与使用经验。</p>
         </a>
-        <a href="https://robowiki.org.cn/learn/" class="rounded-xl border border-slate-200 bg-white p-5 transition hover:border-blue-200 hover:shadow-sm">
+        <a href={`${base}learn/index.html`} class="rounded-xl border border-slate-200 bg-white p-5 transition hover:border-blue-200 hover:shadow-sm">
           <div class="font-semibold text-slate-900">指南</div>
           <p class="mt-1 text-sm leading-6 text-slate-500">选型口径、来源等级与入门路径。</p>
         </a>

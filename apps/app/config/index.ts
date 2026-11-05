@@ -12,7 +12,14 @@ const apiBase =
 const appBase = (() => {
   const raw = (process.env.APP_BASE || '/').trim()
   if (!raw || raw === '/') return '/'
-  return raw.endsWith('/') ? raw : `${raw}/`
+  // Windows 上直接写 APP_BASE=/app/ 会被 shell 的路径转换改成 C:/...；
+  // 这种值塞进 publicPath 会让页面去加载 file:// 资源，直接退回根路径。
+  if (raw.includes(':') || raw.includes('\\')) {
+    console.warn(`[taro] APP_BASE 不是合法 URL 路径，已忽略：${raw}`)
+    return '/'
+  }
+  const normalized = raw.startsWith('/') ? raw : `/${raw}`
+  return normalized.endsWith('/') ? normalized : `${normalized}/`
 })()
 const isH5 = process.env.TARO_ENV === 'h5'
 // 工作区包 @robowiki/core 直接暴露 TS 源码，H5 与小程序都必须进入 babel 编译范围。

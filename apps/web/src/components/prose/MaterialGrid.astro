@@ -1,0 +1,54 @@
+---
+import { withBase } from '@/lib/utils'
+
+export type MaterialItem = {
+  title: string
+  href: string
+  meta?: string
+  tags?: string[]
+  what?: string
+  when?: string
+}
+
+type Props = { items: MaterialItem[]; whenLabel?: string }
+
+const { items = [], whenLabel = '什么时候看' } = Astro.props
+const isExternal = (href: string) => /^https?:\/\//i.test(href)
+const href = (h: string) => (isExternal(h) ? h : withBase(h))
+---
+
+<ul class="grid list-none gap-3 p-0 sm:grid-cols-2">
+  {items.map(item => (
+    <li class="min-w-0">
+      <a
+        href={href(item.href)}
+        class="flex h-full flex-col gap-2 rounded-xl border border-slate-200 bg-white p-4 transition hover:border-blue-300 hover:shadow-sm"
+        target={isExternal(item.href) ? '_blank' : undefined}
+        rel={isExternal(item.href) ? 'noopener' : undefined}
+      >
+        <span class="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-1">
+          <span class="text-sm font-semibold text-slate-900">{item.title}</span>
+          {item.meta && (
+            <span class="rounded-full border border-slate-200 px-2 py-0.5 text-[11px] text-slate-500">{item.meta}</span>
+          )}
+        </span>
+
+        {item.what && <span class="text-xs leading-6 text-slate-600">{item.what}</span>}
+
+        {item.tags && item.tags.length > 0 && (
+          <span class="flex flex-wrap gap-1.5">
+            {item.tags.map(tag => (
+              <span class="rounded-md bg-slate-100 px-1.5 py-0.5 text-[11px] text-slate-600">{tag}</span>
+            ))}
+          </span>
+        )}
+
+        {item.when && (
+          <span class="mt-auto text-[11px] leading-5 text-slate-500">
+            <span class="font-medium text-slate-600">{whenLabel}</span>：{item.when}
+          </span>
+        )}
+      </a>
+    </li>
+  ))}
+</ul>

@@ -350,7 +350,7 @@ def _normalize_return_to(value: str | None) -> str | None:
     """`return_to` → 规范化 origin；未提供返回 None，非法抛 400。
 
     只接受纯 origin（不带 path / query / fragment）：拼接目标是
-    `{origin}/login#code=...`，放路径进来等于开了开放重定向的口子。
+    `{origin}/login.html#code=...`，放路径进来等于开了开放重定向的口子。
     localhost / 127.0.0.1 允许任意端口（本地开发），其余必须精确命中白名单。
     """
     if value is None or not value.strip():
@@ -753,10 +753,10 @@ async def github_callback(request: Request, db: Db):
 
     三条出口：
       · `Accept: application/json` → 直接返回 TokenOut（H5/小程序自己跳转）；
-      · 授权时带了 `return_to` → 302 `{return_to}/login#code=<一次性 code>`，
+      · 授权时带了 `return_to` → 302 `{return_to}/login.html#code=<一次性 code>`，
         静态镜像再用 `POST /auth/handoff` 换 TokenOut；JWT 不落 Location；
       · 未带 `return_to`（旧客户端/主站直连）→ 保持原有
-        `site_url/login#token=<jwt>`，避免破坏既有调用方。
+        `site_url/login.html#token=<jwt>`，避免破坏既有调用方。
     """
     client = _github_client()          # 未配置 → 503
     rate_limit(request, "oauth-callback", 60)
@@ -792,7 +792,7 @@ async def github_callback(request: Request, db: Db):
     if return_to:
         # 静态镜像：Location 里只有 60 秒、一次性的 code，没有 JWT
         code = _create_handoff(db, user, return_to)
-        return RedirectResponse(f"{return_to.rstrip('/')}/login#code={code}",
+        return RedirectResponse(f"{return_to.rstrip('/')}/login.html#code={code}",
                                 status_code=status.HTTP_302_FOUND)
     return RedirectResponse(_login_redirect(out.access_token),
                             status_code=status.HTTP_302_FOUND)
@@ -1043,4 +1043,4 @@ def _wants_json(request: Request) -> bool:
 
 
 def _login_redirect(token: str) -> str:
-    return f"{settings.site_url.rstrip('/')}/login#token={token}"
+    return f"{settings.site_url.rstrip('/')}/login.html#token={token}"

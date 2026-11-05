@@ -1,6 +1,6 @@
 name: Deploy wiki to GitHub Pages
 
-# 站点只负责渲染：目录数据从 `RoboWiki` 仓的锁定 release 取。
+# Astro 根站 + Taro /app：目录数据从 `RoboWiki` 仓的锁定 release 取。
 # 不在本仓保存 schema/、catalog 或产品图副本。
 #
 # 唯一的例外是社区快照（data/ratings_snapshot.json、data/reviews_snapshot.json）：
@@ -12,9 +12,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'wiki/**'
       - 'pipeline/**'
-      - 'console/public/**'
       - 'apps/web/**'
       - 'apps/app/**'
       - 'packages/**'
@@ -41,8 +39,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: wiki/package-lock.json
 
       - uses: actions/setup-python@v5
         with:
@@ -91,42 +87,37 @@ jobs:
           python -m pip install --quiet pydantic
           python -m pipeline build
 
-      - name: install & build
-        working-directory: wiki
-        env:
-          WIKI_BASE: /
-        run: |
-          npm ci
-          npm run build
-
-      # Astro 迁移预览：挂在 /next/，不替换现有 VitePress 生产路径。
       # 版本由根 package.json 的 packageManager 决定；此处再写 version 会冲突。
       - uses: pnpm/action-setup@v4
-      - name: build Astro preview
-        env:
-          BASE_PATH: /next
-        run: |
-          set -euo pipefail
-          pnpm install --filter @robowiki/web... --no-frozen-lockfile
-          pnpm --filter @robowiki/web build
-          mkdir -p wiki/docs/.vitepress/dist/next
-          cp -R apps/web/dist/. wiki/docs/.vitepress/dist/next/
 
-      - name: build Taro H5 preview
+      - name: install workspace
+        run: pnpm install --no-frozen-lockfile
+
+      - name: build Astro site
+        run: pnpm --filter @robowiki/web build
+
+      - name: build Taro H5
         env:
           APP_BASE: /app/
+        run: pnpm --filter @robowiki/app build:h5
+
+      - name: assemble GitHub Pages artifact
         run: |
           set -euo pipefail
-          pnpm install --filter @robowiki/app... --no-frozen-lockfile
-          pnpm --filter @robowiki/app build:h5
-          mkdir -p wiki/docs/.vitepress/dist/app
-          cp -R apps/app/dist/h5/. wiki/docs/.vitepress/dist/app/
+          rm -rf site
+          mkdir -p site
+          cp -R apps/web/dist/. site/
+          mkdir -p site/app
+          cp -R apps/app/dist/h5/. site/app/
+          test -f site/index.html
+          test -f site/catalog.html
+          test -f site/app/index.html
 
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: wiki/docs/.vitepress/dist
+          path: site
 
   deploy:
     needs: build

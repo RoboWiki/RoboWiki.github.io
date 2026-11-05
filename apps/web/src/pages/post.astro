@@ -1,0 +1,9 @@
+---
+import Base from '@/layouts/Base.astro'
+import PostRoute from '@/components/community/post-route'
+
+const title = '帖子 · RoboWiki'
+---
+<Base title={title} description="RoboWiki 社区帖子、实测记录与讨论。">
+  <PostRoute client:only="react" />
+</Base>

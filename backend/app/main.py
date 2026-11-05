@@ -19,7 +19,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from .api.routes import (admin, auth, bot, catalog, community, export, mcp,
                          materials, media, notifications, protocols, ratings,
                          reports, semantics, submissions, wiki)
-from .core.config import ROOT, settings
+from .core.config import settings
 from .core.db import (bootstrap_admin, create_tables, ensure_catalog_present,
                       seed_catalog, seed_community, session)
 
@@ -194,43 +194,46 @@ def _custom_openapi():
 app.openapi = _custom_openapi
 
 
-# ── 静态站点托管 ────────────────────────────────────────────────────────────
-# 现在**只有一个前台**：VitePress 挂在 `/`（部件库、型号页、口径、协议、讨论）。
-# React 选型台不再是第二套站点，只作为「控制台」挂在 `/console/`：
-# 发帖、看信息流、后台改数 —— 这些都要写库，静态站做不到。
-#
-# 注册顺序即优先级：/api → /console → /（wiki）→ 兜底。
-# 挂 "/" 的 StaticFiles 必须最后，否则它会把前面全部吃掉。
-_WIKI_DIST = ROOT / "wiki" / "docs" / ".vitepress" / "dist"
-_SPA_DIST = ROOT / "console" / "dist"
-
-from fastapi.responses import FileResponse, RedirectResponse  # noqa: E402
-from fastapi.staticfiles import StaticFiles  # noqa: E402
-
-if _SPA_DIST.exists():
-
-    @app.get("/console/{rest:path}", include_in_schema=False)
-    def console_spa(rest: str):
-        """控制台是客户端路由（/console/community、/console/post/3）。
-
-        不能挂 StaticFiles：它不会为客户端路由回退，而且 `/console/community`
-        会被它的前缀匹配吃掉直接 404。这里自己判断——文件在就发文件，否则发 index.html。
-        """
-        candidate = (_SPA_DIST / rest).resolve()
-        if rest and str(candidate).startswith(str(_SPA_DIST.resolve())) and candidate.is_file():
-            return FileResponse(candidate)
-        return FileResponse(_SPA_DIST / "index.html")
+# ── 旧前台跳转 ──────────────────────────────────────────────────────────────
+# 静态站由 GitHub Pages 构建（Astro 根站 + /app/），API 不再托管站点文件。
+# `/console/*` 是旧 React 控制台的客户端路由，改成跳转到新站点，
+# 老通知、老邮件里的链接仍能落到正确页面。
+from fastapi.responses import RedirectResponse  # noqa: E402
 
 
-if _WIKI_DIST.exists():
-    app.mount("/", StaticFiles(directory=str(_WIKI_DIST), html=True), name="site")
+def _legacy_target(rest: str) -> str:
+    rest = rest.strip("/")
+    if rest in ("", "community"):
+        return "/community.html"
+    if rest == "top":
+        return "/top.html"
+    if rest == "semantics":
+        return "/semantics.html"
+    if rest in ("submissions", "reports", "admin"):
+        return f"/admin.html?tab={rest}"
+    if rest.startswith("post/"):
+        return f"/post.html?id={rest[5:]}"
+    if rest.startswith("u/"):
+        return f"/u.html?handle={rest[2:]}"
+    return "/"
+
+
+@app.get("/console", include_in_schema=False)
+def legacy_console_root():
+    return RedirectResponse("/community.html", status_code=308)
+
+
+@app.get("/console/{rest:path}", include_in_schema=False)
+def legacy_console(rest: str):
+    return RedirectResponse(_legacy_target(rest), status_code=308)
+
+
+@app.get("/login", include_in_schema=False)
+def legacy_login():
+    return RedirectResponse("/login.html", status_code=308)
 
 
 @app.get("/{full_path:path}", include_in_schema=False)
 def fallback(full_path: str):
-    """剩下的路径：给没构建时的可读提示，不要返回 500。"""
-    if full_path.startswith("api"):
-        raise HTTPException(404, "not found")
-    if not _WIKI_DIST.exists():
-        return RedirectResponse("/api/docs")
+    """API 实例不再回退到静态站；未知路径统一 404。"""
     raise HTTPException(404, "not found")

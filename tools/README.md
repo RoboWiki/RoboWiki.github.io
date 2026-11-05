@@ -5,7 +5,7 @@
 
 这里只保留不产出数据的站点专用脚本：
 
-- `site/import_competition_pdf.py` / `site/import_competition_docs.py`：把竞赛文档导入 `wiki/docs/competitions/`
+- `site/import_competition_pdf.py` / `site/import_competition_docs.py`：把竞赛文档导入 `apps/web/src/content/competitions/`
 - `site/dev.ps1`：本地开发辅助
 
 站点构建的数据来自`RoboWiki` 仓 release，先运行：

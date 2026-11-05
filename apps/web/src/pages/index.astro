@@ -3,7 +3,7 @@ import Base from '@/layouts/Base.astro'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { catalog, featuredParts, imageUrl, topCategories } from '@/lib/catalog'
+import { catalog, dataVersion, featuredParts, imageUrl, topCategories } from '@/lib/catalog'
 import { formatPrice, partHref, withBase } from '@/lib/utils'
 ---
 <Base>
@@ -11,7 +11,7 @@ import { formatPrice, partHref, withBase } from '@/lib/utils'
     <div class="absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgba(37,99,235,0.12),transparent_45%),radial-gradient(circle_at_10%_90%,rgba(21,128,61,0.08),transparent_40%)]"></div>
     <div class="relative max-w-3xl">
       <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
-        data-{catalog.meta?.data_version || 'v2026.11.3'} · {catalog.count} 个部件
+        {dataVersion} · {catalog.count} 个部件
       </div>
       <h1 class="text-3xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-5xl">
         选机器人硬件，<br class="hidden sm:block" />先看真实使用经验。
@@ -21,7 +21,7 @@ import { formatPrice, partHref, withBase } from '@/lib/utils'
       </p>
       <div class="mt-6 flex flex-wrap gap-3">
         <a href={withBase('/catalog.html')}><Button size="lg">浏览部件库 →</Button></a>
-        <a href="https://robowiki.org.cn/submit"><Button size="lg" variant="outline">参与投稿</Button></a>
+        <a href={withBase('/submit.html')}><Button size="lg" variant="outline">参与投稿</Button></a>
       </div>
       <div class="mt-8 grid grid-cols-3 gap-4 border-t border-slate-200 pt-5 text-sm sm:max-w-lg">
         <div><div class="text-xl font-bold text-slate-900">{catalog.count}</div><div class="text-xs text-slate-500">部件</div></div>
@@ -65,6 +65,29 @@ import { formatPrice, partHref, withBase } from '@/lib/utils'
               <div class="flex items-center gap-1.5"><Badge variant="secondary">{p.vendor}</Badge>{p.verified && <Badge variant="success">已核对</Badge>}</div>
               <div class="font-semibold text-slate-900">{p.model}</div>
               <div class="flex justify-between text-xs text-slate-500"><span>{formatPrice(p.price)}</span><span>{p.tauPeak ? `${p.tauPeak} N·m` : '参数待补'}</span></div>
+            </CardContent>
+          </Card>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="mt-10">
+    <div class="mb-4"><h2 class="text-xl font-bold text-slate-900">继续找</h2><p class="mt-1 text-sm text-slate-500">整机、材质、软件、渠道与竞赛资料都在同一套数据口径下。</p></div>
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {[
+        { href: '/robots.html', title: '整机库', desc: '21 套可复现方案，看自由度、算力与 URDF。' },
+        { href: '/materials.html', title: '材质库', desc: '材料参数与加工工艺的能力边界。' },
+        { href: '/software.html', title: '软件库', desc: '仿真、训练、部署工具的许可与硬件门槛。' },
+        { href: '/suppliers.html', title: '渠道库', desc: '加工与元件渠道的真实反馈。' },
+        { href: '/competitions.html', title: '竞赛资料', desc: '电控、机械、算法与硬件的可复用材料。' },
+        { href: '/community.html', title: '社区', desc: '提问、实测记录与选型讨论。' },
+      ].map(item => (
+        <a href={withBase(item.href)}>
+          <Card class="h-full transition hover:border-blue-200 hover:shadow-sm">
+            <CardContent class="space-y-1 p-5">
+              <div class="font-semibold text-slate-900">{item.title} →</div>
+              <p class="text-sm leading-6 text-slate-500">{item.desc}</p>
             </CardContent>
           </Card>
         </a>

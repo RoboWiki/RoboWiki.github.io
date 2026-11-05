@@ -5,6 +5,8 @@ import {
   type ApiTransport,
   type ApiTransportRequest,
   type ApiTransportResponse,
+  type Media,
+  type Notification,
   type TokenPair,
   type TokenStore,
   type User,
@@ -13,6 +15,8 @@ import {
 const ACCESS_KEY = 'rw.app.access'
 const REFRESH_KEY = 'rw.app.refresh'
 const USER_KEY = 'rw.app.user'
+/** 会话列表里显示来源：后端优先读 X-Client。 */
+const CLIENT_LABEL = process.env.TARO_ENV === 'h5' ? 'h5' : 'mini'
 
 function read(key: string): string | null {
   try {
@@ -70,7 +74,7 @@ class TaroTransport implements ApiTransport {
     const res = await Taro.request({
       url: req.url,
       method: (req.method || 'GET') as TaroMethod,
-      header: req.headers,
+      header: { 'X-Client': CLIENT_LABEL, ...(req.headers || {}) },
       data: req.body as Taro.request.Option['data'],
       timeout: 20000,
       dataType: 'json',
@@ -141,15 +145,7 @@ export async function logout(): Promise<void> {
   }
 }
 
-export type AppNotification = {
-  id: number
-  type: string
-  subject: string
-  body: string
-  link: string | null
-  read_at: string | null
-  created_at: string
-}
+export type AppNotification = Notification
 
 export type NotificationPage = {
   total: number
@@ -162,7 +158,49 @@ export function listNotifications(limit = 20): Promise<NotificationPage> {
 }
 
 export function markNotificationsRead(): Promise<{ ok: boolean }> {
-  return api.request('/notifications/read-all', { method: 'POST' })
+  return api.markNotificationsRead()
+}
+
+/** 单条已读：点击通知时先标记，再决定跳转。 */
+export function markNotificationRead(id: number): Promise<AppNotification> {
+  return api.markNotificationRead(id)
+}
+
+/** 把改密 / 换邮箱返回的新令牌写回本地，其他页面的请求才不会 401。 */
+export function applySession(pair: TokenPair): User {
+  saveSession(pair)
+  return pair.user
+}
+
+/**
+ * 评论配图：multipart 字段名按 backend media.py 为 `file`。
+ * Taro.uploadFile 不走 ApiClient（body 是 FormData），401 需要自己报。
+ */
+export async function uploadImage(filePath: string): Promise<Media> {
+  const access = tokenStore.getAccess()
+  const res = await Taro.uploadFile({
+    url: `${api.baseUrl}/media`,
+    filePath,
+    name: 'file',
+    header: access ? { Authorization: `Bearer ${access}` } : {},
+  })
+  let data: unknown = null
+  try {
+    data = typeof res.data === 'string' ? JSON.parse(res.data) : res.data
+  } catch {
+    data = null
+  }
+  if (res.statusCode < 200 || res.statusCode >= 300) {
+    const detail = (data as { detail?: unknown } | null)?.detail
+    throw new ApiError(
+      res.statusCode,
+      typeof detail === 'string' ? detail : `上传失败（${res.statusCode}）`,
+      detail,
+    )
+  }
+  const media = data as Media | null
+  if (!media || !media.url) throw new Error('上传没有返回图片地址')
+  return media
 }
 
 /** 微信小程序：wx.login 的 code 换本站令牌。 */

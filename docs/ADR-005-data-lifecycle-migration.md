@@ -41,7 +41,7 @@
 ## 4. 产物契约与源数据契约分离
 
 - `data/` 是源数据契约（人写、snake_case、schema 在 schema/）
-- `wiki/docs/public/*.json` 是产物契约（只有 pipeline 写、camelCase、消费方前端/API）
+- `apps/web/src/data/*.json` 与 `apps/web/public/*.json` 是产物契约（只有 pipeline 写、camelCase、消费方前端/API）
 - **产物也要 schema**：schema/artifacts/catalog.schema.json，pipeline 写完自校验
 - **产物带信封**：{schema_version, generated_at, source_commit, record_count, license}
 - **映射唯一落点**：pipeline/export_map.py 一张 {source_key: artifact_key} 表——消灭「产物键名与 schema 不一致」的根源（不一致没错，错在没有一张表写出来）

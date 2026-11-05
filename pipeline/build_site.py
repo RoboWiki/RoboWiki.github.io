@@ -29,14 +29,13 @@ except ImportError:  # 直接 python pipeline/xxx.py 时没有包上下文
     sys.path.insert(0, str(_Path(__file__).resolve().parents[1]))
     from pipeline.paths import ASSETS_DIR, DATA_DIR, SCHEMA_DIR
 DATA = DATA_DIR
-OUT = ROOT / "wiki" / "docs"
+OUT = ROOT / ".build" / "legacy-site"
+PUB = ROOT / "apps" / "web" / "public"
 
 #: 品类。顺序即展示顺序 —— 关节电机是重点，放最前。
 #: 机械结构 / 电池 没有收录：不是漏了，是没有可信来源，宁缺不编。
 from .load import cat_labels as _cat_labels
 from .meta import meta as _artifact_meta
-from .build_home import build as build_home
-from .build_competitions import build as build_competitions
 from .build_robots import build as build_robots
 from .build_materials import build as build_materials
 from .build_software import build as build_software
@@ -944,7 +943,7 @@ def main() -> None:
     for r in rows:
         HREF[r["id"]] = f'/parts/{r["category"]}/{slugs[r["id"]]}'
 
-    n_share = build_share(rows, slugs, OUT, SITE_URL, _data_version())
+    n_share = build_share(rows, slugs, PUB, SITE_URL, _data_version())
     print(f"  分享卡 {n_share} 条 -> public/share")
 
     # ── 静态目录快照：让静态站也能做交互式检索 ────────────────────────
@@ -1044,11 +1043,30 @@ def main() -> None:
             "featured": r["id"] in featured_set,
             "notes": (r.get("notes") or "")[:600],
         })
-    pub = OUT / "public"
+    pub = PUB
     pub.mkdir(parents=True, exist_ok=True)
+
+    # 品类内的分组（关节电机按厂商、传感器按类型）交给前端直接渲染，
+    # 不再让 Astro 重写一遍 vendor_slug/type_groups 的规则。
+    groups_payload: dict[str, list[dict]] = {}
+    for c, _, _ in CATS:
+        items = [r for r in rows if r["category"] == c]
+        vs = sorted({r["vendor"] for r in items})
+        if c in ("sensor", "module", "open_hw"):
+            groups = type_groups(items, c)
+        else:
+            vslug = vendor_slugs(items, legacy=(c == "actuator"))
+            groups = [(vslug[v], v, [r for r in items if r["vendor"] == v]) for v in vs]
+        groups_payload[c] = [
+            {"key": key, "label": label,
+             "slugs": [slugs[r["id"]] for r in sub]}
+            for key, label, sub in groups
+        ]
+
     (pub / "catalog.json").write_text(
         json.dumps({"meta": _artifact_meta(len(digest)),
                     "count": len(digest), "parts": digest,
+                    "groups": groups_payload,
                     # 品类表随产物一起发：前端不再硬编码品类名，
                     # 加品类 / 改名只动 data/taxonomy.json
                     "featured": {"ids": featured_ids, "updated_at": _feat.get("updated_at")},
@@ -1798,10 +1816,7 @@ def main() -> None:
     n_rated = sum(1 for r in rows if (r.get("specs") or {}).get("tau_rated_Nm"))
     vendors = sorted({r["vendor"] for r in rows if r["category"] == "actuator"})
 
-    # ── 首页与竞赛页：结构在 pipeline/build_home.py / build_competitions.py ──
     # 这里不再自己拼首页卡片（上一版算好的统计量从没被用上，已删）。
-    build_home(OUT, ROOT)
-    build_competitions(OUT, ROOT)
 
     # ── 部件总表 ────────────────────────────────────────────────────────
     cat_links = "\n".join(f"- **[{name}](/parts/{c}/)** —— {desc}（{sum(1 for r in rows if r['category'] == c)} 件）"
@@ -1831,7 +1846,7 @@ def main() -> None:
 
 {actuator_table(sorted(items, key=lambda r: -(r['specs'].get('tau_peak_Nm') or 0))[:40], HREF)}
 
-> 完整表在[部件库](/catalog)按任意列排序。这里只放前 40，因为一张表读不完等于没读。
+> 完整表在[部件库](/catalog.html)按任意列排序。这里只放前 40，因为一张表读不完等于没读。
 """, encoding="utf-8")
 
             # 每家一页
@@ -2192,7 +2207,7 @@ html.dark .rl-th {{ color: #e0b159; }}
 
     build_robots(ROOT, OUT, pub)
     build_materials(ROOT, OUT, pub, SITE_URL, _data_version())
-    build_software(OUT, ROOT)
+    build_software(PUB, ROOT)
     build_contributors(ROOT, OUT, pub)
 
 

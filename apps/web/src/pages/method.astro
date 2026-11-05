@@ -1,0 +1,127 @@
+---
+import Base from '@/layouts/Base.astro'
+import { withBase } from '@/lib/utils'
+import semantics from '@/data/semantics.json'
+
+const steps = [
+  { n: 1, title: '先看来源等级', body: 'A 逐项核对厂商手册；B 公开网页；C 二手转述。等级决定这个数能不能直接用于设计。' },
+  { n: 2, title: '再看口径字段', body: 'tau_basis 是 peak 还是 rated、inertia_basis 是 rotor 还是 output；口径不明就不参与比较。' },
+  { n: 3, title: '缺的当缺的', body: '— 是「没公布」，不是「不支持」，也不是 0。三态里 unknown 既不算兼容也不算不兼容。' },
+  { n: 4, title: '最后才比派生量', body: '扭矩密度、峰值/额定比、反射惯量占比是结果不是原因：用来发现异常，不用来选型。' },
+]
+const governance = [
+  { title: '来源等级', body: 'A / B / C 三级标记核对程度；缺来源记「来源不明」，不参与比较。', href: '/sources.html', cta: '来源与溯源规则' },
+  { title: '口径唯一事实源', body: `字段语义写在 semantics.json（当前版本 ${semantics.version}），静态站、后端与 MCP 都读这一份。`, href: '/semantics.html', cta: '字段口径与红线' },
+  { title: '改动留痕', body: '每次字段改动先成为提案（旧值、新值、依据、来源链接），审核后开 PR，发布 data-v* release 才更新目录。', href: '/sources.html', cta: '追溯链' },
+  { title: '授权与撤下', body: 'GPL-3.0 发布；厂商手册与图片归原方，权利人要求撤下就先下架、后讨论。', href: '/notice.html', cta: '免责声明与许可' },
+]
+---
+
+<Base title="方法与来源 · RoboWiki" description="评级方法、三态判定、可比性等级、六条物理红线与数据治理规则。">
+  <nav aria-label="面包屑" class="mb-4 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+    <a href={withBase('/')} class="hover:text-blue-700">首页</a><span aria-hidden="true">/</span>
+    <span class="text-slate-700" aria-current="page">方法与来源</span>
+  </nav>
+
+  <header class="mb-8 max-w-3xl">
+    <p class="text-xs font-semibold uppercase tracking-wider text-blue-700">方法</p>
+    <h1 class="mt-1 text-3xl font-extrabold tracking-tight text-slate-950">先说怎么判，再谈推荐。</h1>
+    <p class="mt-2 text-sm leading-6 text-slate-500">
+      本站不排序「最好」，只说明「这个数字在什么口径下、什么来源等级下、能不能比」。
+      评级由证据等级 + 口径可比性共同决定，缺一就不给结论。
+    </p>
+  </header>
+
+  <section class="mb-10" aria-labelledby="rating">
+    <h2 id="rating" class="mb-3 text-lg font-bold text-slate-900">评级方法：四步走</h2>
+    <ol class="grid gap-3 sm:grid-cols-2">
+      {steps.map(s => (
+        <li class="rounded-xl border border-slate-200 bg-white p-4">
+          <div class="flex items-baseline gap-2">
+            <span class="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-blue-600 text-xs font-bold text-white" aria-hidden="true">{s.n}</span>
+            <span class="text-sm font-semibold text-slate-900">{s.title}</span>
+          </div>
+          <p class="mt-2 text-xs leading-6 text-slate-600">{s.body}</p>
+        </li>
+      ))}
+    </ol>
+    <div class="mt-3 flex flex-wrap gap-2 text-xs text-slate-600">
+      <span class="font-medium text-slate-700">判定只有三种结论：</span>
+      {semantics.trinary.values.map(v => (
+        <span class="rounded-full border border-slate-300 px-2.5 py-0.5 font-semibold text-slate-700">{v}</span>
+      ))}
+      <span>— unknown 表示证据不足，既不计入兼容也不计入不兼容。</span>
+    </div>
+  </section>
+
+  <section class="mb-10" aria-labelledby="comparability">
+    <h2 id="comparability" class="mb-3 text-lg font-bold text-slate-900">可比性：能不能放进同一张表</h2>
+    <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+      <table class="w-full text-left text-sm">
+        <thead class="bg-slate-50 text-xs text-slate-600">
+          <tr>
+            <th scope="col" class="px-3 py-2 font-semibold">等级</th>
+            <th scope="col" class="px-3 py-2 font-semibold">名称</th>
+            <th scope="col" class="px-3 py-2 font-semibold">条件</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          {semantics.comparability.map(c => (
+            <tr class="align-top">
+              <td class="px-3 py-2 text-xs font-bold text-slate-900">{c.grade}</td>
+              <td class="px-3 py-2 text-xs text-slate-700">{c.name}</td>
+              <td class="px-3 py-2 text-xs leading-5 text-slate-600">{c.condition}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="mb-10" aria-labelledby="red-lines">
+    <h2 id="red-lines" class="mb-3 text-lg font-bold text-slate-900">六条物理红线</h2>
+    <ul class="divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white">
+      {semantics.red_lines.map(rl => (
+        <li class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-4 py-3">
+          <span class="rounded bg-slate-100 px-1.5 py-0.5 text-[11px] font-semibold text-slate-600">{rl.id}</span>
+          <span class="text-sm font-semibold text-slate-900">{rl.name}</span>
+          {rl.review_above != null && (
+            <span class="text-xs text-amber-700">{rl.review_above} {rl.unit ?? ''} 需复核{rl.absurd_above != null ? ` · ${rl.absurd_above} 不可信` : ''}</span>
+          )}
+          <span class="min-w-0 flex-1 text-xs leading-5 text-slate-500">{rl.how_to_check}</span>
+        </li>
+      ))}
+    </ul>
+    <p class="mt-2 text-xs text-slate-500">
+      公式、常见做法与缺失含义见
+      <a href={withBase('/semantics.html')} class="font-medium text-blue-700 hover:underline">参数口径 · 六条物理红线</a>。
+    </p>
+  </section>
+
+  <section class="mb-10" aria-labelledby="governance">
+    <h2 id="governance" class="mb-3 text-lg font-bold text-slate-900">数据治理</h2>
+    <div class="grid gap-3 sm:grid-cols-2">
+      {governance.map(g => (
+        <div class="rounded-xl border border-slate-200 bg-white p-4">
+          <h3 class="text-sm font-semibold text-slate-900">{g.title}</h3>
+          <p class="mt-2 text-xs leading-6 text-slate-600">{g.body}</p>
+          <a href={withBase(g.href)} class="mt-2 inline-block text-xs font-semibold text-blue-700 hover:underline">{g.cta} →</a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section aria-labelledby="supplier">
+    <h2 id="supplier" class="mb-2 text-lg font-bold text-slate-900">问供应商的七个问题</h2>
+    <p class="mb-2 max-w-3xl text-xs leading-6 text-slate-500">写不进技术协议的参数，验收时不具备约束力。</p>
+    <ol class="list-decimal space-y-1 pl-5 text-xs leading-6 text-slate-600">
+      {semantics.supplier_questions.map(q => <li>{q}</li>)}
+    </ol>
+    <p class="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs font-medium">
+      <a href={withBase('/semantics.html')} class="text-blue-700 hover:underline">参数口径与协议语义</a>
+      <a href={withBase('/sources.html')} class="text-blue-700 hover:underline">来源清单与溯源规则</a>
+      <a href={withBase('/notice.html')} class="text-blue-700 hover:underline">免责声明与许可</a>
+      <a href={withBase('/submit.html')} class="text-blue-700 hover:underline">参与投稿</a>
+    </p>
+  </section>
+</Base>

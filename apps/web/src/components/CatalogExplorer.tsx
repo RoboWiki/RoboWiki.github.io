@@ -9,7 +9,7 @@ import { formatPrice, partHref } from '@/lib/utils'
 type Props = { parts: CatalogPart[]; categories: { id: string; name: string }[] }
 
 const PAGE = 24
-const INTERACTIVE_HOME = 'https://robowiki.org.cn'
+const INTERACTIVE_HOME = '/community.html'
 
 function PartRating({ rating }: { rating?: CatalogPart['rating'] }) {
   const count = Number(rating?.count) || 0
@@ -45,7 +45,7 @@ export default function CatalogExplorer({ parts, categories }: Props) {
     const needle = q.trim().toLowerCase()
     if (!needle) return parts
     return parts.filter(p =>
-      [p.id, p.vendor, p.model, p.notes, p.subtypeLabel, p.category]
+      [p.id, p.slug, p.vendor, p.model, p.notes, p.subtypeLabel, p.category]
         .filter(Boolean).join(' ').toLowerCase().includes(needle),
     )
   }, [parts, q])
@@ -192,7 +192,7 @@ export default function CatalogExplorer({ parts, categories }: Props) {
               rel="noopener"
               className="inline-flex min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-medium text-blue-700 hover:bg-blue-50 sm:min-h-9"
             >
-              去互动版提问<span aria-hidden="true">↗</span>
+              去社区提问<span aria-hidden="true">→</span>
             </a>
           </div>
         </div>

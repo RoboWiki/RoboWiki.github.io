@@ -25,4 +25,4 @@ def _resolve(env_name: str, default: Path) -> Path:
 DATA_DIR = _resolve("ROBOWIKI_DATA_DIR", ROOT / "data")
 SCHEMA_DIR = _resolve("ROBOWIKI_SCHEMA_DIR", ROOT / "schema")
 # 单仓模式图片在 console/public/parts；拆分后由 `RoboWiki` 仓的 assets/parts 提供。
-ASSETS_DIR = _resolve("ROBOWIKI_ASSETS_DIR", ROOT / "console" / "public" / "parts")
+ASSETS_DIR = _resolve("ROBOWIKI_ASSETS_DIR", ROOT / ".data" / "assets" / "parts")

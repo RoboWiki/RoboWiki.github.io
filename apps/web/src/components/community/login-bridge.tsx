@@ -1,0 +1,89 @@
+import 'antd/dist/reset.css'
+import { Alert, Button, Card, Skeleton, Typography } from 'antd'
+import { useEffect, useRef, useState } from 'react'
+import { ApiError, api, auth, siteHref, v1Req, type TokenPair } from '@/lib/community-api'
+import { AuthForm, IslandProvider } from './providers'
+
+type Phase = 'checking' | 'form' | 'done'
+
+const ACCOUNT_TARGET = '/app/#/pages/account/index'
+
+function Bridge() {
+  const [phase, setPhase] = useState<Phase>('checking')
+  const [error, setError] = useState<string | null>(null)
+  const started = useRef(false)
+
+  useEffect(() => {
+    if (started.current) return
+    started.current = true
+
+    const hash = window.location.hash.replace(/^#/, '')
+    const params = new URLSearchParams(hash)
+    const token = params.get('token')
+    const code = params.get('code')
+    const next = params.get('next') || new URLSearchParams(window.location.search).get('next')
+
+    // next=account 时回 App 的账号页；其余一律回社区。不接受任意 URL，避免开放跳转。
+    const target = next === 'account' ? siteHref(ACCOUNT_TARGET) : siteHref('/community.html')
+    const go = () => { window.location.replace(target) }
+
+    if (!token && !code) { setPhase('form'); return }
+
+    // 一次性 code / token 不留在地址栏，避免刷新重放
+    window.history.replaceState(null, '', window.location.pathname + window.location.search)
+
+    const run = async () => {
+      try {
+        if (code) {
+          const r = await v1Req<TokenPair>('/auth/handoff', {
+            method: 'POST',
+            body: JSON.stringify({ code }),
+          })
+          auth.setTokens(r.access_token, r.refresh_token)
+        } else if (token) {
+          auth.setTokens(token, null)
+          // token 交接只带 access：用 /auth/me 确认可用并拿到账号
+          const me = await api.me()
+          if (!me?.handle) throw new ApiError(401, '登录凭证无效或已过期')
+        }
+        setPhase('done')
+        go()
+      } catch (e) {
+        auth.clear()
+        setError(e instanceof Error ? e.message : '登录凭证无效或已过期')
+        setPhase('form')
+      }
+    }
+    void run()
+  }, [])
+
+  if (phase === 'checking') {
+    return (
+      <Card>
+        <Skeleton active paragraph={{ rows: 3 }} />
+        <Typography.Text type="secondary" style={{ fontSize: 12 }}>正在校验登录凭证…</Typography.Text>
+      </Card>
+    )
+  }
+
+  return (
+    <Card>
+      {error && (
+        <Alert className="mb-4" type="error" showIcon title={error}
+          description="凭证只能用一次，且 60 秒内有效；可以重新登录，或回 App 重新发起。"
+          action={<a href={siteHref('/community.html')}><Button size="small">回社区</Button></a>} />
+      )}
+      <AuthForm onSuccess={() => { window.location.replace(siteHref('/community.html')) }} />
+    </Card>
+  )
+}
+
+export default function LoginBridge() {
+  return (
+    <IslandProvider>
+      <div className="mx-auto max-w-[420px]">
+        <Bridge />
+      </div>
+    </IslandProvider>
+  )
+}

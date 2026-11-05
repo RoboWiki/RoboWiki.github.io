@@ -8,10 +8,12 @@ import { CommentItem } from '@/components/CommentItem'
 import { EmptyState, ErrorState } from '@/components/Feedback'
 import { RatingStars } from '@/components/RatingStars'
 import {
+  absoluteUrl,
   api,
   errorMessage,
   loadMe,
   reportComment,
+  uploadImage,
 } from '@/services/api'
 import {
   partCategoryLabel,
@@ -57,6 +59,7 @@ export default function PartPage() {
   const [commentsKey, setCommentsKey] = useState(0)
   const [commentText, setCommentText] = useState('')
   const [imageUrl, setImageUrl] = useState('')
+  const [uploading, setUploading] = useState(false)
   const [commentBusy, setCommentBusy] = useState(false)
 
   const pageKey = partPageKey(part)
@@ -193,8 +196,35 @@ export default function PartPage() {
     }
   }
 
-  const submitComment = async () => {
-    if (!requireLogin()) return
+  const openFix = () => {
+    if (!part) return
+    Taro.navigateTo({ url: `/pages/submit/index?id=${encodeURIComponent(String(part.id))}` })
+  }
+
+  /** 评论配图：先传 /media 拿 URL，再把 URL 写进评论正文。 */
+  const pickImage = async () => {
+    if (uploading || commentBusy) return
+    try {
+      const res = await Taro.chooseImage({
+        count: 1,
+        sizeType: ['compressed'],
+        sourceType: ['album', 'camera'],
+      })
+      const path = res.tempFilePaths?.[0]
+      if (!path) return
+      setUploading(true)
+      const media = await uploadImage(path)
+      setImageUrl(absoluteUrl(media.url))
+      toast('图片已上传')
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String((err as { errMsg?: string })?.errMsg || '')
+      if (!/cancel/i.test(msg)) toast(msg || '上传失败，请重试')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  const submitComment = async () => {    if (!requireLogin()) return
     const text = commentText.trim()
     const image = imageUrl.trim()
     if (!text && !image) {
@@ -311,6 +341,11 @@ export default function PartPage() {
       </View>
 
       {part.notes ? <Text className="part__notes">{part.notes}</Text> : null}
+
+      <View className="rw-row rw-row--between part__fix">
+        <Text className="rw-caption">参数或价格不对？提交纠错，站务审核后更新目录。</Text>
+        <Text className="rw-link" onClick={openFix}>纠错</Text>
+      </View>
 
       <View className="part__section">
         <View className="rw-row rw-row--between part__section-head">
@@ -435,16 +470,42 @@ export default function PartPage() {
                 onInput={(event) => setCommentText(event.detail.value)}
               />
             </View>
-            <View className="rw-field">
-              <Input
-                className="rw-input"
-                value={imageUrl}
-                placeholder="图片 URL（可选）"
-                onInput={(event) => setImageUrl(event.detail.value)}
-              />
+            <View className="part__upload">
+              <View className="rw-row rw-row--between">
+                <Text className="rw-caption">配图（可选）</Text>
+                {imageUrl ? (
+                  <Text className="rw-link" onClick={() => setImageUrl('')}>移除</Text>
+                ) : null}
+              </View>
+              {imageUrl ? (
+                <Image
+                  className="part__upload-preview"
+                  src={imageUrl}
+                  mode="aspectFit"
+                  onClick={() => Taro.previewImage({ urls: [imageUrl], current: imageUrl })}
+                />
+              ) : null}
+              <View className="rw-row" style={{ gap: '12px' }}>
+                <Button
+                  className="rw-btn"
+                  disabled={uploading || commentBusy}
+                  onClick={pickImage}
+                >
+                  {uploading ? '上传中…' : imageUrl ? '重新上传' : '上传图片'}
+                </Button>
+                <Text className="rw-caption">JPEG / PNG / WebP，≤ 5 MB</Text>
+              </View>
+              <View className="rw-field">
+                <Input
+                  className="rw-input"
+                  value={imageUrl}
+                  placeholder="或粘贴图片链接（可选）"
+                  onInput={(event) => setImageUrl(event.detail.value)}
+                />
+              </View>
             </View>
             <View className="rw-row rw-row--between">
-              <Text className="rw-caption">正文与图片链接会一起保存</Text>
+              <Text className="rw-caption">正文与图片会一起保存</Text>
               <Button
                 className="rw-btn rw-btn--primary"
                 disabled={commentBusy}

@@ -1,0 +1,49 @@
+---
+import Base from '@/layouts/Base.astro'
+import { Card, CardContent } from '@/components/ui/card'
+import { categoryLabel, imageUrl, parts, type CatalogPart } from '@/lib/catalog'
+import { formatPrice, partHref, withBase } from '@/lib/utils'
+
+type Group = { key: string; label: string; slugs: string[] }
+const { category, group } = Astro.props as { category: string; group: Group }
+const groupParts = group.slugs
+  .map(slug => parts.find(p => p.category === category && p.slug === slug))
+  .filter(Boolean) as CatalogPart[]
+const title = `${group.label} · ${categoryLabel(category)} · RoboWiki`
+const description = `${categoryLabel(category)} · ${group.label}，共 ${groupParts.length} 个型号的参数、价格、来源与真实使用经验。`
+---
+<Base title={title} description={description}>
+  <nav class="mb-4 flex items-center gap-2 text-xs text-slate-500" aria-label="面包屑">
+    <a href={withBase('/')} class="hover:text-blue-700">首页</a><span>/</span>
+    <a href={withBase('/catalog.html')} class="hover:text-blue-700">部件库</a><span>/</span>
+    <a href={withBase(`/parts/${category}.html`)} class="hover:text-blue-700">{categoryLabel(category)}</a><span>/</span>
+    <span class="text-slate-700">{group.label}</span>
+  </nav>
+  <header class="mb-6">
+    <h1 class="text-3xl font-extrabold tracking-tight text-slate-950">{group.label}</h1>
+    <p class="mt-2 text-sm text-slate-500">{categoryLabel(category)} · 共 {groupParts.length} 个型号</p>
+  </header>
+  <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" role="list">
+    {groupParts.map(p => (
+      <li>
+        <a href={partHref(p)} class="group flex h-full rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
+          <Card class="flex h-full w-full flex-col overflow-hidden transition group-hover:-translate-y-0.5 group-hover:shadow-md">
+            <div class="flex h-32 shrink-0 items-center justify-center bg-gradient-to-br from-slate-100 to-slate-50">
+              {p.image ? <img src={imageUrl(p)} alt={`${p.vendor} ${p.model}`} loading="lazy" class="h-full w-full object-contain p-3" /> : <span class="px-4 text-center text-xs text-slate-400">暂无产品图</span>}
+            </div>
+            <CardContent class="flex flex-1 flex-col gap-2 p-4">
+              <div class="min-w-0">
+                <div class="truncate text-xs text-slate-500">{p.vendor}</div>
+                <div class="mt-0.5 line-clamp-2 min-h-10 text-sm font-semibold leading-5 text-slate-900">{p.model}</div>
+              </div>
+              <div class="mt-auto flex items-center justify-between gap-2 border-t border-slate-100 pt-2 text-xs">
+                <span class="truncate font-medium tabular-nums text-slate-700">{formatPrice(p.price)}</span>
+                <span class="text-slate-400">{p.tier ? `来源 ${p.tier}` : ''}</span>
+              </div>
+            </CardContent>
+          </Card>
+        </a>
+      </li>
+    ))}
+  </ul>
+</Base>

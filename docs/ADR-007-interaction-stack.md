@@ -1,14 +1,14 @@
 # RoboWiki 互动栈与成熟框架引用（ADR-007）
 
-> 状态：**已裁定，P0 分批实施**
-> 上位：`ARCHITECTURE.md`、ADR-003（最终架构）、ADR-004（统一投稿）、ADR-005（数据生命周期）
+> 状态：**已实施**（Vue 组件已由 Astro React 岛与 Taro 替代）
+> 上位：`ARCHITECTURE.md`、ADR-004（统一投稿）、ADR-005（数据生命周期）、ADR-008（前端栈）
 > 范围：评论、评分、投稿、身份与多端登录。目录数据、发布链路和部署形态不在本文改动范围。
 
 ## 0. 一句话裁定
 
 **写入只留一个领域：FastAPI。** 身份用 `users` + `identities` 一层抽象，OAuth2/OIDC 协议交给 Authlib；
-评论、评分、投稿继续用 FastAPI 的领域模型；Vue 侧用 VeeValidate + Zod + reka-ui，控制台用
-Ant Design 的 Form/Rate；纯静态镜像继续用 giscus；Discourse 只作为未来的卫星社区，不在主站部署。
+评论、评分、投稿继续用 FastAPI 的领域模型；Astro 社区/站务用 Ant Design Form/Rate，
+Taro 负责移动端表单；纯静态镜像可回落到 giscus；Discourse 只作为未来的卫星社区，不在主站部署。
 
 这就是 **C 路线**：不买一个论坛来顶替主站，也不从零写协议、表单和论坛。成熟件放在外围，
 自研压在领域规则上。
@@ -37,11 +37,11 @@ Ant Design 的 Form/Rate；纯静态镜像继续用 giscus；Discourse 只作为
 | API | 单领域 API：FastAPI + `/api/v1`；静态读仍走构建产物 | `../backend/app/main.py` |
 | 身份 | `users` 存账号与资料，`identities` 存 `(provider, subject)` 映射；协议交给 Authlib；Casdoor 延后 | `../backend/app/models.py`、`../backend/app/api/routes/auth.py` |
 | 评论 | 社区讨论、零件评价、文档页讨论共用 Post/Comment/Vote/WikiComment；`kind` 与挂载点区分 | `../backend/app/models.py`、`../backend/app/api/routes/community.py`、`../backend/app/api/routes/wiki.py` |
-| 评分 | `Rating` 一人一实体一票，可改；聚合与分布在同一读模型；GitHub issue 快照收敛为导入源 | `../backend/app/api/routes/ratings.py`、`../wiki/docs/.vitepress/components/PartRating.vue` |
+| 评分 | `Rating` 一人一实体一票，可改；聚合与分布在同一读模型；GitHub issue 快照收敛为导入源 | `../backend/app/api/routes/ratings.py`、`../apps/app/src/pages/part/index.tsx`、`../apps/web/src/components/parts/PartDetail.astro` |
 | 投稿 | `Submission` + `SubmissionReview` + `Outbox`；字段级 before/after 与证据，审核通过不等于生效 | `../backend/app/models.py`、`../backend/app/worker.py` |
-| Vue 表单 | VeeValidate + Zod（`@vee-validate/zod`）+ reka-ui 交互原语 | `../wiki/docs/.vitepress/components/` |
-| 控制台 | Ant Design 的 Form/Rate，与现有 Table/Drawer 同一套 | `../console/package.json` |
-| 静态镜像 | GitHub Pages 继续用 giscus；主站探测到 API 时走站内讨论 | `../wiki/docs/.vitepress/components/PageComments.vue`、`../wiki/docs/.vitepress/giscus.ts` |
+| 前端表单 | React 岛用 Ant Design Form；移动端用 Taro 受控表单 | `../apps/web/src/components/community/`、`../apps/app/src/pages/` |
+| 站务 | Ant Design 的 Form/Table，与社区共用一套 | `../apps/web/src/components/admin/` |
+| 静态镜像 | GitHub Pages 继续用 giscus；主站探测到 API 时走站内讨论 | `../apps/web/src/components/comments/Comments.tsx` |
 | 未来卫星社区 | Discourse 只在触发条件满足后独立部署，与主站 SSO | 本文 §4 |
 
 ## 4. 为什么不现在上 Discourse

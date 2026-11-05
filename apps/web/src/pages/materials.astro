@@ -1,0 +1,124 @@
+---
+import Base from '@/layouts/Base.astro'
+import Breadcrumbs from '@/components/library/Breadcrumbs.astro'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
+import materialsData from '@/data/materials.json'
+import { withBase } from '@/lib/utils'
+
+type Form = { form: string; spec?: string | null; note?: string | null }
+type Item = {
+  id: string
+  category: 'material' | 'process'
+  group: string
+  group_label: string
+  family_label: string
+  title: string
+  name_en?: string | null
+  aliases?: string[]
+  notes?: string | null
+  applications?: string[] | null
+  forms?: Form[] | null
+  source_tier?: string | null
+  verified?: number
+  specs: Record<string, unknown>
+  _href: string
+}
+
+const materials = materialsData.materials as unknown as Item[]
+const processes = materialsData.processes as unknown as Item[]
+const sections = materialsData.groups
+  .map(group => ({
+    ...group,
+    items: [
+      ...materials.filter(item => item.group === group.id),
+      ...(group.id === 'process' ? processes : []),
+    ],
+  }))
+  .filter(group => group.items.length > 0)
+const total = materials.length + processes.length
+
+function summary(item: Item): string[] {
+  const specs = item.specs
+  const out: string[] = []
+  if (item.category === 'process') {
+    if (specs.tolerance_mm != null) out.push(`公差 ±${specs.tolerance_mm} mm`)
+    if (specs.lead_time) out.push(`交期 ${specs.lead_time}`)
+  } else {
+    if (specs.density_g_cm3 != null) out.push(`密度 ${specs.density_g_cm3} g/cm³`)
+    if (specs.modulus_GPa != null) out.push(`模量 ${specs.modulus_GPa} GPa`)
+    if (specs.service_temp_C != null) out.push(`耐温 ${specs.service_temp_C} °C`)
+  }
+  return out
+}
+---
+
+<Base
+  title="材质库 · RoboWiki"
+  description={`${materials.length} 种结构材料与 ${processes.length} 种加工工艺：密度、模量、强度、形态规格与工艺能力边界。`}
+>
+  <Breadcrumbs items={[{ label: '首页', href: '/' }, { label: '材质库' }]} />
+
+  <header class="mb-6">
+    <p class="text-xs font-semibold uppercase tracking-wider text-blue-700">材质库</p>
+    <h1 class="mt-1 text-3xl font-extrabold tracking-tight text-slate-950">先看物理属性，再看工艺能不能做。</h1>
+    <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+      收录 {materials.length} 种材料与 {processes.length} 种加工工艺，共 {total} 条。参数取公开资料与供应商典型值；没有公开值的字段显示 —，不用推算值填空。
+    </p>
+  </header>
+
+  <nav class="chip-row mb-8" aria-label="材质分类">
+    {sections.map(group => (
+      <a
+        href={`#group-${group.id}`}
+        class="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-600 hover:border-blue-300 hover:text-blue-700"
+      >
+        {group.label}<span class="tabular-nums text-slate-400">{group.items.length}</span>
+      </a>
+    ))}
+  </nav>
+
+  <div class="space-y-10">
+    {sections.map(group => (
+      <section id={`group-${group.id}`} aria-labelledby={`group-${group.id}-title`} class="scroll-mt-20">
+        <div class="mb-3 flex flex-wrap items-baseline justify-between gap-2 border-b border-slate-200 pb-2">
+          <h2 id={`group-${group.id}-title`} class="text-xl font-bold tracking-tight text-slate-950">{group.label}</h2>
+          <span class="text-xs text-slate-400">{group.items.length} 条</span>
+        </div>
+        <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3" role="list">
+          {group.items.map(item => (
+            <li>
+              <a
+                href={withBase(`/materials/${item._href}.html`)}
+                class="group flex h-full rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              >
+                <Card className="flex h-full w-full flex-col transition group-hover:-translate-y-0.5 group-hover:shadow-md">
+                  <CardContent className="flex flex-1 flex-col gap-2 p-4">
+                    <div class="flex flex-wrap items-center gap-1.5">
+                      <Badge variant={item.category === 'process' ? 'warning' : 'secondary'}>
+                        {item.category === 'process' ? '加工工艺' : item.family_label}
+                      </Badge>
+                      {item.source_tier && <Badge variant="outline">来源 {item.source_tier}</Badge>}
+                    </div>
+                    <h3 class="text-sm font-semibold leading-5 text-slate-900">{item.title}</h3>
+                    {item.name_en && <p class="line-clamp-1 text-xs text-slate-400">{item.name_en}</p>}
+                    <ul class="mt-1 space-y-0.5 text-xs text-slate-600">
+                      {summary(item).map(line => <li class="tabular-nums">{line}</li>)}
+                    </ul>
+                    {item.notes && <p class="line-clamp-2 text-xs leading-5 text-slate-500">{item.notes}</p>}
+                    <span class="mt-auto pt-2 text-xs font-medium text-blue-700">查看参数 →</span>
+                  </CardContent>
+                </Card>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+
+  <p class="mt-10 rounded-xl border border-slate-200 bg-white p-4 text-xs leading-6 text-slate-500">
+    物理量是常温典型值；热处理状态、纤维方向、含水率与批次都会让实际值偏离。加工工艺的公差与交期随厂商、批量与结构变化，下单前请以报价单为准。
+    <a href={withBase('/method.html')} class="ml-1 text-blue-700 hover:underline">方法与来源 →</a>
+  </p>
+</Base>

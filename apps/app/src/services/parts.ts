@@ -104,3 +104,27 @@ export function partPageKey(part: PartView | null): string {
   const slug = String(part.id || '').replace(/[^A-Za-z0-9]+/g, '-')
   return `parts/${part.category || 'unknown'}/${slug}`
 }
+
+export type PartLinkMatch = { category: string; slug: string }
+
+/** 通知里的部件链接形如 /parts/<category>/<slug>.html#comment-1。 */
+export function matchPartLink(link: string | null | undefined): PartLinkMatch | null {
+  const m = /^\/?parts\/([^/?#]+)\/([^/?#]+)\.html/i.exec(String(link || '').trim())
+  return m ? { category: m[1], slug: m[2] } : null
+}
+
+/**
+ * 把网页链接解析回部件 id：服务端 web_path 才是权威，
+ * 所以按品类拉一页再比对，不自己从 slug 反推。
+ */
+export async function resolvePartId(link: string): Promise<string | null> {
+  const match = matchPartLink(link)
+  if (!match) return null
+  const res = await api.listParts({ category: match.category, limit: 200, compact: true })
+  const target = `/${match.slug}.html`
+  const hit = ((res.items || []) as PartView[]).find(
+    (item) => String(item.web_path || '').endsWith(target),
+  )
+  return hit ? String(hit.id) : null
+}
+

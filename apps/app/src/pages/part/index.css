@@ -262,3 +262,22 @@
 .rw-stars--sm .rw-star {
   font-size: var(--rw-text-md);
 }
+
+.part__fix {
+  padding: var(--rw-space-2) 0 var(--rw-space-3);
+  gap: var(--rw-space-3);
+}
+
+.part__upload {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rw-space-2);
+}
+
+.part__upload-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: var(--rw-radius-sm);
+  border: 1px solid var(--rw-border);
+  background: var(--rw-bg);
+}

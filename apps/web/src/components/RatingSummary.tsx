@@ -5,6 +5,13 @@ import { Button } from '@/components/ui/button'
 import type { RatingSummary as RatingData } from '@robowiki/core'
 
 const APP_PART_PATH = '/app/#/pages/part/index?id='
+const DIM_LABELS: Record<string, string> = {
+  value: '性价比',
+  build: '做工',
+  docs: '文档与支持',
+  spec_trust: '参数可信度',
+  compat: '兼容与生态',
+}
 
 type State =
   | { status: 'loading' }
@@ -123,6 +130,25 @@ export default function RatingSummary({ partId }: { partId: string }) {
       ) : (
         <p className="rounded-lg bg-slate-50 p-3 text-xs leading-5 text-slate-500">
           还没有人留下真实使用评分。缺数据就是缺数据，这里不做推测，也不显示 0 分。
+        </p>
+      )}
+
+      {data.dims_avg && Object.keys(data.dims_avg).length > 0 && (
+        <dl className="grid grid-cols-2 gap-2" aria-label="分维度评分">
+          {Object.entries(data.dims_avg).map(([key, value]) => (
+            <div key={key} className="rounded-lg border border-slate-100 bg-slate-50/60 p-2">
+              <dt className="text-xs text-slate-500">{DIM_LABELS[key] || key}</dt>
+              <dd className="mt-0.5 text-sm font-semibold tabular-nums text-slate-800">
+                {Number(value).toFixed(1)}<span className="text-xs font-normal text-slate-400">/{data.dims_n?.[key] ?? '—'}</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      )}
+      {typeof data.own_hardware_avg === 'number' && (data.own_hardware_count || 0) > 0 && (
+        <p className="text-xs text-slate-500">
+          装过机的人均分 <span className="font-medium text-slate-700">{data.own_hardware_avg.toFixed(1)}</span>
+          （{data.own_hardware_count} 条）
         </p>
       )}
 

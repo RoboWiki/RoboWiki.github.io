@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css'
+import Comments from '@/components/comments/Comments'
 import { BASE, withBase } from '@/lib/utils'
 
 type Props = { title?: string; description?: string; accountHref?: string; image?: string }
@@ -17,12 +18,18 @@ const stripped = BASE && rawPath.startsWith(BASE) ? (rawPath.slice(BASE.length) 
 // 避免 /next/ 与 /next/index.html 两份内容互为重复页。
 const path = stripped.replace(/\/index\.html$/, '/')
 const canonical = new URL(withBase(path), Astro.site ?? Astro.url).href
+// 讨论串按旧站路径存库：parts/actuator/xxx、learn/control-chain。
+const commentsPage = path === '/' ? 'index' : path.replace(/^\//, '').replace(/\.html$/, '')
+const showComments = !/^(admin|login|account|community|post|top|u|404)/.test(commentsPage)
 type NavItem = { href: string; label: string; match?: string[]; external?: boolean }
 const nav: NavItem[] = [
   { href: '/', label: '首页' },
-  { href: '/catalog.html', label: '部件库', match: ['/catalog', '/parts'] },  { href: 'https://robowiki.org.cn/robots', label: '整机库', external: true },
-  { href: 'https://robowiki.org.cn/materials', label: '材质库', external: true },
-  { href: 'https://robowiki.org.cn/learn/', label: '指南', external: true },
+  { href: '/catalog.html', label: '部件库', match: ['/catalog', '/parts'] },
+  { href: '/robots.html', label: '整机库', match: ['/robots'] },
+  { href: '/materials.html', label: '材质库', match: ['/materials'] },
+  { href: '/software.html', label: '软件与渠道', match: ['/software', '/suppliers'] },
+  { href: '/learn/index.html', label: '指南', match: ['/learn'] },
+  { href: '/community.html', label: '社区', match: ['/community', '/post', '/u/', '/top'] },
 ]
 
 const isCurrent = (item: NavItem) => {
@@ -47,6 +54,8 @@ const menuLinkClass = (current: boolean) =>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="manifest" href={withBase('/manifest.webmanifest')} />
+    <link rel="icon" href={withBase('/favicon.ico')} sizes="any" />
     <meta property="og:site_name" content="RoboWiki" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
@@ -66,7 +75,7 @@ const menuLinkClass = (current: boolean) =>
           <span>RoboWiki</span>
         </a>
 
-        <nav class="hidden items-center gap-1 md:flex" aria-label="主导航">
+        <nav class="hidden items-center gap-1 lg:flex" aria-label="主导航">
           {nav.map(item => (
             <a
               href={withBase(item.href)}
@@ -96,7 +105,7 @@ const menuLinkClass = (current: boolean) =>
             账号
           </a>
 
-          <details class="mobile-nav md:hidden">
+          <details class="mobile-nav lg:hidden">
             <summary
               class="grid h-11 w-11 place-items-center rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50"
               aria-label="打开导航菜单"
@@ -149,16 +158,30 @@ const menuLinkClass = (current: boolean) =>
 
     <main id="main" tabindex="-1" class="mx-auto max-w-6xl px-4 py-8">
       <slot />
+      {showComments && <Comments client:idle page={commentsPage} />}
     </main>
 
     <footer class="mt-16 border-t border-slate-200 bg-white">
-      <div class="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-8 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
-        <p>RoboWiki · 数据带来源，口径可追溯，不卖零件不收佣金。</p>
-        <p>GPL-3.0 · 内容与数据来源见页面底部说明</p>
+      <div class="mx-auto max-w-6xl space-y-3 px-4 py-8 text-xs text-slate-500">
+        <nav class="flex flex-wrap gap-x-5 gap-y-2" aria-label="页脚导航">
+          <a href={withBase('/method.html')} class="hover:text-slate-900">方法与来源</a>
+          <a href={withBase('/submit.html')} class="hover:text-slate-900">参与投稿</a>
+          <a href={withBase('/contributors.html')} class="hover:text-slate-900">贡献者</a>
+          <a href={withBase('/competitions.html')} class="hover:text-slate-900">竞赛资料</a>
+          <a href={withBase('/notice.html')} class="hover:text-slate-900">免责声明</a>
+          <a href={withBase('/sources.html')} class="hover:text-slate-900">来源清单</a>
+        </nav>
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <p>RoboWiki · 数据带来源，口径可追溯，不卖零件不收佣金。</p>
+          <p>GPL-3.0 · 内容与数据来源见页面底部说明</p>
+        </div>
       </div>
     </footer>
 
     <script>
+      if ('serviceWorker' in navigator && location.protocol === 'https:') {
+        window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}))
+      }
       // Small enhancement for the <details> menu: close on outside click / Escape.
       const menu = document.querySelector<HTMLDetailsElement>('details.mobile-nav')
       if (menu) {

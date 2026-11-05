@@ -23,7 +23,7 @@ export ROBOWIKI_SCHEMA_DIR="$PWD/.data/schema"
 export ROBOWIKI_ASSETS_DIR="$PWD/.data/assets/parts"
 python -m pipeline build             # 生成页面
 python -m pytest                     # 测试（需先装 backend/requirements.txt）
-cd wiki && npm ci && npm run dev      # 本地起站
+pnpm install && pnpm dev:web          # 本地起 Astro 根站
 ```
 
 Node 版本以仓库根 `.nvmrc` 为准（22），CI（`pages.yml` / `pr-gate.yml`）与
@@ -37,14 +37,14 @@ Node 版本以仓库根 `.nvmrc` 为准（22），CI（`pages.yml` / `pr-gate.ym
 | 加/改部件、整机、材料、工艺、软件、渠道、参数 | `RoboWiki` 仓 `data/` |
 | 改字段口径、schema | `RoboWiki` 仓 `schema/` |
 | 加产品图 | `RoboWiki` 仓 `assets/parts/` |
-| 改页面文案、导航、样式、组件 | 本仓 `wiki/` |
+| 改页面文案、导航、样式、组件 | 本仓 `apps/web/` |
 | 改 API / 提案审核 / outbox worker | 本仓 `backend/` |
-| 改控制台 | 本仓 `console/` |
+| 改社区或站务后台 | 本仓 `apps/web/src/components/{community,admin}/` |
 | 改部署 / 1Panel 反代 / Compose | 本仓 `deploy/` |
 | 改多端契约 / QQ 机器人 | 本仓 `clients/` |
 | 导入竞赛文档 | 本仓 `tools/site/` |
 
-**不要手改生成物**：`wiki/docs/parts/`、`wiki/docs/public/*.json`、`wiki/docs/.vitepress/sidebar.json`
+**不要手改生成物**：`apps/web/src/data/*.json`、`apps/web/public/{parts,share,docs}/`
 都由 `pipeline build` 生成，下次构建会覆盖。
 
 ## 数据版本

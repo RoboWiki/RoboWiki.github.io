@@ -81,10 +81,10 @@ def render_email(kind: str, **ctx: object) -> tuple[str, str, str]:
         return subject, text, html
     if kind == "security":
         subject = str(ctx.get("subject") or "RoboWiki 账号安全提醒")
-        text = f"{body}\n\n如果不是你本人操作，请立即修改密码并退出全部设备。\n{site}/login"
+        text = f"{body}\n\n如果不是你本人操作，请立即修改密码并退出全部设备。\n{site}/login.html"
         html = _base(title, f"<p>{escape(body)}</p>"
                      "<p>如果不是你本人操作，请立即修改密码并退出全部设备。</p>",
-                     f"{site}/login", "打开账号中心")
+                     f"{site}/login.html", "打开账号中心")
         return subject, text, html
 
     subject = str(ctx.get("subject") or "RoboWiki 通知")
