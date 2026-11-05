@@ -12,7 +12,10 @@ const {
 } = Astro.props
 
 const rawPath = Astro.url.pathname
-const path = BASE && rawPath.startsWith(BASE) ? (rawPath.slice(BASE.length) || '/') : rawPath
+const stripped = BASE && rawPath.startsWith(BASE) ? (rawPath.slice(BASE.length) || '/') : rawPath
+// build.format:'file' 让首页产物是 index.html，但对外 canonical 用目录 URL，
+// 避免 /next/ 与 /next/index.html 两份内容互为重复页。
+const path = stripped.replace(/\/index\.html$/, '/')
 const canonical = new URL(withBase(path), Astro.site ?? Astro.url).href
 type NavItem = { href: string; label: string; match?: string[]; external?: boolean }
 const nav: NavItem[] = [

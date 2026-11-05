@@ -40,10 +40,11 @@ export default defineConfig({
       // 404 / 500 由集成自动排除，这里只兜底过滤无索引价值的页。
       filter: page => !/\/(404|500)\/?$/.test(page),
       // Astro 的 sitemap 会按路由去扩展名；本项目的静态产物是 .html。
+      // 目录型 URL（首页 /next/）和 404 等页面保持原样：补成 /next.html 会指向不存在的文件。
       serialize(item) {
         const url = new URL(item.url)
-        if (url.pathname !== '/' && !/\.[a-z0-9]+$/i.test(url.pathname)) {
-          url.pathname = `${url.pathname.replace(/\/$/, '')}.html`
+        if (!url.pathname.endsWith('/') && !/\.[a-z0-9]+$/i.test(url.pathname)) {
+          url.pathname = `${url.pathname}.html`
         }
         return { ...item, url: url.href }
       },
