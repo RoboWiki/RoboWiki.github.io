@@ -329,6 +329,14 @@ git rev-parse HEAD > deploy/.deployed-rev
 
 ## 7. 镜像升级与回滚
 
+在服务器仓库根目录一条命令完成拉代码、重建、迁移、验收与版本记录：
+
+```bash
+bash scripts/deploy-server.sh
+```
+
+手动等价：
+
 ```bash
 cd deploy
 
