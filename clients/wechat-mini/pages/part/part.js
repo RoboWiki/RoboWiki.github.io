@@ -1,5 +1,6 @@
 const api = require('../../utils/api')
 const auth = require('../../utils/auth')
+const config = require('../../config')
 const F = require('../../utils/format')
 const L = require('../../utils/labels')
 const { text } = require('../../utils/text')
@@ -28,6 +29,45 @@ function authorName(a) {
 function hue(a) {
   const n = Number(a && a.avatar_hue)
   return isFinite(n) ? n : 160
+}
+
+/** 讨论正文里的本站媒体：/api/v1/media/<32hex>，可带本站域名。 */
+const MEDIA_RE = /(?:https?:\/\/[^\s<>"']*)?\/api\/v1\/media\/([0-9a-f]{32})(?:[?#][^\s<>"']*)?/g
+
+function hostOf(url) {
+  const m = /^https?:\/\/([^\/]+)/i.exec(String(url || ''))
+  return m ? m[1].toLowerCase() : ''
+}
+
+/** 只认本站（当前 API / 站点 / 正式域）；外链仍按文字展示并可复制。 */
+function mediaHostAllowed(url) {
+  const host = hostOf(url)
+  if (!host) return true
+  const allow = [config.SITE, config.API, config.PROD].map(hostOf).filter(Boolean)
+  return allow.indexOf(host) >= 0
+}
+
+/**
+ * 把评论正文切成 text / image 段。小程序没有 innerHTML，
+ * 这里只产出文本与 <image src>，HTML 字符不会被执行。
+ */
+function commentSegments(body) {
+  const s = String(body || '')
+  const out = []
+  let last = 0
+  let m
+  MEDIA_RE.lastIndex = 0
+  while ((m = MEDIA_RE.exec(s)) !== null) {
+    if (!mediaHostAllowed(m[0])) continue
+    if (m.index > last) out.push({ type: 'text', text: s.slice(last, m.index) })
+    // 统一走当前 API 域名，开发版和真机都复用同一套合法域名配置。
+    out.push({ type: 'image', src: config.API + '/media/' + m[1].toLowerCase() })
+    last = m.index + m[0].length
+  }
+  if (last < s.length) out.push({ type: 'text', text: s.slice(last) })
+  if (!out.length) out.push({ type: 'text', text: '' })
+  out.forEach((seg, i) => { seg.k = i })
+  return out
 }
 
 Page({
@@ -326,21 +366,60 @@ Page({
     }
   },
 
+  async revokeRating() {
+    if (this.data.ratingBusy || !this.data.ratingMine) return
+    const confirmed = await new Promise(resolve => {
+      wx.showModal({
+        title: '撤销评分',
+        content: '撤销后这条评分不再计入均分，可以重新打分。',
+        confirmText: '撤销',
+        success: res => resolve(!!res.confirm),
+        fail: () => resolve(false),
+      })
+    })
+    if (!confirmed) return
+    this.setData({ ratingBusy: true, ratingError: '', ratingNotice: '' })
+    try {
+      await api.del('/ratings/' + encodeURIComponent(this.id))
+      this.setData({
+        ratingMine: null,
+        score: 0,
+        ownHardware: false,
+        ratingNote: '',
+        ratingNotice: '已撤销评分',
+      })
+      wx.showToast({ title: '已撤销评分', icon: 'success' })
+      // 均分 / 直方图 / 样本量都要重新取，不能只清本地表单。
+      await this.loadRating()
+    } catch (e) {
+      const msg = (e && e.message) || '撤销失败，请稍后重试'
+      this.setData({ ratingError: msg, loggedIn: auth.isLoggedIn(), me: auth.user() })
+      wx.showToast({ title: msg, icon: 'none' })
+    } finally {
+      this.setData({ ratingBusy: false })
+    }
+  },
+
   // ── 讨论 ────────────────────────────────────────────────────────────────
-  buildComments(rows) {
+  buildComments(rows, myHandle) {
+    const mine = String(myHandle || '')
     const byId = {}
     ;(rows || []).forEach(c => {
       const deleted = !!c.deleted
+      const authorHandle = (c.author && c.author.handle) || ''
       byId[c.id] = {
         id: c.id,
         body: deleted ? '该讨论已被删除' : c.body,
         deleted,
         pending: c.status === 'pending',
         canReply: !deleted,
+        // 评论作者只返回 handle（不含 id），按当前账号的 handle 判归属。
+        canDelete: !deleted && !!mine && authorHandle === mine,
         created_at: c.created_at,
         authorName: deleted ? '已删除' : authorName(c.author),
         hue: hue(c.author),
         parent_id: c.parent_id,
+        segments: commentSegments(deleted ? '该讨论已被删除' : c.body),
         children: [],
       }
     })
@@ -362,9 +441,11 @@ Page({
         flat.push({
           id: n.id,
           body: n.body,
+          segments: n.segments,
           deleted: n.deleted,
           pending: n.pending,
           canReply: n.canReply,
+          canDelete: n.canDelete,
           date: F.date(n.created_at),
           authorName: n.authorName,
           hue: n.hue,
@@ -384,8 +465,9 @@ Page({
     this.setData({ commentsLoading: true, commentError: '' })
     try {
       const d = await api.get('/wiki/comments', { page: this.page, limit: 200 })
+      const me = auth.user() || this.data.me
       this.setData({
-        comments: this.buildComments((d && d.comments) || []),
+        comments: this.buildComments((d && d.comments) || [], me && me.handle),
         commentsLoading: false,
         commentsReadonly: false,
       })
@@ -441,6 +523,64 @@ Page({
     } catch (e) {
       // 401 已由 api 清会话；服务端内容安全拒绝会带 detail，原样展示便于修改。
       const msg = (e && e.message) || '发言失败，请稍后重试'
+      this.setData({ commentError: msg, loggedIn: auth.isLoggedIn(), me: auth.user() })
+      wx.showToast({ title: msg, icon: 'none' })
+    } finally {
+      this.setData({ commentBusy: false })
+    }
+  },
+
+  /** 举报只进站务队列，不直接改变可见性；重复举报由后端 409 拦。 */
+  async reportComment(e) {
+    const id = Number(e.currentTarget.dataset.id)
+    if (!id || this.data.commentBusy || this.data.commentsReadonly) return
+    if (!(await this.ensureLogin())) return
+    this.setData({ commentBusy: true, commentError: '', commentNotice: '' })
+    try {
+      await api.post('/reports', {
+        target_kind: 'wiki_comment',
+        target_id: id,
+        reason: 'spam',
+        detail: '小程序举报',
+      })
+      this.setData({ commentNotice: '已举报' })
+      wx.showToast({ title: '已举报', icon: 'success' })
+    } catch (e) {
+      const status = Number(e && e.status)
+      const msg = status === 409 ? '你已经举报过' : ((e && e.message) || '举报失败，请稍后重试')
+      // 401 已由 api 清会话：同步登录态，让「微信登录」按钮回来。
+      this.setData({
+        commentError: status === 409 ? '' : msg,
+        loggedIn: auth.isLoggedIn(),
+        me: auth.user(),
+      })
+      wx.showToast({ title: msg, icon: 'none' })
+    } finally {
+      this.setData({ commentBusy: false })
+    }
+  },
+
+  deleteComment(e) {
+    const id = Number(e.currentTarget.dataset.id)
+    if (!id || this.data.commentBusy) return
+    wx.showModal({
+      title: '删除这条讨论',
+      content: '删除后正文不再显示；有人回复时线程会保留占位。',
+      confirmText: '删除',
+      success: res => { if (res.confirm) this.doDeleteComment(id) },
+    })
+  },
+
+  async doDeleteComment(id) {
+    if (!(await this.ensureLogin())) return
+    this.setData({ commentBusy: true, commentError: '', commentNotice: '' })
+    try {
+      await api.del('/wiki/comments/' + id)
+      this.setData({ commentNotice: '已删除' })
+      wx.showToast({ title: '已删除', icon: 'success' })
+      this.loadComments()
+    } catch (e) {
+      const msg = (e && e.message) || '删除失败，请稍后重试'
       this.setData({ commentError: msg, loggedIn: auth.isLoggedIn(), me: auth.user() })
       wx.showToast({ title: msg, icon: 'none' })
     } finally {

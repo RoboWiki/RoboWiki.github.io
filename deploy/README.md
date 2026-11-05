@@ -192,6 +192,19 @@ curl -sSI https://robowiki.org.cn/ | grep -iE \
 回 **503**，日志里是 `robowiki.mailer` 的明确原因；`POST /api/v1/auth/password/forgot`
 仍回 202（不能让 503/202 变成邮箱枚举信号），失败原因只进日志。
 
+验证码/确认邮件同步发送，便于明确告诉用户失败；**回复/审核/安全通知**进
+`email_outbox`，由 `worker` 异步发送并指数退避重试。用户需在账号中心
+主动开启「邮件提醒」；安全事件邮件（改密/重置/换绑）不受该开关影响。
+
+站务可用接口发测试邮件（不会泄露 SMTP 细节给普通用户）：
+
+```bash
+curl -fsS -X POST http://127.0.0.1:8080/api/v1/admin/email/test \
+  -H "Authorization: Bearer <staff-access-token>" \
+  -H 'Content-Type: application/json' \
+  -d '{"to":"you@example.com"}'
+```
+
 验证 SMTP 是否真的能发（会发真实邮件）：
 
 ```bash

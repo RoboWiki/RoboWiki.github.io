@@ -15,6 +15,9 @@ on:
       - 'wiki/**'
       - 'pipeline/**'
       - 'console/public/**'
+      - 'apps/web/**'
+      - 'apps/app/**'
+      - 'packages/**'
       - 'data.lock.json'
       - 'data/**'
       - '.github/workflows/pages.yml'
@@ -95,6 +98,30 @@ jobs:
         run: |
           npm ci
           npm run build
+
+      # Astro 迁移预览：挂在 /next/，不替换现有 VitePress 生产路径。
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: build Astro preview
+        env:
+          BASE_PATH: /next
+        run: |
+          set -euo pipefail
+          pnpm install --filter @robowiki/web... --no-frozen-lockfile
+          pnpm --filter @robowiki/web build
+          mkdir -p wiki/docs/.vitepress/dist/next
+          cp -R apps/web/dist/. wiki/docs/.vitepress/dist/next/
+
+      - name: build Taro H5 preview
+        env:
+          APP_BASE: /app/
+        run: |
+          set -euo pipefail
+          pnpm install --filter @robowiki/app... --no-frozen-lockfile
+          pnpm --filter @robowiki/app build:h5
+          mkdir -p wiki/docs/.vitepress/dist/app
+          cp -R apps/app/dist/h5/. wiki/docs/.vitepress/dist/app/
 
       - uses: actions/configure-pages@v5
 

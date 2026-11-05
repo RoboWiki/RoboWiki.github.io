@@ -1,0 +1,13 @@
+---
+import Base from '@/layouts/Base.astro'
+import CatalogExplorer from '@/components/CatalogExplorer'
+import { catalog, parts } from '@/lib/catalog'
+---
+<Base title="部件库 · RoboWiki" description={`${catalog.count} 个机器人硬件部件，按品类、厂商与参数筛选。`}>
+  <div class="mb-5">
+    <p class="text-xs font-semibold uppercase tracking-wider text-blue-700">部件库</p>
+    <h1 class="mt-1 text-3xl font-extrabold tracking-tight text-slate-950">按任务找件，不按广告找件。</h1>
+    <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-500">所有条目来自可核对来源；价格缺就写询价，参数缺就写 —。</p>
+  </div>
+  <CatalogExplorer client:load parts={parts} categories={catalog.categories || []} />
+</Base>

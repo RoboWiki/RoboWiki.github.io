@@ -92,6 +92,10 @@
           {{ratingMine ? '更新评分' : '提交评分'}}
         </button>
       </view>
+      <view wx:if="{{ratingMine}}" class="form-row">
+        <text class="muted">已评分，撤销后可重新打分</text>
+        <button class="btn form-btn" loading="{{ratingBusy}}" bindtap="revokeRating">撤销评分</button>
+      </view>
       <view wx:if="{{ratingError}}" class="error">{{ratingError}}</view>
       <view wx:if="{{ratingNotice}}" class="note">{{ratingNotice}}</view>
       <view wx:if="{{!loggedIn}}" class="muted">未登录时提交会先走微信登录。</view>
@@ -162,10 +166,18 @@
           <text wx:if="{{item.pending}}" class="muted">待审核</text>
           <text class="muted">{{item.date}}</text>
         </view>
-        <view class="comment-body {{item.deleted ? 'muted' : ''}}">{{item.body}}</view>
-        <view wx:if="{{item.canReply}}" class="comment-actions">
-          <text class="link" data-id="{{item.id}}" data-name="{{item.authorName}}"
-            bindtap="startReply">回复</text>
+        <view class="comment-body {{item.deleted ? 'muted' : ''}}">
+          <block wx:for="{{item.segments}}" wx:key="k" wx:for-item="seg">
+            <text wx:if="{{seg.type === 'text'}}" user-select>{{seg.text}}</text>
+            <image wx:else class="comment-image" mode="widthFix" src="{{seg.src}}" />
+          </block>
+        </view>
+        <view wx:if="{{!item.deleted}}" class="comment-actions comment-links">
+          <text wx:if="{{item.canReply}}" class="link" data-id="{{item.id}}"
+            data-name="{{item.authorName}}" bindtap="startReply">回复</text>
+          <text class="link" data-id="{{item.id}}" bindtap="reportComment">举报</text>
+          <text wx:if="{{item.canDelete}}" class="link danger" data-id="{{item.id}}"
+            bindtap="deleteComment">删除</text>
         </view>
       </view>
 

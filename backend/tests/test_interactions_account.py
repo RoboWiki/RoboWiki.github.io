@@ -29,6 +29,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 import jwt  # noqa: E402
 import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
+from sqlmodel import select  # noqa: E402
 
 from app.core.config import settings  # noqa: E402
 from app.main import app  # noqa: E402
@@ -141,3 +142,152 @@ def test_change_password_requires_login(client):
                     json={"current_password": "whatever",
                           "new_password": "newpass456"})
     assert r.status_code == 401, r.text
+
+
+# ── 资料编辑 / 首次设密 / 设备会话 ─────────────────────────────────────────
+def test_profile_update_changes_public_fields(client):
+    handle = "acct-profile"
+    reg = _register(client, handle)
+    token = reg["access_token"]
+
+    r = client.patch("/api/v1/auth/me", headers=_auth(token),
+                     json={"display_name": "新名字", "bio": "玩四足和机械臂"})
+    assert r.status_code == 200, r.text
+    assert r.json()["display_name"] == "新名字"
+    assert r.json()["bio"] == "玩四足和机械臂"
+
+    me = client.get("/api/v1/auth/me", headers=_auth(token)).json()
+    assert me["display_name"] == "新名字"
+    # 公开作者信息同步，但不泄露邮箱
+    pub = client.get("/api/v1/users/" + handle).json()
+    assert pub["display_name"] == "新名字"
+    assert "email" not in pub
+
+
+def test_third_party_account_can_set_password(client):
+    from app.core.db import session
+    from app.core.security import create_token, unusable_password_hash
+    from app.models import User
+
+    handle = "acct-thirdparty"
+    with session() as db:
+        u = User(handle=handle, display_name="第三方账号",
+                 password_hash=unusable_password_hash(), password_set=False)
+        db.add(u)
+        db.commit()
+        db.refresh(u)
+        token = create_token(handle, u.password_hash,
+                             session_epoch=u.session_epoch or 0)
+
+    r = client.post("/api/v1/auth/password/set", headers=_auth(token),
+                    json={"password": "thirdpass1"})
+    assert r.status_code == 200, r.text
+    new = r.json()
+    assert new["access_token"] and new["refresh_token"]
+    # 设密会提升 epoch：旧 access 不能继续用
+    assert client.get("/api/v1/auth/me", headers=_auth(token)).status_code == 401
+    assert client.get("/api/v1/auth/me",
+                      headers=_auth(new["access_token"])).status_code == 200
+    assert _login(client, handle, "thirdpass1").status_code == 200
+    # 已设过只能走改密
+    assert client.post("/api/v1/auth/password/set",
+                       headers=_auth(new["access_token"]),
+                       json={"password": "another1"}).status_code == 409
+
+
+def test_session_list_and_revoke(client):
+    handle = "acct-sessions"
+    reg = _register(client, handle)
+    token = reg["access_token"]
+    sessions = client.get("/api/v1/auth/sessions", headers=_auth(token)).json()
+    assert len(sessions) == 1
+    sid = sessions[0]["id"]
+
+    assert client.delete(f"/api/v1/auth/sessions/{sid}",
+                         headers=_auth(token)).status_code == 204
+    assert client.get("/api/v1/auth/sessions", headers=_auth(token)).json() == []
+    # 该 refresh 已被撤销，不能再续期
+    r = client.post("/api/v1/auth/refresh",
+                    json={"refresh_token": reg["refresh_token"]})
+    assert r.status_code == 401
+
+
+def test_email_change_verifies_new_address_and_revokes_old_session(client, monkeypatch):
+    import re
+    from app.core.db import session
+    from app.models import User
+
+    handle = "acct-email-change"
+    reg = _register(client, handle, email="old-address@example.com")
+    token = reg["access_token"]
+    sent: list[tuple[str, str]] = []
+    monkeypatch.setattr(
+        "app.api.routes.auth.send_email",
+        lambda to, subject, text, html=None: sent.append((to, text)),
+    )
+
+    bad = client.post("/api/v1/auth/email/change/request", headers=_auth(token),
+                      json={"email": "new-address@example.com", "password": "wrong"})
+    assert bad.status_code == 403
+
+    ok = client.post("/api/v1/auth/email/change/request", headers=_auth(token),
+                     json={"email": "new-address@example.com", "password": "pass1234"})
+    assert ok.status_code == 200, ok.text
+    assert sent and sent[-1][0] == "new-address@example.com"
+    raw = re.search(r"验证令牌[：:]\s*(\S+)", sent[-1][1])
+    assert raw, sent[-1][1]
+
+    confirmed = client.post("/api/v1/auth/email/change/confirm",
+                            headers=_auth(token), json={"token": raw.group(1)})
+    assert confirmed.status_code == 200, confirmed.text
+    data = confirmed.json()
+    assert data["user"]["email"] == "new-address@example.com"
+    assert data["user"]["email_verified"] is True
+    # 换绑提升 session_epoch：旧 access 立即失效，新 access 可用
+    assert client.get("/api/v1/auth/me", headers=_auth(token)).status_code == 401
+    assert client.get("/api/v1/auth/me",
+                      headers=_auth(data["access_token"])).status_code == 200
+    with session() as db:
+        u = db.exec(select(User).where(User.handle == handle)).first()
+        assert u.email == "new-address@example.com" and u.email_verified
+
+
+def test_email_change_rejects_taken_address(client):
+    h1 = "acct-email-taken1"
+    h2 = "acct-email-taken2"
+    _register(client, h1, email="taken1@example.com")
+    r2 = _register(client, h2)
+    r = client.post("/api/v1/auth/email/change/request",
+                    headers=_auth(r2["access_token"]),
+                    json={"email": "taken1@example.com", "password": "pass1234"})
+    assert r.status_code == 409
+
+
+def test_verified_user_notification_queues_email(client):
+    from app.core.db import session
+    from app.models import EmailOutbox, User
+    from app.api.routes.notifications import create_notification
+
+    handle = "acct-email-notify"
+    _register(client, handle, email="notify-me@example.com")
+    with session() as db:
+        u = db.exec(select(User).where(User.handle == handle)).first()
+        u.email_verified = True
+        u.email_notify = True
+        db.add(u)
+        db.commit()
+        create_notification(db, u.id, type="reply", subject="测试通知",
+                            body="有人回复了你", link="/catalog")
+        db.commit()
+        jobs = db.exec(select(EmailOutbox).where(
+            EmailOutbox.user_id == u.id)).all()
+        assert jobs and jobs[-1].to_addr == "notify-me@example.com"
+        assert jobs[-1].status == "pending"
+
+
+def test_login_accepts_email_or_handle(client):
+    handle = "acct-email-login"
+    email = "login-by-email@example.com"
+    _register(client, handle, email=email)
+    assert _login(client, handle, "pass1234").status_code == 200
+    assert _login(client, email.upper(), "pass1234").status_code == 200

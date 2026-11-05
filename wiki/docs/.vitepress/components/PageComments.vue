@@ -487,8 +487,28 @@ function canDelete(c: Comment): boolean {
     || (typeof author.id === 'number' && author.id === me.value.id)
 }
 
-async function remove(c: Comment) {
-  if (!loggedIn.value) {
+/** 站务：待审讨论通过 / 隐藏。返回更新后的节点，就地替换避免整页重拉。 */
+async function moderateComment(c: Comment, action: 'approve' | 'hide') {
+  error.value = ''
+  notice.value = ''
+  try {
+    const updated = await apiFetch<Comment>(
+      `/wiki/comments/${c.id}/moderation`,
+      { method: 'PATCH', body: JSON.stringify({ action }) },
+    )
+    items.value = items.value.map(x => x.id === c.id ? { ...x, ...updated } : x)
+    notice.value = action === 'approve' ? '已通过并公开' : '已隐藏'
+  } catch (e: any) {
+    if (e instanceof ApiError && e.status === 401) {
+      clearSession()
+      error.value = '登录已过期，请重新登录'
+      return
+    }
+    error.value = apiErrorMessage(e, '审核操作失败，请稍后再试')
+  }
+}
+
+async function remove(c: Comment) {  if (!loggedIn.value) {
     error.value = '请先登录'
     return
   }
@@ -897,6 +917,10 @@ watch(isDark, syncGiscusTheme)
               </span>
               <span v-if="node.c.author?.is_staff" class="rsw-badge">站方</span>
               <span v-if="commentState(node.c) === 'pending'" class="rsw-badge rsw-badge-pending">待审核</span>
+              <span v-if="me?.is_staff && commentState(node.c) === 'pending'" class="rsw-mod-inline">
+                <button type="button" class="rsw-link" @click="moderateComment(node.c, 'approve')">通过</button>
+                <button type="button" class="rsw-link rsw-link-danger" @click="moderateComment(node.c, 'hide')">隐藏</button>
+              </span>
               <span class="rsw-time">{{ fmt(node.c.created_at) }}</span>
               <span class="rsw-actions-inline">
                 <button v-if="loggedIn && commentState(node.c) === 'visible'" type="button"
@@ -1150,6 +1174,8 @@ watch(isDark, syncGiscusTheme)
   opacity: 0.5;
   cursor: default;
 }
+.rsw-mod-inline { display: inline-flex; gap: 0.5rem; }
+.rsw-link-danger { color: var(--vp-c-danger-1); }
 .rsw-body {
   font-size: 0.86rem;
   line-height: 1.7;

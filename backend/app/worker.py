@@ -19,7 +19,8 @@ from sqlmodel import select
 
 from .core.config import settings
 from .core.db import session
-from .models import Outbox
+from .mailer import send_email
+from .models import EmailOutbox, Outbox
 from .publisher import publish_job
 
 
@@ -81,18 +82,58 @@ def process_one() -> bool:
         return True
 
 
+def process_email_one() -> bool:
+    """发送一封 outbox 邮件；失败按指数退避重试，不影响 PR 队列。"""
+    with session() as db:
+        now = _now()
+        job = db.exec(
+            select(EmailOutbox).where(or_(
+                and_(EmailOutbox.status == "pending", EmailOutbox.next_at <= now),
+                and_(EmailOutbox.status == "failed", EmailOutbox.attempts < 5,
+                     EmailOutbox.next_at <= now),
+            )).order_by(EmailOutbox.id).limit(1)
+        ).first()
+        if job is None:
+            return False
+        job.status = "running"
+        job.attempts += 1
+        job.next_at = _now()
+        db.add(job)
+        db.commit()
+        try:
+            send_email(job.to_addr, job.subject, job.text, job.html)
+            job.status = "done"
+            job.sent_at = _now()
+            job.last_error = None
+        except Exception as exc:
+            job.status = "pending" if job.attempts < 5 else "failed"
+            job.last_error = str(exc)[:500]
+            delay = min(300, 5 * 2 ** max(0, job.attempts - 1))
+            job.next_at = _now() + timedelta(seconds=delay)
+            print(f"[email] {job.id} attempt {job.attempts} failed: {exc} "
+                  f"（{delay}s 后重试）")
+        db.add(job)
+        db.commit()
+        if job.status == "done":
+            print(f"[email] {job.id} -> sent to {job.to_addr} ({job.kind})")
+        return True
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--once", action="store_true", help="只处理一条后退出")
     args = ap.parse_args()
     if args.once:
+        process_email_one()
         process_one()
         return 0
     print(f"[outbox] worker 启动：mode={settings.publish_mode}"
           + ("" if settings.publish_mode == "github" else f" · 产物目录 {_outbox_dir()}"))
     interval = float(os.environ.get("ROBOWIKI_WORKER_INTERVAL", "10"))
     while True:
-        if not process_one():
+        did_email = process_email_one()
+        did_pr = process_one()
+        if not did_email and not did_pr:
             time.sleep(interval)
 
 

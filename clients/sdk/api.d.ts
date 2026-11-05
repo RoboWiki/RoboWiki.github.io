@@ -27,6 +27,15 @@ export interface AccountOut {
   badges?: string[]
   email?: string | null
   password_set?: boolean
+  email_notify?: boolean
+}
+
+/** 本人可改的公开资料；邮箱/身份走验证流程，不在这里直接改。 */
+export interface AccountUpdateIn {
+  display_name?: string | null
+  bio?: string | null
+  avatar_hue?: number | null
+  email_notify?: boolean | null
 }
 
 /** Body_upload_api_v1_media_post */
@@ -51,6 +60,22 @@ export interface CommentOut {
   author?: UserOut | null
   my_vote?: number
   replies?: CommentOut[]
+}
+
+/** EmailChangeConfirmIn */
+export interface EmailChangeConfirmIn {
+  token: string
+}
+
+/** EmailChangeIn */
+export interface EmailChangeIn {
+  email: string
+  password?: string | null
+}
+
+/** EmailTestIn */
+export interface EmailTestIn {
+  to: string
 }
 
 /** ForgotIn */
@@ -131,6 +156,11 @@ export interface OutboxOut {
 export interface PasswordChangeIn {
   current_password: string
   new_password: string
+}
+
+/** PasswordSetIn */
+export interface PasswordSetIn {
+  password: string
 }
 
 /** PatchIn */
@@ -344,12 +374,24 @@ export interface WikiCommentIn {
   parent_id?: number | null
 }
 
+/** WikiCommentModerationIn */
+export interface WikiCommentModerationIn {
+  action: "approve" | "hide"
+}
+
 /** OpenAPI 原名与可读名等价。 */
 export type app__api__routes__wiki__CommentIn = WikiCommentIn;
 /** OpenAPI 原名与可读名等价。 */
 export type app__schemas__CommentIn = PostCommentIn;
 
 export interface ApiOperations {
+  /** 站务发一封测试邮件，确认 SMTP_FROM/账号/TLS 配置可用。 */
+  /** Email Test */
+  'POST /api/v1/admin/email/test': {
+    body: EmailTestIn;
+    response: unknown;
+    status: 200;
+  };
   /** 提案 + 已发布修改的流水，按时间倒序。 */
   /** Admin History */
   'GET /api/v1/admin/history': {
@@ -401,6 +443,20 @@ export interface ApiOperations {
   /** 数据缺口看板。 口径纪律同样适用于看板本身：**只在字段有意义的品类里统计**。 `tau_rated_Nm` / `armature_kgm2` 对主控和传感器没有意义， 把它们算进缺口会虚增 41 个（曾经就犯过这个错）。 */
   /** Admin Stats */
   'GET /api/v1/admin/stats': {
+    response: unknown;
+    status: 200;
+  };
+  /** 确认换绑：写新邮箱、撤销全部旧会话并签发新 token。 */
+  /** Confirm Email Change */
+  'POST /api/v1/auth/email/change/confirm': {
+    body: EmailChangeConfirmIn;
+    response: TokenOut;
+    status: 200;
+  };
+  /** 向新邮箱发确认令牌；确认后才真正换绑。 */
+  /** Request Email Change */
+  'POST /api/v1/auth/email/change/request': {
+    body: EmailChangeIn;
     response: unknown;
     status: 200;
   };
@@ -472,6 +528,13 @@ export interface ApiOperations {
     response: AccountOut;
     status: 200;
   };
+  /** 本人编辑公开资料。邮箱与登录身份不在这里改，避免绕过验证。 */
+  /** Update Me */
+  'PATCH /api/v1/auth/me': {
+    body: AccountUpdateIn;
+    response: AccountOut;
+    status: 200;
+  };
   /** 改密：验当前口令 → 写新哈希 → **当场签发新 token**。 旧 token 的 `pv` 绑定的是旧哈希，改完立刻失效；refresh 也全部撤销 （改密后旧设备的刷新链不该继续活着）。调用方已通过验证，所以响应里 直接给一对新 token，其他设备上的旧 token / refresh 全部失效。 */
   /** Change Password */
   'POST /api/v1/auth/password/change': {
@@ -489,6 +552,13 @@ export interface ApiOperations {
   'POST /api/v1/auth/password/reset': {
     body: ResetPasswordIn;
     response: unknown;
+    status: 200;
+  };
+  /** 给第三方建号首次设置本站密码；已设过的走 /password/change。 */
+  /** Set Password */
+  'POST /api/v1/auth/password/set': {
+    body: PasswordSetIn;
+    response: TokenOut;
     status: 200;
   };
   /** 公开：当前服务端实际可用的登录渠道。 前端先问这里再决定要不要渲染 GitHub 按钮 —— 未配置的渠道不发请求， 避免点一下只拿到 503。`email` 始终可用（口令注册/登录是本站基线）。 */
@@ -515,6 +585,13 @@ export interface ApiOperations {
   'GET /api/v1/auth/sessions': {
     response: SessionOut[];
     status: 200;
+  };
+  /** 撤销自己的某个设备会话；当前 access 会自然到期，不强制全端下线。 */
+  /** Revoke Session */
+  'DELETE /api/v1/auth/sessions/{session_id}': {
+    path: { session_id: number };
+    response: void;
+    status: 204;
   };
   /** 小程序登录：`wx.login()` 拿到的 code 换 openid，之后与口令登录等价。 */
   /** Wechat Mini */
@@ -812,6 +889,14 @@ export interface ApiOperations {
     path: { cid: number };
     response: void;
     status: 204;
+  };
+  /** 站务处置待审讨论：通过后公开，隐藏后从公开线程移除。 */
+  /** Moderate Comment */
+  'PATCH /api/v1/wiki/comments/{cid}/moderation': {
+    path: { cid: number };
+    body: WikiCommentModerationIn;
+    response: unknown;
+    status: 200;
   };
   /** Mcp Manifest */
   'GET /mcp': {

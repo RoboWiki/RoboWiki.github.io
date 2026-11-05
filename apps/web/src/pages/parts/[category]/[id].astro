@@ -1,0 +1,98 @@
+---
+import Base from '@/layouts/Base.astro'
+import RatingSummary from '@/components/RatingSummary'
+import SeoJsonLd from '@/components/SeoJsonLd.astro'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent } from '@/components/ui/card'
+import { categoryLabel, imageUrl, parts, type CatalogPart } from '@/lib/catalog'
+import { formatPrice, withBase } from '@/lib/utils'
+
+export function getStaticPaths() {
+  return parts.map(part => ({
+    params: { category: part.category, id: part.id },
+    props: { part },
+  }))
+}
+
+const { part } = Astro.props as { part: CatalogPart }
+const specEntries = Object.entries(part.specs || {})
+  .filter(([, v]) => v !== null && v !== undefined && v !== '')
+  .slice(0, 24)
+const partPath = `/parts/${part.category}/${part.id}.html`
+const title = `${part.vendor} ${part.model} · RoboWiki`
+---
+<Base title={title} description={`${part.vendor} ${part.model} 的参数、来源、评分与真实使用经验。`} image={imageUrl(part)}>
+  <SeoJsonLd type="Product" title={`${part.vendor} ${part.model}`}
+    description={`${part.model} 的参数、来源、评分与真实使用经验。`}
+    url={partPath} image={imageUrl(part)} />
+  <nav class="mb-4 flex items-center gap-2 text-xs text-slate-500" aria-label="面包屑">
+    <a href={withBase('/')} class="hover:text-blue-700">首页</a><span>/</span>
+    <a href={withBase('/catalog.html')} class="hover:text-blue-700">部件库</a><span>/</span>
+    <a href={`${withBase('/catalog.html')}?category=${part.category}`} class="hover:text-blue-700">{categoryLabel(part.category)}</a>
+    <span>/</span><span class="text-slate-700">{part.model}</span>
+  </nav>
+
+  <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+    <div class="space-y-6">
+      <div class="grid gap-5 rounded-2xl border border-slate-200 bg-white p-5 sm:grid-cols-[220px_minmax(0,1fr)]">
+        <div class="flex h-44 items-center justify-center rounded-xl bg-slate-50">
+          {part.image ? <img src={imageUrl(part)} alt={`${part.vendor} ${part.model}`} class="h-full w-full object-contain p-4" /> : <span class="text-xs text-slate-400">暂无产品图</span>}
+        </div>
+        <div>
+          <div class="flex flex-wrap items-center gap-1.5">
+            <Badge variant="secondary">{categoryLabel(part.category)}</Badge>
+            {part.subtypeLabel && <Badge variant="outline">{part.subtypeLabel}</Badge>}
+            {part.tier && <Badge variant="outline">来源 {part.tier}</Badge>}
+            {part.verified && <Badge variant="success">已核对</Badge>}
+          </div>
+          <h1 class="mt-3 text-3xl font-extrabold tracking-tight text-slate-950">{part.model}</h1>
+          <p class="mt-1 text-sm text-slate-500">{part.vendor}</p>
+          <div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div><div class="text-xs text-slate-500">峰值扭矩</div><div class="mt-1 font-semibold">{part.tauPeak ?? '—'} N·m</div></div>
+            <div><div class="text-xs text-slate-500">额定扭矩</div><div class="mt-1 font-semibold">{part.tauRated ?? '—'} N·m</div></div>
+            <div><div class="text-xs text-slate-500">质量</div><div class="mt-1 font-semibold">{part.mass ?? '—'} kg</div></div>
+            <div><div class="text-xs text-slate-500">参考价</div><div class="mt-1 font-semibold">{formatPrice(part.price)}</div></div>
+          </div>
+        </div>
+      </div>
+
+      <Card>
+        <CardContent class="space-y-3">
+          <div class="flex items-center justify-between"><h2 class="font-semibold">公开参数</h2><span class="text-xs text-slate-400">{specEntries.length} 项</span></div>
+          <dl class="grid gap-x-6 gap-y-2 sm:grid-cols-2">
+            {specEntries.map(([k, v]) => (
+              <div class="flex items-start justify-between gap-4 border-b border-slate-100 py-1.5 text-sm">
+                <dt class="text-slate-500">{k}</dt><dd class="text-right font-medium text-slate-800">{String(v)}</dd>
+              </div>
+            ))}
+          </dl>
+          {part.notes && <p class="rounded-lg bg-slate-50 p-3 text-sm leading-6 text-slate-600">{part.notes}</p>}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent class="space-y-3">
+          <h2 class="font-semibold">这一页的讨论</h2>
+          <p class="text-sm leading-6 text-slate-500">讨论由站内账号发布，支持回复、举报和待审核状态。当前静态页展示评分快照；完整讨论在互动端。</p>
+          <a href={`/app/#/pages/part/index?id=${encodeURIComponent(part.id)}`} class="inline-flex h-9 items-center rounded-lg bg-slate-900 px-4 text-sm font-medium text-white hover:bg-slate-700">打开互动版</a>
+        </CardContent>
+      </Card>
+    </div>
+
+    <aside class="space-y-4">
+      <Card>
+        <CardContent class="space-y-3">
+          <h2 class="font-semibold">实际使用</h2>
+          <RatingSummary client:visible partId={part.id} />
+        </CardContent>
+      </Card>
+      <Card>
+        <CardContent class="space-y-2 text-sm">
+          <h2 class="font-semibold">数据口径</h2>
+          <p class="leading-6 text-slate-500">参数缺失显示 —；来源等级表示可信度，不代表厂商好坏。评分少于 3 条时只显示样本，不给确定结论。</p>
+          <a href="https://robowiki.org.cn/method" class="text-blue-700 hover:underline">阅读方法与来源 →</a>
+        </CardContent>
+      </Card>
+    </aside>
+  </div>
+</Base>

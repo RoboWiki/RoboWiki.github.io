@@ -1,0 +1,42 @@
+{
+  "name": "@robowiki/app",
+  "version": "0.0.0",
+  "private": true,
+  "description": "RoboWiki 交互端（Taro H5 + 微信小程序）",
+  "scripts": {
+    "dev:h5": "taro build --type h5 --watch",
+    "dev:weapp": "taro build --type weapp --watch",
+    "build:h5": "taro build --type h5",
+    "build:weapp": "taro build --type weapp",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.26.0",
+    "@robowiki/core": "workspace:*",
+    "@robowiki/tokens": "workspace:*",
+    "@tarojs/components": "4.3.2",
+    "@tarojs/helper": "4.3.2",
+    "@tarojs/plugin-framework-react": "4.3.2",
+    "@tarojs/plugin-platform-h5": "4.3.2",
+    "@tarojs/plugin-platform-weapp": "4.3.2",
+    "@tarojs/react": "4.3.2",
+    "@tarojs/runtime": "4.3.2",
+    "@tarojs/shared": "4.3.2",
+    "@tarojs/taro": "4.3.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-react": "^7.26.0",
+    "@tarojs/cli": "4.3.2",
+    "@tarojs/webpack5-runner": "4.3.2",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "babel-preset-taro": "4.3.2",
+    "react-refresh": "^0.14.2",
+    "typescript": "^5.9.0",
+    "webpack": "5.91.0"
+  }
+}

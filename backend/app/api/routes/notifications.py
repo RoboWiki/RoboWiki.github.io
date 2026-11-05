@@ -14,7 +14,9 @@ from fastapi import APIRouter, HTTPException, Query
 from sqlalchemy import func
 from sqlmodel import Session, select
 
-from ...models import Notification
+from ...email_templates import render_email
+from ...mailer import enqueue_email
+from ...models import Notification, User
 from ...schemas import NotificationListOut, NotificationOut
 from ..deps import CurrentUser, Db
 
@@ -38,6 +40,18 @@ def create_notification(db: Session, user_id: int | None, *, type: str,
                             subject=(subject or "")[:200],
                             body=(body or "")[:500], link=link)
         db.add(note)
+        db.flush()                  # 拿 id 做邮件去重；同一事务随主实体一起提交
+        if link is not None:
+            recipient = db.get(User, user_id)
+            if recipient is not None and recipient.email and recipient.email_verified \
+                    and recipient.email_notify:
+                mail_subject, text, html = render_email(
+                    "notification", subject=note.subject, title=note.subject,
+                    body=note.body, link=link, link_label="打开查看")
+                enqueue_email(
+                    db, to=recipient.email, subject=mail_subject, text=text,
+                    html=html, kind="notification", user_id=recipient.id,
+                    dedupe_key=f"notification:{note.id}")
         return note
     except Exception:                          # pragma: no cover - 防御性
         log.warning("创建通知失败，主流程继续", exc_info=True)

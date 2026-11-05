@@ -82,6 +82,6 @@
       <view class="muted" style="margin-top:8rpx">B 级为公开资料汇编；商用或设计前请回原始来源核对。</view>
     </view>
 
-    <view class="footer">{{version ? '数据版本 ' + version + ' · ' : ''}}只读目录 · 不构成设计认证</view>
+    <view class="footer">{{version ? '数据版本 ' + version + ' · ' : ''}}目录只读，详情页可登录评分与讨论 · 不构成设计认证</view>
   </block>
 </view>

@@ -26,14 +26,14 @@ class MailError(RuntimeError):
     """发信失败：配置缺失 / SMTP 拒绝 / 网络不可达。"""
 
 
-def send_email(to: str, subject: str, text: str) -> None:
+def send_email(to: str, subject: str, text: str, html: str | None = None) -> None:
     to = (to or "").strip()
     if not to:
         raise MailError("收件人为空，未发送邮件")
 
     mode = (settings.email_mode or "").strip().lower()
     if mode == "smtp":
-        _send_smtp(to, subject, text)
+        _send_smtp(to, subject, text, html)
         return
     if mode == "log":
         # 开发模式：令牌只写服务端日志，不进 API 响应
@@ -43,7 +43,32 @@ def send_email(to: str, subject: str, text: str) -> None:
         f"EMAIL_MODE={settings.email_mode!r} 不支持；只能是 {' / '.join(_MODES)}")
 
 
-def _send_smtp(to: str, subject: str, text: str) -> None:
+def enqueue_email(db, *, to: str, subject: str, text: str, html: str | None = None,
+                  kind: str = "notification", user_id: int | None = None,
+                  dedupe_key: str | None = None):
+    """把邮件写进 outbox，由 worker 发送。
+
+    不 commit：调用方的主事务一起落库；邮件失败不能回滚业务通知。
+    """
+    from .models import EmailOutbox
+
+    to = (to or "").strip()
+    if not to:
+        return None
+    if dedupe_key:
+        from sqlmodel import select
+        exists = db.exec(select(EmailOutbox).where(
+            EmailOutbox.dedupe_key == dedupe_key)).first()
+        if exists is not None:
+            return exists
+    job = EmailOutbox(user_id=user_id, to_addr=to, subject=subject[:200],
+                      text=text[:20000], html=(html or None),
+                      kind=kind[:40], dedupe_key=dedupe_key)
+    db.add(job)
+    return job
+
+
+def _send_smtp(to: str, subject: str, text: str, html: str | None = None) -> None:
     host = (settings.smtp_host or "").strip()
     if not host:
         raise MailError("EMAIL_MODE=smtp 但未配置 SMTP_HOST")
@@ -62,6 +87,8 @@ def _send_smtp(to: str, subject: str, text: str) -> None:
     msg["To"] = to
     msg["Subject"] = subject
     msg.set_content(text)
+    if html:
+        msg.add_alternative(html, subtype="html")
 
     server: smtplib.SMTP | None = None
     try:

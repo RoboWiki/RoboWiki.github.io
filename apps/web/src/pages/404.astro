@@ -1,0 +1,92 @@
+---
+import '../styles/global.css'
+import SeoJsonLd from '@/components/SeoJsonLd.astro'
+
+// GitHub Pages 支持根路径，也支持项目页（/repo/）。链接统一走 BASE_URL，避免写死。
+const base = import.meta.env.BASE_URL
+const homeHref = base
+const catalogHref = `${base}catalog.html`
+const title = '页面走丢了 · 404 · RoboWiki'
+const description = '这个地址没有对应页面。回到 RoboWiki 首页，或者去部件库按品类找件。'
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex, follow" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen antialiased">
+    <header class="sticky top-0 z-40 border-b border-slate-200/80 bg-white/90 backdrop-blur">
+      <div class="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4">
+        <a href={homeHref} class="flex items-center gap-2 font-bold tracking-tight">
+          <span class="grid h-7 w-7 place-items-center rounded-lg bg-blue-600 text-xs text-white">RW</span>
+          <span>RoboWiki</span>
+        </a>
+        <nav class="hidden items-center gap-1 md:flex" aria-label="主导航">
+          <a href={homeHref} class="rounded-lg px-3 py-1.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900">首页</a>
+          <a href={catalogHref} class="rounded-lg px-3 py-1.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900">部件库</a>
+          <a href="https://robowiki.org.cn/robots" class="rounded-lg px-3 py-1.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900">整机库</a>
+          <a href="https://robowiki.org.cn/materials" class="rounded-lg px-3 py-1.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900">材质库</a>
+          <a href="https://robowiki.org.cn/learn/" class="rounded-lg px-3 py-1.5 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900">指南</a>
+        </nav>
+        <div class="ml-auto flex items-center gap-2">
+          <a href="https://github.com/RoboWiki" class="hidden items-center gap-1 rounded-lg px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50 sm:flex" target="_blank" rel="noopener">GitHub</a>
+          <a href="/app/#/pages/login/index" class="rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700">账号</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-6xl px-4 py-8">
+      <section class="relative overflow-hidden rounded-3xl border border-slate-200 bg-white px-6 py-12 sm:px-10 sm:py-16">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgba(37,99,235,0.12),transparent_45%),radial-gradient(circle_at_10%_90%,rgba(21,128,61,0.08),transparent_40%)]"></div>
+        <div class="relative max-w-3xl">
+          <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
+            HTTP 404 · 没有这个页面
+          </div>
+          <h1 class="text-3xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-5xl">
+            这个地址没有对应内容。
+          </h1>
+          <p class="mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+            链接可能过期，或者型号已经改名。回首页重新进入，或者直接去部件库按品类找件。
+          </p>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a href={homeHref} class="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 text-base font-medium text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
+              返回首页 →
+            </a>
+            <a href={catalogHref} class="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-6 text-base font-medium text-slate-900 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
+              浏览部件库
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-10 grid gap-3 sm:grid-cols-3">
+        <a href={catalogHref} class="rounded-xl border border-slate-200 bg-white p-5 transition hover:border-blue-200 hover:shadow-sm">
+          <div class="font-semibold text-slate-900">部件库</div>
+          <p class="mt-1 text-sm leading-6 text-slate-500">按品类、厂商与参数筛选硬件。</p>
+        </a>
+        <a href="https://robowiki.org.cn/robots" class="rounded-xl border border-slate-200 bg-white p-5 transition hover:border-blue-200 hover:shadow-sm">
+          <div class="font-semibold text-slate-900">整机库</div>
+          <p class="mt-1 text-sm leading-6 text-slate-500">看现成整机的配置与使用经验。</p>
+        </a>
+        <a href="https://robowiki.org.cn/learn/" class="rounded-xl border border-slate-200 bg-white p-5 transition hover:border-blue-200 hover:shadow-sm">
+          <div class="font-semibold text-slate-900">指南</div>
+          <p class="mt-1 text-sm leading-6 text-slate-500">选型口径、来源等级与入门路径。</p>
+        </a>
+      </section>
+
+      <SeoJsonLd type="WebPage" title={title} description={description} url={Astro.url} />
+    </main>
+
+    <footer class="mt-16 border-t border-slate-200 bg-white">
+      <div class="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-8 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+        <p>RoboWiki · 数据带来源，口径可追溯，不卖零件不收佣金。</p>
+        <p>GPL-3.0 · 内容与数据来源见页面底部说明</p>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,305 @@
+/* RoboWiki app 全局样式：只消费 @robowiki/tokens 的 --rw-* 变量。 */
+page,
+body,
+.taro_page {
+  background: var(--rw-bg);
+  color: #0f172a;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  font-size: var(--rw-text-base);
+  line-height: 1.55;
+}
+
+view,
+text,
+input,
+textarea,
+button {
+  box-sizing: border-box;
+}
+
+.rw-page {
+  min-height: 100vh;
+  padding: var(--rw-space-4);
+  /* constant() 是 iOS 11 旧语法；和 env() 写在同一条 shorthand 里，
+     不支持的浏览器会整条丢弃，连左右内边距一起失效。 */
+  padding-bottom: calc(var(--rw-space-6) + constant(safe-area-inset-bottom));
+  padding-bottom: calc(var(--rw-space-6) + env(safe-area-inset-bottom));
+}
+
+.rw-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rw-space-3);
+}
+
+.rw-row {
+  display: flex;
+  align-items: center;
+  gap: var(--rw-space-2);
+}
+
+.rw-row--between {
+  justify-content: space-between;
+}
+
+.rw-grow {
+  flex: 1;
+  min-width: 0;
+}
+
+.rw-muted {
+  color: var(--rw-muted);
+  font-size: var(--rw-text-sm);
+}
+
+.rw-strong {
+  font-weight: 600;
+}
+
+.rw-title {
+  font-size: var(--rw-text-xl);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.rw-subtitle {
+  font-size: var(--rw-text-md);
+  font-weight: 600;
+}
+
+.rw-caption {
+  font-size: var(--rw-text-xs);
+  color: var(--rw-muted);
+}
+
+.rw-divider {
+  height: 1px;
+  background: var(--rw-border);
+}
+
+/* 行式列表：不做大卡片，只用分隔线组织信息。 */
+.rw-list {
+  background: var(--rw-surface);
+  border: 1px solid var(--rw-border);
+  border-radius: var(--rw-radius-md);
+  overflow: hidden;
+}
+
+.rw-list__row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--rw-space-3);
+  padding: var(--rw-space-3) var(--rw-space-4);
+  min-height: var(--rw-control-touch);
+  background: var(--rw-surface);
+}
+
+.rw-list__row + .rw-list__row {
+  border-top: 1px solid var(--rw-border);
+}
+
+.rw-list__row--tap:active {
+  background: #f1f5f9;
+}
+
+.rw-thumb {
+  width: 56px;
+  height: 56px;
+  flex: 0 0 56px;
+  border-radius: var(--rw-radius-sm);
+  background: #eef2f7;
+}
+
+.rw-empty-thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  flex: 0 0 56px;
+  border-radius: var(--rw-radius-sm);
+  background: var(--rw-bg);
+  color: var(--rw-muted);
+  font-size: var(--rw-text-xs);
+}
+
+.rw-line-clamp-1 {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.rw-line-clamp-2 {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* 控件统一 44px 触控高度。 */
+.rw-field {
+  display: flex;
+  align-items: center;
+  gap: var(--rw-space-2);
+  min-height: var(--rw-control-touch);
+  padding: 0 var(--rw-space-3);
+  background: var(--rw-surface);
+  border: 1px solid var(--rw-border);
+  border-radius: var(--rw-radius-sm);
+}
+
+.rw-field--textarea {
+  align-items: stretch;
+  padding: var(--rw-space-2) var(--rw-space-3);
+}
+
+.rw-input {
+  flex: 1;
+  min-width: 0;
+  min-height: calc(var(--rw-control-touch) - 2px);
+  font-size: var(--rw-text-base);
+  color: inherit;
+}
+
+.rw-textarea {
+  width: 100%;
+  min-height: 88px;
+  font-size: var(--rw-text-base);
+  line-height: 1.6;
+}
+
+.rw-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--rw-control-touch);
+  padding: 0 var(--rw-space-4);
+  border-radius: var(--rw-radius-sm);
+  font-size: var(--rw-text-base);
+  font-weight: 600;
+  background: var(--rw-surface);
+  color: var(--rw-primary);
+  border: 1px solid var(--rw-border);
+}
+
+.rw-btn::after {
+  border: none;
+}
+
+.rw-btn--primary {
+  background: var(--rw-primary);
+  border-color: var(--rw-primary);
+  color: var(--rw-primary-foreground);
+}
+
+.rw-btn--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--rw-primary);
+  padding: 0 var(--rw-space-2);
+}
+
+.rw-btn--danger {
+  color: var(--rw-danger);
+}
+
+.rw-btn[disabled],
+.rw-btn--disabled {
+  opacity: 0.5;
+}
+
+.rw-chips {
+  display: flex;
+  gap: var(--rw-space-2);
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: var(--rw-space-1);
+}
+
+.rw-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--rw-control-sm);
+  padding: 0 var(--rw-space-3);
+  border-radius: var(--rw-radius-full);
+  border: 1px solid var(--rw-border);
+  background: var(--rw-surface);
+  color: var(--rw-muted);
+  font-size: var(--rw-text-sm);
+  flex: 0 0 auto;
+}
+
+.rw-chip--active {
+  background: #eff6ff;
+  border-color: var(--rw-primary);
+  color: var(--rw-primary);
+}
+
+.rw-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--rw-space-2);
+  border-radius: var(--rw-radius-full);
+  font-size: var(--rw-text-xs);
+  line-height: 20px;
+  background: #eff6ff;
+  color: var(--rw-primary);
+}
+
+.rw-badge--warn {
+  background: #fff7ed;
+  color: var(--rw-warning);
+}
+
+.rw-error {
+  color: var(--rw-danger);
+  font-size: var(--rw-text-sm);
+}
+
+.rw-success {
+  color: var(--rw-success);
+}
+
+/* 统一 loading / empty / error 视图。 */
+.rw-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rw-space-3);
+  padding: var(--rw-space-6) var(--rw-space-4);
+  text-align: center;
+  color: var(--rw-muted);
+}
+
+.rw-state__title {
+  font-size: var(--rw-text-base);
+  color: #0f172a;
+}
+
+.rw-skeleton {
+  background: linear-gradient(90deg, #eef2f7 25%, #f8fafc 37%, #eef2f7 63%);
+  background-size: 400% 100%;
+  border-radius: var(--rw-radius-xs);
+  animation: rw-shimmer 1.4s ease infinite;
+}
+
+.rw-skeleton--line {
+  height: 12px;
+}
+
+@keyframes rw-shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+.rw-safe-bottom {
+  height: constant(safe-area-inset-bottom);
+  height: env(safe-area-inset-bottom);
+}

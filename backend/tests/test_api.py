@@ -698,7 +698,7 @@ def test_email_verify_and_password_reset(client, monkeypatch):
 
     sent: list[tuple[str, str, str]] = []
     monkeypatch.setattr(auth_route, "send_email",
-                        lambda to, subject, text: sent.append((to, subject, text)))
+                        lambda to, subject, text, html=None: sent.append((to, subject, text)))
     r = client.post("/api/auth/register", json={
         "handle": "mailuser", "display_name": "Mail User",
         "email": "mailuser@example.com", "password": "oldpass123",

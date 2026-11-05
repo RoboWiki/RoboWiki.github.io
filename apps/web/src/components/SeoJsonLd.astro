@@ -1,0 +1,53 @@
+---
+/**
+ * SeoJsonLd · 结构化数据（schema.org）输出组件
+ *
+ * 用法（放进页面任意位置即可，JSON-LD 放在 body 里同样被搜索引擎识别）：
+ *   <SeoJsonLd type="Product" title="Cubemars AK10-9 V3.0" description="..." url={Astro.url} />
+ *
+ * 可选：
+ *   type        schema.org 类型，默认 WebPage（型号页可传 Product，首页可传 WebSite）
+ *   title       → name / headline
+ *   description → description
+ *   url         → url（相对路径会按 Astro.site 补成绝对地址）
+ *   image       → image（相对路径同样会补成绝对地址）
+ *   extra       额外字段，浅合并进最终对象（例如 offers / brand / aggregateRating）
+ */
+type Props = {
+  type?: 'WebSite' | 'WebPage' | 'Product' | 'Article' | 'BreadcrumbList' | (string & {})
+  title: string
+  description?: string
+  url?: string | URL
+  image?: string
+  extra?: Record<string, unknown>
+}
+
+const { type = 'WebPage', title, description, url, image, extra } = Astro.props
+
+const fallbackOrigin = Astro.site ?? new URL(Astro.url.origin)
+const absolutize = (value?: string | URL) => {
+  if (!value) return undefined
+  try {
+    return new URL(value.toString(), fallbackOrigin).href
+  } catch {
+    return undefined
+  }
+}
+
+const pageUrl = absolutize(url ?? Astro.url.pathname)
+
+const jsonLd: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': type,
+  name: title,
+  ...(description ? { description } : {}),
+  ...(pageUrl ? { url: pageUrl } : {}),
+  ...(image ? { image: absolutize(image) } : {}),
+  ...extra,
+}
+
+// JSON.stringify 后再转义 "<"，避免内容里出现 </script> 提前闭合标签。
+const serialized = JSON.stringify(jsonLd, null, 0).replace(/</g, '\\u003c')
+---
+
+<script type="application/ld+json" is:inline set:html={serialized} />

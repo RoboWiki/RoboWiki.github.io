@@ -1,0 +1,28 @@
+.login__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rw-space-2);
+  padding: var(--rw-space-5) 0 var(--rw-space-5);
+}
+
+.login__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rw-space-4);
+  padding: var(--rw-space-4);
+  background: var(--rw-surface);
+  border: 1px solid var(--rw-border);
+  border-radius: var(--rw-radius-md);
+}
+
+.login__note {
+  line-height: 1.6;
+}
+
+.login__switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--rw-space-3);
+  padding-top: var(--rw-space-5);
+}

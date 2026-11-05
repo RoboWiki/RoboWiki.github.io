@@ -17,6 +17,8 @@ from sqlalchemy import func
 from sqlmodel import select
 
 from ...catalog_fields import SPEC_KEYS, TOP_FIELDS, split_field
+from ...email_templates import render_email
+from ...mailer import MailError, send_email
 from ...models import Part, PartEdit, Submission, User
 from ..deps import CurrentUser, Db
 from .catalog import _attach_reviews, part_out
@@ -44,9 +46,25 @@ class EditOut(BaseModel):
     created_at: str
 
 
+class EmailTestIn(BaseModel):
+    to: str = Field(min_length=3, max_length=200)
+
+
 def _staff(user: User) -> None:
     if not user.is_staff:
         raise HTTPException(403, "需要站务权限")
+
+
+@router.post("/email/test")
+def email_test(payload: EmailTestIn, user: CurrentUser):
+    """站务发一封测试邮件，确认 SMTP_FROM/账号/TLS 配置可用。"""
+    _staff(user)
+    subject, text, html = render_email("test")
+    try:
+        send_email(payload.to.strip(), subject, text, html)
+    except MailError as exc:
+        raise HTTPException(503, f"测试邮件发送失败：{exc}") from exc
+    return {"ok": True, "to": payload.to.strip()}
 
 
 def _split(key: str) -> tuple[str, str]:

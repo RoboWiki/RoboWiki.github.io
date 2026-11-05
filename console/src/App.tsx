@@ -3,7 +3,7 @@ import { LogoutOutlined } from '@ant-design/icons'
 import { useQueryClient } from '@tanstack/react-query'
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
-import { auth, api, type User } from './api'
+import { ApiError, auth, api, type User } from './api'
 import { Composer } from './ui'
 import Catalog from './Catalog'
 import { ThemeProvider, useTheme } from './theme'
@@ -51,7 +51,7 @@ function AuthModal({ open, onClose }: { open: boolean; onClose: () => void }) {
           // 邮箱可选：空串不要发给后端，否则会占用「空邮箱」唯一约束
           email: v.email ? String(v.email).trim() : undefined,
         })
-      auth.set(r.access_token)
+      auth.setTokens(r.access_token, r.refresh_token)
       setUser(r.user)
       message.success(mode === 'login' ? `欢迎回来，${r.user.display_name}` : '注册成功')
       form.resetFields()
@@ -183,12 +183,24 @@ function Shell() {
   const qc = useQueryClient()
 
   useEffect(() => {
-    if (!auth.token) { setReady(true); return }
-    api.me().then(u => setUserState(u)).catch(() => auth.set(null)).finally(() => setReady(true))
+    // 只有 access 过期、refresh 还在时也要能恢复：请求层会先刷新再重试
+    if (!auth.token && !auth.refreshToken) { setReady(true); return }
+    api.me()
+      .then(u => setUserState(u))
+      .catch((e: unknown) => {
+        // 仅 401 才算会话失效；刷新因网络/5xx 失败时 refresh 还在，保留它下次再试
+        if (e instanceof ApiError && e.status === 401 && !auth.refreshToken) auth.clear()
+      })
+      .finally(() => setReady(true))
   }, [])
 
   const setUser = useCallback((u: User | null) => setUserState(u), [])
-  const logout = useCallback(() => { auth.set(null); setUserState(null); qc.clear() }, [qc])
+  const logout = useCallback(() => {
+    // UI 立即登出；撤销会话与本地清理交给 api.logout（失败也不残留 token）
+    setUserState(null)
+    qc.clear()
+    void api.logout()
+  }, [qc])
   const ctx = useMemo<AuthCtx>(() => ({
     user, ready, setUser, logout, openAuth: () => setAuthOpen(true),
   }), [user, ready, setUser, logout])

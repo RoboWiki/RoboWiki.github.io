@@ -14,11 +14,11 @@
  *   · 提交按钮在请求中 disabled 且表单 aria-busy
  *   · 表单内 Enter 即提交（原生 form + type="submit"），不额外绑 keyup
  *
- * 账号中心的分区（资料 / 密码 / 登录方式）与「危险操作二次确认」参考了
+ * 账号中心的分区（资料 / 密码 / 登录设备 / 登录方式）与「危险操作二次确认」参考了
  * Cal.com、Outline 的设置页交互；只借鉴信息结构与反馈方式，没有复制代码
  * （Outline 部分代码使用 BSL 许可）。
  */
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
@@ -30,8 +30,11 @@ import NotificationList from './NotificationList.vue'
 type Me = {
   handle: string
   display_name: string
+  bio?: string | null
+  avatar_hue?: number
   email?: string | null
   email_verified?: boolean
+  email_notify?: boolean
   password_set?: boolean
 }
 type Providers = { email: boolean; github: boolean; wechat_mini: boolean }
@@ -41,7 +44,16 @@ type Identity = {
   email?: string | null
   created_at: string
 }
-type AccountTab = 'profile' | 'security' | 'notifications' | 'identities'
+/** GET /auth/sessions：仍可用（未撤销、未轮换、未过期）的 refresh 会话 */
+type SessionInfo = {
+  id: number
+  client: string
+  created_at: string
+  expires_at: string
+}
+type AccountTab = 'profile' | 'security' | 'sessions' | 'notifications' | 'identities'
+type ProfileValues = { displayName: string; bio: string }
+type SetPasswordValues = { password: string; confirmPassword: string }
 
 /** 与后端 RegisterIn 完全一致的约束 */
 const HANDLE_RE = /^[A-Za-z0-9][A-Za-z0-9_-]*$/
@@ -65,6 +77,8 @@ type ChangeValues = {
 function accountSchema(m: Mode): z.ZodType<AccountValues, z.ZodTypeDef, AccountValues> {
   const handle = z.string().trim().min(2, '账号至少 2 位').max(24, '账号最多 24 位')
     .regex(HANDLE_RE, '账号只能用 a-z、0-9、-、_，并以字母或数字开头')
+  const loginId = z.string().trim().min(2, '请输入账号或邮箱').max(200, '账号或邮箱过长')
+    .refine(v => HANDLE_RE.test(v) || EMAIL_RE.test(v), '请输入有效的账号或邮箱')
   const password = z.string().min(6, '密码至少 6 位').max(128, '密码最多 128 位')
   const displayName = z.string().trim().min(1, '请填写显示名').max(32, '显示名最多 32 字')
   const emailOptional = z.string().trim().max(200, '邮箱过长')
@@ -84,7 +98,7 @@ function accountSchema(m: Mode): z.ZodType<AccountValues, z.ZodTypeDef, AccountV
     return z.object({ handle, password, displayName, email: emailOptional })
   }
   return z.object({
-    handle,
+    handle: loginId,
     password,
     displayName: z.string().trim().max(32),
     email: emailOptional,
@@ -112,18 +126,71 @@ const pendingUnbind = ref<string | null>(null)
 const unbindBusy = ref<string | null>(null)
 const changeError = ref('')
 const changeNotice = ref('')
+/* ── 编辑资料 ──────────────────────────────────────────────────────────── */
+const profileEditing = ref(false)
+const profileError = ref('')
+const profileNotice = ref('')
+
+/* ── 登录设备 ──────────────────────────────────────────────────────────── */
+const sessions = ref<SessionInfo[]>([])
+const sessionsBusy = ref(false)
+const sessionsLoaded = ref(false)
+const sessionsError = ref('')
+const sessionsNotice = ref('')
+/** 正在撤销的 session id；null = 没有进行中的撤销 */
+const revokeBusy = ref<number | null>(null)
+const logoutAllBusy = ref(false)
 
 /* ── 通知 ──────────────────────────────────────────────────────────────── */
 /** 未读角标：由 NotificationList 拉完列表后回传，退出/401 时清零 */
 const unreadCount = ref(0)
 
-/** 401：apiFetch 已清 token，这里把界面退回登录态，不要让「账号中心」继续挂着 */
-function onNotificationAuthExpired(message: string) {
+/* ── 邮箱绑定 / 换绑 / 通知偏好 ────────────────────────────────────────── */
+const emailNotify = ref(true)
+const emailEditing = ref(false)
+const emailPending = ref(false)
+const newEmail = ref('')
+const emailPassword = ref('')
+const emailToken = ref('')
+const emailBusy = ref(false)
+const emailError = ref('')
+const emailNotice = ref('')
+
+/**
+ * 统一的「退回登录态」：清空账号中心的所有缓存状态并给出提示。
+ * 401（apiFetch 已清 token）、退出登录、退出全部设备都走这里，
+ * 避免各分支只清一半状态，留下上一个账号的资料/设备列表。
+ */
+function enterLoggedOut(message: string) {
   me.value = null
   identities.value = []
   identitiesLoaded.value = false
+  identityError.value = ''
+  identityNotice.value = ''
+  pendingUnbind.value = null
+  changeError.value = ''
+  changeNotice.value = ''
+  profileEditing.value = false
+  profileError.value = ''
+  profileNotice.value = ''
+  sessions.value = []
+  sessionsLoaded.value = false
+  sessionsError.value = ''
+  sessionsNotice.value = ''
+  revokeBusy.value = null
   unreadCount.value = 0
-  notice.value = message || '登录已过期，请重新登录'
+  accountTab.value = 'profile'
+  // 清掉登录/改密/设密/资料表单里的残留值；重新登录时不该看到上一个人输入过的密码
+  resetAccount()
+  resetChange()
+  resetSetPw()
+  resetProfile()
+  notice.value = message
+}
+
+/** NotificationList 的 401：界面退回登录态，不要让「账号中心」继续挂着 */
+function onNotificationAuthExpired(message: string) {
+  enterLoggedOut(message || '登录已过期，请重新登录')
 }
 
 /** 后端 detail 的解析与 401/429/断网文案统一收在 lib/api */
@@ -350,6 +417,294 @@ const onChangeSubmit = onChangeSubmitRaw(async values => {
   }
 })
 
+/* ── 编辑资料：显示名 / 简介 ───────────────────────────────────────────── */
+const profileCtx = useForm<ProfileValues>({
+  validationSchema: toTypedSchema(z.object({
+    displayName: z.string().trim().min(1, '显示名不能为空').max(32, '显示名最多 32 字'),
+    bio: z.string().trim().max(500, '简介最多 500 字'),
+  })),
+  initialValues: { displayName: '', bio: '' },
+})
+const {
+  errors: profileErrors,
+  isSubmitting: profileBusy,
+  handleSubmit: onProfileSubmitRaw,
+  defineField: profileField,
+  setValues: setProfileValues,
+  resetForm: resetProfile,
+} = profileCtx
+const [profileDisplayName, profileDisplayNameAttrs] = profileField('displayName')
+const [profileBio, profileBioAttrs] = profileField('bio')
+
+function startProfileEdit() {
+  profileError.value = ''
+  profileNotice.value = ''
+  setProfileValues({
+    displayName: me.value?.display_name || '',
+    bio: me.value?.bio || '',
+  })
+  profileEditing.value = true
+  nextTick(() => document.getElementById('acct-display-name')?.focus())
+}
+
+function cancelProfileEdit() {
+  profileEditing.value = false
+  profileError.value = ''
+  resetProfile()
+}
+
+const onProfileSubmit = onProfileSubmitRaw(async values => {
+  profileError.value = ''
+  profileNotice.value = ''
+  try {
+    // 只提交资料字段；邮箱/身份走各自的验证流程（见 PATCH /auth/me 契约）。
+    me.value = await req<Me>('/auth/me', {
+      method: 'PATCH',
+      body: JSON.stringify({ display_name: values.displayName, bio: values.bio }),
+    })
+    profileEditing.value = false
+    profileNotice.value = '资料已保存'
+  } catch (e: any) {
+    profileError.value = apiErrorMessage(e, '保存失败，请稍后再试')
+  }
+})
+
+watch(me, (v) => {
+  if (v) emailNotify.value = v.email_notify === true
+}, { immediate: true })
+
+function startEmailChange() {
+  emailEditing.value = true
+  emailPending.value = false
+  newEmail.value = ''
+  emailPassword.value = ''
+  emailToken.value = ''
+  emailError.value = ''
+  emailNotice.value = ''
+}
+
+function cancelEmailChange() {
+  emailEditing.value = false
+  emailPending.value = false
+  emailPassword.value = ''
+  emailToken.value = ''
+  emailError.value = ''
+}
+
+async function requestEmailChange() {
+  emailError.value = ''
+  emailNotice.value = ''
+  const email = newEmail.value.trim().toLowerCase()
+  if (!EMAIL_RE.test(email)) {
+    emailError.value = '邮箱格式不正确'
+    return
+  }
+  if (me.value?.password_set && !emailPassword.value) {
+    emailError.value = '请先输入当前密码'
+    return
+  }
+  emailBusy.value = true
+  try {
+    await req('/auth/email/change/request', {
+      method: 'POST',
+      body: JSON.stringify({
+        email,
+        ...(me.value?.password_set ? { password: emailPassword.value } : {}),
+      }),
+    })
+    emailPending.value = true
+    emailEditing.value = false
+    emailNotice.value = `确认邮件已发送到 ${email}，请输入邮件里的令牌。`
+  } catch (e: any) {
+    emailError.value = apiErrorMessage(e, '发送确认邮件失败，请稍后再试')
+  } finally {
+    emailBusy.value = false
+  }
+}
+
+async function confirmEmailChange() {
+  emailError.value = ''
+  emailNotice.value = ''
+  if (!emailToken.value.trim()) {
+    emailError.value = '请输入邮件里的令牌'
+    return
+  }
+  emailBusy.value = true
+  try {
+    const r = await req<{ access_token: string; refresh_token?: string | null; user: Me }>(
+      '/auth/email/change/confirm',
+      { method: 'POST', body: JSON.stringify({ token: emailToken.value.trim() }) },
+    )
+    // 换绑会提升 session_epoch：旧 access 全部失效，本设备换用新令牌。
+    setToken(r.access_token)
+    setRefreshToken(r.refresh_token)
+    me.value = r.user
+    emailPending.value = false
+    emailToken.value = ''
+    emailPassword.value = ''
+    emailNotice.value = '邮箱已更新并验证'
+  } catch (e: any) {
+    emailError.value = apiErrorMessage(e, '确认换绑失败，请检查令牌后重试')
+  } finally {
+    emailBusy.value = false
+  }
+}
+
+async function saveEmailNotify() {
+  if (!me.value) return
+  const next = emailNotify.value
+  emailError.value = ''
+  emailNotice.value = ''
+  try {
+    me.value = await req<Me>('/auth/me', {
+      method: 'PATCH', body: JSON.stringify({ email_notify: next }),
+    })
+    emailNotice.value = next ? '已开启邮件提醒' : '已关闭邮件提醒'
+  } catch (e: any) {
+    emailNotify.value = me.value.email_notify !== false
+    emailError.value = apiErrorMessage(e, '保存邮件偏好失败，请稍后再试')
+  }
+}
+
+/* ── 首次设置本站密码（第三方建号） ───────────────────────────────────── */
+const setPwCtx = useForm<SetPasswordValues>({
+  validationSchema: toTypedSchema(
+    z.object({
+      password: z.string().min(6, '密码至少 6 位').max(128, '密码最多 128 位'),
+      confirmPassword: z.string().min(1, '请再次输入密码').max(128, '密码最多 128 位'),
+    }).refine(v => v.password === v.confirmPassword, {
+      message: '两次输入的密码不一致',
+      path: ['confirmPassword'],
+    }),
+  ),
+  initialValues: { password: '', confirmPassword: '' },
+})
+const {
+  errors: setPwErrors,
+  isSubmitting: setPwBusy,
+  handleSubmit: onSetPwSubmitRaw,
+  defineField: setPwField,
+  resetForm: resetSetPw,
+} = setPwCtx
+const [setPassword, setPasswordAttrs] = setPwField('password')
+const [setConfirmPassword, setConfirmPasswordAttrs] = setPwField('confirmPassword')
+
+const onSetPwSubmit = onSetPwSubmitRaw(async values => {
+  changeError.value = ''
+  changeNotice.value = ''
+  try {
+    const r = await req<{ access_token: string; refresh_token?: string | null; user?: Me }>(
+      '/auth/password/set',
+      { method: 'POST', body: JSON.stringify({ password: values.password }) },
+    )
+    // 设密会 bump session_epoch，旧令牌当场失效；换上新令牌，本设备无缝继续。
+    setToken(r.access_token)
+    setRefreshToken(r.refresh_token)
+    me.value = r.user || (me.value ? { ...me.value, password_set: true } : me.value)
+    resetSetPw()
+    changeNotice.value = '本站密码已设置'
+  } catch (e: any) {
+    changeError.value = e.status === 409
+      ? '本站密码已设置，请使用修改密码'
+      : apiErrorMessage(e, '设置失败，请稍后再试')
+  }
+})
+
+/* ── 登录设备（refresh 会话） ──────────────────────────────────────────── */
+const CLIENT_LABEL: Record<string, string> = {
+  web: '网页',
+  github: 'GitHub',
+  mini: '微信小程序',
+  wechat_mini: '微信小程序',
+}
+
+function clientLabel(client: string): string {
+  return CLIENT_LABEL[client] || client || '未知设备'
+}
+
+function formatDateTime(iso: string): string {
+  const d = new Date(iso)
+  return Number.isNaN(d.getTime())
+    ? ''
+    : d.toLocaleString('zh-CN', {
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit',
+    })
+}
+
+async function loadSessions() {
+  if (sessionsBusy.value) return
+  sessionsBusy.value = true
+  sessionsError.value = ''
+  sessionsNotice.value = ''
+  try {
+    sessions.value = await req<SessionInfo[]>('/auth/sessions')
+  } catch (e: any) {
+    sessions.value = []
+    if (e instanceof ApiError && e.status === 401) {
+      enterLoggedOut('登录已过期，请重新登录')
+      return
+    }
+    sessionsError.value = apiErrorMessage(e, '无法读取登录设备，请稍后重试')
+  } finally {
+    sessionsBusy.value = false
+    sessionsLoaded.value = true
+  }
+}
+
+async function revokeSession(id: number) {
+  if (revokeBusy.value !== null) return
+  sessionsError.value = ''
+  sessionsNotice.value = ''
+  revokeBusy.value = id
+  try {
+    await req(`/auth/sessions/${id}`, { method: 'DELETE' })
+    await loadSessions()
+    if (!sessionsError.value) sessionsNotice.value = '已退出该设备'
+  } catch (e: any) {
+    if (e instanceof ApiError && e.status === 401) {
+      enterLoggedOut('登录已过期，请重新登录')
+      return
+    }
+    if (e instanceof ApiError && e.status === 404) {
+      await loadSessions()
+      if (!sessionsError.value) sessionsNotice.value = '该会话已经失效，列表已刷新'
+      return
+    }
+    sessionsError.value = apiErrorMessage(e, '退出该设备失败，请稍后再试')
+  } finally {
+    revokeBusy.value = null
+  }
+}
+
+/** 全端退出：服务端会让当前 access 立即失效，本地也必须清干净。 */
+async function logoutAll() {
+  if (logoutAllBusy.value) return
+  sessionsError.value = ''
+  sessionsNotice.value = ''
+  logoutAllBusy.value = true
+  try {
+    const r = await req<{ ok: boolean; revoked: number }>('/auth/logout-all', { method: 'POST' })
+    clearAuth()
+    enterLoggedOut(r?.revoked
+      ? `已退出全部设备（${r.revoked} 个会话），请重新登录`
+      : '已退出全部设备，请重新登录')
+  } catch (e: any) {
+    if (e instanceof ApiError && e.status === 401) {
+      enterLoggedOut('登录已过期，请重新登录')
+      return
+    }
+    sessionsError.value = apiErrorMessage(e, '退出全部设备失败，请稍后再试')
+  } finally {
+    logoutAllBusy.value = false
+  }
+}
+
+// 进入「登录设备」时才拉列表：账号中心默认停在资料页，不需要为它多打一次请求。
+watch(accountTab, (tab) => {
+  if (tab === 'sessions') void loadSessions()
+})
+
 /* ── 已绑定身份 ────────────────────────────────────────────────────────── */
 const KNOWN_PROVIDERS: { id: string; label: string }[] = [
   { id: 'github', label: 'GitHub' },
@@ -448,20 +803,8 @@ async function logout() {
     if (refresh) await apiFetch('/auth/logout', { method: 'POST', body: JSON.stringify({ refresh_token: refresh }) })
   } catch { /* 本地仍要退出 */ }
   clearAuth()
-  me.value = null
-  identities.value = []
-  identitiesLoaded.value = false
-  identityError.value = ''
-  identityNotice.value = ''
-  pendingUnbind.value = null
-  changeError.value = ''
-  changeNotice.value = ''
-  unreadCount.value = 0
-  accountTab.value = 'profile'
-  // 用 resetForm 清值 + 清错误；直接改 password 会让表单在重新挂载时闪一条「至少 6 位」
-  resetAccount()
-  resetChange()
-  notice.value = '已退出登录'
+  // enterLoggedOut 会重置所有表单，避免重新登录时闪出旧输入或旧校验错误
+  enterLoggedOut('已退出登录')
 }
 
 onMounted(async () => {
@@ -540,14 +883,20 @@ onMounted(async () => {
 
     <!-- ── 已登录：账号中心 ────────────────────────────────────────────── -->
     <div v-else-if="me" class="auth-card"
-      :aria-busy="accountBusy || verifyBusy || verifyRequestBusy || identitiesBusy || !!unbindBusy || changeBusy">
+      :aria-busy="accountBusy || verifyBusy || verifyRequestBusy || identitiesBusy || !!unbindBusy
+        || changeBusy || setPwBusy || profileBusy || sessionsBusy || !!revokeBusy || logoutAllBusy">
       <h1>账号中心</h1>
       <p class="auth-lead">管理账号资料、邮箱验证、本站密码与第三方登录方式。</p>
 
+      <!-- unmount-on-hide=false：五个 panel 都常驻 DOM，reka-ui 生成的
+           id / aria-controls 才能两两对应；否则未选中的 tab 会指向不存在的 panel。 -->
       <TabsRoot v-model="accountTab" class="acct" :unmount-on-hide="false">
         <TabsList class="acct-tabs" aria-label="账号设置">
           <TabsTrigger value="profile" class="acct-tab">账号信息</TabsTrigger>
-          <TabsTrigger value="security" class="acct-tab">修改密码</TabsTrigger>
+          <TabsTrigger value="security" class="acct-tab">
+            {{ me.password_set === false ? '设置密码' : '修改密码' }}
+          </TabsTrigger>
+          <TabsTrigger value="sessions" class="acct-tab">登录设备</TabsTrigger>
           <TabsTrigger value="notifications" class="acct-tab">
             通知
             <span v-if="unreadCount > 0" class="acct-tab-count">
@@ -564,6 +913,10 @@ onMounted(async () => {
             <div class="acct-fact">
               <dt>显示名</dt>
               <dd>{{ me.display_name }}</dd>
+            </div>
+            <div class="acct-fact">
+              <dt>简介</dt>
+              <dd>{{ me.bio || '未填写' }}</dd>
             </div>
             <div class="acct-fact">
               <dt>账号</dt>
@@ -584,7 +937,57 @@ onMounted(async () => {
               <dt>本站密码</dt>
               <dd>{{ me.password_set === false ? '未设置（只能用第三方身份登录）' : '已设置' }}</dd>
             </div>
+            <div class="acct-fact">
+              <dt>邮件提醒</dt>
+              <dd>{{ me.email_notify === false ? '已关闭' : '已开启' }}</dd>
+            </div>
           </dl>
+
+          <!-- 编辑资料：显示名 1–32、简介 ≤500；邮箱/身份不在这里改 -->
+          <div v-if="!profileEditing" class="acct-profile-edit">
+            <button type="button" class="auth-ghost acct-small" @click="startProfileEdit">编辑资料</button>
+          </div>
+          <form v-else class="auth-form acct-profile-form" novalidate :aria-busy="profileBusy"
+            @submit.prevent="onProfileSubmit">
+            <div class="auth-field">
+              <label class="auth-label" for="acct-display-name">显示名</label>
+              <input id="acct-display-name" v-model="profileDisplayName"
+                v-bind="profileDisplayNameAttrs" autocomplete="nickname" placeholder="1–32 字"
+                :aria-invalid="!!profileErrors.displayName"
+                :aria-describedby="profileErrors.displayName
+                  ? 'acct-display-name-hint err-acct-display-name' : 'acct-display-name-hint'" />
+              <p id="acct-display-name-hint" class="auth-hint auth-field-hint">别人看到的名字，1–32 字。</p>
+              <p v-if="profileErrors.displayName" id="err-acct-display-name"
+                class="auth-err-inline" role="alert">
+                {{ profileErrors.displayName }}
+              </p>
+            </div>
+
+            <div class="auth-field">
+              <label class="auth-label" for="acct-bio">简介</label>
+              <textarea id="acct-bio" v-model="profileBio" v-bind="profileBioAttrs"
+                rows="3" placeholder="做了什么、在关注什么（可选，最多 500 字）"
+                :aria-invalid="!!profileErrors.bio"
+                :aria-describedby="profileErrors.bio ? 'err-acct-bio' : 'acct-bio-hint'" />
+              <p id="acct-bio-hint" class="auth-hint auth-field-hint">最多 500 字；公开展示在个人资料。</p>
+              <p v-if="profileErrors.bio" id="err-acct-bio" class="auth-err-inline" role="alert">
+                {{ profileErrors.bio }}
+              </p>
+            </div>
+
+            <div class="acct-form-actions">
+              <button type="submit" class="auth-primary" :disabled="profileBusy">
+                {{ profileBusy ? '保存中…' : '保存资料' }}
+              </button>
+              <button type="button" class="auth-ghost" @click="cancelProfileEdit">取消</button>
+            </div>
+          </form>
+          <p v-if="profileError" class="auth-err" role="alert" aria-live="assertive">
+            {{ profileError }}
+          </p>
+          <p v-if="profileNotice" class="auth-notice" role="status" aria-live="polite">
+            {{ profileNotice }}
+          </p>
 
           <p v-if="me.email && me.email_verified" class="auth-hint" role="status">
             邮箱已验证，可用于找回密码与接收站务通知。
@@ -618,14 +1021,109 @@ onMounted(async () => {
               </button>
             </form>
           </div>
+
+          <!-- 邮箱绑定/换绑 + 邮件提醒偏好 -->
+          <div class="auth-email-tools">
+            <label class="auth-check">
+              <input v-model="emailNotify" type="checkbox"
+                :disabled="!me.email || !me.email_verified" @change="saveEmailNotify" />
+              接收回复与审核结果的邮件提醒
+            </label>
+            <button type="button" class="auth-ghost acct-small" @click="startEmailChange">
+              {{ me.email ? '更换邮箱' : '绑定邮箱' }}
+            </button>
+          </div>
+
+          <form v-if="emailEditing" class="auth-form acct-profile-form" novalidate
+            :aria-busy="emailBusy" @submit.prevent="requestEmailChange">
+            <div class="auth-field">
+              <label class="auth-label" for="acct-new-email">新邮箱</label>
+              <input id="acct-new-email" v-model="newEmail" type="email" autocomplete="email"
+                placeholder="name@example.com" />
+            </div>
+            <div v-if="me.password_set" class="auth-field">
+              <label class="auth-label" for="acct-email-password">当前密码</label>
+              <input id="acct-email-password" v-model="emailPassword" type="password"
+                autocomplete="current-password" placeholder="确认是你本人操作" />
+            </div>
+            <div class="acct-form-actions">
+              <button type="submit" class="auth-primary" :disabled="emailBusy">
+                {{ emailBusy ? '发送中…' : '发送确认邮件' }}
+              </button>
+              <button type="button" class="auth-ghost" @click="cancelEmailChange">取消</button>
+            </div>
+          </form>
+
+          <form v-if="emailPending" class="auth-form acct-profile-form" novalidate
+            :aria-busy="emailBusy" @submit.prevent="confirmEmailChange">
+            <div class="auth-field">
+              <label class="auth-label" for="acct-email-token">确认令牌</label>
+              <input id="acct-email-token" v-model="emailToken" autocomplete="one-time-code"
+                placeholder="邮件里的确认令牌" />
+            </div>
+            <div class="acct-form-actions">
+              <button type="submit" class="auth-primary" :disabled="emailBusy">
+                {{ emailBusy ? '确认中…' : '确认换绑' }}
+              </button>
+              <button type="button" class="auth-ghost" @click="cancelEmailChange">取消</button>
+            </div>
+          </form>
+
+          <p v-if="emailError" class="auth-err" role="alert">{{ emailError }}</p>
+          <p v-if="emailNotice" class="auth-notice" role="status">{{ emailNotice }}</p>
         </TabsContent>
 
-        <!-- 修改密码 -->
+        <!-- 修改密码：第三方建号（password_set=false）先设置密码，已设过才走改密 -->
         <TabsContent value="security" class="acct-panel">
           <template v-if="me.password_set === false">
             <p class="auth-hint">
-              这个账号由第三方登录创建，还没有本站密码。请退出后用「找回密码」通过
-              {{ me.email || '已绑定邮箱' }} 设置密码，或继续使用已绑定身份登录。
+              这个账号由第三方登录创建，还没有本站密码。设置之后可以用「账号 + 密码」登录本站，
+              也可以继续使用已绑定的身份。
+            </p>
+            <form class="auth-form" novalidate :aria-busy="setPwBusy"
+              @submit.prevent="onSetPwSubmit">
+              <div class="auth-field">
+                <label class="auth-label" for="acct-set-password">新密码</label>
+                <input id="acct-set-password" v-model="setPassword"
+                  v-bind="setPasswordAttrs" type="password" autocomplete="new-password"
+                  placeholder="至少 6 位"
+                  :aria-invalid="!!setPwErrors.password"
+                  :aria-describedby="setPwErrors.password
+                    ? 'acct-set-password-hint err-acct-set-password' : 'acct-set-password-hint'" />
+                <p id="acct-set-password-hint" class="auth-hint auth-field-hint">
+                  至少 6 位；不要与其他网站复用同一密码。
+                </p>
+                <p v-if="setPwErrors.password" id="err-acct-set-password"
+                  class="auth-err-inline" role="alert">
+                  {{ setPwErrors.password }}
+                </p>
+              </div>
+
+              <div class="auth-field">
+                <label class="auth-label" for="acct-set-confirm">确认新密码</label>
+                <input id="acct-set-confirm" v-model="setConfirmPassword"
+                  v-bind="setConfirmPasswordAttrs" type="password" autocomplete="new-password"
+                  placeholder="再输入一次新密码"
+                  :aria-invalid="!!setPwErrors.confirmPassword"
+                  :aria-describedby="setPwErrors.confirmPassword ? 'err-acct-set-confirm' : undefined" />
+                <p v-if="setPwErrors.confirmPassword" id="err-acct-set-confirm"
+                  class="auth-err-inline" role="alert">
+                  {{ setPwErrors.confirmPassword }}
+                </p>
+              </div>
+
+              <button type="submit" class="auth-primary" :disabled="setPwBusy">
+                {{ setPwBusy ? '设置中…' : '设置本站密码' }}
+              </button>
+            </form>
+            <p v-if="changeError" class="auth-err" role="alert" aria-live="assertive">
+              {{ changeError }}
+            </p>
+            <p v-if="changeNotice" class="auth-notice" role="status" aria-live="polite">
+              {{ changeNotice }}
+            </p>
+            <p class="auth-hint">
+              设置成功后其他设备的旧令牌会失效；本设备会自动换用新令牌，无需重新登录。
             </p>
           </template>
           <template v-else>
@@ -688,6 +1186,48 @@ onMounted(async () => {
               修改成功后，其他设备上的旧令牌会立即失效；本设备会自动换用新令牌，无需重新登录。
             </p>
           </template>
+        </TabsContent>
+
+        <!-- 登录设备：refresh 会话列表；可逐条退出或全端退出 -->
+        <TabsContent value="sessions" class="acct-panel">
+          <p v-if="sessionsBusy" class="auth-hint" role="status">正在读取登录设备…</p>
+          <p v-if="sessionsError" class="auth-err" role="alert">{{ sessionsError }}</p>
+          <button v-if="sessionsError" type="button" class="auth-ghost acct-small"
+            @click="loadSessions">重试</button>
+
+          <ul v-if="sessionsLoaded && !sessionsError && sessions.length" class="acct-ids">
+            <li v-for="s in sessions" :key="s.id" class="acct-id">
+              <div class="acct-id-main">
+                <span class="acct-id-name">{{ clientLabel(s.client) }}</span>
+                <span class="acct-id-meta">创建于 {{ formatDateTime(s.created_at) }}</span>
+                <span class="acct-id-meta">到期 {{ formatDateTime(s.expires_at) }}</span>
+              </div>
+              <div class="acct-id-actions">
+                <button type="button" class="auth-ghost acct-small"
+                  :disabled="revokeBusy === s.id" @click="revokeSession(s.id)">
+                  {{ revokeBusy === s.id ? '退出中…' : '退出该设备' }}
+                </button>
+              </div>
+            </li>
+          </ul>
+          <p v-else-if="sessionsLoaded && !sessionsError" class="auth-hint">
+            当前没有可用的登录会话（可能已全部退出，或令牌即将到期）。
+          </p>
+
+          <p v-if="sessionsNotice" class="auth-notice" role="status" aria-live="polite">
+            {{ sessionsNotice }}
+          </p>
+
+          <div class="acct-sessions-foot">
+            <button type="button" class="acct-danger" :disabled="logoutAllBusy"
+              @click="logoutAll">
+              {{ logoutAllBusy ? '退出中…' : '退出全部设备' }}
+            </button>
+            <p class="auth-hint acct-sessions-hint">
+              撤销所有刷新会话并让当前 access 立即失效，页面会退回登录态；
+              适合怀疑账号被盗用时使用。
+            </p>
+          </div>
         </TabsContent>
 
         <!-- 通知：被回复 / 举报处置结果，登录后自动加载 -->
@@ -779,22 +1319,26 @@ onMounted(async () => {
         </p>
       </div>
 
+      <!-- 三个 tab 共用同一个 panel（字段随 mode 显隐）。如果给每个 tab 生成
+           auth-panel-<mode>，未选中的 tab 会指向一个不存在的 id；统一指向
+           auth-panel，panel 本身用 aria-labelledby 指向当前 tab。 -->
       <div class="auth-tabs" role="tablist" aria-label="账号操作" @keydown="onTabKey">
         <button v-for="m in MODES" :key="m" :id="`auth-tab-${m}`" ref="tabEls" type="button"
-          role="tab" :aria-selected="mode === m" :aria-controls="`auth-panel-${m}`"
+          role="tab" :aria-selected="mode === m" aria-controls="auth-panel"
           :tabindex="mode === m ? 0 : -1" :class="{ on: mode === m }" @click="selectMode(m)">
           {{ TAB_LABEL[m] }}
         </button>
       </div>
 
-      <div :id="`auth-panel-${mode}`" role="tabpanel" :aria-labelledby="`auth-tab-${mode}`" tabindex="0">
+      <div id="auth-panel" role="tabpanel" :aria-labelledby="`auth-tab-${mode}`" tabindex="0">
         <!-- 登录 / 注册 / 找回密码：同一个表单，字段随模式显隐 -->
         <form class="auth-form" novalidate :aria-busy="accountBusy" @submit.prevent="onAccountSubmit">
           <template v-if="mode !== 'forgot'">
             <div class="auth-field">
-              <label class="auth-label" for="auth-handle">账号</label>
+              <label class="auth-label" for="auth-handle">{{ mode === 'login' ? '账号 / 邮箱' : '账号' }}</label>
               <input id="auth-handle" v-model="handle" v-bind="handleAttrs"
-                autocomplete="username" placeholder="2–24 位 a-z、0-9、-、_"
+                autocomplete="username"
+                :placeholder="mode === 'login' ? '账号或邮箱' : '2–24 位 a-z、0-9、-、_'"
                 :aria-invalid="!!accountErrors.handle"
                 :aria-describedby="accountErrors.handle ? 'err-account-handle' : undefined" />
               <p v-if="accountErrors.handle" id="err-account-handle" class="auth-err-inline" role="alert">
@@ -925,13 +1469,17 @@ onMounted(async () => {
 .auth-field { display: flex; flex-direction: column; gap: 0.3rem; }
 .auth-label { font-size: 0.82rem; color: var(--vp-c-text-2); }
 .auth-field-hint { margin: 0; }
-.auth-form input {
+.auth-form input,
+.auth-form textarea {
   width: 100%; box-sizing: border-box; padding: 0.55rem 0.65rem;
   border: 1px solid var(--vp-c-divider); border-radius: 8px;
   background: var(--vp-c-bg); color: var(--vp-c-text-1); font: inherit;
 }
-.auth-form input:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 1px; }
-.auth-form input[aria-invalid="true"] { border-color: var(--rw-danger); }
+.auth-form textarea { resize: vertical; line-height: 1.7; }
+.auth-form input:focus-visible,
+.auth-form textarea:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 1px; }
+.auth-form input[aria-invalid="true"],
+.auth-form textarea[aria-invalid="true"] { border-color: var(--rw-danger); }
 .auth-err-inline { margin: 0; font-size: 0.76rem; line-height: 1.6; color: var(--rw-danger); }
 .auth-primary {
   display: inline-flex; align-items: center; justify-content: center; min-height: 44px;
@@ -978,6 +1526,19 @@ onMounted(async () => {
 }
 .acct-panel:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 3px; }
 .acct-facts { display: grid; gap: 0.55rem; margin: 0 0 1rem; }
+.acct-profile-edit { margin: 0 0 1rem; }
+.auth-email-tools {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem;
+  margin: 0 0 0.8rem; padding-top: 0.8rem; border-top: 1px dashed var(--vp-c-divider);
+}
+.auth-check { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--vp-c-text-2); }
+.acct-profile-form { margin: 0 0 1rem; padding-top: 0.8rem; border-top: 1px dashed var(--vp-c-divider); }
+.acct-form-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.acct-sessions-foot {
+  margin-top: 1rem; padding-top: 0.8rem; border-top: 1px dashed var(--vp-c-divider);
+  display: flex; flex-direction: column; gap: 0.4rem; align-items: flex-start;
+}
+.acct-sessions-hint { margin: 0; }
 .acct-fact { display: grid; grid-template-columns: 5.5rem 1fr; gap: 0.6rem; align-items: baseline; }
 .acct-fact dt { color: var(--vp-c-text-3); font-size: 0.78rem; }
 .acct-fact dd {

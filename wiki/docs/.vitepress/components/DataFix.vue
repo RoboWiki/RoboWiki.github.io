@@ -106,6 +106,18 @@ function statusClass(status: string): string {
 
 const loginHref = computed(() => `/login?redirect=${encodeURIComponent(route.path)}`)
 
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '')
+
+/**
+ * 只有部件页（/parts/<category>/<slug>.html）才有 Part。
+ * 材质/工艺页虽然也有 share JSON，但没有 part id：在这里渲染会允许提交
+ * `part_patch`，服务端必然 404。所以材料页整块不初始化、不渲染。
+ */
+function isPartPage(pathname: string): boolean {
+  const p = BASE && pathname.startsWith(BASE) ? pathname.slice(BASE.length) : pathname
+  return p.startsWith('/parts/')
+}
+
 const token = () => getToken()
 
 /** detail 解析 + 401/429/断网文案统一在 lib/api，组件不再自己拼 base */
@@ -130,6 +142,9 @@ async function loadPage() {
   serverError.value = ''
   notice.value = ''
   verifySent.value = false
+
+  // 材料/工艺页没有 Part：不渲染纠错块，也不发 /auth/me 与 /submissions。
+  if (!isPartPage(window.location.pathname)) return
 
   const next = await findShareEntry(window.location.pathname)
   if (seq !== pageSeq) return

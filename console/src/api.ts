@@ -1,14 +1,34 @@
-/** API 客户端 + 类型。token 存 localStorage，请求自动带 Authorization。 */
+/** API 客户端 + 类型。token 存 localStorage，请求自动带 Authorization。
+ *
+ * 会话与网页端一致：access（短寿命）+ refresh（可轮换）。401 时用 refresh
+ * 换一对新 token 再重试原请求；refresh 也失效才清空本地会话。
+ */
 
-const TOKEN_KEY = 'roboselect.token'
+const ACCESS_KEY = 'roboselect.token'
+const REFRESH_KEY = 'roboselect.refresh'
 
 export const auth = {
   get token(): string | null {
-    return localStorage.getItem(TOKEN_KEY)
+    return localStorage.getItem(ACCESS_KEY)
   },
+  get refreshToken(): string | null {
+    return localStorage.getItem(REFRESH_KEY)
+  },
+  /** 登录 / 刷新成功后同时写入两项 */
+  setTokens(access: string | null, refresh: string | null) {
+    if (access) localStorage.setItem(ACCESS_KEY, access)
+    else localStorage.removeItem(ACCESS_KEY)
+    if (refresh) localStorage.setItem(REFRESH_KEY, refresh)
+    else localStorage.removeItem(REFRESH_KEY)
+  },
+  /** 兼容旧调用：只写 access，不动 refresh */
   set(token: string | null) {
-    if (token) localStorage.setItem(TOKEN_KEY, token)
-    else localStorage.removeItem(TOKEN_KEY)
+    if (token) localStorage.setItem(ACCESS_KEY, token)
+    else localStorage.removeItem(ACCESS_KEY)
+  },
+  clear() {
+    localStorage.removeItem(ACCESS_KEY)
+    localStorage.removeItem(REFRESH_KEY)
   },
 }
 
@@ -20,13 +40,56 @@ export class ApiError extends Error {
   }
 }
 
-async function req<T>(path: string, init?: RequestInit): Promise<T> {
-  const headers: Record<string, string> = { ...(init?.headers as any) }
-  if (init?.body) headers['Content-Type'] = 'application/json'
-  const t = auth.token
-  if (t) headers['Authorization'] = `Bearer ${t}`
+/** 模块级单飞：并发 401 只触发一次刷新，其余请求等同一个 Promise */
+let refreshing: Promise<boolean> | null = null
 
-  const r = await fetch(`/api${path}`, { ...init, headers })
+async function doRefresh(): Promise<boolean> {
+  const rt = auth.refreshToken
+  if (!rt) return false
+  try {
+    const r = await fetch('/api/v1/auth/refresh', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refresh_token: rt }),
+    })
+    const data = await r.json().catch(() => null)
+    // 4xx：refresh 已被撤销或过期 → 会话确定失效，清本地；
+    // 5xx 是服务端临时故障，保留 refresh 等下次
+    if (r.status >= 400 && r.status < 500) {
+      auth.clear()
+      return false
+    }
+    if (!r.ok || !data?.access_token) return false
+    auth.setTokens(data.access_token, data.refresh_token ?? rt)
+    return true
+  } catch {
+    // 网络错误 / 服务暂时不可达：保留 refresh，下次请求再试
+    return false
+  }
+}
+
+function refreshOnce(): Promise<boolean> {
+  if (!refreshing) refreshing = doRefresh().finally(() => { refreshing = null })
+  return refreshing
+}
+
+/** 统一请求：拼好完整 URL，401 时刷新一次并重试 */
+async function request<T>(url: string, init?: RequestInit, retryOnAuth = true): Promise<T> {
+  const send = (): Promise<Response> => {
+    const headers: Record<string, string> = { ...(init?.headers as any) }
+    if (init?.body) headers['Content-Type'] = 'application/json'
+    const t = auth.token
+    if (t) headers['Authorization'] = `Bearer ${t}`
+    return fetch(url, { ...init, headers })
+  }
+
+  const sentWith = auth.token
+  let r = await send()
+  if (r.status === 401 && retryOnAuth && auth.refreshToken) {
+    // 并发 401：若别的请求已经把 access 换新，直接重试，不重复刷新
+    if (auth.token && auth.token !== sentWith) r = await send()
+    else if (await refreshOnce()) r = await send()
+  }
   const text = await r.text()
   const data = text ? JSON.parse(text) : null
   if (!r.ok) {
@@ -39,23 +102,28 @@ async function req<T>(path: string, init?: RequestInit): Promise<T> {
   return data as T
 }
 
+async function req<T>(path: string, init?: RequestInit, retryOnAuth = true): Promise<T> {
+  return request<T>(`/api${path}`, init, retryOnAuth)
+}
+
 /** v1 规范接口（非 /admin 前缀），带同一份 Bearer token */
 export async function v1Req<T>(path: string, init?: RequestInit): Promise<T> {
-  const headers: Record<string, string> = { ...(init?.headers as any) }
-  if (init?.body) headers['Content-Type'] = 'application/json'
-  const t = auth.token
-  if (t) headers['Authorization'] = `Bearer ${t}`
-  const r = await fetch(`/api/v1${path}`, { ...init, headers })
-  const text = await r.text()
-  const data = text ? JSON.parse(text) : null
-  if (!r.ok) {
-    const detail = data?.detail
-    const msg = typeof detail === 'string' ? detail
-      : Array.isArray(detail) ? detail.map((d: any) => d.msg).join('；')
-        : `HTTP ${r.status}`
-    throw new ApiError(r.status, msg)
+  return request<T>(`/api/v1${path}`, init)
+}
+
+/** 退出：先撤销服务端会话，再清理本地（撤销失败不阻塞退出） */
+export async function logoutSession(): Promise<void> {
+  const rt = auth.refreshToken
+  try {
+    if (rt) {
+      await v1Req<{ ok: boolean }>('/auth/logout',
+        { method: 'POST', body: JSON.stringify({ refresh_token: rt }) })
+    }
+  } catch {
+    // 离线 / access 与 refresh 都过期：本地照样清掉
+  } finally {
+    auth.clear()
   }
-  return data as T
 }
 
 const qs = (o: Record<string, any>) => {
@@ -157,6 +225,13 @@ export interface Catalog {
   sortable: string[]
 }
 
+/** 登录 / 注册 / 刷新共用的会话响应 */
+export interface TokenPair {
+  access_token: string
+  refresh_token: string
+  user: User
+}
+
 // ── 端点 ──────────────────────────────────────────────────────────────────
 export const api = {
   health: () => req<{ ok: boolean; project: string }>('/health'),
@@ -184,12 +259,14 @@ export const api = {
   user: (handle: string) => req<User>(`/users/${encodeURIComponent(handle)}`),
   leaderboard: (limit = 10) => req<User[]>(`/leaderboard?limit=${limit}`),
 
+  // 登录/注册的 401 是「凭据不对」，不是 access 过期：不触发刷新重试
   register: (body: any) =>
-    req<{ access_token: string; user: User }>('/auth/register',
-      { method: 'POST', body: JSON.stringify(body) }),
+    req<TokenPair>('/auth/register',
+      { method: 'POST', body: JSON.stringify(body) }, false),
   login: (body: any) =>
-    req<{ access_token: string; user: User }>('/auth/login',
-      { method: 'POST', body: JSON.stringify(body) }),
+    req<TokenPair>('/auth/login',
+      { method: 'POST', body: JSON.stringify(body) }, false),
+  logout: logoutSession,
   me: () => req<User>('/auth/me'),
 
   exportDraft: (ids?: string[]) =>

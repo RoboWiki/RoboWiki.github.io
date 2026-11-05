@@ -71,6 +71,8 @@ class User(SQLModel, table=True):
     display_name: str
     email: str | None = Field(default=None, unique=True)
     email_verified: bool = False
+    #: 是否接收站内通知的邮件副本（回复/审核/安全事件）；默认关闭，用户主动开
+    email_notify: bool = False
     password_hash: str
     #: 是否设置过可用口令。第三方登录（GitHub / 小程序）建出来的账号拿着
     #: 一个没人知道的随机哈希，这里记 False —— 解绑最后一个身份前，
@@ -96,11 +98,36 @@ class EmailToken(SQLModel, table=True):
 
     id: int | None = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="users.id", index=True)
-    purpose: str = Field(index=True)          # verify | reset
+    purpose: str = Field(index=True)          # verify | reset | change_email
     token_hash: str = Field(index=True, unique=True)
+    #: 换绑邮箱时记录目标地址；只放在一次性令牌行里，确认后才写 users.email
+    meta: dict = Field(default_factory=dict, sa_column=Column(JSON))
     expires_at: datetime = Field(index=True)
     used_at: datetime | None = None
     created_at: datetime = Field(default_factory=utcnow)
+
+
+class EmailOutbox(SQLModel, table=True):
+    """异步邮件队列：站内通知的邮件副本由 worker 发送并重试。"""
+
+    __tablename__ = "email_outbox"
+    __table_args__ = (Index("ix_email_outbox_status_next", "status", "next_at"),)
+
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int | None = Field(default=None, foreign_key="users.id", index=True)
+    to_addr: str = Field(index=True)
+    subject: str
+    text: str
+    html: str | None = None
+    kind: str = "notification"
+    #: 同一事件只发一次；为空表示不去重
+    dedupe_key: str | None = Field(default=None, unique=True, index=True)
+    status: str = Field(default="pending", index=True)  # pending|running|done|failed
+    attempts: int = 0
+    next_at: datetime = Field(default_factory=utcnow, index=True)
+    last_error: str | None = None
+    created_at: datetime = Field(default_factory=utcnow)
+    sent_at: datetime | None = None
 
 
 class RefreshToken(SQLModel, table=True):

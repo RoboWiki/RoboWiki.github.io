@@ -74,6 +74,7 @@ function main() {
 
   checkConfigAndShare()
   checkNoSecrets(files)
+  checkPartComments()
 
   return checkApiAuth().then(() => {
     console.log(`mini check ok: ${js} JS, ${json} JSON, ${wxml} WXML, appid ${project.appid}`)
@@ -252,6 +253,52 @@ function checkNoSecrets(files) {
       throw new Error(`${file} 含有不该进客户端的密钥 / 会话字段`)
     }
   }
+}
+
+/**
+ * 讨论配图分段与归属是纯逻辑：本站 /api/v1/media/<id> 切图片，
+ * 外链保持文本；评论只按 handle 判定「是不是我」。用 Page() 捕获页面定义，
+ * 不需要微信运行时。
+ */
+function checkPartComments() {
+  const pagePath = path.join(ROOT, 'pages', 'part', 'part.js')
+  let page = null
+  global.Page = def => { page = def }
+  try {
+    delete require.cache[require.resolve(pagePath)]
+    require(pagePath)
+  } finally {
+    delete global.Page
+  }
+  assert(page && typeof page.buildComments === 'function', 'part.js 没有 buildComments')
+
+  const id = '0123456789abcdef0123456789abcdef'
+  const rows = [
+    {
+      id: 1, body: '看图 /api/v1/media/' + id + ' 结束', status: 'visible',
+      created_at: '2026-01-01T00:00:00Z',
+      author: { handle: 'wx-1', display_name: '我' },
+    },
+    {
+      id: 2, body: '外链 https://evil.example/api/v1/media/' + id, status: 'visible',
+      created_at: '2026-01-01T00:00:00Z',
+      author: { handle: 'wx-2', display_name: '别人' },
+    },
+  ]
+  const out = page.buildComments(rows, 'wx-1')
+  const mine = out.find(c => c.id === 1)
+  const other = out.find(c => c.id === 2)
+  assert(mine.segments.some(s => s.type === 'image'), '本站媒体 URL 没有切成图片')
+  assert(mine.segments.some(s => s.type === 'text' && /结束/.test(s.text)), '图片前后的文本丢了')
+  assert(mine.segments.some(s => s.type === 'image' && s.src === configApi() + '/media/' + id),
+    '图片 src 没有指向当前 API')
+  assert(!other.segments.some(s => s.type === 'image'), '外链媒体 URL 不应渲染成图片')
+  assert(mine.canDelete === true && other.canDelete === false, '评论归属判断不对')
+  console.log('comments: 本站配图分段 / 归属判断通过')
+}
+
+function configApi() {
+  return require(path.join(ROOT, 'config.js')).API
 }
 
 /** 环境映射与分享 URL 是契约，不该只靠 README 口述。 */

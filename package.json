@@ -1,0 +1,13 @@
+{
+  "name": "robowiki-monorepo",
+  "private": true,
+  "packageManager": "pnpm@10.0.0",
+  "scripts": {
+    "dev:web": "pnpm --filter @robowiki/web dev",
+    "build:web": "pnpm --filter @robowiki/web build",
+    "dev:app": "pnpm --filter @robowiki/app dev:h5",
+    "build:app:h5": "pnpm --filter @robowiki/app build:h5",
+    "build:app:weapp": "pnpm --filter @robowiki/app build:weapp",
+    "typecheck": "pnpm -r typecheck"
+  }
+}

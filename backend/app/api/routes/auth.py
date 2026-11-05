@@ -26,12 +26,14 @@ from ...core.security import (create_token, dummy_password_hash, hash_password,
                               hash_secret, new_handoff_code, new_refresh_token,
                               unusable_password_hash, verify_password)
 from ...crud import user_out
-from ...mailer import MailError, send_email
+from ...email_templates import render_email
+from ...mailer import MailError, enqueue_email, send_email
 from ...models import EmailToken, HandoffCode, Identity, RefreshToken, User
-from ...schemas import (AccountOut, ForgotIn, HandoffIn, IdentityOut, LoginIn,
-                        LogoutIn, PasswordChangeIn, ProvidersOut, RefreshIn,
-                        RegisterIn, ResetPasswordIn, SessionOut, TokenOut,
-                        VerifyEmailIn, WechatMiniIn)
+from ...schemas import (AccountOut, AccountUpdateIn, EmailChangeConfirmIn,
+                        EmailChangeIn, ForgotIn, HandoffIn, IdentityOut,
+                        LoginIn, LogoutIn, PasswordChangeIn, PasswordSetIn,
+                        ProvidersOut, RefreshIn, RegisterIn, ResetPasswordIn,
+                        SessionOut, TokenOut, VerifyEmailIn, WechatMiniIn)
 from ..deps import CurrentUser, Db, rate_limit
 
 # OAuth/OIDC 的协议细节（授权码、state、PKCE）全部交给 Authlib。
@@ -61,7 +63,20 @@ def _account_out(db: Session, u: User) -> AccountOut:
     """UserOut（公开资料）+ 仅本人可见的邮箱 / 口令状态。"""
     base = user_out(db, u)
     return AccountOut(**base.model_dump(), email=u.email,
-                      password_set=u.password_set)
+                      password_set=u.password_set,
+                      email_notify=u.email_notify)
+
+
+def _queue_security_mail(db: Session, user: User, title: str, body: str) -> None:
+    """安全事件邮件进 outbox：不阻塞请求，失败由 worker 重试。"""
+    if not user.email or not user.email_verified:
+        return
+    subject, text, html = render_email(
+        "security", subject=f"RoboWiki {title}", title=title, body=body)
+    enqueue_email(db, to=user.email, subject=subject, text=text, html=html,
+                  kind="security", user_id=user.id,
+                  dedupe_key=f"security:{user.id}:{title}:{int(datetime.now().timestamp())}")
+    db.commit()
 
 
 @router.get("/providers", response_model=ProvidersOut)
@@ -82,16 +97,17 @@ def providers():
 @router.post("/register", response_model=TokenOut, status_code=201)
 def register(payload: RegisterIn, request: Request, db: Db):
     rate_limit(request, "register", 20)
+    email = payload.email.strip().lower() if payload.email else None
     if db.exec(select(User).where(User.handle == payload.handle)).first():
         raise HTTPException(status.HTTP_409_CONFLICT, "这个 handle 已被占用")
-    if payload.email and db.exec(select(User).where(User.email == payload.email)).first():
+    if email and db.exec(select(User).where(User.email == email)).first():
         # 内部照样拦住重复创建，但对外只说「没注册成功」——不能变成邮箱枚举接口。
         # 先跑一次同成本的哑哈希，避免「邮箱已存在」分支明显更快。
         verify_password(payload.password, dummy_password_hash())
         raise HTTPException(status.HTTP_400_BAD_REQUEST, _REGISTER_FAILED)
 
     u = User(handle=payload.handle, display_name=payload.display_name,
-             email=payload.email, password_hash=hash_password(payload.password),
+             email=email, password_hash=hash_password(payload.password),
              avatar_hue=abs(hash(payload.handle)) % 360)
     db.add(u)
     db.commit()
@@ -102,7 +118,10 @@ def register(payload: RegisterIn, request: Request, db: Db):
 @router.post("/login", response_model=TokenOut)
 def login(payload: LoginIn, request: Request, db: Db):
     rate_limit(request, "login", 30)
-    u = db.exec(select(User).where(User.handle == payload.handle.lower())).first()
+    ident = payload.handle.strip().lower()
+    # 账号或邮箱都能登录：老用户不用记 handle，邮箱注册的账号也符合直觉。
+    u = db.exec(select(User).where(
+        (User.handle == ident) | (User.email == ident))).first()
     # 用户不存在时也拿固定的哑哈希跑一次 PBKDF2：否则「先查库、有才哈希」
     # 会让响应时长差出一个数量级，等于把账号是否存在送出去。
     stored = u.password_hash if u is not None else dummy_password_hash()
@@ -117,8 +136,33 @@ def me(user: CurrentUser, db: Db):
     return _account_out(db, user)
 
 
+@router.patch("/me", response_model=AccountOut)
+def update_me(payload: AccountUpdateIn, request: Request, user: CurrentUser, db: Db):
+    """本人编辑公开资料。邮箱与登录身份不在这里改，避免绕过验证。"""
+    rate_limit(request, "profile-update", 30, user.id)
+    data = payload.model_dump(exclude_unset=True)
+    if "display_name" in data:
+        name = (data["display_name"] or "").strip()
+        if not name:
+            raise HTTPException(422, "显示名不能为空")
+        user.display_name = name
+    if "bio" in data:
+        user.bio = (data["bio"] or "").strip()
+    if "avatar_hue" in data and data["avatar_hue"] is not None:
+        user.avatar_hue = int(data["avatar_hue"])
+    if "email_notify" in data and data["email_notify"] is not None:
+        user.email_notify = bool(data["email_notify"])
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return _account_out(db, user)
+
+
 def _hash(raw: str) -> str:
     return hashlib.sha256(raw.encode()).hexdigest()
+
+
+_EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$")
 
 
 # ── 会话：access 短寿命 + refresh 轮换 ───────────────────────────────────────
@@ -243,6 +287,19 @@ def list_sessions(user: CurrentUser, db: Db):
                        expires_at=r.expires_at) for r in rows]
 
 
+@router.delete("/sessions/{session_id}", status_code=204)
+def revoke_session(session_id: int, user: CurrentUser, db: Db):
+    """撤销自己的某个设备会话；当前 access 会自然到期，不强制全端下线。"""
+    row = db.get(RefreshToken, session_id)
+    if row is None or row.user_id != user.id:
+        raise HTTPException(404, "会话不存在")
+    if row.revoked_at is None:
+        row.revoked_at = _utcnow()
+        db.add(row)
+        db.commit()
+    return None
+
+
 @router.post("/logout")
 def logout(request: Request, user: CurrentUser, db: Db,
            payload: LogoutIn | None = None):
@@ -358,7 +415,7 @@ def exchange_handoff(payload: HandoffIn, request: Request, db: Db):
     return _issue_session(db, user, request)
 
 
-def _issue(db: Db, user: User, purpose: str) -> str:
+def _issue(db: Db, user: User, purpose: str, meta: dict | None = None) -> str:
     now = datetime.now(timezone.utc)
     for old in db.exec(select(EmailToken).where(
             EmailToken.user_id == user.id, EmailToken.purpose == purpose,
@@ -367,12 +424,13 @@ def _issue(db: Db, user: User, purpose: str) -> str:
         db.add(old)
     raw = secrets.token_urlsafe(32)
     db.add(EmailToken(user_id=user.id, purpose=purpose, token_hash=_hash(raw),
+                      meta=meta or {},
                       expires_at=now + timedelta(minutes=settings.email_token_minutes)))
     db.commit()
     return raw
 
 
-def _consume(db: Db, raw: str, purpose: str) -> User:
+def _consume(db: Db, raw: str, purpose: str) -> tuple[User, EmailToken]:
     now = datetime.now(timezone.utc)
     token_hash = _hash(raw)
     # 条件 UPDATE 保证一次性：重置/验证令牌并发提交时只有一个能成功。
@@ -389,9 +447,9 @@ def _consume(db: Db, raw: str, purpose: str) -> User:
     row = db.exec(select(EmailToken).where(
         EmailToken.token_hash == token_hash)).first()
     user = db.get(User, row.user_id) if row is not None else None
-    if user is None:
+    if user is None or row is None:
         raise HTTPException(400, "用户不存在")
-    return user
+    return user, row
 
 
 @router.post("/email/verify/request")
@@ -402,11 +460,9 @@ def request_email_verify(request: Request, user: CurrentUser, db: Db):
     if user.email_verified:
         return {"ok": True, "email_verified": True}
     raw = _issue(db, user, "verify")
+    subject, text, html = render_email("verify", token=raw)
     try:
-        send_email(user.email, "RoboWiki 邮箱验证",
-                   f"验证令牌：{raw}\n"
-                   f"有效期 {settings.email_token_minutes} 分钟。\n"
-                   "在站点登录后打开「验证邮箱」输入该令牌即可。")
+        send_email(user.email, subject, text, html)
     except MailError as exc:
         # 已登录用户不必用「没发出去也回 200」防枚举：直接告诉他是发信环节坏了，
         # 令牌行仍有效，修好 SMTP 后重发即可（重发会作废旧令牌）。
@@ -418,7 +474,7 @@ def request_email_verify(request: Request, user: CurrentUser, db: Db):
 
 @router.post("/email/verify", response_model=AccountOut)
 def verify_email(payload: VerifyEmailIn, db: Db):
-    user = _consume(db, payload.token, "verify")
+    user, _row = _consume(db, payload.token, "verify")
     user.email_verified = True
     db.add(user)
     db.commit()
@@ -426,17 +482,79 @@ def verify_email(payload: VerifyEmailIn, db: Db):
     return _account_out(db, user)
 
 
+@router.post("/email/change/request")
+def request_email_change(payload: EmailChangeIn, request: Request,
+                         user: CurrentUser, db: Db):
+    """向新邮箱发确认令牌；确认后才真正换绑。"""
+    rate_limit(request, "email-change", 10, user.id)
+    email = payload.email.strip().lower()
+    if not _EMAIL_RE.match(email):
+        raise HTTPException(422, "邮箱格式不正确")
+    if email == (user.email or "").lower():
+        raise HTTPException(422, "这已经是当前邮箱")
+    taken = db.exec(select(User).where(User.email == email,
+                                       User.id != user.id)).first()
+    if taken is not None:
+        raise HTTPException(409, "这个邮箱已被其他账号使用")
+    # 已设置口令的账号换邮箱必须再验一次口令，避免被盗会话直接换绑。
+    if user.password_set and not verify_password(payload.password or "",
+                                                  user.password_hash):
+        raise HTTPException(403, "当前密码不正确")
+
+    raw = _issue(db, user, "change_email", {"email": email})
+    subject, text, html = render_email("change_email", token=raw, email=email)
+    try:
+        send_email(email, subject, text, html)
+    except MailError as exc:
+        log.error("change email send failed user=%s: %s", user.handle, exc)
+        raise HTTPException(503, "确认邮件发送失败，请稍后再试") from exc
+    return {"ok": True, "email": email}
+
+
+@router.post("/email/change/confirm", response_model=TokenOut)
+def confirm_email_change(payload: EmailChangeConfirmIn, request: Request,
+                         user: CurrentUser, db: Db):
+    """确认换绑：写新邮箱、撤销全部旧会话并签发新 token。"""
+    owner, row = _consume(db, payload.token, "change_email")
+    if owner.id != user.id:
+        raise HTTPException(400, "令牌不属于当前账号")
+    email = str((row.meta or {}).get("email") or "").strip().lower()
+    if not email:
+        raise HTTPException(400, "令牌缺少目标邮箱，请重新发起")
+    taken = db.exec(select(User).where(User.email == email,
+                                       User.id != user.id)).first()
+    if taken is not None:
+        raise HTTPException(409, "这个邮箱已被其他账号使用")
+    old_email = user.email
+    user.email = email
+    user.email_verified = True
+    user.session_epoch = int(user.session_epoch or 0) + 1
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    _revoke_all_sessions(db, user.id)
+    if old_email and old_email.lower() != email:
+        subject, text, html = render_email(
+            "security", subject="RoboWiki 邮箱已更换",
+            title="邮箱已更换",
+            body=f"你的 RoboWiki 账号邮箱已从 {old_email} 更换为 {email}。")
+        enqueue_email(db, to=old_email, subject=subject, text=text, html=html,
+                      kind="security", user_id=user.id,
+                      dedupe_key=f"email-change:{user.id}:{int(datetime.now().timestamp())}")
+        db.commit()
+    return _issue_session(db, user, request, scopes=("email",))
+
+
 @router.post("/password/forgot", status_code=202)
 def forgot_password(payload: ForgotIn, request: Request, db: Db):
     rate_limit(request, "password-forgot", 10)
-    u = db.exec(select(User).where(User.email == payload.email.strip())).first()
+    u = db.exec(select(User).where(
+        User.email == payload.email.strip().lower())).first()
     if u is not None:
         raw = _issue(db, u, "reset")
+        subject, text, html = render_email("reset", token=raw)
         try:
-            send_email(u.email or "", "RoboWiki 重置密码",
-                       f"重置令牌：{raw}\n"
-                       f"有效期 {settings.email_token_minutes} 分钟。\n"
-                       "在登录框选择「找回密码」并输入该令牌与新密码。")
+            send_email(u.email or "", subject, text, html)
         except MailError as exc:
             # 这个接口对「邮箱是否存在」必须保持同一个响应（202），所以发信失败
             # 只能记日志，不能改成 503 —— 否则 503/202 本身就是枚举信号。
@@ -447,10 +565,11 @@ def forgot_password(payload: ForgotIn, request: Request, db: Db):
 
 @router.post("/password/reset")
 def reset_password(payload: ResetPasswordIn, db: Db):
-    user = _consume(db, payload.token, "reset")
+    user, _row = _consume(db, payload.token, "reset")
     user.password_hash = hash_password(payload.password)
     # 找回密码 = 账号重新拥有可用口令；第三方登录建出来的账号从此也能口令登录
     user.password_set = True
+    user.email_verified = True
     # 口令被重置意味着「可能有别人拿到过账号」：所有旧会话（access + refresh）
     # 一并作废，不能留下一条能用 refresh 续出 access 的漏网链。
     user.session_epoch = int(user.session_epoch or 0) + 1
@@ -461,6 +580,8 @@ def reset_password(payload: ResetPasswordIn, db: Db):
         db.add(t)
     db.commit()
     _revoke_all_sessions(db, user.id)
+    _queue_security_mail(db, user, "密码已重置",
+                         "你的密码已通过邮箱重置，所有旧会话已失效。")
     return {"ok": True}
 
 
@@ -487,6 +608,28 @@ def change_password(payload: PasswordChangeIn, request: Request,
     db.commit()
     db.refresh(user)
     _revoke_all_sessions(db, user.id)
+    _queue_security_mail(db, user, "密码已修改",
+                         "你的 RoboWiki 密码已修改，其他设备上的会话已全部失效。")
+    return _issue_session(db, user, request, scopes=("password",))
+
+
+@router.post("/password/set", response_model=TokenOut)
+def set_password(payload: PasswordSetIn, request: Request,
+                 user: CurrentUser, db: Db):
+    """给第三方建号首次设置本站密码；已设过的走 /password/change。"""
+    rate_limit(request, "password-set", 10, user.id)
+    if user.password_set:
+        raise HTTPException(409, "本站密码已设置，请使用修改密码")
+    user.password_hash = hash_password(payload.password)
+    user.password_set = True
+    # 设密等于新增一条登录方式：旧 access/refresh 全部作废，只保留本次签发的新会话。
+    user.session_epoch = int(user.session_epoch or 0) + 1
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    _revoke_all_sessions(db, user.id)
+    _queue_security_mail(db, user, "本站密码已设置",
+                         "你的 RoboWiki 账号已设置本站密码；旧会话已全部失效。")
     return _issue_session(db, user, request, scopes=("password",))
 
 
@@ -803,6 +946,7 @@ def _user_for_identity(db: Session, *, provider: str, subject: str,
       · 未验证但已经绑过别的身份：不并，另建账号 —— 否则攻击者可以先占邮箱
         再绑自己的 GitHub，等受害者登录时把受害者并进攻击者控制的账号。
     """
+    email = email.strip().lower() if email else None
     ident = db.exec(select(Identity).where(Identity.provider == provider,
                                           Identity.subject == subject)).first()
     if ident is not None:

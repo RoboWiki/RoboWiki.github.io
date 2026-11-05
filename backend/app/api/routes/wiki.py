@@ -18,9 +18,10 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import Annotated
+from typing import Annotated, Literal
 
 from fastapi import APIRouter, HTTPException, Query, Request
+from pydantic import BaseModel
 from sqlalchemy import func
 from sqlmodel import select
 
@@ -238,6 +239,36 @@ def create_comment(payload: WikiCommentIn, request: Request,
             subject="有人回复了你的讨论",
             body=snippet, link=f"/{page}#comment-{c.id}", actor_id=user.id)
 
+    db.commit()
+    db.refresh(c)
+    return _out(c, user)
+
+
+class WikiCommentModerationIn(BaseModel):
+    action: Literal["approve", "hide"]
+
+
+@router.patch("/comments/{cid}/moderation")
+def moderate_comment(cid: int, payload: WikiCommentModerationIn,
+                     user: CurrentUser, db: Db):
+    """站务处置待审讨论：通过后公开，隐藏后从公开线程移除。"""
+    if not user.is_staff:
+        raise HTTPException(403, "只有站务可以审核讨论")
+    c = db.get(WikiComment, cid)
+    if c is None or c.deleted_at is not None:
+        raise HTTPException(404, "讨论不存在")
+    if payload.action == "approve":
+        c.status = "visible"
+        c.hidden = False
+    else:
+        c.status = "hidden"
+        c.hidden = True
+    db.add(c)
+    create_notification(
+        db, c.user_id, type="moderation",
+        subject="你的讨论已通过审核" if payload.action == "approve" else "你的讨论已被隐藏",
+        body=(c.body or "")[:120],
+        link=f"/{c.page}#comment-{c.id}", actor_id=user.id)
     db.commit()
     db.refresh(c)
     return _out(c, user)

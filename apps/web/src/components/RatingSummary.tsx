@@ -1,0 +1,151 @@
+import { useEffect, useState } from 'react'
+import { api } from '@/lib/api'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import type { RatingSummary as RatingData } from '@robowiki/core'
+
+const APP_PART_PATH = '/app/#/pages/part/index?id='
+
+type State =
+  | { status: 'loading' }
+  | { status: 'error' }
+  | { status: 'ready'; data: RatingData }
+
+function Stars({ value }: { value: number }) {
+  return (
+    <span className="flex items-center gap-0.5" aria-hidden="true">
+      {[1, 2, 3, 4, 5].map(n => (
+        <span key={n} className={n <= Math.round(value) ? 'text-amber-500' : 'text-slate-300'}>★</span>
+      ))}
+    </span>
+  )
+}
+
+export default function RatingSummary({ partId }: { partId: string }) {
+  const [state, setState] = useState<State>({ status: 'loading' })
+  const [attempt, setAttempt] = useState(0)
+  const interactiveHref = `${typeof location === 'undefined' ? 'https://robowiki.org.cn' : location.origin}${APP_PART_PATH}${encodeURIComponent(partId)}`
+
+  useEffect(() => {
+    let alive = true
+    setState({ status: 'loading' })
+    api.getRating(partId)
+      .then(data => { if (alive) setState({ status: 'ready', data }) })
+      .catch(() => { if (alive) setState({ status: 'error' }) })
+    return () => { alive = false }
+  }, [partId, attempt])
+
+  if (state.status === 'loading') {
+    return (
+      <div className="space-y-3" role="status" aria-live="polite">
+        <span className="sr-only">正在加载评分</span>
+        <div className="h-9 w-24 animate-pulse rounded-lg bg-slate-100" aria-hidden="true" />
+        <div className="h-3 w-full animate-pulse rounded bg-slate-100" aria-hidden="true" />
+        <div className="h-3 w-4/5 animate-pulse rounded bg-slate-100" aria-hidden="true" />
+      </div>
+    )
+  }
+
+  if (state.status === 'error') {
+    return (
+      <div className="space-y-2" role="alert">
+        <p className="text-sm leading-6 text-slate-600">评分暂时拉取不到，可能是网络或接口限制。</p>
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="min-h-11 sm:min-h-8"
+            onClick={() => setAttempt(v => v + 1)}
+          >
+            重试
+          </Button>
+          <a
+            href={interactiveHref}
+            target="_blank"
+            rel="noopener"
+            className="inline-flex min-h-11 items-center gap-1 rounded-lg px-2 text-xs font-medium text-blue-700 hover:bg-blue-50 sm:min-h-8"
+          >
+            去互动版查看<span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+    )
+  }
+
+  const { data } = state
+  const count = Math.max(0, Number(data.count) || 0)
+  const avg = typeof data.avg === 'number' && Number.isFinite(data.avg) ? data.avg : null
+  const hasRating = count > 0 && avg !== null
+  const histogram = data.histogram || {}
+  const mine = data.mine ?? null
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="flex items-baseline gap-1">
+            <span className="text-3xl font-bold tabular-nums text-slate-900">{hasRating ? avg!.toFixed(1) : '—'}</span>
+            <span className="text-xs text-slate-400">/ 5</span>
+          </div>
+          <p className="mt-1 text-xs text-slate-500">
+            {hasRating ? `${count} 人评分` : '暂无评分样本'}
+          </p>
+        </div>
+        {hasRating && count < 3 && <Badge variant="warning">样本不足</Badge>}
+      </div>
+
+      {hasRating ? (
+        <>
+          <div className="flex items-center gap-2">
+            <Stars value={avg!} />
+            <span className="text-xs text-slate-500">
+              平均 <span className="font-medium tabular-nums text-slate-700">{avg!.toFixed(1)}</span> 分
+            </span>
+          </div>
+          <ul className="space-y-1.5" aria-label="评分分布">
+            {[5, 4, 3, 2, 1].map(score => {
+              const n = Number(histogram[String(score)]) || 0
+              const pct = count ? Math.round((n / count) * 100) : 0
+              return (
+                <li key={score} className="flex items-center gap-2 text-xs text-slate-500">
+                  <span className="w-7 shrink-0 tabular-nums">{score} 星</span>
+                  <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-100" aria-hidden="true">
+                    <span className="block h-full rounded-full bg-blue-500" style={{ width: `${pct}%` }} />
+                  </span>
+                  <span className="w-16 shrink-0 text-right tabular-nums">{n} 人 · {pct}%</span>
+                  <span className="sr-only">{score} 星 {n} 人，占 {pct}%</span>
+                </li>
+              )
+            })}
+          </ul>
+        </>
+      ) : (
+        <p className="rounded-lg bg-slate-50 p-3 text-xs leading-5 text-slate-500">
+          还没有人留下真实使用评分。缺数据就是缺数据，这里不做推测，也不显示 0 分。
+        </p>
+      )}
+
+      <div className="space-y-2 rounded-lg border border-slate-200 bg-slate-50/70 p-3">
+        {mine ? (
+          <p className="text-xs leading-5 text-slate-700">
+            你已打分 <span className="font-semibold tabular-nums">{mine.score}</span> 分
+            {mine.own_hardware && <span className="text-slate-500"> · 基于自有硬件</span>}
+            {mine.hidden && <span className="text-slate-500"> · 待审核</span>}
+          </p>
+        ) : (
+          <p className="text-xs leading-5 text-slate-500">未登录或还没打分。登录互动版后可以打分、写使用备注。</p>
+        )}
+        <a
+          href={interactiveHref}
+          target="_blank"
+          rel="noopener"
+          className="inline-flex min-h-11 items-center gap-1 rounded-lg bg-slate-900 px-3 text-xs font-medium text-white hover:bg-slate-700 sm:min-h-9"
+        >
+          去互动版评分 / 评论<span aria-hidden="true">↗</span>
+          <span className="sr-only">（在 robowiki.org.cn 打开，新窗口）</span>
+        </a>
+      </div>
+    </div>
+  )
+}

@@ -103,6 +103,30 @@ class AccountOut(UserOut):
     email: str | None = None
     #: False = 第三方建号（口令是随机串，没人知道），只能靠绑定的身份进来
     password_set: bool = False
+    email_notify: bool = False
+
+
+class AccountUpdateIn(BaseModel):
+    """本人可改的公开资料；邮箱/身份走验证流程，不在这里直接改。"""
+
+    display_name: str | None = Field(default=None, min_length=1, max_length=32)
+    bio: str | None = Field(default=None, max_length=500)
+    avatar_hue: int | None = Field(default=None, ge=0, le=359)
+    email_notify: bool | None = None
+
+
+class PasswordSetIn(BaseModel):
+    password: str = Field(min_length=6, max_length=128)
+
+
+class EmailChangeIn(BaseModel):
+    email: str = Field(min_length=3, max_length=200)
+    #: 已设置密码的账号必须验证当前口令；第三方建号可不填
+    password: str | None = Field(default=None, max_length=128)
+
+
+class EmailChangeConfirmIn(BaseModel):
+    token: str = Field(min_length=10, max_length=200)
 
 
 class TokenOut(BaseModel):

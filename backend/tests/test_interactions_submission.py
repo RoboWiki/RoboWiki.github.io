@@ -253,3 +253,21 @@ def test_duplicate_review_returns_409(client, staff):
     assert again.status_code == 409, again.text
     # 改成驳回也不行：状态已经不是 pending
     assert review(client, staff, sid, "rejected", "duplicate", "重复提案").status_code == 409
+
+
+def test_review_notifies_submitter(client, staff):
+    r = client.post("/api/v1/auth/register", json={
+        "handle": "notify-submitter", "display_name": "提案人",
+        "password": "pass1234",
+    })
+    assert r.status_code == 201, r.text
+    user = {"Authorization": f"Bearer {r.json()['access_token']}"}
+
+    sid = submit(client, user, {"price_cny": 3111.0}).json()["id"]
+    assert review(client, staff, sid, "rejected", "wrong_value",
+                  "官网价格不对").status_code == 200
+
+    notes = client.get("/api/v1/notifications", headers=user).json()
+    hit = [n for n in notes["items"] if n["type"] == "moderation"]
+    assert hit and "驳回" in hit[0]["subject"]
+    assert "官网价格不对" in hit[0]["body"]

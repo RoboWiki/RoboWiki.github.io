@@ -10,8 +10,8 @@ const gh = 'https://github.com/RoboWiki/RoboWiki.github.io'
 const forms = [
   {
     t: '写评价 / 打分',
-    d: '必填只有三项：总分 → 用没用过 → 一句话理由。四个维度分和使用工况都是可选，不填也能提交。',
-    href: `${gh}/issues/new?template=rate-part.yml&labels=rating`,
+    d: '部件页底部可直接打 1–5 分，登录后提交，不用 GitHub。需要四维分、使用工况或长实测时，再用 GitHub 表单。',
+    href: '/catalog',
     who: '用过或用过同类件的人 · 约 30 秒',
   },
   {
@@ -22,7 +22,7 @@ const forms = [
   },
   {
     t: '纠参数 / 补数据',
-    d: '发现数错了、缺了，或者你有官方 PDF。写清「哪个件、哪个字段、应该是什么、依据」即可，不需要会 git。',
+    d: '部件页底部已有站内纠错表单：登录后写清哪个字段、正确的值和依据即可。批量修改、一次改多个件，或页面上没有站内入口时，用这个 GitHub 表单。',
     href: `${gh}/issues/new?template=data-fix.yml&labels=data-fix`,
     who: '任何人 · 约 2 分钟',
   },
@@ -47,29 +47,34 @@ const forms = [
     <h1>五种投稿，按你手里的东西选。</h1>
     <p>
       有实测就写实测，有证据就纠数据，用过就写评价，能写清楚就写文章。
-      <strong>下面这些开源投稿只需要一个 GitHub 账号</strong>，署名就是你的 GitHub 账号，可追溯。
-      站内账号用于站内评分、评论与参数纠错；<a href="/login">登录 / 注册</a>后不需要 GitHub 也能参与。
+      <strong>写实测、写文章、批量加型号改结构走 GitHub，只需要一个 GitHub 账号</strong>，
+      署名就是你的 GitHub 账号，可追溯。
+      评分和单个参数纠错可以直接在站内完成：<a href="/login">登录 / 注册</a>后不用 GitHub 也能参与。
     </p>
     <p>
-      只想纠一个参数？<a href="/catalog">部件页</a>有站内评分、纠错与讨论入口（需登录）：
+      只想纠一个参数？<a href="/catalog">部件页</a>底部有站内评分、纠错与讨论入口（需登录）：
       审核通过后由 worker 开 PR，合并并发布数据版本后页面才更新。
     </p>
     <p>
-      快速打分直接用部件页的站内 1–5 分表单；需要四维分、使用工况或长实测时，再用下面的 GitHub 表单。
+      快速打分直接用部件页的站内 1–5 分表单；需要四维分、使用工况或长实测时，再用
+      <a :href="`${gh}/issues/new?template=rate-part.yml&labels=rating`" target="_blank" rel="noopener">GitHub 评分表单</a>
+      或下面的实测卡片。
     </p>
   </header>
 
   <section class="submission-steps">
     <h2>三步走完</h2>
     <ol>
-      <li><b>选卡片</b>：在下面五张卡里点最像你手里东西的那张，跳到 GitHub 表单。</li>
-      <li><b>填表单</b>：从部件页点「写评价 / 写实测」进来时，部件 id 已经自动带进标题，不用手抄。必填项尽量少，可选写了「可选」的就是可以不填。</li>
-      <li><b>提交即完成</b>：评分和实测由机器人自动聚合，不用等人工。想知道后续，看下面「投稿之后会怎样」。</li>
+      <li><b>选卡片</b>：在下面五张卡里点最像你手里东西的那张。评分直接去部件页打 1–5 分；单个参数纠错优先用部件页底部的站内表单；其余卡片跳到 GitHub 表单。</li>
+      <li><b>填表单</b>：从部件页点「写评价 / 写实测」进来时，部件 id 已经自动带进标题，不用手抄。站内表单会带上当前部件；必填项尽量少，可选写了「可选」的就是可以不填。</li>
+      <li><b>提交即完成</b>：站内评分与纠错提交后即时入库、等待审核；GitHub 评分和实测由机器人自动聚合。想知道后续，看下面「投稿之后会怎样」。</li>
     </ol>
   </section>
 
   <div class="submission-grid">
-    <a v-for="f in forms" :key="f.t" class="submission-card" :href="f.href" target="_blank" rel="noopener">
+    <a v-for="f in forms" :key="f.t" class="submission-card" :href="f.href"
+      :target="f.href.startsWith('http') ? '_blank' : undefined"
+      :rel="f.href.startsWith('http') ? 'noopener' : undefined">
       <b>{{ f.t }}</b>
       <p>{{ f.d }}</p>
       <span class="submission-who">{{ f.who }}</span>
@@ -79,7 +84,7 @@ const forms = [
   <section class="submission-note">
     <h2>投稿之后会怎样</h2>
     <ol>
-      <li><b>评分 / 实测</b>：提交后由 Actions 聚合成快照；站点在下一次数据发布后更新（不是实时）。每条都能查到是谁、凭什么。如果表单解析失败（比如部件 id 写错），这条会进错误日志而不会悄悄消失，维护者会看到并联系你。</li>
+      <li><b>评分 / 实测</b>：站内评分与纠错直接进后台、按审核流程处理；GitHub 表单提交的评分 / 实测由 Actions 聚合成快照。站点在下一次数据发布后更新（不是实时）。每条都能查到是谁、凭什么。如果表单解析失败（比如部件 id 写错），这条会进错误日志而不会悄悄消失，维护者会看到并联系你。</li>
       <li><b>纠错</b>：维护者把它转成提案，记录字段旧值、新值与依据；审核通过后由 worker 开 PR。
         <b>合并并发布 <code>data-v*</code> release 后</b>目录才更新 —— 后台不会直接改线上数据。</li>
       <li><b>文章</b>：过编辑评审后进「学习路线」，登记到 <code>data/learn.json</code>，并标注难度与预计阅读时长。评审不通过会在 issue 里说明原因。</li>
@@ -90,7 +95,8 @@ const forms = [
   <section class="submission-note">
     <h2>评分是怎么算的</h2>
     <ul>
-      <li><b>一人一件一票</b>：唯一键 = 你的 GitHub 账号 + 部件 id。改主意就<b>编辑原 issue</b>，
+      <li><b>一人一件一票</b>：唯一键 = 你的账号 + 部件 id（站内账号与 GitHub 登录共用同一个账号）。
+        站内评分再提交会覆盖上一次；GitHub 表单改主意就<b>编辑原 issue</b>，
         重复开新的只会被聚合脚本按最新一条覆盖，不会变成两票。</li>
       <li><b>维度分只统计填了的</b>：只统计填了该项的样本，所以页面会显示成 <code>4.6/5</code>、
         <code>2.8/3</code> —— 斜杠后是这一维的实际样本数。<b>没填就是没填，不补 0</b>。</li>

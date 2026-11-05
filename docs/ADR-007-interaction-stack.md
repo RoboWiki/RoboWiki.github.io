@@ -241,6 +241,14 @@ Casdoor 解决的是「多个应用共享登录、集中用户生命周期、管
 - 不在没有触发条件时把 Casdoor、Discourse、Meilisearch 放进部署面。
 - 不让客户端直接写目录数据；目录仍只由 `RoboWiki` 仓 release 写。
 
+## 11. 账号与邮件（对标 NewAPI / Sub2API）
+
+借鉴的是“可审计的一次性流程”，不是商业化计费体系：
+
+- **采用**：邮箱验证码/令牌只存哈希、单活覆盖、过期与原子消费；换绑邮箱先验证新地址、已设密账号再验当前密码；验证成功提升 `session_epoch` 并撤销旧会话；通知偏好 + 异步邮件 outbox（worker 重试、去重键）；HTML/纯文本双模板；SMTP 测试发信。
+- **保持本站模型**：身份仍是 `identities` 表，不在 users 上堆 provider 列；refresh token 仍落库，不依赖 Redis。
+- **暂不采用**：邀请返利、兑换码、套餐计费、多 OAuth 采纳矩阵、Passkey、TOTP/备份码、全量 step-up 授权矩阵。这些是商业化网关的必需项，不是硬件目录社区的基础闭环；需要时再按同一套 `auth_flows`/审计模型扩展。
+
 ## 参考
 
 - Authlib：<https://authlib.org/> · <https://docs.authlib.org/>
@@ -257,3 +265,5 @@ Casdoor 解决的是「多个应用共享登录、集中用户生命周期、管
 - 微信小程序登录：<https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/login.html> · <https://developers.weixin.qq.com/miniprogram/dev/server/API/user-login/api_code2session.html>
 - OAuth 2.0 PKCE：<https://datatracker.ietf.org/doc/html/rfc7636>
 - FastAPI：<https://fastapi.tiangolo.com/>
+- New API（账号/邮件/会话/2FA 参考）：<https://github.com/QuantumNous/new-api>
+- Sub2API（邀请/邮箱验证/通知模板参考）：<https://github.com/Wei-Shaw/sub2api>

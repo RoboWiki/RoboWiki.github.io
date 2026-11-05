@@ -1,0 +1,80 @@
+---
+import Base from '@/layouts/Base.astro'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { catalog, featuredParts, imageUrl, topCategories } from '@/lib/catalog'
+import { formatPrice, partHref, withBase } from '@/lib/utils'
+---
+<Base>
+  <section class="relative overflow-hidden rounded-3xl border border-slate-200 bg-white px-6 py-12 sm:px-10 sm:py-16">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgba(37,99,235,0.12),transparent_45%),radial-gradient(circle_at_10%_90%,rgba(21,128,61,0.08),transparent_40%)]"></div>
+    <div class="relative max-w-3xl">
+      <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
+        data-{catalog.meta?.data_version || 'v2026.11.3'} · {catalog.count} 个部件
+      </div>
+      <h1 class="text-3xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-5xl">
+        选机器人硬件，<br class="hidden sm:block" />先看真实使用经验。
+      </h1>
+      <p class="mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+        参数、价格、来源等级和踩坑记录放在同一页。每一个数字都能追到出处，每一条评价都来自真实使用。
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href={withBase('/catalog.html')}><Button size="lg">浏览部件库 →</Button></a>
+        <a href="https://robowiki.org.cn/submit"><Button size="lg" variant="outline">参与投稿</Button></a>
+      </div>
+      <div class="mt-8 grid grid-cols-3 gap-4 border-t border-slate-200 pt-5 text-sm sm:max-w-lg">
+        <div><div class="text-xl font-bold text-slate-900">{catalog.count}</div><div class="text-xs text-slate-500">部件</div></div>
+        <div><div class="text-xl font-bold text-slate-900">{topCategories.length}</div><div class="text-xs text-slate-500">品类</div></div>
+        <div><div class="text-xl font-bold text-slate-900">A/B/C</div><div class="text-xs text-slate-500">来源等级</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-10">
+    <div class="mb-4 flex items-end justify-between">
+      <div><h2 class="text-xl font-bold text-slate-900">按品类找</h2><p class="mt-1 text-sm text-slate-500">先锁定品类，再看参数和评价。</p></div>
+      <a href={withBase('/catalog.html')} class="text-sm font-medium text-blue-700 hover:underline">全部部件 →</a>
+    </div>
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      {topCategories.map(c => (
+        <a href={`${withBase('/catalog.html')}?category=${c.id}`}>
+          <Card class="transition hover:border-blue-200 hover:shadow-sm">
+            <CardContent class="flex items-center justify-between p-4">
+              <div><div class="font-medium text-slate-900">{c.name}</div><div class="mt-1 text-xs text-slate-500">{c.count || 0} 个</div></div>
+              <span class="text-slate-300">→</span>
+            </CardContent>
+          </Card>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="mt-10">
+    <div class="mb-4 flex items-end justify-between">
+      <div><h2 class="text-xl font-bold text-slate-900">值得先看</h2><p class="mt-1 text-sm text-slate-500">来源清楚、参数完整、社区关注度高。</p></div>
+    </div>
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {featuredParts.map(p => (
+        <a href={partHref(p)}>
+          <Card class="h-full overflow-hidden transition hover:-translate-y-0.5 hover:shadow-md">
+            <div class="flex h-32 items-center justify-center bg-slate-50">
+              {p.image ? <img src={imageUrl(p)} alt={`${p.vendor} ${p.model}`} loading="lazy" class="h-full w-full object-contain p-3" /> : null}
+            </div>
+            <CardContent class="space-y-1.5 p-4">
+              <div class="flex items-center gap-1.5"><Badge variant="secondary">{p.vendor}</Badge>{p.verified && <Badge variant="success">已核对</Badge>}</div>
+              <div class="font-semibold text-slate-900">{p.model}</div>
+              <div class="flex justify-between text-xs text-slate-500"><span>{formatPrice(p.price)}</span><span>{p.tauPeak ? `${p.tauPeak} N·m` : '参数待补'}</span></div>
+            </CardContent>
+          </Card>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="mt-10 grid gap-3 sm:grid-cols-3">
+    <Card><CardContent class="space-y-2 p-5"><div class="text-lg">◈</div><div class="font-semibold">来源可追溯</div><p class="text-sm leading-6 text-slate-500">每个参数标注来源等级与核对日期，缺的写 —，不猜。</p></CardContent></Card>
+    <Card><CardContent class="space-y-2 p-5"><div class="text-lg">◎</div><div class="font-semibold">真实使用经验</div><p class="text-sm leading-6 text-slate-500">评分和讨论来自用过的玩家，不用宣传语代替实测。</p></CardContent></Card>
+    <Card><CardContent class="space-y-2 p-5"><div class="text-lg">▦</div><div class="font-semibold">多端同一份数据</div><p class="text-sm leading-6 text-slate-500">网页、GitHub Pages 镜像、小程序和未来 App 共用同一套 API。</p></CardContent></Card>
+  </section>
+</Base>

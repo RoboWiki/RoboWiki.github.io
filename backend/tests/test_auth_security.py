@@ -164,7 +164,7 @@ def test_password_reset_invalidates_old_token(client, monkeypatch):
 
     sent: list[tuple[str, str, str]] = []
     monkeypatch.setattr(auth_route, "send_email",
-                        lambda to, subject, text: sent.append((to, subject, text)))
+                        lambda to, subject, text, html=None: sent.append((to, subject, text)))
 
     reg = client.post("/api/auth/register", json={
         "handle": "resetuser", "display_name": "Reset",

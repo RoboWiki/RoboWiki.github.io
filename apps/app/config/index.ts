@@ -1,0 +1,120 @@
+import path from 'node:path'
+import { createRequire } from 'node:module'
+
+import { defineConfig, type UserConfigExport } from '@tarojs/cli'
+
+// 默认线上 API；本地联调可用 PUBLIC_API_BASE / VITE_API_BASE / RW_API_BASE 覆盖。
+const apiBase =
+  process.env.PUBLIC_API_BASE ||
+  process.env.VITE_API_BASE ||
+  process.env.RW_API_BASE ||
+  'https://robowiki.org.cn/api/v1'
+const appBase = (() => {
+  const raw = (process.env.APP_BASE || '/').trim()
+  if (!raw || raw === '/') return '/'
+  return raw.endsWith('/') ? raw : `${raw}/`
+})()
+const isH5 = process.env.TARO_ENV === 'h5'
+// 工作区包 @robowiki/core 直接暴露 TS 源码，H5 与小程序都必须进入 babel 编译范围。
+const workspaceSources = [path.resolve(__dirname, '..', '..', '..', 'packages', 'core', 'src')]
+
+// React 19 删除了 ReactDOM.render，Taro 4.3.2 的 H5 运行时仍在调用它。
+// 用 webpack alias 在 H5 构建时替换 react-dom，小程序构建不受影响。
+const appRequire = createRequire(path.resolve(__dirname, '..', 'package.json'))
+const reactDomReal = appRequire.resolve('react-dom')
+const reactDomShim = path.resolve(__dirname, '..', 'src', 'shims', 'react-dom.ts')
+const h5Alias = isH5
+  ? { 'react-dom$': reactDomShim, 'react-dom-real$': reactDomReal }
+  : {}
+
+const config: UserConfigExport<'webpack5'> = {
+  projectName: 'robowiki-app',
+  date: '2026-11-5',
+  designWidth: 375,
+  deviceRatio: {
+    375: 2,
+    640: 2.34 / 2,
+    750: 1,
+    828: 1.81 / 2,
+  },
+  sourceRoot: 'src',
+  outputRoot: `dist/${process.env.TARO_ENV || 'h5'}`,
+  plugins: [],
+  defineConstants: {
+    __RW_API_BASE__: JSON.stringify(apiBase),
+  },
+  copy: {
+    patterns: [],
+    options: {},
+  },
+  framework: 'react',
+  compiler: {
+    type: 'webpack5',
+    prebundle: {
+      enable: false,
+    },
+  },
+  cache: {
+    enable: false,
+  },
+  alias: {
+    '@': path.resolve(__dirname, '..', 'src'),
+    ...h5Alias,
+  },
+  mini: {
+    compile: {
+      include: workspaceSources,
+    },
+    postcss: {
+      pxtransform: {
+        enable: true,
+        config: {},
+      },
+      cssModules: {
+        enable: false,
+      },
+    },
+  },
+  h5: {
+    publicPath: appBase,
+    staticDirectory: 'static',
+    compile: {
+      include: workspaceSources,
+    },
+    // alias 配置在平台级更可靠：确保 react-dom 被 shim 替换。
+    webpackChain(chain: any) {
+      chain.resolve.alias.set('react-dom$', reactDomShim)
+      chain.resolve.alias.set('react-dom-real$', reactDomReal)
+    },
+    router: {
+      mode: 'hash',
+    },
+    postcss: {
+      autoprefixer: {
+        enable: true,
+      },
+      cssModules: {
+        enable: false,
+      },
+    },
+    devServer: {
+      host: '0.0.0.0',
+      port: 10086,
+    },
+  },
+}
+
+export default defineConfig<'webpack5'>(async (merge) => {
+  if (process.env.NODE_ENV === 'development') {
+    return merge({}, config, {
+      mini: {},
+      h5: {},
+    })
+  }
+  return merge({}, config, {
+    mini: {},
+    h5: {},
+  })
+})
+
+export { isH5 }

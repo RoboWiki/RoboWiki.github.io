@@ -90,3 +90,10 @@ clients/wechat-mini/tests/node_modules/
 
 # 评论配图（P1 媒体上传）
 deploy/var/media/
+
+# Astro / Taro build caches
+apps/*/.astro/
+apps/*/.swc/
+
+# VitePress 构建临时文件
+wiki/docs/.vitepress/config.mts.timestamp-*.mjs

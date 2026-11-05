@@ -491,3 +491,34 @@ def test_review_post_and_rating_are_same_fact(client):
     final = client.get(f"/api/v1/ratings/{part}", headers=user).json()
     assert final["count"] == after["count"] and final["avg"] is not None
     assert final["mine"]["score"] == 3
+
+
+def test_staff_can_approve_or_hide_pending_comment(client, monkeypatch):
+    from app.content_safety import SafetyResult
+
+    a, _, _ = register(client)
+    page = f"parts/p1/moderate-{uuid.uuid4().hex[:8]}"
+    monkeypatch.setattr(
+        "app.api.routes.wiki.check_user_text_chunks",
+        lambda db, uid, text: SafetyResult(False, checked=True, reason="risky"),
+    )
+    c = client.post("/api/v1/wiki/comments", headers=a,
+                    json={"page": page, "body": "待审内容"}).json()
+    assert c["status"] == "pending"
+
+    plain = client.patch(f"/api/v1/wiki/comments/{c['id']}/moderation",
+                         headers=a, json={"action": "approve"})
+    assert plain.status_code == 403
+
+    staff = staff_headers(client)
+    ok = client.patch(f"/api/v1/wiki/comments/{c['id']}/moderation",
+                      headers=staff, json={"action": "approve"})
+    assert ok.status_code == 200 and ok.json()["status"] == "visible"
+    assert client.get("/api/v1/wiki/comments", params={"page": page}
+                      ).json()["count"] == 1
+
+    hidden = client.patch(f"/api/v1/wiki/comments/{c['id']}/moderation",
+                          headers=staff, json={"action": "hide"})
+    assert hidden.status_code == 200 and hidden.json()["status"] == "hidden"
+    assert client.get("/api/v1/wiki/comments", params={"page": page}
+                      ).json()["count"] == 0

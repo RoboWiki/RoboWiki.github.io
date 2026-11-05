@@ -1,6 +1,6 @@
 <view class="wrap">
   <view class="hero">
-    <view class="hero-kicker">ROBOWIKI · 只读目录</view>
+    <view class="hero-kicker">ROBOWIKI · 机器人硬件目录</view>
     <view class="hero-title">机器人硬件，先查清再买</view>
     <view class="hero-sub">参数有来源，未知就写未知；不卖零件、不收佣金。</view>
     <view class="hero-note">A 级逐项核对 · B 级公开资料汇编 · 未公布不猜</view>
@@ -148,5 +148,5 @@
   <view wx:if="{{items.length && !hasMore}}" class="footer">
     共 {{total}} 条{{version ? ' · ' + version : ''}}
   </view>
-  <view class="footer">微信小程序为只读目录 · 投稿与纠错请到网页版</view>
+  <view class="footer">目录只读，详情页可登录评分与讨论</view>
 </view>

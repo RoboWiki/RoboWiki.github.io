@@ -1,0 +1,95 @@
+@import "tailwindcss";
+@import "@robowiki/tokens/tokens.css";
+
+@theme {
+  --font-sans: "Inter", "Noto Sans SC", ui-sans-serif, system-ui, sans-serif;
+  --color-brand: var(--rw-primary);
+  --color-danger: var(--rw-danger);
+  --color-surface: var(--rw-surface);
+  --color-border: var(--rw-border);
+}
+
+/* Extra token used by the static UI. Derived from the shared palette only. */
+:root {
+  --rw-shadow-raised: 0 8px 20px -12px rgb(15 23 42 / 0.28);
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--rw-bg); color: #0f172a; }
+::selection { background: color-mix(in srgb, var(--rw-primary) 25%, transparent); }
+:focus-visible { outline: 2px solid var(--rw-primary); outline-offset: 2px; }
+
+/* Skip link: hidden until focused, then pinned above the sticky header. */
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 12px;
+  z-index: 60;
+  transform: translateY(-160%);
+  border-radius: var(--rw-radius-sm);
+  background: var(--rw-surface);
+  padding: 10px 16px;
+  font-size: var(--rw-text-sm);
+  font-weight: 600;
+  color: #0f172a;
+  box-shadow: var(--rw-shadow-raised);
+  transition: transform var(--rw-dur-fast) ease-out;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* Horizontal filter rail: one row of chips on phones, wrapped rows from sm up. */
+.chip-row {
+  display: flex;
+  gap: var(--rw-space-2);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding-block: 2px;
+}
+.chip-row::-webkit-scrollbar { display: none; }
+.chip-row > * {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
+
+@media (min-width: 640px) {
+  .chip-row {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+}
+
+/* Native <details> mobile menu: no summary marker, panel anchored to the trigger. */
+.mobile-nav > summary { list-style: none; cursor: pointer; }
+.mobile-nav > summary::-webkit-details-marker { display: none; }
+.mobile-nav[open] > summary { background: #f1f5f9; }
+.mobile-nav .mobile-nav-panel { box-shadow: var(--rw-shadow-raised); }
+
+/* Search fields ship their own clear button; hide the UA one to avoid a double ×. */
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Grid children default to min-width:auto, so one long spec token can push a
+   whole page wider than the phone viewport. Keep columns shrinkable. */
+main :where(.grid > *) { min-width: 0; }
+main :where(dl, dd, h1, h2, h3, p, li) { overflow-wrap: break-word; }
+main :where(dd) { min-width: 0; overflow-wrap: anywhere; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

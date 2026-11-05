@@ -1,0 +1,44 @@
+/* RoboWiki design tokens. Primitive -> semantic; apps may override brand hue only. */
+/* 同时挂到 page：微信小程序 WXSS 不保证 :root 生效，page 是稳定根选择器。 */
+:root,
+page {
+  --rw-radius-xs: 4px;
+  --rw-radius-sm: 8px;
+  --rw-radius-md: 12px;
+  --rw-radius-full: 999px;
+
+  --rw-space-1: 4px;
+  --rw-space-2: 8px;
+  --rw-space-3: 12px;
+  --rw-space-4: 16px;
+  --rw-space-5: 24px;
+  --rw-space-6: 32px;
+  --rw-space-7: 48px;
+
+  --rw-text-xs: 12px;
+  --rw-text-sm: 13px;
+  --rw-text-base: 14px;
+  --rw-text-md: 16px;
+  --rw-text-lg: 18px;
+  --rw-text-xl: 20px;
+  --rw-text-2xl: 24px;
+  --rw-text-3xl: 30px;
+
+  --rw-control-sm: 32px;
+  --rw-control-md: 36px;
+  --rw-control-touch: 44px;
+  --rw-focus: 0 0 0 3px color-mix(in srgb, var(--rw-primary) 35%, transparent);
+  --rw-dur-fast: 120ms;
+  --rw-dur-base: 180ms;
+  --rw-dur-slow: 240ms;
+
+  --rw-primary: #2563eb;
+  --rw-primary-foreground: #ffffff;
+  --rw-success: #15803d;
+  --rw-warning: #b45309;
+  --rw-danger: #b91c1c;
+  --rw-muted: #64748b;
+  --rw-border: #e2e8f0;
+  --rw-surface: #ffffff;
+  --rw-bg: #f7f8fb;
+}

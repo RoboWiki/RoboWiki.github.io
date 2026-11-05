@@ -19,6 +19,7 @@ from ...models import Outbox, Part, Submission, SubmissionReview, User
 from ...schemas import (OutboxOut, ReviewIn, ReviewOut, SubmissionIn,
                         SubmissionOut)
 from ..deps import CurrentUser, Db, MaybeUser, rate_limit
+from .notifications import create_notification
 
 router = APIRouter(prefix="/submissions", tags=["submissions"])
 
@@ -264,6 +265,14 @@ def review_submission(submission_id: int, payload: ReviewIn, db: Db,
     db.add(review)
     s.status = decision
     s.updated_at = review.created_at
+
+    if s.submitter_id:
+        verdict = "通过" if decision == "accepted" else "驳回"
+        detail = note or reason or ""
+        create_notification(
+            db, s.submitter_id, type="moderation",
+            subject=f"你的参数提案已{verdict}",
+            body=detail[:300], link="/catalog", actor_id=user.id)
 
     if decision == "accepted":
         db.add(Outbox(
