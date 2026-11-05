@@ -117,6 +117,10 @@ export default function IndexPage() {
     Taro.navigateTo({ url: '/pages/login/index' })
   }
 
+  const openAccount = () => {
+    Taro.navigateTo({ url: '/pages/account/index' })
+  }
+
   const hasFilter = Boolean(query || category)
 
   return (
@@ -125,7 +129,9 @@ export default function IndexPage() {
         <View className="rw-row rw-row--between">
           <Text className="rw-title">部件目录</Text>
           {user ? (
-            <Text className="rw-caption">{user.display_name || user.handle}</Text>
+            <Text className="rw-link" onClick={openAccount}>
+              {user.display_name || user.handle}
+            </Text>
           ) : (
             <Text className="rw-link" onClick={openLogin}>
               登录

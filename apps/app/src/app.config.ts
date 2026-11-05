@@ -3,6 +3,7 @@ export default defineAppConfig({
     'pages/index/index',
     'pages/part/index',
     'pages/login/index',
+    'pages/account/index',
   ],
   window: {
     backgroundTextStyle: 'dark',

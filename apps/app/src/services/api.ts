@@ -120,6 +120,51 @@ export async function loginWithPassword(account: string, password: string): Prom
   return pair.user
 }
 
+export async function registerAccount(
+  handle: string,
+  displayName: string,
+  password: string,
+  email?: string,
+): Promise<User> {
+  const pair = await api.register(handle.trim(), displayName.trim(), password, email?.trim() || undefined)
+  saveSession(pair)
+  return pair.user
+}
+
+export async function logout(): Promise<void> {
+  try {
+    await api.request('/auth/logout', { method: 'POST' })
+  } catch {
+    // 令牌已失效也要清本地，不能把用户困在登录态。
+  } finally {
+    tokenStore.clear()
+  }
+}
+
+export type AppNotification = {
+  id: number
+  type: string
+  subject: string
+  body: string
+  link: string | null
+  read_at: string | null
+  created_at: string
+}
+
+export type NotificationPage = {
+  total: number
+  unread: number
+  items: AppNotification[]
+}
+
+export function listNotifications(limit = 20): Promise<NotificationPage> {
+  return api.request(`/notifications?limit=${limit}`)
+}
+
+export function markNotificationsRead(): Promise<{ ok: boolean }> {
+  return api.request('/notifications/read-all', { method: 'POST' })
+}
+
 /** 微信小程序：wx.login 的 code 换本站令牌。 */
 export async function loginWithWechat(): Promise<User> {
   const login = await Taro.login()

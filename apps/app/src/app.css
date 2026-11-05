@@ -53,6 +53,15 @@ button {
   font-size: var(--rw-text-sm);
 }
 
+.rw-link {
+  color: var(--rw-primary);
+  font-size: var(--rw-text-sm);
+}
+
+.rw-link--danger {
+  color: var(--rw-danger);
+}
+
 .rw-strong {
   font-weight: 600;
 }

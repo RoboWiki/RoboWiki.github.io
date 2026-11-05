@@ -4,10 +4,11 @@ import { Button, Input, Text, View } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { ApiError } from '@robowiki/core'
 
-import { errorMessage, loginWithPassword, loginWithWechat } from '@/services/api'
+import { errorMessage, loginWithPassword, loginWithWechat, registerAccount } from '@/services/api'
 import './index.css'
 
 const IS_H5 = process.env.TARO_ENV === 'h5'
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 function backOrHome() {
   const pages = Taro.getCurrentPages()
@@ -19,14 +20,58 @@ function backOrHome() {
 }
 
 export default function LoginPage() {
+  const [mode, setMode] = useState<'login' | 'register'>('login')
   const [account, setAccount] = useState('')
   const [password, setPassword] = useState('')
+  const [handle, setHandle] = useState('')
+  const [displayName, setDisplayName] = useState('')
+  const [email, setEmail] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
 
-  const finish = () => {
-    Taro.showToast({ title: '登录成功', icon: 'success', duration: 1200 })
+  const finish = (title = '登录成功') => {
+    Taro.showToast({ title, icon: 'success', duration: 1200 })
     setTimeout(backOrHome, 500)
+  }
+
+  const switchMode = (next: 'login' | 'register') => {
+    if (busy) return
+    setMode(next)
+    setError('')
+  }
+
+  const submitRegister = async () => {
+    if (busy) return
+    if (handle.trim().length < 2 || handle.trim().length > 24) {
+      setError('用户名需 2–24 个字符')
+      return
+    }
+    if (!displayName.trim()) {
+      setError('请填写显示名')
+      return
+    }
+    if (email.trim() && !EMAIL_RE.test(email.trim())) {
+      setError('邮箱格式不对')
+      return
+    }
+    if (password.length < 6) {
+      setError('密码至少 6 位')
+      return
+    }
+    setBusy(true)
+    setError('')
+    try {
+      await registerAccount(handle, displayName, password, email)
+      finish('注册成功')
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 409) {
+        setError('这个用户名已被占用')
+      } else {
+        setError(errorMessage(err))
+      }
+    } finally {
+      setBusy(false)
+    }
   }
 
   const submitPassword = async () => {
@@ -78,7 +123,7 @@ export default function LoginPage() {
   return (
     <View className="rw-page login">
       <View className="login__head">
-        <Text className="rw-title">登录 RoboWiki</Text>
+        <Text className="rw-title">{mode === 'register' ? '注册 RoboWiki' : '登录 RoboWiki'}</Text>
         <Text className="rw-caption">
           {IS_H5
             ? '一个账号同时用于网站、小程序和 App 的评分与讨论。'
@@ -88,44 +133,131 @@ export default function LoginPage() {
 
       {IS_H5 ? (
         <View className="login__form">
-          <View className="rw-stack" style={{ gap: '8px' }}>
-            <Text className="rw-caption">邮箱 / 用户名</Text>
-            <View className="rw-field">
-              <Input
-                className="rw-input"
-                value={account}
-                name="username"
-                placeholder="name@example.com 或用户名"
-                onInput={(event) => setAccount(event.detail.value)}
-              />
-            </View>
+          <View className="login__tabs" role="tablist">
+            <Text
+              className={`login__tab ${mode === 'login' ? 'login__tab--active' : ''}`}
+              onClick={() => switchMode('login')}
+            >
+              登录
+            </Text>
+            <Text
+              className={`login__tab ${mode === 'register' ? 'login__tab--active' : ''}`}
+              onClick={() => switchMode('register')}
+            >
+              注册
+            </Text>
           </View>
 
-          <View className="rw-stack" style={{ gap: '8px' }}>
-            <Text className="rw-caption">密码</Text>
-            <View className="rw-field">
-              <Input
-                className="rw-input"
-                value={password}
-                name="password"
-                password
-                placeholder="至少 6 位"
-                confirmType="done"
-                onInput={(event) => setPassword(event.detail.value)}
-                onConfirm={submitPassword}
-              />
-            </View>
-          </View>
+          {mode === 'register' ? (
+            <>
+              <View className="rw-stack" style={{ gap: '8px' }}>
+                <Text className="rw-caption">用户名</Text>
+                <View className="rw-field">
+                  <Input
+                    className="rw-input"
+                    value={handle}
+                    name="handle"
+                    placeholder="2–24 个字符，登录时可用"
+                    onInput={(event) => setHandle(event.detail.value)}
+                  />
+                </View>
+              </View>
 
-          {error ? <Text className="rw-error">{error}</Text> : null}
+              <View className="rw-stack" style={{ gap: '8px' }}>
+                <Text className="rw-caption">显示名</Text>
+                <View className="rw-field">
+                  <Input
+                    className="rw-input"
+                    value={displayName}
+                    name="display_name"
+                    placeholder="公开显示的昵称"
+                    onInput={(event) => setDisplayName(event.detail.value)}
+                  />
+                </View>
+              </View>
 
-          <Button className="rw-btn rw-btn--primary" disabled={busy} onClick={submitPassword}>
-            {busy ? '登录中…' : '登录'}
-          </Button>
+              <View className="rw-stack" style={{ gap: '8px' }}>
+                <Text className="rw-caption">邮箱（选填）</Text>
+                <View className="rw-field">
+                  <Input
+                    className="rw-input"
+                    value={email}
+                    name="email"
+                    type="text"
+                    placeholder="用于找回密码和邮件通知"
+                    onInput={(event) => setEmail(event.detail.value)}
+                  />
+                </View>
+              </View>
 
-          <Text className="rw-caption login__note">
-            账号密码登录走 /auth/login；用户名和已验证邮箱都可以登录。
-          </Text>
+              <View className="rw-stack" style={{ gap: '8px' }}>
+                <Text className="rw-caption">密码</Text>
+                <View className="rw-field">
+                  <Input
+                    className="rw-input"
+                    value={password}
+                    name="new-password"
+                    password
+                    placeholder="至少 6 位"
+                    confirmType="done"
+                    onInput={(event) => setPassword(event.detail.value)}
+                    onConfirm={submitRegister}
+                  />
+                </View>
+              </View>
+
+              {error ? <Text className="rw-error">{error}</Text> : null}
+
+              <Button className="rw-btn rw-btn--primary" disabled={busy} onClick={submitRegister}>
+                {busy ? '注册中…' : '注册并登录'}
+              </Button>
+
+              <Text className="rw-caption login__note">
+                注册即登录。填写邮箱后可在账号页发送验证邮件，验证后才能接收邮件通知。
+              </Text>
+            </>
+          ) : (
+            <>
+              <View className="rw-stack" style={{ gap: '8px' }}>
+                <Text className="rw-caption">邮箱 / 用户名</Text>
+                <View className="rw-field">
+                  <Input
+                    className="rw-input"
+                    value={account}
+                    name="username"
+                    placeholder="name@example.com 或用户名"
+                    onInput={(event) => setAccount(event.detail.value)}
+                  />
+                </View>
+              </View>
+
+              <View className="rw-stack" style={{ gap: '8px' }}>
+                <Text className="rw-caption">密码</Text>
+                <View className="rw-field">
+                  <Input
+                    className="rw-input"
+                    value={password}
+                    name="password"
+                    password
+                    placeholder="至少 6 位"
+                    confirmType="done"
+                    onInput={(event) => setPassword(event.detail.value)}
+                    onConfirm={submitPassword}
+                  />
+                </View>
+              </View>
+
+              {error ? <Text className="rw-error">{error}</Text> : null}
+
+              <Button className="rw-btn rw-btn--primary" disabled={busy} onClick={submitPassword}>
+                {busy ? '登录中…' : '登录'}
+              </Button>
+
+              <Text className="rw-caption login__note">
+                账号密码登录走 /auth/login；用户名和已验证邮箱都可以登录。
+              </Text>
+            </>
+          )}
         </View>
       ) : (
         <View className="login__form">

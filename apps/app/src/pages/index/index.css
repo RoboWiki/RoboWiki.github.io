@@ -55,15 +55,6 @@
   padding: var(--rw-space-5) 0 var(--rw-space-3);
 }
 
-.rw-link {
-  color: var(--rw-primary);
-  font-size: var(--rw-text-sm);
-}
-
-.rw-link--danger {
-  color: var(--rw-danger);
-}
-
 .rw-star {
   font-size: var(--rw-text-2xl);
   line-height: 1;
