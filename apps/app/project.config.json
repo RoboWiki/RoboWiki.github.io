@@ -1,7 +1,7 @@
 {
   "miniprogramRoot": "dist/weapp/",
   "projectname": "robowiki-app",
-  "description": "RoboWiki 交互端（Taro）：目录、详情、评分与讨论",
+  "description": "RoboWiki 交互端（Taro）：目录、详情、评分/讨论、账号、投稿纠错",
   "appid": "wx13bffd77b0b597e2",
   "compileType": "miniprogram",
   "libVersion": "3.17.6",
