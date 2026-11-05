@@ -12,7 +12,7 @@
 {
   "data_version": "data-v2026.11.2",
   "source_repo": "RoboWiki/RoboWiki",
-  "release_asset": "robowiki-data-v2026.11.2.tar.gz",
+  "release_asset": "robowiki-data-v2026.11.3.tar.gz",
   "sha256": "<tar.gz 的 SHA-256>",
   "manifest_sha256": "<MANIFEST 的 SHA-256>",
   "schema_version": "1.1.0",
@@ -67,7 +67,7 @@ pnpm --filter @robowiki/web build
 
 ## 口径与计数
 
-- `parts` 是`RoboWiki` 仓数据条数（含 C 级线索）；站点目录只投影 A/B，当前 **326 件入库**。
-- `materials` / `processes` 是材质库条目数；页面 `/materials` 与 `public/materials.json` 同源。
+- `parts` 是`RoboWiki` 仓数据条数（含 C 级线索）；站点目录只投影 A/B，当前 **338 件入库**。
+- `materials` / `processes` 是材质库条目数；页面 `/materials.html` 与 `apps/web/public/materials.json` 同源。
 - `semantics_version` 是字段口径；只增删条目不升它。
 - 任何页面上的“共 N 件”必须来自构建产物，不手写。

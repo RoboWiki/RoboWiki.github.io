@@ -18,7 +18,7 @@
 **不再使用 Caddy**：TLS、静态、安全头统一在 1Panel 站点配置里维护，模板见
 [1panel-site.conf](1panel-site.conf)。
 
-> 实测基线：2026-11-04，Docker 27.3.1 / Compose v2.29.7，数据集 `data-v2026.11.3`。
+> 实测基线：2026-11-05，Docker 27.3.1 / Compose v2.29.7，数据集 `data-v2026.11.3`。前端为 Astro 根站 + Taro `/app/`，旧 VitePress/console 已删除。
 > 公网 `/api/v1/ready`、`/api/v1/meta`、`/community.html`、`/mcp` 均通过；静态站 338 部件、
 > 36 个材料/工艺页、产品图与安全头正常；api 以 uid 10001 非 root 运行。
 
