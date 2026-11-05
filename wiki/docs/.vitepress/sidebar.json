@@ -106,6 +106,10 @@
        "link": "/parts/controller_low/"
       },
       {
+       "text": "High Torque Robotics 高擎动力",
+       "link": "/parts/controller_low/hightorque"
+      },
+      {
        "text": "MIT Biomimetics Robotics Lab",
        "link": "/parts/controller_low/mit-biomimetics"
       },

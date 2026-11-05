@@ -1,12 +1,12 @@
 # RoboWiki
 
-> 机器人开发的开放资料底稿：338 个部件的可核对参数、21 台整机、软件库与采购渠道。每个数字都带来源与口径，缺的字段写「—」，不猜、不用同类填补。站点不卖零件、不收佣金。
+> 机器人开发的开放资料底稿：343 个部件的可核对参数、21 台整机、软件库与采购渠道。每个数字都带来源与口径，缺的字段写「—」，不猜、不用同类填补。站点不卖零件、不收佣金。
 
 站点：https://robowiki.org.cn/　中文为主，英文是子集（/en/）。
 
 ## 机器可读数据（首选入口）
 
-- [catalog.json](https://robowiki.org.cn/catalog.json)：全部 338 个部件的结构化数据（id、slug、品类、厂商、型号、关键参数、来源等级、价格、优惠、评分），字段名即参数名。
+- [catalog.json](https://robowiki.org.cn/catalog.json)：全部 343 个部件的结构化数据（id、slug、品类、厂商、型号、关键参数、来源等级、价格、优惠、评分），字段名即参数名。
 - [robots.json](https://robowiki.org.cn/robots.json)：21 台整机（自由度、质量、负载、续驶、URDF / 仓库链接、开源生态）。
 - [materials.json](https://robowiki.org.cn/materials.json)：27 种结构材料 + 9 种加工工艺（密度、弹性模量、抗拉强度、形态规格与渠道引用）。
 - [software.json](https://robowiki.org.cn/software.json)：软件库（仿真 / 训练 / 部署 / 算法，含仓库与许可）。
@@ -16,7 +16,7 @@
 
 ## 主要页面
 
-- [部件库](https://robowiki.org.cn/catalog.html)：按列排序 / 筛选的交互式选型台（338 件；纯前端渲染，抓 HTML 请改读 catalog.json 或下面的型号页）。
+- [部件库](https://robowiki.org.cn/catalog.html)：按列排序 / 筛选的交互式选型台（343 件；纯前端渲染，抓 HTML 请改读 catalog.json 或下面的型号页）。
 - [关节电机总览](https://robowiki.org.cn/parts/actuator/index.html)：按峰值扭矩降序的跨厂商速览。
 - [整机库](https://robowiki.org.cn/robots.html)：选方案（几自由度、带不带算力、有没有 URDF）。
 - [材质库](https://robowiki.org.cn/materials.html)：材料物理属性、形态规格与加工工艺；密度 / 模量 / 强度带 SI 换算。
@@ -147,10 +147,14 @@
 - [树莓派 Raspberry Pi 5](https://robowiki.org.cn/parts/controller_high/raspberry-pi-5.html)：SoC Broadcom BCM2712、来源 A 级、¥1,600
 - [瑞莎 Radxa ROCK 5B](https://robowiki.org.cn/parts/controller_high/radxa-rock-5b.html)：SoC Rockchip RK3588、NPU 6 TOPS、来源 A 级、¥884
 
-### 下位机（11 件）
+### 下位机（15 件）
 
 底层控制 / 电机驱动。
 
+- [High Torque Robotics 高擎动力 4路CAN主控盒子](https://robowiki.org.cn/parts/controller_low/high-torque-robotics-4-can.html)：接口 4× XT30(2+2) 电机接口；XT60(2+4) 24–48 V 输入；RK3588 系统板接口；电机控制按钮；系统板供电按钮（长按）、来源 B 级
+- [High Torque Robotics 高擎动力 7路 CAN 通用盒子](https://robowiki.org.cn/parts/controller_low/high-torque-robotics-7-can.html)：接口 XT60(2+4) 24–50 V 输入；7× XT30(2+2) 48 V + CAN 输出；1× XT30 48 V 输出；1× XT30 12 V 输出；USB3.0 Type-C 与电脑通信；USB2 读取 IMU；USB3 给通信芯片烧录固件；CAN GH1.25-2P、JTAG GH1.25-6P、UART GH1.25-4P；2× Debug UART；拨码开关切换 USB；2 个电源按键、MCU STM32F103C8T6、来源 A 级
+- [High Torque Robotics 高擎动力 RoboBox-7C](https://robowiki.org.cn/parts/controller_low/high-torque-robotics-robobox-7c.html)：接口 7× XT30(2+2) 48 V + CAN 输出；XT60(2+4) 24–50 V 输入；XT30 48 V 输出；XT30 12 V 输出；2× Debug UART；IMU YIS130；1× 调试接口；2 个电源按键；RK3588S 核心板（16 GB + 128 GB）；3× USB2.0 + 1× USB3.0；HDMI；TF；Mini-PCIe（4G/WiFi）；千兆网；Type-C；音频；4× PWM、1× I2C、1× SPI、3× UART、MCU STM32F103C8T6、来源 A 级、¥3,999
+- [High Torque Robotics 高擎动力 STM32H730VBT6](https://robowiki.org.cn/parts/controller_low/high-torque-robotics-stm32h730vbt6.html)：接口 FDCAN×3；2× Type-C（USB2.0 全速 12MHz / USB3.0 转 4 路虚拟串口）；UART1/2 跳线；UART6；UART10 + SWD；SBUS 反相选择；独立电源接口；自定义按键/拨码/LED；SPI/UART 扩展、MCU STM32H730VBT6、来源 A 级、¥199
 - [MIT Biomimetics Robotics Lab 3phase_integrated](https://robowiki.org.cn/parts/controller_low/mit-biomimetics-robotics-lab-3phase-integrated.html)：接口 CAN 1 Mbit/s / UART（配置，921600）/ ST-Link（JST-SH）、MCU STM32F446RET6、来源 A 级
 - [ODrive Robotics ODrive S1](https://robowiki.org.cn/parts/controller_low/odrive-robotics-odrive-s1.html)：质量 0.035 kg、接口 USB / CAN-FD / UART / PWM / STEP-DIR / GPIO、来源 A 级
 - [PJRC Teensy 4.1](https://robowiki.org.cn/parts/controller_low/pjrc-teensy-4-1.html)：接口 CAN / CAN-FD / UART / SPI / I2C / PWM / ADC / Ethernet / USB、MCU i.MX RT1062（Arm Cortex-M7）、来源 A 级
@@ -355,10 +359,11 @@ NTC / 温湿度 / 温度 / 压力 / 光照 / ToF / 力矩。
 - [伟利达 WLD 5264 3P 端子线](https://robowiki.org.cn/parts/connector/wld-5264-3p.html)：接口 5264 3P、来源 B 级
 - [电蜂优选 Elecbee GX12-2P 2芯航空插头](https://robowiki.org.cn/parts/connector/elecbee-gx12-2p-2.html)：接口 GX12-2P、来源 B 级
 
-### 其余模块（5 件）
+### 其余模块（6 件）
 
 CAN 通信 / 电源管理 / 力触觉 / 编码器。
 
+- [High Torque Robotics 高擎动力 4路CAN叠板](https://robowiki.org.cn/parts/module/high-torque-robotics-4-can-a9c1ea.html)：接口 USB Type-C 上行（4 路虚拟串口）；功率板 XT60 公头 12–24 V 输入、来源 B 级
 - [大疆 DJI RoboMaster PM01](https://robowiki.org.cn/parts/module/dji-robomaster-pm01.html)：额定电压 24 V、接口 输入 XT60；输出 4× XT30 + 5V/12V/24V 裁判系统供电、来源 A 级、¥620
 - [大疆 DJI RoboMaster PM02](https://robowiki.org.cn/parts/module/dji-robomaster-pm02.html)：额定电压 24 V、接口 输入 XT60；输出 4× XT30 + 5V/12V/24V 裁判系统供电、来源 A 级、¥620
 - [灵足 RobStride USB-CAN HUB](https://robowiki.org.cn/parts/module/robstride-usb-can-hub.html)：额定电压 5 V、接口 USB 2.0 Type-C（5 V）/ MX1.25-4P、来源 A 级
@@ -544,5 +549,5 @@ CAN 通信 / 电源管理 / 力触觉 / 编码器。
 ## 引用与许可
 
 - 内容许可 GPL-3.0；数据可转载，但请保留来源链接与核对日期（型号页底部有）。
-- 数据快照带版本：2026-11-04T12:41:58.397596+00:00，源提交 824f1c65befc6b05be738a8aaa20afb3d6c24de4。
+- 数据快照带版本：2026-11-05T11:46:59.057676+00:00，源提交 7cc62bb87cb57ec26e79bf448c8c8fa35330d95d。
 - 参数口径（峰值 / 额定、转子 / 输出惯量）不统一时不能横向比，先读 /semantics。

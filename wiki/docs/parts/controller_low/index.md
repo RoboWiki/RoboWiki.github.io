@@ -5,10 +5,11 @@ title: 下位机
 
 # 下位机
 
-底层控制 / 电机驱动，共 **11** 件、**10** 家厂商。
+底层控制 / 电机驱动，共 **15** 件、**11** 家厂商。
 
 ## 厂商
 
+- [High Torque Robotics 高擎动力](/parts/controller_low/hightorque) —— 4 型
 - [MIT Biomimetics Robotics Lab](/parts/controller_low/mit-biomimetics) —— 1 型
 - [ODrive Robotics](/parts/controller_low/odrive) —— 1 型
 - [PJRC](/parts/controller_low/pjrc) —— 1 型
@@ -24,6 +25,10 @@ title: 下位机
 
 | 型号 | MCU | FOC 轴数 | CAN | 电流环 kHz | 最高 V | 价格 ¥ | 来源 |
 |---|---|---|---|---|---|---|---|
+| [**STM32H730VBT6**](/parts/controller_low/high-torque-robotics-stm32h730vbt6) | STM32H730VBT6 | — | 3 FD | — | — | 199 | `A✓` |
+| [**7路 CAN 通用盒子**](/parts/controller_low/high-torque-robotics-7-can) | STM32F103C8T6 | — | 7 FD | — | 50 | — | `A✓` |
+| [**RoboBox-7C**](/parts/controller_low/high-torque-robotics-robobox-7c) | STM32F103C8T6 | — | 7 FD | — | 50 | 3,999 | `A✓` |
+| [**4路CAN主控盒子**](/parts/controller_low/high-torque-robotics-4-can) | — | — | 4 FD | — | 48 | — | `B` |
 | [**3phase_integrated**](/parts/controller_low/mit-biomimetics-robotics-lab-3phase-integrated) | STM32F446RET6 | 1 | 1 | 40 | 35 | — | `A✓` |
 | [**ODrive S1**](/parts/controller_low/odrive-robotics-odrive-s1) | — | 1 | 1 FD | — | 50.5 | — | `A✓` |
 | [**Teensy 4.1**](/parts/controller_low/pjrc-teensy-4-1) | i.MX RT1062（Arm Cortex-M7） | — | 3 FD | — | — | — | `A✓` |
