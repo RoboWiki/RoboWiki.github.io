@@ -100,9 +100,8 @@ jobs:
           npm run build
 
       # Astro 迁移预览：挂在 /next/，不替换现有 VitePress 生产路径。
+      # 版本由根 package.json 的 packageManager 决定；此处再写 version 会冲突。
       - uses: pnpm/action-setup@v4
-        with:
-          version: 10
       - name: build Astro preview
         env:
           BASE_PATH: /next
