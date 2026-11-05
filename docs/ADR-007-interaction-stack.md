@@ -28,7 +28,7 @@ Taro 负责移动端表单；纯静态镜像可回落到 giscus；Discourse 只�
 |---|---|---|---|
 | A 论坛优先 | Discourse/Answer 作为社区内核，站点链接过去 | 第二套账号/库/运维；小程序与 App 仍要另写 BFF；评分/投稿关系断裂 | 否 |
 | B 全自研 | 自己写 OAuth/OIDC、表单校验、无障碍组件、论坛 | 安全面、可访问性、协议细节全部自己承担；回归成本随端数增长 | 否 |
-| **C 单领域 + 成熟件** | FastAPI 唯一写域；身份抽象；Vue/控制台用成熟表单与 UI；静态镜像用 giscus；Discourse 后置 | 需要克制「再加一个服务」的冲动；领域规则仍要自己写 | **采用** |
+| **C 单领域 + 成熟件** | FastAPI 唯一写域；身份抽象；React 岛/站务用成熟表单与 UI；静态镜像用 giscus；Discourse 后置 | 需要克制「再加一个服务」的冲动；领域规则仍要自己写 | **采用** |
 
 ## 3. C 路线的组成
 
@@ -196,7 +196,7 @@ Casdoor 解决的是「多个应用共享登录、集中用户生命周期、管
 - 统一错误契约与 `request_id`；OpenAPI 增加错误 schema；客户端契约测试覆盖 401/403/409/422。
 - 备份按 `../deploy/README.md` 执行：`pg_dump` + 异地加密 + 每季度恢复演练；PII 不进 git。
 
-验收：Web 与小程序登录落到同一 `users`；同一错误在 Web/小程序/控制台解析一致；
+验收：Web 与小程序登录落到同一 `users`；同一错误在 Web/小程序/站务后台解析一致；
 恢复演练能用备份起一套可读的 API。
 
 ### P1：互动统一
@@ -205,7 +205,7 @@ Casdoor 解决的是「多个应用共享登录、集中用户生命周期、管
   页面/API/静态产物对账一致。
 - 投稿 changeset：字段级 before/after、证据、changeset id、审核日志、outbox 幂等与重试。
 - giscus 历史评论一次性导入 `wiki_comments`；导入后冻结该来源，标记 `source=giscus`。
-- Vue 表单统一到 VeeValidate + Zod + reka-ui；控制台评分/审核统一到 AntD Form/Rate。
+- 前端表单统一到 React 受控表单；站务评分/审核统一到 AntD Form/Rate。
 
 验收：同一部件的评分在页面、API、快照三处计数一致；旧 issue 重放幂等；导入评论的
 页面路径与外链稳定。

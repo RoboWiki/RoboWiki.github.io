@@ -4,7 +4,7 @@
 `data-v*` release，并把同一份数据渲染成静态站、API、分享卡和群机器人回答。
 
 > 拆仓前的单仓架构已废弃，见 `RoboWiki` 仓 [ADR-006](https://github.com/RoboWiki/RoboWiki/blob/main/docs/ADR-006-split-repos-2026-11-02.md)。
-> 本文取代本仓旧的 `docs/ARCHITECTURE.md`。
+> 本文取代本仓旧的 `docs/ARCHITECTURE.md`。前端路由、构建与小程序上传见 [FRONTEND.md](FRONTEND.md)。
 
 ## 两仓边界
 
@@ -38,7 +38,7 @@
 - `apps/web/`：Astro 生成首页、部件/整机/材质/软件/渠道、方法、投稿、贡献者；社区与站务是 React 岛。
 - 目录、参数、来源、分享文案全部在构建期来自 release；静态站不依赖 API 才能读。
 - 页面 URL 保持旧站形态：`/catalog.html`、`/parts/<category>/<slug>.html`。
-- PWA：外壳、访问过的页面、搜索索引与分享 JSON 可离线；`/api` 永远走网络。
+- PWA：外壳、访问过的页面、分享 JSON 可离线；`/api` 永远走网络。
 - 分享卡：浏览器用同一份 `share/*.json` 画 1080×1440 PNG + 二维码。
 
 ### 后端（可选但生产需要）
@@ -108,7 +108,7 @@ docs/        架构、ADR、版本化、CI
 2. **不在本仓保存数据副本**；不手改 `apps/web/src/data/`、`apps/web/public/{parts,share,docs}/`。
 3. **一套 API、一套身份**：Web/PWA/小程序/机器人/App 共用 `/api/v1` 与 `users`；
    外部身份绑定收敛到 `identities`（GitHub/微信/App PKCE），协议由 Authlib 承担；
-   当前仍是 Bearer 令牌，小程序登录与 `identities` 表在 P0 落地，见
+   当前仍是 Bearer 令牌；小程序登录、邮箱验证与 `identities` 已落地，见
    [ADR-007](ADR-007-interaction-stack.md)。
 
 ## 规模与演进

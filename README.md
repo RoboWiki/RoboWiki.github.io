@@ -157,7 +157,7 @@ cd deploy && cp .env.example .env && docker compose up -d --build
 PUBLIC_API_BASE=http://127.0.0.1:8080/api/v1 pnpm dev:web
 ```
 
-改一个型号的参数 = 去`RoboWiki` 仓改一个 JSON，或走站内提案/控制台；`RoboWiki` 仓发布新 `data-v*` 后更新 `data.lock.json`。数据闸门/测试会拦住三类错：A 级键集不一致、来源等级越级、
+改一个型号的参数 = 去`RoboWiki` 仓改一个 JSON，或走站内提案/站务后台；`RoboWiki` 仓发布新 `data-v*` 后更新 `data.lock.json`。数据闸门/测试会拦住三类错：A 级键集不一致、来源等级越级、
 厂商未登记（taxonomy 测试）；构建阶段再拦页面死链。**后台不改 `parts`**：提案审核通过后由 worker 开 PR。
 
 ## 目录
@@ -178,6 +178,10 @@ inbox/      产品图暂存区（认领后进`RoboWiki` 仓 assets/parts）
 **数据、schema、产品图不在本仓**：它们在 `RoboWiki` 仓
 [RoboWiki/RoboWiki](https://github.com/RoboWiki/RoboWiki)，由 `data.lock.json`
 锁定版本。`apps/web/src/data/` 与 `apps/web/public/{parts,share}` 由 pipeline 生成，不手改。
+
+## 前端与构建
+
+Astro 根站、Taro H5/小程序的目录、URL、数据流与上传步骤见 [docs/FRONTEND.md](docs/FRONTEND.md)。
 
 ## 怎么贡献
 

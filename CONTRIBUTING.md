@@ -3,7 +3,7 @@
 RoboWiki 由两个仓库组成：
 
 - **`RoboWiki`**（[RoboWiki/RoboWiki](https://github.com/RoboWiki/RoboWiki)）：数据、schema、产品图；
-- **`RoboWiki.github.io`**（本仓）：站点、页面、后端、控制台、部署、客户端。
+- **`RoboWiki.github.io`**（本仓）：Astro 根站、Taro 互动端、后端、部署与客户端契约。
 
 改数据请去 `RoboWiki` 仓；本仓只处理展示、交互、页面内容与后端。
 
