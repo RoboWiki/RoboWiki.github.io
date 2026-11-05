@@ -1,5 +1,5 @@
 # RoboWiki · GitHub Pages 静态站
-# 产物目录：apps/web/dist（build.format=directory，每页 index.html）
+# 产物目录：apps/web/dist（build.format=file，页面为 .html，首页为 index.html）
 
 User-agent: *
 Allow: /

@@ -41,9 +41,16 @@ export const featuredParts = (() => {
   return (picked.length ? picked : parts.filter(p => p.featured)).slice(0, 8)
 })()
 
+// catalog.json 的 categories 只有 id/name/subtypes，没有逐品类计数；
+// 首页要展示「N 个」，按 parts 现算，避免所有卡片都写 0。
+const categoryCounts = parts.reduce((acc, p) => {
+  acc.set(p.category, (acc.get(p.category) || 0) + 1)
+  return acc
+}, new Map<string, number>())
+
 export const topCategories = (catalog.categories || [])
-  .slice()
-  .sort((a, b) => (b.count || 0) - (a.count || 0))
+  .map(c => ({ ...c, count: categoryCounts.get(c.id) ?? 0 }))
+  .sort((a, b) => b.count - a.count)
   .slice(0, 8)
 
 export function imageUrl(p: CatalogPart): string {
