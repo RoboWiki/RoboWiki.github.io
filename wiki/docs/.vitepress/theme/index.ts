@@ -2,7 +2,7 @@
 // 参考 YunQianDoc 的 theme/index.ts（doc-before / layout-bottom 插槽用法），
 // 这里只占 doc-after 一个插槽，把评论放在正文之后。
 import { defineAsyncComponent, h } from 'vue'
-import type { Theme } from 'vitepress'
+import { useRoute, type Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import PageComments from '../components/PageComments.vue'
 import AuthPanel from '../components/AuthPanel.vue'
@@ -18,8 +18,14 @@ import './material.css'
 export default {
   extends: DefaultTheme,
   Layout() {
+    const route = useRoute()
+    // 按路由重挂载：ShareBox / DataFix 在 onMounted 里按 pathname 取当前部件，
+    // 不随 VitePress 的客户端路由切换更新；不 remount 会把上一页的数据带过去。
+    // 注意 route.data（useData().page）没有 path 字段，必须用 route.path。
     return h(DefaultTheme.Layout, null, {
-      'doc-after': () => h('div', [h(ShareBox), h(DataFix), h(PageComments)]),
+      'doc-after': () => h('div', { key: route.path }, [
+        h(ShareBox), h(DataFix), h(PageComments),
+      ]),
     })
   },
   enhanceApp({ app }) {

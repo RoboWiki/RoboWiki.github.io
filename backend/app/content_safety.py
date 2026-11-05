@@ -165,3 +165,14 @@ def check_user_text(db: Session, user_id: int | None, text: str) -> SafetyResult
     if not settings.content_check_enabled or not appid or not secret:
         return check_text(text)
     return check_text(text, openid=openid_for(db, user_id))
+
+
+def check_user_text_chunks(db: Session, user_id: int | None, text: str) -> SafetyResult:
+    """长文分段检查：微信单次只收 MAX_CONTENT 字，不能只看开头。"""
+    text = text or ""
+    last: SafetyResult | None = None
+    for start in range(0, max(1, len(text)), MAX_CONTENT):
+        last = check_user_text(db, user_id, text[start:start + MAX_CONTENT])
+        if not last.passed:
+            return last
+    return last or SafetyResult(True)

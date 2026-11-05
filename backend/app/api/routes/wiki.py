@@ -20,14 +20,15 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Annotated
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Request
 from sqlalchemy import func
 from sqlmodel import select
 
-from ...content_safety import check_user_text
+from ...content_safety import check_user_text_chunks
+from ...core.config import settings
 from ...models import User, WikiComment
 from ...schemas import WikiCommentIn
-from ..deps import CurrentUser, Db, MaybeUser
+from ..deps import CurrentUser, Db, MaybeUser, rate_limit
 from .notifications import create_notification
 
 router = APIRouter(prefix="/wiki", tags=["wiki"])
@@ -189,7 +190,9 @@ def comment_counts(db: Db):
 
 
 @router.post("/comments", status_code=201)
-def create_comment(payload: WikiCommentIn, user: CurrentUser, db: Db):
+def create_comment(payload: WikiCommentIn, request: Request,
+                   user: CurrentUser, db: Db):
+    rate_limit(request, "wiki-comment", settings.rate_max_comments, user.id)
     body = payload.body.strip()
     if not body:
         raise HTTPException(422, "评论不能为空")
@@ -219,7 +222,7 @@ def create_comment(payload: WikiCommentIn, user: CurrentUser, db: Db):
             root_id = _root_of(parent, by_id)
 
     # 内容安全：未配置微信时放行；判定风险则落 pending 等人工复核
-    safety = check_user_text(db, user.id, body)
+    safety = check_user_text_chunks(db, user.id, body)
 
     c = WikiComment(page=page, user_id=user.id, body=body,
                     parent_id=parent.id if parent else None,

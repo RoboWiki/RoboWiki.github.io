@@ -330,11 +330,15 @@ Page({
   buildComments(rows) {
     const byId = {}
     ;(rows || []).forEach(c => {
+      const deleted = !!c.deleted
       byId[c.id] = {
         id: c.id,
-        body: c.body,
+        body: deleted ? '该讨论已被删除' : c.body,
+        deleted,
+        pending: c.status === 'pending',
+        canReply: !deleted,
         created_at: c.created_at,
-        authorName: authorName(c.author),
+        authorName: deleted ? '已删除' : authorName(c.author),
         hue: hue(c.author),
         parent_id: c.parent_id,
         children: [],
@@ -358,13 +362,17 @@ Page({
         flat.push({
           id: n.id,
           body: n.body,
+          deleted: n.deleted,
+          pending: n.pending,
+          canReply: n.canReply,
           date: F.date(n.created_at),
           authorName: n.authorName,
           hue: n.hue,
           depth,
           parentName: n.parentName || '',
         })
-        if (depth < 3) walk(n.children, depth + 1)
+        // 后端支持多层回复；超过 3 层只收窄缩进，不能把内容丢掉。
+        walk(n.children, Math.min(depth + 1, 3))
       })
     }
     walk(roots, 0)

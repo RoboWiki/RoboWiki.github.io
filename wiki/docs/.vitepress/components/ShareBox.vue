@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
-import { useData, withBase } from 'vitepress'
+import { useData, useRoute, withBase } from 'vitepress'
 import QRCode from 'qrcode'
 import { canonical, findShareEntry, shareImage, shareJsonPath, type ShareEntry } from '../lib/share'
 
 //: 页面 frontmatter 里的分享图（部件=产品图，材质=默认 OG），由 pipeline 写入。
 const { page } = useData()
+const route = useRoute()
 
 const entry = ref<ShareEntry | null>(null)
 /** 刚复制的是哪一项：只用来在按钮上打勾，不再改按钮文案。
@@ -23,6 +24,7 @@ const isMobile = ref(false)
 const wechatHint = ref(false)
 let flashTimer: number | undefined
 let statusTimer: number | undefined
+let loadSeq = 0
 
 async function loadEntry(pathname: string): Promise<ShareEntry | null> {
   // 先直查当前页那张 1KB 的分享卡；找不到再退回 165KB 索引。
@@ -45,14 +47,27 @@ async function loadEntry(pathname: string): Promise<ShareEntry | null> {
   return findShareEntry(pathname)
 }
 
-onMounted(async () => {
+async function refreshEntry() {
+  const seq = ++loadSeq
+  const p = typeof window !== 'undefined' ? window.location.pathname : ''
+  if (!p.startsWith('/parts/') && !p.startsWith('/materials/')) {
+    entry.value = null
+    return
+  }
+  // 客户端路由连续切换时只认最后一次结果，避免慢请求把旧页数据写回来。
+  const next = await loadEntry(p)
+  if (seq === loadSeq) entry.value = next
+}
+
+onMounted(() => {
   canWebShare.value = typeof navigator.share === 'function'
   isMobile.value = /Android|iPhone|iPad|iPod|Mobile|HarmonyOS/i.test(navigator.userAgent)
-  // 只有部件/材质页有分享卡；别的页面别拖 165KB 的 share/index.json。
-  const p = window.location.pathname
-  if (!p.startsWith('/parts/') && !p.startsWith('/materials/')) return
-  entry.value = await loadEntry(p)
+  void refreshEntry()
 })
+
+// VitePress 的 doc-after 插槽在客户端路由切换时不会重建组件；
+// 必须监听当前页面路径，否则分享卡会继续显示上一页的标题和参数。
+watch(() => route.path, () => { void refreshEntry() })
 
 watch([entry, qrEl], async ([e, el]) => {
   if (!e || !el) return
@@ -65,10 +80,7 @@ watch([entry, qrEl], async ([e, el]) => {
   }
 }, { immediate: true })
 
-const shareNoun = computed(() => {
-  const p = typeof window !== 'undefined' ? window.location.pathname : ''
-  return p.startsWith('/materials/') ? '材料 / 工艺' : '部件'
-})
+const shareNoun = computed(() => (route.path.startsWith('/materials/') ? '材料 / 工艺' : '部件'))
 
 const shareUrl = computed(() => (entry.value ? canonical(entry.value) : ''))
 

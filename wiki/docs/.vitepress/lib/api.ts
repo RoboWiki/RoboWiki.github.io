@@ -234,28 +234,60 @@ function errorFrom(res: Response, data: unknown): ApiError {
  *
  * 需要区分 403 / 404 / 409 时读 `err.status`。
  */
-async function refreshAccessToken(): Promise<boolean> {
-  const refresh = getRefreshToken()
-  if (!refresh) return false
+type RefreshResult = 'ok' | 'auth' | 'unavailable'
+let refreshInFlight: Promise<RefreshResult> | null = null
+
+/** 同一标签页的并发 401 共用一个刷新；跨标签页用 Web Locks 串行，避免轮换重放。 */
+function withRefreshLock<T>(fn: () => Promise<T>): Promise<T> {
+  const locks = typeof navigator !== 'undefined'
+    ? (navigator as Navigator & { locks?: { request<T>(name: string, cb: () => Promise<T>): Promise<T> } }).locks
+    : undefined
+  return locks?.request ? locks.request('robowiki-refresh', fn) : fn()
+}
+
+async function doRefresh(refresh: string): Promise<RefreshResult> {
   try {
+    const timeout = (AbortSignal as any)?.timeout
+    const signal = typeof timeout === 'function' ? timeout(8000) : undefined
     const res = await fetch(apiUrl('/auth/refresh'), {
       method: 'POST',
       headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
       body: JSON.stringify({ refresh_token: refresh }),
       cache: 'no-store',
+      signal,
     })
     if (!res.ok) {
-      if (res.status === 401 || res.status === 403) clearAuth()
-      return false
+      if (res.status === 401 || res.status === 403) {
+        clearAuth()
+        return 'auth'
+      }
+      return 'unavailable'
     }
     const data = await res.json()
-    if (!data || !data.access_token) { clearAuth(); return false }
+    if (!data || !data.access_token) {
+      clearAuth()
+      return 'auth'
+    }
     setToken(data.access_token)
     setRefreshToken(data.refresh_token || refresh)
-    return true
+    return 'ok'
   } catch {
-    return false
+    // 断网/超时：保留 refresh，下一次请求还能再试；不能把用户误登出。
+    return 'unavailable'
   }
+}
+
+async function refreshAccessToken(staleToken?: string): Promise<RefreshResult> {
+  if (refreshInFlight) return refreshInFlight
+  refreshInFlight = withRefreshLock(async () => {
+    // 另一个标签页可能已经刷新并写回了新 access；此时不要再消费旧 refresh。
+    const current = getToken()
+    if (staleToken && current && current !== staleToken) return 'ok'
+    const refresh = getRefreshToken()
+    if (!refresh) return 'auth'
+    return doRefresh(refresh)
+  }).finally(() => { refreshInFlight = null })
+  return refreshInFlight
 }
 
 export async function apiFetch<T = any>(path: string, init: RequestInit = {}): Promise<T> {
@@ -289,9 +321,14 @@ export async function apiFetch<T = any>(path: string, init: RequestInit = {}): P
 
   // access 过期时先尝试 refresh 一次；refresh 也失效才真正登出。
   if (res.status === 401 && !isAuthPath && getRefreshToken()) {
-    if (await refreshAccessToken()) {
-      const retryHeaders = new Headers(init.headers)
-      retryHeaders.set('Accept', 'application/json')
+    const refreshed = await refreshAccessToken(token)
+    if (refreshed === 'unavailable') {
+      throw new ApiError(isMirror() ? MSG_MIRROR_NETWORK : MSG_NETWORK, 0, 'network')
+    }
+    if (refreshed === 'ok') {
+      // 复用首轮 headers：Content-Type 等由 apiFetch 补的字段不能丢，
+      // 否则重试的写请求会退化成 text/plain 并收到 422。
+      const retryHeaders = new Headers(headers)
       const fresh = getToken()
       if (fresh) retryHeaders.set('Authorization', `Bearer ${fresh}`)
       try {

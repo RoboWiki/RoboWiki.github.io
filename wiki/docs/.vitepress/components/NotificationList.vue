@@ -16,7 +16,7 @@
  * 点击时先尽力标记已读再跳转，标记失败也不拦着用户看内容。
  */
 import { computed, onMounted, ref, watch } from 'vue'
-import { ApiError, apiErrorMessage, apiFetch } from '../lib/api'
+import { ApiError, apiErrorMessage, apiFetch, isMirror, PRIMARY_SITE } from '../lib/api'
 
 export type Notification = {
   id: number
@@ -177,7 +177,15 @@ function onOpen(evt: MouseEvent, n: Notification) {
   if (evt.metaKey || evt.ctrlKey || evt.shiftKey || evt.altKey || evt.button !== 0) return
   evt.preventDefault()
   if (isUnread(n)) void markRead(n)
-  window.location.assign(n.link)
+  window.location.assign(hrefFor(n.link))
+}
+
+/** 控制台只在主站提供；github.io 镜像上的通知必须回到主站。 */
+function hrefFor(link: string): string {
+  const path = link.replace(/^\/community\/post\//, '/console/post/')
+  return isMirror() && /^\/console(\/|$)/.test(path)
+    ? `${PRIMARY_SITE}${path}`
+    : path
 }
 
 const KIND_LABEL: Record<string, string> = {
@@ -253,7 +261,7 @@ defineExpose({ refresh: load })
           :class="{ 'is-unread': isUnread(n) }">
           <div class="notif-item-head">
             <span class="notif-kind">{{ kindLabel(n.type) }}</span>
-            <a v-if="n.link" class="notif-subject" :href="n.link"
+            <a v-if="n.link" class="notif-subject" :href="hrefFor(n.link)"
               @click="onOpen($event, n)">{{ n.subject || '查看详情' }}</a>
             <span v-else class="notif-subject">{{ n.subject || '通知' }}</span>
             <span v-if="isUnread(n)" class="notif-dot" aria-label="未读" />
@@ -265,7 +273,7 @@ defineExpose({ refresh: load })
               :disabled="busyId === n.id" @click="markRead(n)">
               {{ busyId === n.id ? '标记中…' : '标记已读' }}
             </button>
-            <a v-if="n.link" class="notif-open" :href="n.link" @click="onOpen($event, n)">
+            <a v-if="n.link" class="notif-open" :href="hrefFor(n.link)" @click="onOpen($event, n)">
               打开 ↗
             </a>
           </div>

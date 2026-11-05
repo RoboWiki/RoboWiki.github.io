@@ -26,7 +26,7 @@
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useData, useRoute } from 'vitepress'
 import { giscus as giscusCfg } from '../giscus'
-import { ApiError, apiAvailable, apiErrorMessage, apiFetch, apiUrl, isConnectivityError, isMirror, MIRROR_READONLY_NOTE, PRIMARY_SITE } from '../lib/api'
+import { ApiError, apiAvailable, apiBase, apiErrorMessage, apiFetch, apiUrl, isConnectivityError, isMirror, MIRROR_READONLY_NOTE, PRIMARY_SITE } from '../lib/api'
 import { clearToken, getToken } from '../lib/auth'
 
 const { isDark } = useData()
@@ -259,15 +259,19 @@ function applyPaging(page: CommentPage | null | undefined) {
   rootTotal.value = serverPaged.value ? Number(total) : null
 }
 
+let loadSeq = 0
+
 async function load() {
   // 探活没通过就一个请求都不发：镜像端这里调一次只会拿到失败并渲染成故障
   if (!apiUp.value) return
+  const seq = ++loadSeq
   loading.value = true
   error.value = ''
   offline.value = false
   loadingMore.value = false
   try {
     const d = await fetchComments()
+    if (seq !== loadSeq) return
     const list = Array.isArray(d?.comments) ? d.comments : []
     items.value = list
     applyPaging(d)
@@ -275,12 +279,13 @@ async function load() {
     visibleRoots.value = PAGE_SIZE
     await focusHashComment()
   } catch (e: any) {
+    if (seq !== loadSeq) return
     if (goReadonlyIfMirror(e)) return
     // 走到这里说明探活过了但请求失败（后端刚挂 / 网关超时），这才是真的「加载失败」
     offline.value = true
     error.value = apiErrorMessage(e, '讨论加载失败，请稍后重试')
   } finally {
-    loading.value = false
+    if (seq === loadSeq) loading.value = false
   }
 }
 
@@ -606,6 +611,42 @@ function resolveMediaUrl(url: string): string {
   return idx >= 0 ? apiUrl(url.slice(idx)) : url
 }
 
+/** 只把本站媒体链接渲染成图片，其他 http(s) 链接仍是普通外链。 */
+function isOwnMediaUrl(url: string): boolean {
+  const abs = resolveMediaUrl(url)
+  return abs.startsWith(apiBase() + '/media/')
+    && /^[A-Za-z0-9_-]+$/.test(abs.slice((apiBase() + '/media/').length))
+}
+
+type BodyPart = { kind: 'text' | 'link' | 'image'; value: string }
+
+/**
+ * 把评论文本切成文本/链接/图片，模板按类型渲染。
+ * 不用 v-html：用户正文永远当文本处理，避免 XSS。
+ */
+function bodyParts(text: string): BodyPart[] {
+  const out: BodyPart[] = []
+  const re = /(https?:\/\/[^\s<>"']+|\/api\/v1\/media\/[A-Za-z0-9_-]+)/g
+  let last = 0
+  let m: RegExpExecArray | null
+  while ((m = re.exec(text)) !== null) {
+    const raw = m[0]
+    const trailing = raw.match(/[.,;:!?，。；：！？）)\]]+$/)?.[0] || ''
+    const value = trailing ? raw.slice(0, -trailing.length) : raw
+    if (m.index > last) out.push({ kind: 'text', value: text.slice(last, m.index) })
+    if (value) {
+      out.push({
+        kind: isOwnMediaUrl(value) ? 'image' : 'link',
+        value: isOwnMediaUrl(value) ? resolveMediaUrl(value) : value,
+      })
+    }
+    if (trailing) out.push({ kind: 'text', value: trailing })
+    last = m.index + raw.length
+  }
+  if (last < text.length) out.push({ kind: 'text', value: text.slice(last) })
+  return out
+}
+
 function pickMedia() {
   if (uploading.value) return
   fileInput.value?.click()
@@ -787,8 +828,10 @@ onUnmounted(() => {
   if (typeof window !== 'undefined') window.removeEventListener('hashchange', onHashChange)
 })
 watch(() => route.path, () => {
+  loadSeq++                    // 让上一页在途的加载结果作废
   mode.value = 'probe'
   items.value = []
+  body.value = ''
   replyTo.value = null
   reportFor.value = null
   notice.value = ''
@@ -831,8 +874,8 @@ watch(isDark, syncGiscusTheme)
       </p>
 
       <p v-if="offline" class="rsw-muted">
-        讨论加载失败，请稍后重试。本地开发需先起后端：
-        <code>uvicorn app.main:app --port 8000</code>。
+        讨论加载失败，请稍后重试。
+        <button type="button" class="rsw-btn rsw-retry" @click="load">重试</button>
       </p>
       <p v-else-if="loading" class="rsw-muted">加载中…</p>
       <p v-else-if="!tree.length" class="rsw-muted">还没有讨论。第一条就由你来写。</p>
@@ -876,7 +919,17 @@ watch(isDark, syncGiscusTheme)
             <div v-else-if="commentState(node.c) === 'deleted'" class="rsw-placeholder">
               已删除
             </div>
-            <div v-else class="rsw-body">{{ node.c.body }}</div>
+            <div v-else class="rsw-body">
+              <template v-for="(part, pi) in bodyParts(node.c.body)" :key="pi">
+                <a v-if="part.kind === 'image'" :href="part.value" target="_blank"
+                   rel="nofollow ugc noopener">
+                  <img :src="part.value" alt="评论配图" loading="lazy" class="rsw-body-img" />
+                </a>
+                <a v-else-if="part.kind === 'link'" :href="part.value" target="_blank"
+                   rel="nofollow ugc noopener" class="rsw-body-link">{{ part.value }}</a>
+                <template v-else>{{ part.value }}</template>
+              </template>
+            </div>
 
             <!-- 举报：只调用现有 /reports，不在前端做审核或折叠逻辑 -->
             <div v-if="reportFor === node.c.id" class="rsw-report">
@@ -1105,6 +1158,16 @@ watch(isDark, syncGiscusTheme)
   overflow-wrap: anywhere;
   color: var(--vp-c-text-1);
 }
+.rsw-body-img {
+  display: block;
+  max-width: min(100%, 420px);
+  max-height: 420px;
+  margin: 0.4rem 0;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+}
+.rsw-body-link { color: var(--rw-link); text-decoration: underline; }
+.rsw-retry { margin-left: 0.35rem; padding: 0.2rem 0.5rem; font-size: 0.78rem; }
 .rsw-placeholder {
   margin-top: 0.3rem;
   font-size: 0.82rem;
@@ -1164,6 +1227,10 @@ watch(isDark, syncGiscusTheme)
 .rsw-input:focus {
   outline: none;
   border-color: var(--vp-c-brand-1);
+}
+.rsw-input:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
 }
 .rsw-input[aria-invalid="true"] { border-color: var(--vp-c-danger-1); }
 .rsw-input:disabled { opacity: 0.6; }

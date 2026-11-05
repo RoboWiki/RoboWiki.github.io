@@ -29,6 +29,17 @@ export interface AccountOut {
   password_set?: boolean
 }
 
+/** Body_upload_api_v1_media_post */
+export interface Body_upload_api_v1_media_post {
+  file: string
+}
+
+/** CommentIn */
+export interface CommentIn {
+  body: string
+  parent_id?: number | null
+}
+
 /** CommentOut */
 export interface CommentOut {
   id: number
@@ -76,6 +87,34 @@ export interface LogoutIn {
   refresh_token?: string | null
 }
 
+/** MediaOut */
+export interface MediaOut {
+  id: string
+  url: string
+  content_type: string
+  size: number
+}
+
+/** NotificationListOut */
+export interface NotificationListOut {
+  total: number
+  unread: number
+  limit: number
+  offset: number
+  items: NotificationOut[]
+}
+
+/** NotificationOut */
+export interface NotificationOut {
+  id: number
+  type: string
+  subject?: string
+  body?: string
+  link?: string | null
+  read_at?: string | null
+  created_at: string
+}
+
 /** OutboxOut */
 export interface OutboxOut {
   id: number
@@ -100,13 +139,6 @@ export interface PatchIn {
   /** 依据：哪份 datasheet 的哪一页 / 哪封厂商邮件 */
   note: string
   source_url?: string | null
-}
-
-/** CommentIn */
-/** OpenAPI 原名：app__schemas__CommentIn */
-export interface PostCommentIn {
-  body: string
-  parent_id?: number | null
 }
 
 /** PostIn */
@@ -305,8 +337,7 @@ export interface WechatMiniIn {
   nickname?: string | null
 }
 
-/** CommentIn */
-/** OpenAPI 原名：app__api__routes__wiki__CommentIn */
+/** WikiCommentIn */
 export interface WikiCommentIn {
   page: string
   body: string
@@ -540,9 +571,52 @@ export interface ApiOperations {
     response: unknown;
     status: 200;
   };
+  /** 上传一张图（jpeg / png / webp，≤ 5 MB）。 */
+  /** Upload */
+  'POST /api/v1/media': {
+    body: Body_upload_api_v1_media_post;
+    response: MediaOut;
+    status: 201;
+  };
+  /** 公开读取：评论里的图片要能在未登录时显示。 */
+  /** Get Media */
+  'GET /api/v1/media/{media_id}': {
+    path: { media_id: string };
+    response: unknown;
+    status: 200;
+  };
+  /** 删除自己的媒体（可选能力，供控制台清理）。 */
+  /** Delete Media */
+  'DELETE /api/v1/media/{media_id}': {
+    path: { media_id: string };
+    response: void;
+    status: 204;
+  };
   /** Meta */
   'GET /api/v1/meta': {
     response: unknown;
+    status: 200;
+  };
+  /** List Notifications */
+  'GET /api/v1/notifications': {
+    query: { limit?: number; offset?: number; unread?: boolean };
+    response: NotificationListOut;
+    status: 200;
+  };
+  /** Mark All Read */
+  'POST /api/v1/notifications/read-all': {
+    response: unknown;
+    status: 200;
+  };
+  /** Unread Count */
+  'GET /api/v1/notifications/unread_count': {
+    response: unknown;
+    status: 200;
+  };
+  /** Mark Read */
+  'POST /api/v1/notifications/{notification_id}/read': {
+    path: { notification_id: number };
+    response: NotificationOut;
     status: 200;
   };
   /** List Parts */
@@ -585,7 +659,7 @@ export interface ApiOperations {
   /** Create Comment */
   'POST /api/v1/posts/{post_id}/comments': {
     path: { post_id: number };
-    body: PostCommentIn;
+    body: CommentIn;
     response: CommentOut;
     status: 201;
   };
@@ -713,16 +787,16 @@ export interface ApiOperations {
     response: VoteOut;
     status: 200;
   };
-  /** 每页条数，供侧边栏或索引页显示「N 条讨论」。 */
+  /** 每页条数，供侧边栏或索引页显示「N 条讨论」。 只数公开可见的：pending/hidden/已删除都不算 —— 页面上看不到的， 不应该在索引里显示成一条讨论。 */
   /** Comment Counts */
   'GET /api/v1/wiki/comment-counts': {
     response: unknown;
     status: 200;
   };
-  /** 一个页面的讨论串；不传 page 则返回最近的全站讨论。 */
+  /** 一个页面的讨论串；不传 page 则返回最近的全站讨论。 分页按**根讨论**做（`root_limit` / `root_offset`），回复永远跟着根返回， 所以前端组树时不会出现「父节点没拉到、回复变孤儿」。`limit` 仍保留为 单次最大行数的兼容参数。 */
   /** List Comments */
   'GET /api/v1/wiki/comments': {
-    query: { page?: string | null; limit?: number };
+    query: { page?: string | null; limit?: number; root_limit?: number | null; root_offset?: number; root_id?: number | null };
     response: unknown;
     status: 200;
   };
@@ -732,6 +806,7 @@ export interface ApiOperations {
     response: unknown;
     status: 201;
   };
+  /** 软删除：作者或站务。 子节点**不删**：删掉父节点后线程仍能展开，只是父节点变成占位。 重复删除幂等返回 204，客户端重试不会报错。 */
   /** Delete Comment */
   'DELETE /api/v1/wiki/comments/{cid}': {
     path: { cid: number };

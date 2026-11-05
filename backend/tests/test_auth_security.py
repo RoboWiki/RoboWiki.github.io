@@ -250,6 +250,32 @@ def test_rate_limit_bucket_table_is_bounded(monkeypatch):
         deps.reset_rate_limits()
 
 
+def test_rate_limit_ignores_forwarded_headers_from_public_peer(monkeypatch):
+    """直连方是公网地址时，客户端自带的转发头不能改变限流键。"""
+    from app.api import deps
+    from fastapi import HTTPException
+
+    deps.reset_rate_limits()
+    try:
+        def req(real_ip: str) -> Request:
+            return Request({
+                "type": "http", "method": "GET", "path": "/api/auth/login",
+                "headers": [(b"x-real-ip", real_ip.encode())],
+                "client": ("8.8.8.8", 12345), "server": ("testserver", 80),
+                "scheme": "http", "query_string": b"",
+            })
+
+        deps.rate_limit(req("10.0.0.1"), "public-peer", 1)
+        try:
+            deps.rate_limit(req("10.0.0.2"), "public-peer", 1)
+        except HTTPException as exc:
+            assert exc.status_code == 429
+        else:
+            raise AssertionError("伪造 X-Real-IP 不应绕过限流")
+    finally:
+        deps.reset_rate_limits()
+
+
 def test_rate_limit_evicts_expired_buckets(monkeypatch):
     """溢出清理时，窗口外的旧桶必须先被丢掉（而不是只按 LRU 硬砍）。"""
     from app.api import deps

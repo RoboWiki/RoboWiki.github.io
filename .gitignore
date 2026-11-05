@@ -22,6 +22,11 @@ audit-*.png
 
 # 核心仓数据发布物（Pages/本地构建时下载，不提交）
 .data/
+.data.new/
+.data.prev/
+.data.lock
+.openapi.tmp.json
+deploy/.deployed-rev
 
 # 厂商原始 PDF / 抓取缓存（40 MB）：可由 docs/ref-zju-wiki.md §5 复现，不入库
 data/raw/
@@ -71,6 +76,7 @@ console/tsconfig.tsbuildinfo
 # 数据备份（可能含 PII）
 deploy/backup/*.dump
 deploy/backup/*.dump.tmp
+deploy/backup/robowiki-media-*.tar.gz
 
 # 可选卫星社区（NodeBB）的本地配置：含 secret 与数据库口令
 deploy/community/

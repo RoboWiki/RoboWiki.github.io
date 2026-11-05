@@ -85,7 +85,9 @@ def register(payload: RegisterIn, request: Request, db: Db):
     if db.exec(select(User).where(User.handle == payload.handle)).first():
         raise HTTPException(status.HTTP_409_CONFLICT, "这个 handle 已被占用")
     if payload.email and db.exec(select(User).where(User.email == payload.email)).first():
-        # 内部照样拦住重复创建，但对外只说「没注册成功」——不能变成邮箱枚举接口
+        # 内部照样拦住重复创建，但对外只说「没注册成功」——不能变成邮箱枚举接口。
+        # 先跑一次同成本的哑哈希，避免「邮箱已存在」分支明显更快。
+        verify_password(payload.password, dummy_password_hash())
         raise HTTPException(status.HTTP_400_BAD_REQUEST, _REGISTER_FAILED)
 
     u = User(handle=payload.handle, display_name=payload.display_name,
@@ -217,8 +219,14 @@ def refresh_session(payload: RefreshIn, request: Request, db: Db):
     row = db.exec(select(RefreshToken).where(
         RefreshToken.token_hash == token_hash)).first()
     if row is not None and row.used_at is not None and row.revoked_at is None:
-        # 复用：把同 family 里已签发的新 token 一起废掉
+        # 复用：整条 family 作废，并自增 session_epoch，让窃取者手里尚未过期的
+        # access 也立即失效（否则还能继续用 2 小时）。
         _revoke_family(db, row.user_id, row.family)
+        user = db.get(User, row.user_id)
+        if user is not None:
+            user.session_epoch = int(user.session_epoch or 0) + 1
+            db.add(user)
+        db.commit()
     raise _refresh_rejected()
 
 
@@ -366,15 +374,21 @@ def _issue(db: Db, user: User, purpose: str) -> str:
 
 def _consume(db: Db, raw: str, purpose: str) -> User:
     now = datetime.now(timezone.utc)
-    row = db.exec(select(EmailToken).where(
-        EmailToken.token_hash == _hash(raw), EmailToken.purpose == purpose,
-        EmailToken.used_at.is_(None), EmailToken.expires_at > now)).first()
-    if row is None:
+    token_hash = _hash(raw)
+    # 条件 UPDATE 保证一次性：重置/验证令牌并发提交时只有一个能成功。
+    claimed = db.execute(update(EmailToken).where(
+        EmailToken.token_hash == token_hash,
+        EmailToken.purpose == purpose,
+        EmailToken.used_at.is_(None),
+        EmailToken.expires_at > now,
+    ).values(used_at=now))
+    if claimed.rowcount != 1:
+        db.rollback()
         raise HTTPException(400, "链接/令牌无效或已过期")
-    row.used_at = now
-    db.add(row)
     db.commit()
-    user = db.get(User, row.user_id)
+    row = db.exec(select(EmailToken).where(
+        EmailToken.token_hash == token_hash)).first()
+    user = db.get(User, row.user_id) if row is not None else None
     if user is None:
         raise HTTPException(400, "用户不存在")
     return user
@@ -756,14 +770,38 @@ def _claim_handle(db: Session, base: str) -> str:
                         "账号标识分配失败，请稍后再试")
 
 
+def _can_claim_unverified(db: Session, user: User) -> bool:
+    """未验证邮箱账号只有在没有任何其他身份时，才允许被已验证的提供方认领。"""
+    if user.email_verified:
+        return False
+    return db.exec(select(Identity).where(Identity.user_id == user.id)).first() is None
+
+
+def _claim_unverified(db: Session, user: User) -> None:
+    """提供方已证明邮箱归属：保留账号数据，但清掉占位口令和旧会话。
+
+    先注册受害者邮箱、再等受害者用 GitHub 登录的攻击者，不能继续用口令进来。
+    """
+    user.email_verified = True
+    user.password_hash = unusable_password_hash()
+    user.password_set = False
+    user.session_epoch = int(user.session_epoch or 0) + 1
+    db.add(user)
+    db.commit()
+    _revoke_all_sessions(db, user.id)
+
+
 def _user_for_identity(db: Session, *, provider: str, subject: str,
                        email: str | None, email_verified: bool,
                        display_name: str | None, handle_hint: str,
                        raw: dict) -> User:
     """(provider, subject) → User。找不到就建，找到就复用。
 
-    并号规则只认**提供方已验证**的邮箱：未验证邮箱并入已有账号等于
-    「我先用你的邮箱注册，你再用 GitHub 一登就进了我的账号」。
+    并号规则只认**提供方已验证**的邮箱，且要区分存量账号有没有验证过：
+      · 已验证账号：直接并入；
+      · 未验证且没有任何第三方身份：认领并清掉占位口令/旧会话；
+      · 未验证但已经绑过别的身份：不并，另建账号 —— 否则攻击者可以先占邮箱
+        再绑自己的 GitHub，等受害者登录时把受害者并进攻击者控制的账号。
     """
     ident = db.exec(select(Identity).where(Identity.provider == provider,
                                           Identity.subject == subject)).first()
@@ -782,20 +820,24 @@ def _user_for_identity(db: Session, *, provider: str, subject: str,
         db.commit()
 
     user = None
-    if email and email_verified:
-        user = db.exec(select(User).where(User.email == email)).first()
-        if user is not None and not user.email_verified:
-            # 提供方已经证明这个邮箱归他所有；顺手把本站的「已验证」补上
-            user.email_verified = True
-            db.add(user)
-            db.commit()
+    created_user = False
+    existing_email_user = None
+    if email:
+        existing_email_user = db.exec(select(User).where(User.email == email)).first()
+    if email and email_verified and existing_email_user is not None:
+        if _can_claim_unverified(db, existing_email_user):
+            _claim_unverified(db, existing_email_user)
+            user = existing_email_user
+        elif existing_email_user.email_verified:
+            user = existing_email_user
 
     if user is None:
+        created_user = True
         handle = _claim_handle(db, handle_hint)
-        safe_email = email
-        if email and not email_verified and \
-                db.exec(select(User).where(User.email == email)).first() is not None:
-            safe_email = None      # 未验证邮箱不能占用别人已注册的邮箱
+        # 未验证邮箱不能占用别人已注册的邮箱；已验证但邮箱已被别的身份占用，
+        # 同样不能硬塞，否则会撞唯一约束甚至误并号。
+        safe_email = email if (email and email_verified
+                               and existing_email_user is None) else None
         user = User(
             handle=handle,
             display_name=(display_name or handle)[:32],
@@ -815,7 +857,18 @@ def _user_for_identity(db: Session, *, provider: str, subject: str,
             user = (db.exec(select(User).where(User.email == email)).first()
                     if email else None)
             if user is None:
-                raise
+                # 无邮箱的并发首次登录（微信/GitHub 无邮箱）撞 handle：让客户端重试，
+                # 不要把 IntegrityError 变成 500。
+                raise HTTPException(
+                    status.HTTP_409_CONFLICT, "账号创建冲突，请重试") from None
+            if not user.email_verified:
+                if _can_claim_unverified(db, user):
+                    _claim_unverified(db, user)
+                else:
+                    raise HTTPException(
+                        status.HTTP_409_CONFLICT,
+                        "该邮箱已绑定其他账号，请使用原登录方式")
+            created_user = False
         else:
             db.refresh(user)
 
@@ -830,6 +883,14 @@ def _user_for_identity(db: Session, *, provider: str, subject: str,
                                               Identity.subject == subject)).first()
         if ident is None:
             raise
+        winner = db.get(User, ident.user_id)
+        if winner is None:
+            raise
+        if created_user:
+            # 本请求新建的账号没抢到身份，不能把会话签到一个没有身份的孤儿账号上。
+            db.delete(user)
+            db.commit()
+        return winner
     return user
 
 

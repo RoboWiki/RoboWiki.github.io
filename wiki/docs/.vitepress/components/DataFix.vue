@@ -11,8 +11,8 @@
  * 那边说参数错」。这里只放一个带 ?redirect= 的登录链接，登录态本身仍从
  * lib/auth 的同一个 token 读。
  */
-import { computed, onMounted, ref } from 'vue'
-import { withBase } from 'vitepress'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRoute, withBase } from 'vitepress'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
@@ -32,6 +32,7 @@ type Mine = {
   reviews?: Review[]
 }
 
+const route = useRoute()
 const entry = ref<ShareEntry | null>(null)
 const detail = ref<{ params?: { key: string; label: string; value: string }[] } | null>(null)
 const me = ref<Me | null>(null)
@@ -99,14 +100,11 @@ function reviewTextOf(s: Mine): string {
 
 function statusClass(status: string): string {
   if (status === 'rejected') return 'is-bad'
-  if (status === 'pending') return 'is-wait'
-  return 'is-ok'
+  if (['accepted', 'merged', 'released'].includes(status)) return 'is-ok'
+  return 'is-wait'
 }
 
-const loginHref = computed(() => {
-  const path = typeof window !== 'undefined' ? window.location.pathname : '/'
-  return `/login?redirect=${encodeURIComponent(path)}`
-})
+const loginHref = computed(() => `/login?redirect=${encodeURIComponent(route.path)}`)
 
 const token = () => getToken()
 
@@ -120,23 +118,42 @@ async function loadMine() {
   mine.value = await req<Mine[]>('/submissions/mine?limit=10').catch(() => [])
 }
 
-onMounted(async () => {
-  entry.value = await findShareEntry(window.location.pathname)
-  if (!entry.value) return
-  // 探活统一走 lib/api：模块级缓存，一页里多个组件只探一次；
-  // 探不到就是静态镜像（GitHub Pages），整块交互入口直接不渲染。
+let pageSeq = 0
+
+async function loadPage() {
+  const seq = ++pageSeq
+  resetFix()
+  entry.value = null
+  detail.value = null
+  mine.value = []
+  done.value = null
+  serverError.value = ''
+  notice.value = ''
+  verifySent.value = false
+
+  const next = await findShareEntry(window.location.pathname)
+  if (seq !== pageSeq) return
+  entry.value = next
+  if (!next) return
   apiReady.value = await apiAvailable()
-  if (!apiReady.value) return
-  detail.value = await fetch(withBase(entry.value.json)).then(r => r.ok ? r.json() : null).catch(() => null)
+  if (seq !== pageSeq || !apiReady.value) return
+  detail.value = await fetch(withBase(next.json)).then(r => r.ok ? r.json() : null).catch(() => null)
+  if (seq !== pageSeq) return
   if (token()) {
     me.value = await req<Me>('/auth/me').catch((e) => {
       // 只有 401 才清 token；断网/CORS 不要把用户踢下线
       if (e instanceof ApiError && e.status === 401) clearToken()
       return null
     })
-    await loadMine()
+    if (seq === pageSeq) await loadMine()
   }
-})
+}
+
+onMounted(() => { void loadPage() })
+
+// doc-after 插槽在客户端路由切换时会复用组件；必须重新解析当前页，
+// 否则纠错提案会带着上一页的 part id 提交。
+watch(() => route.path, () => { void loadPage() })
 
 const issueUrl = computed(() => {
   if (!entry.value) return ''

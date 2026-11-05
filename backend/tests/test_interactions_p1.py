@@ -355,6 +355,38 @@ def test_wiki_report_hides_whole_nested_thread(client):
                       ).json()["count"] == 3, "恢复后整条线程原样回来"
 
 
+def test_restore_does_not_publish_pending_thread(client, monkeypatch):
+    """隐藏 pending 再恢复，必须回到 pending，不能变成公开可见。"""
+    from app.content_safety import SafetyResult
+
+    a, _, _ = register(client)
+    reporter, _, _ = register(client)
+    page = f"parts/p1/pending-{uuid.uuid4().hex[:8]}"
+
+    monkeypatch.setattr(
+        "app.api.routes.wiki.check_user_text_chunks",
+        lambda db, uid, text: SafetyResult(False, checked=True, reason="risky"),
+    )
+    c = client.post("/api/v1/wiki/comments", headers=a,
+                    json={"page": page, "body": "需要人工复核的内容"}).json()
+    assert c["status"] == "pending"
+
+    rid = client.post("/api/v1/reports", headers=reporter, json={
+        "target_kind": "wiki_comment", "target_id": c["id"],
+        "reason": "misinfo", "detail": "P1 测试：待审内容处置"}).json()["id"]
+    staff = staff_headers(client)
+
+    assert client.patch(f"/api/v1/admin/reports/{rid}", headers=staff, json={
+        "action": "hide", "note": "先隐藏"}).status_code == 200
+    assert client.patch(f"/api/v1/admin/reports/{rid}", headers=staff, json={
+        "action": "restore", "note": "恢复但保持待审"}).status_code == 200
+
+    assert client.get("/api/v1/wiki/comments", params={"page": page}
+                      ).json()["count"] == 0, "pending 恢复后仍不能公开"
+    mine = client.get("/api/v1/wiki/comments", params={"page": page}, headers=a).json()
+    assert mine["count"] == 1 and mine["comments"][0]["status"] == "pending"
+
+
 # ── 媒体 ────────────────────────────────────────────────────────────────────
 def test_media_upload_and_fetch(client):
     user, _, _ = register(client)

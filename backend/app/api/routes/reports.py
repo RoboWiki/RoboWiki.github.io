@@ -106,10 +106,13 @@ def _set_hidden(db, kind: str, target_id: int, hidden: bool) -> None:
             row = db.get(WikiComment, cid)
             if row is not None:
                 row.hidden = hidden
-                # status 与 hidden 同步：旧查询只看 hidden，新查询看 status，
-                # 两套读法必须给出同一个可见性结论。已软删的行不改状态。
+                # 隐藏时不要覆盖 pending：否则恢复举报会把待审内容直接放成 visible。
+                # 只把原本 visible 的行标成 hidden；恢复时也只还原 hidden。
                 if row.deleted_at is None:
-                    row.status = "hidden" if hidden else "visible"
+                    if hidden and row.status == "visible":
+                        row.status = "hidden"
+                    elif not hidden and row.status == "hidden":
+                        row.status = "visible"
                 db.add(row)
         return
 
@@ -149,10 +152,10 @@ def _target_link(db, kind: str, target_id: int) -> str | None:
         c = db.get(WikiComment, target_id)
         return f"/{c.page}#comment-{target_id}" if c is not None else None
     if kind == "post":
-        return f"/community/post/{target_id}"
+        return f"/console/post/{target_id}"
     if kind == "comment":
         c = db.get(Comment, target_id)
-        return f"/community/post/{c.post_id}#c{target_id}" if c is not None else None
+        return f"/console/post/{c.post_id}#c{target_id}" if c is not None else None
     return None
 
 

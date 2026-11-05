@@ -56,7 +56,8 @@ cp deploy/.env.example deploy/.env
 #      POSTGRES_PASSWORD=$(openssl rand -base64 24)
 #      SECRET_KEY=$(openssl rand -hex 32)
 #      ADMIN_PASSWORD=$(openssl rand -base64 18)
-#    生产把 SITE_URL 和 CORS_ORIGINS 改成主域；EMAIL_MODE 改 smtp。
+#    生产把 SITE_URL 改主域；CORS_ORIGINS 必须同时保留主域与 github.io
+#    镜像（静态站跨域带 Bearer 调 API）；EMAIL_MODE 改 smtp。
 
 # 2) 数据 release（校验 SHA-256 与 MANIFEST 计数）
 bash scripts/fetch-data-release.sh
@@ -69,6 +70,9 @@ chown -R 10001:10001 deploy/var/outbox deploy/var/media
 cd deploy
 docker compose up -d --build
 docker compose ps
+cd ..
+# 记录“当前镜像对应的代码版本”，供 data-only 更新判断是否混入代码变更
+git rev-parse HEAD > deploy/.deployed-rev
 ```
 
 期望：`db` healthy、`api` healthy、`worker` Up、`migrate` **Exited (0)**。
@@ -161,7 +165,7 @@ curl -sSI https://robowiki.org.cn/ | grep -iE \
 | `OAUTH_REDIRECT_BASE` | 反代后回调的对外根 | `https://robowiki.org.cn` |
 | `WECHAT_MP_APPID` / `WECHAT_MP_SECRET` | 小程序 code2session；Secret 只在服务端 | 按需 |
 | `EXPOSE_DOCS` | Swagger UI | `false` |
-| `CORS_ORIGINS` | JSON 数组 | `["https://robowiki.org.cn"]` |
+| `CORS_ORIGINS` | JSON 数组 | `["https://robowiki.org.cn","https://robowiki.github.io"]` |
 | `BOT_TOKEN` | QQ 机器人只读问答 | 随机长串；留空则关闭 |
 | `PUBLISH_MODE` | `dryrun` / `github` | 先 `dryrun`，验证后再 `github` |
 | `GITHUB_TOKEN` | 开`RoboWiki` 仓 PR | 细粒度 token，仅 contents/pull_requests 写 |
@@ -290,18 +294,34 @@ cd /opt/RoboWiki.github.io
 bash scripts/update-data.sh
 ```
 
-脚本做四件事：`git pull --ff-only` → `fetch-data-release.sh`（校验 SHA-256/MANIFEST）→
-`docker compose up -d --no-build --force-recreate migrate api worker` → 轮询 `/ready`。
+脚本会先确认 `deploy/.deployed-rev` 与当前 HEAD 之间没有 `backend/`、`deploy/` 或
+`pyproject.toml` 变更；有变更就中止，避免旧镜像跑新迁移。首次使用前先完整部署一次并记录基线：
+
+```bash
+cd /opt/RoboWiki.github.io/deploy
+docker compose up -d --build
+cd ..
+git rev-parse HEAD > deploy/.deployed-rev
+```
+
+脚本随后会停 api/worker、下载并校验新 release（先落 `.data.new`，失败保留旧 `.data`）、
+替换数据、重建容器并轮询 `/ready`，成功后把新 HEAD 写回 `.deployed-rev`。
 数据是挂载进容器的，换 release 不需要重新构建 `robowiki/api` 镜像，也不需要改 1Panel 反代。
+脚本默认按 compose 的默认路径更新；如果改过 `DATA_DIR`/`SCHEMA_DIR`，请按下面手动命令并自行调整挂载。
 
 手动等价命令：
 
 ```bash
 git pull
+cd deploy
+docker compose stop api worker
+cd ..
 bash scripts/fetch-data-release.sh
 cd deploy
 docker compose up -d --no-build --force-recreate migrate api worker
 curl -fsS http://127.0.0.1:8080/api/v1/ready
+cd ..
+git rev-parse HEAD > deploy/.deployed-rev
 ```
 
 顺序不能反：**先换数据，再重启 API**。反向操作会让 API 先看到旧目录。

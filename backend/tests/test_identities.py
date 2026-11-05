@@ -331,10 +331,18 @@ def test_github_links_verified_email_to_existing_account(client, github_configur
 
     ident = _get_identity("github", "90010")
     assert ident is not None and ident.user_id == before
-    # 并号不该顺手把口令关掉：这个账号本来就有口令
-    assert _user_by_handle("idlink1").password_set is True
+    # 认领未验证邮箱账号时必须清掉占位口令：否则先占邮箱的人还能继续登录。
+    assert _user_by_handle("idlink1").password_set is False
     # GitHub 已经证明邮箱归属，本站的「已验证」跟着补齐
     assert _user_by_handle("idlink1").email_verified is True
+    # 认领会提升 session_epoch，旧 access 立即失效
+    old = reg.get("access_token")
+    assert old
+    assert client.get("/api/v1/auth/me",
+                      headers={"Authorization": f"Bearer {old}"}).status_code == 401
+    # 旧口令也不能再登录
+    assert client.post("/api/v1/auth/login", json={
+        "handle": "idlink1", "password": "pass1234"}).status_code == 401
 
 
 def test_github_unverified_email_never_takes_over_account(client, github_configured,
@@ -354,6 +362,30 @@ def test_github_unverified_email_never_takes_over_account(client, github_configu
     ident = _get_identity("github", "90011")
     assert ident is not None and ident.user_id != victim_id
     assert _user_by_handle("idlink2").email == "link2@example.com", "受害者邮箱不能被顶掉"
+
+
+def test_verified_email_does_not_merge_account_with_other_identities(
+        client, github_configured, monkeypatch):
+    """先占邮箱并绑自己 GitHub 的账号，不能靠受害者邮箱被并进来。"""
+    reg = _register(client, "idlink3", email="link3@example.com")
+    victim_id = reg["user"]["id"]
+    _bind("idlink3", "wechat_mini", "attacker-openid")
+
+    fake_github(monkeypatch, subject="90012", login="victim",
+                name="Victim", email="link3@example.com", verified=True)
+    r = client.get("/api/v1/auth/github/callback",
+                   params={"code": "fake", "state": "fake"},
+                   headers={"Accept": "application/json"})
+    assert r.status_code == 200, r.text
+    assert r.json()["user"]["id"] != victim_id, "已有其他身份的账号不得被验证邮箱认领"
+    # 原账号口令仍然有效，不会被并号清掉
+    assert _user_by_handle("idlink3").password_set is True
+    db = _db()
+    try:
+        assert len([i for i in db.exec(select(Identity)).all()
+                    if i.user_id == victim_id]) == 1
+    finally:
+        db.close()
 
 
 # ── 5. 微信小程序：未配置 503 / mock 成功 / mock 失败 ───────────────────────

@@ -67,6 +67,7 @@ const score = ref(0)
 const own = ref(false)
 const note = ref('')
 const submitting = ref(false)
+const loading = ref(true)
 const ratingError = ref('')
 const ratingNotice = ref('')
 const mine = ref<Mine | null>(null)
@@ -190,12 +191,15 @@ async function loadLive() {
       own.value = mine.value.own_hardware
       note.value = mine.value.note || ''
     }
-    // 站内还没有票时保留 GitHub 快照，避免把已有评价显示成 0。
-    if (d.count > 0 || !s.value.count) mergeLive(d)
+    // 站内还没有票时保留 GitHub 快照；但一旦进入实时态（含撤销最后一票），
+    // 必须无条件采用接口结果，否则会继续显示「1 人打分」。
+    if (d.count > 0 || !s.value.count || source.value === 'live') mergeLive(d)
   } catch (e) {
     // 断网/主站不可达：保留构建快照（镜像端就是这样工作的）
     if (isMirror() && isConnectivityError(e)) source.value = s.value.count ? 'snapshot' : 'none'
-    // 失败不清 token：GET 评分公开，401 只可能是服务端异常配置
+    // 失败不清 token：GET 评分公开，401 只可能是服务端异常配置；
+    // 但如果别的请求已经把 token 清掉，登录态要同步，不能留一个提交必失败的星评表单。
+    if (!getToken()) loggedIn.value = false
   }
 }
 
@@ -215,7 +219,7 @@ async function submitRating() {
     mergeLive(d)
     ratingNotice.value = mine.value?.hidden
       ? '评分已保存；对应评价帖已被隐藏，暂不计入公开均分'
-      : mine.value ? '已更新你的评分' : '评分已记录'
+      : d.created ? '评分已记录' : mine.value ? '已更新你的评分' : '评分已记录'
   } catch (e: any) {
     if (e instanceof ApiError && e.status === 401) {
       loggedIn.value = false
@@ -242,10 +246,11 @@ async function removeRating() {
     await loadLive()
   } catch (e: any) {
     if (e instanceof ApiError && e.status === 404) {
-      // 已经没有这票，按成功处理
+      // 已经没有这票，按成功处理；仍要重取聚合，避免摘要留着旧票数。
       mine.value = null
       score.value = 0
       ratingNotice.value = '已撤销评分'
+      await loadLive()
       return
     }
     if (e instanceof ApiError && e.status === 401) {
@@ -260,8 +265,12 @@ async function removeRating() {
 }
 
 onMounted(async () => {
-  await load()
-  await loadLive()
+  try {
+    await load()
+    await loadLive()
+  } finally {
+    loading.value = false
+  }
 })
 </script>
 
@@ -269,14 +278,15 @@ onMounted(async () => {
   <div id="评分" class="rt">
     <div class="rt-head">
       <span class="rt-title">实际使用</span>
-      <span v-if="!s.count" class="rt-none">暂无评分</span>
+      <span v-if="loading" class="rt-none">加载中…</span>
+      <span v-else-if="!s.count" class="rt-none">暂无评分</span>
       <span v-else-if="s.low_sample" class="rt-warn" title="样本少于 3 条时不显示确定结论">样本不足</span>
       <span v-else-if="source === 'live'" class="rt-tag">站内实时</span>
       <span v-else-if="source === 'snapshot'" class="rt-tag">快照</span>
     </div>
 
     <!-- 汇总：总分 + 分布 -->
-    <div class="rt-sum">
+    <div v-if="!loading" class="rt-sum">
       <div class="rt-avg">
         <span class="rt-avg-n">{{ s.avg == null ? '—' : s.avg.toFixed(1) }}</span>
         <span class="rt-avg-s">{{ s.count }} 人打分</span>
@@ -291,12 +301,12 @@ onMounted(async () => {
     </div>
 
     <!-- 装过机的单独均分 -->
-    <p v-if="s.count" class="rt-meta">
+    <p v-if="!loading && s.count" class="rt-meta">
       其中 <strong>{{ s.own_hardware_count }}</strong> 人装过机<template v-if="s.own_hardware_avg != null">，
       他们给的均分是 <strong>{{ s.own_hardware_avg.toFixed(1) }}</strong></template>。
       只看均分会把「5 人 5 分」和「1 人 5 分 + 4 人 1 分」看成一样，所以分布也放出来。
     </p>
-    <p v-else class="rt-meta">
+    <p v-else-if="!loading" class="rt-meta">
       还没有人打分。第一条评价由你来写 —— 有实测最好；没有实测也可以写，但请如实勾选「装过机」。
     </p>
 
@@ -354,12 +364,12 @@ onMounted(async () => {
         <p v-if="mine?.hidden" class="rt-hidden" role="status">
           你的评分对应评价帖已被站务隐藏，这票暂不计入公开均分；评价恢复后会重新计入。
         </p>
-        <p v-if="ratingError" class="rt-err" role="alert">{{ ratingError }}</p>
-        <p v-if="ratingNotice" class="rt-ok" role="status">{{ ratingNotice }}</p>
       </template>
       <p v-else class="rt-hint">
         站内评分需要登录 · <a :href="loginHref">登录 / 注册</a>（不需要 GitHub 账号）。
       </p>
+      <p v-if="ratingError" class="rt-err" role="alert">{{ ratingError }}</p>
+      <p v-if="ratingNotice" class="rt-ok" role="status">{{ ratingNotice }}</p>
     </div>
 
     <!-- GitHub 表单：静态镜像的主入口；主站保留作多维评分入口 -->

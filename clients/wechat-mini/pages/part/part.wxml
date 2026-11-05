@@ -159,10 +159,11 @@
         <view class="comment-head">
           <text class="comment-author">{{item.authorName}}</text>
           <text wx:if="{{item.parentName}}" class="muted">回复 {{item.parentName}}</text>
+          <text wx:if="{{item.pending}}" class="muted">待审核</text>
           <text class="muted">{{item.date}}</text>
         </view>
-        <view class="comment-body">{{item.body}}</view>
-        <view class="comment-actions">
+        <view class="comment-body {{item.deleted ? 'muted' : ''}}">{{item.body}}</view>
+        <view wx:if="{{item.canReply}}" class="comment-actions">
           <text class="link" data-id="{{item.id}}" data-name="{{item.authorName}}"
             bindtap="startReply">回复</text>
         </view>

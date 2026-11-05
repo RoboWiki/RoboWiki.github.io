@@ -182,6 +182,73 @@ netErr?.kind === 'network' && /主站|网络/.test(netErr.message)
   ? ok('断网 → 统一网络文案（镜像提到快照）', `"${netErr.message}"`)
   : fail('断网 → 统一网络文案', `${netErr?.kind} ${netErr?.message}`)
 
+/* ── 3b. 401 并发刷新：只发一次 refresh，且保留 JSON Content-Type ────────── */
+localStorage.setItem('roboselect.token', 'old-access')
+localStorage.setItem('roboselect.refresh', 'old-refresh')
+let refreshCalls = 0
+let retryContentType = ''
+let retryAuth = ''
+globalThis.fetch = async (url, init) => {
+  const u = String(url)
+  if (u.endsWith('/auth/refresh')) {
+    refreshCalls++
+    return new Response(JSON.stringify({
+      access_token: 'new-access', refresh_token: 'new-refresh',
+    }), { status: 200, headers: { 'content-type': 'application/json' } })
+  }
+  const h = new Headers(init?.headers)
+  if (h.get('authorization') === 'Bearer old-access') {
+    return new Response(JSON.stringify({ detail: 'expired' }), {
+      status: 401, headers: { 'content-type': 'application/json' },
+    })
+  }
+  retryAuth = h.get('authorization') || ''
+  retryContentType = h.get('content-type') || ''
+  return new Response(JSON.stringify({ ok: true }), {
+    status: 200, headers: { 'content-type': 'application/json' },
+  })
+}
+const parallel = await Promise.allSettled([
+  api.apiFetch('/wiki/comments', { method: 'POST', body: JSON.stringify({ body: 'a' }) }),
+  api.apiFetch('/wiki/comments', { method: 'POST', body: JSON.stringify({ body: 'b' }) }),
+])
+parallel.every(x => x.status === 'fulfilled')
+  ? ok('并发 401 后两个请求都重试成功')
+  : fail('并发 401 后重试', JSON.stringify(parallel))
+refreshCalls === 1
+  ? ok('并发 401 只刷新一次（避免 refresh 重放）')
+  : fail('并发刷新次数', `${refreshCalls} 次`)
+retryAuth === 'Bearer new-access'
+  ? ok('重试使用新 access token')
+  : fail('重试 Authorization', retryAuth)
+retryContentType.includes('application/json')
+  ? ok('重试保留 JSON Content-Type')
+  : fail('重试 Content-Type', retryContentType || '缺失')
+localStorage.getItem('roboselect.refresh') === 'new-refresh'
+  ? ok('刷新后的 refresh token 已落盘')
+  : fail('refresh token 落盘', String(localStorage.getItem('roboselect.refresh')))
+localStorage.removeItem('roboselect.token')
+localStorage.removeItem('roboselect.refresh')
+
+// 刷新请求断网：不能把用户误登出，也不能丢 refresh。
+localStorage.setItem('roboselect.token', 'old-access-2')
+localStorage.setItem('roboselect.refresh', 'old-refresh-2')
+globalThis.fetch = async (url) => {
+  if (String(url).endsWith('/auth/refresh')) throw new TypeError('Failed to fetch')
+  return new Response(JSON.stringify({ detail: 'expired' }), {
+    status: 401, headers: { 'content-type': 'application/json' },
+  })
+}
+let refreshNetErr
+try { await api.apiFetch('/auth/me') } catch (e) { refreshNetErr = e }
+refreshNetErr?.kind === 'network'
+  && localStorage.getItem('roboselect.refresh') === 'old-refresh-2'
+  ? ok('刷新遇到断网 → 网络错误且保留会话')
+  : fail('刷新断网处理',
+    `kind=${refreshNetErr?.kind} refresh=${localStorage.getItem('roboselect.refresh')}`)
+localStorage.removeItem('roboselect.token')
+localStorage.removeItem('roboselect.refresh')
+
 globalThis.fetch = realFetch
 
 /* ── 4. 探活打 base + /health ──────────────────────────────────────────── */

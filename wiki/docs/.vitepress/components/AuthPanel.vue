@@ -140,12 +140,32 @@ const githubHref = computed(() => {
   return `${apiBase()}/auth/github/login?return_to=${encodeURIComponent(origin)}`
 })
 
-/** 只接受站内相对路径，避免 ?redirect=https://… 变成开放跳转 */
+/** 只接受站内相对路径；拒绝 // 与 /\ 形式，避免开放跳转 */
+function safeRedirect(value: string | null): string {
+  return value && value.startsWith('/') && !value.startsWith('//') && !value.startsWith('/\\')
+    ? value
+    : ''
+}
+
+const LOGIN_REDIRECT_KEY = 'roboselect.login.redirect'
+
+function readStoredRedirect(): string {
+  try { return sessionStorage.getItem(LOGIN_REDIRECT_KEY) || '' } catch { return '' }
+}
+
+/** GitHub OAuth 会离开本页，先把 ?redirect= 记住，回跳后继续去原页面。 */
+function rememberRedirect() {
+  const redirect = safeRedirect(new URLSearchParams(window.location.search).get('redirect'))
+  if (!redirect) return
+  try { sessionStorage.setItem(LOGIN_REDIRECT_KEY, redirect) } catch { /* 无痕模式 */ }
+}
+
 function goAfterLogin() {
-  const redirect = new URLSearchParams(window.location.search).get('redirect')
-  if (redirect && redirect.startsWith('/') && !redirect.startsWith('//')) {
-    window.location.href = redirect
-  }
+  const fromQuery = safeRedirect(new URLSearchParams(window.location.search).get('redirect'))
+  const remembered = safeRedirect(readStoredRedirect())
+  const redirect = fromQuery || remembered
+  try { sessionStorage.removeItem(LOGIN_REDIRECT_KEY) } catch { /* 无痕模式 */ }
+  if (redirect) window.location.href = redirect
 }
 
 /* ── 登录 / 注册 / 找回密码 ─────────────────────────────────────────────── */
@@ -458,6 +478,7 @@ onMounted(async () => {
     setToken(hash.token)
     clearHashAuth()
     notice.value = '登录成功'
+    goAfterLogin()
   }
 
   apiReady.value = await apiAvailable()
@@ -479,6 +500,7 @@ onMounted(async () => {
       setRefreshToken(r.refresh_token)
       if (r.user) me.value = r.user
       notice.value = '登录成功'
+      goAfterLogin()
     } catch (e: any) {
       // handoff 的 401 是「code 过期/已用」，比通用「登录已过期」更准确
       const detail = e instanceof ApiError && typeof e.detail === 'string' ? e.detail : ''
@@ -738,7 +760,7 @@ onMounted(async () => {
 
       <!-- 渠道能力由服务端 /auth/providers 决定：未配置时不渲染链接，避免 503 -->
       <div v-if="mode !== 'forgot'" class="auth-provider">
-        <a v-if="providers?.github" class="auth-gh" :href="githubHref">
+        <a v-if="providers?.github" class="auth-gh" :href="githubHref" @click="rememberRedirect">
           使用 GitHub 登录 ↗
         </a>
         <button v-else type="button" class="auth-gh" disabled aria-describedby="auth-gh-note">

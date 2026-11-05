@@ -233,7 +233,11 @@ def test_reusing_old_refresh_revokes_whole_family(client):
 
     # family 已被整条撤销：刚才拿到的新 refresh 也立刻失效
     assert _refresh(client, first["refresh_token"]).status_code == 401
-    assert _sessions(client, first["access_token"]) == []
+    # session_epoch 同时提升：窃取者手里尚未过期的 access 也不能继续用
+    assert client.get(f"{API}/auth/me",
+                      headers=_auth(first["access_token"])).status_code == 401
+    assert client.get(f"{API}/auth/me",
+                      headers=_auth(data["access_token"])).status_code == 401
 
 
 def test_unknown_and_expired_refresh_are_401(client):

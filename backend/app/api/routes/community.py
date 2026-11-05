@@ -11,7 +11,7 @@ from fastapi import APIRouter, HTTPException, Query, Request
 from sqlalchemy import func
 from sqlmodel import select
 
-from ...content_safety import check_user_text
+from ...content_safety import check_user_text_chunks
 from ...core.config import settings
 from ...crud import (apply_vote, comments_out, posts_out, touch_comment_count,
                      user_out)
@@ -88,6 +88,11 @@ def create_post(payload: PostIn, request: Request, db: Db, user: CurrentUser):
     if payload.part_id and db.get(Part, payload.part_id) is None:
         raise HTTPException(404, "零件不存在")
 
+    # 帖子正文同样过内容安全；长文分段检查，不能只看开头。
+    safety = check_user_text_chunks(db, user.id, payload.title + "\n" + payload.body)
+    if not safety.passed:
+        raise HTTPException(422, "内容可能包含违规信息，请修改后再试")
+
     p = Post(kind=payload.kind, title=payload.title.strip(), body=payload.body,
              author_id=user.id, part_id=payload.part_id,
              tags=",".join(t.strip() for t in payload.tags.split(",") if t.strip())[:80],
@@ -95,7 +100,8 @@ def create_post(payload: PostIn, request: Request, db: Db, user: CurrentUser):
              own_hardware=payload.own_hardware,
              total_price_cny=payload.total_price_cny,
              price_scope=payload.price_scope,
-             price_verified=payload.price_verified)
+             # 「价格已核实」是站务信任标记，普通用户不能自填
+             price_verified=bool(payload.price_verified and user.is_staff))
     db.add(p)
 
     # 评价帖是「评分 + 长评」的另一条入口；它必须和 /ratings 是同一份事实，
@@ -164,7 +170,7 @@ def create_comment(post_id: int, payload: CommentIn, request: Request, db: Db,
 
     # 内容安全：未配置微信时放行；配置且判定违规时直接拒收（社区评论没有
     # pending 态，宁可不发也不把未审内容放进公开信息流）。
-    safety = check_user_text(db, user.id, payload.body)
+    safety = check_user_text_chunks(db, user.id, payload.body)
     if not safety.passed:
         raise HTTPException(422, "内容可能包含违规信息，请修改后再试")
 
@@ -179,7 +185,7 @@ def create_comment(post_id: int, payload: CommentIn, request: Request, db: Db,
     create_notification(
         db, target_id, type="reply",
         subject="有人回复了你的帖子" if payload.parent_id is None else "有人回复了你的评论",
-        body=snippet, link=f"/community/post/{post_id}#c{c.id}",
+        body=snippet, link=f"/console/post/{post_id}#c{c.id}",
         actor_id=user.id)
 
     touch_comment_count(db, post_id)

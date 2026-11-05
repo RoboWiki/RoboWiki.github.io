@@ -94,6 +94,9 @@ with io.open(src, encoding="utf-8") as f:
 REQUIRED_PATHS = (
     "/api/v1/auth/wechat/mini",
     "/api/v1/auth/refresh",
+    "/api/v1/notifications",
+    "/api/v1/media",
+    "/api/v1/media/{media_id}",
     "/api/v1/ratings/{part_id}",
     "/api/v1/wiki/comments",
 )

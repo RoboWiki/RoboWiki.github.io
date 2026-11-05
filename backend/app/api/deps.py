@@ -1,6 +1,7 @@
 """依赖注入：会话、当前用户、限流。"""
 from __future__ import annotations
 
+import ipaddress
 import secrets
 import threading
 import time
@@ -105,11 +106,26 @@ _lock = threading.Lock()
 
 
 def _client_ip(request: Request) -> str:
-    """反代后取真实客户端 IP；API 只在内网，可信 X-Forwarded-For。"""
-    xff = request.headers.get("x-forwarded-for")
-    if xff:
-        return xff.split(",")[0].strip() or "?"
-    return (request.client.host if request.client else "?") or "?"
+    """取真实客户端 IP。
+
+    只有直连方是回环/内网（1Panel、Docker）时才采信转发头，否则用 TCP 对端地址：
+    API 误绑 0.0.0.0 或前面换成不可信代理时，客户端自带 X-Real-IP 不能改变限流键。
+    """
+    peer = (request.client.host if request.client else "") or "?"
+    trusted = False
+    try:
+        trusted = ipaddress.ip_address(peer).is_loopback or ipaddress.ip_address(peer).is_private
+    except ValueError:
+        # TestClient 的 host 是 "testclient"；测试环境按可信处理。
+        trusted = peer == "testclient"
+    if trusted:
+        real = (request.headers.get("x-real-ip") or "").strip()
+        if real:
+            return real
+        xff = request.headers.get("x-forwarded-for")
+        if xff:
+            return xff.split(",")[-1].strip() or "?"
+    return peer
 
 
 def _prune_locked(now: float) -> None:
