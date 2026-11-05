@@ -8,7 +8,7 @@
 
 | 时间 | 类型 | 分支 / 提交 | 修改内容 | 验证 |
 |---|---|---|---|---|
-| 20:03 | 数据 / 分类 | 数据仓 ccc_dt `e4cbdc6` / 站点 ccc（未提交） | 部件库收录高擎动力 5 款控制器：STM32H730VBT6、7 路 CAN 通用盒子、RoboBox-7C、4 路 CAN 主控盒子、4 路 CAN 叠板；按承担角色分工，前四款进 `controller_low`，无主控/FOC 职责的 4 路 CAN 叠板从 `controller_low/bridge` 迁入 `module/can`，删除空置的「调试桥」子类型；同步 ID 注册表、数量测试与 5 张官方图 | 核心仓 `pipeline validate` 通过（106 警告）、`pytest` 15 passed 1 skipped、`id_registry` 639 条（637 在用）；站点 `pipeline all` 343 件 / 560 页、VitePress 17.55s、sitemap 559；`/catalog.html` 下位机 15、其余模块 6，旧 controller_low 叠板页 404；小程序下位机 15、无「调试桥」、CAN 模块 4 且叠板详情正确 |
+| 20:03 | 数据 / 分类 | 数据仓 ccc_dt `e4cbdc6` / 站点 ccc `f161731` | 部件库收录高擎动力 5 款控制器：STM32H730VBT6、7 路 CAN 通用盒子、RoboBox-7C、4 路 CAN 主控盒子、4 路 CAN 叠板；按承担角色分工，前四款进 `controller_low`，无主控/FOC 职责的 4 路 CAN 叠板从 `controller_low/bridge` 迁入 `module/can`，删除空置的「调试桥」子类型；同步 ID 注册表、数量测试与 5 张官方图 | 核心仓 `pipeline validate` 通过（106 警告）、`pytest` 15 passed 1 skipped、`id_registry` 639 条（637 在用）；站点 `pipeline all` 343 件 / 560 页、VitePress 17.55s、sitemap 559；`/catalog.html` 下位机 15、其余模块 6，旧 controller_low 叠板页 404；小程序下位机 15、无「调试桥」、CAN 模块 4 且叠板详情正确 |
 
 ## 2026-11-04
 
