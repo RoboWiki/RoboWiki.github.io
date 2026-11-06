@@ -1,12 +1,12 @@
 import {
   App as AntApp, ConfigProvider, Form, Input, Modal, Segmented, theme as antdTheme,
 } from 'antd'
-import { LogoutOutlined } from '@ant-design/icons'
-import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query'
+import { GithubOutlined, LogoutOutlined } from '@ant-design/icons'
+import { QueryClient, QueryClientProvider, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   Component, createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode,
 } from 'react'
-import { ApiError, api, auth, siteHref, type User } from '@/lib/community-api'
+import { API_BASE, ApiError, api, auth, siteHref, type User } from '@/lib/community-api'
 import { Avatar } from './ui'
 
 // ── 设计令牌桥接 ──────────────────────────────────────────────────────────
@@ -315,6 +315,21 @@ export function AuthForm({ onSuccess, compact = false }: {
   const [error, setError] = useState<string | null>(null)
   const [form] = Form.useForm()
 
+  // GitHub OAuth 只有在服务端配了 client id/secret 时才出现；
+  // 回调由 /login.html 的 handoff 桥接，JWT 不经过地址栏。
+  const providers = useQuery({
+    queryKey: ['auth-providers'],
+    queryFn: () => api.providers(),
+    staleTime: 60_000,
+    retry: false,
+  })
+  const githubEnabled = providers.data?.github === true
+  const startGithub = () => {
+    const origin = typeof window !== 'undefined' ? window.location.origin : ''
+    if (!origin) return
+    window.location.href = `${API_BASE}/auth/github/login?return_to=${encodeURIComponent(origin)}`
+  }
+
   const submit = async (v: Record<string, string>) => {
     setBusy(true)
     setError(null)
@@ -349,6 +364,21 @@ export function AuthForm({ onSuccess, compact = false }: {
           </div>
           <div className="mt-1 text-[12.5px] text-ink-3">选型是底座，真实反馈才是值钱的部分</div>
         </div>
+      )}
+
+      {githubEnabled && (
+        <>
+          <button type="button" onClick={startGithub} disabled={busy}
+            className="mb-3 inline-flex h-10 w-full items-center justify-center gap-2 rounded-md border border-line bg-surface px-4 text-sm font-semibold text-ink transition-colors hover:border-line-strong hover:bg-surface-2 disabled:cursor-not-allowed disabled:opacity-60">
+            <GithubOutlined aria-hidden="true" />
+            使用 GitHub 登录
+          </button>
+          <div className="mb-4 flex items-center gap-3 text-[11px] text-ink-3" aria-hidden="true">
+            <span className="h-px flex-1 bg-line" />
+            或使用邮箱
+            <span className="h-px flex-1 bg-line" />
+          </div>
+        </>
       )}
 
       <Segmented block value={mode} className="mb-4" disabled={busy}

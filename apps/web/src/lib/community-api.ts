@@ -344,6 +344,9 @@ export const api = {
     request<TokenPair>('/auth/login', { method: 'POST', body: JSON.stringify(body) }, false),
   logout: logoutSession,
   me: () => request<Account>('/auth/me'),
+  /** 公开端点：哪些第三方登录已配置。GitHub 按钮只在 github=true 时出现。 */
+  providers: () => request<{ email: boolean; github: boolean; wechat_mini: boolean }>(
+    '/auth/providers', undefined, false),
   updateMe: (body: {
     display_name?: string
     bio?: string
