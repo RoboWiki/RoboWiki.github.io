@@ -37,6 +37,13 @@
   color: var(--rw-primary);
 }
 
+.part__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--rw-space-2);
+}
+
 .part__notes {
   display: block;
   padding: var(--rw-space-3) 0;
@@ -121,14 +128,14 @@
   flex: 1;
   height: 6px;
   border-radius: var(--rw-radius-full);
-  background: #eef2f7;
+  background: var(--rw-surface-3);
   overflow: hidden;
 }
 
 .part__histogram-fill {
   height: 100%;
   border-radius: var(--rw-radius-full);
-  background: #f59e0b;
+  background: var(--rw-warning);
 }
 
 .part__histogram-count {
@@ -242,11 +249,11 @@
 .rw-star {
   font-size: var(--rw-text-2xl);
   line-height: 1;
-  color: #cbd5e1;
+  color: var(--rw-border-strong);
 }
 
 .rw-star--on {
-  color: #f59e0b;
+  color: var(--rw-warning);
 }
 
 .rw-star--disabled {

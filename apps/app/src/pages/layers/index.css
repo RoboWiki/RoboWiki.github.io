@@ -1,0 +1,310 @@
+.layers__hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rw-space-2);
+  padding: var(--rw-space-4);
+  background: var(--rw-surface);
+  border: 1px solid var(--rw-border);
+  border-radius: var(--rw-radius-lg);
+  box-shadow: var(--rw-shadow-xs);
+}
+
+.layers__eyebrow {
+  font-size: var(--rw-text-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--rw-primary);
+}
+
+.layers__title {
+  font-size: var(--rw-text-2xl);
+  line-height: 1.35;
+}
+
+.layers__tagline {
+  font-size: var(--rw-text-sm);
+  color: var(--rw-ink-2);
+}
+
+.layers__lede {
+  padding-top: var(--rw-space-1);
+  border-top: 1px solid var(--rw-border);
+}
+
+.layers__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rw-space-3);
+  margin-top: var(--rw-space-5);
+}
+
+.layers__section-head {
+  min-height: var(--rw-control-sm);
+}
+
+.layers__cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rw-space-3);
+}
+
+.layers__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rw-space-2);
+  min-height: var(--rw-control-touch);
+  padding: var(--rw-space-3) var(--rw-space-4);
+  background: var(--rw-surface);
+  border: 1px solid var(--rw-border);
+  border-left: 4px solid var(--rw-border-strong);
+  border-radius: var(--rw-radius-md);
+}
+
+.layers__card--mechanical {
+  border-left-color: var(--rw-layer-mech);
+}
+
+.layers__card--hardware {
+  border-left-color: var(--rw-layer-hw);
+}
+
+.layers__card--embedded {
+  border-left-color: var(--rw-layer-emb);
+}
+
+.layers__card--algorithm {
+  border-left-color: var(--rw-layer-algo);
+}
+
+.layers__card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--rw-space-3);
+}
+
+.layers__index {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: var(--rw-radius-sm);
+  background: var(--rw-surface-3);
+  color: var(--rw-muted);
+}
+
+.layers__index--mechanical {
+  color: var(--rw-layer-mech);
+}
+
+.layers__index--hardware {
+  color: var(--rw-layer-hw);
+}
+
+.layers__index--embedded {
+  color: var(--rw-layer-emb);
+}
+
+.layers__index--algorithm {
+  color: var(--rw-layer-algo);
+}
+
+.layers__index-text {
+  font-family: var(--rw-font-mono);
+  font-size: var(--rw-text-md);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.layers__name-row {
+  display: flex;
+  align-items: center;
+  gap: var(--rw-space-2);
+}
+
+.layers__name {
+  font-size: var(--rw-text-md);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.layers__en {
+  font-size: var(--rw-text-xs);
+  color: var(--rw-muted);
+}
+
+.layers__tagline {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--rw-text-sm);
+  color: var(--rw-ink-2);
+}
+
+.layers__arrow {
+  flex: 0 0 auto;
+  padding-left: var(--rw-space-1);
+  font-size: var(--rw-text-xl);
+  line-height: 1;
+  color: var(--rw-muted);
+}
+
+.layers__arrow--mechanical {
+  color: var(--rw-layer-mech);
+}
+
+.layers__arrow--hardware {
+  color: var(--rw-layer-hw);
+}
+
+.layers__arrow--embedded {
+  color: var(--rw-layer-emb);
+}
+
+.layers__arrow--algorithm {
+  color: var(--rw-layer-algo);
+}
+
+.layers__desc {
+  display: block;
+  font-size: var(--rw-text-sm);
+  line-height: 1.6;
+  color: var(--rw-ink-2);
+}
+
+.layers__card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--rw-space-3);
+  padding-top: var(--rw-space-2);
+  border-top: 1px solid var(--rw-border);
+}
+
+.layers__hint {
+  flex: 1;
+  min-width: 0;
+}
+
+.layers__go {
+  flex: 0 0 auto;
+  font-size: var(--rw-text-xs);
+  font-weight: 600;
+  color: var(--rw-primary);
+}
+
+.layers__go--mechanical {
+  color: var(--rw-layer-mech);
+}
+
+.layers__go--hardware {
+  color: var(--rw-layer-hw);
+}
+
+.layers__go--embedded {
+  color: var(--rw-layer-emb);
+}
+
+.layers__go--algorithm {
+  color: var(--rw-layer-algo);
+}
+
+/* 系统集成是大脑：横条、实线边框和浅色底，和四张骨架卡明确区分。 */
+.layers__brain {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rw-space-3);
+  margin-top: var(--rw-space-5);
+  padding: var(--rw-space-4);
+  background: var(--rw-primary-soft);
+  border: 1px solid var(--rw-layer-sys);
+  border-left: 4px solid var(--rw-layer-sys);
+  border-radius: var(--rw-radius-md);
+}
+
+.layers__brain-head {
+  display: flex;
+  align-items: center;
+  gap: var(--rw-space-3);
+}
+
+.layers__brain-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border-radius: var(--rw-radius-full);
+  background: var(--rw-surface);
+  color: var(--rw-layer-sys);
+}
+
+.layers__brain-star {
+  font-size: var(--rw-text-md);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.layers__brain-kicker {
+  display: block;
+  font-size: var(--rw-text-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--rw-layer-sys);
+}
+
+.layers__brain-name {
+  display: block;
+  font-size: var(--rw-text-lg);
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--rw-ink);
+}
+
+.layers__brain-badge {
+  flex: 0 0 auto;
+  padding: 2px var(--rw-space-2);
+  border-radius: var(--rw-radius-full);
+  background: var(--rw-surface);
+  color: var(--rw-layer-sys);
+  font-size: var(--rw-text-xs);
+  font-weight: 600;
+}
+
+.layers__brain-desc {
+  display: block;
+  font-size: var(--rw-text-sm);
+  line-height: 1.6;
+  color: var(--rw-ink-2);
+}
+
+.layers__steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rw-space-2);
+}
+
+.layers__step {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--rw-control-sm);
+  padding: 0 var(--rw-space-3);
+  border: 1px solid var(--rw-layer-sys);
+  border-radius: var(--rw-radius-full);
+  background: var(--rw-surface);
+  color: var(--rw-layer-sys);
+  font-size: var(--rw-text-xs);
+  font-weight: 600;
+}
+
+.layers__brain-hint {
+  line-height: 1.5;
+}
+
+.layers__note {
+  display: block;
+  margin-top: var(--rw-space-4);
+  padding: 0 var(--rw-space-1);
+  line-height: 1.6;
+}

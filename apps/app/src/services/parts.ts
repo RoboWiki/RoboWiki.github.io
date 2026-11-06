@@ -1,4 +1,5 @@
 import type { PartSummary } from '@robowiki/core'
+import { formatSpecValue, specLabel } from '@robowiki/content'
 
 import { api, absoluteUrl } from './api'
 
@@ -45,14 +46,6 @@ export function listPartCards(params: {
 }
 
 
-function text(value: unknown): string {
-  if (value === null || value === undefined) return ''
-  if (typeof value === 'boolean') return value ? '是' : '否'
-  if (typeof value === 'number') return Number.isFinite(value) ? String(value) : ''
-  if (typeof value === 'string') return value
-  return ''
-}
-
 /** 详情页的关键参数：优先后端挑好的 key_specs，缺失时退回 specs 原始键值。 */
 export function partFacts(part: PartView | null): SpecFact[] {
   if (!part) return []
@@ -62,8 +55,12 @@ export function partFacts(part: PartView | null): SpecFact[] {
   const specs = part.specs || {}
   return Object.entries(specs)
     .filter(([, value]) => ['string', 'number', 'boolean'].includes(typeof value))
-    .map(([key, value]) => ({ key, label: key, value: text(value) }))
-    .filter((f) => f.value)
+    .map(([key, value]) => {
+      // 原始 specs 只有英文 key（如 od_mm），用共享词表生成中文名并补单位。
+      const { label, unit } = specLabel(key)
+      return { key, label: label || key, value: formatSpecValue(value, unit) }
+    })
+    .filter((f) => f.value && f.value !== '—')
     .slice(0, 8)
 }
 

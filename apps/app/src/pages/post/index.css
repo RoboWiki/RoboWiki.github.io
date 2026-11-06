@@ -1,0 +1,211 @@
+.post__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rw-space-2);
+  padding-bottom: var(--rw-space-4);
+}
+
+.post__badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--rw-space-2);
+}
+
+.post__rating {
+  font-size: var(--rw-text-sm);
+  color: var(--rw-warning);
+}
+
+.post__time {
+  margin-left: auto;
+}
+
+.post__title {
+  font-size: var(--rw-text-xl);
+  line-height: 1.4;
+}
+
+.post__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--rw-space-2);
+}
+
+.post__manage {
+  display: flex;
+  align-items: center;
+  gap: var(--rw-space-4);
+  min-height: var(--rw-control-touch);
+}
+
+.post__author {
+  font-size: var(--rw-text-sm);
+  font-weight: 600;
+}
+
+.post__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rw-space-1);
+}
+
+.post__part {
+  display: flex;
+  align-items: center;
+  gap: var(--rw-space-2);
+  min-height: var(--rw-control-touch);
+  padding: var(--rw-space-3);
+  margin-bottom: var(--rw-space-3);
+  background: var(--rw-primary-soft);
+  border: 1px solid var(--rw-border);
+  border-radius: var(--rw-radius-sm);
+}
+
+.post__part-title {
+  display: block;
+  font-size: var(--rw-text-sm);
+  font-weight: 600;
+}
+
+.post__body {
+  display: block;
+  padding: var(--rw-space-2) 0 var(--rw-space-4);
+  font-size: var(--rw-text-base);
+  line-height: 1.75;
+  color: var(--rw-ink-2);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.post__votes {
+  display: flex;
+  gap: var(--rw-space-2);
+  padding: var(--rw-space-3) 0;
+  border-top: 1px solid var(--rw-border);
+  border-bottom: 1px solid var(--rw-border);
+}
+
+.post__vote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rw-space-1);
+  min-height: var(--rw-control-touch);
+  padding: 0 var(--rw-space-4);
+  border: 1px solid var(--rw-border);
+  border-radius: var(--rw-radius-full);
+  background: var(--rw-surface);
+  color: var(--rw-ink-2);
+  font-size: var(--rw-text-sm);
+}
+
+.post__vote--on {
+  border-color: var(--rw-primary);
+  background: var(--rw-primary-soft);
+  color: var(--rw-primary);
+}
+
+.post__vote--down {
+  border-color: var(--rw-danger);
+  background: var(--rw-danger-soft);
+  color: var(--rw-danger);
+}
+
+.post__vote-icon {
+  font-size: var(--rw-text-xs);
+}
+
+.post__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rw-space-3);
+  padding: var(--rw-space-4) 0;
+}
+
+.post__section-head {
+  min-height: var(--rw-control-sm);
+}
+
+.post__composer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rw-space-2);
+  padding: var(--rw-space-3);
+  background: var(--rw-surface);
+  border: 1px solid var(--rw-border);
+  border-radius: var(--rw-radius-sm);
+}
+
+.post__login-hint {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--rw-space-2);
+  min-height: var(--rw-control-touch);
+  padding: var(--rw-space-3);
+  background: var(--rw-surface);
+  border: 1px solid var(--rw-border);
+  border-radius: var(--rw-radius-sm);
+}
+
+.post__comments {
+  display: flex;
+  flex-direction: column;
+}
+
+.post-comment {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rw-space-1);
+  padding: var(--rw-space-3) 0;
+  border-top: 1px solid var(--rw-border);
+}
+
+.post-comment:first-child {
+  border-top: none;
+}
+
+.post-comment__head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--rw-space-2);
+}
+
+.post-comment__author {
+  font-size: var(--rw-text-sm);
+  font-weight: 600;
+}
+
+.post-comment__time {
+  margin-left: auto;
+}
+
+.post-comment__body {
+  font-size: var(--rw-text-base);
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.post-comment__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--rw-space-2);
+}
+
+.post-comment__score {
+  font-size: var(--rw-text-xs);
+  color: var(--rw-muted);
+}
+
+.post-comment--accepted {
+  margin: var(--rw-space-2) 0;
+  padding: var(--rw-space-3);
+  background: var(--rw-success-soft);
+  border: 1px solid var(--rw-success);
+  border-radius: var(--rw-radius-sm);
+}

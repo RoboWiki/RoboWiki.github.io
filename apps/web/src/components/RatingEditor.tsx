@@ -100,7 +100,7 @@ export default function RatingEditor({ partId, onDone }: { partId: string; onDon
       <div className="rounded-md border border-line bg-surface-2 p-3">
         <p className="text-[12px] leading-6 text-ink-3">登录后可以打分：一句话都不用写，点星 + 选两个理由即可。</p>
         <a
-          href="/app/#/pages/login/index"
+          href="/account.html"
           className="mt-2 inline-flex h-8 items-center rounded-md bg-brand px-3 text-[12px] font-semibold text-brand-fg hover:bg-brand-hover"
         >
           去登录

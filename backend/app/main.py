@@ -16,9 +16,10 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import text
 from starlette.middleware.sessions import SessionMiddleware
 
-from .api.routes import (admin, auth, bot, catalog, community, export, mcp,
-                         materials, media, notifications, protocols, ratings,
-                         reproductions, reports, semantics, submissions, wiki)
+from .api.routes import (admin, auth, bot, builds, catalog, community, export,
+                         learn, mcp, materials, media, notifications, protocols,
+                         ratings, reproductions, reports, semantics,
+                         submissions, wiki)
 from .core.config import settings
 from .core.db import (bootstrap_admin, create_tables, ensure_catalog_present,
                       seed_catalog, seed_community, session)
@@ -45,7 +46,7 @@ async def lifespan(_app: FastAPI):
 
 
 app = FastAPI(title="RoboWiki API", version="0.2.0",
-              description="四足机器人选型 + 社区。选型是底座，互动是主体。",
+              description="面向机器人制作全流程的可追溯工程知识库。选型、方案、社区共用一套数据与身份。",
               docs_url="/api/docs" if settings.expose_docs else None,
               openapi_url="/api/openapi.json",
               lifespan=lifespan)
@@ -83,6 +84,7 @@ app.add_middleware(
 _ROUTERS = (auth.router, catalog.router, community.router, export.router,
             semantics.router, admin.router, protocols.router, wiki.router,
             ratings.router, reproductions.router, submissions.router, bot.router, materials.router,
+            builds.router, learn.router,
             reports.router, notifications.router, media.router)
 
 # 规范前缀 /api/v1；/api 只作旧客户端别名，不进入 OpenAPI。
@@ -179,6 +181,7 @@ def _custom_openapi():
         "/api/v1/catalog", "/api/v1/parts", "/api/v1/parts/{part_id}",
         "/api/v1/materials", "/api/v1/materials/meta",
         "/api/v1/materials/{item_id}",
+        "/api/v1/builds", "/api/v1/builds/{build_id}", "/api/v1/learn",
         "/api/v1/ratings", "/api/v1/ratings/summary",
         "/api/v1/ratings/{part_id}",
     )

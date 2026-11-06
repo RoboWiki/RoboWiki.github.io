@@ -62,9 +62,11 @@ page {
 
   --rw-muted: var(--rw-ink-3);
 
-  /* 分层骨架色：机械 / 电气 / 算法 / 系统 */
+  /* 分层骨架色：机械 / 硬件 / 嵌入式 / 算法 / 系统集成 */
   --rw-layer-mech: #7c3aed;
-  --rw-layer-elec: #0e7490;
+  --rw-layer-hw: #0e7490;
+  --rw-layer-emb: #0f766e;
+  --rw-layer-elec: #0e7490; /* 兼容旧名：电气与嵌入式已拆成硬件 / 嵌入式 */
   --rw-layer-algo: #b45309;
   --rw-layer-sys: #1d4ed8;
 
@@ -107,7 +109,9 @@ page.dark {
   --rw-ink-inverse: #0a0f18;
 
   --rw-layer-mech: #a78bfa;
-  --rw-layer-elec: #22d3ee;
+  --rw-layer-hw: #22d3ee;
+  --rw-layer-emb: #2dd4bf;
+  --rw-layer-elec: #22d3ee; /* 兼容旧名 */
   --rw-layer-algo: #f0b429;
   --rw-layer-sys: #6ba0ff;
 

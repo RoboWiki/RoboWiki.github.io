@@ -151,12 +151,86 @@ export interface User {
   display_name: string
   bio: string
   avatar_hue: number
+  /** 自定义头像；为空时用 avatar_hue 底色 + 首字母 */
+  avatar_url?: string | null
   is_staff: boolean
+  email_verified?: boolean
   reputation: number
   created_at: string
   post_count: number
   comment_count: number
+  rating_count?: number
+  submission_count?: number
+  accepted_count?: number
   badges: string[]
+}
+
+/** `/auth/me` 的本人视角：比公开 User 多邮箱与口令状态。 */
+export interface Account extends User {
+  email?: string | null
+  password_set?: boolean
+  email_notify?: boolean
+}
+
+export interface AuthSession {
+  id: number
+  client: string
+  created_at: string
+  expires_at: string
+}
+
+export interface Identity {
+  provider: string
+  subject: string
+  email: string | null
+  created_at: string
+}
+
+export interface Notification {
+  id: number
+  type: string
+  subject: string
+  body: string
+  link: string | null
+  read_at: string | null
+  created_at: string
+}
+
+export interface NotificationList {
+  total: number
+  unread: number
+  limit: number
+  offset: number
+  items: Notification[]
+}
+
+export interface Media {
+  id: string
+  url: string
+  content_type: string
+  size: number
+}
+
+export interface SubmissionReview {
+  id: number
+  decision: string
+  reason_code: string
+  note: string
+  reviewer_id: number | null
+  created_at: string
+}
+
+export interface Submission {
+  id: number
+  kind: string
+  target_id: string | null
+  payload: Record<string, unknown>
+  evidence: Record<string, unknown>
+  submitter_id: number | null
+  status: string
+  revision: number
+  created_at: string
+  reviews: SubmissionReview[]
 }
 
 export interface Part {
@@ -198,6 +272,8 @@ export interface Post {
   view_count: number
   pinned: boolean
   created_at: string
+  updated_at?: string | null
+  accepted_comment_id?: number | null
   author: User | null
   my_vote: number
 }
@@ -209,6 +285,7 @@ export interface Comment {
   body: string
   score: number
   created_at: string
+  accepted?: boolean
   author: User | null
   my_vote: number
   replies: Comment[]
@@ -233,10 +310,19 @@ export const api = {
   post: (id: number) => request<Post>(`/posts/${id}`),
   createPost: (body: unknown) =>
     request<Post>('/posts', { method: 'POST', body: JSON.stringify(body) }),
+  updatePost: (id: number, body: unknown) =>
+    request<Post>(`/posts/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
+  deletePost: (id: number) =>
+    request<void>(`/posts/${id}`, { method: 'DELETE' }),
 
   comments: (postId: number) => request<Comment[]>(`/posts/${postId}/comments`),
   createComment: (postId: number, body: unknown) =>
     request<Comment>(`/posts/${postId}/comments`, { method: 'POST', body: JSON.stringify(body) }),
+  acceptComment: (postId: number, commentId: number) =>
+    request<Post>(`/posts/${postId}/accept`,
+      { method: 'POST', body: JSON.stringify({ comment_id: commentId }) }),
+  unacceptComment: (postId: number) =>
+    request<Post>(`/posts/${postId}/accept`, { method: 'DELETE' }),
 
   vote: (target_kind: 'post' | 'comment', target_id: number, value: number) =>
     request<{ score: number; my_vote: number }>('/votes',
@@ -257,7 +343,102 @@ export const api = {
   login: (body: unknown) =>
     request<TokenPair>('/auth/login', { method: 'POST', body: JSON.stringify(body) }, false),
   logout: logoutSession,
-  me: () => request<User>('/auth/me'),
+  me: () => request<Account>('/auth/me'),
+  updateMe: (body: {
+    display_name?: string
+    bio?: string
+    avatar_hue?: number
+    avatar_url?: string | null
+    email_notify?: boolean
+  }) => request<Account>('/auth/me', { method: 'PATCH', body: JSON.stringify(body) }),
+
+  sessions: () => request<AuthSession[]>('/auth/sessions'),
+  revokeSession: (id: number) =>
+    request<void>(`/auth/sessions/${id}`, { method: 'DELETE' }),
+  logoutAll: () =>
+    request<{ ok: boolean; revoked: number; session_epoch?: number }>(
+      '/auth/logout-all', { method: 'POST' }),
+
+  identities: () => request<Identity[]>('/auth/identities'),
+  unlinkIdentity: (provider: string) =>
+    request<{ ok: boolean; provider: string; remaining: number }>(
+      `/auth/identities/${encodeURIComponent(provider)}`, { method: 'DELETE' }),
+
+  changePassword: (current_password: string, new_password: string) =>
+    request<TokenPair>('/auth/password/change',
+      { method: 'POST', body: JSON.stringify({ current_password, new_password }) }),
+  setPassword: (password: string) =>
+    request<TokenPair>('/auth/password/set',
+      { method: 'POST', body: JSON.stringify({ password }) }),
+
+  notifications: (p: Record<string, unknown> = {}) =>
+    request<NotificationList>(`/notifications?${qs(p)}`),
+  readNotification: (id: number) =>
+    request<Notification>(`/notifications/${id}/read`, { method: 'POST' }),
+  readAllNotifications: () =>
+    request<{ updated: number }>('/notifications/read-all', { method: 'POST' }),
+
+  mySubmissions: (limit = 50) =>
+    request<Submission[]>(`/submissions/mine?limit=${limit}`),
+  exportAccount: () => request<unknown>('/auth/export'),
+}
+
+/** 相对媒体地址在镜像站需要补上 API 源，否则 `/api/v1/media/…` 会落到静态站。 */
+export function assetUrl(url: string | null | undefined): string | null {
+  if (!url) return null
+  if (/^(https?:)?\/\//i.test(url) || url.startsWith('data:') || url.startsWith('blob:')) return url
+  const base = API_BASE.replace(/\/+$/, '')
+  // `/media/x` 是后端规范化的头像路径（相对于 API 前缀），不是站点根路径。
+  if (url.startsWith('/media/')) {
+    if (/^https?:/i.test(base)) {
+      const api = new URL(base)
+      return `${api.origin}${api.pathname.replace(/\/$/, '')}${url}`
+    }
+    return `${base}${url}`
+  }
+  if (url.startsWith('/') && /^https?:/i.test(base)) return new URL(url, base).href
+  return url
+}
+
+const mediaError = async (r: Response): Promise<ApiError> => {
+  const text = await r.text().catch(() => '')
+  let detail: unknown = null
+  try {
+    detail = text ? JSON.parse(text).detail : null
+  } catch {
+    detail = null
+  }
+  const msg = typeof detail === 'string' ? detail
+    : Array.isArray(detail)
+      ? detail.map((d: { msg?: string }) => d.msg).filter(Boolean).join('；')
+      : `上传失败（HTTP ${r.status}）`
+  return new ApiError(r.status, msg)
+}
+
+/** multipart 上传单独走一条路径：request() 会强制 JSON Content-Type。 */
+export async function uploadMedia(file: File): Promise<Media> {
+  const send = (): Promise<Response> => {
+    const headers: Record<string, string> = {}
+    const t = auth.token
+    if (t) headers.Authorization = `Bearer ${t}`
+    const form = new FormData()
+    form.append('file', file)
+    return fetch(`${API_BASE}/media`, { method: 'POST', headers, body: form })
+  }
+
+  const sentWith = auth.token
+  let r = await send()
+  if (r.status === 401 && auth.refreshToken) {
+    if (auth.token && auth.token !== sentWith) r = await send()
+    else if (await refreshOnce()) r = await send()
+  }
+  if (!r.ok) throw await mediaError(r)
+  const text = await r.text()
+  try {
+    return JSON.parse(text) as Media
+  } catch {
+    throw new ApiError(r.status, '上传接口没有返回 JSON')
+  }
 }
 
 export const KIND_LABEL: Record<string, string> = {

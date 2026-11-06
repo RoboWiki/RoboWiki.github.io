@@ -1,12 +1,12 @@
 import { App as AntApp, Button, Form, Input, Modal, Rate, Select, Tooltip } from 'antd'
 import {
-  ArrowDownOutlined, ArrowUpOutlined, CommentOutlined, EyeOutlined,
+  ArrowDownOutlined, ArrowUpOutlined, CheckCircleFilled, CommentOutlined, EyeOutlined,
 } from '@ant-design/icons'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Markdown, { type Components } from 'react-markdown'
-import { useState, type ReactNode } from 'react'
+import { useMemo, useState, type ReactNode } from 'react'
 import {
-  KIND_LABEL, api, siteHref, type Comment, type Post, type User,
+  KIND_LABEL, api, assetUrl, siteHref, type Comment, type Post, type User,
 } from '@/lib/community-api'
 
 // ── 时间 ──────────────────────────────────────────────────────────────────
@@ -116,17 +116,43 @@ export function MarkdownBody({ children, className = '' }: {
 }
 
 // ── 头像 ──────────────────────────────────────────────────────────────────
+function hueOf(user?: User | null): number {
+  return typeof user?.avatar_hue === 'number' && user.avatar_hue >= 0 ? user.avatar_hue : 160
+}
+
+/** 统一头像：有 avatar_url 用图，否则用 avatar_hue 底色 + 首字母。 */
+export function Avatar({ user, size = 24, className = '' }: {
+  user?: User | null; size?: number; className?: string
+}) {
+  const src = assetUrl(user?.avatar_url)
+  const name = user?.display_name?.trim() || '?'
+  if (src) {
+    return (
+      <img src={src} alt={`${name} 的头像`} width={size} height={size} loading="lazy"
+        className={`shrink-0 rounded-full border border-line object-cover ${className}`}
+        style={{ width: size, height: size }} />
+    )
+  }
+  return (
+    <span role="img" aria-label={`${name} 的头像`}
+      className={`grid shrink-0 place-items-center rounded-full font-bold text-brand-fg ${className}`}
+      style={{
+        width: size,
+        height: size,
+        fontSize: Math.max(10, Math.round(size * 0.44)),
+        backgroundColor: `hsl(${hueOf(user)} 52% 40%)`,
+      }}>
+      {name.slice(0, 1)}
+    </span>
+  )
+}
+
 export function UserBadge({ user, size = 24 }: { user?: User | null; size?: number }) {
   if (!user) return <span className="text-[12.5px] text-ink-3">已注销</span>
   return (
     <Tooltip title={`${user.display_name} · 声望 ${user.reputation}${user.badges?.length ? ' · ' + user.badges.join('/') : ''}`}>
       <span className="inline-flex min-w-0 items-center gap-1.5">
-        <span
-          className="grid shrink-0 place-items-center rounded-full bg-brand font-bold text-brand-fg"
-          style={{ width: size, height: size, fontSize: Math.max(10, Math.round(size * 0.44)) }}
-          aria-hidden="true">
-          {user.display_name.slice(0, 1)}
-        </span>
+        <Avatar user={user} size={size} />
         <span className="truncate font-medium text-ink">{user.display_name}</span>
         <span className="mono tabular shrink-0 text-[11.5px] text-ink-3">{user.reputation}</span>
       </span>
@@ -210,6 +236,9 @@ export function PostCard({ post }: { post: Post }) {
           <div className="flex flex-wrap items-center gap-1.5">
             {post.pinned && <Pill tone="bg-warning-soft text-warning">置顶</Pill>}
             <Pill tone={KIND_TONE[post.kind]}>{KIND_LABEL[post.kind]}</Pill>
+            {post.kind === 'discussion' && post.accepted_comment_id != null && (
+              <Pill tone="bg-success-soft text-success">已解决</Pill>
+            )}
             {post.own_hardware && <Pill tone="bg-success-soft text-success">实测</Pill>}
             {post.part_title && <Pill>{post.part_title}</Pill>}
             {post.rating != null && (
@@ -399,11 +428,21 @@ export function Composer({ open, onClose }: { open: boolean; onClose: () => void
 }
 
 // ── 评论 ──────────────────────────────────────────────────────────────────
-function CommentNode({ c, postId, depth = 0 }: { c: Comment; postId: number; depth?: number }) {
+type AcceptProps = {
+  acceptedId: number | null
+  canAccept: boolean
+  onAccept: (commentId: number, accepted: boolean) => void
+  acceptingId: number | null
+}
+
+function CommentNode({ c, postId, depth = 0, acceptedId, canAccept, onAccept, acceptingId }: {
+  c: Comment; postId: number; depth?: number
+} & AcceptProps) {
   const qc = useQueryClient()
   const { message } = AntApp.useApp()
   const [replying, setReplying] = useState(false)
   const [text, setText] = useState('')
+  const accepted = c.accepted === true || c.id === acceptedId
 
   const vote = useMutation({
     mutationFn: (v: number) => api.vote('comment', c.id, v),
@@ -422,21 +461,38 @@ function CommentNode({ c, postId, depth = 0 }: { c: Comment; postId: number; dep
   })
 
   const nested = depth > 0
+  const action = 'inline-flex min-h-11 items-center rounded px-1 text-[12px] transition-colors sm:min-h-8'
 
   return (
     <div className={nested ? 'mt-3 border-l border-line pl-3 sm:pl-4' : 'mt-3'}>
-      <div className="flex gap-2.5">
+      <div className={`flex gap-2.5 ${accepted ? 'rounded-lg border border-success/35 bg-success-soft/55 p-2.5 sm:p-3' : ''}`}>
         <VoteButtons compact score={c.score} myVote={c.my_vote} onVote={v => vote.mutate(v)} />
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[12px] text-ink-3">
             <UserBadge user={c.author} size={20} />
             <span className="mono tabular">{ago(c.created_at)}</span>
+            {accepted && (
+              <span className="inline-flex items-center gap-1 rounded-full border border-success/35 bg-success-soft px-2 py-0.5 text-[11.5px] font-semibold text-success">
+                <CheckCircleFilled aria-hidden="true" />
+                已采纳
+              </span>
+            )}
             {depth === 0 && (
               <button type="button" onClick={() => setReplying(v => !v)}
                 aria-expanded={replying}
-                className="rounded text-[12px] text-ink-3 transition-colors hover:text-brand">
+                className={`${action} text-ink-3 hover:text-brand`}>
                 回复
+              </button>
+            )}
+            {canAccept && (
+              <button type="button" disabled={acceptingId === c.id}
+                onClick={() => onAccept(c.id, accepted)}
+                aria-pressed={accepted}
+                className={`${action} disabled:cursor-not-allowed disabled:opacity-50 ${
+                  accepted ? 'text-ink-3 hover:text-danger' : 'font-medium text-brand hover:bg-brand-soft'
+                }`}>
+                {acceptingId === c.id ? '处理中…' : accepted ? '取消采纳' : '采纳'}
               </button>
             )}
           </div>
@@ -456,17 +512,26 @@ function CommentNode({ c, postId, depth = 0 }: { c: Comment; postId: number; dep
 
       {c.replies?.length > 0 && (
         <div className="mt-1">
-          {c.replies.map(r => <CommentNode key={r.id} c={r} postId={postId} depth={depth + 1} />)}
+          {c.replies.map(r => (
+            <CommentNode key={r.id} c={r} postId={postId} depth={depth + 1}
+              acceptedId={acceptedId} canAccept={canAccept}
+              onAccept={onAccept} acceptingId={acceptingId} />
+          ))}
         </div>
       )}
     </div>
   )
 }
 
-export function CommentList({ postId }: { postId: number }) {
+export function CommentList({ postId, acceptedId = null, canAccept = false }: {
+  postId: number
+  acceptedId?: number | null
+  canAccept?: boolean
+}) {
   const qc = useQueryClient()
   const { message } = AntApp.useApp()
   const [text, setText] = useState('')
+  const [acceptingId, setAcceptingId] = useState<number | null>(null)
   const { data, isLoading } = useQuery({
     queryKey: ['comments', postId], queryFn: () => api.comments(postId),
   })
@@ -479,6 +544,35 @@ export function CommentList({ postId }: { postId: number }) {
     },
     onError: (e: Error) => message.error(e.message),
   })
+
+  // 已采纳的评论排在最前：读者先看到结论，再看讨论过程。
+  const ordered = useMemo(() => {
+    const rows = [...(data || [])]
+    rows.sort((a, b) => {
+      const aa = a.accepted === true || a.id === acceptedId ? 1 : 0
+      const bb = b.accepted === true || b.id === acceptedId ? 1 : 0
+      return bb - aa
+    })
+    return rows
+  }, [data, acceptedId])
+
+  const accept = async (commentId: number, accepted: boolean) => {
+    setAcceptingId(commentId)
+    try {
+      if (accepted) await api.unacceptComment(postId)
+      else await api.acceptComment(postId, commentId)
+      await Promise.all([
+        qc.invalidateQueries({ queryKey: ['comments', postId] }),
+        qc.invalidateQueries({ queryKey: ['post', postId] }),
+        qc.invalidateQueries({ queryKey: ['posts'] }),
+      ])
+      message.success(accepted ? '已取消采纳' : '已采纳这条回复')
+    } catch (e) {
+      message.error((e as Error).message)
+    } finally {
+      setAcceptingId(null)
+    }
+  }
 
   return (
     <div>
@@ -506,11 +600,15 @@ export function CommentList({ postId }: { postId: number }) {
             </div>
           ))}
         </div>
-      ) : !data?.length ? (
+      ) : !ordered.length ? (
         <EmptyState title="还没有回复" hint="来说第一句：哪个参数不对、哪个工况没覆盖。" />
       ) : (
         <div className="mt-1 divide-y divide-line">
-          {data.map(c => <CommentNode key={c.id} c={c} postId={postId} />)}
+          {ordered.map(c => (
+            <CommentNode key={c.id} c={c} postId={postId}
+              acceptedId={acceptedId} canAccept={canAccept}
+              onAccept={accept} acceptingId={acceptingId} />
+          ))}
         </div>
       )}
     </div>

@@ -4,7 +4,7 @@ import type { Comment, User } from '@robowiki/core'
 
 type Props = { page: string }
 
-const LOGIN_HREF = '/app/#/pages/login/index'
+const LOGIN_HREF = '/account.html'
 
 function renderBody(body: string) {
   return body.split(/(!\[[^\]]*\]\(\/api\/v1\/media\/[^)]+\))/g).map((chunk, i) => {
@@ -104,7 +104,7 @@ export default function Comments({ page }: Props) {
   }
 
   return (
-    <section className="mt-10 rounded-lg border border-line bg-surface p-5" aria-label="页面讨论">
+    <section className="rounded-lg border border-line bg-surface p-5" aria-label="页面讨论">
       <div className="flex items-center justify-between gap-3">
         <h2 className="text-lg font-bold text-ink">这一页的讨论</h2>
         <span className="text-xs text-ink-3">{comments.length} 条</span>
@@ -147,7 +147,11 @@ export default function Comments({ page }: Props) {
 
       <ul className="mt-5 space-y-4">
         {comments.map(c => (
-          <li key={c.id} className={`rounded-lg border border-line p-3 ${c.parent_id ? 'ml-6 bg-surface-2/60' : ''}`}>
+          <li
+            key={c.id}
+            id={`comment-${c.id}`}
+            className={`scroll-mt-24 rounded-lg border border-line p-3 ${c.parent_id ? 'ml-6 bg-surface-2/60' : ''}`}
+          >
             <div className="flex flex-wrap items-center gap-2 text-xs text-ink-3">
               <span className="font-medium text-ink-2">{c.author?.display_name || c.author?.handle || '已注销'}</span>
               <span>{String(c.created_at).slice(0, 10)}</span>

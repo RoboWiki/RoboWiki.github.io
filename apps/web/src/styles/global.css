@@ -33,6 +33,8 @@
   --color-danger-soft: var(--rw-danger-soft);
 
   --color-layer-mech: var(--rw-layer-mech);
+  --color-layer-hw: var(--rw-layer-hw);
+  --color-layer-emb: var(--rw-layer-emb);
   --color-layer-elec: var(--rw-layer-elec);
   --color-layer-algo: var(--rw-layer-algo);
   --color-layer-sys: var(--rw-layer-sys);

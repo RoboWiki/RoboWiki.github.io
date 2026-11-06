@@ -5,6 +5,7 @@ import Taro from '@tarojs/taro'
 import { ApiError } from '@robowiki/core'
 
 import { errorMessage, loginWithPassword, loginWithWechat, registerAccount } from '@/services/api'
+import { useThemeMode } from '@/utils/theme'
 import './index.css'
 
 const IS_H5 = process.env.TARO_ENV === 'h5'
@@ -20,6 +21,7 @@ function backOrHome() {
 }
 
 export default function LoginPage() {
+  const theme = useThemeMode()
   const [mode, setMode] = useState<'login' | 'register'>('login')
   const [account, setAccount] = useState('')
   const [password, setPassword] = useState('')
@@ -121,7 +123,7 @@ export default function LoginPage() {
   }
 
   return (
-    <View className="rw-page login">
+    <View className={`rw-page login ${theme === 'dark' ? 'dark' : ''}`}>
       <View className="login__head">
         <Text className="rw-title">{mode === 'register' ? '注册 RoboWiki' : '登录 RoboWiki'}</Text>
         <Text className="rw-caption">

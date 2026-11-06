@@ -39,11 +39,19 @@ export type User = {
   display_name: string
   bio?: string
   avatar_hue?: number
+  avatar_url?: string | null
   email?: string | null
   email_verified?: boolean
   email_notify?: boolean
   password_set?: boolean
   is_staff?: boolean
+  /** 公开资料页 / 贡献统计（后端按需聚合，不落库） */
+  reputation?: number
+  post_count?: number
+  comment_count?: number
+  rating_count?: number
+  submission_count?: number
+  accepted_count?: number
 }
 
 export type TokenPair = {
@@ -91,6 +99,126 @@ export type PartList = {
   offset: number
   data_version?: string
   items: PartSummary[]
+}
+
+export type SpecFact = { key: string; label: string; value: string }
+
+/** 方案（整机/复现方案）列表卡片。 */
+export type BuildSummary = {
+  id: string
+  slug?: string
+  subtype?: string | null
+  subtype_label?: string | null
+  vendor: string
+  vendor_cn?: string | null
+  model: string
+  title: string
+  url?: string | null
+  source_tier?: string | null
+  verified?: boolean | null
+  last_checked?: string | null
+  price_cny?: number | null
+  image_url?: string | null
+  key_specs?: SpecFact[]
+  web_path?: string
+}
+
+export type BuildDetail = BuildSummary & {
+  specs?: Record<string, unknown>
+  notes?: string | null
+  origin?: string | null
+  ecosystem?: {
+    count?: number
+    roles?: Record<string, number>
+    projects?: Array<Record<string, unknown>>
+  } | null
+}
+
+export type BuildList = {
+  total: number
+  limit: number
+  offset: number
+  data_version?: string
+  items: BuildSummary[]
+}
+
+export type LearnArticle = {
+  slug: string
+  title: string
+  summary: string
+  tags: string[]
+  level: string
+  minutes: number
+  web_path?: string
+}
+
+export type LearnList = {
+  updated_at?: string
+  total: number
+  items: LearnArticle[]
+}
+
+export type PostAuthor = {
+  id?: number
+  handle: string
+  display_name: string
+  is_staff?: boolean
+}
+
+export type PostSummary = {
+  id: number
+  kind: string
+  title: string
+  body: string
+  tags: string[]
+  part_id?: string | null
+  part_title?: string | null
+  rating?: number | null
+  score: number
+  comment_count: number
+  view_count: number
+  pinned: boolean
+  /** 问答帖被采纳的评论；非空即「已解决」 */
+  accepted_comment_id?: number | null
+  created_at: string
+  updated_at?: string
+  author?: PostAuthor | null
+  my_vote?: number
+}
+
+export type PostList = {
+  total: number
+  limit: number
+  offset: number
+  items: PostSummary[]
+}
+
+export type PostComment = {
+  id: number
+  post_id: number
+  parent_id?: number | null
+  body: string
+  score: number
+  created_at: string
+  author?: PostAuthor | null
+  my_vote?: number
+  /** 是否是本楼被采纳的答案 */
+  accepted?: boolean
+  replies?: PostComment[]
+}
+
+export type PostInput = {
+  kind?: 'discussion' | 'review' | 'build'
+  title: string
+  body: string
+  part_id?: string | null
+  tags?: string
+  rating?: number | null
+  use_case?: string | null
+  own_hardware?: boolean
+  total_price_cny?: number | null
+  price_scope?: string | null
+  price_verified?: boolean
 }
 
 export type ReproductionSummary = {
@@ -462,5 +590,98 @@ export class ApiClient {
 
   mySubmissions(limit = 10) {
     return this.request<Submission[]>(`/submissions/mine?limit=${limit}`)
+  }
+
+  // ── 方案库（只读，数据来自 data-v* release） ──────────────────────────
+  listBuilds(params: {
+    q?: string
+    subtype?: string
+    limit?: number
+    offset?: number
+  } = {}) {
+    const q = new URLSearchParams()
+    Object.entries(params).forEach(([k, v]) => {
+      if (v !== undefined && v !== '' && v !== null) q.set(k, String(v))
+    })
+    const s = q.toString()
+    return this.request<BuildList>(`/builds${s ? `?${s}` : ''}`)
+  }
+
+  getBuild(id: string) {
+    return this.request<BuildDetail>(`/builds/${encodeURIComponent(id)}`)
+  }
+
+  // ── 学习指南（只读） ─────────────────────────────────────────────────
+  listLearn() {
+    return this.request<LearnList>('/learn')
+  }
+
+  // ── 社区（帖子 / 评论 / 投票） ───────────────────────────────────────
+  listPosts(params: {
+    kind?: string
+    part_id?: string
+    author?: string
+    tag?: string
+    q?: string
+    sort?: 'new' | 'top' | 'hot'
+    solved?: boolean
+    limit?: number
+    offset?: number
+  } = {}) {
+    const q = new URLSearchParams()
+    Object.entries(params).forEach(([k, v]) => {
+      if (v !== undefined && v !== '' && v !== null) q.set(k, String(v))
+    })
+    const s = q.toString()
+    return this.request<PostList>(`/posts${s ? `?${s}` : ''}`)
+  }
+
+  getPost(id: number) {
+    return this.request<PostSummary>(`/posts/${id}`)
+  }
+
+  listPostComments(id: number) {
+    return this.request<PostComment[]>(`/posts/${id}/comments`)
+  }
+
+  addPostComment(id: number, body: string, parentId?: number) {
+    return this.request<PostComment>(`/posts/${id}/comments`, {
+      method: 'POST',
+      body: { body, parent_id: parentId ?? null },
+    })
+  }
+
+  vote(targetKind: 'post' | 'comment', targetId: number, value: -1 | 0 | 1) {
+    return this.request<{ score: number; my_vote: number }>('/votes', {
+      method: 'POST',
+      body: { target_kind: targetKind, target_id: targetId, value },
+    })
+  }
+
+  createPost(body: PostInput) {
+    return this.request<PostSummary>('/posts', { method: 'POST', body })
+  }
+
+  updatePost(id: number, body: Partial<PostInput>) {
+    return this.request<PostSummary>(`/posts/${id}`, { method: 'PATCH', body })
+  }
+
+  deletePost(id: number) {
+    return this.request<void>(`/posts/${id}`, { method: 'DELETE' })
+  }
+
+  acceptComment(postId: number, commentId: number) {
+    return this.request<PostSummary>(`/posts/${postId}/accept`, {
+      method: 'POST',
+      body: { comment_id: commentId },
+    })
+  }
+
+  unacceptComment(postId: number) {
+    return this.request<void>(`/posts/${postId}/accept`, { method: 'DELETE' })
+  }
+
+  exportAccount() {
+    return this.request<Record<string, unknown>>('/auth/export')
   }
 }

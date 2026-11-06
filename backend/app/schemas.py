@@ -3,10 +3,12 @@ from __future__ import annotations
 
 import re
 from datetime import datetime
+from urllib.parse import urlparse
 
 from pydantic import BaseModel, Field, field_validator
 
 _EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$")
+_AVATAR_HTTP_RE = re.compile(r"^https?://", re.IGNORECASE)
 
 
 def _normalize_email(v: str | None) -> str | None:
@@ -20,6 +22,34 @@ def _normalize_email(v: str | None) -> str | None:
     if not _EMAIL_RE.match(v):
         raise ValueError("邮箱格式不正确")
     return v
+
+
+def _normalize_avatar_url(v: str | None) -> str | None:
+    """头像只收两类：本站媒体路径或 http(s) 外链。
+
+    `javascript:` / `data:` 之类会进 `<img src>` 的值一律拒掉 —— 前端
+    直接渲染这个字段，协议白名单必须由服务端兜住，不能靠客户端自觉。
+    空串视同清除，返回 None。
+    """
+    if v is None:
+        return None
+    v = v.strip()
+    if not v:
+        return None
+    if len(v) > 500:
+        raise ValueError("头像地址过长")
+    if any(c.isspace() for c in v):
+        raise ValueError("头像地址不能包含空白字符")
+    if v.startswith("/media/") and len(v) > len("/media/"):
+        return v
+    if _AVATAR_HTTP_RE.match(v):
+        try:
+            parsed = urlparse(v)
+        except ValueError:
+            parsed = None
+        if parsed is not None and parsed.netloc:
+            return v
+    raise ValueError("头像地址只能是 /media/... 或 http(s) 链接")
 
 
 # ── 认证 ────────────────────────────────────────────────────────────────────
@@ -84,12 +114,17 @@ class UserOut(BaseModel):
     display_name: str
     bio: str = ""
     avatar_hue: int = 160
+    avatar_url: str | None = None
     is_staff: bool = False
     email_verified: bool = False
     reputation: int = 0
     created_at: datetime
     post_count: int = 0
     comment_count: int = 0
+    #: 贡献统计：打分数 / 目录变更提案数 / 回答被采纳数
+    rating_count: int = 0
+    submission_count: int = 0
+    accepted_count: int = 0
     badges: list[str] = []
 
 
@@ -112,7 +147,14 @@ class AccountUpdateIn(BaseModel):
     display_name: str | None = Field(default=None, min_length=1, max_length=32)
     bio: str | None = Field(default=None, max_length=500)
     avatar_hue: int | None = Field(default=None, ge=0, le=359)
+    #: None = 清除自定义头像，回退到 avatar_hue 底色
+    avatar_url: str | None = Field(default=None, max_length=500)
     email_notify: bool | None = None
+
+    @field_validator("avatar_url")
+    @classmethod
+    def _avatar_ok(cls, v: str | None) -> str | None:
+        return _normalize_avatar_url(v)
 
 
 class PasswordSetIn(BaseModel):
@@ -235,9 +277,36 @@ class PostOut(BaseModel):
     comment_count: int = 0
     view_count: int = 0
     pinned: bool = False
+    #: 非空即「已解决」；对应 CommentOut.accepted
+    accepted_comment_id: int | None = None
     created_at: datetime
+    updated_at: datetime
     author: UserOut | None = None
     my_vote: int = 0
+
+
+class PostPatchIn(BaseModel):
+    """编辑帖子：只传要改的字段，`kind` 与 `part_id` 不可变。
+
+    留空（不传）与显式 null 是两件事：只有传了的键才会被写回，
+    所以 `rating: null` 能清掉评分，而不传 `rating` 则保持原值。
+    """
+
+    title: str | None = Field(default=None, min_length=4, max_length=120)
+    body: str | None = Field(default=None, min_length=10, max_length=20000)
+    tags: str | None = Field(default=None, max_length=80)
+    rating: int | None = Field(default=None, ge=1, le=5)
+    use_case: str | None = Field(default=None, max_length=16)
+    own_hardware: bool | None = None
+    total_price_cny: float | None = Field(default=None, ge=0, le=10_000_000)
+    price_scope: str | None = Field(default=None, max_length=200)
+    price_verified: bool | None = None
+
+
+class AcceptIn(BaseModel):
+    """采纳本楼的一条回答。"""
+
+    comment_id: int
 
 
 class PostListOut(BaseModel):
@@ -258,6 +327,8 @@ class CommentOut(BaseModel):
     parent_id: int | None = None
     body: str
     score: int = 0
+    #: 是否是本楼被采纳的答案
+    accepted: bool = False
     created_at: datetime
     author: UserOut | None = None
     my_vote: int = 0
@@ -399,3 +470,105 @@ class OutboxOut(BaseModel):
     last_error: str | None = None
     result: dict = {}
     created_at: datetime
+
+
+# ── 方案库 / 学习指南 ───────────────────────────────────────────────────────
+class KeySpecOut(BaseModel):
+    key: str
+    label: str
+    value: str
+
+
+class BuildSummaryOut(BaseModel):
+    id: str
+    slug: str
+    subtype: str | None = None
+    subtype_label: str | None = None
+    vendor: str | None = None
+    vendor_cn: str | None = None
+    model: str | None = None
+    title: str | None = None
+    url: str | None = None
+    source_tier: str | None = None
+    verified: bool = False
+    last_checked: str | None = None
+    price_cny: float | None = None
+    image_url: str | None = None
+    key_specs: list[KeySpecOut] = []
+    web_path: str
+
+
+class BuildDetailOut(BuildSummaryOut):
+    specs: dict = {}
+    notes: str = ""
+    origin: str | None = None
+    ecosystem: dict | None = None
+
+
+class BuildListOut(BaseModel):
+    total: int
+    limit: int
+    offset: int
+    data_version: str | None = None
+    items: list[BuildSummaryOut]
+
+
+class LearnArticleOut(BaseModel):
+    slug: str
+    title: str
+    summary: str | None = None
+    tags: list[str] = []
+    level: str | None = None
+    minutes: int | None = None
+    web_path: str
+
+
+class LearnListOut(BaseModel):
+    updated_at: str | None = None
+    total: int
+    items: list[LearnArticleOut]
+
+
+# ── 账号数据导出（「我的数据可带走」）───────────────────────────────────────
+class CommentExportOut(BaseModel):
+    id: int
+    post_id: int
+    parent_id: int | None = None
+    body: str
+    score: int = 0
+    hidden: bool = False
+    created_at: datetime
+
+
+class RatingExportOut(BaseModel):
+    part_id: str
+    part_title: str | None = None
+    score: int
+    own_hardware: bool = False
+    usage_level: str = ""
+    reason_tags: list[str] = []
+    note: str = ""
+    created_at: datetime
+    updated_at: datetime
+
+
+class SubmissionExportOut(BaseModel):
+    id: int
+    kind: str
+    target_id: str | None = None
+    payload: dict = {}
+    evidence: dict = {}
+    status: str
+    revision: int
+    created_at: datetime
+    updated_at: datetime
+
+
+class AccountExportOut(BaseModel):
+    """只含本人内容；不含口令哈希、refresh token 等凭据。"""
+
+    user: AccountOut
+    posts: list[PostOut] = []
+    comments: list[CommentExportOut] = []
+    ratings: list[RatingExportOut] = []
+    submissions: list[SubmissionExportOut] = []

@@ -2,13 +2,13 @@
 import '../styles/global.css'
 import Comments from '@/components/comments/Comments'
 import { BASE, withBase } from '@/lib/utils'
+import { DISCUSSION, POSITIONING, WEB_NAV } from '@robowiki/content'
 
 type Props = { title?: string; description?: string; accountHref?: string; image?: string; noindex?: boolean }
-const appLoginHref = '/app/#/pages/login/index'
 const {
   title = 'RoboWiki · 机器人制作全流程工程知识库',
-  description = '面向机器人制作全流程的可追溯工程知识库：四层能力骨架，社区共建的部件选型与评价、加工与采购经验、教程、案例与开源索引。',
-  accountHref = appLoginHref,
+  description = `${POSITIONING.short}：以「机械—硬件—嵌入式—算法」四层能力为骨架，以系统集成能力为大脑，社区共建部件选型与评价、加工与采购经验、教程、案例与开源索引。`,
+  accountHref = withBase('/account.html'),
   image = '',
   noindex = false,
 } = Astro.props
@@ -23,16 +23,10 @@ const canonical = new URL(withBase(path), Astro.site ?? Astro.url).href
 const commentsPage = path === '/' ? 'index' : path.replace(/^\//, '').replace(/\.html$/, '')
 // 工具型页面（搜索、对比、路径选择、开源索引）不挂讨论区：那里没有可讨论的对象。
 const showComments = !/^(admin|login|account|community|post|top|u|404|search|compare|start|open|paths)/.test(commentsPage)
-type NavItem = { href: string; label: string; desc?: string; match?: string[]; external?: boolean }
-const nav: NavItem[] = [
-  { href: '/start.html', label: '学习路径', desc: '从零到跑通，按天给判据', match: ['/start', '/paths', '/learn'] },
-  { href: '/builds.html', label: '方案库', desc: '可复现方案，含 BOM 与步骤', match: ['/builds', '/robots', '/competitions'] },
-  { href: '/catalog.html', label: '部件库', desc: '参数带来源，缺失写 null', match: ['/catalog', '/parts', '/materials'] },
-  { href: '/suppliers.html', label: '采购渠道', desc: '报价、交期与真实反馈', match: ['/suppliers'] },
-]
+// 一级入口与小程序共用一份：学习 / 方案 / 部件 / 社区 / 采购。
+const nav = WEB_NAV
 
-const isCurrent = (item: NavItem) => {
-  if (item.external) return false
+const isCurrent = (item: (typeof WEB_NAV)[number]) => {
   const targets = item.match?.length ? item.match : [item.href]
   return targets.some(t => (t === '/' ? path === '/' : path.startsWith(t)))
 }
@@ -61,6 +55,7 @@ const footerGroups = [
     title: '学习与参与',
     links: [
       { href: '/start.html', label: '学习路径' },
+      { href: '/community.html', label: '社区' },
       { href: '/tools.html', label: '工具链' },
       { href: '/open.html', label: '开源索引' },
       { href: '/submit.html', label: '参与投稿' },
@@ -131,8 +126,6 @@ const footerGroups = [
               href={withBase(item.href)}
               class={linkClass(isCurrent(item))}
               aria-current={isCurrent(item) ? 'page' : undefined}
-              target={item.external ? '_blank' : undefined}
-              rel={item.external ? 'noopener' : undefined}
             >
               {item.label}
             </a>
@@ -211,14 +204,11 @@ const footerGroups = [
                         href={withBase(item.href)}
                         class={menuLinkClass(isCurrent(item))}
                         aria-current={isCurrent(item) ? 'page' : undefined}
-                        target={item.external ? '_blank' : undefined}
-                        rel={item.external ? 'noopener' : undefined}
                       >
                         <span class="min-w-0">
                           <span class="block">{item.label}</span>
                           {item.desc && <span class="block text-[11px] font-normal text-ink-3">{item.desc}</span>}
                         </span>
-                        {item.external && <span class="text-xs text-ink-3" aria-hidden="true">↗</span>}
                         {isCurrent(item) && <span class="text-xs text-brand">当前</span>}
                       </a>
                     </li>
@@ -249,7 +239,29 @@ const footerGroups = [
 
     <main id="main" tabindex="-1" class="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
       <slot />
-      {showComments && <Comments client:idle page={commentsPage} />}
+      {showComments && (
+        <details id="discussion" class="group mt-10">
+          <summary
+            class="flex cursor-pointer list-none items-center justify-between gap-3 rounded-lg border border-line bg-surface px-5 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
+          >
+            <span class="flex min-w-0 flex-col gap-0.5">
+              <span>{DISCUSSION.title}与纠错</span>
+              <span class="text-[11px] font-normal text-ink-3">{DISCUSSION.collapsedHint}</span>
+            </span>
+            <span
+              class="grid h-6 w-6 shrink-0 place-items-center rounded-md border border-line text-ink-3 transition-transform group-open:rotate-180"
+              aria-hidden="true"
+            >
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+          </summary>
+          <div class="mt-3">
+            <Comments client:idle page={commentsPage} />
+          </div>
+        </details>
+      )}
     </main>
 
     <footer class="mt-20 border-t border-line bg-surface">
@@ -261,7 +273,7 @@ const footerGroups = [
               <span class="text-sm font-bold text-ink">RoboWiki</span>
             </div>
             <p class="mt-3 max-w-xs text-xs leading-6 text-ink-3">
-              面向机器人制作全流程的可追溯工程知识库。四层能力骨架，社区共建。不卖零件、不收佣金。
+              面向机器人制作全流程的可追溯工程知识库。四层能力打底，系统集成收口，社区共建。不卖零件、不收佣金。
             </p>
           </div>
           {footerGroups.map(group => (
@@ -314,6 +326,26 @@ const footerGroups = [
             summary?.focus()
           }
         })
+      }
+
+      // 通知链接带 #comment-2 / #c2，但讨论区默认收起：先展开，再等 React 渲染后滚过去。
+      const discussion = document.getElementById('discussion')
+      if (discussion && /^#(?:comment-|c)\d+$/.test(location.hash)) {
+        discussion.open = true
+        const jump = () => {
+          const matched = location.hash.match(/^#(?:comment-|c)(\d+)$/)
+          if (!matched) return false
+          const target =
+            document.getElementById(`comment-${matched[1]}`) || document.getElementById(`c${matched[1]}`)
+          if (!target) return false
+          target.scrollIntoView({ block: 'center' })
+          return true
+        }
+        // 评论列表是 client:idle 岛屿，首帧通常还没有节点：按 300/1200/2500ms 重试。
+        if (!jump()) {
+          requestAnimationFrame(jump)
+          ;[300, 1200, 2500].forEach(ms => setTimeout(jump, ms))
+        }
       }
     </script>
   </body>

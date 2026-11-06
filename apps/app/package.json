@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.26.0",
+    "@robowiki/content": "workspace:*",
     "@robowiki/core": "workspace:*",
     "@robowiki/tokens": "workspace:*",
     "@tarojs/components": "4.3.2",

@@ -6,7 +6,7 @@ import { AuthForm, IslandProvider } from './providers'
 
 type Phase = 'checking' | 'form' | 'done'
 
-const ACCOUNT_TARGET = '/app/#/pages/account/index'
+const ACCOUNT_TARGET = '/account.html'
 
 function Bridge() {
   const [phase, setPhase] = useState<Phase>('checking')
@@ -23,9 +23,18 @@ function Bridge() {
     const code = params.get('code')
     const next = params.get('next') || new URLSearchParams(window.location.search).get('next')
 
-    // next=account 时回 App 的账号页；其余一律回社区。不接受任意 URL，避免开放跳转。
+    // next=account 时回账号中心；其余一律回社区。不接受任意 URL，避免开放跳转。
     const target = next === 'account' ? siteHref(ACCOUNT_TARGET) : siteHref('/community.html')
-    const go = () => { window.location.replace(target) }
+    // 账号页发起的 GitHub 授权会先离开站点：只认账号页这一个回跳落点。
+    let saved: string | null = null
+    try {
+      saved = window.sessionStorage.getItem('rw-auth-return')
+      window.sessionStorage.removeItem('rw-auth-return')
+    } catch {
+      // 隐私模式可能禁用 sessionStorage；回跳落点退回默认值。
+    }
+    const back = saved === '/account.html' ? siteHref(saved) : target
+    const go = () => { window.location.replace(back) }
 
     if (!token && !code) { setPhase('form'); return }
 

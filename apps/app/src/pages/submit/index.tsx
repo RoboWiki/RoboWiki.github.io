@@ -6,6 +6,7 @@ import { ApiError, type Submission, type User } from '@robowiki/core'
 
 import { api, errorMessage, loadMe } from '@/services/api'
 import { partCategoryLabel, type PartView } from '@/services/parts'
+import { useThemeMode } from '@/utils/theme'
 import './index.css'
 
 const COMMON_FIELDS: Array<{ key: string; label: string }> = [
@@ -34,6 +35,8 @@ function typedValue(field: string, raw: string): string | number {
 
 export default function SubmitPage() {
   const router = useRouter()
+  const theme = useThemeMode()
+  const darkClass = theme === 'dark' ? 'dark' : ''
   const presetId = decodeURIComponent(router.params?.id || '')
 
   const [user, setUser] = useState<User | null>(null)
@@ -199,7 +202,7 @@ export default function SubmitPage() {
 
   if (!user) {
     return (
-      <View className="rw-page submit">
+      <View className={`rw-page submit ${darkClass}`}>
         <View className="rw-stack">
           <Text className="rw-title">投稿纠错</Text>
           <Text className="rw-caption">登录后才能提交参数纠错，提案会进入站务审核队列。</Text>
@@ -212,7 +215,7 @@ export default function SubmitPage() {
 
   if (done) {
     return (
-      <View className="rw-page submit">
+      <View className={`rw-page submit ${darkClass}`}>
         <View className="submit__done">
           <Text className="rw-title">已提交</Text>
           <Text className="rw-caption">
@@ -234,7 +237,7 @@ export default function SubmitPage() {
   }
 
   return (
-    <View className="rw-page submit">
+    <View className={`rw-page submit ${darkClass}`}>
       <View className="submit__head">
         <Text className="rw-title">投稿纠错</Text>
         <Text className="rw-caption">

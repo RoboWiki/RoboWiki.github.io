@@ -9,15 +9,15 @@ from typing import Annotated, Literal
 
 from fastapi import APIRouter, HTTPException, Query, Request
 from sqlalchemy import func
-from sqlmodel import select
+from sqlmodel import Session, select
 
 from ...content_safety import check_user_text_chunks
 from ...core.config import settings
 from ...crud import (apply_vote, comments_out, posts_out, touch_comment_count,
                      user_out)
 from ...models import Comment, Part, Post, Rating, User, utcnow
-from ...schemas import (CommentIn, CommentOut, PostIn, PostListOut, PostOut,
-                        UserOut, VoteIn, VoteOut)
+from ...schemas import (AcceptIn, CommentIn, CommentOut, PostIn, PostListOut,
+                        PostOut, PostPatchIn, UserOut, VoteIn, VoteOut)
 from ..deps import CurrentUser, Db, MaybeUser, rate_limit
 from .notifications import create_notification
 
@@ -35,6 +35,10 @@ def list_posts(
     author: str | None = None,
     tag: str | None = None,
     q: str | None = None,
+    #: 问答闭环：true 只看已解决，false 只看未解决；不传不过滤。
+    #: 对 discussion / review / build 一律按 accepted_comment_id 判断，
+    #: 不因 kind 报错 —— 前端可能把同一个筛选器带到所有 tab。
+    solved: bool | None = None,
     sort: Literal["new", "top", "hot"] = "new",
     limit: Annotated[int, Query(ge=1, le=100)] = 20,
     offset: Annotated[int, Query(ge=0)] = 0,
@@ -48,6 +52,9 @@ def list_posts(
         stmt = stmt.where(Post.tags.contains(tag))
     if q:
         stmt = stmt.where(Post.title.contains(q) | Post.body.contains(q))
+    if solved is not None:
+        stmt = stmt.where(Post.accepted_comment_id.is_not(None) if solved
+                          else Post.accepted_comment_id.is_(None))
     if author:
         u = db.exec(select(User).where(User.handle == author.lower())).first()
         if u is None:
@@ -144,6 +151,117 @@ def get_post(post_id: int, db: Db, user: MaybeUser):
     return posts_out(db, [p], user.id if user else None)[0]
 
 
+def _editable_post(db: Session, post_id: int, user: User) -> Post:
+    """取出可编辑的帖子：不存在 / 已隐藏（非站务）一律 404，越权 403。
+
+    隐藏帖对普通作者也按 404 处理：既然公开读不到，就不该通过「403/404
+    的差异」暴露它仍然存在。
+    """
+    p = db.get(Post, post_id)
+    if p is None or (p.hidden and not user.is_staff):
+        raise HTTPException(404, "帖子不存在")
+    if p.author_id != user.id and not user.is_staff:
+        raise HTTPException(403, "只能操作自己的帖子")
+    return p
+
+
+@router.patch("/posts/{post_id}", response_model=PostOut)
+def update_post(post_id: int, payload: PostPatchIn, request: Request, db: Db,
+                user: CurrentUser):
+    """编辑帖子。kind / part_id 不可改；校验按「补丁合并后」的值做。
+
+    只改 kind 相关字段会绕过创建时的必填约束（把评价的分清空、把整机报价
+    的覆盖范围删掉），所以必须拿合并后的完整状态再校验一次。
+    """
+    rate_limit(request, "post-update", settings.rate_max_posts, user.id)
+    p = _editable_post(db, post_id, user)
+    data = payload.model_dump(exclude_unset=True)
+
+    title = p.title
+    if "title" in data:
+        title = (data["title"] or "").strip()
+        if not title:
+            raise HTTPException(422, "标题不能为空")
+    body = p.body
+    if "body" in data:
+        if data["body"] is None:
+            raise HTTPException(422, "正文不能为空")
+        body = data["body"]
+    rating = data.get("rating", p.rating)
+    total_price = data.get("total_price_cny", p.total_price_cny)
+    price_scope = data.get("price_scope", p.price_scope)
+
+    if p.kind == "review":
+        if not p.part_id:
+            raise HTTPException(422, "评价必须指定零件")
+        if rating is None:
+            raise HTTPException(422, "评价必须给 1–5 分")
+    if p.kind == "build" and total_price:
+        # 与创建同口径：只给一个数字的整机报价没有意义
+        if not (price_scope or "").strip():
+            raise HTTPException(
+                422, "整机报价必须填「覆盖范围」：这个价格包含哪些件、哪些另计")
+
+    if "title" in data or "body" in data:
+        safety = check_user_text_chunks(db, user.id, f"{title}\n{body}")
+        if not safety.passed:
+            raise HTTPException(422, "内容可能包含违规信息，请修改后再试")
+
+    p.title = title
+    p.body = body
+    if "tags" in data:
+        p.tags = ",".join(t.strip() for t in (data["tags"] or "").split(",")
+                          if t.strip())[:80]
+    if "rating" in data:
+        p.rating = data["rating"]
+    if "use_case" in data:
+        p.use_case = data["use_case"]
+    if "own_hardware" in data:
+        p.own_hardware = bool(data["own_hardware"])
+    if "total_price_cny" in data:
+        p.total_price_cny = data["total_price_cny"]
+    if "price_scope" in data:
+        p.price_scope = data["price_scope"]
+    if "price_verified" in data:
+        # 「价格已核实」仍是站务信任标记，普通作者不能自封
+        p.price_verified = bool(data["price_verified"] and user.is_staff)
+    p.updated_at = utcnow()
+    db.add(p)
+
+    # 评价帖是「评分 + 长评」的入口之一，改动必须同步到 Rating，
+    # 否则零件页的均分与帖子里的星级会对不上。
+    if p.kind == "review" and p.part_id and p.rating is not None \
+            and {"rating", "body", "own_hardware"} & data.keys():
+        row = db.exec(select(Rating).where(
+            Rating.part_id == p.part_id, Rating.user_id == p.author_id)).first()
+        if row is None:
+            db.add(Rating(part_id=p.part_id, user_id=p.author_id,
+                          score=p.rating, own_hardware=p.own_hardware,
+                          note=(p.body or "")[:200]))
+        else:
+            row.score = p.rating
+            row.own_hardware = p.own_hardware
+            row.note = (p.body or "")[:200]
+            row.updated_at = utcnow()
+            db.add(row)
+
+    db.commit()
+    db.refresh(p)
+    return posts_out(db, [p], user.id)[0]
+
+
+@router.delete("/posts/{post_id}", status_code=204)
+def delete_post(post_id: int, db: Db, user: CurrentUser):
+    """软删除：只置 hidden，保留行与评论线程，站务仍可在后台恢复/查看。"""
+    p = _editable_post(db, post_id, user)
+    if not p.hidden:
+        p.hidden = True
+        p.updated_at = utcnow()
+        db.add(p)
+        db.commit()
+    return None
+
+
 @router.get("/posts/{post_id}/comments", response_model=list[CommentOut])
 def list_comments(post_id: int, db: Db, user: MaybeUser):
     post = db.get(Post, post_id)
@@ -193,6 +311,68 @@ def create_comment(post_id: int, payload: CommentIn, request: Request, db: Db,
     return CommentOut(id=c.id or 0, post_id=c.post_id, parent_id=c.parent_id,
                       body=c.body, score=c.score, created_at=c.created_at,
                       author=user_out(db, user), my_vote=0, replies=[])
+
+
+@router.post("/posts/{post_id}/accept", response_model=PostOut)
+def accept_comment(post_id: int, payload: AcceptIn, db: Db, user: CurrentUser):
+    """采纳本楼的一条回答，给回答者发通知。
+
+    采纳状态只存在帖子上的 `accepted_comment_id`：不复制到评论行，
+    换采纳 / 取消采纳都只改一个字段，读取侧也不会出现「两条都被采纳」。
+    """
+    p = db.get(Post, post_id)
+    if p is None or (p.hidden and not user.is_staff):
+        raise HTTPException(404, "帖子不存在")
+    if p.author_id != user.id and not user.is_staff:
+        raise HTTPException(403, "只有作者或站务可以采纳答案")
+
+    c = db.get(Comment, payload.comment_id)
+    if c is None:
+        raise HTTPException(404, "评论不存在")
+    if c.post_id != post_id:
+        raise HTTPException(422, "评论不属于这个帖子")
+    if c.hidden:
+        raise HTTPException(422, "不能采纳已隐藏的评论")
+
+    # 换采纳时先把旧答主的分扣回去，再把分记给新答主；自问自答不加分。
+    if p.accepted_comment_id and p.accepted_comment_id != c.id:
+        old = db.get(Comment, p.accepted_comment_id)
+        if old:
+            old_author = db.get(User, old.author_id)
+            if old_author and old_author.id != user.id:
+                old_author.reputation = max(0, int(old_author.reputation or 0) - 3)
+                db.add(old_author)
+    p.accepted_comment_id = c.id
+    db.add(p)
+    answer_author = db.get(User, c.author_id)
+    if answer_author and answer_author.id != user.id:
+        answer_author.reputation = int(answer_author.reputation or 0) + 3
+        db.add(answer_author)
+    snippet = c.body if len(c.body) <= 80 else c.body[:80] + "…"
+    create_notification(db, c.author_id, type="accepted",
+                        subject="你的回答被采纳了", body=snippet,
+                        link=f"/post.html?id={post_id}", actor_id=user.id)
+    db.commit()
+    db.refresh(p)
+    return posts_out(db, [p], user.id)[0]
+
+
+@router.delete("/posts/{post_id}/accept", status_code=204)
+def unaccept_comment(post_id: int, db: Db, user: CurrentUser):
+    """取消采纳。重复调用也返回 204，语义是「确保没有采纳」。"""
+    p = _editable_post(db, post_id, user)
+    if p.accepted_comment_id is not None:
+        c = db.get(Comment, p.accepted_comment_id)
+        if c:
+            answer_author = db.get(User, c.author_id)
+            if answer_author and answer_author.id != user.id:
+                answer_author.reputation = max(0, int(answer_author.reputation or 0) - 3)
+                db.add(answer_author)
+        p.accepted_comment_id = None
+        p.updated_at = utcnow()
+        db.add(p)
+        db.commit()
+    return None
 
 
 @router.post("/votes", response_model=VoteOut)

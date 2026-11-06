@@ -9,12 +9,19 @@ import { Composer, EmptyState, PostCard, PostSkeleton, UserBadge } from './ui'
 
 const PAGE_SIZE = 10
 type Sort = 'new' | 'hot' | 'top'
+type Solved = 'all' | 'open' | 'solved'
 
 const KINDS: { value: string; label: string }[] = [
   { value: 'all', label: '全部' },
   { value: 'discussion', label: '讨论' },
   { value: 'review', label: '评价' },
   { value: 'build', label: '整机方案' },
+]
+
+const SOLVED: { value: Solved; label: string }[] = [
+  { value: 'all', label: '全部' },
+  { value: 'open', label: '待解决' },
+  { value: 'solved', label: '已解决' },
 ]
 
 const SORTS: { value: Sort; label: string; icon?: ReactNode }[] = [
@@ -26,14 +33,19 @@ const SORTS: { value: Sort; label: string; icon?: ReactNode }[] = [
 function Feed({ initialSort }: { initialSort: Sort }) {
   const { user, openAuth } = useAuth()
   const [kind, setKind] = useState('all')
+  const [solved, setSolved] = useState<Solved>('all')
   const [sort, setSort] = useState<Sort>(initialSort)
   const [page, setPage] = useState(1)
   const [composerOpen, setComposerOpen] = useState(false)
 
   const query = useMemo(() => ({
     kind: kind === 'all' ? undefined : kind,
+    // 仅讨论（以及包含讨论的「全部」）有解决状态；评价/整机方案不显示这组筛选。
+    solved: (kind === 'all' || kind === 'discussion') && solved !== 'all'
+      ? (solved === 'solved' ? 'true' : 'false')
+      : undefined,
     sort, limit: PAGE_SIZE, offset: (page - 1) * PAGE_SIZE,
-  }), [kind, sort, page])
+  }), [kind, solved, sort, page])
 
   const posts = useQuery({ queryKey: ['posts', query], queryFn: () => api.posts(query) })
   const board = useQuery({ queryKey: ['leaderboard', 6], queryFn: () => api.leaderboard(6) })
@@ -57,14 +69,32 @@ function Feed({ initialSort }: { initialSort: Sort }) {
         <div className="min-w-0">
           {/* 筛选与排序同一行：窄屏筛选横滑，排序固定在右侧 */}
           <div className="mb-3 flex flex-wrap items-center gap-2 border-b border-line pb-3">
-            <div className="chip-row min-w-0 flex-1" role="group" aria-label="按类型筛选">
-              {KINDS.map(k => (
-                <button key={k.value} type="button" className="chip"
-                  aria-pressed={kind === k.value}
-                  onClick={() => { setKind(k.value); setPage(1) }}>
-                  {k.label}
-                </button>
-              ))}
+            <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+              <div className="chip-row min-w-0" role="group" aria-label="按类型筛选">
+                {KINDS.map(k => (
+                  <button key={k.value} type="button" className="chip"
+                    aria-pressed={kind === k.value}
+                    onClick={() => {
+                      setKind(k.value)
+                      setSolved('all')
+                      setPage(1)
+                    }}>
+                    {k.label}
+                  </button>
+                ))}
+              </div>
+
+              {(kind === 'all' || kind === 'discussion') && (
+                <div className="chip-row min-w-0" role="group" aria-label="按解决状态筛选">
+                  {SOLVED.map(s => (
+                    <button key={s.value} type="button" className="chip"
+                      aria-pressed={solved === s.value}
+                      onClick={() => { setSolved(s.value); setPage(1) }}>
+                      {s.label}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="flex shrink-0 items-center gap-0.5 rounded-full border border-line bg-surface-2 p-0.5"
@@ -116,7 +146,11 @@ function Feed({ initialSort }: { initialSort: Sort }) {
           ) : !posts.data?.items.length ? (
             <EmptyState
               title="还没有帖子"
-              hint={kind === 'all' ? '第一条可以从你自己的装机记录写起。' : '这个类型下还没有内容，换一个筛选看看。'}
+              hint={kind === 'all'
+                ? '第一条可以从你自己的装机记录写起。'
+                : solved !== 'all'
+                  ? (solved === 'open' ? '这个类型下没有待解决的讨论。' : '这个类型下还没有已解决的讨论。')
+                  : '这个类型下还没有内容，换一个筛选看看。'}
               action={!user ? (
                 <button type="button" onClick={openAuth}
                   className="inline-flex h-9 items-center rounded-md bg-brand px-3.5 text-[13px] font-semibold text-brand-fg transition-colors hover:bg-brand-hover">

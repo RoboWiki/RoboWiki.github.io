@@ -1,29 +1,46 @@
 ---
 import Base from '@/layouts/Base.astro'
-
-const target = '/app/#/pages/account/index'
+import Breadcrumbs from '@/components/community/Breadcrumbs.astro'
+import IslandFallback from '@/components/community/IslandFallback.astro'
+import AccountCenter from '@/components/account/AccountCenter'
+import { withBase } from '@/lib/utils'
 ---
-<Base title="账号 · RoboWiki" description="账号中心已迁移到 RoboWiki 互动端。">
-  <section class="card mx-auto max-w-xl p-6">
-    <p class="text-xs font-semibold uppercase tracking-[0.14em] text-brand">账号</p>
-    <h1 class="mt-1 text-2xl font-bold tracking-tight text-ink">账号中心</h1>
-    <p class="mt-2 text-sm leading-6 text-ink-2">
-      资料、密码、会话与通知已统一到互动端，打开后会自动进入账号页。
-    </p>
+<Base
+  title="账号中心 · RoboWiki"
+  description="在网页端管理 RoboWiki 账号：资料与头像、密码与会话、通知、投稿进度和登录方式。"
+>
+  <div class="mx-auto max-w-4xl">
+    <Breadcrumbs items={[
+      { label: '首页', href: '/' },
+      { label: '社区', href: '/community.html' },
+      { label: '账号中心' },
+    ]} />
 
-    <div class="mt-5 flex flex-wrap items-center gap-3">
-      <a href={target}
-        class="inline-flex h-11 items-center rounded-md bg-brand px-5 text-sm font-medium text-brand-fg transition-colors hover:bg-brand-hover">
-        打开账号中心 →
+    <header class="mb-6 flex flex-wrap items-end justify-between gap-3">
+      <div class="max-w-2xl">
+        <p class="text-xs font-semibold uppercase tracking-[0.14em] text-brand">账号</p>
+        <h1 class="mt-1 text-3xl font-extrabold tracking-tight text-ink">账号中心</h1>
+        <p class="mt-2 text-sm leading-6 text-ink-2">
+          资料、密码、会话、通知与投稿都在网页里完成。不再跳小程序，也不用回到 App 才能改。
+        </p>
+      </div>
+      <a href={withBase('/community.html')}
+        class="inline-flex h-11 items-center rounded-md border border-line bg-surface px-4 text-[13px] text-ink-2 transition-colors hover:border-line-strong hover:text-ink">
+        回社区
       </a>
-      <a href="/community.html" class="text-[13px] text-ink-3 transition-colors hover:text-ink">先去社区</a>
-    </div>
+    </header>
+  </div>
 
-    <p class="mt-4 border-t border-line pt-3 text-[11.5px] text-ink-3">
-      没有自动跳转？<a href={target} class="text-brand hover:underline">点这里</a>。
+  <div class="min-h-[60vh]">
+    <IslandFallback label="正在准备账号中心…" rows={0} />
+    <AccountCenter client:only="react" />
+  </div>
+
+  <noscript>
+    <p class="mt-4 rounded-md border border-warning/35 bg-warning-soft p-3 text-[13px] leading-6 text-warning">
+      账号中心需要启用 JavaScript。也可以先
+      <a href={withBase('/community.html')} class="underline underline-offset-2">去社区</a>
+      浏览内容。
     </p>
-  </section>
-  <script>
-    location.replace('/app/#/pages/account/index')
-  </script>
+  </noscript>
 </Base>

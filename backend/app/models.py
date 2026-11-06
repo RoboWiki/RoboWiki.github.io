@@ -80,6 +80,8 @@ class User(SQLModel, table=True):
     password_set: bool = True
     bio: str = ""
     avatar_hue: int = 160                              # 头像底色，免上传
+    #: 自定义头像地址：站内上传（/media/...）或外链 http(s)。为空则用底色+首字
+    avatar_url: str | None = Field(default=None, max_length=500)
     is_staff: bool = False
     reputation: int = 0                                # 收到的赞之和，冗余字段
     #: 会话代次。access JWT 的 `se` 必须等于它；`logout-all` 自增一次即可
@@ -244,6 +246,10 @@ class Post(SQLModel, table=True):
     pinned: bool = False
     #: 站务处置后隐藏；列表、详情与评分聚合都不再返回，站务仍可在后台查看
     hidden: bool = Field(default=False, index=True)
+    #: 问答闭环：本楼被采纳的评论 id。非空即「已解决」。
+    #: 刻意不加外键：posts ↔ comments 互相引用会形成建表/删除的循环依赖，
+    #: 删除评论时也应由业务决定是否清空采纳，而不是让数据库级联。
+    accepted_comment_id: int | None = Field(default=None, index=True)
     created_at: datetime = Field(default_factory=utcnow, index=True)
     updated_at: datetime = Field(default_factory=utcnow)
 

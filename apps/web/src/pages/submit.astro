@@ -1,5 +1,7 @@
 ---
 import Base from '@/layouts/Base.astro'
+import CorrectionForm from '@/components/submit/CorrectionForm'
+import { withBase } from '@/lib/utils'
 
 const gh = 'https://github.com/RoboWiki/RoboWiki.github.io'
 const inside = [
@@ -13,7 +15,7 @@ const inside = [
   {
     title: '纠参数 / 补数据',
     desc: '站内纠错表单：登录后写清字段、正确值和依据。批量修改或多个件一起改，走 GitHub 表单。',
-    href: '/app/#/pages/submit/index',
+    href: '/submit.html#form',
     who: '任何人 · 约 2 分钟',
     external: false,
   },
@@ -66,7 +68,7 @@ const groups = [
         <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {group.items.map(card => (
             <a
-              href={card.href}
+              href={withBase(card.href)}
               target={card.external ? '_blank' : undefined}
               rel={card.external ? 'noopener' : undefined}
               class="card card-hover flex flex-col p-5"
@@ -83,6 +85,14 @@ const groups = [
       </section>
     ))}
   </div>
+
+  <section id="form" class="mt-10 scroll-mt-24">
+    <div class="mb-3 flex flex-wrap items-baseline gap-x-2 border-b border-line pb-2">
+      <h2 class="m-0 text-[13px] font-semibold text-ink">站内纠错表单</h2>
+      <span class="text-[11.5px] text-ink-3">登录后提交，进审核队列</span>
+    </div>
+    <CorrectionForm client:visible />
+  </section>
 
   <section class="prose mt-10 max-w-3xl">
     <h2>投稿之后会怎样</h2>

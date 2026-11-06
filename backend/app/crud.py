@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from sqlmodel import Session, func, select
 
-from .models import Comment, Part, Post, User, Vote
+from .models import Comment, Part, Post, Rating, Submission, User, Vote
 from .schemas import CommentOut, PostOut, UserOut
 
 
@@ -28,7 +28,8 @@ def shadowed_review_keys(db: Session,
 
 
 # ── 徽章（派生，不落库）──────────────────────────────────────────────────────
-def badges_for(db: Session, u: User, post_count: int, comment_count: int) -> list[str]:
+def badges_for(db: Session, u: User, post_count: int, comment_count: int,
+               accepted_count: int = 0, submission_count: int = 0) -> list[str]:
     out: list[str] = []
     if post_count and post_count > 0:
         out.append("首次发帖")
@@ -46,6 +47,12 @@ def badges_for(db: Session, u: User, post_count: int, comment_count: int) -> lis
                                           Post.kind == "build")).one()
     if has_build:
         out.append("方案作者")
+    if accepted_count:
+        out.append("首答被采纳")
+    if accepted_count >= 5:
+        out.append("答主")
+    if submission_count:
+        out.append("纠错贡献者")
     if u.reputation >= 100:
         out.append("百赞")
     if u.reputation >= 1000:
@@ -59,13 +66,29 @@ def user_out(db: Session, u: User) -> UserOut:
     posts = db.exec(select(func.count(Post.id)).where(Post.author_id == u.id)).one()
     comments = db.exec(
         select(func.count(Comment.id)).where(Comment.author_id == u.id)).one()
+    ratings = db.exec(
+        select(func.count(Rating.id)).where(Rating.user_id == u.id)).one()
+    submissions = db.exec(
+        select(func.count(Submission.id)).where(Submission.submitter_id == u.id)).one()
+    # 采纳数按「我的回答被采纳了几条」计，归回答者而不是帖主。
+    # 采纳状态仍只存在 posts.accepted_comment_id，不在评论上另存一份。
+    accepted = db.exec(
+        select(func.count(Comment.id))
+        .join(Post, Comment.post_id == Post.id)
+        .where(Comment.author_id == u.id,
+               Comment.hidden == False,  # noqa: E712
+               Post.accepted_comment_id == Comment.id)).one()
     return UserOut(
         id=u.id or 0, handle=u.handle, display_name=u.display_name, bio=u.bio,
-        avatar_hue=u.avatar_hue, is_staff=u.is_staff,
+        avatar_hue=u.avatar_hue, avatar_url=u.avatar_url, is_staff=u.is_staff,
         email_verified=u.email_verified, reputation=u.reputation,
         created_at=u.created_at, post_count=int(posts or 0),
         comment_count=int(comments or 0),
-        badges=badges_for(db, u, int(posts or 0), int(comments or 0)),
+        rating_count=int(ratings or 0),
+        submission_count=int(submissions or 0),
+        accepted_count=int(accepted or 0),
+        badges=badges_for(db, u, int(posts or 0), int(comments or 0),
+                          int(accepted or 0), int(submissions or 0)),
     )
 
 
@@ -151,7 +174,9 @@ def post_out(p: Post, author: UserOut | None, part_title: str | None,
         total_price_cny=p.total_price_cny, price_scope=p.price_scope,
         price_verified=p.price_verified, score=p.score,
         comment_count=p.comment_count, view_count=p.view_count,
-        pinned=p.pinned, created_at=p.created_at, author=author, my_vote=my_vote,
+        pinned=p.pinned, accepted_comment_id=p.accepted_comment_id,
+        created_at=p.created_at, updated_at=p.updated_at,
+        author=author, my_vote=my_vote,
     )
 
 
@@ -173,13 +198,16 @@ def comments_out(db: Session, post_id: int, viewer_id: int | None = None) -> lis
     rows = db.exec(select(Comment).where(
         Comment.post_id == post_id, Comment.hidden == False)  # noqa: E712
         .order_by(Comment.created_at)).all()
+    post = db.get(Post, post_id)
+    accepted_id = post.accepted_comment_id if post is not None else None
     authors = users_out(db, {c.author_id for c in rows})
     votes = my_votes(db, viewer_id, "comment", [c.id for c in rows if c.id])
     flat: dict[int, CommentOut] = {}
     for c in rows:
         flat[c.id or 0] = CommentOut(
             id=c.id or 0, post_id=c.post_id, parent_id=c.parent_id, body=c.body,
-            score=c.score, created_at=c.created_at,
+            score=c.score, accepted=(c.id is not None and c.id == accepted_id),
+            created_at=c.created_at,
             author=authors.get(c.author_id), my_vote=votes.get(c.id or 0, 0))
     roots: list[CommentOut] = []
     for c in flat.values():

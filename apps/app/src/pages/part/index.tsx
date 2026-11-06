@@ -6,6 +6,7 @@ import type { Comment, RatingSummary, User } from '@robowiki/core'
 
 import { CommentItem } from '@/components/CommentItem'
 import { EmptyState, ErrorState } from '@/components/Feedback'
+import { LayerBadge } from '@/components/LayerBadge'
 import { RatingStars } from '@/components/RatingStars'
 import {
   absoluteUrl,
@@ -24,6 +25,8 @@ import {
   type PartView,
 } from '@/services/parts'
 import { formatTime } from '@/utils/format'
+import { touchRecent } from '@/utils/recent'
+import { useThemeMode } from '@/utils/theme'
 import './index.css'
 
 const REPORT_REASONS = [
@@ -39,6 +42,8 @@ function toast(title: string) {
 
 export default function PartPage() {
   const router = useRouter()
+  const theme = useThemeMode()
+  const darkClass = theme === 'dark' ? 'dark' : ''
   const id = decodeURIComponent(router.params?.id || '')
 
   const [part, setPart] = useState<PartView | null>(null)
@@ -80,7 +85,10 @@ export default function PartPage() {
     api
       .getPart(id)
       .then((data) => {
-        if (alive) setPart(data as PartView)
+        if (alive) {
+          setPart(data as PartView)
+          touchRecent(String(data.id || id))
+        }
       })
       .catch((err) => {
         if (alive) setError(errorMessage(err))
@@ -289,7 +297,7 @@ export default function PartPage() {
 
   if (loading) {
     return (
-      <View className="rw-page part">
+      <View className={`rw-page part ${darkClass}`}>
         <View className="rw-stack">
           <View className="rw-skeleton" style={{ height: '80px' }} />
           <View className="rw-skeleton" style={{ height: '120px' }} />
@@ -301,7 +309,7 @@ export default function PartPage() {
 
   if (error || !part) {
     return (
-      <View className="rw-page">
+      <View className={`rw-page ${darkClass}`}>
         <ErrorState message={error || '部件不存在'} onRetry={() => Taro.navigateBack()} />
       </View>
     )
@@ -314,7 +322,7 @@ export default function PartPage() {
   const histogram = rating?.histogram || {}
 
   return (
-    <View className="rw-page part">
+    <View className={`rw-page part ${darkClass}`}>
       <View className="part__head">
         {image ? (
           <Image
@@ -332,10 +340,13 @@ export default function PartPage() {
           <Text className="rw-title part__title">
             {part.vendor} {part.model}
           </Text>
-          <Text className="rw-caption">
-            {partCategoryLabel(part)}
-            {part.verified ? ' · 已核对' : ''}
-          </Text>
+          <View className="part__meta">
+            <LayerBadge category={part.category} />
+            <Text className="rw-caption">
+              {partCategoryLabel(part)}
+              {part.verified ? ' · 已核对' : ''}
+            </Text>
+          </View>
           <Text className="part__price">{partPrice(part)}</Text>
         </View>
       </View>

@@ -188,7 +188,12 @@ function ReviewModal({ sub, decision, onClose }: {
       body: JSON.stringify({ decision, reason_code, note }),
     }),
     onSuccess: (_r, v) => {
-      message.success(v.decision === 'accepted' ? `#${v.id} 已通过，进入发布队列` : `#${v.id} 已驳回`)
+      message.success({
+        content: v.decision === 'accepted'
+          ? `#${v.id} 已通过，进入发布队列；通过不等于已发布，数据在下一个 data-v* 发布后生效`
+          : `#${v.id} 已驳回`,
+        duration: 6,
+      })
       qc.invalidateQueries({ queryKey: ['submissions'] })
       qc.invalidateQueries({ queryKey: ['submission', v.id] })
       qc.invalidateQueries({ queryKey: ['outbox'] })

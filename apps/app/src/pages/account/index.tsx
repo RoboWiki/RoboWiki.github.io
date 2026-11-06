@@ -2,8 +2,11 @@ import { useEffect, useState } from 'react'
 
 import { Button, Input, Text, Textarea, View } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import type { AuthSession, Identity, User } from '@robowiki/core'
+import type { AuthSession, Identity, Submission, User } from '@robowiki/core'
 
+import { Avatar } from '@/components/Avatar'
+import { SkeletonRows } from '@/components/Feedback'
+import { ThemeToggle } from '@/components/ThemeToggle'
 import {
   api,
   applySession,
@@ -15,9 +18,14 @@ import {
   markNotificationRead,
   markNotificationsRead,
   tokenStore,
+  updateAvatar,
+  uploadImage,
+  API_ORIGIN,
   type AppNotification,
 } from '@/services/api'
 import { matchPartLink, resolvePartId } from '@/services/parts'
+import { openExternal } from '@/utils/nav'
+import { useThemeMode } from '@/utils/theme'
 import './index.css'
 
 const IS_H5 = process.env.TARO_ENV === 'h5'
@@ -31,6 +39,17 @@ const CLIENT_LABEL: Record<string, string> = {
   wechat_mini: '微信小程序',
 }
 
+const SUBMISSION_STATUS: Record<string, { label: string; tone: string }> = {
+  pending: { label: '待审核', tone: 'rw-badge--warn' },
+  accepted: { label: '已通过', tone: 'rw-badge--success' },
+  rejected: { label: '已驳回', tone: 'rw-badge' },
+}
+
+const SUBMISSION_KIND: Record<string, string> = {
+  part_patch: '部件纠错',
+  part_new: '新部件',
+}
+
 const PROVIDERS: Array<{ id: string; label: string }> = [
   { id: 'github', label: 'GitHub' },
   { id: 'wechat_mini', label: '微信小程序' },
@@ -38,6 +57,10 @@ const PROVIDERS: Array<{ id: string; label: string }> = [
 
 function goLogin() {
   Taro.navigateTo({ url: '/pages/login/index' })
+}
+
+function goSubmit() {
+  Taro.navigateTo({ url: '/pages/submit/index' })
 }
 
 function providerLabel(id: string): string {
@@ -49,7 +72,19 @@ function formatDate(iso: string | null | undefined): string {
   return value ? value.slice(0, 10) : ''
 }
 
+function submissionSummary(item: Submission): string {
+  const payload = item.payload || {}
+  const key = Object.keys(payload)[0]
+  if (!key) return ''
+  const raw = payload[key]
+  const value = typeof raw === 'object' ? JSON.stringify(raw) : String(raw ?? '')
+  return `${key}: ${value}`.slice(0, 60)
+}
+
+
 export default function AccountPage() {
+  const theme = useThemeMode()
+  const darkClass = theme === 'dark' ? 'dark' : ''
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [busy, setBusy] = useState(false)
@@ -78,6 +113,14 @@ export default function AccountPage() {
   const [identities, setIdentities] = useState<Identity[]>([])
   const [identitiesLoaded, setIdentitiesLoaded] = useState(false)
 
+  const [avatarBusy, setAvatarBusy] = useState(false)
+  const [exporting, setExporting] = useState(false)
+
+  const [submissions, setSubmissions] = useState<Submission[]>([])
+  const [submissionsLoaded, setSubmissionsLoaded] = useState(false)
+  const [submissionsError, setSubmissionsError] = useState('')
+  const [submissionsKey, setSubmissionsKey] = useState(0)
+
   const loadNotifications = async () => {
     try {
       const page = await listNotifications()
@@ -85,6 +128,35 @@ export default function AccountPage() {
       setUnread(page.unread || 0)
     } catch {
       // 通知失败不影响账号页主体。
+    }
+  }
+
+  /** /auth/me 没带聚合统计时，用公开资料补齐。 */
+  const withStats = async (me: User): Promise<User> => {
+    const keys: Array<keyof User> = [
+      'reputation',
+      'post_count',
+      'comment_count',
+      'rating_count',
+      'submission_count',
+      'accepted_count',
+    ]
+    if (keys.every((key) => typeof me[key] === 'number')) return me
+    try {
+      const fresh = await api.request<User>(`/users/${encodeURIComponent(me.handle)}`)
+      const merged: User = {
+        ...me,
+        reputation: fresh.reputation ?? me.reputation,
+        post_count: fresh.post_count ?? me.post_count,
+        comment_count: fresh.comment_count ?? me.comment_count,
+        rating_count: fresh.rating_count ?? me.rating_count,
+        submission_count: fresh.submission_count ?? me.submission_count,
+        accepted_count: fresh.accepted_count ?? me.accepted_count,
+      }
+      cacheUser(merged)
+      return merged
+    } catch {
+      return me
     }
   }
 
@@ -110,6 +182,19 @@ export default function AccountPage() {
     }
   }
 
+  const loadSubmissions = async () => {
+    setSubmissionsLoaded(false)
+    setSubmissionsError('')
+    try {
+      const rows = await api.mySubmissions(8)
+      setSubmissions(rows || [])
+    } catch (err) {
+      setSubmissionsError(errorMessage(err))
+    } finally {
+      setSubmissionsLoaded(true)
+    }
+  }
+
   useEffect(() => {
     let alive = true
     loadMe().then(async (me) => {
@@ -119,6 +204,10 @@ export default function AccountPage() {
       if (!me) return
       setDisplayName(me.display_name || '')
       setBio(me.bio || '')
+      // 统计可能不在 /auth/me 里：先渲染主体，再用公开资料补齐。
+      withStats(me).then((next) => {
+        if (alive) setUser(next)
+      })
       await loadNotifications()
       if (!alive) return
       await Promise.all([loadSessions(), loadIdentities()])
@@ -126,9 +215,95 @@ export default function AccountPage() {
     return () => { alive = false }
   }, [])
 
+  useEffect(() => {
+    if (!user) return
+    loadSubmissions()
+  }, [user?.handle, submissionsKey])
+
   const reset = () => {
     setError('')
     setNotice('')
+  }
+
+  /** PATCH /auth/me 可能只回基础字段，合并时保住已有统计。 */
+  const applyUser = (next: User) => {
+    const merged: User = user
+      ? {
+          ...user,
+          ...next,
+          reputation: next.reputation ?? user.reputation,
+          post_count: next.post_count ?? user.post_count,
+          comment_count: next.comment_count ?? user.comment_count,
+          rating_count: next.rating_count ?? user.rating_count,
+          submission_count: next.submission_count ?? user.submission_count,
+          accepted_count: next.accepted_count ?? user.accepted_count,
+        }
+      : next
+    setUser(merged)
+    cacheUser(merged)
+  }
+
+  const chooseAvatar = () => {
+    if (!user || avatarBusy || busy) return
+    reset()
+    Taro.chooseImage({
+      count: 1,
+      sizeType: ['compressed'],
+      sourceType: ['album', 'camera'],
+    })
+      .then(async (res) => {
+        const path = res.tempFilePaths?.[0]
+        if (!path) return
+        setAvatarBusy(true)
+        try {
+          const media = await uploadImage(path)
+          const next = await updateAvatar(media.url)
+          applyUser(next)
+          setNotice('头像已更新')
+        } catch (err) {
+          setError(errorMessage(err))
+        } finally {
+          setAvatarBusy(false)
+        }
+      })
+      .catch((err: unknown) => {
+        const message = String((err as { errMsg?: string })?.errMsg || '')
+        if (/cancel/i.test(message)) return
+        setError('选择图片失败，请重试')
+      })
+  }
+
+  const exportAccount = async () => {
+    if (!user || exporting) return
+    reset()
+    setExporting(true)
+    try {
+      const data = await api.exportAccount()
+      const text = JSON.stringify(data, null, 2)
+      if (IS_H5 && typeof document !== 'undefined') {
+        const blob = new Blob([text], { type: 'application/json' })
+        const href = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = href
+        link.download = `robowiki-${user.handle}.json`
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        setTimeout(() => URL.revokeObjectURL(href), 1000)
+        setNotice('账号数据已导出为 JSON')
+      } else {
+        await Taro.setClipboardData({ data: text })
+        Taro.showToast({ title: '账号数据已复制', icon: 'none' })
+      }
+    } catch (err) {
+      setError(errorMessage(err))
+    } finally {
+      setExporting(false)
+    }
+  }
+
+  const openAccountCenter = () => {
+    openExternal(`${API_ORIGIN}/account.html`, '账号中心')
   }
 
   const saveProfile = async () => {
@@ -146,10 +321,9 @@ export default function AccountPage() {
     setBusy(true)
     try {
       const next = await api.updateMe({ display_name: name, bio: bio.trim() })
-      setUser(next)
-      setDisplayName(next.display_name || '')
-      setBio(next.bio || '')
-      cacheUser(next)
+      applyUser(next)
+      setDisplayName(next.display_name || name)
+      setBio(typeof next.bio === 'string' ? next.bio : bio.trim())
       setNotice('资料已保存')
     } catch (err) {
       setError(errorMessage(err))
@@ -164,8 +338,7 @@ export default function AccountPage() {
     setBusy(true)
     try {
       const next = await api.updateMe({ email_notify: !user.email_notify })
-      setUser(next)
-      cacheUser(next)
+      applyUser(next)
     } catch (err) {
       setError(errorMessage(err))
     } finally {
@@ -223,7 +396,9 @@ export default function AccountPage() {
     setBusy(true)
     try {
       const pair = await api.confirmEmailChange(token)
-      setUser(applySession(pair))
+      const nextUser = applySession(pair)
+      applyUser(nextUser)
+      withStats(nextUser).then(applyUser)
       setEmailPending(false)
       setEmailToken('')
       setEmailPassword('')
@@ -252,7 +427,9 @@ export default function AccountPage() {
       const pair = user.password_set
         ? await api.changePassword(currentPassword, newPassword)
         : await api.setPassword(newPassword)
-      setUser(applySession(pair))
+      const nextUser = applySession(pair)
+      applyUser(nextUser)
+      withStats(nextUser).then(applyUser)
       setCurrentPassword('')
       setNewPassword('')
       setConfirmPassword('')
@@ -404,19 +581,38 @@ export default function AccountPage() {
 
   if (loading) {
     return (
-      <View className="rw-page">
-        <Text className="rw-caption">正在读取账号…</Text>
+      <View className={`rw-page ${darkClass}`}>
+        <View className="account__profile">
+          <View className="rw-skeleton" style={{ width: '72px', height: '72px', borderRadius: '999px' }} />
+          <View className="rw-grow rw-stack" style={{ gap: '8px' }}>
+            <View className="rw-skeleton rw-skeleton--line" style={{ width: '48%' }} />
+            <View className="rw-skeleton rw-skeleton--line" style={{ width: '30%' }} />
+            <View className="rw-skeleton rw-skeleton--line" style={{ width: '62%' }} />
+          </View>
+        </View>
+        <View className="account__stats">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <View className="account__stat" key={index}>
+              <View className="rw-skeleton rw-skeleton--line" style={{ width: '40%' }} />
+              <View className="rw-skeleton rw-skeleton--line" style={{ width: '58%' }} />
+            </View>
+          ))}
+        </View>
+        <SkeletonRows rows={3} />
       </View>
     )
   }
 
   if (!user) {
     return (
-      <View className="rw-page">
+      <View className={`rw-page ${darkClass}`}>
         <View className="rw-stack">
           <Text className="rw-title">还没有登录</Text>
           <Text className="rw-caption">登录后可以评分、评论，并在这里管理账号。</Text>
           <Button className="rw-btn rw-btn--primary" onClick={goLogin}>去登录</Button>
+        </View>
+        <View className="account__section">
+          <ThemeToggle />
         </View>
       </View>
     )
@@ -430,18 +626,56 @@ export default function AccountPage() {
       .map((item) => ({ id: item.provider, label: providerLabel(item.provider), identity: item })),
   ]
 
+  const statRows: Array<{ label: string; value?: number }> = [
+    { label: '帖子', value: user.post_count },
+    { label: '评论', value: user.comment_count },
+    { label: '评分', value: user.rating_count },
+    { label: '投稿', value: user.submission_count },
+    { label: '被采纳', value: user.accepted_count },
+    { label: '声望', value: user.reputation },
+  ]
+
   return (
-    <View className="rw-page">
-      <View className="account__head">
-        <Text className="rw-title">{user.display_name || user.handle}</Text>
-        <Text className="rw-caption">@{user.handle}</Text>
-        {user.password_set ? null : (
-          <Text className="rw-caption">第三方登录建号，还没有本站密码。</Text>
-        )}
+    <View className={`rw-page ${darkClass}`}>
+      <View className="account__profile">
+        <View
+          className={`account__avatar ${avatarBusy ? 'account__avatar--busy' : ''}`}
+          onClick={chooseAvatar}
+        >
+          <Avatar user={user} size={72} />
+          <Text className="account__avatar-action">
+            {avatarBusy ? '上传中…' : '换头像'}
+          </Text>
+        </View>
+        <View className="rw-grow account__identity">
+          <Text className="rw-title">{user.display_name || user.handle}</Text>
+          <Text className="rw-caption">
+            @{user.handle}
+            {user.is_staff ? ' · 站务' : ''}
+          </Text>
+          <Text className="rw-caption">
+            {user.password_set ? '本站账号' : '第三方登录建号，还没有本站密码'}
+          </Text>
+        </View>
+      </View>
+
+      <View className="account__stats">
+        {statRows.map((row) => (
+          <View className="account__stat" key={row.label}>
+            <Text className="account__stat-value">
+              {typeof row.value === 'number' ? row.value : '—'}
+            </Text>
+            <Text className="rw-caption">{row.label}</Text>
+          </View>
+        ))}
       </View>
 
       {error ? <Text className="rw-error">{error}</Text> : null}
       {notice ? <Text className="rw-caption rw-success account__line">{notice}</Text> : null}
+
+      <View className="account__section">
+        <ThemeToggle />
+      </View>
 
       <View className="account__section">
         <View className="account__section-head">
@@ -478,6 +712,65 @@ export default function AccountPage() {
         </View>
       </View>
 
+      <View className="account__section">
+        <View className="account__section-head">
+          <Text className="rw-subtitle">我的投稿</Text>
+          <Text className="rw-link rw-link--tap" onClick={goSubmit}>
+            去投稿 ›
+          </Text>
+        </View>
+
+        <Text className="rw-caption account__line">
+          审核通过不等于页面已更新；数据在下一个 data-v* 发布后生效。
+        </Text>
+
+        {!submissionsLoaded ? (
+          <Text className="rw-caption">正在读取投稿…</Text>
+        ) : submissionsError ? (
+          <View className="account__inline-error">
+            <Text className="rw-caption">{submissionsError}</Text>
+            <Text className="rw-link rw-link--tap" onClick={() => setSubmissionsKey((key) => key + 1)}>
+              重试
+            </Text>
+          </View>
+        ) : submissions.length === 0 ? (
+          <View className="account__empty">
+            <Text className="rw-caption">还没有投稿。发现参数有误时，可以直接提交纠错。</Text>
+            <Text className="rw-link rw-link--tap" onClick={goSubmit}>
+              投稿纠错 ›
+            </Text>
+          </View>
+        ) : (
+          <View className="rw-list">
+            {submissions.map((item) => {
+              const status = SUBMISSION_STATUS[item.status] || {
+                label: item.status,
+                tone: 'rw-badge',
+              }
+              const summary = submissionSummary(item)
+              return (
+                <View key={item.id} className="rw-list__row account__submission">
+                  <View className="rw-grow">
+                    <View className="account__submission-head">
+                      <Text className="rw-subtitle">
+                        {SUBMISSION_KIND[item.kind] || item.kind} #{item.id}
+                      </Text>
+                      <Text className={`rw-badge ${status.tone}`}>{status.label}</Text>
+                    </View>
+                    <Text className="rw-caption account__line">
+                      目标 {item.target_id || '—'} · {formatDate(item.created_at)}
+                    </Text>
+                    {summary ? (
+                      <Text className="rw-caption account__line rw-line-clamp-1">{summary}</Text>
+                    ) : null}
+                  </View>
+                </View>
+              )
+            })}
+          </View>
+        )}
+      </View>
+
       <View className="rw-list account__section">
         <View className="rw-list__row account__row">
           <View className="rw-grow">
@@ -492,7 +785,7 @@ export default function AccountPage() {
             )}
           </View>
           {user.email && !user.email_verified ? (
-            <Text className="rw-link" onClick={sendVerifyMail}>发送验证邮件</Text>
+            <Text className="rw-link rw-link--tap" onClick={sendVerifyMail}>发送验证邮件</Text>
           ) : null}
         </View>
 
@@ -503,7 +796,7 @@ export default function AccountPage() {
               {user.email_notify ? '回复与审核结果会发到邮箱' : '当前只在站内通知'}
             </Text>
           </View>
-          <Text className="rw-link" onClick={toggleEmailNotify}>
+          <Text className="rw-link rw-link--tap" onClick={toggleEmailNotify}>
             {user.email_notify ? '关闭' : '开启'}
           </Text>
         </View>
@@ -540,7 +833,7 @@ export default function AccountPage() {
         ) : (
           <View className="rw-list__row account__row">
             <Text className="rw-caption">换邮箱需要验证新地址，并会让旧会话全部失效。</Text>
-            <Text className="rw-link" onClick={() => { reset(); setEmailEditing(true) }}>
+            <Text className="rw-link rw-link--tap" onClick={() => { reset(); setEmailEditing(true) }}>
               更换邮箱
             </Text>
           </View>
@@ -609,7 +902,7 @@ export default function AccountPage() {
       <View className="account__section">
         <View className="rw-row--between account__section-head">
           <Text className="rw-subtitle">登录会话</Text>
-          <Text className="rw-link rw-link--danger" onClick={logoutAll}>全部下线</Text>
+          <Text className="rw-link rw-link--tap rw-link--danger" onClick={logoutAll}>全部下线</Text>
         </View>
         {!sessionsLoaded ? (
           <Text className="rw-caption">正在读取会话…</Text>
@@ -627,7 +920,7 @@ export default function AccountPage() {
                     自 {formatDate(session.created_at)} · 到期 {formatDate(session.expires_at)}
                   </Text>
                 </View>
-                <Text className="rw-link rw-link--danger" onClick={() => revokeSession(session)}>
+                <Text className="rw-link rw-link--tap rw-link--danger" onClick={() => revokeSession(session)}>
                   结束
                 </Text>
               </View>
@@ -655,25 +948,27 @@ export default function AccountPage() {
                   </Text>
                 </View>
                 {row.identity ? (
-                  <Text className="rw-link rw-link--danger" onClick={() => unlinkIdentity(row.identity!)}>
+                  <Text className="rw-link rw-link--tap rw-link--danger" onClick={() => unlinkIdentity(row.identity!)}>
                     解绑
                   </Text>
                 ) : (
-                  <Text className="rw-caption">需在网页完成绑定</Text>
+                  <Text className="rw-link rw-link--tap" onClick={openAccountCenter}>
+                    去网页绑定 ›
+                  </Text>
                 )}
               </View>
             ))}
           </View>
         )}
         <Text className="rw-caption account__hint">
-          OAuth 跳转只在网页端提供；小程序内绑定请先到 robowiki.org.cn 登录。
+          OAuth 跳转只在网页账号中心提供：{IS_H5 ? '点击上方链接会在新窗口打开。' : '点击后复制链接，请在手机浏览器打开。'}
         </Text>
       </View>
 
       <View className="account__section">
         <View className="rw-row--between account__section-head">
           <Text className="rw-subtitle">通知{unread ? ` · ${unread} 条未读` : ''}</Text>
-          {unread ? <Text className="rw-link" onClick={readAll}>全部已读</Text> : null}
+          {unread ? <Text className="rw-link rw-link--tap" onClick={readAll}>全部已读</Text> : null}
         </View>
 
         {items.length ? (
@@ -711,12 +1006,31 @@ export default function AccountPage() {
         <Text className="rw-caption account__hint">小程序内账号由微信身份自动登录。</Text>
       ) : null}
 
+      <View className="account__section">
+        <View className="account__section-head">
+          <Text className="rw-subtitle">账号数据</Text>
+        </View>
+        <View className="rw-list">
+          <View className="rw-list__row account__row">
+            <View className="rw-grow">
+              <Text className="rw-subtitle">导出账号数据</Text>
+              <Text className="rw-caption account__line">
+                {IS_H5 ? '下载 JSON，包含资料、会话与贡献记录。' : '复制 JSON 到剪贴板，可粘贴保存。'}
+              </Text>
+            </View>
+            <Text className="rw-link rw-link--tap" onClick={exportAccount}>
+              {exporting ? '导出中…' : '导出'}
+            </Text>
+          </View>
+        </View>
+      </View>
+
       {confirmLogout ? (
         <View className="account__confirm">
           <Text className="rw-caption">退出后需要重新登录才能评分和评论。</Text>
           <View className="account__confirm-actions">
-            <Text className="rw-link" onClick={() => setConfirmLogout(false)}>取消</Text>
-            <Text className="rw-link rw-link--danger" onClick={doLogout}>确认退出</Text>
+            <Text className="rw-link rw-link--tap" onClick={() => setConfirmLogout(false)}>取消</Text>
+            <Text className="rw-link rw-link--tap rw-link--danger" onClick={doLogout}>确认退出</Text>
           </View>
         </View>
       ) : (

@@ -18,10 +18,22 @@ const USER_KEY = 'rw.app.user'
 /** 会话列表里显示来源：后端优先读 X-Client。 */
 const CLIENT_LABEL = process.env.TARO_ENV === 'h5' ? 'h5' : 'mini'
 
+/**
+ * Taro H5 的 getStorageSync 偶尔返回 { data: '...' } 包装，
+ * 不解包会让 Authorization 变成 Bearer {"data":"eyJ..."}，登录后全站 401。
+ */
+function unwrap(value: unknown): string | null {
+  if (typeof value === 'string') return value || null
+  if (value && typeof value === 'object') {
+    const data = (value as { data?: unknown }).data
+    if (typeof data === 'string') return data || null
+  }
+  return null
+}
+
 function read(key: string): string | null {
   try {
-    const value = Taro.getStorageSync(key)
-    return typeof value === 'string' && value ? value : null
+    return unwrap(Taro.getStorageSync(key))
   } catch {
     return null
   }
@@ -95,13 +107,15 @@ export const api = new ApiClient({
 })
 
 export const API_ORIGIN = __RW_API_BASE__.replace(/\/api\/v\d+\/?$/i, '')
+/** 图片 / 静态资源在静态站点，不在 API 域；API 请求仍走 baseUrl。 */
+export const ASSET_ORIGIN = __RW_ASSET_BASE__.replace(/\/+$/, '')
 
 /** 后端返回的相对地址（图片、媒体）补成绝对地址。 */
 export function absoluteUrl(url: string | null | undefined): string {
   const value = String(url || '').trim()
   if (!value) return ''
   if (/^(https?:)?\/\//i.test(value)) return value
-  if (value.startsWith('/')) return `${API_ORIGIN}${value}`
+  if (value.startsWith('/')) return `${ASSET_ORIGIN}${value}`
   return value
 }
 
@@ -114,7 +128,12 @@ export function errorMessage(err: unknown): string {
     if (err.status === 503) return '服务暂未开放，请稍后再试'
     return err.message || `请求失败（${err.status}）`
   }
-  if (err instanceof Error && err.message) return err.message
+  if (err instanceof Error && err.message) {
+    if (/failed to fetch|networkerror|network request failed|timeout/i.test(err.message)) {
+      return '网络异常，请检查网络后重试'
+    }
+    return err.message
+  }
   return '网络异常，请检查网络后重试'
 }
 
@@ -170,6 +189,19 @@ export function markNotificationRead(id: number): Promise<AppNotification> {
 export function applySession(pair: TokenPair): User {
   saveSession(pair)
   return pair.user
+}
+
+/**
+ * 头像地址走 PATCH /auth/me；core 的 updateMe 签名还没收录 avatar_url，
+ * 这里用通用 request 保持同一套鉴权 / 刷新逻辑。
+ */
+export async function updateAvatar(url: string): Promise<User> {
+  const user = await api.request<User>('/auth/me', {
+    method: 'PATCH',
+    body: { avatar_url: url },
+  })
+  cacheUser(user)
+  return user
 }
 
 /**

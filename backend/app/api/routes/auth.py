@@ -25,15 +25,18 @@ from ...core.config import settings
 from ...core.security import (create_token, dummy_password_hash, hash_password,
                               hash_secret, new_handoff_code, new_refresh_token,
                               unusable_password_hash, verify_password)
-from ...crud import user_out
+from ...crud import posts_out, user_out
 from ...email_templates import render_email
 from ...mailer import MailError, enqueue_email, send_email
-from ...models import EmailToken, HandoffCode, Identity, RefreshToken, User
-from ...schemas import (AccountOut, AccountUpdateIn, EmailChangeConfirmIn,
-                        EmailChangeIn, ForgotIn, HandoffIn, IdentityOut,
-                        LoginIn, LogoutIn, PasswordChangeIn, PasswordSetIn,
-                        ProvidersOut, RefreshIn, RegisterIn, ResetPasswordIn,
-                        SessionOut, TokenOut, VerifyEmailIn, WechatMiniIn)
+from ...models import (Comment, EmailToken, HandoffCode, Identity, Part, Post,
+                       Rating, RefreshToken, Submission, User)
+from ...schemas import (AccountExportOut, AccountOut, AccountUpdateIn,
+                        CommentExportOut, EmailChangeConfirmIn, EmailChangeIn,
+                        ForgotIn, HandoffIn, IdentityOut, LoginIn, LogoutIn,
+                        PasswordChangeIn, PasswordSetIn, ProvidersOut,
+                        RatingExportOut, RefreshIn, RegisterIn, ResetPasswordIn,
+                        SessionOut, SubmissionExportOut, TokenOut,
+                        VerifyEmailIn, WechatMiniIn)
 from ..deps import CurrentUser, Db, rate_limit
 
 # OAuth/OIDC 的协议细节（授权码、state、PKCE）全部交给 Authlib。
@@ -150,12 +153,59 @@ def update_me(payload: AccountUpdateIn, request: Request, user: CurrentUser, db:
         user.bio = (data["bio"] or "").strip()
     if "avatar_hue" in data and data["avatar_hue"] is not None:
         user.avatar_hue = int(data["avatar_hue"])
+    if "avatar_url" in data:
+        # 已由 AccountUpdateIn 归一化：None / /media/... / http(s)
+        user.avatar_url = data["avatar_url"]
     if "email_notify" in data and data["email_notify"] is not None:
         user.email_notify = bool(data["email_notify"])
     db.add(user)
     db.commit()
     db.refresh(user)
     return _account_out(db, user)
+
+
+@router.get("/export", response_model=AccountExportOut)
+def export_account(user: CurrentUser, db: Db):
+    """「我的数据可带走」：本人帖子 / 评论 / 评分 / 目录提案。
+
+    只按 `user.id` 取自己的行，不含口令哈希、refresh token、一次性令牌；
+    `user` 用 AccountOut（含邮箱与 email_notify），因为这就是导出给本人的。
+    """
+    posts = db.exec(select(Post).where(Post.author_id == user.id)
+                    .order_by(Post.created_at)).all()
+    comments = db.exec(select(Comment).where(Comment.author_id == user.id)
+                       .order_by(Comment.created_at)).all()
+    ratings = db.exec(select(Rating).where(Rating.user_id == user.id)
+                      .order_by(Rating.created_at)).all()
+    submissions = db.exec(select(Submission).where(
+        Submission.submitter_id == user.id).order_by(Submission.created_at)).all()
+
+    part_ids = {r.part_id for r in ratings}
+    parts: dict[str, str] = {}
+    if part_ids:
+        for pid, title in db.exec(
+                select(Part.id, Part.title).where(Part.id.in_(part_ids))).all():
+            parts[pid] = title
+
+    return AccountExportOut(
+        user=_account_out(db, user),
+        posts=posts_out(db, list(posts), user.id),
+        comments=[CommentExportOut(
+            id=c.id or 0, post_id=c.post_id, parent_id=c.parent_id,
+            body=c.body, score=c.score, hidden=c.hidden,
+            created_at=c.created_at) for c in comments],
+        ratings=[RatingExportOut(
+            part_id=r.part_id, part_title=parts.get(r.part_id), score=r.score,
+            own_hardware=r.own_hardware, usage_level=r.usage_level,
+            reason_tags=[t for t in (r.reason_tags or "").split(",") if t],
+            note=r.note, created_at=r.created_at,
+            updated_at=r.updated_at) for r in ratings],
+        submissions=[SubmissionExportOut(
+            id=s.id or 0, kind=s.kind, target_id=s.target_id,
+            payload=s.payload, evidence=s.evidence, status=s.status,
+            revision=s.revision, created_at=s.created_at,
+            updated_at=s.updated_at) for s in submissions],
+    )
 
 
 def _hash(raw: str) -> str:

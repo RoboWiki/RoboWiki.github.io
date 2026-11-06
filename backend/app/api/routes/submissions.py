@@ -294,6 +294,12 @@ def review_submission(submission_id: int, payload: ReviewIn, db: Db,
                      "evidence": s.evidence},
             idempotency_key=f"submission:{s.id}:{s.revision}",
         ))
+        # 通过提案给提交者记声望；审核通过 ≠ 已发布，页面仍需 data-v* 发布后更新。
+        if s.submitter_id:
+            submitter = db.get(User, s.submitter_id)
+            if submitter:
+                submitter.reputation = int(submitter.reputation or 0) + 5
+                db.add(submitter)
     try:
         db.commit()
     except IntegrityError:

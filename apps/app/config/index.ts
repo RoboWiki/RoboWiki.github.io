@@ -9,6 +9,11 @@ const apiBase =
   process.env.VITE_API_BASE ||
   process.env.RW_API_BASE ||
   'https://robowiki.org.cn/api/v1'
+// 图片 / 静态资源默认与 API 同域；本地联调可指向静态站点（如 4321）。
+const assetBase =
+  process.env.PUBLIC_ASSET_BASE ||
+  process.env.RW_ASSET_BASE ||
+  apiBase.replace(/\/api\/v\d+\/?$/i, '')
 const appBase = (() => {
   const raw = (process.env.APP_BASE || '/').trim()
   if (!raw || raw === '/') return '/'
@@ -22,8 +27,11 @@ const appBase = (() => {
   return normalized.endsWith('/') ? normalized : `${normalized}/`
 })()
 const isH5 = process.env.TARO_ENV === 'h5'
-// 工作区包 @robowiki/core 直接暴露 TS 源码，H5 与小程序都必须进入 babel 编译范围。
-const workspaceSources = [path.resolve(__dirname, '..', '..', '..', 'packages', 'core', 'src')]
+// 工作区包直接暴露 TS 源码，H5 与小程序都必须进入 babel 编译范围。
+const workspaceSources = [
+  path.resolve(__dirname, '..', '..', '..', 'packages', 'core', 'src'),
+  path.resolve(__dirname, '..', '..', '..', 'packages', 'content', 'src'),
+]
 
 // React 19 删除了 ReactDOM.render，Taro 4.3.2 的 H5 运行时仍在调用它。
 // 用 webpack alias 在 H5 构建时替换 react-dom，小程序构建不受影响。
@@ -49,6 +57,7 @@ const config: UserConfigExport<'webpack5'> = {
   plugins: [],
   defineConstants: {
     __RW_API_BASE__: JSON.stringify(apiBase),
+    __RW_ASSET_BASE__: JSON.stringify(assetBase),
   },
   copy: {
     patterns: [],

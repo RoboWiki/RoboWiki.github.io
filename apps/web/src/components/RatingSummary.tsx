@@ -3,9 +3,11 @@ import { api } from '@/lib/api'
 import RatingEditor from '@/components/RatingEditor'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { withBase } from '@/lib/utils'
 import type { RatingSummary as RatingData } from '@robowiki/core'
 
-const APP_PART_PATH = '/app/#/pages/part/index?id='
+// 账号中心是静态站内的真实入口；互动版 /app/ 不在静态构建里。
+const ACCOUNT_HREF = withBase('/account.html')
 const USAGE_LABELS: Record<string, string> = {
   long: '长期用过（>6 个月）',
   short: '短期用过（<1 个月）',
@@ -54,7 +56,6 @@ function Stars({ value }: { value: number }) {
 export default function RatingSummary({ partId }: { partId: string }) {
   const [state, setState] = useState<State>({ status: 'loading' })
   const [attempt, setAttempt] = useState(0)
-  const interactiveHref = `${typeof location === 'undefined' ? 'https://robowiki.org.cn' : location.origin}${APP_PART_PATH}${encodeURIComponent(partId)}`
 
   useEffect(() => {
     let alive = true
@@ -93,12 +94,10 @@ export default function RatingSummary({ partId }: { partId: string }) {
             重试
           </Button>
           <a
-            href={interactiveHref}
-            target="_blank"
-            rel="noopener"
+            href={ACCOUNT_HREF}
             className="inline-flex min-h-11 items-center gap-1 rounded-lg px-2 text-xs font-medium text-blue-700 hover:bg-blue-50 sm:min-h-8"
           >
-            去互动版查看<span aria-hidden="true">↗</span>
+            去账号中心<span aria-hidden="true">↗</span>
           </a>
         </div>
       </div>
@@ -225,16 +224,13 @@ export default function RatingSummary({ partId }: { partId: string }) {
             {mine.hidden && <span className="text-ink-3"> · 待审核</span>}
           </p>
         ) : (
-          <p className="text-xs leading-5 text-ink-3">未登录或还没打分。登录互动版后可以打分、写使用备注。</p>
+          <p className="text-xs leading-5 text-ink-3">未登录或还没打分。登录后可以打分、写使用备注。</p>
         )}
         <a
-          href={interactiveHref}
-          target="_blank"
-          rel="noopener"
+          href={ACCOUNT_HREF}
           className="inline-flex min-h-11 items-center gap-1 rounded-lg bg-brand px-3 text-xs font-medium text-brand-fg hover:bg-brand-hover sm:min-h-9"
         >
-          去互动版评分 / 评论<span aria-hidden="true">↗</span>
-          <span className="sr-only">（在 robowiki.org.cn 打开，新窗口）</span>
+          登录后评分 / 评论<span aria-hidden="true">→</span>
         </a>
       </div>
     </div>

@@ -7,6 +7,7 @@ import {
   Component, createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode,
 } from 'react'
 import { ApiError, api, auth, siteHref, type User } from '@/lib/community-api'
+import { Avatar } from './ui'
 
 // ── 设计令牌桥接 ──────────────────────────────────────────────────────────
 // antd 不认 CSS 变量做派生色，这里在运行时读取 --rw-* 的值传给 ConfigProvider：
@@ -477,9 +478,7 @@ export function CommunityHeader({ current, onCompose }: {
             <button onClick={() => setMenuOpen(v => !v)}
               className="flex items-center gap-1.5 rounded-full border border-line bg-surface py-[3px] pl-[3px] pr-2.5 transition-colors hover:border-line-strong"
               aria-haspopup="menu" aria-expanded={menuOpen}>
-              <span className="grid h-6 w-6 place-items-center rounded-full bg-brand text-[11px] font-bold text-brand-fg">
-                {user.display_name.slice(0, 1)}
-              </span>
+              <Avatar user={user} size={24} />
               <span className="max-w-[110px] truncate text-[12.5px] text-ink">{user.display_name}</span>
             </button>
             {menuOpen && (

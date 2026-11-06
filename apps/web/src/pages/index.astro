@@ -3,13 +3,21 @@ import Base from '@/layouts/Base.astro'
 import { getCollection } from 'astro:content'
 import { catalog, dataVersion, featuredParts, imageUrl, topCategories } from '@/lib/catalog'
 import { formatPrice, partHref, withBase } from '@/lib/utils'
-import { LAYERS } from '@/lib/layers'
+import { BRAIN_LAYER, POSITIONING, SKELETON_LAYERS } from '@/lib/layers'
 import robotsData from '@/data/robots.json'
 import materialsData from '@/data/materials.json'
 import softwareData from '@/data/software.json'
 import suppliersData from '@/data/suppliers.json'
 
 const learn = await getCollection('learn')
+
+// Tailwind 只能识别源码里的完整类名；tone 在 content 包里动态拼接不会被扫描到。
+const layerBar: Record<string, string> = {
+  mechanical: 'bg-layer-mech',
+  hardware: 'bg-layer-hw',
+  embedded: 'bg-layer-emb',
+  algorithm: 'bg-layer-algo',
+}
 
 const stats = [
   { label: '部件', value: catalog.count, href: '/catalog.html' },
@@ -21,9 +29,9 @@ const stats = [
 ]
 
 const steps = [
-  { k: '先认层', v: '看清自己在机械、电气、算法还是集成层', href: '/layers.html' },
+  { k: '先认层', v: '看清自己卡在机械、硬件、嵌入式、算法哪一层', href: '/layers.html' },
   { k: '再查参', v: '按品类筛参数，确认口径与来源等级', href: '/catalog.html' },
-  { k: '找参照', v: '对照整机方案，确认四层怎么组合', href: '/robots.html' },
+  { k: '找参照', v: '确认四层与集成怎么组合', href: '/robots.html' },
   { k: '留记录', v: '把实测与失败模式写回知识库', href: '/submit.html' },
 ]
 
@@ -69,8 +77,9 @@ const faqs = [
         </h1>
 
         <p class="mt-5 max-w-2xl text-[15px] leading-7 text-ink-2 sm:text-base">
-          以「机械结构—电气与嵌入式—算法控制—系统集成」四层能力为骨架，社区共建部件选型与评价、加工与采购经验、教程、案例与开源索引。从需求定义到迭代优化，每一步都留下可检索、可复现的记录。
+          {POSITIONING.short}。以「机械—硬件—嵌入式—算法」四层能力为骨架，以系统集成能力为大脑，社区共建部件选型与评价、加工与采购经验、教程、案例与开源索引，贯通需求定义、方案设计、工程实现、测试验证与迭代优化。
         </p>
+        <p class="mt-2 text-xs font-medium text-brand">{POSITIONING.tagline}</p>
 
         <div class="mt-7 flex flex-wrap items-center gap-3">
           <a
@@ -121,28 +130,44 @@ const faqs = [
 
       <div class="relative">
         <div class="rounded-lg border border-line bg-surface-2 p-4 sm:p-5">
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between gap-2">
             <span class="text-xs font-semibold tracking-wide text-ink-3 uppercase">能力骨架</span>
-            <span class="mono text-[11px] text-ink-3">04 layers</span>
+            <span class="mono text-[11px] text-ink-3">4 层 + 1 大脑</span>
           </div>
           <ol class="mt-4 space-y-2">
-            {LAYERS.map(layer => (
+            {SKELETON_LAYERS.map(layer => (
               <li>
                 <a
                   href={withBase(`/method.html#layers`)}
                   class="group flex items-center gap-3 rounded-md border border-line bg-surface px-3 py-2.5 transition-colors hover:border-line-strong"
                 >
                   <span class="mono text-[11px] text-ink-3">{layer.index}</span>
-                  <span class={`h-6 w-px ${layer.tone.replace('text-', 'bg-')}`} aria-hidden="true"></span>
-                  <span class="flex-1">
+                  <span class={`h-6 w-px ${layerBar[layer.id]}`} aria-hidden="true"></span>
+                  <span class="min-w-0 flex-1">
                     <span class="block text-sm font-semibold text-ink">{layer.name}</span>
                     <span class="block text-[11px] leading-5 text-ink-3">{layer.tagline}</span>
                   </span>
-                  <span class="text-ink-3 transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
+                  <span class="shrink-0 text-ink-3 transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
                 </a>
               </li>
             ))}
           </ol>
+
+          <div class="mx-auto h-3 w-px bg-line-strong" aria-hidden="true"></div>
+
+          {BRAIN_LAYER && (
+            <a
+              href={withBase(`/method.html#layers`)}
+              class="group block rounded-md border border-brand/25 bg-brand-soft px-3 py-3 transition-colors hover:border-brand/40"
+            >
+              <div class="flex items-center gap-2">
+                <span class="mono text-xs font-bold text-layer-sys" aria-hidden="true">★</span>
+                <span class="text-sm font-semibold text-ink">{BRAIN_LAYER.name} · 大脑</span>
+                <span class="ml-auto shrink-0 text-ink-3 transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
+              </div>
+              <p class="mt-1 text-[11px] leading-5 text-ink-2">横贯四层：需求 / 接口 / 预算 / 联调</p>
+            </a>
+          )}
         </div>
       </div>
     </div>
@@ -166,14 +191,15 @@ const faqs = [
     <div class="flex flex-wrap items-end justify-between gap-3">
       <div>
         <h2 class="text-xl font-bold tracking-tight text-ink">从哪进去</h2>
-        <p class="mt-1 text-sm text-ink-3">四条主路径，各管一件事。</p>
+        <p class="mt-1 text-sm text-ink-3">五个一级入口，各管一件事。</p>
       </div>
     </div>
-    <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
       {[
         { href: '/start.html', title: '学习路径', desc: '从零到跑通，按天给判据', count: '1 条可用', eg: '另 2 条在写' },
         { href: '/builds.html', title: '方案库', desc: '可复现方案，含 BOM 与步骤', count: `${robotsData.count} 套`, eg: '例：四足 5k 方案' },
         { href: '/catalog.html', title: '部件库', desc: '参数带来源，缺失写 null', count: `${catalog.count} 个部件`, eg: '例：DM4310 参数' },
+        { href: '/community.html', title: '社区', desc: '写实测，不写「好用」', count: '开放讨论', eg: '例：选型求助' },
         { href: '/suppliers.html', title: '采购渠道', desc: '报价、交期与真实反馈', count: `${suppliersData.count} 家`, eg: '例：嘉立创打样' },
       ].map(item => (
         <a href={withBase(item.href)} class="card card-hover group flex flex-col p-5">

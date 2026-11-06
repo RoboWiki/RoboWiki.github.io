@@ -97,7 +97,7 @@ export default function ReproductionPanel({ buildId }: { buildId: string }) {
             装过这台机器？登录后一句话记录结果（成功 / 部分成功 / 没成），比点赞有用。
           </p>
           <a
-            href="/app/#/pages/login/index"
+            href="/account.html"
             className="mt-2 inline-flex h-8 items-center rounded-md border border-line bg-surface px-3 text-[12px] font-medium text-ink hover:border-line-strong"
           >
             去登录

@@ -1,0 +1,107 @@
+.compare__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rw-space-1);
+  padding-bottom: var(--rw-space-3);
+}
+
+.compare__scroll {
+  width: 100%;
+  border: 1px solid var(--rw-border);
+  border-radius: var(--rw-radius-md);
+  background: var(--rw-surface);
+}
+
+.compare__table {
+  display: inline-flex;
+  flex-direction: column;
+  min-width: 100%;
+}
+
+.compare__row {
+  display: flex;
+  align-items: stretch;
+  background: var(--rw-surface);
+  border-bottom: 1px solid var(--rw-border);
+}
+
+.compare__row:last-child {
+  border-bottom: none;
+}
+
+.compare__row--head {
+  background: var(--rw-surface-2);
+}
+
+.compare__cell {
+  flex: 0 0 140px;
+  width: 140px;
+  padding: var(--rw-space-2) var(--rw-space-3);
+  border-right: 1px solid var(--rw-border);
+  font-size: var(--rw-text-sm);
+}
+
+.compare__cell:last-child {
+  border-right: none;
+}
+
+.compare__cell--label {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  flex: 0 0 96px;
+  width: 96px;
+  background: var(--rw-surface-2);
+  color: var(--rw-muted);
+  font-weight: 500;
+}
+
+.compare__row--head .compare__cell--label {
+  background: var(--rw-surface-2);
+}
+
+.compare__cell--head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rw-space-1);
+}
+
+.compare__model {
+  font-size: var(--rw-text-base);
+  font-weight: 600;
+}
+
+.compare__vendor {
+  font-size: var(--rw-text-xs);
+  color: var(--rw-muted);
+}
+
+.compare__remove {
+  display: flex;
+  align-items: center;
+  min-height: var(--rw-control-touch);
+  font-size: var(--rw-text-xs);
+  color: var(--rw-danger);
+}
+
+.compare__value {
+  display: block;
+  font-size: var(--rw-text-sm);
+  line-height: 1.55;
+  word-break: break-word;
+}
+
+.compare__single {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rw-space-2);
+  padding: var(--rw-space-4);
+  background: var(--rw-surface);
+  border: 1px solid var(--rw-border);
+  border-radius: var(--rw-radius-md);
+}
+
+.compare__hint {
+  display: block;
+  margin-top: var(--rw-space-2);
+}

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { specLabel } from '@robowiki/content'
 import { formatPrice } from '@/lib/utils'
 
 type Part = {
@@ -208,8 +209,13 @@ export default function CompareTable({ labels = {} }: { labels?: Labels }) {
           <p className="mt-1.5 text-[13px] text-ink-3">参数字段不同、口径不一致的地方会被标出来。</p>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-line bg-surface">
-          <table className="w-full min-w-[640px] border-collapse text-[13px]">
+        <>
+          <p className="sm:hidden text-[12px] leading-5 text-ink-3">左右滑动查看全部列；首列固定。</p>
+          <div
+            className="overflow-x-auto rounded-lg border border-line bg-surface"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
+            <table className="w-full min-w-[560px] border-collapse text-[13px]">
             <thead>
               <tr className="border-b border-line bg-surface-2">
                 <th className="sticky left-0 z-10 bg-surface-2 px-3 py-2.5 text-left text-[11px] font-semibold text-ink-3">
@@ -248,25 +254,32 @@ export default function CompareTable({ labels = {} }: { labels?: Labels }) {
                   <td key={p.id} className="mono tabular px-3 py-2 text-ink">{formatPrice(p.price)}</td>
                 ))}
               </tr>
-              {visibleRows.map(row => (
-                <tr key={row.key} className={row.differs ? 'border-b border-line bg-warning-soft/70' : 'border-b border-line'}>
-                  <th scope="row" className="sticky left-0 z-10 bg-surface px-3 py-2 text-left font-medium text-ink-2">
-                    <span>{labels[row.key]?.label ?? row.key}</span>
-                    {labels[row.key]?.label && (
-                      <span className="mono ml-1.5 text-[10px] text-ink-3">{row.key}</span>
-                    )}
-                    {labels[row.key]?.unit && (
-                      <span className="ml-1 text-[10px] text-ink-3">({labels[row.key].unit})</span>
-                    )}
-                  </th>
-                  {row.values.map((v, i) => (
-                    <td key={i} className="mono tabular px-3 py-2 text-ink">{v}</td>
-                  ))}
-                </tr>
-              ))}
+              {visibleRows.map(row => {
+                // 语义表优先；目录里新增、semantics.json 还没收录的 key 用内容包兜底，
+                // 否则对比表左侧只剩一串 snake_case。
+                const known = labels[row.key]
+                const fallback = known?.label ? null : specLabel(row.key)
+                const label = known?.label ?? fallback?.label ?? row.key
+                const unit = known?.unit ?? fallback?.unit ?? ''
+                return (
+                  <tr key={row.key} className={row.differs ? 'border-b border-line bg-warning-soft/70' : 'border-b border-line'}>
+                    <th scope="row" className="sticky left-0 z-10 bg-surface px-3 py-2 text-left font-medium text-ink-2">
+                      <span>{label}</span>
+                      {label !== row.key && (
+                        <span className="mono ml-1.5 text-[10px] text-ink-3">{row.key}</span>
+                      )}
+                      {unit && <span className="ml-1 text-[10px] text-ink-3">({unit})</span>}
+                    </th>
+                    {row.values.map((v, i) => (
+                      <td key={i} className="mono tabular px-3 py-2 text-ink">{v}</td>
+                    ))}
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
-        </div>
+          </div>
+        </>
       )}
 
       <p className="text-[11px] leading-5 text-ink-3">

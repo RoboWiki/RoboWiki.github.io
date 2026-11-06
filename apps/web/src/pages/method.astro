@@ -21,8 +21,19 @@ const toc = [
   { id: 'red-lines', label: '六条物理红线' },
   { id: 'governance', label: '数据治理' },
   { id: 'supplier', label: '七个问题' },
-  { id: 'layers', label: '四层能力怎么用' },
+  { id: 'layers', label: '四层 + 集成怎么用' },
 ]
+
+const reviewLayers = [
+  { n: '01', name: '机械', tone: 'text-layer-mech', ask: '扭矩/转速余量、传动与背隙、材料与工艺边界' },
+  { n: '02', name: '硬件', tone: 'text-layer-hw', ask: '峰值电流与母线压降、接口/连接器/散热、器件供货与替代' },
+  { n: '03', name: '嵌入式', tone: 'text-layer-emb', ask: '控制周期与实时性、总线带宽与节点数、固件/驱动/工具链' },
+  { n: '04', name: '算法', tone: 'text-layer-algo', ask: '传感器频率与精度、标定与噪声、算力预算' },
+]
+const brainReview = {
+  name: '系统集成（大脑）',
+  ask: '整机质量与重心、接口契约与预算冲突、故障能否定位到具体一层',
+}
 ---
 
 <Base title="方法与来源 · RoboWiki" description="评级方法、三态判定、可比性等级、六条物理红线与数据治理规则。">
@@ -183,25 +194,24 @@ const toc = [
         <section aria-labelledby="layers" class="mt-12 scroll-mt-24">
           <div class="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-line pb-2">
             <span class="mono text-[11px] font-semibold text-ink-3">06</span>
-            <h2 id="layers" class="text-lg font-bold tracking-tight text-ink">四层能力怎么用</h2>
+            <h2 id="layers" class="text-lg font-bold tracking-tight text-ink">四层 + 集成怎么用</h2>
           </div>
 
-          <p class="max-w-3xl text-sm leading-7 text-ink-2">
-            「机械结构—电气与嵌入式—算法控制—系统集成」是<b class="text-ink">设计评审的检查表</b>，不是浏览路径。
-            一个电机同时属于机械（扭矩、法兰）和电气（母线电压、驱动），把它归到唯一一层只会误导。
-            正确的用法是在方案定下来之后，按四层各过一遍，问自己有没有漏项。
+          <p class="max-w-3xl rounded-md border-l-2 border-brand bg-brand-soft px-4 py-3 text-sm leading-7 text-ink-2">
+            系统集成不是第五层，而是横贯四层的大脑：<span class="text-ink">需求定义、接口契约、预算分配、联调与迭代</span>都在这里收口。
+          </p>
+
+          <p class="mt-4 max-w-3xl text-sm leading-7 text-ink-2">
+            「机械—硬件—嵌入式—算法」四层 + 系统集成，是<b class="text-ink">设计评审的检查表</b>，不是浏览路径。
+            一个电机同时属于机械（扭矩、法兰）和硬件（母线电压、驱动），把它归到唯一一层只会误导。
+            正确的用法是在方案定下来之后，按四层各过一遍，再用系统集成收口，问自己有没有漏项。
           </p>
 
           <ol class="mt-4 grid gap-2 sm:grid-cols-2" role="list">
-            {[
-              { n: '01', name: '机械结构', ask: '扭矩与转速有余量吗？传动背隙能接受吗？材料和工艺做得出吗？' },
-              { n: '02', name: '电气与嵌入式', ask: '峰值电流与母线压降够吗？总线带宽和节点数超标了吗？主控实时性够吗？' },
-              { n: '03', name: '算法控制', ask: '传感器的频率与精度满足控制器吗？标定和噪声验证过吗？算力预算够吗？' },
-              { n: '04', name: '系统集成', ask: '整机质量与重心可接受吗？预算冲突时砍谁？出问题能定位到哪一层？' },
-            ].map(item => (
+            {reviewLayers.map(item => (
               <li class="card p-4">
                 <div class="flex items-center gap-2">
-                  <span class="mono text-[11px] font-semibold text-brand">{item.n}</span>
+                  <span class={`mono text-[11px] font-semibold ${item.tone}`}>{item.n}</span>
                   <span class="text-[13px] font-semibold text-ink">{item.name}</span>
                 </div>
                 <p class="mt-1.5 text-[12px] leading-5 text-ink-3">{item.ask}</p>
@@ -209,8 +219,18 @@ const toc = [
             ))}
           </ol>
 
+          <div class="mt-2 rounded-md border border-brand/25 bg-brand-soft px-4 py-3">
+            <div class="flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:gap-3">
+              <div class="flex shrink-0 items-center gap-2 sm:w-[11rem]">
+                <span class="mono text-xs font-bold text-layer-sys" aria-hidden="true">★</span>
+                <span class="text-[13px] font-semibold text-ink">{brainReview.name}</span>
+              </div>
+              <p class="min-w-0 text-[12px] leading-5 text-ink-2">{brainReview.ask}</p>
+            </div>
+          </div>
+
           <p class="mt-4 text-xs leading-6 text-ink-3">
-            评审顺序建议自上而下：先算机械余量，再核电气是否撑得住，然后确认算法需求没有超出传感器能力，最后看整机装不装得下。
+            评审顺序建议自上而下：先算机械余量，再核硬件供电与散热撑不撑得住、嵌入式实时性够不够，然后确认算法需求没有超出传感器与算力，最后由系统集成确认整机装得下、接口对得上。
           </p>
         </section>
       </div>
