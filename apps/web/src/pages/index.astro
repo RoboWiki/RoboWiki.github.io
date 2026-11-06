@@ -2,7 +2,7 @@
 import Base from '@/layouts/Base.astro'
 import { getCollection } from 'astro:content'
 import { catalog, dataVersion, featuredParts, imageUrl, topCategories } from '@/lib/catalog'
-import { formatPrice, partHref, withBase } from '@/lib/utils'
+import { bestOfferPrice, formatPrice, partHref, withBase } from '@/lib/utils'
 import { BRAIN_LAYER, POSITIONING, SKELETON_LAYERS } from '@/lib/layers'
 import robotsData from '@/data/robots.json'
 import materialsData from '@/data/materials.json'
@@ -283,7 +283,23 @@ const faqs = [
             </div>
             <div class="text-sm font-semibold text-ink">{p.model}</div>
             <div class="mt-auto flex items-baseline justify-between pt-1 text-xs">
-              <span class="mono tabular text-ink-2">{formatPrice(p.price)}</span>
+              <span class="flex flex-col">
+                {(() => {
+                  const offer = bestOfferPrice(p.offers)
+                  const regular = typeof p.price === 'number' ? p.price : null
+                  return (
+                    <>
+                      <span class={`mono tabular ${offer !== null ? 'font-semibold text-brand' : 'text-ink-2'}`}>
+                        {formatPrice(offer ?? regular)}
+                        {offer !== null && <span class="ml-1 text-[10px] font-normal">活动价</span>}
+                      </span>
+                      {offer !== null && regular !== null && offer < regular && (
+                        <span class="mono tabular text-[10px] text-ink-3 line-through">参考 {formatPrice(regular)}</span>
+                      )}
+                    </>
+                  )
+                })()}
+              </span>
               <span class="mono tabular text-ink-3">{p.tauPeak ? `${p.tauPeak} N·m` : '参数待补'}</span>
             </div>
           </div>

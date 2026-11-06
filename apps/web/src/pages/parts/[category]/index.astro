@@ -1,7 +1,7 @@
 ---
 import Base from '@/layouts/Base.astro'
 import { categoryGroups, categoryLabel, parts } from '@/lib/catalog'
-import { formatPrice, partHref, withBase } from '@/lib/utils'
+import { bestOfferPrice, formatPrice, partHref, withBase } from '@/lib/utils'
 
 export function getStaticPaths() {
   const categories = [...new Set(parts.map(p => p.category))]
@@ -75,7 +75,23 @@ const tierCounts = categoryParts.reduce<Record<string, number>>((acc, p) => {
                 <span class="block truncate text-xs text-ink-3">{p.vendor}</span>
               </span>
               {p.subtypeLabel && <span class="rounded-full border border-line px-2 py-0.5 text-[11px] text-ink-2">{p.subtypeLabel}</span>}
-              <span class="mono tabular w-24 text-right text-xs text-ink-2">{formatPrice(p.price)}</span>
+              <span class="flex w-28 flex-col items-end text-right">
+                {(() => {
+                  const offer = bestOfferPrice(p.offers)
+                  const regular = typeof p.price === 'number' ? p.price : null
+                  return (
+                    <>
+                      <span class={`mono tabular text-xs ${offer !== null ? 'font-semibold text-brand' : 'text-ink-2'}`}>
+                        {formatPrice(offer ?? regular)}
+                        {offer !== null && <span class="ml-1 text-[10px] font-normal">活动价</span>}
+                      </span>
+                      {offer !== null && regular !== null && offer < regular && (
+                        <span class="mono tabular text-[10px] text-ink-3 line-through">参考 {formatPrice(regular)}</span>
+                      )}
+                    </>
+                  )
+                })()}
+              </span>
               <span class="w-14 text-right">
                 {p.tier && (
                   <span class={p.tier === 'A' ? 'tier tier-a' : p.tier === 'B' ? 'tier tier-b' : 'tier tier-c'}>{p.tier}</span>

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { categoryLabel, imageUrl, type CatalogPart } from '@/lib/catalog'
-import { formatPrice, partHref } from '@/lib/utils'
+import { bestOfferPrice, effectivePrice, formatPrice, partHref } from '@/lib/utils'
 
 type CategoryMeta = {
   id: string
@@ -16,6 +16,7 @@ type Props = { parts: CatalogPart[]; categories: CategoryMeta[] }
 const PAGE = 24
 const INTERACTIVE_HOME = '/community.html'
 const DEFAULT_SORT = 'effective_price:asc'
+const DEFAULT_CATEGORY = 'actuator'
 
 function PartRating({ rating }: { rating?: CatalogPart['rating'] }) {
   const count = Number(rating?.count) || 0
@@ -42,20 +43,6 @@ function hasOffer(p: CatalogPart) {
   })
 }
 
-function effectivePrice(p: CatalogPart): number | null {
-  const today = new Date().toISOString().slice(0, 10)
-  const prices = (p.offers ?? [])
-    .filter(o => {
-      const offer = o as { demo?: boolean; expires?: string | null; price?: unknown }
-      return !offer.demo && (!offer.expires || offer.expires >= today)
-        && offer.price !== null && offer.price !== undefined
-        && Number.isFinite(Number(offer.price))
-    })
-    .map(o => Number((o as { price?: unknown }).price))
-  if (typeof p.price === 'number' && Number.isFinite(p.price)) prices.push(p.price)
-  return prices.length ? Math.min(...prices) : null
-}
-
 function TierBadge({ tier }: { tier?: string }) {
   if (!tier) return null
   const cls = tier === 'A' ? 'tier tier-a' : tier === 'B' ? 'tier tier-b' : 'tier tier-c'
@@ -64,7 +51,7 @@ function TierBadge({ tier }: { tier?: string }) {
 
 export default function CatalogExplorer({ parts, categories }: Props) {
   const [q, setQ] = useState('')
-  const [cat, setCat] = useState('')
+  const [cat, setCat] = useState(DEFAULT_CATEGORY)
   const [tier, setTier] = useState('')
   const [openOnly, setOpenOnly] = useState(false)
   const [offerOnly, setOfferOnly] = useState(false)
@@ -147,7 +134,7 @@ export default function CatalogExplorer({ parts, categories }: Props) {
   }, [vendorBase])
 
   const sortValue = (p: CatalogPart, key: string): number | string | null => {
-    if (key === 'effective_price') return effectivePrice(p)
+    if (key === 'effective_price') return effectivePrice(p.price, p.offers)
     if (key === 'price') return typeof p.price === 'number' ? p.price : null
     if (key === 'rating') return typeof p.rating?.avg === 'number' ? p.rating.avg : null
     const raw = (p.specs as Record<string, unknown> | undefined)?.[key] ?? (p as unknown as Record<string, unknown>)[key]
@@ -218,7 +205,10 @@ export default function CatalogExplorer({ parts, categories }: Props) {
 
   const shown = filtered.slice(0, limit)
   const needle = q.trim()
-  const hasFilter = Boolean(cat || needle || tier || openOnly || offerOnly || vendor || (sort && sort !== DEFAULT_SORT))
+  const hasFilter = Boolean(
+    (cat && cat !== DEFAULT_CATEGORY) || needle || tier || openOnly || offerOnly || vendor
+    || (sort && sort !== DEFAULT_SORT),
+  )
 
   const selectCategory = (next: string) => {
     setCat(next)
@@ -249,7 +239,7 @@ export default function CatalogExplorer({ parts, categories }: Props) {
     setOfferOnly(false)
     setVendor('')
     setSort(DEFAULT_SORT)
-    selectCategory('')
+    selectCategory(DEFAULT_CATEGORY)
   }
 
   return (
@@ -508,7 +498,24 @@ export default function CatalogExplorer({ parts, categories }: Props) {
                     </div>
                     <div className="line-clamp-2 min-h-10 text-sm font-semibold leading-5 text-ink">{p.model}</div>
                     <div className="mt-auto flex items-center justify-between gap-2 border-t border-line pt-2 text-xs">
-                      <span className="mono tabular truncate font-medium text-ink-2">{formatPrice(p.price)}</span>
+                      <span className="flex min-w-0 flex-col">
+                        {(() => {
+                          const offer = bestOfferPrice(p.offers)
+                          const regular = typeof p.price === 'number' ? p.price : null
+                          const showCompare = offer !== null && regular !== null && offer < regular
+                          return (
+                            <>
+                              <span className="flex items-baseline gap-1.5">
+                                <span className={`mono tabular truncate font-semibold ${offer !== null ? 'text-brand' : 'text-ink-2'}`}>
+                                  {formatPrice(offer ?? regular)}
+                                </span>
+                                {offer !== null && <span className="shrink-0 text-[10px] font-medium text-brand">活动价</span>}
+                              </span>
+                              {showCompare && <span className="mono tabular text-[10px] text-ink-3 line-through">参考 {formatPrice(regular)}</span>}
+                            </>
+                          )
+                        })()}
+                      </span>
                       <PartRating rating={p.rating} />
                     </div>
                   </div>

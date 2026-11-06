@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { specLabel } from '@robowiki/content'
-import { formatPrice } from '@/lib/utils'
+import { bestOfferPrice, formatPrice } from '@/lib/utils'
 
 type Part = {
   id: string
@@ -11,6 +11,7 @@ type Part = {
   tier?: string | null
   verified?: boolean
   price?: number | null
+  offers?: Array<Record<string, unknown>>
   specs?: Record<string, unknown>
 }
 
@@ -249,10 +250,22 @@ export default function CompareTable({ labels = {} }: { labels?: Labels }) {
                 ))}
               </tr>
               <tr className="border-b border-line">
-                <th scope="row" className="sticky left-0 z-10 bg-surface px-3 py-2 text-left font-medium text-ink-2">参考价</th>
-                {picked.map(p => (
-                  <td key={p.id} className="mono tabular px-3 py-2 text-ink">{formatPrice(p.price)}</td>
-                ))}
+                <th scope="row" className="sticky left-0 z-10 bg-surface px-3 py-2 text-left font-medium text-ink-2">价格</th>
+                {picked.map(p => {
+                  const offer = bestOfferPrice(p.offers)
+                  const regular = typeof p.price === 'number' ? p.price : null
+                  return (
+                    <td key={p.id} className="mono tabular px-3 py-2 text-ink">
+                      <span className={offer !== null ? 'font-semibold text-brand' : ''}>
+                        {formatPrice(offer ?? regular)}
+                        {offer !== null && <span className="ml-1 text-[10px] font-normal">活动价</span>}
+                      </span>
+                      {offer !== null && regular !== null && offer < regular && (
+                        <span className="ml-1.5 text-[10px] text-ink-3 line-through">{formatPrice(regular)}</span>
+                      )}
+                    </td>
+                  )
+                })}
               </tr>
               {visibleRows.map(row => {
                 // 语义表优先；目录里新增、semantics.json 还没收录的 key 用内容包兜底，

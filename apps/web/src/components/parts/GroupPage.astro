@@ -1,7 +1,7 @@
 ---
 import Base from '@/layouts/Base.astro'
 import { categoryLabel, imageUrl, parts, type CatalogPart } from '@/lib/catalog'
-import { formatPrice, partHref, withBase } from '@/lib/utils'
+import { bestOfferPrice, formatPrice, partHref, withBase } from '@/lib/utils'
 
 type Group = { key: string; label: string; slugs: string[] }
 const { category, group } = Astro.props as { category: string; group: Group }
@@ -52,7 +52,23 @@ const tierOf = (tier?: string) =>
               <div class="truncate text-[11px] text-ink-3">{p.vendor}</div>
               <div class="line-clamp-2 min-h-10 text-sm font-semibold leading-5 text-ink">{p.model}</div>
               <div class="mt-auto flex items-center justify-between gap-2 border-t border-line pt-2 text-xs">
-                <span class="mono tabular truncate font-medium text-ink-2">{formatPrice(p.price)}</span>
+                <span class="flex min-w-0 flex-col">
+                  {(() => {
+                    const offer = bestOfferPrice(p.offers)
+                    const regular = typeof p.price === 'number' ? p.price : null
+                    return (
+                      <>
+                        <span class={`mono tabular truncate font-medium ${offer !== null ? 'text-brand' : 'text-ink-2'}`}>
+                          {formatPrice(offer ?? regular)}
+                          {offer !== null && <span class="ml-1 text-[10px] font-normal">活动价</span>}
+                        </span>
+                        {offer !== null && regular !== null && offer < regular && (
+                          <span class="mono tabular text-[10px] text-ink-3 line-through">参考 {formatPrice(regular)}</span>
+                        )}
+                      </>
+                    )
+                  })()}
+                </span>
                 <span class="text-ink-3">{p.verified ? '已核对' : ''}</span>
               </div>
             </div>

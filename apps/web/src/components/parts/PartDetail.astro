@@ -3,7 +3,7 @@ import Base from '@/layouts/Base.astro'
 import RatingSummary from '@/components/RatingSummary'
 import SeoJsonLd from '@/components/SeoJsonLd.astro'
 import { categoryLabel, imageUrl, type CatalogPart } from '@/lib/catalog'
-import { formatPrice, withBase } from '@/lib/utils'
+import { bestOfferPrice, formatPrice, withBase } from '@/lib/utils'
 import semantics from '@/data/semantics.json'
 import { specLabel as contentSpecLabel } from '@robowiki/content'
 import { layerOfCategory } from '@/lib/layers'
@@ -72,6 +72,9 @@ type Offer = {
 const today = new Date().toISOString().slice(0, 10)
 const offers = ((part.offers ?? []) as Offer[])
   .filter(o => o && !o.demo && (!o.expires || o.expires >= today))
+const bestOffer = bestOfferPrice(part.offers as Array<Record<string, unknown>>)
+const regularReference = typeof part.price === 'number' && Number.isFinite(part.price) ? part.price : null
+const showCompare = bestOffer !== null && regularReference !== null && bestOffer < regularReference
 const offerLink = (url?: string | null) => (url && /^https?:\/\//i.test(url) ? url : '')
 const partPath = `/parts/${part.category}/${part.slug}.html`
 const title = `${part.vendor} ${part.model} · RoboWiki`
@@ -153,8 +156,17 @@ const keyStats = STAT_PRIORITY
                 </div>
               ))}
               <div class="bg-surface px-3 py-2.5">
-                <dt class="text-[11px] text-ink-3">参考价</dt>
-                <dd class="mono tabular mt-0.5 text-sm font-semibold text-ink">{formatPrice(part.price)}</dd>
+                <dt class="text-[11px] text-ink-3">
+                  {bestOffer !== null ? '活动价' : '参考价'}
+                </dt>
+                <dd class="mt-0.5 flex flex-wrap items-baseline gap-x-1.5">
+                  <span class={`mono tabular text-sm font-semibold ${bestOffer !== null ? 'text-brand' : 'text-ink'}`}>
+                    {formatPrice(bestOffer ?? regularReference)}
+                  </span>
+                  {showCompare && (
+                    <span class="mono tabular text-[10px] text-ink-3 line-through">参考 {formatPrice(regularReference)}</span>
+                  )}
+                </dd>
               </div>
             </dl>
 
@@ -177,7 +189,12 @@ const keyStats = STAT_PRIORITY
                 <div class="flex flex-wrap items-baseline justify-between gap-2">
                   <p class="text-[13px] font-semibold text-ink">{offer.title || '渠道活动'}</p>
                   {offer.price != null && (
-                    <span class="mono tabular text-sm font-semibold text-brand">¥{Number(offer.price).toLocaleString('zh-CN')}</span>
+                    <span class="flex flex-wrap items-baseline gap-x-1.5">
+                      <span class="mono tabular text-sm font-semibold text-brand">¥{Number(offer.price).toLocaleString('zh-CN')}</span>
+                      {regularReference !== null && Number(offer.price) < regularReference && (
+                        <span class="mono tabular text-[10px] text-ink-3 line-through">参考 {formatPrice(regularReference)}</span>
+                      )}
+                    </span>
                   )}
                 </div>
                 {offer.condition && <p class="mt-1.5 whitespace-pre-line text-[12.5px] leading-6 text-ink-2">{offer.condition}</p>}
