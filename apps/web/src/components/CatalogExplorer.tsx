@@ -5,7 +5,13 @@ import { Input } from '@/components/ui/input'
 import { categoryLabel, imageUrl, type CatalogPart } from '@/lib/catalog'
 import { formatPrice, partHref } from '@/lib/utils'
 
-type Props = { parts: CatalogPart[]; categories: { id: string; name: string }[] }
+type CategoryMeta = {
+  id: string
+  name: string
+  keys?: Array<{ k: string; label?: string; unit?: string }>
+  sorts?: Array<{ k: string; label: string }>
+}
+type Props = { parts: CatalogPart[]; categories: CategoryMeta[] }
 
 const PAGE = 24
 const INTERACTIVE_HOME = '/community.html'
@@ -46,6 +52,9 @@ export default function CatalogExplorer({ parts, categories }: Props) {
   const [cat, setCat] = useState('')
   const [tier, setTier] = useState('')
   const [openOnly, setOpenOnly] = useState(false)
+  const [offerOnly, setOfferOnly] = useState(false)
+  const [vendor, setVendor] = useState('')
+  const [sort, setSort] = useState('')
   // 对比托盘：最多 4 个，落 localStorage，跨页面（部件库 → 对比页）复用
   const [picked, setPicked] = useState<string[]>([])
   const [limit, setLimit] = useState(PAGE)
@@ -76,6 +85,7 @@ export default function CatalogExplorer({ parts, categories }: Props) {
     const fromQuery = params.get('q') || ''
     if (fromUrl && categories.some(c => c.id === fromUrl)) setCat(fromUrl)
     if (fromQuery) setQ(fromQuery)
+    if (params.get('offer') === '1') setOfferOnly(true)
   }, [categories])
 
   const searched = useMemo(() => {
@@ -98,14 +108,63 @@ export default function CatalogExplorer({ parts, categories }: Props) {
     return Array.isArray(repos) && repos.length > 0
   }
 
+  const catMeta = categories.find(c => c.id === cat)
+  const sortOptions = useMemo(() => {
+    const keySorts = (catMeta?.sorts || []).filter(item => !['price', 'rating'].includes(item.k))
+    return [
+      { value: '', label: '综合排序' },
+      ...keySorts.map(item => ({ value: `${item.k}:desc`, label: `${item.label} 从高到低` })),
+      { value: 'price:asc', label: '价格从低到高' },
+      { value: 'price:desc', label: '价格从高到低' },
+      { value: 'rating:desc', label: '评分从高到低' },
+    ]
+  }, [catMeta])
+
+  const vendorBase = useMemo(
+    () => (cat ? searched.filter(p => p.category === cat) : searched),
+    [searched, cat],
+  )
+  const vendors = useMemo(() => {
+    const map = new Map<string, number>()
+    for (const p of vendorBase) map.set(p.vendor, (map.get(p.vendor) || 0) + 1)
+    return [...map.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'zh-CN'))
+  }, [vendorBase])
+
+  const sortValue = (p: CatalogPart, key: string): number | string | null => {
+    if (key === 'price') return typeof p.price === 'number' ? p.price : null
+    if (key === 'rating') return typeof p.rating?.avg === 'number' ? p.rating.avg : null
+    const raw = (p.specs as Record<string, unknown> | undefined)?.[key] ?? (p as unknown as Record<string, unknown>)[key]
+    if (typeof raw === 'number') return raw
+    if (typeof raw === 'string') {
+      const n = Number(raw.replace(/,/g, '').match(/-?\d+(?:\.\d+)?/)?.[0])
+      return Number.isFinite(n) ? n : raw
+    }
+    return null
+  }
+
   const filtered = useMemo(() => {
     let list = searched
     if (cat) list = list.filter(p => p.category === cat)
+    if (vendor) list = list.filter(p => p.vendor === vendor)
     if (tier === 'verified') list = list.filter(p => p.verified)
     else if (tier) list = list.filter(p => p.tier === tier)
     if (openOnly) list = list.filter(hasRepo)
+    if (offerOnly) list = list.filter(hasOffer)
+    if (sort) {
+      const [key, dir] = sort.split(':')
+      const sign = dir === 'asc' ? 1 : -1
+      list = [...list].sort((a, b) => {
+        const av = sortValue(a, key)
+        const bv = sortValue(b, key)
+        if (av === null && bv === null) return 0
+        if (av === null) return 1
+        if (bv === null) return -1
+        if (typeof av === 'number' && typeof bv === 'number') return (av - bv) * sign
+        return String(av).localeCompare(String(bv), 'zh-CN') * sign
+      })
+    }
     return list
-  }, [searched, cat, tier, openOnly])
+  }, [searched, cat, vendor, tier, openOnly, offerOnly, sort])
 
   const tierCounts = useMemo(() => {
     const base = cat ? searched.filter(p => p.category === cat) : searched
@@ -123,12 +182,19 @@ export default function CatalogExplorer({ parts, categories }: Props) {
     return base.filter(hasRepo).length
   }, [searched, cat])
 
+  const offerCount = useMemo(() => {
+    let base = cat ? searched.filter(p => p.category === cat) : searched
+    if (vendor) base = base.filter(p => p.vendor === vendor)
+    return base.filter(hasOffer).length
+  }, [searched, cat, vendor])
+
   const shown = filtered.slice(0, limit)
   const needle = q.trim()
-  const hasFilter = Boolean(cat || needle || tier || openOnly)
+  const hasFilter = Boolean(cat || needle || tier || openOnly || offerOnly || vendor || sort)
 
   const selectCategory = (next: string) => {
     setCat(next)
+    setVendor('')
     setLimit(PAGE)
     if (typeof window === 'undefined') return
     // Keep the filter shareable without pulling in a router.
@@ -152,6 +218,9 @@ export default function CatalogExplorer({ parts, categories }: Props) {
     setQ('')
     setTier('')
     setOpenOnly(false)
+    setOfferOnly(false)
+    setVendor('')
+    setSort('')
     selectCategory('')
   }
 
@@ -244,6 +313,28 @@ export default function CatalogExplorer({ parts, categories }: Props) {
         ))}
       </div>
 
+      <div className="chip-row -mx-1 px-1" role="group" aria-label="按品牌筛选">
+        <button
+          type="button"
+          className="chip h-7 px-2.5 text-[12px]"
+          aria-pressed={!vendor}
+          onClick={() => { setVendor(''); setLimit(PAGE) }}
+        >
+          全部品牌<span className="mono tabular opacity-60">{vendorBase.length}</span>
+        </button>
+        {vendors.slice(0, 10).map(([name, count]) => (
+          <button
+            key={name}
+            type="button"
+            className="chip h-7 px-2.5 text-[12px]"
+            aria-pressed={vendor === name}
+            onClick={() => { setVendor(vendor === name ? '' : name); setLimit(PAGE) }}
+          >
+            {name}<span className="mono tabular opacity-60">{count}</span>
+          </button>
+        ))}
+      </div>
+
       <div className="flex flex-wrap items-center gap-1.5">
         <span className="text-[11px] text-ink-3">来源</span>
         {[
@@ -267,6 +358,25 @@ export default function CatalogExplorer({ parts, categories }: Props) {
         <span className="mx-1 h-4 w-px bg-line" aria-hidden="true" />
         <button
           type="button"
+          className={`chip h-7 px-2.5 text-[12px] ${offerOnly ? 'border-brand bg-brand-soft text-brand' : ''}`}
+          aria-pressed={offerOnly}
+          onClick={() => {
+            setOfferOnly(v => !v)
+            setLimit(PAGE)
+            try {
+              const url = new URL(window.location.href)
+              if (!offerOnly) url.searchParams.set('offer', '1')
+              else url.searchParams.delete('offer')
+              window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`)
+            } catch { /* history unavailable */ }
+          }}
+          title="只显示当前有活动价/渠道优惠的部件"
+        >
+          有优惠
+          <span className="mono tabular opacity-60">{offerCount}</span>
+        </button>
+        <button
+          type="button"
           className="chip h-7 px-2.5 text-[12px]"
           aria-pressed={openOnly}
           onClick={() => { setOpenOnly(v => !v); setLimit(PAGE) }}
@@ -275,6 +385,30 @@ export default function CatalogExplorer({ parts, categories }: Props) {
           开源
           <span className="mono tabular opacity-60">{openCount}</span>
         </button>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <label className="inline-flex items-center gap-2 text-[11px] text-ink-3">
+          品牌
+          <select
+            value={vendor}
+            onChange={event => { setVendor(event.target.value); setLimit(PAGE) }}
+            className="h-8 rounded-md border border-line bg-surface px-2 text-[12px] text-ink"
+          >
+            <option value="">全部品牌（{vendorBase.length}）</option>
+            {vendors.map(([name, count]) => <option value={name}>{name}（{count}）</option>)}
+          </select>
+        </label>
+        <label className="inline-flex items-center gap-2 text-[11px] text-ink-3">
+          排序
+          <select
+            value={sort}
+            onChange={event => { setSort(event.target.value); setLimit(PAGE) }}
+            className="h-8 rounded-md border border-line bg-surface px-2 text-[12px] text-ink"
+          >
+            {sortOptions.map(item => <option value={item.value}>{item.label}</option>)}
+          </select>
+        </label>
       </div>
 
       {shown.length === 0 ? (

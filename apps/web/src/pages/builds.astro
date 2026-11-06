@@ -16,21 +16,28 @@ type Robot = {
   source_tier?: string | null
   verified?: number
   specs: Record<string, unknown>
-  ecosystem?: { count?: number; projects?: unknown[] } | null
+  ecosystem?: {
+    count?: number
+    projects?: Array<{ name?: string; url?: string; role?: string }>
+  } | null
   _slug: string
 }
 
 const robots = robotsData.robots as unknown as Robot[]
-const groups: Array<{ label: string; items: Robot[] }> = []
-for (const robot of robots) {
-  const label = robot.subtype_label || '其他'
-  const group = groups.find(item => item.label === label)
-  if (group) group.items.push(robot)
-  else groups.push({ label, items: [robot] })
-}
+const ecoCount = (robot: Robot) =>
+  Number(robot.ecosystem?.count ?? robot.specs.ecosystem_count ?? 0) || 0
+const ecoProjects = (robot: Robot) => (robot.ecosystem?.projects || []).filter(p => p?.url).length
+const defaultSort = [...robots].sort((a, b) =>
+  ecoCount(b) - ecoCount(a) || ecoProjects(b) - ecoProjects(a) || a.model.localeCompare(b.model, 'zh-CN'))
+
 const verifiedCount = robots.filter(robot => robot.verified).length
 const vendorCount = new Set(robots.map(robot => robot.vendor)).size
 const pricedCount = robots.filter(robot => robot.price_cny != null).length
+const ecoTotal = robots.reduce((sum, robot) => sum + ecoCount(robot), 0)
+const ecoCovered = robots.filter(robot => ecoCount(robot) > 0).length
+const groups = [...new Set(robots.map(robot => robot.subtype_label || '其他'))]
+  .map(label => ({ label, count: robots.filter(robot => (robot.subtype_label || '其他') === label).length }))
+  .sort((a, b) => b.count - a.count)
 
 const imageSrc = (robot: Robot) =>
   typeof robot.specs.image_url === 'string' ? withBase(robot.specs.image_url) : ''
@@ -38,53 +45,43 @@ const specText = (robot: Robot, key: string) => {
   const value = robot.specs[key]
   return value === null || value === undefined || value === '' ? null : String(value)
 }
+const num = (robot: Robot, key: string) => {
+  const value = Number(robot.specs[key])
+  return Number.isFinite(value) ? value : -1
+}
 const tierClass = (tier?: string | null) =>
   tier && ['a', 'b', 'c'].includes(tier.toLowerCase()) ? `tier tier-${tier.toLowerCase()}` : 'tier tier-c'
 const searchText = (robot: Robot) =>
-  [robot.model, robot.title, robot.vendor, robot.vendor_cn ?? '', robot.subtype_label ?? ''].join(' ')
-
-const stats = [
-  { label: '收录方案', value: robots.length, unit: '套' },
-  { label: '已按官网核对', value: verifiedCount, unit: '套' },
-  { label: '形态分类', value: groups.length, unit: '类' },
-  { label: '覆盖厂商', value: vendorCount, unit: '家' },
-]
+  [robot.model, robot.title, robot.vendor, robot.vendor_cn ?? '', robot.subtype_label ?? '']
+    .filter(Boolean).join(' ').toLowerCase()
 ---
 
 <Base
   title="方案库 · RoboWiki"
-  description={`${robots.length} 套可复现方案：自由度、质量、续航、算力与仓库链接，按形态分组。`}
+  description={`${robots.length} 套可复现整机方案，默认按开源生态丰富度排序：URDF、SDK、训练与部署项目。`}
 >
   <Breadcrumbs items={[{ label: '首页', href: '/' }, { label: '方案库' }]} />
 
   <header class="relative overflow-hidden rounded-lg border border-line bg-surface p-6 sm:p-8">
-    <div
-      class="pointer-events-none absolute -right-20 -top-28 h-64 w-64 rounded-full bg-brand-soft opacity-80 blur-3xl"
-      aria-hidden="true"
-    >
-    </div>
+    <div class="pointer-events-none absolute -right-20 -top-28 h-64 w-64 rounded-full bg-brand-soft opacity-80 blur-3xl" aria-hidden="true"></div>
     <div class="relative">
       <p class="text-xs font-semibold tracking-[0.14em] text-brand uppercase">方案库 / Builds</p>
       <h1 class="mt-2 max-w-3xl text-3xl font-extrabold leading-tight tracking-tight text-ink sm:text-4xl">
-        先看能不能买到，再看能不能改。
+        先看开源生态有多厚，再看参数。
       </h1>
       <p class="mt-3 max-w-2xl text-sm leading-6 text-ink-2">
-        收录 {robots.length} 台整机，{verifiedCount} 台已核对。参数缺失显示 —；没有公布的价格写询价，不拿渠道报价冒充官方价。
+        默认按开源生态项目数排序：URDF/模型、SDK、仿真、训练、部署、导航与控制项目越多，越容易找到能直接跑的实现。
+        生态数不代表性能，也不代表这些项目都适配这台机器。
       </p>
 
       <dl class="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-line bg-line sm:grid-cols-4">
-        {stats.map(stat => (
-          <div class="bg-surface-2 px-4 py-3">
-            <dt class="text-[11px] font-medium tracking-wide text-ink-3">{stat.label}</dt>
-            <dd class="mt-1 flex items-baseline gap-1">
-              <span class="mono tabular text-xl font-semibold leading-none text-ink">{stat.value}</span>
-              <span class="text-[11px] text-ink-3">{stat.unit}</span>
-            </dd>
-          </div>
-        ))}
+        <div class="bg-surface-2 px-4 py-3"><dt class="text-[11px] font-medium tracking-wide text-ink-3">收录方案</dt><dd class="mt-1 flex items-baseline gap-1"><span class="mono tabular text-xl font-semibold leading-none text-ink">{robots.length}</span><span class="text-[11px] text-ink-3">套</span></dd></div>
+        <div class="bg-surface-2 px-4 py-3"><dt class="text-[11px] font-medium tracking-wide text-ink-3">有开源生态</dt><dd class="mt-1 flex items-baseline gap-1"><span class="mono tabular text-xl font-semibold leading-none text-ink">{ecoCovered}</span><span class="text-[11px] text-ink-3">套</span></dd></div>
+        <div class="bg-surface-2 px-4 py-3"><dt class="text-[11px] font-medium tracking-wide text-ink-3">生态项目</dt><dd class="mt-1 flex items-baseline gap-1"><span class="mono tabular text-xl font-semibold leading-none text-ink">{ecoTotal}</span><span class="text-[11px] text-ink-3">个索引</span></dd></div>
+        <div class="bg-surface-2 px-4 py-3"><dt class="text-[11px] font-medium tracking-wide text-ink-3">已核对</dt><dd class="mt-1 flex items-baseline gap-1"><span class="mono tabular text-xl font-semibold leading-none text-ink">{verifiedCount}</span><span class="text-[11px] text-ink-3">套</span></dd></div>
       </dl>
       <p class="mt-2.5 text-[11px] text-ink-3">
-        其中 <span class="mono tabular text-ink-2">{pricedCount}</span> 台有厂商公开标价，其余为询价。
+        覆盖 {vendorCount} 家厂商，{pricedCount} 台有厂商公开标价；生态是参考库索引，不等于官方支持。
       </p>
     </div>
   </header>
@@ -97,183 +94,160 @@ const stats = [
         </button>
         {groups.map(group => (
           <button type="button" class="chip" data-filter={group.label} aria-pressed="false">
-            {group.label}<span class="mono tabular text-[11px] opacity-60">{group.items.length}</span>
+            {group.label}<span class="mono tabular text-[11px] opacity-60">{group.count}</span>
           </button>
         ))}
       </div>
-      <label class="flex h-9 shrink-0 items-center gap-2 rounded-md border border-line bg-surface px-3 text-ink-3 focus-within:border-brand lg:w-60">
-        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <circle cx="11" cy="11" r="7" />
-          <path d="m20 20-3.5-3.5" stroke-linecap="round" />
-        </svg>
-        <input
-          id="robot-search"
-          type="search"
-          placeholder="搜索型号 / 厂商"
-          aria-label="搜索整机型号或厂商"
-          class="w-full bg-transparent text-sm text-ink placeholder:text-ink-3 focus:outline-none"
-        />
-      </label>
+      <div class="flex flex-wrap items-center gap-2">
+        <label class="flex h-9 shrink-0 items-center gap-2 rounded-md border border-line bg-surface px-3 text-ink-3 focus-within:border-brand lg:w-52">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" stroke-linecap="round" />
+          </svg>
+          <input id="robot-search" type="search" placeholder="搜索型号 / 厂商" aria-label="搜索整机型号或厂商" class="w-full bg-transparent text-sm text-ink placeholder:text-ink-3 focus:outline-none" />
+        </label>
+        <label class="flex h-9 items-center gap-2 text-[11px] text-ink-3">
+          排序
+          <select id="robot-sort" class="h-8 rounded-md border border-line bg-surface px-2 text-[12px] text-ink">
+            <option value="eco">开源生态丰富度</option>
+            <option value="projects">生态项目数</option>
+            <option value="dof">自由度</option>
+            <option value="mass">质量</option>
+            <option value="price">参考价</option>
+            <option value="name">型号</option>
+          </select>
+        </label>
+      </div>
     </div>
     <p class="mt-2 text-xs text-ink-3" aria-live="polite">
       <span id="robot-count" class="mono tabular text-ink-2">{robots.length}</span> 台符合当前筛选
     </p>
   </div>
 
-  <div class="mt-8 space-y-10">
-    {groups.map(group => (
-      <section
-        id={`type-${encodeURIComponent(group.label)}`}
-        data-group={group.label}
-        aria-labelledby={`type-${encodeURIComponent(group.label)}-title`}
-        class="scroll-mt-40"
+  <ul id="build-grid" class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" role="list">
+    {defaultSort.map(robot => (
+      <li
+        data-item
+        data-type={robot.subtype_label || '其他'}
+        data-search={searchText(robot)}
+        data-eco={ecoCount(robot)}
+        data-projects={ecoProjects(robot)}
+        data-dof={num(robot, 'dof')}
+        data-mass={num(robot, 'mass_kg')}
+        data-price={typeof robot.price_cny === 'number' ? robot.price_cny : -1}
+        data-name={robot.model}
+        class="flex min-w-0"
       >
-        <div class="mb-3 flex flex-wrap items-baseline justify-between gap-2 border-b border-line pb-2.5">
-          <h2
-            id={`type-${encodeURIComponent(group.label)}-title`}
-            class="text-lg font-bold tracking-tight text-ink sm:text-xl"
-          >
-            {group.label}
-          </h2>
-          <span class="mono tabular text-xs text-ink-3">{group.items.length} 台</span>
-        </div>
-        <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" role="list">
-          {group.items.map(robot => (
-            <li data-item data-group={group.label} data-search={searchText(robot)} class="flex">
-              <a
-                href={withBase(`/builds/${robot._slug}.html`)}
-                class="card card-hover group flex h-full w-full flex-col overflow-hidden focus-visible:outline-none"
-              >
-                <div class="relative flex h-40 shrink-0 items-center justify-center overflow-hidden border-b border-line bg-surface-2">
-                  {imageSrc(robot) ? (
-                    <img
-                      src={imageSrc(robot)}
-                      alt={`${robot.vendor} ${robot.model}`}
-                      loading="lazy"
-                      class="h-full w-full object-contain p-4 transition-transform duration-300 group-hover:scale-[1.03]"
-                    />
-                  ) : (
-                    <span class="flex flex-col items-center gap-1 text-[11px] text-ink-3">
-                      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                        <rect x="4" y="7" width="16" height="12" rx="2" />
-                        <path d="M12 3v4M9 12h.01M15 12h.01" stroke-linecap="round" />
-                      </svg>
-                      暂无产品图
-                    </span>
-                  )}
-                  {robot.source_tier && (
-                    <span class={`${tierClass(robot.source_tier)} absolute left-3 top-3`}>
-                      来源 {robot.source_tier}
-                    </span>
-                  )}
-                </div>
-                <div class="flex flex-1 flex-col gap-3 p-4">
-                  <div class="flex items-start justify-between gap-2">
-                    <div class="min-w-0">
-                      <h3 class="truncate text-sm font-semibold leading-5 text-ink transition-colors group-hover:text-brand">
-                        {robot.model}
-                      </h3>
-                      <p class="mt-0.5 truncate text-xs text-ink-3">{robot.vendor_cn || robot.vendor}</p>
-                      {(robot.ecosystem?.count || 0) > 0 && (
-                        <p class="mt-1 truncate text-[11px] text-brand">开源生态 {robot.ecosystem?.count} 个项目</p>
-                      )}
-                    </div>
-                    {robot.verified ? (
-                      <span class="tier tier-a shrink-0">已核对</span>
-                    ) : (
-                      <span class="tier tier-c shrink-0">待复核</span>
-                    )}
-                  </div>
-                  <dl class="mt-auto grid grid-cols-3 gap-2 border-t border-line pt-3">
-                    <div class="min-w-0">
-                      <dt class="text-[11px] text-ink-3">自由度</dt>
-                      <dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">
-                        {specText(robot, 'dof') || '—'}
-                      </dd>
-                    </div>
-                    <div class="min-w-0">
-                      <dt class="text-[11px] text-ink-3">质量</dt>
-                      <dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">
-                        {specText(robot, 'mass_kg') ? `${specText(robot, 'mass_kg')} kg` : '—'}
-                      </dd>
-                    </div>
-                    <div class="min-w-0">
-                      <dt class="text-[11px] text-ink-3">参考价</dt>
-                      <dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">
-                        {formatPrice(robot.price_cny)}
-                      </dd>
-                    </div>
-                  </dl>
-                </div>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
+        <a href={withBase(`/builds/${robot._slug}.html`)} class="card card-hover group flex h-full w-full flex-col overflow-hidden focus-visible:outline-none">
+          <div class="relative flex h-40 shrink-0 items-center justify-center overflow-hidden border-b border-line bg-surface-2">
+            {imageSrc(robot) ? (
+              <img src={imageSrc(robot)} alt={`${robot.vendor} ${robot.model}`} loading="lazy" class="h-full w-full object-contain p-4 transition-transform duration-300 group-hover:scale-[1.03]" />
+            ) : (
+              <span class="flex flex-col items-center gap-1 text-[11px] text-ink-3">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4" y="7" width="16" height="12" rx="2" /><path d="M12 3v4M9 12h.01M15 12h.01" stroke-linecap="round" /></svg>
+                暂无产品图
+              </span>
+            )}
+            {robot.source_tier && <span class={`${tierClass(robot.source_tier)} absolute left-3 top-3`}>来源 {robot.source_tier}</span>}
+            <span class="absolute right-3 top-3 rounded-full border border-brand/20 bg-brand-soft px-2 py-0.5 text-[11px] font-semibold text-brand">
+              生态 {ecoCount(robot)}
+            </span>
+          </div>
+          <div class="flex flex-1 flex-col gap-3 p-4">
+            <div class="flex items-start justify-between gap-2">
+              <div class="min-w-0">
+                <h3 class="truncate text-sm font-semibold leading-5 text-ink transition-colors group-hover:text-brand">{robot.model}</h3>
+                <p class="mt-0.5 truncate text-xs text-ink-3">{robot.vendor_cn || robot.vendor}</p>
+              </div>
+              {robot.verified ? <span class="tier tier-a shrink-0">已核对</span> : <span class="tier tier-c shrink-0">待复核</span>}
+            </div>
+
+            <p class="text-[11px] leading-5 text-ink-3">
+              {robot.subtype_label || '其他'} · 仓库/URDF/训练/部署等项目索引
+            </p>
+
+            <dl class="mt-auto grid grid-cols-3 gap-2 border-t border-line pt-3">
+              <div class="min-w-0"><dt class="text-[11px] text-ink-3">自由度</dt><dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">{specText(robot, 'dof') || '—'}</dd></div>
+              <div class="min-w-0"><dt class="text-[11px] text-ink-3">质量</dt><dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">{specText(robot, 'mass_kg') ? `${specText(robot, 'mass_kg')} kg` : '—'}</dd></div>
+              <div class="min-w-0"><dt class="text-[11px] text-ink-3">参考价</dt><dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">{formatPrice(robot.price_cny)}</dd></div>
+            </dl>
+          </div>
+        </a>
+      </li>
     ))}
-  </div>
+  </ul>
 
   <div id="robot-empty" class="card mt-8 p-10 text-center" data-empty hidden>
     <p class="text-sm font-semibold text-ink">没有匹配的整机</p>
-    <p class="mt-1 text-xs leading-5 text-ink-3">
-      换一个型号或厂商关键词试试；也可以点「全部」清除形态筛选。
-    </p>
+    <p class="mt-1 text-xs leading-5 text-ink-3">换一个型号或厂商关键词，或点「全部」清除形态筛选。</p>
   </div>
 
   <p class="mt-10 rounded-md border border-line bg-surface-2 p-4 text-xs leading-6 text-ink-3">
-    参数来自厂商官网、官方仓库与 URDF；同一机型不同配置差异可能很大。价格只在厂商公开标价时展示，其余写询价。
+    生态项目数来自参考库索引，只说明「哪些环节有现成开源实现」，不代表官方支持或可直接适配。
+    参数与价格来自厂商官网、官方仓库与 URDF；价格只在厂商公开标价时展示，其余写询价。
     <a href={withBase('/method.html')} class="ml-1 font-medium text-brand hover:underline">方法与来源 →</a>
   </p>
 </Base>
 
+<script>
+  const grid = document.getElementById('build-grid')
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-item]'))
+  const search = document.getElementById('robot-search') as HTMLInputElement | null
+  const sortSelect = document.getElementById('robot-sort') as HTMLSelectElement | null
+  const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip[data-filter]'))
+  const counter = document.getElementById('robot-count')
+  const empty = document.getElementById('robot-empty')
+  let activeType = 'all'
+
+  const number = (card: HTMLElement, key: string) => Number(card.dataset[key] || -1)
+  const sortCards = () => {
+    const key = sortSelect?.value || 'eco'
+    const sorted = [...cards].sort((a, b) => {
+      if (key === 'name') return (a.dataset.name || '').localeCompare(b.dataset.name || '', 'zh-CN')
+      if (key === 'mass') {
+        const av = number(a, 'mass'), bv = number(b, 'mass')
+        if (av < 0 && bv < 0) return 0
+        if (av < 0) return 1
+        if (bv < 0) return -1
+        return av - bv
+      }
+      return number(b, key) - number(a, key)
+    })
+    for (const card of sorted) grid?.appendChild(card)
+  }
+
+  const apply = () => {
+    const needle = (search?.value || '').trim().toLowerCase()
+    let visible = 0
+    for (const card of cards) {
+      const hitType = activeType === 'all' || card.dataset.type === activeType
+      const hitQuery = !needle || (card.dataset.search || '').includes(needle)
+      const show = hitType && hitQuery
+      card.hidden = !show
+      if (show) visible += 1
+    }
+    if (counter) counter.textContent = String(visible)
+    if (empty) empty.hidden = visible !== 0
+    if (grid) grid.hidden = visible === 0
+  }
+
+  chips.forEach(button => button.addEventListener('click', () => {
+    activeType = button.dataset.filter || 'all'
+    for (const other of chips) {
+      const on = other.dataset.filter === activeType
+      other.classList.toggle('is-active', on)
+      other.setAttribute('aria-pressed', String(on))
+    }
+    apply()
+  }))
+  search?.addEventListener('input', apply)
+  sortSelect?.addEventListener('change', sortCards)
+  sortCards()
+  apply()
+</script>
+
 <style>
-  section[hidden],
-  li[data-item][hidden],
+  [data-item][hidden],
   [data-empty][hidden] {
     display: none !important;
   }
 </style>
-
-<script>
-  const search = document.getElementById('robot-search') as HTMLInputElement | null
-  const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip[data-filter]'))
-  const sections = Array.from(document.querySelectorAll<HTMLElement>('section[data-group]'))
-  const counter = document.getElementById('robot-count')
-  const empty = document.getElementById('robot-empty')
-  let active = 'all'
-
-  const apply = () => {
-    const query = (search?.value || '').trim().toLowerCase()
-    let visible = 0
-    for (const section of sections) {
-      const group = section.dataset.group || ''
-      if (active !== 'all' && group !== active) {
-        section.hidden = true
-        continue
-      }
-      let shown = 0
-      for (const item of Array.from(section.querySelectorAll<HTMLElement>('li[data-item]'))) {
-        const hit = !query || (item.dataset.search || '').toLowerCase().includes(query)
-        item.hidden = !hit
-        if (hit) shown += 1
-      }
-      section.hidden = shown === 0
-      visible += shown
-    }
-    if (counter) counter.textContent = String(visible)
-    if (empty) empty.hidden = visible !== 0
-  }
-
-  for (const chip of chips) {
-    chip.addEventListener('click', () => {
-      active = chip.dataset.filter || 'all'
-      for (const other of chips) {
-        const on = other === chip
-        other.classList.toggle('is-active', on)
-        other.setAttribute('aria-pressed', String(on))
-      }
-      apply()
-    })
-  }
-  search?.addEventListener('input', apply)
-</script>
