@@ -3,96 +3,104 @@ import Base from '@/layouts/Base.astro'
 import suppliersData from '@/data/suppliers.json'
 import { withBase } from '@/lib/utils'
 
+type Signal = 'good' | 'mixed' | 'bad' | 'unknown' | 'fast' | 'slow' | 'low' | 'mid' | 'high' | 'yes' | 'no'
 type Supplier = {
   id: string
   name: string
   display_name?: string | null
+  shop_type?: string | null
   category?: string | null
-  fine?: string | null
-  kind?: string | null
+  services?: string[]
   listing?: string | null
   grade?: string | null
-  reason?: string | null
-  notes?: string | null
   channel?: string | null
-  process?: string | null
-  quality?: string | null
-  punctual?: string | null
-  price_level?: string | null
-  invoice?: string | null
-  tier?: string | null
+  signals?: Record<string, Signal>
+  quality_raw?: string | null
+  punctual_raw?: string | null
+  price_raw?: string | null
+  invoice_raw?: string | null
+  notes?: string | null
+  reason?: string | null
   reported_at?: string | null
-  reports?: number
-  origin?: string | null
 }
 
-const suppliers = suppliersData.suppliers as unknown as Supplier[]
+const suppliers = (suppliersData.suppliers || []) as unknown as Supplier[]
 const total = suppliers.length
+const redCount = suppliers.filter(s => s.listing === '红榜').length
+const blackCount = suppliers.filter(s => s.listing === '黑榜').length
+const invoiceCount = suppliers.filter(s => s.signals?.invoice === 'yes').length
 
-const categories = [...new Set(suppliers.map(item => item.category || '未分类'))]
-  .map(category => ({
-    category,
-    items: suppliers.filter(item => (item.category || '未分类') === category),
-  }))
-  .sort((a, b) => b.items.length - a.items.length)
-
-const grades = ['全新', '拆机'].map(grade => ({
-  grade,
-  count: suppliers.filter(item => item.grade === grade).length,
+const TYPE_ORDER = [
+  '电子元件 / 模块',
+  '标准件 / 紧固件',
+  '标准件 / 五金',
+  '轴承 / 传动',
+  'CNC / 车铣',
+  '钣金 / 激光切割',
+  'CNC / 钣金综合',
+  '3D打印 / 手板',
+  '线切割 / 焊接 / 表面处理',
+  '机械加工 / 其他',
+  '工具 / 仪表',
+  '材料 / 耗材',
+  '包胶 / 轮',
+  '杂项 / 耗材',
+  '踩雷记录',
+]
+const typeCounts = new Map<string, number>()
+for (const item of suppliers) {
+  const type = item.shop_type || '其他'
+  typeCounts.set(type, (typeCounts.get(type) || 0) + 1)
+}
+const types = [...typeCounts.entries()]
+  .sort((a, b) => {
+    const ia = TYPE_ORDER.indexOf(a[0])
+    const ib = TYPE_ORDER.indexOf(b[0])
+    return (ia < 0 ? 999 : ia) - (ib < 0 ? 999 : ib) || b[1] - a[1]
+  })
+const groups = types.map(([type, count]) => ({
+  type,
+  count,
+  items: suppliers.filter(s => (s.shop_type || '其他') === type),
 }))
-const ungraded = suppliers.filter(item => !item.grade).length
-const listingCounts = ['红榜', '黑榜'].map(listing => ({
-  listing,
-  count: suppliers.filter(item => item.listing === listing).length,
-}))
-const unlisted = suppliers.filter(item => !item.listing).length
-const redCount = listingCounts[0].count
-const blackCount = listingCounts[1].count
 
-const searchText = (item: Supplier) =>
-  [
-    item.display_name,
-    item.name,
-    item.category,
-    item.fine,
-    item.listing,
-    item.grade,
-    item.reason,
-    item.notes,
-    item.channel,
-    item.process,
-    item.quality,
-    item.punctual,
-    item.price_level,
-    item.invoice,
-  ]
-    .filter(Boolean)
-    .join(' ')
-    .toLowerCase()
+const services = [...new Set(suppliers.flatMap(s => (s.services || []).filter(x => x !== '风险记录')))]
+  .map(service => ({ service, count: suppliers.filter(s => (s.services || []).includes(service)).length }))
+  .sort((a, b) => b.count - a.count)
 
 const listingTone = (listing?: string | null) =>
   listing === '红榜'
-    ? { pill: 'border-success/30 bg-success-soft text-success', bar: 'bg-success' }
+    ? 'border-success/30 bg-success-soft text-success'
     : listing === '黑榜'
-      ? { pill: 'border-danger/30 bg-danger-soft text-danger', bar: 'bg-danger' }
-      : { pill: 'border-line bg-surface-2 text-ink-3', bar: '' }
+      ? 'border-danger/30 bg-danger-soft text-danger'
+      : 'border-line bg-surface-2 text-ink-3'
+const listingBar = (listing?: string | null) =>
+  listing === '红榜' ? 'bg-success' : listing === '黑榜' ? 'bg-danger' : ''
 
-const metaEntries = (item: Supplier) =>
+const signalLabel: Record<string, Record<string, string>> = {
+  quality: { good: '质量稳', mixed: '质量一般', bad: '质量有坑', unknown: '未评' },
+  punctual: { fast: '交期快', mixed: '交期一般', slow: '要催', unknown: '未评' },
+  price: { low: '价格低', mid: '价格中', high: '价格高', unknown: '未评' },
+  invoice: { yes: '可开票', no: '不开票', unknown: '未评' },
+}
+const rawOrSignal = (raw: string | null | undefined, signals: Record<string, Signal> | undefined, key: string) =>
+  raw || signalLabel[key]?.[signals?.[key] || 'unknown'] || '未评'
+
+const feedback = (item: Supplier) => {
+  const text = [item.reason, item.notes].filter(Boolean).join('\n').trim()
+  return text.length > 220 ? `${text.slice(0, 220)}…` : text
+}
+const fullFeedback = (item: Supplier) => [item.reason, item.notes].filter(Boolean).join('\n').trim()
+const searchText = (item: Supplier) =>
   [
-    ['细分', item.fine || item.process],
-    ['渠道', item.channel],
-    ['质量反馈', item.quality],
-    ['交期', item.punctual],
-    ['价格档', item.price_level],
-    ['发票', item.invoice],
-  ].filter(([, value]) => Boolean(value)) as Array<[string, string]>
-
-const countListing = (items: Supplier[], listing: string) => items.filter(item => item.listing === listing).length
+    item.name, item.display_name, item.shop_type, item.category, item.notes, item.reason,
+    ...(item.services || []), item.quality_raw, item.punctual_raw, item.price_raw, item.invoice_raw,
+  ].filter(Boolean).join(' ').toLowerCase()
 ---
 
 <Base
   title="渠道与加工 · RoboWiki"
-  description={`${total} 条机器人零件与加工渠道的社区记录：按品类与榜单分组，标注成色、原因与反馈时间。`}
+  description={`${total} 家机器人零件与加工店铺：按店铺类型分组，直接看社区评价原文。`}
 >
   <div class="mx-auto max-w-6xl">
     <nav aria-label="面包屑" class="mb-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-ink-3">
@@ -105,160 +113,150 @@ const countListing = (items: Supplier[], listing: string) => items.filter(item =
 
     <header>
       <p class="text-[11px] font-semibold tracking-[0.14em] text-brand uppercase">渠道库</p>
-      <h1 class="mt-2 max-w-3xl text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">买过的人怎么说，比店铺首页怎么写更可靠。</h1>
+      <h1 class="mt-2 max-w-3xl text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
+        先看是什么店，再看别人怎么说。
+      </h1>
       <p class="mt-3 max-w-3xl text-sm leading-7 text-ink-2">
-        {total} 条社区记录，按品类分组。红黑榜为社区匿名填写（已去除掌柜 ID 与店铺链接），记录的是某次购买经历，不是本站的推荐或背书；下单前请自行核验。
+        按店铺类型分组：元件电商、标准件/紧固件、CNC/车铣、钣金/激光、3D 打印、轴承传动、工具耗材、踩雷记录。
+        每张卡保留社区原话里的质量、交期、价格、发票和踩雷原因，不做“适合所有人”的抽象推荐。
       </p>
 
-      <dl class="mt-6 grid max-w-2xl grid-cols-2 gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-4">
-        <div class="bg-surface px-4 py-3">
-          <dt class="text-[11px] text-ink-3">收录记录</dt>
-          <dd class="mono mt-1 text-xl font-bold text-ink">{total}</dd>
-        </div>
-        <div class="bg-surface px-4 py-3">
-          <dt class="text-[11px] text-ink-3">红榜</dt>
-          <dd class="mono mt-1 text-xl font-bold text-success">{redCount}</dd>
-        </div>
-        <div class="bg-surface px-4 py-3">
-          <dt class="text-[11px] text-ink-3">黑榜</dt>
-          <dd class="mono mt-1 text-xl font-bold text-danger">{blackCount}</dd>
-        </div>
-        <div class="bg-surface px-4 py-3">
-          <dt class="text-[11px] text-ink-3">未入榜</dt>
-          <dd class="mono mt-1 text-xl font-bold text-ink-2">{unlisted}</dd>
-        </div>
+      <dl class="mt-6 grid max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-4">
+        <div class="bg-surface px-4 py-3"><dt class="text-[11px] text-ink-3">收录店铺</dt><dd class="mono mt-1 text-xl font-bold text-ink">{total}</dd></div>
+        <div class="bg-surface px-4 py-3"><dt class="text-[11px] text-ink-3">红榜</dt><dd class="mono mt-1 text-xl font-bold text-success">{redCount}</dd></div>
+        <div class="bg-surface px-4 py-3"><dt class="text-[11px] text-ink-3">踩雷</dt><dd class="mono mt-1 text-xl font-bold text-danger">{blackCount}</dd></div>
+        <div class="bg-surface px-4 py-3"><dt class="text-[11px] text-ink-3">可开票</dt><dd class="mono mt-1 text-xl font-bold text-ink">{invoiceCount}</dd></div>
       </dl>
-
-      <p class="mono mt-2 text-[11px] text-ink-3">数据快照：{suppliersData.meta.generated_at.slice(0, 10)} · 共 {suppliersData.meta.record_count} 条</p>
     </header>
 
-    <form id="supplier-filters" class="card mt-6 p-4" role="search" aria-label="筛选渠道">
-      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <div class="sm:col-span-2 lg:col-span-1">
-          <label for="sup-q" class="text-[11px] font-medium text-ink-3">搜索</label>
-          <input
-            id="sup-q"
-            type="search"
-            name="q"
-            placeholder="店名、品类、工艺、反馈内容"
-            class="mt-1 flex h-9 w-full rounded-md border border-line bg-surface px-3 text-sm text-ink transition-colors placeholder:text-ink-3 hover:border-line-strong focus-visible:border-brand focus-visible:outline-none"
-          />
-        </div>
-        <div>
-          <label for="sup-cat" class="text-[11px] font-medium text-ink-3">品类</label>
-          <select id="sup-cat" class="mt-1 flex h-9 w-full rounded-md border border-line bg-surface px-2 text-sm text-ink transition-colors hover:border-line-strong">
-            <option value="">全部品类</option>
-            {categories.map(category => <option value={category.category}>{category.category}（{category.items.length}）</option>)}
-          </select>
-        </div>
-        <div>
-          <label for="sup-grade" class="text-[11px] font-medium text-ink-3">成色</label>
-          <select id="sup-grade" class="mt-1 flex h-9 w-full rounded-md border border-line bg-surface px-2 text-sm text-ink transition-colors hover:border-line-strong">
-            <option value="">全部成色</option>
-            {grades.map(grade => <option value={grade.grade}>{grade.grade}（{grade.count}）</option>)}
-            <option value="__none">未标注（{ungraded}）</option>
-          </select>
-        </div>
-        <div>
-          <label for="sup-listing" class="text-[11px] font-medium text-ink-3">榜单</label>
-          <select id="sup-listing" class="mt-1 flex h-9 w-full rounded-md border border-line bg-surface px-2 text-sm text-ink transition-colors hover:border-line-strong">
-            <option value="">全部记录</option>
-            {listingCounts.map(listing => <option value={listing.listing}>{listing.listing}（{listing.count}）</option>)}
-            <option value="__none">未入榜（{unlisted}）</option>
-          </select>
-        </div>
-      </div>
-      <p id="sup-count" class="mono mt-3 text-[11px] text-ink-3" aria-live="polite">显示 {total} / {total} 家</p>
-    </form>
-
-    <nav aria-label="按品类跳转" class="mt-5">
+    <nav aria-label="按店铺类型跳转" class="mt-6">
       <div class="chip-row">
-        {categories.map(category => (
-          <a href={`#cat-${category.category}`} class="chip">
-            {category.category}
-            <span class="mono text-[11px] text-ink-3">{category.items.length}</span>
+        {types.map(([type, count]) => (
+          <a href={`#type-${encodeURIComponent(type)}`} class="chip">
+            {type}<span class="mono text-[11px] opacity-60">{count}</span>
           </a>
         ))}
       </div>
     </nav>
 
-    <div class="mt-8 space-y-10">
-      {categories.map(category => (
-        <section
-          id={`cat-${category.category}`}
-          data-supplier-section
-          aria-labelledby={`cat-${category.category}-title`}
-          class="scroll-mt-24"
-        >
+    <form id="supplier-filters" class="card mt-4 p-4" role="search" aria-label="筛选渠道">
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="sm:col-span-2">
+          <label for="sup-q" class="text-[11px] font-medium text-ink-3">搜索店名 / 工艺 / 评价原文</label>
+          <input id="sup-q" type="search" placeholder="例如：钣金、轴承、拖工期、能开票" class="mt-1 h-9 w-full rounded-md border border-line bg-surface px-3 text-sm text-ink placeholder:text-ink-3 focus-visible:border-brand focus-visible:outline-none" />
+        </div>
+        <div>
+          <label for="sup-type" class="text-[11px] font-medium text-ink-3">店铺类型</label>
+          <select id="sup-type" class="mt-1 h-9 w-full rounded-md border border-line bg-surface px-2 text-sm text-ink">
+            <option value="">全部类型</option>
+            {types.map(([type, count]) => <option value={type}>{type}（{count}）</option>)}
+          </select>
+        </div>
+        <div>
+          <label for="sup-listing" class="text-[11px] font-medium text-ink-3">榜单</label>
+          <select id="sup-listing" class="mt-1 h-9 w-full rounded-md border border-line bg-surface px-2 text-sm text-ink">
+            <option value="">全部记录</option>
+            <option value="红榜">红榜（{redCount}）</option>
+            <option value="黑榜">踩雷（{blackCount}）</option>
+            <option value="__none">未入榜（{total - redCount - blackCount}）</option>
+          </select>
+        </div>
+      </div>
+      <div class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+        <label class="inline-flex items-center gap-2 text-xs text-ink-2">
+          <input id="sup-invoice" type="checkbox" class="h-4 w-4 rounded border-line" />
+          只看可开票
+        </label>
+        <span class="text-[11px] text-ink-3">能力：</span>
+        <div class="chip-row" role="group" aria-label="按能力筛选">
+          <button type="button" class="chip is-active" data-service="" aria-pressed="true">全部</button>
+          {services.slice(0, 12).map(({ service, count }) => (
+            <button type="button" class="chip" data-service={service} aria-pressed="false">
+              {service}<span class="mono text-[11px] opacity-60">{count}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+      <p id="sup-count" class="mono mt-3 text-[11px] text-ink-3" aria-live="polite">显示 {total} / {total} 家</p>
+    </form>
+
+    <p class="mt-4 rounded-md border border-amber-200 bg-amber-50 p-3 text-[12px] leading-6 text-amber-900">
+      「质量、交期、价格、发票」来自社区原话，是某次交易的记录，不是量化评分；同一家店不同批次可能完全不同。
+      红黑榜不展示填写人、掌柜 ID、店铺链接或联系方式。
+    </p>
+
+    <div id="supplier-empty" class="card mt-6 p-10 text-center" hidden>
+      <p class="text-sm font-semibold text-ink">没有匹配的店铺</p>
+      <p class="mt-1 text-xs leading-5 text-ink-3">换一个类型、能力或关键词试试。</p>
+    </div>
+
+    <div class="mt-8 space-y-9">
+      {groups.map(group => (
+        <section id={`type-${encodeURIComponent(group.type)}`} data-supplier-section data-type-group={group.type} class="scroll-mt-24">
           <div class="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-line pb-2">
-            <h2 id={`cat-${category.category}-title`} class="text-lg font-bold tracking-tight text-ink">{category.category}</h2>
-            <span class="mono text-[11px] text-ink-3">{category.items.length} 家</span>
-            <span class="ml-auto flex items-center gap-3 text-[11px] text-ink-3">
-              {countListing(category.items, '红榜') > 0 && (
-                <span class="inline-flex items-center gap-1">
-                  <span class="h-1.5 w-1.5 rounded-full bg-success" aria-hidden="true" />红榜 {countListing(category.items, '红榜')}
-                </span>
-              )}
-              {countListing(category.items, '黑榜') > 0 && (
-                <span class="inline-flex items-center gap-1">
-                  <span class="h-1.5 w-1.5 rounded-full bg-danger" aria-hidden="true" />黑榜 {countListing(category.items, '黑榜')}
-                </span>
-              )}
+            <h2 class="text-lg font-bold tracking-tight text-ink">{group.type}</h2>
+            <span class="mono text-[11px] text-ink-3">{group.count} 家</span>
+            <span class="ml-auto flex gap-3 text-[11px] text-ink-3">
+              {group.items.some(s => s.listing === '红榜') && <span class="text-success">红榜 {group.items.filter(s => s.listing === '红榜').length}</span>}
+              {group.items.some(s => s.listing === '黑榜') && <span class="text-danger">踩雷 {group.items.filter(s => s.listing === '黑榜').length}</span>}
             </span>
           </div>
-
           <ul class="grid grid-cols-1 gap-3 lg:grid-cols-2" role="list">
-            {category.items.map(item => {
-              const tone = listingTone(item.listing)
+            {group.items.map(item => {
+              const signals = item.signals || {}
+              const raw = feedback(item)
+              const full = fullFeedback(item)
               return (
                 <li
-                  class="min-w-0"
                   data-supplier
-                  data-cat={item.category || '未分类'}
-                  data-grade={item.grade || ''}
+                  data-type={item.shop_type || '其他'}
+                  data-services={(item.services || []).join(' ')}
                   data-listing={item.listing || ''}
+                  data-invoice={signals.invoice === 'yes' ? 'yes' : 'no'}
                   data-search={searchText(item)}
+                  class="min-w-0"
                 >
-                  <article class="card card-hover relative flex h-full flex-col gap-2.5 overflow-hidden py-4 pr-4 pl-5">
-                    {item.listing && <span class={`absolute inset-y-0 left-0 w-[3px] ${tone.bar}`} aria-hidden="true" />}
-
+                  <article class="card card-hover relative flex h-full flex-col gap-3 overflow-hidden py-4 pr-4 pl-5">
+                    {item.listing && <span class={`absolute inset-y-0 left-0 w-[3px] ${listingBar(item.listing)}`} aria-hidden="true" />}
                     <div class="flex flex-wrap items-start gap-x-2 gap-y-1.5">
                       <h3 class="mr-auto text-[15px] font-semibold leading-6 text-ink">{item.display_name || item.name}</h3>
-                      <span class={`inline-flex items-center rounded-full border px-2 py-px text-[11px] font-semibold leading-5 ${tone.pill}`}>
+                      <span class={`inline-flex rounded-full border px-2 py-px text-[11px] font-semibold leading-5 ${listingTone(item.listing)}`}>
                         {item.listing || '未入榜'}
                       </span>
-                      {item.grade && (
-                        <span class="inline-flex items-center rounded-full border border-line bg-surface-2 px-2 py-px text-[11px] font-medium leading-5 text-ink-2">{item.grade}</span>
-                      )}
-                      {item.tier && <span class={`tier tier-${item.tier.toLowerCase()}`}>来源 {item.tier}</span>}
+                      {item.grade && <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-[11px] leading-5 text-ink-2">{item.grade}</span>}
                     </div>
 
                     <p class="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] leading-5 text-ink-3">
-                      <span>{item.category || '未分类'}</span>
-                      {(item.fine || item.process) && <span aria-hidden="true">·</span>}
-                      {(item.fine || item.process) && <span>{item.fine || item.process}</span>}
-                      {item.channel && <span aria-hidden="true">·</span>}
-                      {item.channel && <span>{item.channel}</span>}
-                      {item.reported_at && <span aria-hidden="true">·</span>}
-                      {item.reported_at && <span class="mono">{item.reported_at}</span>}
-                      {item.reports && item.reports > 1 && <span aria-hidden="true">·</span>}
-                      {item.reports && item.reports > 1 && <span class="mono">{item.reports} 条反馈</span>}
+                      <span>{item.shop_type || '其他'}</span>
+                      {item.channel && <><span aria-hidden="true">·</span><span>{item.channel}</span></>}
+                      {item.reported_at && <><span aria-hidden="true">·</span><span>反馈 {item.reported_at}</span></>}
                     </p>
 
-                    <p class="text-xs leading-6 text-ink-2">{item.reason || item.notes || '社区未留下文字说明。'}</p>
-                    {item.reason && item.notes && (
-                      <p class="text-[11px] leading-5 text-ink-3">补充：{item.notes}</p>
-                    )}
+                    <div class="flex flex-wrap gap-1">
+                      {(item.services || []).filter(s => s !== '风险记录').map(service => (
+                        <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-[11px] text-ink-2">{service}</span>
+                      ))}
+                    </div>
 
-                    {metaEntries(item).length > 0 && (
-                      <dl class="mt-auto grid grid-cols-2 gap-x-4 gap-y-1 border-t border-line pt-2.5 text-[11px] sm:grid-cols-3">
-                        {metaEntries(item).map(([label, value]) => (
-                          <div class="flex min-w-0 gap-1">
-                            <dt class="shrink-0 text-ink-3">{label}</dt>
-                            <dd class="truncate text-ink-2" title={value}>{value}</dd>
-                          </div>
-                        ))}
-                      </dl>
+                    <dl class="grid grid-cols-2 gap-x-4 gap-y-1 rounded-md border border-line bg-surface-2 p-2.5 text-[12px] leading-5 sm:grid-cols-4">
+                      <div><dt class="text-[10px] text-ink-3">质量</dt><dd class="text-ink-2">{rawOrSignal(item.quality_raw, signals, 'quality')}</dd></div>
+                      <div><dt class="text-[10px] text-ink-3">交期</dt><dd class="text-ink-2">{rawOrSignal(item.punctual_raw, signals, 'punctual')}</dd></div>
+                      <div><dt class="text-[10px] text-ink-3">价格</dt><dd class="text-ink-2">{rawOrSignal(item.price_raw, signals, 'price')}</dd></div>
+                      <div><dt class="text-[10px] text-ink-3">发票</dt><dd class="text-ink-2">{rawOrSignal(item.invoice_raw, signals, 'invoice')}</dd></div>
+                    </dl>
+
+                    {raw && (
+                      <div class="text-[12.5px] leading-6 text-ink-2">
+                        <p class={item.listing === '黑榜' ? 'text-danger' : ''}>
+                          <span class="font-medium">{item.listing === '黑榜' ? '踩雷经过：' : '社区评价：'}</span>{raw}
+                        </p>
+                        {full.length > 220 && (
+                          <details class="mt-1.5">
+                            <summary class="cursor-pointer select-none text-[11px] text-brand">展开完整反馈</summary>
+                            <p class={`mt-1 whitespace-pre-line text-[12px] leading-6 ${item.listing === '黑榜' ? 'text-danger' : 'text-ink-2'}`}>{full}</p>
+                          </details>
+                        )}
+                      </div>
                     )}
                   </article>
                 </li>
@@ -269,52 +267,59 @@ const countListing = (items: Supplier[], listing: string) => items.filter(item =
       ))}
     </div>
 
-    <p class="mt-10 rounded-lg border border-line bg-surface-2 p-4 text-xs leading-6 text-ink-3">
-      记录来自社区匿名填写，可能过时、片面或带主观判断；「红榜」只表示这次买得顺利，「黑榜」只表示这次出了问题，都不构成对商家的担保或指控。发现错误欢迎在
-      <a href={withBase('/submit.html')} class="mx-1 font-medium text-brand underline decoration-brand/30 underline-offset-2 hover:decoration-brand">投稿页</a>纠正。
+    <p class="mt-10 rounded-md border border-line bg-surface-2 p-4 text-xs leading-6 text-ink-3">
+      店铺名来自社区表与公开名录；链接、掌柜 ID、填写人和联系方式均已移除。记录仅供参考，不代表本站推荐或背书。
     </p>
   </div>
 </Base>
 
 <script>
-  // 过滤靠 `.hidden` 切换：`[data-supplier]` / `[data-supplier-section]` 上不要加
-  // flex / grid 等 display utility，否则同类 utility 谁生效取决于产物 CSS 顺序。
-  const form = document.querySelector<HTMLFormElement>('#supplier-filters')
-  const query = document.querySelector<HTMLInputElement>('#sup-q')
-  const category = document.querySelector<HTMLSelectElement>('#sup-cat')
-  const grade = document.querySelector<HTMLSelectElement>('#sup-grade')
-  const listing = document.querySelector<HTMLSelectElement>('#sup-listing')
-  const count = document.querySelector<HTMLElement>('#sup-count')
-  const cards = [...document.querySelectorAll<HTMLElement>('[data-supplier]')]
-  const sections = [...document.querySelectorAll<HTMLElement>('[data-supplier-section]')]
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-supplier]'))
+  const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-supplier-section]'))
+  const q = document.getElementById('sup-q') as HTMLInputElement | null
+  const type = document.getElementById('sup-type') as HTMLSelectElement | null
+  const listing = document.getElementById('sup-listing') as HTMLSelectElement | null
+  const invoice = document.getElementById('sup-invoice') as HTMLInputElement | null
+  const count = document.getElementById('sup-count')
+  const empty = document.getElementById('supplier-empty')
+  const serviceButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip[data-service]'))
+  let activeService = ''
 
   const apply = () => {
-    const term = (query?.value || '').trim().toLowerCase()
-    const cat = category?.value || ''
-    const gradeValue = grade?.value || ''
-    const listingValue = listing?.value || ''
+    const needle = (q?.value || '').trim().toLowerCase()
+    const wantType = type?.value || ''
+    const wantListing = listing?.value || ''
+    const wantInvoice = Boolean(invoice?.checked)
     let shown = 0
     for (const card of cards) {
-      const matchesTerm = !term || (card.dataset.search || '').includes(term)
-      const matchesCat = !cat || card.dataset.cat === cat
-      const matchesGrade = !gradeValue ||
-        (gradeValue === '__none' ? !card.dataset.grade : card.dataset.grade === gradeValue)
-      const matchesListing = !listingValue ||
-        (listingValue === '__none' ? !card.dataset.listing : card.dataset.listing === listingValue)
-      const visible = matchesTerm && matchesCat && matchesGrade && matchesListing
-      card.classList.toggle('hidden', !visible)
+      const hitType = !wantType || card.dataset.type === wantType
+      const hitService = !activeService || (card.dataset.services || '').split(' ').includes(activeService)
+      const hitListing = !wantListing || (wantListing === '__none' ? !card.dataset.listing : card.dataset.listing === wantListing)
+      const hitInvoice = !wantInvoice || card.dataset.invoice === 'yes'
+      const hitQuery = !needle || (card.dataset.search || '').includes(needle)
+      const visible = hitType && hitService && hitListing && hitInvoice && hitQuery
+      card.hidden = !visible
       if (visible) shown += 1
     }
     for (const section of sections) {
-      const anyVisible = [...section.querySelectorAll<HTMLElement>('[data-supplier]')].some(card => !card.classList.contains('hidden'))
-      section.classList.toggle('hidden', !anyVisible)
+      section.hidden = !Array.from(section.querySelectorAll<HTMLElement>('[data-supplier]')).some(card => !card.hidden)
     }
     if (count) count.textContent = `显示 ${shown} / ${cards.length} 家`
+    if (empty) empty.hidden = shown !== 0
   }
 
-  form?.addEventListener('submit', event => event.preventDefault())
-  for (const control of [query, category, grade, listing]) {
-    control?.addEventListener('input', apply)
-    control?.addEventListener('change', apply)
-  }
+  serviceButtons.forEach(button => button.addEventListener('click', () => {
+    activeService = activeService === button.dataset.service ? '' : (button.dataset.service || '')
+    for (const other of serviceButtons) {
+      const on = other.dataset.service === activeService
+      other.classList.toggle('is-active', on)
+      other.setAttribute('aria-pressed', String(on))
+    }
+    apply()
+  }))
+  q?.addEventListener('input', apply)
+  type?.addEventListener('change', apply)
+  listing?.addEventListener('change', apply)
+  invoice?.addEventListener('change', apply)
+  apply()
 </script>
