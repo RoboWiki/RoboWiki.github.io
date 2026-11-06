@@ -16,6 +16,7 @@ type Robot = {
   source_tier?: string | null
   verified?: number
   specs: Record<string, unknown>
+  ecosystem?: { count?: number; projects?: unknown[] } | null
   _slug: string
 }
 
@@ -173,6 +174,9 @@ const stats = [
                         {robot.model}
                       </h3>
                       <p class="mt-0.5 truncate text-xs text-ink-3">{robot.vendor_cn || robot.vendor}</p>
+                      {(robot.ecosystem?.count || 0) > 0 && (
+                        <p class="mt-1 truncate text-[11px] text-brand">开源生态 {robot.ecosystem?.count} 个项目</p>
+                      )}
                     </div>
                     {robot.verified ? (
                       <span class="tier tier-a shrink-0">已核对</span>

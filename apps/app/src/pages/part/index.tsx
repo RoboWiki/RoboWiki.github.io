@@ -317,6 +317,13 @@ export default function PartPage() {
 
   const facts = partFacts(part)
   const image = partImage(part)
+  const offers = (part.offers || []).filter(o => o && !o.demo)
+  const copyOffer = (url?: string | null) => {
+    if (!url || !/^https?:\/\//i.test(url)) return
+    Taro.setClipboardData({ data: url }).then(() =>
+      Taro.showToast({ title: '活动链接已复制', icon: 'none' }),
+    )
+  }
   const avg = rating?.avg
   const count = rating?.count || 0
   const histogram = rating?.histogram || {}
@@ -352,6 +359,33 @@ export default function PartPage() {
       </View>
 
       {part.notes ? <Text className="part__notes">{part.notes}</Text> : null}
+
+      {offers.length ? (
+        <View className="part__section">
+          <View className="rw-row rw-row--between part__section-head">
+            <Text className="rw-subtitle">渠道优惠 / 活动价</Text>
+            <Text className="rw-caption">{offers.length} 条</Text>
+          </View>
+          <View className="rw-list">
+            {offers.map((offer) => (
+              <View className="rw-list__row" key={String(offer.id ?? offer.title)}>
+                <View className="rw-grow">
+                  <Text className="rw-strong">{offer.title || '渠道活动'}</Text>
+                  {offer.detail ? <Text className="rw-caption part__offer-detail">{offer.detail}</Text> : null}
+                  <Text className="rw-caption">
+                    {offer.vendor ? `${offer.vendor} · ` : ''}
+                    {offer.expires_on ? `有效期至 ${offer.expires_on}` : '有效期未标注'}
+                  </Text>
+                </View>
+                {offer.url && /^https?:\/\//i.test(offer.url) ? (
+                  <Text className="rw-link" onClick={() => copyOffer(offer.url)}>复制链接</Text>
+                ) : null}
+              </View>
+            ))}
+          </View>
+          <Text className="rw-caption part__offer-note">优惠以下单页面为准；本站不卖货、不收佣金。</Text>
+        </View>
+      ) : null}
 
       <View className="rw-row rw-row--between part__fix">
         <Text className="rw-caption">参数或价格不对？提交纠错，站务审核后更新目录。</Text>

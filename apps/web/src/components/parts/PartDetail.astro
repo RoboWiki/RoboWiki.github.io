@@ -58,6 +58,21 @@ const allSpecs = Object.entries(part.specs || {})
 const missing = allSpecs.filter(([, v]) => v === null || v === undefined || v === '').length
 const commits = (part.specs?.repo_urls as string[] | undefined) ?? []
 const repoLicense = part.specs?.repo_license as string | null | undefined
+type Offer = {
+  title?: string
+  kind?: string
+  price?: number | null
+  discount?: number | string | null
+  condition?: string | null
+  url?: string | null
+  expires?: string | null
+  source?: string | null
+  demo?: boolean
+}
+const today = new Date().toISOString().slice(0, 10)
+const offers = ((part.offers ?? []) as Offer[])
+  .filter(o => o && !o.demo && (!o.expires || o.expires >= today))
+const offerLink = (url?: string | null) => (url && /^https?:\/\//i.test(url) ? url : '')
 const partPath = `/parts/${part.category}/${part.slug}.html`
 const title = `${part.vendor} ${part.model} · RoboWiki`
 const description = `${part.vendor} ${part.model} 的参数、来源、评分与真实使用经验。`
@@ -149,6 +164,40 @@ const keyStats = STAT_PRIORITY
           </div>
         </div>
       </header>
+
+      {offers.length > 0 && (
+        <section class="card p-5" aria-labelledby="offers">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 id="offers" class="text-sm font-semibold text-ink">渠道优惠 / 活动价</h2>
+            <span class="mono tabular text-[11px] text-ink-3">{offers.length} 条</span>
+          </div>
+          <ul class="mt-3 space-y-3">
+            {offers.map(offer => (
+              <li class="rounded-md border border-line bg-surface-2 p-3.5">
+                <div class="flex flex-wrap items-baseline justify-between gap-2">
+                  <p class="text-[13px] font-semibold text-ink">{offer.title || '渠道活动'}</p>
+                  {offer.price != null && (
+                    <span class="mono tabular text-sm font-semibold text-brand">¥{Number(offer.price).toLocaleString('zh-CN')}</span>
+                  )}
+                </div>
+                {offer.condition && <p class="mt-1.5 whitespace-pre-line text-[12.5px] leading-6 text-ink-2">{offer.condition}</p>}
+                <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-ink-3">
+                  {offer.expires && <span>有效期至 {offer.expires}</span>}
+                  {offer.source && <span>来源：{offer.source}</span>}
+                  {offer.kind && <span>类型：{offer.kind}</span>}
+                  {offerLink(offer.url) && (
+                    <a href={offerLink(offer.url)} target="_blank" rel="noopener" class="font-medium text-brand hover:underline">查看活动 →</a>
+                  )}
+                </div>
+                {offer.url && !offerLink(offer.url) && <p class="mt-1 text-[11px] text-ink-3">渠道：{offer.url}</p>}
+              </li>
+            ))}
+          </ul>
+          <p class="mt-3 text-[11px] leading-5 text-ink-3">
+            优惠信息按活动方公开口径整理，价格、资格与截止时间以下单页面为准；本站不卖货、不收佣金。
+          </p>
+        </section>
+      )}
 
       <section class="card" aria-labelledby="specs">
         <div class="flex flex-wrap items-baseline justify-between gap-2 border-b border-line px-5 py-4">

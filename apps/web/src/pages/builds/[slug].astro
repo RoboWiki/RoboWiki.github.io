@@ -27,6 +27,12 @@ type Robot = {
   bom?: Array<{ part_id?: string | null; name: string; qty: number; note?: string | null }> | null
   steps?: Array<{ order?: number | null; title: string; detail?: string | null; criteria?: string | null; pitfall?: string | null }> | null
   artifacts?: Record<string, string | null> | null
+  ecosystem?: {
+    label?: string | null
+    count?: number
+    roles?: Record<string, number>
+    projects?: Array<{ name: string; role: string; desc?: string | null; files?: number; url: string }>
+  } | null
 }
 
 export function getStaticPaths() {
@@ -46,6 +52,12 @@ const license = text(robot.specs.repo_license)
 const repos = list(robot.specs.repo_urls)
 const urdfs = list(robot.specs.urdf_urls)
 const artifacts = robot.artifacts ?? {}
+const eco = robot.ecosystem ?? null
+const ecoProjects = (eco?.projects ?? []).filter(p => p && p.url)
+const ECO_ROLE_ORDER = ['官方项目', '官方描述/资产', '官方 SDK', '仿真', '训练', '部署', '导航', '控制/MPC', '工具/资料']
+const ecoGroups = ECO_ROLE_ORDER
+  .map(role => ({ role, items: ecoProjects.filter(p => p.role === role).sort((a, b) => (b.files || 0) - (a.files || 0)) }))
+  .filter(group => group.items.length > 0)
 const artifactLink = (key: string) => (artifacts[key] ? String(artifacts[key]) : '')
 const bom = (robot.bom ?? []).filter(item => item && item.name)
 const steps = [...(robot.steps ?? [])]
@@ -130,6 +142,11 @@ const docs = [
           <span class="inline-flex h-7 items-center whitespace-nowrap rounded-full border border-line bg-surface-2 px-2.5 text-xs font-medium text-ink-2">
             {robot.subtype_label}
           </span>
+        )}
+        {ecoProjects.length > 0 && (
+          <a href="#ecosystem" class="inline-flex h-7 items-center whitespace-nowrap rounded-full border border-brand/30 bg-brand-soft px-2.5 text-xs font-medium text-brand hover:border-brand">
+            生态 {ecoProjects.length} 个项目
+          </a>
         )}
         {robot.source_tier && <span class={tierClass(robot.source_tier)}>来源 {robot.source_tier} 级</span>}
         <span class={robot.verified ? 'tier tier-a' : 'tier tier-c'}>{robot.verified ? '已核对' : '待复核'}</span>
@@ -310,6 +327,47 @@ const docs = [
           ))}
         </dl>
       </section>
+
+      {ecoGroups.length > 0 && (
+        <section class="card p-5 sm:p-6" aria-labelledby="ecosystem">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 id="ecosystem" class="text-base font-bold tracking-tight text-ink">开源生态</h2>
+            <span class="mono tabular text-xs text-ink-3">{ecoProjects.length} 个项目 · {eco?.count ?? ecoProjects.length} 个索引</span>
+          </div>
+          <p class="mt-1 text-xs leading-5 text-ink-3">
+            来自参考库的项目索引，只说明哪些环节有现成开源实现；不代表这些项目都直接适配这台机器。
+          </p>
+          <div class="mt-3 flex flex-wrap gap-1.5">
+            {ECO_ROLE_ORDER.filter(role => eco?.roles?.[role]).map(role => (
+              <span class="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-[11px] text-ink-3">
+                {role} <span class="mono tabular text-ink-2">{eco?.roles?.[role]}</span>
+              </span>
+            ))}
+          </div>
+          <div class="mt-4 space-y-4">
+            {ecoGroups.map(group => (
+              <div>
+                <h3 class="text-[13px] font-semibold text-ink">{group.role} <span class="mono text-[11px] font-normal text-ink-3">{group.items.length}</span></h3>
+                <ul class="mt-1.5 space-y-1.5">
+                  {group.items.slice(0, 10).map(project => (
+                    <li class="flex items-start gap-2 text-[13px] leading-6">
+                      <span class="mt-2 h-1 w-1 shrink-0 rounded-full bg-line-strong" aria-hidden="true"></span>
+                      <span class="min-w-0">
+                        <a href={project.url} target="_blank" rel="noopener" class="break-all font-medium text-brand hover:underline">
+                          {project.name}
+                        </a>
+                        {project.desc && <span class="text-ink-3"> — {project.desc}</span>}
+                        {project.files ? <span class="mono ml-1 text-[11px] text-ink-3">{project.files} files</span> : null}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                {group.items.length > 10 && <p class="mt-1 text-[11px] text-ink-3">还有 {group.items.length - 10} 个未展开</p>}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {docs.length > 0 && (
         <section class="card p-5 sm:p-6" aria-labelledby="repos">

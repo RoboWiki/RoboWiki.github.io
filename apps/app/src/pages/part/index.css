@@ -288,3 +288,16 @@
   border: 1px solid var(--rw-border);
   background: var(--rw-bg);
 }
+
+.part__offer-detail {
+  display: block;
+  margin-top: 2px;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.part__offer-note {
+  display: block;
+  margin-top: var(--rw-space-2);
+  line-height: 1.5;
+}

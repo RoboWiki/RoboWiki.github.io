@@ -188,6 +188,15 @@ def build(root: pathlib.Path, out: pathlib.Path, pub: pathlib.Path) -> None:
         eid = (r.get("specs") or {}).get("ecosystem_id")
         e = eco_all.get(eid) if eid else None
         r.setdefault("specs", {})["ecosystem_count"] = (e or {}).get("count") or 0
+        # 生态明细（仓库 / URDF / SDK / 训练等）随 JSON 一起给前端；
+        # 只导出有 URL 的项目，本地工程与纯资料项在页面上点不动。
+        if e:
+            r["ecosystem"] = {
+                "label": e.get("label"),
+                "count": e.get("count") or 0,
+                "roles": e.get("roles") or {},
+                "projects": [p for p in (e.get("projects") or []) if p.get("url")],
+            }
 
     # slug：用 id 去前缀 —— ASCII、稳定，厂商改名也不影响 URL
     def slug(r: dict) -> str:

@@ -27,6 +27,14 @@ function PartRating({ rating }: { rating?: CatalogPart['rating'] }) {
   )
 }
 
+function hasOffer(p: CatalogPart) {
+  const today = new Date().toISOString().slice(0, 10)
+  return (p.offers ?? []).some(o => {
+    const offer = o as { demo?: boolean; expires?: string | null }
+    return !offer.demo && (!offer.expires || offer.expires >= today)
+  })
+}
+
 function TierBadge({ tier }: { tier?: string }) {
   if (!tier) return null
   const cls = tier === 'A' ? 'tier tier-a' : tier === 'B' ? 'tier tier-b' : 'tier tier-c'
@@ -327,6 +335,7 @@ export default function CatalogExplorer({ parts, categories }: Props) {
                       : <span className="px-4 text-center text-xs text-ink-3">暂无产品图</span>}
                     <div className="absolute left-2 top-2">
                       <TierBadge tier={p.tier} />
+                      {hasOffer(p) && <span className="rounded-full border border-line bg-brand-soft px-2 py-0.5 text-[11px] font-medium text-brand">有优惠</span>}
                     </div>
                   </div>
                   <div className="flex flex-1 flex-col gap-2 p-4">

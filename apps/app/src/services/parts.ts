@@ -22,6 +22,16 @@ export type PartView = PartSummary & {
   rating_count?: number
   rating_avg?: number | null
   derived?: Record<string, unknown>
+  offers?: Array<{
+    id?: number
+    kind?: string
+    title?: string
+    detail?: string | null
+    url?: string | null
+    vendor?: string | null
+    expires_on?: string | null
+    demo?: boolean
+  }>
 }
 
 export type PartListResponse = {
