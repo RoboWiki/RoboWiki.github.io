@@ -300,6 +300,51 @@ def test_logout_all_bumps_epoch_and_kills_old_access(client):
                       headers=_auth(fresh["access_token"])).status_code == 200
 
 
+def test_session_revoke_is_scoped_to_the_owner(client):
+    """删别人的会话必须 404，且原会话仍然可用 —— 否则会话 id 是连续整数，
+    任何人都能把别人的登录链掐掉（或探测某个 id 是否存在）。"""
+    owner = _register(client, "sessscope1")
+    other = _register(client, "sessscope2")
+    sid = _sessions(client, owner["access_token"])[0]["id"]
+
+    r = client.delete(f"{API}/auth/sessions/{sid}",
+                      headers=_auth(other["access_token"]))
+    assert r.status_code == 404, r.text
+
+    # 原会话没被误删：列表还在，refresh 还能正常轮换
+    assert [s["id"] for s in _sessions(client, owner["access_token"])] == [sid]
+    assert _refresh(client, owner["refresh_token"]).status_code == 200
+    # 不存在的 id 同样是 404，不泄露存在性
+    assert client.delete(f"{API}/auth/sessions/{sid + 10**6}",
+                         headers=_auth(owner["access_token"])).status_code == 404
+
+
+def test_revoked_session_cannot_be_revived_by_refresh(client):
+    """单端登出后，那条链上的 refresh 必须是 401，而且**不能**顺带
+    把同一账号其它设备的会话也撤掉（复用检测只针对「已用过」的令牌）。"""
+    handle = "sesschain1"
+    first = _register(client, handle)
+    second = _login(client, handle)
+    assert len(_sessions(client, first["access_token"])) == 2
+
+    # 会话列表按时间倒序，用 token 的 sha256 反查第一台设备的会话 id 更可靠
+    db = db_session()
+    try:
+        row = db.exec(select(RefreshToken).where(
+            RefreshToken.token_hash == hash_secret(first["refresh_token"]))).first()
+        assert row is not None
+        sid = row.id
+    finally:
+        db.close()
+
+    assert client.delete(f"{API}/auth/sessions/{sid}",
+                         headers=_auth(second["access_token"])).status_code == 204
+
+    assert _refresh(client, first["refresh_token"]).status_code == 401
+    # 另一条链不受影响
+    assert _refresh(client, second["refresh_token"]).status_code == 200
+
+
 def test_legacy_access_without_se_is_still_accepted(client):
     """旧 token 没有 se：视为 0，与存量账号（epoch=0）继续兼容。"""
     data = _register(client, "sesslegacy1")

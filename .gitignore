@@ -7,6 +7,8 @@ robowiki.db-shm
 node_modules/
 .venv/
 .env
+*.egg-info/
+.pnpm-store/
 
 # 开发期的一次性产物：截图、探针脚本、日志 —— 不进库
 shot-*.*

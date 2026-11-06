@@ -83,7 +83,7 @@ GPL-3.0 本身**允许商业使用**。上面那句「仅用于非商业」说�
 ## 引用格式
 
 ```
-RoboWiki. 机器人开发的开放资料底稿[DB/OL]. https://robowiki.org.cn, 2026-10-31.
+RoboWiki. 面向机器人制作全流程的可追溯工程知识库[DB/OL]. https://robowiki.org.cn, 2026-11-06.
 ```
 
 ---

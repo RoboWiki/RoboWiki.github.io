@@ -1,9 +1,13 @@
 ---
 import Base from '@/layouts/Base.astro'
+import IslandFallback from '@/components/community/IslandFallback.astro'
 import ProfileRoute from '@/components/community/profile-route'
 
 const title = '用户 · RoboWiki'
 ---
 <Base title={title} description="RoboWiki 社区用户资料与公开发言。">
-  <ProfileRoute client:only="react" />
+  <div class="min-h-[60vh]">
+    <IslandFallback label="正在读取用户资料…" rows={0} />
+    <ProfileRoute client:only="react" />
+  </div>
 </Base>

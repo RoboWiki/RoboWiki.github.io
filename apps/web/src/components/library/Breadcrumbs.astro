@@ -5,14 +5,14 @@ type Item = { label: string; href?: string }
 const { items } = Astro.props as { items: Item[] }
 ---
 
-<nav class="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500" aria-label="面包屑">
+<nav class="mb-4 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-ink-3" aria-label="面包屑">
   {items.map((item, index) => (
     <>
-      {index > 0 && <span aria-hidden="true">/</span>}
+      {index > 0 && <span class="text-line-strong" aria-hidden="true">/</span>}
       {item.href ? (
-        <a href={withBase(item.href)} class="hover:text-blue-700">{item.label}</a>
+        <a href={withBase(item.href)} class="transition-colors hover:text-brand">{item.label}</a>
       ) : (
-        <span class="text-slate-700" aria-current="page">{item.label}</span>
+        <span class="text-ink-2" aria-current="page">{item.label}</span>
       )}
     </>
   ))}

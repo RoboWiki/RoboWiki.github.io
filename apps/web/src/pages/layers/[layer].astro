@@ -1,0 +1,28 @@
+---
+import { LAYERS } from '@/lib/layers'
+
+export function getStaticPaths() {
+  return LAYERS.map(layer => ({ params: { layer: layer.id } }))
+}
+
+const base = import.meta.env.BASE_URL
+const target = `${base}method.html#layers`
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <link rel="canonical" href={target} />
+    <meta name="robots" content="noindex, follow" />
+    <title>页面已迁移 · RoboWiki</title>
+  </head>
+  <body class="grid min-h-screen place-items-center bg-bg text-ink">
+    <p class="text-sm">
+      四层能力已并入「方法与来源」，正在跳转…… 若没有自动跳转，请点
+      <a class="text-brand underline" href={target}>这里</a>。
+    </p>
+  </body>
+</html>

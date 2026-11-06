@@ -425,7 +425,39 @@ class Rating(SQLModel, table=True):
     score: int                                          # 1–5
     #: 打分的依据（是否装过机）。没有这个字段，5 分可能来自「看着不错」
     own_hardware: bool = False
+    #: 使用时长分档：long（>6 个月）/ short（<1 个月）/ unboxed（只开箱）。
+    #: 与 own_hardware 互补：装过机但只用了三天，参考价值低于用了半年。
+    usage_level: str = ""
+    #: 打分的理由标签，逗号分隔、最多 3 个。空表示「没给理由」，
+    #: 这类票仍计入均分，但不进标签分布——理由是可聚合的解释，不是必填噪音。
+    reason_tags: str = ""
     note: str = ""                                      # 一句话理由，可空
+    created_at: datetime = Field(default_factory=utcnow)
+    updated_at: datetime = Field(default_factory=utcnow)
+
+
+class Reproduction(SQLModel, table=True):
+    """方案复现记录：一条 = 一次真实的复现尝试。
+
+    为什么不给方案打 5 星：同一套结构换个人装，结果只有「成 / 部分成 / 没成」，
+    再加上「我改了什么」。评分是偏好，复现是事实，两者不能混。
+    """
+
+    __tablename__ = "reproductions"
+    __table_args__ = (
+        UniqueConstraint("user_id", "build_id", name="uq_reproduction_once"),
+        Index("ix_reproduction_build", "build_id"),
+    )
+
+    id: int | None = Field(default=None, primary_key=True)
+    #: 方案 id（数据仓 robots 的 id，非外键：方案不在本站库里）
+    build_id: str = Field(index=True)
+    user_id: int = Field(foreign_key="users.id", index=True)
+    #: success / partial / failed
+    outcome: str
+    #: 相对原方案改了什么（换了电机、改了减速比…），空表示照做
+    changes: str = ""
+    note: str = ""
     created_at: datetime = Field(default_factory=utcnow)
     updated_at: datetime = Field(default_factory=utcnow)
 

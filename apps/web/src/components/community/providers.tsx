@@ -1,61 +1,253 @@
 import {
-  Alert, App as AntApp, Button, ConfigProvider, Form, Input, Modal, Segmented, theme as antdTheme,
+  App as AntApp, ConfigProvider, Form, Input, Modal, Segmented, theme as antdTheme,
 } from 'antd'
 import { LogoutOutlined } from '@ant-design/icons'
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import {
-  createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode,
+  Component, createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode,
 } from 'react'
 import { ApiError, api, auth, siteHref, type User } from '@/lib/community-api'
 
-// ── 基础 Provider ─────────────────────────────────────────────────────────
-const TOKENS = {
-  colorPrimary: '#0078d4',
-  colorInfo: '#0078d4',
-  colorLink: '#0078d4',
-  colorWarning: '#a06a00',
-  colorError: '#c02b2b',
-  colorBgBase: '#ffffff',
-  colorBgContainer: '#ffffff',
-  colorBgLayout: '#ffffff',
-  colorBorder: '#d0d0d0',
-  colorBorderSecondary: '#e6e6e6',
-  colorText: '#1f1f1f',
-  colorTextSecondary: '#616161',
-  colorTextTertiary: '#8a8a8a',
+// ── 设计令牌桥接 ──────────────────────────────────────────────────────────
+// antd 不认 CSS 变量做派生色，这里在运行时读取 --rw-* 的值传给 ConfigProvider：
+// 令牌仍是唯一来源，深色模式切换时重算一次，antd 组件跟着换肤。
+type ThemeVars = {
+  primary: string
+  primaryHover: string
+  primarySoft: string
+  primaryFg: string
+  bg: string
+  surface: string
+  surface2: string
+  surface3: string
+  border: string
+  borderStrong: string
+  ink: string
+  ink2: string
+  ink3: string
+  success: string
+  warning: string
+  danger: string
+  fontSans: string
+  fontMono: string
+  radiusSm: number
+  radiusMd: number
+}
+
+const FALLBACK: ThemeVars = {
+  primary: '#2563eb',
+  primaryHover: '#1d4ed8',
+  primarySoft: '#eff5ff',
+  primaryFg: '#ffffff',
+  bg: '#f5f7fa',
+  surface: '#ffffff',
+  surface2: '#f8fafc',
+  surface3: '#f1f4f8',
+  border: '#e3e8ef',
+  borderStrong: '#cdd5df',
+  ink: '#0b1220',
+  ink2: '#475467',
+  ink3: '#667085',
+  success: '#15803d',
+  warning: '#b45309',
+  danger: '#b42318',
+  fontSans: 'ui-sans-serif, system-ui, sans-serif',
+  fontMono: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+  radiusSm: 8,
+  radiusMd: 12,
+}
+
+function readThemeVars(): ThemeVars {
+  if (typeof window === 'undefined') return FALLBACK
+  const cs = window.getComputedStyle(document.documentElement)
+  const raw = (name: string, fallback: string) => cs.getPropertyValue(name).trim() || fallback
+  const px = (name: string, fallback: number) => {
+    const n = Number.parseInt(raw(name, ''), 10)
+    return Number.isFinite(n) ? n : fallback
+  }
+  return {
+    primary: raw('--rw-primary', FALLBACK.primary),
+    primaryHover: raw('--rw-primary-hover', FALLBACK.primaryHover),
+    primarySoft: raw('--rw-primary-soft', FALLBACK.primarySoft),
+    primaryFg: raw('--rw-primary-foreground', FALLBACK.primaryFg),
+    bg: raw('--rw-bg', FALLBACK.bg),
+    surface: raw('--rw-surface', FALLBACK.surface),
+    surface2: raw('--rw-surface-2', FALLBACK.surface2),
+    surface3: raw('--rw-surface-3', FALLBACK.surface3),
+    border: raw('--rw-border', FALLBACK.border),
+    borderStrong: raw('--rw-border-strong', FALLBACK.borderStrong),
+    ink: raw('--rw-ink', FALLBACK.ink),
+    ink2: raw('--rw-ink-2', FALLBACK.ink2),
+    ink3: raw('--rw-ink-3', FALLBACK.ink3),
+    success: raw('--rw-success', FALLBACK.success),
+    warning: raw('--rw-warning', FALLBACK.warning),
+    danger: raw('--rw-danger', FALLBACK.danger),
+    fontSans: raw('--rw-font-sans', FALLBACK.fontSans),
+    fontMono: raw('--rw-font-mono', FALLBACK.fontMono),
+    radiusSm: px('--rw-radius-sm', FALLBACK.radiusSm),
+    radiusMd: px('--rw-radius-md', FALLBACK.radiusMd),
+  }
+}
+
+/** 跟随 <html class="dark"> 变化重算令牌，首帧就能拿到正确色值。 */
+function useDesignTheme(): { dark: boolean; vars: ThemeVars } {
+  const [dark, setDark] = useState(
+    () => typeof document !== 'undefined' && document.documentElement.classList.contains('dark'),
+  )
+
+  useEffect(() => {
+    const root = document.documentElement
+    const sync = () => setDark(root.classList.contains('dark'))
+    const observer = new MutationObserver(sync)
+    observer.observe(root, { attributes: true, attributeFilter: ['class'] })
+
+    // 没有手动选择过主题时，系统主题变化也要跟上
+    const mq = window.matchMedia('(prefers-color-scheme: dark)')
+    const onScheme = (e: MediaQueryListEvent) => {
+      if (!window.localStorage.getItem('rw-theme')) setDark(e.matches)
+    }
+    mq.addEventListener('change', onScheme)
+    return () => {
+      observer.disconnect()
+      mq.removeEventListener('change', onScheme)
+    }
+  }, [])
+
+  const vars = useMemo(() => readThemeVars(), [dark])
+  return { dark, vars }
+}
+
+function AntdTheme({ children }: { children: ReactNode }) {
+  const { dark, vars } = useDesignTheme()
+
+  return (
+    <ConfigProvider
+      theme={{
+        algorithm: dark ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
+        token: {
+          colorPrimary: vars.primary,
+          colorPrimaryHover: vars.primaryHover,
+          colorPrimaryActive: vars.primaryHover,
+          colorPrimaryBg: vars.primarySoft,
+          colorInfo: vars.primary,
+          colorLink: vars.primary,
+          colorLinkHover: vars.primaryHover,
+          colorSuccess: vars.success,
+          colorWarning: vars.warning,
+          colorError: vars.danger,
+          colorBgBase: vars.bg,
+          colorBgLayout: vars.bg,
+          colorBgContainer: vars.surface,
+          colorBgElevated: vars.surface,
+          colorBgSpotlight: vars.surface3,
+          colorFillQuaternary: vars.surface2,
+          colorFillTertiary: vars.surface3,
+          colorFillSecondary: vars.surface3,
+          colorBorder: vars.border,
+          colorBorderSecondary: vars.border,
+          colorSplit: vars.border,
+          colorText: vars.ink,
+          colorTextHeading: vars.ink,
+          colorTextSecondary: vars.ink2,
+          colorTextTertiary: vars.ink3,
+          colorTextQuaternary: vars.ink3,
+          colorTextDescription: vars.ink3,
+          colorTextPlaceholder: vars.ink3,
+          borderRadius: vars.radiusSm,
+          borderRadiusLG: vars.radiusMd,
+          fontSize: 14,
+          fontFamily: vars.fontSans,
+          fontFamilyCode: vars.fontMono,
+          controlHeight: 34,
+          wireframe: false,
+        },
+        components: {
+          Table: {
+            headerBg: vars.surface2,
+            headerColor: vars.ink3,
+            headerSplitColor: vars.border,
+            borderColor: vars.border,
+            rowHoverBg: vars.surface2,
+            footerBg: vars.surface2,
+            cellPaddingBlockSM: 8,
+          },
+          Card: { headerBg: 'transparent', headerFontSize: 13, headerHeight: 44 },
+          Modal: { contentBg: vars.surface, headerBg: vars.surface, footerBg: 'transparent' },
+          Segmented: {
+            itemSelectedBg: vars.primary,
+            itemSelectedColor: vars.primaryFg,
+            itemHoverBg: vars.surface3,
+            itemColor: vars.ink3,
+            itemHoverColor: vars.ink,
+            trackBg: vars.surface2,
+          },
+          Tabs: { itemColor: vars.ink2, itemSelectedColor: vars.primary, inkBarColor: vars.primary },
+          Tag: { defaultBg: vars.surface3, defaultColor: vars.ink2 },
+          Button: { primaryShadow: 'none', defaultShadow: 'none', dangerShadow: 'none' },
+          Input: { activeBorderColor: vars.primary, hoverBorderColor: vars.borderStrong },
+          Select: { optionSelectedBg: vars.primarySoft },
+          Pagination: { itemActiveBg: vars.primarySoft },
+          Empty: { colorTextDescription: vars.ink3 },
+        },
+      }}
+    >
+      <AntApp>{children}</AntApp>
+    </ConfigProvider>
+  )
+}
+
+/**
+ * 岛屿内发生渲染异常时兜底：宁可显示一条可重试的提示，也不要让整页空白。
+ * （chunk 缺失属于模块加载失败，兜不住——那种情况由页面里的 IslandFallback 静态骨架接住。）
+ */
+class IslandBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false }
+
+  static getDerivedStateFromError() {
+    return { failed: true }
+  }
+
+  componentDidCatch(error: unknown) {
+    console.error('[community island]', error)
+    // 已经接管显示，撤掉静态骨架，避免骨架和错误卡叠在一起
+    document.querySelectorAll('[data-island-fallback]').forEach(el => el.remove())
+  }
+
+  render() {
+    if (!this.state.failed) return this.props.children
+    return (
+      <div className="card mx-auto max-w-lg p-6 text-center">
+        <p className="m-0 text-sm font-semibold text-ink">内容没能加载出来</p>
+        <p className="mb-4 mt-1.5 text-[12.5px] leading-6 text-ink-2">
+          页面脚本没有正常运行，可能是网络中断或缓存了旧版本。
+        </p>
+        <button type="button" onClick={() => window.location.reload()}
+          className="inline-flex h-9 items-center rounded-md bg-brand px-3.5 text-[13px] font-semibold text-brand-fg transition-colors hover:bg-brand-hover">
+          重新加载
+        </button>
+      </div>
+    )
+  }
 }
 
 export function IslandProvider({ children }: { children: ReactNode }) {
   const [qc] = useState(() => new QueryClient({
     defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false, staleTime: 15_000 } },
   }))
+
+  // 岛屿真正挂载后才撤掉页面里的静态骨架；没挂载（chunk 404/JS 报错）时骨架继续留着。
+  useEffect(() => {
+    document.querySelectorAll('[data-island-fallback]').forEach(el => el.remove())
+  }, [])
+
   return (
-    <QueryClientProvider client={qc}>
-      <ConfigProvider theme={{
-        algorithm: antdTheme.defaultAlgorithm,
-        token: {
-          ...TOKENS,
-          borderRadius: 8,
-          fontSize: 14,
-          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", '
-            + '"Microsoft YaHei", "Noto Sans SC", Roboto, sans-serif',
-        },
-        components: {
-          Table: { headerBg: '#f8f8f8', headerColor: '#616161', rowHoverBg: '#f8f8f8' },
-          Card: { headerBg: 'transparent' },
-          Segmented: {
-            itemSelectedBg: '#0078d4',
-            itemSelectedColor: '#ffffff',
-            itemHoverBg: '#e8e8e8',
-            trackBg: '#f8f8f8',
-          },
-        },
-      }}>
-        <AntApp>
+    <IslandBoundary>
+      <QueryClientProvider client={qc}>
+        <AntdTheme>
           <AuthProvider>{children}</AuthProvider>
-        </AntApp>
-      </ConfigProvider>
-    </QueryClientProvider>
+        </AntdTheme>
+      </QueryClientProvider>
+    </IslandBoundary>
   )
 }
 
@@ -150,21 +342,24 @@ export function AuthForm({ onSuccess, compact = false }: {
   return (
     <div>
       {!compact && (
-        <div className="mb-4 text-center">
-          <div className="text-[22px] font-extrabold tracking-tight">
-            Robo<span className="text-blue-600">Wiki</span>
+        <div className="mb-5 text-center">
+          <div className="text-[22px] font-extrabold tracking-tight text-ink">
+            Robo<span className="text-brand">Wiki</span>
           </div>
-          <div className="mt-1 text-[12.5px] text-slate-500">选型是底座，真实反馈才是值钱的部分</div>
+          <div className="mt-1 text-[12.5px] text-ink-3">选型是底座，真实反馈才是值钱的部分</div>
         </div>
       )}
-      <Segmented block value={mode} style={{ marginBottom: 16 }} disabled={busy}
+
+      <Segmented block value={mode} className="mb-4" disabled={busy}
         onChange={v => {
           setMode(v as 'login' | 'register')
           setError(null)
           form.setFieldValue('password', '')
         }}
         options={[{ label: '登录', value: 'login' }, { label: '注册', value: 'register' }]} />
-      <Form form={form} layout="vertical" onFinish={submit} disabled={busy} autoComplete="on">
+
+      <Form form={form} layout="vertical" onFinish={submit} disabled={busy} autoComplete="on"
+        requiredMark={false}>
         <Form.Item name="handle" label="账号"
           normalize={v => (v || '').trim()}
           rules={[
@@ -192,7 +387,7 @@ export function AuthForm({ onSuccess, compact = false }: {
             </Form.Item>
           </>
         )}
-        <Form.Item name="password" label="密码"
+        <Form.Item name="password" label="密码" className="mb-3"
           rules={[
             { required: true, message: '请填写密码' },
             { min: 6, message: '密码至少 6 位' },
@@ -201,10 +396,21 @@ export function AuthForm({ onSuccess, compact = false }: {
           <Input.Password placeholder="至少 6 位"
             autoComplete={mode === 'register' ? 'new-password' : 'current-password'} />
         </Form.Item>
-        {error && <Alert className="mb-3" type="error" showIcon title={error} />}
-        <Button type="primary" block htmlType="submit" loading={busy} disabled={busy}>
-          {mode === 'login' ? '登录' : '注册并登录'}
-        </Button>
+
+        {/* 错误提示固定在提交按钮上方，避免出现时顶动按钮位置 */}
+        <div aria-live="polite" className="mb-3">
+          {error && (
+            <div role="alert"
+              className="rounded-md border border-danger/35 bg-danger-soft px-3 py-2 text-[12.5px] leading-5 text-danger">
+              {error}
+            </div>
+          )}
+        </div>
+
+        <button type="submit" disabled={busy}
+          className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-md bg-brand px-4 text-sm font-semibold text-brand-fg transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-60">
+          {busy ? '提交中…' : mode === 'login' ? '登录' : '注册并登录'}
+        </button>
       </Form>
     </div>
   )
@@ -223,8 +429,10 @@ function AuthModal({ open, onClose }: { open: boolean; onClose: () => void }) {
 function NavLink({ href, label, current }: { href: string; label: string; current?: boolean }) {
   return (
     <a href={siteHref(href)} aria-current={current ? 'page' : undefined}
-      className={`rounded-lg px-2.5 py-1.5 text-[13px] transition ${
-        current ? 'bg-slate-100 font-semibold text-slate-900' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+      className={`inline-flex min-h-8 items-center rounded-md px-2.5 text-[13px] transition-colors ${
+        current
+          ? 'bg-brand-soft font-semibold text-brand'
+          : 'text-ink-2 hover:bg-surface-3 hover:text-ink'
       }`}>
       {label}
     </a>
@@ -239,11 +447,15 @@ export function CommunityHeader({ current, onCompose }: {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <div className="mb-5 flex flex-wrap items-center gap-2 border-b border-slate-200 pb-3">
-      <a href={siteHref('/')} className="mr-1 text-[15px] font-extrabold tracking-tight text-slate-900">
-        社区<span className="ml-1 rounded-full border border-slate-300 px-1.5 py-[1px] text-[10px] font-semibold text-slate-500">RoboWiki</span>
+    <div className="mb-5 flex flex-wrap items-center gap-2 border-b border-line pb-3">
+      <a href={siteHref('/')} className="mr-1 flex items-baseline gap-1.5">
+        <span className="text-[15px] font-extrabold tracking-tight text-ink">社区</span>
+        <span className="mono rounded-full border border-line bg-surface-2 px-1.5 py-[1px] text-[10px] font-semibold text-ink-3">
+          RoboWiki
+        </span>
       </a>
-      <nav className="flex items-center gap-0.5" aria-label="社区导航">
+
+      <nav className="flex flex-wrap items-center gap-0.5" aria-label="社区导航">
         <NavLink href="/community.html" label="社区" current={current === 'community'} />
         <NavLink href="/top.html" label="贡献榜" current={current === 'top'} />
         <NavLink href="/catalog.html" label="部件库 ↗" />
@@ -253,31 +465,35 @@ export function CommunityHeader({ current, onCompose }: {
       <div className="ml-auto flex items-center gap-2">
         {onCompose && (
           <button onClick={() => (user ? onCompose() : openAuth())}
-            className="min-h-9 rounded-full bg-blue-600 px-3.5 text-[13px] font-semibold text-white transition hover:bg-blue-700">
+            className="inline-flex min-h-9 items-center rounded-full bg-brand px-3.5 text-[13px] font-semibold text-brand-fg transition-colors hover:bg-brand-hover">
             发帖
           </button>
         )}
-        {!ready ? <span className="text-[12px] text-slate-400">…</span> : user ? (
+
+        {!ready ? (
+          <span className="text-[12px] text-ink-3" aria-hidden="true">…</span>
+        ) : user ? (
           <div className="relative">
             <button onClick={() => setMenuOpen(v => !v)}
-              className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white py-[3px] pl-[3px] pr-2.5 transition hover:border-slate-300"
+              className="flex items-center gap-1.5 rounded-full border border-line bg-surface py-[3px] pl-[3px] pr-2.5 transition-colors hover:border-line-strong"
               aria-haspopup="menu" aria-expanded={menuOpen}>
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-[11px] font-bold text-white">
+              <span className="grid h-6 w-6 place-items-center rounded-full bg-brand text-[11px] font-bold text-brand-fg">
                 {user.display_name.slice(0, 1)}
               </span>
-              <span className="max-w-[110px] truncate text-[12.5px] text-slate-800">{user.display_name}</span>
+              <span className="max-w-[110px] truncate text-[12.5px] text-ink">{user.display_name}</span>
             </button>
             {menuOpen && (
               <>
                 <div className="fixed inset-0 z-10" onClick={() => setMenuOpen(false)} />
                 <div role="menu"
-                  className="absolute right-0 z-20 mt-1.5 w-40 overflow-hidden rounded-lg border border-slate-200 bg-white py-1 shadow-lg">
-                  <a role="menuitem" href={siteHref(`/u.html?handle=${encodeURIComponent(user.handle)}`)} onClick={() => setMenuOpen(false)}
-                    className="block px-3 py-2 text-[12.5px] text-slate-700 hover:bg-slate-100">
+                  className="absolute right-0 z-20 mt-1.5 w-40 overflow-hidden rounded-lg border border-line bg-surface py-1 shadow-lg">
+                  <a role="menuitem" href={siteHref(`/u.html?handle=${encodeURIComponent(user.handle)}`)}
+                    onClick={() => setMenuOpen(false)}
+                    className="block px-3 py-2 text-[12.5px] text-ink-2 hover:bg-surface-3 hover:text-ink">
                     我的主页
                   </a>
                   <button role="menuitem" onClick={() => { setMenuOpen(false); logout() }}
-                    className="flex w-full items-center gap-1.5 px-3 py-2 text-left text-[12.5px] text-slate-500 hover:bg-slate-100">
+                    className="flex w-full items-center gap-1.5 px-3 py-2 text-left text-[12.5px] text-ink-3 hover:bg-surface-3 hover:text-ink">
                     <LogoutOutlined className="text-[11px]" /> 退出登录
                   </button>
                 </div>
@@ -287,11 +503,11 @@ export function CommunityHeader({ current, onCompose }: {
         ) : (
           <>
             <button onClick={openAuth}
-              className="min-h-9 rounded-full border border-slate-200 bg-white px-3.5 text-[13px] text-slate-700 transition hover:border-slate-300 hover:text-slate-900">
+              className="inline-flex min-h-9 items-center rounded-full border border-line bg-surface px-3.5 text-[13px] text-ink-2 transition-colors hover:border-line-strong hover:text-ink">
               登录
             </button>
             <a href={siteHref('/login.html')}
-              className="hidden text-[12px] text-slate-400 hover:text-slate-700 sm:inline">登录遇到问题？</a>
+              className="hidden text-[12px] text-ink-3 hover:text-ink sm:inline">登录遇到问题？</a>
           </>
         )}
       </div>

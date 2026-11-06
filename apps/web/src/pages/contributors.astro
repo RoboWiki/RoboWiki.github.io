@@ -30,12 +30,12 @@ const totalContributions = contributors.reduce((sum, item) => sum + (item.contri
   <Breadcrumbs items={[{ label: '首页', href: '/' }, { label: '贡献者' }]} />
 
   <header class="mb-6">
-    <p class="text-xs font-semibold uppercase tracking-wider text-blue-700">贡献者</p>
-    <h1 class="mt-1 text-3xl font-extrabold tracking-tight text-slate-950">这些数不是天上掉下来的。</h1>
-    <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+    <p class="text-xs font-semibold uppercase tracking-wider text-brand">贡献者</p>
+    <h1 class="mt-1 text-3xl font-extrabold tracking-tight text-ink">这些数不是天上掉下来的。</h1>
+    <p class="mt-2 max-w-2xl text-sm leading-6 text-ink-3">
       每一条参数背后都有人对着厂商手册逐页核过，每一个「—」都是有人确认过「确实没公布」。名字留在这里，是因为数据出错时得有人能被找到。
     </p>
-    <p class="mt-2 text-xs text-slate-400">
+    <p class="mt-2 text-xs text-ink-3">
       数据快照：{contributorsData.updated_at} · {contributors.length} 位贡献者 · 累计计入 {totalContributions.toLocaleString('zh-CN')} 次
     </p>
   </header>
@@ -51,40 +51,40 @@ const totalContributions = contributors.reduce((sum, item) => sum + (item.contri
               width="64"
               height="64"
               loading="lazy"
-              class="h-16 w-16 shrink-0 rounded-full border border-slate-200 bg-slate-50 object-cover"
+              class="h-16 w-16 shrink-0 rounded-full border border-line bg-surface-2 object-cover"
             />
             <div class="min-w-0 flex-1">
               <div class="flex flex-wrap items-center gap-2">
                 {person.url ? (
-                  <a href={person.url} target="_blank" rel="noopener" class="font-semibold text-slate-900 hover:text-blue-700">
+                  <a href={person.url} target="_blank" rel="noopener" class="font-semibold text-ink hover:text-brand">
                     {person.login}<span class="sr-only">（GitHub，新窗口打开）</span> ↗
                   </a>
                 ) : (
-                  <span class="font-semibold text-slate-900">{person.login}</span>
+                  <span class="font-semibold text-ink">{person.login}</span>
                 )}
                 {person.role && <Badge variant="secondary">{person.role}</Badge>}
               </div>
               <dl class="mt-3 grid grid-cols-2 gap-2 text-sm">
                 <div>
-                  <dt class="text-xs text-slate-400">计入总数</dt>
-                  <dd class="font-semibold tabular-nums text-slate-800">
+                  <dt class="text-xs text-ink-3">计入总数</dt>
+                  <dd class="font-semibold tabular-nums text-ink">
                     {(person.contribution_total ?? person.contributions).toLocaleString('zh-CN')}
                   </dd>
                 </div>
                 <div>
-                  <dt class="text-xs text-slate-400">GitHub 公开贡献</dt>
-                  <dd class="font-semibold tabular-nums text-slate-800">{person.contributions.toLocaleString('zh-CN')}</dd>
+                  <dt class="text-xs text-ink-3">GitHub 公开贡献</dt>
+                  <dd class="font-semibold tabular-nums text-ink">{person.contributions.toLocaleString('zh-CN')}</dd>
                 </div>
                 {typeof person.git_commits === 'number' && person.git_commits > person.contributions && (
                   <div>
-                    <dt class="text-xs text-slate-400">全分支 git 提交</dt>
-                    <dd class="font-semibold tabular-nums text-slate-800">{person.git_commits.toLocaleString('zh-CN')}</dd>
+                    <dt class="text-xs text-ink-3">全分支 git 提交</dt>
+                    <dd class="font-semibold tabular-nums text-ink">{person.git_commits.toLocaleString('zh-CN')}</dd>
                   </div>
                 )}
                 {typeof person.baseline === 'number' && person.baseline > 0 && (
                   <div>
-                    <dt class="text-xs text-slate-400">早期核定基数</dt>
-                    <dd class="font-semibold tabular-nums text-slate-800">{person.baseline.toLocaleString('zh-CN')}</dd>
+                    <dt class="text-xs text-ink-3">早期核定基数</dt>
+                    <dd class="font-semibold tabular-nums text-ink">{person.baseline.toLocaleString('zh-CN')}</dd>
                   </div>
                 )}
               </dl>
@@ -95,16 +95,16 @@ const totalContributions = contributors.reduce((sum, item) => sum + (item.contri
     ))}
   </ul>
 
-  <section class="mt-8 rounded-xl border border-slate-200 bg-white p-5" aria-labelledby="how">
-    <h2 id="how" class="font-semibold text-slate-900">怎么上榜</h2>
-    <ul class="mt-2 space-y-1 text-sm leading-6 text-slate-600" role="list">
+  <section class="mt-8 rounded-xl border border-line bg-white p-5" aria-labelledby="how">
+    <h2 id="how" class="font-semibold text-ink">怎么上榜</h2>
+    <ul class="mt-2 space-y-1 text-sm leading-6 text-ink-2" role="list">
       <li>补一条参数、修一个单位、加一张正确产品图 —— 名字进名单</li>
       <li>写一条带工况的实测 —— 名字进名单，且会出现在对应条目页</li>
       <li>纠一次错并给出依据 —— 同样计入</li>
     </ul>
-    <p class="mt-3 text-xs leading-5 text-slate-500">
+    <p class="mt-3 text-xs leading-5 text-ink-3">
       没有贡献值排行榜，排序只按计入总数。<strong>计入总数 = GitHub 公开贡献 + 人工核定的早期基数（baseline）</strong>，所以和 GitHub 个人页的数字不完全一致；本页数据为 {contributorsData.updated_at} 的快照，此后新增的提交不会自动出现。
     </p>
-    <a href={withBase('/submit.html')} class="mt-3 inline-flex text-sm text-blue-700 hover:underline">去投稿 →</a>
+    <a href={withBase('/submit.html')} class="mt-3 inline-flex text-sm text-brand hover:underline">去投稿 →</a>
   </section>
 </Base>

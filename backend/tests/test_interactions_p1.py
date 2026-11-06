@@ -522,3 +522,68 @@ def test_staff_can_approve_or_hide_pending_comment(client, monkeypatch):
     assert hidden.status_code == 200 and hidden.json()["status"] == "hidden"
     assert client.get("/api/v1/wiki/comments", params={"page": page}
                       ).json()["count"] == 0
+
+# ── 通知的可见性与分页参数 ──────────────────────────────────────────────────
+def test_read_all_is_scoped_per_user_and_list_validates_params(client):
+    """`read-all` 只能清自己的；`unread` 过滤与 limit 边界都要在服务端生效。"""
+    a, _, _ = register(client)
+    b, _, _ = register(client)
+    pid = make_post(client, a, "P1 测试：通知读取隔离")
+    root = client.post(f"/api/v1/posts/{pid}/comments", headers=b,
+                       json={"body": "B 的根评论"})
+    assert root.status_code == 201, root.text
+    assert client.post(f"/api/v1/posts/{pid}/comments", headers=a, json={
+        "body": "A 回复 B", "parent_id": root.json()["id"]}).status_code == 201
+
+    assert client.get("/api/v1/notifications/unread_count",
+                      headers=b).json()["unread"] >= 1
+    # A 的「全部已读」不能碰到 B 的未读
+    assert client.post("/api/v1/notifications/read-all",
+                       headers=a).status_code == 200
+    assert client.get("/api/v1/notifications/unread_count",
+                      headers=b).json()["unread"] >= 1
+
+    listing = client.get("/api/v1/notifications", headers=b,
+                         params={"unread": "true"}).json()
+    assert listing["items"] and all(n["read_at"] is None for n in listing["items"])
+    assert listing["total"] == len(listing["items"])
+
+    # 未登录 401；limit 越界 422（不能靠 0 / 101 拖垮或绕过分页）
+    assert client.get("/api/v1/notifications").status_code == 401
+    assert client.get("/api/v1/notifications/unread_count").status_code == 401
+    assert client.get("/api/v1/notifications", headers=b,
+                      params={"limit": 0}).status_code == 422
+    assert client.get("/api/v1/notifications", headers=b,
+                      params={"limit": 101}).status_code == 422
+    assert client.get("/api/v1/notifications", headers=b,
+                      params={"offset": -1}).status_code == 422
+
+
+# ── 评分：使用时长与理由标签 ────────────────────────────────────────────────
+def test_rating_usage_and_reason_tags_are_aggregated(client):
+    """L0 一点打分要能带两件事：用了多久、为什么。
+
+    理由标签必须是白名单：自由文本无法聚合，也没法在页面上做分布。
+    """
+    parts = client.get("/api/v1/parts", params={"limit": 8}).json()["items"]
+    assert parts, "目录为空，无法验证评分布"
+    part = parts[-1]["id"]
+    user, _, _ = register(client)
+
+    r = client.post(f"/api/v1/ratings/{part}", headers=user, json={
+        "score": 4, "usage_level": "long",
+        "reason_tags": ["good_value", "docs_missing"]})
+    assert r.status_code == 201, r.text
+    body = r.json()
+    assert body["mine"]["usage_level"] == "long"
+    assert set(body["mine"]["reason_tags"]) == {"good_value", "docs_missing"}
+    assert body["usage_level_counts"].get("long", 0) >= 1
+    assert body["reason_tag_counts"].get("good_value", 0) >= 1
+
+    # 非法档位、未知标签、超过 3 个标签都要被拒，且不能悄悄落库
+    for bad in (
+        {"score": 4, "usage_level": "forever"},
+        {"score": 4, "reason_tags": ["made_up_tag"]},
+        {"score": 4, "reason_tags": ["good_value", "docs_missing", "heat", "drift"]},
+    ):
+        assert client.post(f"/api/v1/ratings/{part}", headers=user, json=bad).status_code == 422

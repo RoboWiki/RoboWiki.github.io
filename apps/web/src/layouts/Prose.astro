@@ -10,29 +10,29 @@ const { title, description, crumbs = [], eyebrow } = Astro.props
 
 <Base title={`${title} · RoboWiki`} description={description}>
   <div class="mx-auto max-w-3xl">
-    <nav aria-label="面包屑" class="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500">
-      <a href={withBase('/')} class="hover:text-blue-700">首页</a>
+    <nav aria-label="面包屑" class="mb-4 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-ink-3">
+      <a href={withBase('/')} class="hover:text-brand">首页</a>
       {crumbs.map(c => (
         <>
-          <span aria-hidden="true">/</span>
+          <span class="text-line-strong" aria-hidden="true">/</span>
           {c.href ? (
-            <a href={withBase(c.href)} class="hover:text-blue-700">{c.label}</a>
+            <a href={withBase(c.href)} class="hover:text-brand">{c.label}</a>
           ) : (
-            <span class="text-slate-700" aria-current="page">{c.label}</span>
+            <span class="text-ink-2" aria-current="page">{c.label}</span>
           )}
         </>
       ))}
     </nav>
 
-    {eyebrow && <p class="text-xs font-semibold uppercase tracking-wider text-blue-700">{eyebrow}</p>}
-    <h1 class="mt-1 text-3xl font-extrabold tracking-tight text-slate-950">{title}</h1>
-    {description && <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-500">{description}</p>}
+    {eyebrow && <p class="text-xs font-semibold tracking-wider text-brand uppercase">{eyebrow}</p>}
+    <h1 class="mt-1 text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">{title}</h1>
+    {description && <p class="mt-2 max-w-2xl text-sm leading-6 text-ink-3">{description}</p>}
 
     <div class="mt-6 empty:hidden">
       <slot name="lead" />
     </div>
 
-    <div class="prose-body mt-6 max-w-3xl">
+    <div class="prose prose-body mt-6 max-w-3xl">
       <slot />
     </div>
 
@@ -42,14 +42,14 @@ const { title, description, crumbs = [], eyebrow } = Astro.props
 
 <style is:global>
   .prose-body {
-    color: #1e293b;
+    color: var(--rw-ink-2);
     font-size: 0.95rem;
     line-height: 1.85;
   }
   .prose-body > :first-child { margin-top: 0; }
   .prose-body :where(h2, h3, h4) {
     margin: 2rem 0 0.75rem;
-    color: #020617;
+    color: var(--rw-ink);
     font-weight: 700;
     line-height: 1.35;
     scroll-margin-top: 5rem;
@@ -64,45 +64,47 @@ const { title, description, crumbs = [], eyebrow } = Astro.props
   .prose-body li { margin-block: 0.3rem; }
   .prose-body li > ul, .prose-body li > ol { margin-block: 0.25rem; }
   .prose-body a {
-    color: #1d4ed8;
+    color: var(--rw-primary);
     text-decoration: underline;
     text-underline-offset: 2px;
-    text-decoration-color: #bfdbfe;
+    text-decoration-color: color-mix(in srgb, var(--rw-primary) 35%, transparent);
   }
-  .prose-body a:hover { text-decoration-color: #1d4ed8; }
-  .prose-body strong { color: #020617; font-weight: 650; }
+  .prose-body a:hover { text-decoration-color: var(--rw-primary); }
+  .prose-body strong { color: var(--rw-ink); font-weight: 650; }
   .prose-body blockquote {
-    border-left: 3px solid #bfdbfe;
-    background: #f8fafc;
-    border-radius: 0 0.5rem 0.5rem 0;
+    border-left: 3px solid color-mix(in srgb, var(--rw-primary) 35%, transparent);
+    background: var(--rw-surface-2);
+    border-radius: 0 var(--rw-radius-sm) var(--rw-radius-sm) 0;
     padding: 0.75rem 1rem;
-    color: #334155;
+    color: var(--rw-ink-2);
     font-size: 0.9rem;
   }
   .prose-body blockquote > :first-child { margin-top: 0; }
   .prose-body blockquote > :last-child { margin-bottom: 0; }
   .prose-body :where(code) {
-    background: #f1f5f9;
-    border: 1px solid #e2e8f0;
+    background: var(--rw-surface-3);
+    border: 1px solid var(--rw-border);
     border-radius: 0.35rem;
     padding: 0.05rem 0.3rem;
     font-size: 0.85em;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family: var(--rw-font-mono);
   }
   .prose-body pre {
     overflow-x: auto;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.6rem;
+    border: 1px solid var(--rw-border);
+    border-radius: var(--rw-radius-sm);
     padding: 0.9rem 1rem;
     font-size: 0.82rem;
     line-height: 1.7;
-    background: #f8fafc;
+    background: #0b1220;
+    color: #e2e8f0;
   }
   .prose-body pre code {
     background: none;
     border: 0;
     padding: 0;
     font-size: inherit;
+    color: inherit;
   }
   .prose-body table {
     display: block;
@@ -113,13 +115,13 @@ const { title, description, crumbs = [], eyebrow } = Astro.props
     line-height: 1.7;
   }
   .prose-body :where(th, td) {
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--rw-border);
     padding: 0.5rem 0.7rem;
     text-align: left;
     vertical-align: top;
   }
-  .prose-body th { background: #f8fafc; color: #0f172a; font-weight: 650; white-space: nowrap; }
-  .prose-body tbody tr:nth-child(even) { background: #fcfdff; }
-  .prose-body hr { margin-block: 2rem; border: 0; border-top: 1px solid #e2e8f0; }
-  .prose-body img { max-width: 100%; height: auto; border-radius: 0.5rem; }
+  .prose-body th { background: var(--rw-surface-2); color: var(--rw-ink); font-weight: 650; white-space: nowrap; }
+  .prose-body tbody tr:nth-child(even) { background: var(--rw-surface-2); }
+  .prose-body hr { margin-block: 2rem; border: 0; border-top: 1px solid var(--rw-border); }
+  .prose-body img { max-width: 100%; height: auto; border-radius: var(--rw-radius-sm); border: 1px solid var(--rw-border); }
 </style>

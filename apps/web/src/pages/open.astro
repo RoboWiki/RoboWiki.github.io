@@ -1,0 +1,156 @@
+---
+import Base from '@/layouts/Base.astro'
+import { categoryLabel, parts } from '@/lib/catalog'
+import { partHref, withBase } from '@/lib/utils'
+import robotsData from '@/data/robots.json'
+import softwareData from '@/data/software.json'
+
+type RepoHolder = { repos: string[]; license: string | null }
+
+const repoOf = (specs: Record<string, unknown> | undefined): RepoHolder => {
+  const repos = (specs?.repo_urls as string[] | undefined) ?? []
+  const license = (specs?.repo_license as string | null | undefined) ?? null
+  return { repos, license }
+}
+
+const buildRows = (robotsData.robots as unknown as Array<Record<string, any>>).map(r => {
+  const { repos, license } = repoOf(r.specs)
+  const urdf = (r.specs?.urdf_urls as string[] | undefined) ?? []
+  return {
+    id: r.id as string,
+    title: r.title as string,
+    vendor: (r.vendor_cn || r.vendor) as string,
+    href: `${withBase('/builds/')}${r._slug}.html`,
+    repos,
+    license,
+    urdf: urdf.length,
+  }
+})
+
+const partRows = parts
+  .map(p => ({ part: p, ...repoOf(p.specs as Record<string, unknown>) }))
+  .filter(r => r.repos.length > 0)
+  .sort((a, b) => Number(Boolean(b.license)) - Number(Boolean(a.license)))
+
+const toolRows = (softwareData.items as Array<Record<string, any>>)
+  .filter(i => i.repo)
+  .sort((a, b) => Number(Boolean(b.license)) - Number(Boolean(a.license)))
+
+const noLicense = partRows.filter(r => !r.license).length
+const fullRepro = buildRows.filter(r => r.repos.length > 0 && r.urdf > 0).length
+---
+
+<Base
+  title="开源索引 · 可复现的机器人项目 · RoboWiki"
+  description="机器人领域的开源机型、部件与工具索引：标注仓库、许可与 URDF，帮助判断一个设计能不能改、能不能用。"
+>
+  <nav class="mb-4 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-ink-3" aria-label="面包屑">
+    <a href={withBase('/')} class="hover:text-brand">首页</a>
+    <span class="text-line-strong" aria-hidden="true">/</span>
+    <span class="text-ink-2" aria-current="page">开源索引</span>
+  </nav>
+
+  <header class="max-w-3xl">
+    <p class="text-xs font-semibold tracking-[0.14em] text-brand uppercase">Open Source Index</p>
+    <h1 class="mt-2 text-2xl font-extrabold tracking-tight text-ink sm:text-[32px]">开源索引</h1>
+    <p class="mt-3 text-sm leading-7 text-ink-2">
+      开源不是一类产品，而是「这条数据可被验证、这个设计可被复用」的证据。这里把三类对象里带仓库的挑出来，标注许可与可复现程度。
+    </p>
+    <dl class="mt-5 grid max-w-lg grid-cols-3 gap-px overflow-hidden rounded-md border border-line bg-line">
+      <div class="bg-surface px-3 py-2.5">
+        <dt class="text-[11px] text-ink-3">机型</dt>
+        <dd class="mono tabular mt-0.5 text-lg font-bold text-ink">{buildRows.length}</dd>
+      </div>
+      <div class="bg-surface px-3 py-2.5">
+        <dt class="text-[11px] text-ink-3">部件</dt>
+        <dd class="mono tabular mt-0.5 text-lg font-bold text-ink">{partRows.length}</dd>
+      </div>
+      <div class="bg-surface px-3 py-2.5">
+        <dt class="text-[11px] text-ink-3">工具</dt>
+        <dd class="mono tabular mt-0.5 text-lg font-bold text-ink">{toolRows.length}</dd>
+      </div>
+    </dl>
+    <p class="mt-3 text-[12px] leading-6 text-ink-3">
+      其中 {fullRepro} 套机型同时具备仓库与 URDF；{noLicense} 条部件引用了仓库但未标注许可，已在列表中标记「许可未标注」。
+    </p>
+  </header>
+
+  <section class="mt-8">
+    <div class="flex items-end justify-between gap-3">
+      <div>
+        <h2 class="text-sm font-semibold text-ink">开源机型</h2>
+        <p class="mt-1 text-[12px] text-ink-3">仓库 + URDF 齐全的，才可能真的复现。</p>
+      </div>
+      <a href={withBase('/builds.html')} class="text-xs font-medium text-brand hover:underline">方案库 →</a>
+    </div>
+    <div class="mt-3 overflow-hidden rounded-lg border border-line bg-surface">
+      <ul class="divide-y divide-line">
+        {buildRows.map(row => (
+          <li>
+            <a href={row.href} class="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-3 transition-colors hover:bg-surface-2">
+              <span class="min-w-0 flex-1">
+                <span class="block truncate text-[13px] font-medium text-ink">{row.title}</span>
+                <span class="block truncate text-[11px] text-ink-3">{row.vendor}</span>
+              </span>
+              <span class="rounded-full border border-line px-2 py-0.5 text-[10px] text-ink-2">
+                URDF {row.urdf}
+              </span>
+              <span class={row.license ? 'rounded-full border border-success/30 bg-success-soft px-2 py-0.5 text-[10px] text-success' : 'rounded-full border border-warning/30 bg-warning-soft px-2 py-0.5 text-[10px] text-warning'}>
+                {row.license ?? '许可未标注'}
+              </span>
+              <span class="mono text-[10px] text-ink-3">{row.repos.length} 仓库</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-sm font-semibold text-ink">开源部件</h2>
+    <p class="mt-1 text-[12px] text-ink-3">有固件或硬件设计的部件，通常比只有厂商页面的更可验证。</p>
+    <div class="mt-3 overflow-hidden rounded-lg border border-line bg-surface">
+      <ul class="divide-y divide-line">
+        {partRows.map(({ part, license, repos }) => (
+          <li>
+            <a href={partHref(part)} class="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-3 transition-colors hover:bg-surface-2">
+              <span class="min-w-0 flex-1">
+                <span class="block truncate text-[13px] font-medium text-ink">{part.model}</span>
+                <span class="block truncate text-[11px] text-ink-3">{part.vendor} · {categoryLabel(part.category)}</span>
+              </span>
+              <span class={license ? 'rounded-full border border-success/30 bg-success-soft px-2 py-0.5 text-[10px] text-success' : 'rounded-full border border-warning/30 bg-warning-soft px-2 py-0.5 text-[10px] text-warning'}>
+                {license ?? '许可未标注'}
+              </span>
+              <span class="mono text-[10px] text-ink-3">{repos.length} 仓库</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <div class="flex items-end justify-between gap-3">
+      <h2 class="text-sm font-semibold text-ink">开源工具</h2>
+      <a href={withBase('/tools.html')} class="text-xs font-medium text-brand hover:underline">工具链 →</a>
+    </div>
+    <div class="mt-3 overflow-hidden rounded-lg border border-line bg-surface">
+      <ul class="divide-y divide-line">
+        {toolRows.map(tool => (
+          <li class="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-3">
+            <span class="min-w-0 flex-1">
+              <span class="block truncate text-[13px] font-medium text-ink">{tool.name}</span>
+              <span class="block truncate text-[11px] text-ink-3">{tool.vendor} · {tool.what}</span>
+            </span>
+            <span class="rounded-full border border-line px-2 py-0.5 text-[10px] text-ink-2">{tool.license ?? '未标注'}</span>
+            <a href={tool.repo} target="_blank" rel="noopener" class="mono text-[11px] text-brand hover:underline">仓库 ↗</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <p class="mt-8 text-[12px] leading-6 text-ink-3">
+    判断一个项目能不能复现，看四样东西：仓库、许可、BOM（或结构件）、固件/装配说明。缺任何一样，都只能算“可参考”，不算“可复现”。
+  </p>
+</Base>

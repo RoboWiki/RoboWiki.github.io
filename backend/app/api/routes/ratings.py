@@ -18,7 +18,7 @@ from __future__ import annotations
 from typing import Annotated
 
 from fastapi import APIRouter, HTTPException, Query
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from sqlmodel import select
 
 from ...crud import shadowed_review_keys
@@ -29,10 +29,41 @@ from ..deps import CurrentUser, Db, MaybeUser
 router = APIRouter(prefix="/ratings", tags=["ratings"])
 
 
+USAGE_LEVELS = ("long", "short", "unboxed")
+#: 理由标签白名单。前端只展示这些，避免自由文本导致无法聚合。
+REASON_TAGS = (
+    "good_value", "better_than_spec", "overstated", "heat",
+    "build_quality", "docs_missing", "shipping", "not_recommend",
+    "encoder_drift", "backlash", "fake_chip", "hard_to_solder",
+    "calibration", "drift", "lighting",
+)
+
+
 class RateIn(BaseModel):
     score: int = Field(ge=1, le=5)
     own_hardware: bool = False
     note: str = Field(default="", max_length=200)
+    #: 使用时长分档；空串表示没填（老客户端）。
+    usage_level: str = ""
+    #: 理由标签，最多 3 个，必须在白名单内。
+    reason_tags: list[str] = Field(default_factory=list, max_length=3)
+
+    @field_validator("usage_level")
+    @classmethod
+    def _usage_ok(cls, value: str) -> str:
+        value = (value or "").strip()
+        if value and value not in USAGE_LEVELS:
+            raise ValueError(f"usage_level 必须是 {USAGE_LEVELS} 之一")
+        return value
+
+    @field_validator("reason_tags")
+    @classmethod
+    def _tags_ok(cls, value: list[str]) -> list[str]:
+        cleaned = [t.strip() for t in value if t and t.strip()]
+        unknown = [t for t in cleaned if t not in REASON_TAGS]
+        if unknown:
+            raise ValueError(f"未知的理由标签：{unknown}")
+        return list(dict.fromkeys(cleaned))[:3]
 
 
 def _mine_out(row: Rating | None, *, hidden: bool = False) -> dict | None:
@@ -40,6 +71,8 @@ def _mine_out(row: Rating | None, *, hidden: bool = False) -> dict | None:
         return None
     return {"score": row.score, "own_hardware": row.own_hardware,
             "note": row.note, "updated_at": row.updated_at.isoformat(),
+            "usage_level": row.usage_level or "",
+            "reason_tags": [t for t in (row.reason_tags or "").split(",") if t],
             # 评价帖被隐藏时这票不进公开聚合；作者仍然看得到、可以撤销
             "hidden": hidden}
 
@@ -57,6 +90,21 @@ def _summary(rows: list[Rating], viewer_id: int | None = None,
     shadowed = shadowed or set()
     visible = [r for r in rows if (r.part_id, r.user_id) not in shadowed]
     out = aggregate(visible)
+
+    # 使用时长与理由标签：均分解释不了的东西，靠这两个分布解释。
+    # 空值不计入分母——「没填」不是「没用过」。
+    usage_tally: dict[str, int] = {}
+    tag_tally: dict[str, int] = {}
+    for row in visible:
+        level = (row.usage_level or "").strip()
+        if level:
+            usage_tally[level] = usage_tally.get(level, 0) + 1
+        for tag in (row.reason_tags or "").split(","):
+            tag = tag.strip()
+            if tag:
+                tag_tally[tag] = tag_tally.get(tag, 0) + 1
+    out["usage_level_counts"] = usage_tally
+    out["reason_tag_counts"] = dict(sorted(tag_tally.items(), key=lambda kv: (-kv[1], kv[0])))
     mine_row = (next((r for r in rows if r.user_id == viewer_id), None)
                 if viewer_id is not None else None)
     out["mine"] = _mine_out(
@@ -111,15 +159,19 @@ def rate_part(part_id: str, payload: RateIn, user: CurrentUser, db: Db):
 
     row = db.exec(select(Rating).where(Rating.part_id == part_id,
                                        Rating.user_id == user.id)).first()
+    tags = ",".join(payload.reason_tags)
     if row is None:
         row = Rating(part_id=part_id, user_id=user.id, score=payload.score,
-                     own_hardware=payload.own_hardware, note=payload.note.strip())
+                     own_hardware=payload.own_hardware, note=payload.note.strip(),
+                     usage_level=payload.usage_level, reason_tags=tags)
         db.add(row)
         created = True
     else:
         row.score = payload.score
         row.own_hardware = payload.own_hardware
         row.note = payload.note.strip()
+        row.usage_level = payload.usage_level
+        row.reason_tags = tags
         row.updated_at = utcnow()
         db.add(row)
         created = False

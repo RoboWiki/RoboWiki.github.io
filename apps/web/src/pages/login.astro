@@ -1,6 +1,7 @@
 ---
 import Base from '@/layouts/Base.astro'
 import Breadcrumbs from '@/components/community/Breadcrumbs.astro'
+import IslandFallback from '@/components/community/IslandFallback.astro'
 import LoginBridge from '@/components/community/login-bridge'
 ---
 <Base
@@ -12,14 +13,21 @@ import LoginBridge from '@/components/community/login-bridge'
     { label: '社区', href: '/community.html' },
     { label: '登录' },
   ]} />
+
   <div class="mx-auto max-w-[420px]">
-    <h1 class="mb-1 text-2xl font-extrabold tracking-tight text-slate-950">登录 / 注册</h1>
-    <p class="mb-4 text-sm leading-6 text-slate-500">
-      账号与 App、GitHub 登录共用一套会话；凭证只用一次，60 秒内有效。
-    </p>
+    <header class="mb-4">
+      <p class="text-xs font-semibold uppercase tracking-[0.14em] text-brand">账号</p>
+      <h1 class="mb-1 mt-1 text-2xl font-extrabold tracking-tight text-ink">登录 / 注册</h1>
+      <p class="text-[13px] leading-6 text-ink-2">
+        账号与 App、GitHub 登录共用一套会话；凭证只用一次，60 秒内有效。
+      </p>
+    </header>
+
+    <IslandFallback label="正在准备登录表单…" rows={0} />
     <LoginBridge client:only="react" />
+
     <noscript>
-      <p class="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+      <p class="mt-4 rounded-md border border-warning/35 bg-warning-soft p-3 text-[13px] leading-6 text-warning">
         登录需要启用 JavaScript。也可以直接在 App 里登录后回到社区。
       </p>
     </noscript>

@@ -1,0 +1,423 @@
+---
+import Base from '@/layouts/Base.astro'
+import Breadcrumbs from '@/components/library/Breadcrumbs.astro'
+import SeoJsonLd from '@/components/SeoJsonLd.astro'
+import ReproductionPanel from '@/components/ReproductionPanel'
+import { specRows } from '@/components/library/specs'
+import robotsData from '@/data/robots.json'
+import { formatPrice, withBase } from '@/lib/utils'
+
+type Robot = {
+  id: string
+  subtype?: string | null
+  subtype_label?: string | null
+  vendor: string
+  vendor_cn?: string | null
+  model: string
+  title: string
+  url?: string | null
+  price_cny?: number | null
+  source_tier?: string | null
+  verified?: number
+  last_checked?: string | null
+  specs: Record<string, unknown>
+  notes?: string | null
+  origin?: string | null
+  _slug: string
+  bom?: Array<{ part_id?: string | null; name: string; qty: number; note?: string | null }> | null
+  steps?: Array<{ order?: number | null; title: string; detail?: string | null; criteria?: string | null; pitfall?: string | null }> | null
+  artifacts?: Record<string, string | null> | null
+}
+
+export function getStaticPaths() {
+  const robots = robotsData.robots as unknown as Robot[]
+  return robots.map(robot => ({ params: { slug: robot._slug }, props: { robot } }))
+}
+
+const { robot } = Astro.props as { robot: Robot }
+const allRobots = robotsData.robots as unknown as Robot[]
+const text = (value: unknown) => (typeof value === 'string' && value ? value : null)
+const display = (value: unknown) => (value === null || value === undefined || value === '' ? '—' : String(value))
+const list = (value: unknown) => (Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : [])
+const image = text(robot.specs.image_url)
+const docUrl = text(robot.specs.doc_url)
+const docPdf = text(robot.specs.doc_pdf)
+const license = text(robot.specs.repo_license)
+const repos = list(robot.specs.repo_urls)
+const urdfs = list(robot.specs.urdf_urls)
+const artifacts = robot.artifacts ?? {}
+const artifactLink = (key: string) => (artifacts[key] ? String(artifacts[key]) : '')
+const bom = (robot.bom ?? []).filter(item => item && item.name)
+const steps = [...(robot.steps ?? [])]
+  .filter(step => step && step.title)
+  .sort((a, b) => (a.order ?? 999) - (b.order ?? 999))
+const bomTotal = bom.reduce((sum, item) => sum + (Number(item.qty) || 0), 0)
+const rows = specRows('robot', robot.specs)
+const filled = rows.filter(row => row.value !== '—').length
+const linkClass = 'break-all text-brand hover:underline'
+
+const tierClass = (tier?: string | null) =>
+  tier && ['a', 'b', 'c'].includes(tier.toLowerCase()) ? `tier tier-${tier.toLowerCase()}` : 'tier tier-c'
+
+const related = allRobots
+  .filter(item => item.id !== robot.id && item.subtype && item.subtype === robot.subtype)
+  .slice(0, 6)
+
+const headline = [
+  { label: '自由度', value: display(robot.specs.dof) },
+  { label: '整机质量', value: robot.specs.mass_kg == null ? '—' : `${display(robot.specs.mass_kg)} kg` },
+  { label: '续航', value: display(robot.specs.endurance_h) },
+  { label: '参考价', value: formatPrice(robot.price_cny) },
+]
+
+const docs = [
+  ...repos.map(url => ({ kind: '仓库', url })),
+  ...urdfs.map(url => ({ kind: 'URDF', url })),
+  ...(docUrl ? [{ kind: '文档', url: docUrl }] : []),
+  ...(docPdf ? [{ kind: '手册', url: docPdf }] : []),
+]
+---
+
+<Base
+  title={`${robot.vendor} ${robot.model} · 方案库 · RoboWiki`}
+  description={`${robot.vendor} ${robot.model} 的公开参数、价格、开源仓库与来源。`}
+  image={image ? withBase(image) : undefined}
+>
+  <SeoJsonLd
+    type="Product"
+    title={`${robot.vendor_cn || robot.vendor} ${robot.model}`}
+    description={robot.notes?.slice(0, 160) || `${robot.title} 的结构、电控、开源仓库与来源等级。`}
+    url={Astro.url}
+    image={image ? withBase(image) : undefined}
+    extra={{
+      brand: { '@type': 'Brand', name: robot.vendor_cn || robot.vendor },
+      sku: robot.model,
+      category: robot.subtype_label ?? '机器人整机方案',
+      ...(robot.price_cny ? { offers: { '@type': 'Offer', price: robot.price_cny, priceCurrency: 'CNY' } } : {}),
+    }}
+  />
+
+  <Breadcrumbs
+    items={[
+      { label: '首页', href: '/' },
+      { label: '方案库', href: '/builds.html' },
+      { label: robot.model },
+    ]}
+  />
+
+  <header class="card grid gap-6 p-5 sm:p-6 lg:grid-cols-[minmax(0,260px)_minmax(0,1fr)]">
+    <div class="flex h-52 items-center justify-center overflow-hidden rounded-md border border-line bg-surface-2 lg:h-full">
+      {image ? (
+        <img
+          src={withBase(image)}
+          alt={`${robot.vendor} ${robot.model}`}
+          class="h-full w-full object-contain p-4"
+        />
+      ) : (
+        <span class="flex flex-col items-center gap-1.5 text-xs text-ink-3">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <rect x="4" y="7" width="16" height="12" rx="2" />
+            <path d="M12 3v4M9 12h.01M15 12h.01" stroke-linecap="round" />
+          </svg>
+          暂无产品图
+        </span>
+      )}
+    </div>
+
+    <div class="flex min-w-0 flex-col">
+      <div class="chip-row">
+        {robot.subtype_label && (
+          <span class="inline-flex h-7 items-center whitespace-nowrap rounded-full border border-line bg-surface-2 px-2.5 text-xs font-medium text-ink-2">
+            {robot.subtype_label}
+          </span>
+        )}
+        {robot.source_tier && <span class={tierClass(robot.source_tier)}>来源 {robot.source_tier} 级</span>}
+        <span class={robot.verified ? 'tier tier-a' : 'tier tier-c'}>{robot.verified ? '已核对' : '待复核'}</span>
+      </div>
+
+      <h1 class="mt-3 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">{robot.model}</h1>
+      <p class="mt-1.5 text-sm text-ink-2">{robot.vendor_cn || robot.vendor}</p>
+
+      <dl class="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-line bg-line sm:grid-cols-4">
+        {headline.map(item => (
+          <div class="bg-surface-2 px-3.5 py-3">
+            <dt class="text-[11px] font-medium tracking-wide text-ink-3">{item.label}</dt>
+            <dd class="mono tabular mt-1 text-sm font-semibold leading-5 text-ink">{item.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </header>
+
+  <div class="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
+    <div class="space-y-5">
+      {robot.notes && (
+        <section class="card p-5 sm:p-6" aria-labelledby="notes">
+          <h2 id="notes" class="text-base font-bold tracking-tight text-ink">简介</h2>
+          <p class="mt-2.5 text-sm leading-7 text-ink-2">{robot.notes}</p>
+        </section>
+      )}
+
+      <section class="card p-5 sm:p-6" aria-labelledby="repro">
+        <div class="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 id="repro" class="text-base font-bold tracking-tight text-ink">可复现包</h2>
+          <span class="text-xs text-ink-3">四项齐全才算“能复现”</span>
+        </div>
+        <ul class="mt-3 grid gap-2 sm:grid-cols-2">
+          {[
+            {
+              label: '结构（URDF/CAD）',
+              ok: urdfs.length > 0 || Boolean(artifactLink('urdf')) || Boolean(artifactLink('cad')),
+              note: urdfs.length ? `${urdfs.length} 份` : artifactLink('cad') ? 'CAD' : '未提供',
+            },
+            {
+              label: '代码（仓库）',
+              ok: repos.length > 0 || Boolean(artifactLink('firmware')),
+              note: repos.length ? `${repos.length} 个` : artifactLink('firmware') ? '固件' : '未提供',
+            },
+            { label: '许可', ok: Boolean(license), note: license ?? '未标注' },
+            { label: 'BOM（型号 + 数量）', ok: bom.length > 0, note: bom.length ? `${bom.length} 项` : '未收录' },
+          ].map(item => (
+            <li class="flex items-center gap-2.5 rounded-md border border-line bg-surface-2 px-3 py-2">
+              <span class={item.ok ? 'h-2 w-2 rounded-full bg-success' : 'h-2 w-2 rounded-full bg-line-strong'} aria-hidden="true"></span>
+              <span class="text-[13px] text-ink-2">{item.label}</span>
+              <span class={`ml-auto text-[12px] ${item.ok ? 'text-ink-3' : 'text-warning'}`}>{item.note}</span>
+            </li>
+          ))}
+        </ul>
+
+        {(bom.length > 0 || steps.length > 0) && (
+          <div class="mt-4 flex flex-wrap gap-2">
+            {bom.length > 0 && (
+              <a href="#bom" class="inline-flex h-8 items-center rounded-full border border-line px-3 text-[12px] text-ink-2 hover:border-line-strong">
+                BOM {bom.length} 项
+              </a>
+            )}
+            {steps.length > 0 && (
+              <a href="#steps" class="inline-flex h-8 items-center rounded-full border border-line px-3 text-[12px] text-ink-2 hover:border-line-strong">
+                步骤 {steps.length} 步
+              </a>
+            )}
+          </div>
+        )}
+
+        {bom.length === 0 && (
+          <p class="mt-3 text-[12px] leading-6 text-ink-3">
+            这份清单还没人整理。如果你装过这台机器，欢迎
+            <a href={withBase('/submit.html')} class="text-brand hover:underline">补一条 BOM</a>——
+            型号、数量、单价即可，比再写一篇博客有用得多。
+          </p>
+        )}
+      </section>
+
+      {(bom.length > 0 || artifactLink('cad') || artifactLink('firmware') || artifactLink('assembly')) && (
+        <section class="card p-5 sm:p-6" aria-labelledby="bom">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 id="bom" class="text-base font-bold tracking-tight text-ink">物料清单</h2>
+            <span class="mono tabular text-xs text-ink-3">
+              {bom.length > 0 ? `${bom.length} 项 · 合计 ${bomTotal} 件` : '未收录'}
+            </span>
+          </div>
+
+          {bom.length > 0 ? (
+            <div class="mt-3 overflow-x-auto">
+              <table class="w-full min-w-[520px] border-collapse text-[13px]">
+                <thead>
+                  <tr class="border-b border-line text-left text-[11px] text-ink-3">
+                    <th class="py-2 pr-3 font-medium">物料</th>
+                    <th class="w-16 py-2 pr-3 text-right font-medium">数量</th>
+                    <th class="py-2 font-medium">备注</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bom.map(item => (
+                    <tr class="border-b border-line last:border-0">
+                      <td class="py-2 pr-3 text-ink">{item.name}</td>
+                      <td class="mono tabular py-2 pr-3 text-right text-ink-2">{item.qty}</td>
+                      <td class="py-2 text-[12px] text-ink-3">{item.note ?? '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p class="mt-3 text-[13px] text-ink-3">清单还在整理，先看下面这些交付物。</p>
+          )}
+
+          <div class="mt-4 flex flex-wrap gap-2 border-t border-line pt-3">
+            {[
+              { key: 'urdf', label: 'URDF' },
+              { key: 'cad', label: 'CAD' },
+              { key: 'firmware', label: '固件' },
+              { key: 'assembly', label: '装配说明' },
+              { key: 'docs', label: '文档' },
+            ].filter(item => artifactLink(item.key)).map(item => (
+              <a
+                href={artifactLink(item.key)}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex h-8 items-center rounded-full border border-line px-3 text-[12px] text-ink-2 hover:border-line-strong hover:text-ink"
+              >
+                {item.label} <span class="ml-1 text-ink-3" aria-hidden="true">↗</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {steps.length > 0 && (
+        <section class="card p-5 sm:p-6" aria-labelledby="steps">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 id="steps" class="text-base font-bold tracking-tight text-ink">复现步骤</h2>
+            <span class="mono tabular text-xs text-ink-3">{steps.length} 步</span>
+          </div>
+          <ol class="mt-3 space-y-3">
+            {steps.map((step, index) => (
+              <li class="rounded-md border border-line bg-surface-2 p-3">
+                <div class="flex flex-wrap items-baseline gap-2">
+                  <span class="mono text-[11px] text-ink-3">{String(step.order ?? index + 1).padStart(2, '0')}</span>
+                  <span class="text-[13px] font-semibold text-ink">{step.title}</span>
+                </div>
+                {step.detail && <p class="mt-1.5 text-[12px] leading-6 text-ink-2">{step.detail}</p>}
+                {step.criteria && (
+                  <p class="mt-1.5 rounded-sm border border-success/30 bg-success-soft px-2 py-1 text-[12px] leading-5 text-ink-2">
+                    <span class="font-semibold text-success">判据</span> {step.criteria}
+                  </p>
+                )}
+                {step.pitfall && (
+                  <p class="mt-1.5 text-[12px] leading-5 text-ink-3">坑：{step.pitfall}</p>
+                )}
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+
+      <ReproductionPanel client:visible buildId={robot.id} />
+
+      <section class="card p-5 sm:p-6" aria-labelledby="specs">
+        <div class="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 id="specs" class="text-base font-bold tracking-tight text-ink">关键参数</h2>
+          <span class="mono tabular text-xs text-ink-3">{filled} / {rows.length} 项有公开值</span>
+        </div>
+        <p class="mt-1 text-xs leading-5 text-ink-3">厂商未公布或未核到的字段显示 —，不用推算值填空。</p>
+        <dl class="mt-4 grid gap-x-8 sm:grid-cols-2">
+          {rows.map(row => (
+            <div class="flex items-start justify-between gap-4 border-b border-line py-2 text-sm">
+              <dt class="shrink-0 text-ink-3">{row.label}</dt>
+              <dd class="tabular text-right font-medium text-ink">{row.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      {docs.length > 0 && (
+        <section class="card p-5 sm:p-6" aria-labelledby="repos">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 id="repos" class="text-base font-bold tracking-tight text-ink">仓库与文档</h2>
+            <span class="mono tabular text-xs text-ink-3">{docs.length} 个链接</span>
+          </div>
+          {license && (
+            <p class="mt-1 text-xs leading-5 text-ink-3">
+              仓库许可：<span class="mono text-ink-2">{license}</span>。商用或再分发前请逐个仓库核对许可条款。
+            </p>
+          )}
+          <ul class="mt-3 divide-y divide-line" role="list">
+            {docs.map(doc => (
+              <li class="flex flex-wrap items-baseline gap-x-3 gap-y-1 py-2.5 text-sm">
+                <span class="w-14 shrink-0 text-xs text-ink-3">{doc.kind}</span>
+                <a href={doc.url} target="_blank" rel="noopener" class={linkClass}>
+                  {doc.url}<span class="sr-only">（新窗口打开）</span>
+                </a>
+                <span class="ml-auto text-xs text-ink-3" aria-hidden="true">↗</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </div>
+
+    <aside class="space-y-4 lg:sticky lg:top-20">
+      <section class="card p-5" aria-labelledby="data-version">
+        <h2 id="data-version" class="text-sm font-bold tracking-tight text-ink">数据版本</h2>
+        <dl class="mt-3 space-y-2.5 text-sm">
+          <div class="flex items-center justify-between gap-3">
+            <dt class="text-ink-3">来源等级</dt>
+            <dd>
+              {robot.source_tier ? (
+                <span class={tierClass(robot.source_tier)}>{robot.source_tier} 级</span>
+              ) : (
+                <span class="text-ink-2">—</span>
+              )}
+            </dd>
+          </div>
+          <div class="flex items-center justify-between gap-3">
+            <dt class="text-ink-3">核对状态</dt>
+            <dd class="font-medium text-ink">{robot.verified ? '已核对' : '待复核'}</dd>
+          </div>
+          <div class="flex items-center justify-between gap-3">
+            <dt class="text-ink-3">最近核对</dt>
+            <dd class="mono tabular font-medium text-ink">{robot.last_checked || '—'}</dd>
+          </div>
+          <div class="flex items-center justify-between gap-3">
+            <dt class="text-ink-3">参考价</dt>
+            <dd class="mono tabular font-medium text-ink">{formatPrice(robot.price_cny)}</dd>
+          </div>
+        </dl>
+        {robot.origin && (
+          <p class="mt-3 rounded-md border border-line bg-surface-2 p-3 text-xs leading-5 text-ink-2">{robot.origin}</p>
+        )}
+        <a href={withBase('/method.html')} class="mt-3 inline-flex text-xs font-medium text-brand hover:underline">
+          来源等级怎么算 →
+        </a>
+      </section>
+
+      {related.length > 0 && (
+        <section class="card p-5" aria-labelledby="related">
+          <h2 id="related" class="text-sm font-bold tracking-tight text-ink">
+            相关条目<span class="ml-1.5 mono tabular text-xs font-normal text-ink-3">{related.length}</span>
+          </h2>
+          <ul class="mt-3 space-y-1" role="list">
+            {related.map(item => (
+              <li>
+                <a
+                  href={withBase(`/builds/${item._slug}.html`)}
+                  class="-mx-2 flex items-baseline justify-between gap-2 rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-surface-3"
+                >
+                  <span class="min-w-0 truncate text-ink-2">{item.model}</span>
+                  <span class="shrink-0 text-xs text-ink-3">{formatPrice(item.price_cny)}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <a href={withBase('/builds.html')} class="mt-2 inline-flex text-xs font-medium text-brand hover:underline">
+            查看方案库全部 →
+          </a>
+        </section>
+      )}
+
+      <section class="rounded-md border border-line bg-surface-2 p-5" aria-labelledby="fix">
+        <h2 id="fix" class="text-sm font-bold tracking-tight text-ink">纠错入口</h2>
+        <p class="mt-2 text-xs leading-5 text-ink-3">
+          参数、价格或链接有误？带上官方出处提交，核对后更新这一页。
+        </p>
+        <a
+          href={withBase('/submit.html')}
+          class="mt-3 inline-flex h-9 items-center rounded-md bg-brand px-3.5 text-[13px] font-semibold text-brand-fg transition-colors hover:bg-brand-hover"
+        >
+          提交纠错
+        </a>
+        {robot.url && (
+          <a
+            href={robot.url}
+            target="_blank"
+            rel="noopener"
+            class="mt-2 flex items-center gap-1 text-xs text-brand hover:underline"
+          >
+            厂商页面<span class="sr-only">（新窗口打开）</span><span aria-hidden="true">↗</span>
+          </a>
+        )}
+      </section>
+    </aside>
+  </div>
+</Base>

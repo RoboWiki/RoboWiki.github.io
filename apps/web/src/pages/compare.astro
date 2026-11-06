@@ -1,0 +1,38 @@
+---
+import Base from '@/layouts/Base.astro'
+import CompareTable from '@/components/CompareTable'
+import { withBase } from '@/lib/utils'
+import semantics from '@/data/semantics.json'
+
+type Meta = { label?: string; unit?: string }
+const fieldSemantics = (semantics as { field_semantics?: Record<string, Meta> }).field_semantics ?? {}
+// 只把字段名与单位传给岛屿，避免把整份语义表打进页面。
+const labels = Object.fromEntries(
+  Object.entries(fieldSemantics).map(([key, meta]) => [key, { label: meta.label ?? key, unit: meta.unit ?? '' }]),
+)
+---
+
+<Base
+  title="部件对比 · RoboWiki"
+  description="把 2–4 个部件并排比较：参数、口径、来源等级与价格，差异项自动标出。"
+>
+  <nav class="mb-4 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-ink-3" aria-label="面包屑">
+    <a href={withBase('/')} class="hover:text-brand">首页</a>
+    <span class="text-line-strong" aria-hidden="true">/</span>
+    <a href={withBase('/catalog.html')} class="hover:text-brand">部件库</a>
+    <span class="text-line-strong" aria-hidden="true">/</span>
+    <span class="text-ink-2" aria-current="page">对比</span>
+  </nav>
+
+  <header class="max-w-3xl">
+    <p class="text-xs font-semibold tracking-[0.14em] text-brand uppercase">Compare</p>
+    <h1 class="mt-2 text-2xl font-extrabold tracking-tight text-ink sm:text-[30px]">部件对比</h1>
+    <p class="mt-3 text-sm leading-7 text-ink-2">
+      选 2–4 个部件并排看。字段取值不同的行会被标出来——差异往往不是谁更好，而是口径不同。
+    </p>
+  </header>
+
+  <div class="mt-6">
+    <CompareTable client:load labels={labels} />
+  </div>
+</Base>

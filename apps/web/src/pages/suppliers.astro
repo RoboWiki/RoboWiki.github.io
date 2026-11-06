@@ -1,7 +1,5 @@
 ---
 import Base from '@/layouts/Base.astro'
-import Breadcrumbs from '@/components/library/Breadcrumbs.astro'
-import { Badge } from '@/components/ui/badge'
 import suppliersData from '@/data/suppliers.json'
 import { withBase } from '@/lib/utils'
 
@@ -48,6 +46,8 @@ const listingCounts = ['红榜', '黑榜'].map(listing => ({
   count: suppliers.filter(item => item.listing === listing).length,
 }))
 const unlisted = suppliers.filter(item => !item.listing).length
+const redCount = listingCounts[0].count
+const blackCount = listingCounts[1].count
 
 const searchText = (item: Supplier) =>
   [
@@ -70,12 +70,13 @@ const searchText = (item: Supplier) =>
     .join(' ')
     .toLowerCase()
 
-const listingClass = (listing?: string | null) =>
+const listingTone = (listing?: string | null) =>
   listing === '红榜'
-    ? 'border-transparent bg-emerald-50 text-emerald-700'
+    ? { pill: 'border-success/30 bg-success-soft text-success', bar: 'bg-success' }
     : listing === '黑榜'
-      ? 'border-transparent bg-red-50 text-red-700'
-      : 'border-slate-200 text-slate-500'
+      ? { pill: 'border-danger/30 bg-danger-soft text-danger', bar: 'bg-danger' }
+      : { pill: 'border-line bg-surface-2 text-ink-3', bar: '' }
+
 const metaEntries = (item: Supplier) =>
   [
     ['细分', item.fine || item.process],
@@ -85,133 +86,199 @@ const metaEntries = (item: Supplier) =>
     ['价格档', item.price_level],
     ['发票', item.invoice],
   ].filter(([, value]) => Boolean(value)) as Array<[string, string]>
+
+const countListing = (items: Supplier[], listing: string) => items.filter(item => item.listing === listing).length
 ---
 
 <Base
   title="渠道与加工 · RoboWiki"
   description={`${total} 条机器人零件与加工渠道的社区记录：按品类与榜单分组，标注成色、原因与反馈时间。`}
 >
-  <Breadcrumbs items={[{ label: '首页', href: '/' }, { label: '软件与渠道', href: '/software.html' }, { label: '渠道库' }]} />
+  <div class="mx-auto max-w-6xl">
+    <nav aria-label="面包屑" class="mb-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-ink-3">
+      <a href={withBase('/')} class="transition-colors hover:text-brand">首页</a>
+      <span aria-hidden="true" class="text-line-strong">/</span>
+      <a href={withBase('/software.html')} class="transition-colors hover:text-brand">软件与渠道</a>
+      <span aria-hidden="true" class="text-line-strong">/</span>
+      <span class="text-ink-2" aria-current="page">渠道库</span>
+    </nav>
 
-  <header class="mb-6">
-    <p class="text-xs font-semibold uppercase tracking-wider text-blue-700">渠道库</p>
-    <h1 class="mt-1 text-3xl font-extrabold tracking-tight text-slate-950">买过的人怎么说，比店铺首页怎么写更可靠。</h1>
-    <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-      {total} 条社区记录，按品类分组。红黑榜为社区匿名填写（已去除掌柜 ID 与店铺链接），记录的是某次购买经历，不是本站的推荐或背书；下单前请自行核验。
-    </p>
-    <p class="mt-2 text-xs text-slate-400">数据快照：{suppliersData.meta.generated_at.slice(0, 10)} · 共 {suppliersData.meta.record_count} 条</p>
-  </header>
+    <header>
+      <p class="text-[11px] font-semibold tracking-[0.14em] text-brand uppercase">渠道库</p>
+      <h1 class="mt-2 max-w-3xl text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">买过的人怎么说，比店铺首页怎么写更可靠。</h1>
+      <p class="mt-3 max-w-3xl text-sm leading-7 text-ink-2">
+        {total} 条社区记录，按品类分组。红黑榜为社区匿名填写（已去除掌柜 ID 与店铺链接），记录的是某次购买经历，不是本站的推荐或背书；下单前请自行核验。
+      </p>
 
-  <form id="supplier-filters" class="mb-4 rounded-xl border border-slate-200 bg-white p-4" role="search" aria-label="筛选渠道">
-    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-      <div class="sm:col-span-2 lg:col-span-1">
-        <label for="sup-q" class="text-xs font-medium text-slate-600">搜索</label>
-        <input
-          id="sup-q"
-          type="search"
-          name="q"
-          placeholder="店名、品类、工艺、反馈内容"
-          class="mt-1 flex h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm shadow-sm placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-        />
-      </div>
-      <div>
-        <label for="sup-cat" class="text-xs font-medium text-slate-600">品类</label>
-        <select id="sup-cat" class="mt-1 flex h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-sm">
-          <option value="">全部品类</option>
-          {categories.map(category => <option value={category.category}>{category.category}（{category.items.length}）</option>)}
-        </select>
-      </div>
-      <div>
-        <label for="sup-grade" class="text-xs font-medium text-slate-600">成色</label>
-        <select id="sup-grade" class="mt-1 flex h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-sm">
-          <option value="">全部成色</option>
-          {grades.map(grade => <option value={grade.grade}>{grade.grade}（{grade.count}）</option>)}
-          <option value="__none">未标注（{ungraded}）</option>
-        </select>
-      </div>
-      <div>
-        <label for="sup-listing" class="text-xs font-medium text-slate-600">榜单</label>
-        <select id="sup-listing" class="mt-1 flex h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-sm">
-          <option value="">全部记录</option>
-          {listingCounts.map(listing => <option value={listing.listing}>{listing.listing}（{listing.count}）</option>)}
-          <option value="__none">未入榜（{unlisted}）</option>
-        </select>
-      </div>
-    </div>
-    <p id="sup-count" class="mt-3 text-xs text-slate-500" aria-live="polite">显示 {total} / {total} 家</p>
-  </form>
-
-  <div class="space-y-10">
-    {categories.map(category => (
-      <section
-        id={`cat-${category.category}`}
-        data-supplier-section
-        aria-labelledby={`cat-${category.category}-title`}
-        class="scroll-mt-20"
-      >
-        <div class="mb-3 flex flex-wrap items-baseline justify-between gap-2 border-b border-slate-200 pb-2">
-          <h2 id={`cat-${category.category}-title`} class="text-xl font-bold tracking-tight text-slate-950">{category.category}</h2>
-          <span class="text-xs text-slate-400">{category.items.length} 家</span>
+      <dl class="mt-6 grid max-w-2xl grid-cols-2 gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-4">
+        <div class="bg-surface px-4 py-3">
+          <dt class="text-[11px] text-ink-3">收录记录</dt>
+          <dd class="mono mt-1 text-xl font-bold text-ink">{total}</dd>
         </div>
-        <ul class="grid grid-cols-1 gap-3 lg:grid-cols-2" role="list">
-          {category.items.map(item => (
-            <li
-              data-supplier
-              data-cat={item.category || '未分类'}
-              data-grade={item.grade || ''}
-              data-listing={item.listing || ''}
-              data-search={searchText(item)}
-            >
-              <article class="flex h-full flex-col gap-2 rounded-xl border border-slate-200 bg-white p-4">
-                <div class="flex flex-wrap items-center gap-1.5">
-                  <h3 class="mr-auto text-base font-semibold text-slate-900">{item.display_name || item.name}</h3>
-                  {item.listing ? (
-                    <Badge className={listingClass(item.listing)}>{item.listing}</Badge>
-                  ) : (
-                    <Badge variant="outline">未入榜</Badge>
-                  )}
-                  {item.grade && <Badge variant="secondary">{item.grade}</Badge>}
-                  {item.tier && <Badge variant="outline">来源 {item.tier}</Badge>}
-                </div>
+        <div class="bg-surface px-4 py-3">
+          <dt class="text-[11px] text-ink-3">红榜</dt>
+          <dd class="mono mt-1 text-xl font-bold text-success">{redCount}</dd>
+        </div>
+        <div class="bg-surface px-4 py-3">
+          <dt class="text-[11px] text-ink-3">黑榜</dt>
+          <dd class="mono mt-1 text-xl font-bold text-danger">{blackCount}</dd>
+        </div>
+        <div class="bg-surface px-4 py-3">
+          <dt class="text-[11px] text-ink-3">未入榜</dt>
+          <dd class="mono mt-1 text-xl font-bold text-ink-2">{unlisted}</dd>
+        </div>
+      </dl>
 
-                <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500">
-                  <span>{item.category || '未分类'}</span>
-                  {(item.fine || item.process) && <span>· {item.fine || item.process}</span>}
-                  {item.channel && <span>· {item.channel}</span>}
-                  {item.reported_at && <span>· {item.reported_at}</span>}
-                  {item.reports && item.reports > 1 && <span>· {item.reports} 条反馈</span>}
-                </div>
+      <p class="mono mt-2 text-[11px] text-ink-3">数据快照：{suppliersData.meta.generated_at.slice(0, 10)} · 共 {suppliersData.meta.record_count} 条</p>
+    </header>
 
-                <p class="text-sm leading-6 text-slate-700">
-                  {item.reason || item.notes || '社区未留下文字说明。'}
-                </p>
-                {item.reason && item.notes && <p class="text-xs leading-5 text-slate-500">补充：{item.notes}</p>}
+    <form id="supplier-filters" class="card mt-6 p-4" role="search" aria-label="筛选渠道">
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="sm:col-span-2 lg:col-span-1">
+          <label for="sup-q" class="text-[11px] font-medium text-ink-3">搜索</label>
+          <input
+            id="sup-q"
+            type="search"
+            name="q"
+            placeholder="店名、品类、工艺、反馈内容"
+            class="mt-1 flex h-9 w-full rounded-md border border-line bg-surface px-3 text-sm text-ink transition-colors placeholder:text-ink-3 hover:border-line-strong focus-visible:border-brand focus-visible:outline-none"
+          />
+        </div>
+        <div>
+          <label for="sup-cat" class="text-[11px] font-medium text-ink-3">品类</label>
+          <select id="sup-cat" class="mt-1 flex h-9 w-full rounded-md border border-line bg-surface px-2 text-sm text-ink transition-colors hover:border-line-strong">
+            <option value="">全部品类</option>
+            {categories.map(category => <option value={category.category}>{category.category}（{category.items.length}）</option>)}
+          </select>
+        </div>
+        <div>
+          <label for="sup-grade" class="text-[11px] font-medium text-ink-3">成色</label>
+          <select id="sup-grade" class="mt-1 flex h-9 w-full rounded-md border border-line bg-surface px-2 text-sm text-ink transition-colors hover:border-line-strong">
+            <option value="">全部成色</option>
+            {grades.map(grade => <option value={grade.grade}>{grade.grade}（{grade.count}）</option>)}
+            <option value="__none">未标注（{ungraded}）</option>
+          </select>
+        </div>
+        <div>
+          <label for="sup-listing" class="text-[11px] font-medium text-ink-3">榜单</label>
+          <select id="sup-listing" class="mt-1 flex h-9 w-full rounded-md border border-line bg-surface px-2 text-sm text-ink transition-colors hover:border-line-strong">
+            <option value="">全部记录</option>
+            {listingCounts.map(listing => <option value={listing.listing}>{listing.listing}（{listing.count}）</option>)}
+            <option value="__none">未入榜（{unlisted}）</option>
+          </select>
+        </div>
+      </div>
+      <p id="sup-count" class="mono mt-3 text-[11px] text-ink-3" aria-live="polite">显示 {total} / {total} 家</p>
+    </form>
 
-                {metaEntries(item).length > 0 && (
-                  <dl class="mt-auto grid grid-cols-2 gap-x-4 gap-y-1 border-t border-slate-100 pt-2 text-xs sm:grid-cols-3">
-                    {metaEntries(item).map(([label, value]) => (
-                      <div class="flex gap-1">
-                        <dt class="shrink-0 text-slate-400">{label}</dt>
-                        <dd class="truncate text-slate-600" title={value}>{value}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                )}
-              </article>
-            </li>
-          ))}
-        </ul>
-      </section>
-    ))}
+    <nav aria-label="按品类跳转" class="mt-5">
+      <div class="chip-row">
+        {categories.map(category => (
+          <a href={`#cat-${category.category}`} class="chip">
+            {category.category}
+            <span class="mono text-[11px] text-ink-3">{category.items.length}</span>
+          </a>
+        ))}
+      </div>
+    </nav>
+
+    <div class="mt-8 space-y-10">
+      {categories.map(category => (
+        <section
+          id={`cat-${category.category}`}
+          data-supplier-section
+          aria-labelledby={`cat-${category.category}-title`}
+          class="scroll-mt-24"
+        >
+          <div class="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-line pb-2">
+            <h2 id={`cat-${category.category}-title`} class="text-lg font-bold tracking-tight text-ink">{category.category}</h2>
+            <span class="mono text-[11px] text-ink-3">{category.items.length} 家</span>
+            <span class="ml-auto flex items-center gap-3 text-[11px] text-ink-3">
+              {countListing(category.items, '红榜') > 0 && (
+                <span class="inline-flex items-center gap-1">
+                  <span class="h-1.5 w-1.5 rounded-full bg-success" aria-hidden="true" />红榜 {countListing(category.items, '红榜')}
+                </span>
+              )}
+              {countListing(category.items, '黑榜') > 0 && (
+                <span class="inline-flex items-center gap-1">
+                  <span class="h-1.5 w-1.5 rounded-full bg-danger" aria-hidden="true" />黑榜 {countListing(category.items, '黑榜')}
+                </span>
+              )}
+            </span>
+          </div>
+
+          <ul class="grid grid-cols-1 gap-3 lg:grid-cols-2" role="list">
+            {category.items.map(item => {
+              const tone = listingTone(item.listing)
+              return (
+                <li
+                  class="min-w-0"
+                  data-supplier
+                  data-cat={item.category || '未分类'}
+                  data-grade={item.grade || ''}
+                  data-listing={item.listing || ''}
+                  data-search={searchText(item)}
+                >
+                  <article class="card card-hover relative flex h-full flex-col gap-2.5 overflow-hidden py-4 pr-4 pl-5">
+                    {item.listing && <span class={`absolute inset-y-0 left-0 w-[3px] ${tone.bar}`} aria-hidden="true" />}
+
+                    <div class="flex flex-wrap items-start gap-x-2 gap-y-1.5">
+                      <h3 class="mr-auto text-[15px] font-semibold leading-6 text-ink">{item.display_name || item.name}</h3>
+                      <span class={`inline-flex items-center rounded-full border px-2 py-px text-[11px] font-semibold leading-5 ${tone.pill}`}>
+                        {item.listing || '未入榜'}
+                      </span>
+                      {item.grade && (
+                        <span class="inline-flex items-center rounded-full border border-line bg-surface-2 px-2 py-px text-[11px] font-medium leading-5 text-ink-2">{item.grade}</span>
+                      )}
+                      {item.tier && <span class={`tier tier-${item.tier.toLowerCase()}`}>来源 {item.tier}</span>}
+                    </div>
+
+                    <p class="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] leading-5 text-ink-3">
+                      <span>{item.category || '未分类'}</span>
+                      {(item.fine || item.process) && <span aria-hidden="true">·</span>}
+                      {(item.fine || item.process) && <span>{item.fine || item.process}</span>}
+                      {item.channel && <span aria-hidden="true">·</span>}
+                      {item.channel && <span>{item.channel}</span>}
+                      {item.reported_at && <span aria-hidden="true">·</span>}
+                      {item.reported_at && <span class="mono">{item.reported_at}</span>}
+                      {item.reports && item.reports > 1 && <span aria-hidden="true">·</span>}
+                      {item.reports && item.reports > 1 && <span class="mono">{item.reports} 条反馈</span>}
+                    </p>
+
+                    <p class="text-xs leading-6 text-ink-2">{item.reason || item.notes || '社区未留下文字说明。'}</p>
+                    {item.reason && item.notes && (
+                      <p class="text-[11px] leading-5 text-ink-3">补充：{item.notes}</p>
+                    )}
+
+                    {metaEntries(item).length > 0 && (
+                      <dl class="mt-auto grid grid-cols-2 gap-x-4 gap-y-1 border-t border-line pt-2.5 text-[11px] sm:grid-cols-3">
+                        {metaEntries(item).map(([label, value]) => (
+                          <div class="flex min-w-0 gap-1">
+                            <dt class="shrink-0 text-ink-3">{label}</dt>
+                            <dd class="truncate text-ink-2" title={value}>{value}</dd>
+                          </div>
+                        ))}
+                      </dl>
+                    )}
+                  </article>
+                </li>
+              )
+            })}
+          </ul>
+        </section>
+      ))}
+    </div>
+
+    <p class="mt-10 rounded-lg border border-line bg-surface-2 p-4 text-xs leading-6 text-ink-3">
+      记录来自社区匿名填写，可能过时、片面或带主观判断；「红榜」只表示这次买得顺利，「黑榜」只表示这次出了问题，都不构成对商家的担保或指控。发现错误欢迎在
+      <a href={withBase('/submit.html')} class="mx-1 font-medium text-brand underline decoration-brand/30 underline-offset-2 hover:decoration-brand">投稿页</a>纠正。
+    </p>
   </div>
-
-  <p class="mt-10 rounded-xl border border-slate-200 bg-white p-4 text-xs leading-6 text-slate-500">
-    记录来自社区匿名填写，可能过时、片面或带主观判断；「红榜」只表示这次买得顺利，「黑榜」只表示这次出了问题，都不构成对商家的担保或指控。发现错误欢迎在
-    <a href={withBase('/submit.html')} class="mx-1 text-blue-700 hover:underline">投稿页</a>纠正。
-  </p>
 </Base>
 
 <script>
+  // 过滤靠 `.hidden` 切换：`[data-supplier]` / `[data-supplier-section]` 上不要加
+  // flex / grid 等 display utility，否则同类 utility 谁生效取决于产物 CSS 顺序。
   const form = document.querySelector<HTMLFormElement>('#supplier-filters')
   const query = document.querySelector<HTMLInputElement>('#sup-q')
   const category = document.querySelector<HTMLSelectElement>('#sup-cat')

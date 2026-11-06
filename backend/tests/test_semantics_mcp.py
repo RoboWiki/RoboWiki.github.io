@@ -172,3 +172,39 @@ def test_build_price_requires_scope(client):
     r = client.post("/api/posts", headers=h, json={
         "kind": "build", "title": "没报价的整机方案", "body": "x" * 20})
     assert r.status_code == 201
+
+# ── MCP 的只读边界 ──────────────────────────────────────────────────────────
+def test_mcp_only_exposes_read_only_tools(client):
+    """Agent 只能查、不能写：工具清单是封闭的，任何写操作都没有入口。"""
+    from app.api.routes.mcp import HANDLERS
+
+    listed = [t["name"] for t in _rpc(client, "tools/list")["result"]["tools"]]
+    assert sorted(listed) == sorted(HANDLERS), "tools/list 必须与已注册处理器同集合"
+    assert set(listed) == {"search_components", "get_component_detail",
+                           "compare_components", "get_parameter_semantics"}
+
+    before = client.get("/api/v1/posts", params={"limit": 1}).json()["total"]
+    for bad in ("create_post", "vote", "submit_patch", "delete_part",
+                "update_part", "report_content", "mark_read"):
+        r = _rpc(client, "tools/call", {"name": bad, "arguments": {}})
+        assert r["error"]["code"] == -32601, f"{bad} 不该存在"
+    # 非 JSON-RPC 的写方法（MCP 里的 resources / prompts / sampling 等）也不接
+    for method in ("tools/write", "resources/list", "resources/read",
+                   "prompts/list", "sampling/createMessage"):
+        assert _rpc(client, method)["error"]["code"] == -32601, method
+
+    after = client.get("/api/v1/posts", params={"limit": 1}).json()["total"]
+    assert after == before, "只读端点不能改变任何数据"
+
+
+def test_mcp_is_anonymous_and_sets_no_cookie(client):
+    """免鉴权、无状态：不带 Authorization 也能用，响应不种 cookie。"""
+    r = client.get("/mcp")
+    assert r.status_code == 200
+    assert "set-cookie" not in {k.lower() for k in r.headers}
+
+    r = client.post("/mcp", json={"jsonrpc": "2.0", "id": 1,
+                                  "method": "initialize", "params": {}})
+    assert r.status_code == 200
+    assert "set-cookie" not in {k.lower() for k in r.headers}
+    assert r.json()["result"]["capabilities"]["tools"]["listChanged"] is False

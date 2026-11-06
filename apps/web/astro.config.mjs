@@ -39,7 +39,7 @@ export default defineConfig({
     sitemap({
       // 404 / 500 由集成自动排除；账号与站务页不进入索引。
       filter: page => !/\/(404|500)\/?$/.test(page)
-        && !/\/(admin|login|account)(\.html)?$/.test(new URL(page).pathname),
+        && !/\/(admin|login|account|search)(\.html)?$/.test(new URL(page).pathname),
       // Astro 的 sitemap 会按路由去扩展名；本项目的静态产物是 .html。
       // 目录型 URL（首页 /next/）和 404 等页面保持原样：补成 /next.html 会指向不存在的文件。
       serialize(item) {

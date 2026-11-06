@@ -93,6 +93,22 @@ export type PartList = {
   items: PartSummary[]
 }
 
+export type ReproductionSummary = {
+  build_id: string
+  total: number
+  success: number
+  partial: number
+  failed: number
+  updated_at?: string | null
+  created?: boolean
+  mine?: {
+    outcome: 'success' | 'partial' | 'failed'
+    changes?: string
+    note?: string
+    updated_at?: string
+  } | null
+}
+
 export type RatingSummary = {
   count: number
   avg: number | null
@@ -307,13 +323,35 @@ export class ApiClient {
     return this.request<RatingSummary>(`/ratings/${encodeURIComponent(partId)}`)
   }
 
-  putRating(partId: string, body: { score: number; own_hardware?: boolean; note?: string }) {
+  putRating(partId: string, body: {
+    score: number
+    own_hardware?: boolean
+    note?: string
+    /** 使用时长分档：long / short / unboxed */
+    usage_level?: string
+    /** 理由标签（白名单，最多 3 个） */
+    reason_tags?: string[]
+  }) {
     return this.request<RatingSummary & { created?: boolean }>(
       `/ratings/${encodeURIComponent(partId)}`, { method: 'POST', body })
   }
 
   deleteRating(partId: string) {
     return this.request<void>(`/ratings/${encodeURIComponent(partId)}`, { method: 'DELETE' })
+  }
+
+  // 方案复现记录：与部件评分分开，回答的是「装不装得出来」。
+  getReproductions(buildId: string) {
+    return this.request<ReproductionSummary>(`/reproductions/${encodeURIComponent(buildId)}`)
+  }
+
+  recordReproduction(buildId: string, body: {
+    outcome: 'success' | 'partial' | 'failed'
+    changes?: string
+    note?: string
+  }) {
+    return this.request<ReproductionSummary & { created?: boolean }>(
+      `/reproductions/${encodeURIComponent(buildId)}`, { method: 'POST', body })
   }
 
   listComments(page: string) {

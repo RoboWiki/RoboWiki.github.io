@@ -1,5 +1,5 @@
 import 'antd/dist/reset.css'
-import { Alert, Button, Card, Skeleton, Typography } from 'antd'
+import { Alert, Button } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { ApiError, api, auth, siteHref, v1Req, type TokenPair } from '@/lib/community-api'
 import { AuthForm, IslandProvider } from './providers'
@@ -59,22 +59,30 @@ function Bridge() {
 
   if (phase === 'checking') {
     return (
-      <Card>
-        <Skeleton active paragraph={{ rows: 3 }} />
-        <Typography.Text type="secondary" style={{ fontSize: 12 }}>正在校验登录凭证…</Typography.Text>
-      </Card>
+      <div className="card p-5" aria-live="polite">
+        <div className="space-y-2 animate-pulse" aria-hidden="true">
+          <div className="h-3 w-24 rounded bg-surface-3" />
+          <div className="h-9 w-full rounded-md bg-surface-3" />
+          <div className="h-9 w-full rounded-md bg-surface-3" />
+        </div>
+        <p className="mb-0 mt-3 text-[12px] text-ink-3">正在校验登录凭证…</p>
+      </div>
     )
   }
 
   return (
-    <Card>
-      {error && (
-        <Alert className="mb-4" type="error" showIcon title={error}
-          description="凭证只能用一次，且 60 秒内有效；可以重新登录，或回 App 重新发起。"
-          action={<a href={siteHref('/community.html')}><Button size="small">回社区</Button></a>} />
-      )}
+    <div className="card p-5">
+      {/* 错误固定在表单上方，出现时不再顶动按钮位置 */}
+      <div aria-live="assertive" className={error ? 'mb-4' : ''}>
+        {error && (
+          <Alert type="error" showIcon title={error}
+            description="凭证只能用一次，且 60 秒内有效；可以重新登录，或回 App 重新发起。"
+            action={<a href={siteHref('/community.html')}><Button size="small">回社区</Button></a>} />
+        )}
+      </div>
+
       <AuthForm onSuccess={() => { window.location.replace(siteHref('/community.html')) }} />
-    </Card>
+    </div>
   )
 }
 

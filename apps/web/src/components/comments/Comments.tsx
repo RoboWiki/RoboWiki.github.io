@@ -10,7 +10,7 @@ function renderBody(body: string) {
   return body.split(/(!\[[^\]]*\]\(\/api\/v1\/media\/[^)]+\))/g).map((chunk, i) => {
     const m = chunk.match(/^!\[([^\]]*)\]\((\/api\/v1\/media\/[^)]+)\)$/)
     if (!m) return <span key={i}>{chunk}</span>
-    return <img key={i} src={m[2]} alt={m[1] || '评论配图'} loading="lazy" className="my-2 max-h-72 rounded-lg border border-slate-200" />
+    return <img key={i} src={m[2]} alt={m[1] || '评论配图'} loading="lazy" className="my-2 max-h-72 rounded-lg border border-line" />
   })
 }
 
@@ -104,17 +104,17 @@ export default function Comments({ page }: Props) {
   }
 
   return (
-    <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-5" aria-label="页面讨论">
+    <section className="mt-10 rounded-lg border border-line bg-surface p-5" aria-label="页面讨论">
       <div className="flex items-center justify-between gap-3">
-        <h2 className="text-lg font-bold text-slate-900">这一页的讨论</h2>
-        <span className="text-xs text-slate-400">{comments.length} 条</span>
+        <h2 className="text-lg font-bold text-ink">这一页的讨论</h2>
+        <span className="text-xs text-ink-3">{comments.length} 条</span>
       </div>
 
       <div className="mt-4 space-y-2">
         {me ? (
           <>
             {replyTo !== null && (
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-ink-3">
                 回复 #{replyTo} · <button className="text-blue-700 hover:underline" onClick={() => setReplyTo(null)}>取消</button>
               </p>
             )}
@@ -124,21 +124,21 @@ export default function Comments({ page }: Props) {
               rows={3}
               maxLength={4000}
               placeholder="写清楚工况、实测数据和结论。只写“好用/不好用”对下一个人没有价值。"
-              className="w-full rounded-lg border border-slate-200 p-3 text-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+              className="w-full rounded-lg border border-line p-3 text-sm focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
             />
             <div className="flex flex-wrap items-center gap-2">
-              <button onClick={submit} disabled={busy || !body.trim()} className="inline-flex h-9 items-center rounded-lg bg-slate-900 px-4 text-sm font-medium text-white disabled:opacity-50">
+              <button onClick={submit} disabled={busy || !body.trim()} className="inline-flex h-9 items-center rounded-lg bg-brand px-4 text-sm font-medium text-brand-fg disabled:opacity-50">
                 {busy ? '发送中…' : '发表讨论'}
               </button>
-              <label className="inline-flex h-9 cursor-pointer items-center rounded-lg border border-slate-200 px-3 text-xs text-slate-600 hover:bg-slate-50">
+              <label className="inline-flex h-9 cursor-pointer items-center rounded-lg border border-line px-3 text-xs text-ink-2 hover:bg-surface-3">
                 {uploading ? '上传中…' : '插入图片'}
                 <input type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={e => { const f = e.target.files?.[0]; if (f) upload(f); e.currentTarget.value = '' }} />
               </label>
-              <span className="text-xs text-slate-400">支持 JPEG / PNG / WebP，≤ 5 MB</span>
+              <span className="text-xs text-ink-3">支持 JPEG / PNG / WebP，≤ 5 MB</span>
             </div>
           </>
         ) : (
-          <div className="rounded-lg bg-slate-50 p-3 text-sm text-slate-600">
+          <div className="rounded-lg bg-surface-2 p-3 text-sm text-ink-2">
             <a href={LOGIN_HREF} className="font-medium text-blue-700 hover:underline">登录</a> 后可以发表讨论、上传配图。
           </div>
         )}
@@ -147,24 +147,24 @@ export default function Comments({ page }: Props) {
 
       <ul className="mt-5 space-y-4">
         {comments.map(c => (
-          <li key={c.id} className={`rounded-lg border border-slate-100 p-3 ${c.parent_id ? 'ml-6 bg-slate-50/60' : ''}`}>
-            <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
-              <span className="font-medium text-slate-700">{c.author?.display_name || c.author?.handle || '已注销'}</span>
+          <li key={c.id} className={`rounded-lg border border-line p-3 ${c.parent_id ? 'ml-6 bg-surface-2/60' : ''}`}>
+            <div className="flex flex-wrap items-center gap-2 text-xs text-ink-3">
+              <span className="font-medium text-ink-2">{c.author?.display_name || c.author?.handle || '已注销'}</span>
               <span>{String(c.created_at).slice(0, 10)}</span>
               {c.status === 'pending' && <span className="text-amber-700">待审核</span>}
-              {c.deleted && <span className="text-slate-400">已删除</span>}
+              {c.deleted && <span className="text-ink-3">已删除</span>}
             </div>
-            {!c.deleted && <p className="mt-1 whitespace-pre-wrap text-sm leading-7 text-slate-700">{renderBody(c.body)}</p>}
+            {!c.deleted && <p className="mt-1 whitespace-pre-wrap text-sm leading-7 text-ink-2">{renderBody(c.body)}</p>}
             {!c.deleted && (
               <div className="mt-2 flex gap-3 text-xs">
-                {me && <button className="text-slate-500 hover:text-slate-900" onClick={() => setReplyTo(c.id)}>回复</button>}
-                {me && me.handle === c.author?.handle && <button className="text-slate-500 hover:text-red-600" onClick={() => remove(c.id)}>删除</button>}
-                {me && me.handle !== c.author?.handle && <button className="text-slate-400 hover:text-slate-700" onClick={() => report(c.id)}>举报</button>}
+                {me && <button className="text-ink-3 hover:text-ink" onClick={() => setReplyTo(c.id)}>回复</button>}
+                {me && me.handle === c.author?.handle && <button className="text-ink-3 hover:text-danger" onClick={() => remove(c.id)}>删除</button>}
+                {me && me.handle !== c.author?.handle && <button className="text-ink-3 hover:text-ink-2" onClick={() => report(c.id)}>举报</button>}
               </div>
             )}
           </li>
         ))}
-        {!comments.length && !error && <li className="text-sm text-slate-500">还没有讨论。成为第一个留下实测记录的人。</li>}
+        {!comments.length && !error && <li className="text-sm text-ink-3">还没有讨论。成为第一个留下实测记录的人。</li>}
       </ul>
     </section>
   )

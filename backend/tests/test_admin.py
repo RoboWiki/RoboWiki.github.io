@@ -186,3 +186,37 @@ def test_history_endpoint_lists_proposals(client):
     assert isinstance(d, list) and d
     assert any(x["source"] == "proposal" for x in d)
     assert {"part_id", "note", "editor", "status"} <= set(d[0])
+
+
+# ── 写路径的权限：只读接口挡住不代表写接口也挡住 ────────────────────────────
+def test_admin_write_endpoints_require_staff_and_leave_no_trace(client):
+    """PATCH / verify / 发测试邮件这三条写路径必须和 GET 同口径：
+    非站务 403、未登录 401，并且**权限检查在写库之前**（不能留下半条提案）。"""
+    h_plain = plain(client)
+    h_staff = staff(client)
+    pid = "达妙-dm-dm-j4340-2ec-v1-1"
+    before = len(client.get(f"/api/admin/parts/{pid}", headers=h_staff).json()["proposals"])
+
+    patch_body = {"changes": {"specs.mass_kg": 12.0}, "note": "非站务尝试改字段"}
+    assert client.patch(f"/api/admin/parts/{pid}", headers=h_plain,
+                        json=patch_body).status_code == 403
+    assert client.patch(f"/api/admin/parts/{pid}", json=patch_body).status_code == 401
+    assert client.post(f"/api/admin/parts/{pid}/verify",
+                       headers=h_plain).status_code == 403
+    assert client.post("/api/admin/email/test", headers=h_plain,
+                       json={"to": "someone@example.com"}).status_code == 403
+    assert client.post("/api/admin/email/test",
+                       json={"to": "someone@example.com"}).status_code == 401
+
+    after = client.get(f"/api/admin/parts/{pid}", headers=h_staff).json()
+    assert len(after["proposals"]) == before, "被拒绝的写请求不能留下提案"
+
+
+def test_patch_validates_target_and_source_url(client):
+    """目标不存在是 404，来源不是 http 链接是 422 —— 两者都不能变成 500。"""
+    h = staff(client)
+    assert client.patch("/api/admin/parts/no-such-part", headers=h, json={
+        "changes": {"price_cny": 1.0}, "note": "目标不存在"}).status_code == 404
+    assert client.patch("/api/admin/parts/达妙-dm-dm-j4340-2ec-v1-1", headers=h, json={
+        "changes": {"price_cny": 1.0}, "note": "来源不合法",
+        "source_url": "javascript:alert(1)"}).status_code == 422

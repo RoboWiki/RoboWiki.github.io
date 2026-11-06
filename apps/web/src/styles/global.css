@@ -1,23 +1,82 @@
 @import "tailwindcss";
 @import "@robowiki/tokens/tokens.css";
 
+/* 深色由 <html class="dark"> 决定；默认跟随系统，由布局里的内联脚本落定。 */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  --font-sans: "Inter", "Noto Sans SC", ui-sans-serif, system-ui, sans-serif;
-  --color-brand: var(--rw-primary);
-  --color-danger: var(--rw-danger);
+  --font-sans: var(--rw-font-sans);
+  --font-mono: var(--rw-font-mono);
+
+  --color-bg: var(--rw-bg);
   --color-surface: var(--rw-surface);
-  --color-border: var(--rw-border);
+  --color-surface-2: var(--rw-surface-2);
+  --color-surface-3: var(--rw-surface-3);
+  --color-line: var(--rw-border);
+  --color-line-strong: var(--rw-border-strong);
+
+  --color-ink: var(--rw-ink);
+  --color-ink-2: var(--rw-ink-2);
+  --color-ink-3: var(--rw-ink-3);
+  --color-ink-inverse: var(--rw-ink-inverse);
+
+  --color-brand: var(--rw-primary);
+  --color-brand-hover: var(--rw-primary-hover);
+  --color-brand-soft: var(--rw-primary-soft);
+  --color-brand-fg: var(--rw-primary-foreground);
+
+  --color-success: var(--rw-success);
+  --color-success-soft: var(--rw-success-soft);
+  --color-warning: var(--rw-warning);
+  --color-warning-soft: var(--rw-warning-soft);
+  --color-danger: var(--rw-danger);
+  --color-danger-soft: var(--rw-danger-soft);
+
+  --color-layer-mech: var(--rw-layer-mech);
+  --color-layer-elec: var(--rw-layer-elec);
+  --color-layer-algo: var(--rw-layer-algo);
+  --color-layer-sys: var(--rw-layer-sys);
+
+  --radius-xs: var(--rw-radius-xs);
+  --radius-sm: var(--rw-radius-sm);
+  --radius-md: var(--rw-radius-md);
+  --radius-lg: var(--rw-radius-lg);
+
+  --shadow-xs: var(--rw-shadow-xs);
+  --shadow-sm: var(--rw-shadow-sm);
+  --shadow-md: var(--rw-shadow-md);
+  --shadow-lg: var(--rw-shadow-lg);
 }
 
-/* Extra token used by the static UI. Derived from the shared palette only. */
-:root {
-  --rw-shadow-raised: 0 8px 20px -12px rgb(15 23 42 / 0.28);
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
-html { scroll-behavior: smooth; }
-body { background: var(--rw-bg); color: #0f172a; }
-::selection { background: color-mix(in srgb, var(--rw-primary) 25%, transparent); }
-:focus-visible { outline: 2px solid var(--rw-primary); outline-offset: 2px; }
+body {
+  background: var(--rw-bg);
+  color: var(--rw-ink);
+  font-family: var(--rw-font-sans);
+  font-feature-settings: "cv11", "ss01";
+}
+
+::selection {
+  background: color-mix(in srgb, var(--rw-primary) 25%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--rw-primary);
+  outline-offset: 2px;
+}
+
+/* 数字与参数统一等宽，便于纵向对比。 */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+.mono {
+  font-family: var(--rw-font-mono);
+  font-variant-numeric: tabular-nums;
+}
 
 /* Skip link: hidden until focused, then pinned above the sticky header. */
 .skip-link {
@@ -31,13 +90,62 @@ body { background: var(--rw-bg); color: #0f172a; }
   padding: 10px 16px;
   font-size: var(--rw-text-sm);
   font-weight: 600;
-  color: #0f172a;
-  box-shadow: var(--rw-shadow-raised);
+  color: var(--rw-ink);
+  box-shadow: var(--rw-shadow-md);
   transition: transform var(--rw-dur-fast) ease-out;
 }
 .skip-link:focus,
 .skip-link:focus-visible {
   transform: translateY(0);
+}
+
+/* 组件层：放进 @layer components，让 utility（bg-surface-2 之类）能覆盖默认值。 */
+@layer components {
+/* 页面通用卡片：统一边框、圆角、悬停抬升。 */
+.card {
+  background: var(--rw-surface);
+  border: 1px solid var(--rw-border);
+  border-radius: var(--rw-radius-md);
+  transition:
+    border-color var(--rw-dur-base) ease,
+    box-shadow var(--rw-dur-base) ease,
+    transform var(--rw-dur-base) ease;
+}
+.card-hover:hover {
+  border-color: var(--rw-border-strong);
+  box-shadow: var(--rw-shadow-md);
+}
+a.card-hover:hover {
+  transform: translateY(-1px);
+}
+
+/* 来源等级徽标：A/B/C 的颜色语义固定，跨页面复用。 */
+.tier {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: var(--rw-radius-full);
+  border: 1px solid transparent;
+  padding: 1px 8px;
+  font-size: var(--rw-text-xs);
+  font-weight: 600;
+  line-height: 18px;
+  white-space: nowrap;
+}
+.tier-a {
+  background: var(--rw-success-soft);
+  color: var(--rw-success);
+  border-color: color-mix(in srgb, var(--rw-success) 25%, transparent);
+}
+.tier-b {
+  background: var(--rw-warning-soft);
+  color: var(--rw-warning);
+  border-color: color-mix(in srgb, var(--rw-warning) 25%, transparent);
+}
+.tier-c {
+  background: var(--rw-surface-3);
+  color: var(--rw-ink-3);
+  border-color: var(--rw-border);
 }
 
 /* Horizontal filter rail: one row of chips on phones, wrapped rows from sm up. */
@@ -51,7 +159,9 @@ body { background: var(--rw-bg); color: #0f172a; }
   -webkit-overflow-scrolling: touch;
   padding-block: 2px;
 }
-.chip-row::-webkit-scrollbar { display: none; }
+.chip-row::-webkit-scrollbar {
+  display: none;
+}
 .chip-row > * {
   flex: 0 0 auto;
   scroll-snap-align: start;
@@ -64,11 +174,48 @@ body { background: var(--rw-bg); color: #0f172a; }
   }
 }
 
+/* 筛选胶囊：选中态用品牌色描边 + 浅底，避免大面积实色。 */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: var(--rw-radius-full);
+  border: 1px solid var(--rw-border);
+  background: var(--rw-surface);
+  color: var(--rw-ink-2);
+  font-size: var(--rw-text-sm);
+  font-weight: 500;
+  transition:
+    background var(--rw-dur-fast) ease,
+    border-color var(--rw-dur-fast) ease,
+    color var(--rw-dur-fast) ease;
+  white-space: nowrap;
+}
+.chip:hover {
+  border-color: var(--rw-border-strong);
+  color: var(--rw-ink);
+}
+.chip[aria-pressed="true"],
+.chip.is-active {
+  background: var(--rw-primary-soft);
+  border-color: color-mix(in srgb, var(--rw-primary) 45%, transparent);
+  color: var(--rw-primary);
+  font-weight: 600;
+}
+
 /* Native <details> mobile menu: no summary marker, panel anchored to the trigger. */
-.mobile-nav > summary { list-style: none; cursor: pointer; }
-.mobile-nav > summary::-webkit-details-marker { display: none; }
-.mobile-nav[open] > summary { background: #f1f5f9; }
-.mobile-nav .mobile-nav-panel { box-shadow: var(--rw-shadow-raised); }
+.mobile-nav > summary {
+  list-style: none;
+  cursor: pointer;
+}
+.mobile-nav > summary::-webkit-details-marker {
+  display: none;
+}
+.mobile-nav .mobile-nav-panel {
+  box-shadow: var(--rw-shadow-lg);
+}
 
 /* Search fields ship their own clear button; hide the UA one to avoid a double ×. */
 input[type="search"]::-webkit-search-cancel-button,
@@ -79,12 +226,21 @@ input[type="search"]::-webkit-search-decoration {
 
 /* Grid children default to min-width:auto, so one long spec token can push a
    whole page wider than the phone viewport. Keep columns shrinkable. */
-main :where(.grid > *) { min-width: 0; }
-main :where(dl, dd, h1, h2, h3, p, li) { overflow-wrap: break-word; }
-main :where(dd) { min-width: 0; overflow-wrap: anywhere; }
+main :where(.grid > *) {
+  min-width: 0;
+}
+main :where(dl, dd, h1, h2, h3, p, li) {
+  overflow-wrap: break-word;
+}
+main :where(dd) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
+  html {
+    scroll-behavior: auto;
+  }
   *,
   *::before,
   *::after {
@@ -94,22 +250,106 @@ main :where(dd) { min-width: 0; overflow-wrap: anywhere; }
   }
 }
 
-/* Long-form content: guides, competitions, notice and English pages. */
-.prose { color: #334155; font-size: 1rem; line-height: 1.85; }
-.prose > :first-child { margin-top: 0; }
-.prose h1 { font-size: 2rem; line-height: 1.25; font-weight: 800; letter-spacing: -0.02em; color: #020617; margin: 2.2rem 0 1rem; }
-.prose h2 { font-size: 1.35rem; font-weight: 700; color: #0f172a; margin: 2rem 0 0.75rem; }
-.prose h3 { font-size: 1.1rem; font-weight: 650; color: #0f172a; margin: 1.5rem 0 0.5rem; }
-.prose p, .prose ul, .prose ol, .prose blockquote, .prose pre, .prose table { margin: 0.9rem 0; }
-.prose ul, .prose ol { padding-left: 1.4rem; }
-.prose ul { list-style: disc; }
-.prose ol { list-style: decimal; }
-.prose a { color: #1d4ed8; text-decoration: underline; text-underline-offset: 2px; }
-.prose blockquote { border-left: 3px solid #cbd5e1; padding-left: 1rem; color: #475569; }
-.prose code { background: #f1f5f9; border-radius: 0.3rem; padding: 0.1rem 0.3rem; font-size: 0.9em; }
-.prose pre { background: #0f172a; color: #e2e8f0; border-radius: 0.75rem; padding: 1rem; overflow-x: auto; }
-.prose pre code { background: transparent; padding: 0; color: inherit; }
-.prose table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-.prose th, .prose td { border: 1px solid #e2e8f0; padding: 0.5rem 0.7rem; text-align: left; vertical-align: top; }
-.prose th { background: #f8fafc; font-weight: 600; }
-.prose img { max-width: 100%; height: auto; border-radius: 0.75rem; }
+/* ── 长文排版 ───────────────────────────────────────────────────── */
+.prose {
+  color: var(--rw-ink-2);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+.prose > :first-child {
+  margin-top: 0;
+}
+.prose h1 {
+  font-size: 2rem;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--rw-ink);
+  margin: 2.2rem 0 1rem;
+}
+.prose h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--rw-ink);
+  margin: 2rem 0 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--rw-border);
+}
+.prose h3 {
+  font-size: 1.1rem;
+  font-weight: 650;
+  color: var(--rw-ink);
+  margin: 1.5rem 0 0.5rem;
+}
+.prose p,
+.prose ul,
+.prose ol,
+.prose blockquote,
+.prose pre,
+.prose table {
+  margin: 0.9rem 0;
+}
+.prose ul,
+.prose ol {
+  padding-left: 1.4rem;
+}
+.prose ul {
+  list-style: disc;
+}
+.prose ol {
+  list-style: decimal;
+}
+.prose a {
+  color: var(--rw-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose blockquote {
+  border-left: 3px solid var(--rw-border-strong);
+  padding-left: 1rem;
+  color: var(--rw-ink-3);
+}
+.prose code {
+  background: var(--rw-surface-3);
+  border-radius: 0.3rem;
+  padding: 0.1rem 0.3rem;
+  font-size: 0.9em;
+  font-family: var(--rw-font-mono);
+}
+.prose pre {
+  background: #0b1220;
+  color: #e2e8f0;
+  border-radius: var(--rw-radius-md);
+  padding: 1rem;
+  overflow-x: auto;
+  border: 1px solid var(--rw-border);
+}
+.prose pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.prose th,
+.prose td {
+  border: 1px solid var(--rw-border);
+  padding: 0.5rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+}
+.prose th {
+  background: var(--rw-surface-2);
+  font-weight: 600;
+  color: var(--rw-ink);
+}
+.prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--rw-radius-md);
+  border: 1px solid var(--rw-border);
+}
+}

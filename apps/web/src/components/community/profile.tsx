@@ -1,10 +1,18 @@
 import 'antd/dist/reset.css'
-import { Card, Empty, Skeleton, Space, Tag, Typography } from 'antd'
 import { StarOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/community-api'
 import { CommunityHeader, IslandProvider } from './providers'
-import { PostCard } from './ui'
+import { EmptyState, PostCard, PostSkeleton } from './ui'
+
+function Stat({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="rounded-lg border border-line bg-surface-2 px-2 py-2 text-center">
+      <div className="mono tabular text-[17px] font-semibold leading-tight text-ink">{value}</div>
+      <div className="mt-0.5 text-[11px] text-ink-3">{label}</div>
+    </div>
+  )
+}
 
 function Profile({ handle }: { handle: string }) {
   const u = useQuery({ queryKey: ['user', handle], queryFn: () => api.user(handle), retry: false })
@@ -20,56 +28,90 @@ function Profile({ handle }: { handle: string }) {
     <div>
       <CommunityHeader current="top" />
 
-      {u.isLoading ? <Skeleton active /> : !user ? (
-        <Empty description={`用户不存在${u.error ? `：${(u.error as Error).message}` : ''}`} />
+      {u.isLoading ? (
+        <div className="grid animate-pulse gap-5 lg:grid-cols-[280px_minmax(0,1fr)]" aria-hidden="true">
+          <div className="card h-64" />
+          <div className="space-y-3">
+            <div className="h-5 w-28 rounded bg-surface-3" />
+            <PostSkeleton />
+            <PostSkeleton />
+          </div>
+        </div>
+      ) : !user ? (
+        <EmptyState
+          title="用户不存在"
+          hint={u.error ? (u.error as Error).message : '链接里的用户名可能拼错了。'}
+        />
       ) : (
         <div className="grid gap-5 lg:grid-cols-[280px_minmax(0,1fr)]">
           <aside className="min-w-0">
-            <Card>
-              <Space orientation="vertical" size={12} style={{ width: '100%' }}>
-                <Space size={12}>
-                  <span className="inline-flex h-[54px] w-[54px] items-center justify-center rounded-full bg-blue-600 text-[22px] font-bold text-white">
-                    {user.display_name.slice(0, 1)}
-                  </span>
-                  <div className="min-w-0">
-                    <Typography.Title level={1} style={{ margin: 0, fontSize: 20 }}>{user.display_name}</Typography.Title>
-                    <Typography.Text type="secondary">@{user.handle}</Typography.Text>
-                  </div>
-                </Space>
-                {user.bio && (
-                  <Typography.Paragraph type="secondary" style={{ marginBottom: 0 }}>{user.bio}</Typography.Paragraph>
-                )}
-                <div className="grid grid-cols-3 gap-2 text-center">
-                  {[
-                    { label: '声望', value: user.reputation },
-                    { label: '帖子', value: user.post_count },
-                    { label: '评论', value: user.comment_count },
-                  ].map(s => (
-                    <div key={s.label} className="rounded-lg bg-slate-50 py-2">
-                      <div className="text-[17px] font-semibold tabular-nums text-slate-900">{s.value}</div>
-                      <div className="text-[11px] text-slate-500">{s.label}</div>
-                    </div>
+            <section className="card p-4">
+              <div className="flex items-center gap-3">
+                <span
+                  className="grid h-[54px] w-[54px] shrink-0 place-items-center rounded-full bg-brand text-[22px] font-bold text-brand-fg"
+                  aria-hidden="true">
+                  {user.display_name.slice(0, 1)}
+                </span>
+                <div className="min-w-0">
+                  <h1 className="m-0 truncate text-[19px] font-bold tracking-tight text-ink">
+                    {user.display_name}
+                  </h1>
+                  <p className="mono m-0 truncate text-[12px] text-ink-3">@{user.handle}</p>
+                </div>
+              </div>
+
+              {user.bio && (
+                <p className="mb-0 mt-3 whitespace-pre-wrap text-[12.5px] leading-6 text-ink-2">{user.bio}</p>
+              )}
+
+              <div className="mt-3 grid grid-cols-3 gap-2">
+                <Stat label="声望" value={user.reputation} />
+                <Stat label="帖子" value={user.post_count} />
+                <Stat label="评论" value={user.comment_count} />
+              </div>
+
+              {(user.badges?.length > 0 || user.is_staff) && (
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {user.is_staff && (
+                    <span className="inline-flex items-center rounded-full border border-line bg-warning-soft px-2 py-0.5 text-[11.5px] font-medium text-warning">
+                      站务
+                    </span>
+                  )}
+                  {user.badges?.map(b => (
+                    <span key={b}
+                      className="inline-flex items-center rounded-full border border-line bg-brand-soft px-2 py-0.5 text-[11.5px] font-medium text-brand">
+                      {b}
+                    </span>
                   ))}
                 </div>
-                <Space wrap size={4}>
-                  {user.badges?.map(b => <Tag key={b} color="blue">{b}</Tag>)}
-                  {user.is_staff && <Tag color="gold">站务</Tag>}
-                </Space>
-                <Typography.Text type="secondary" style={{ fontSize: 12 }}>
-                  加入于 {new Date(user.created_at).toLocaleDateString('zh-CN')}
-                </Typography.Text>
-              </Space>
-            </Card>
+              )}
+
+              <p className="mb-0 mt-3 border-t border-line pt-2.5 text-[11.5px] text-ink-3">
+                加入于 <span className="mono tabular">{new Date(user.created_at).toLocaleDateString('zh-CN')}</span>
+              </p>
+            </section>
           </aside>
 
           <div className="min-w-0">
-            <Typography.Title level={2} style={{ fontSize: 16 }}>
-              <StarOutlined /> 帖子（{posts.data?.total ?? 0}）
-            </Typography.Title>
-            {posts.isLoading ? <Skeleton active /> :
-              posts.data?.items?.length
-                ? posts.data.items.map(p => <PostCard key={p.id} post={p} />)
-                : <Empty description="还没发过帖" />}
+            <div className="mb-2.5 flex items-baseline justify-between gap-2 border-b border-line pb-2">
+              <h2 className="m-0 flex items-center gap-1.5 text-[15px] font-semibold text-ink">
+                <StarOutlined className="text-ink-3" aria-hidden="true" />
+                帖子
+                <span className="mono tabular text-[13px] font-normal text-ink-3">
+                  ({posts.data?.total ?? 0})
+                </span>
+              </h2>
+            </div>
+            {posts.isLoading ? (
+              <>
+                <PostSkeleton />
+                <PostSkeleton />
+              </>
+            ) : posts.data?.items?.length ? (
+              posts.data.items.map(p => <PostCard key={p.id} post={p} />)
+            ) : (
+              <EmptyState title="还没发过帖" hint="写一条实测，就能挂到对应的零件上。" />
+            )}
           </div>
         </div>
       )}

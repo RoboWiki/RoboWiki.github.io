@@ -45,6 +45,16 @@ MAX_PRICE_CNY = 10_000_000
 MIN_CHECKED = date(1990, 1, 1)
 
 
+def _page_limit(value: int, cap: int) -> int:
+    """分页上限夹到 [1, cap]。
+
+    只写 `min(limit, cap)` 时，负数会原样进 SQL：SQLite 的 `LIMIT -1` 表示
+    「不设上限」（等于把整表读出来），Postgres 则直接报
+    `LIMIT must not be negative` —— 同一个参数在两种部署下表现完全不同。
+    """
+    return max(1, min(int(value), cap))
+
+
 def _http_url(value: str) -> bool:
     """只收真正的 http(s) 绝对链接：协议对、有主机、没有空白字符。"""
     if not value.lower().startswith(("http://", "https://")):
@@ -159,22 +169,24 @@ def create_submission(payload: SubmissionIn, request: Request, db: Db,
         raise HTTPException(422, "source_url 过长（上限 500）")
     if src and not _http_url(src):
         raise HTTPException(422, "source_url 必须是完整的 http/https 链接")
+    # 目标部件只查一次：既省一条查询，也避免「查到了→再查又没了」的 TOCTOU 窗口
+    part = None
     if payload.kind == "part_patch":
         if not payload.target_id:
             raise HTTPException(422, "part_patch 需要 target_id")
-        if db.get(Part, payload.target_id) is None:
+        part = db.get(Part, payload.target_id)
+        if part is None:
             raise HTTPException(404, "目标部件不存在")
 
     evidence = dict(payload.evidence)
     # preview 必须由服务端按当前目录生成；客户端传的一律丢弃，否则审核员看到的 diff 可被伪造
     evidence.pop("preview", None)
-    if payload.kind == "part_patch":
-        p = db.get(Part, payload.target_id)
-        specs = (p.specs or {}) if p else {}
+    if part is not None:
+        specs = part.specs or {}
         preview = []
         for key, new in payload.payload.items():
             where, field = split_field(key)
-            old = specs.get(field) if where == "specs" else getattr(p, field, None)
+            old = specs.get(field) if where == "specs" else getattr(part, field, None)
             preview.append({"field": key, "old_value": old, "new_value": new})
         evidence["preview"] = preview
 
@@ -191,7 +203,7 @@ def create_submission(payload: SubmissionIn, request: Request, db: Db,
 def my_submissions(db: Db, user: CurrentUser, limit: int = 50):
     rows = db.exec(
         select(Submission).where(Submission.submitter_id == user.id)
-        .order_by(Submission.created_at.desc()).limit(min(limit, 200))
+        .order_by(Submission.created_at.desc()).limit(_page_limit(limit, 200))
     ).all()
     return [_out(db, s) for s in rows]
 
@@ -200,7 +212,7 @@ def my_submissions(db: Db, user: CurrentUser, limit: int = 50):
 def outbox(db: Db, user: CurrentUser, limit: int = 100):
     _staff(user)
     rows = db.exec(select(Outbox).order_by(Outbox.created_at.desc())
-                   .limit(min(limit, 500))).all()
+                   .limit(_page_limit(limit, 500))).all()
     return [OutboxOut(id=r.id or 0, submission_id=r.submission_id,
                       action=r.action, status=r.status, attempts=r.attempts,
                       last_error=r.last_error, result=r.result or {},
@@ -233,7 +245,7 @@ def queue(db: Db, user: CurrentUser, status: str = "pending", limit: int = 100):
     _staff(user)
     rows = db.exec(
         select(Submission).where(Submission.status == status)
-        .order_by(Submission.created_at).limit(min(limit, 500))
+        .order_by(Submission.created_at).limit(_page_limit(limit, 500))
     ).all()
     return [_out(db, s) for s in rows]
 

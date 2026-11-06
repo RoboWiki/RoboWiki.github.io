@@ -1,103 +1,323 @@
 ---
 import Base from '@/layouts/Base.astro'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { getCollection } from 'astro:content'
 import { catalog, dataVersion, featuredParts, imageUrl, topCategories } from '@/lib/catalog'
 import { formatPrice, partHref, withBase } from '@/lib/utils'
+import { LAYERS } from '@/lib/layers'
+import robotsData from '@/data/robots.json'
+import materialsData from '@/data/materials.json'
+import softwareData from '@/data/software.json'
+import suppliersData from '@/data/suppliers.json'
+
+const learn = await getCollection('learn')
+
+const stats = [
+  { label: '部件', value: catalog.count, href: '/catalog.html' },
+  { label: '整机', value: robotsData.count, href: '/robots.html' },
+  { label: '材料与工艺', value: materialsData.count, href: '/materials.html' },
+  { label: '软件', value: softwareData.count, href: '/software.html' },
+  { label: '渠道', value: suppliersData.count, href: '/suppliers.html' },
+  { label: '指南', value: learn.length, href: '/learn/index.html' },
+]
+
+const steps = [
+  { k: '先认层', v: '看清自己在机械、电气、算法还是集成层', href: '/layers.html' },
+  { k: '再查参', v: '按品类筛参数，确认口径与来源等级', href: '/catalog.html' },
+  { k: '找参照', v: '对照整机方案，确认四层怎么组合', href: '/robots.html' },
+  { k: '留记录', v: '把实测与失败模式写回知识库', href: '/submit.html' },
+]
+
+const faqs = [
+  {
+    q: '数据准不准？',
+    a: '每条参数标了来源等级与核对状态。A 级逐项对过厂商手册；B 级是二手整理；C 级只是线索，仅存档、不进目录。读不到的值写 null，不猜、不用同类填补。',
+  },
+  {
+    q: '多久更新一次？',
+    a: '数据以 data-v* 版本发布，页面标注当前版本号。纠正与新增走投稿，审核后进入下一个版本；站点不跟 main 分支，只消费已发布的版本。',
+  },
+  {
+    q: 'A / B / C 级怎么区分？',
+    a: 'A 级：厂商手册或官方数据表逐项核对；B 级：多个二手来源交叉整理，未逐项回原厂；C 级：只有线索，未经核实，因此不参与筛选与排序。',
+  },
+  {
+    q: '可以商用吗？',
+    a: '代码与整理成果按 GPL-3.0 发布，允许商用；厂商手册与商品图版权归原方。本站自身不做售卖、不收佣金、不卖数据。',
+  },
+]
 ---
+
 <Base>
-  <section class="relative overflow-hidden rounded-3xl border border-slate-200 bg-white px-6 py-12 sm:px-10 sm:py-16">
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgba(37,99,235,0.12),transparent_45%),radial-gradient(circle_at_10%_90%,rgba(21,128,61,0.08),transparent_40%)]"></div>
-    <div class="relative max-w-3xl">
-      <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
-        {dataVersion} · {catalog.count} 个部件
+  <section class="relative overflow-hidden rounded-lg border border-line bg-surface">
+    <div
+      class="pointer-events-none absolute inset-0 opacity-[0.55] dark:opacity-40"
+      style="background-image:linear-gradient(to right, var(--rw-border) 1px, transparent 1px),linear-gradient(to bottom, var(--rw-border) 1px, transparent 1px);background-size:44px 44px;mask-image:radial-gradient(ellipse at 70% 0%,#000 20%,transparent 72%)"
+      aria-hidden="true"
+    >
+    </div>
+    <div class="relative grid gap-10 px-6 py-12 sm:px-10 sm:py-16 lg:grid-cols-[1.25fr_0.75fr] lg:items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 rounded-full border border-line bg-surface-2 px-3 py-1 text-xs text-ink-2">
+          <span class="h-1.5 w-1.5 rounded-full bg-success" aria-hidden="true"></span>
+          <span class="mono">{dataVersion}</span>
+          <span class="text-ink-3">·</span>
+          <span class="mono tabular">{catalog.count}</span> 个部件
+        </div>
+
+        <h1 class="mt-5 text-[32px] leading-[1.15] font-extrabold tracking-tight text-ink sm:text-[46px]">
+          把机器人制作，<br class="hidden sm:block" />做成可复现的工程。
+        </h1>
+
+        <p class="mt-5 max-w-2xl text-[15px] leading-7 text-ink-2 sm:text-base">
+          以「机械结构—电气与嵌入式—算法控制—系统集成」四层能力为骨架，社区共建部件选型与评价、加工与采购经验、教程、案例与开源索引。从需求定义到迭代优化，每一步都留下可检索、可复现的记录。
+        </p>
+
+        <div class="mt-7 flex flex-wrap items-center gap-3">
+          <a
+            href={withBase('/start.html')}
+            class="inline-flex h-11 items-center rounded-md bg-brand px-5 text-sm font-semibold text-brand-fg transition-colors hover:bg-brand-hover"
+          >
+            从学习路径开始
+            <span aria-hidden="true">→</span>
+          </a>
+          <a
+            href={withBase('/catalog.html')}
+            class="inline-flex h-11 items-center rounded-md border border-line bg-surface px-5 text-sm font-medium text-ink transition-colors hover:border-line-strong hover:bg-surface-2"
+          >
+            直接查零件
+          </a>
+          <a
+            href={withBase('/submit.html')}
+            class="inline-flex h-11 items-center px-2 text-sm font-medium text-ink-2 transition-colors hover:text-brand"
+          >
+            参与投稿
+          </a>
+        </div>
+
+        <form action={withBase('/search.html')} method="get" role="search" class="mt-7 max-w-md">
+          <label for="hero-search" class="sr-only">搜索部件、厂商或型号</label>
+          <div class="relative">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+              aria-hidden="true" class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-3">
+              <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" stroke-linecap="round" />
+            </svg>
+            <input
+              id="hero-search"
+              name="q"
+              type="search"
+              placeholder="搜索全站：型号、厂商、品类，例如 DM4310"
+              autocomplete="off"
+              class="h-11 w-full rounded-md border border-line bg-surface pl-9 pr-24 text-sm text-ink placeholder:text-ink-3 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
+            />
+            <button
+              type="submit"
+              class="absolute right-1 top-1 inline-flex h-9 items-center rounded-sm bg-brand px-3.5 text-xs font-semibold text-brand-fg hover:bg-brand-hover"
+            >
+              搜索
+            </button>
+          </div>
+        </form>
       </div>
-      <h1 class="text-3xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-5xl">
-        选机器人硬件，<br class="hidden sm:block" />先看真实使用经验。
-      </h1>
-      <p class="mt-4 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-        参数、价格、来源等级和踩坑记录放在同一页。每一个数字都能追到出处，每一条评价都来自真实使用。
-      </p>
-      <div class="mt-6 flex flex-wrap gap-3">
-        <a href={withBase('/catalog.html')}><Button size="lg">浏览部件库 →</Button></a>
-        <a href={withBase('/submit.html')}><Button size="lg" variant="outline">参与投稿</Button></a>
-      </div>
-      <div class="mt-8 grid grid-cols-3 gap-4 border-t border-slate-200 pt-5 text-sm sm:max-w-lg">
-        <div><div class="text-xl font-bold text-slate-900">{catalog.count}</div><div class="text-xs text-slate-500">部件</div></div>
-        <div><div class="text-xl font-bold text-slate-900">{topCategories.length}</div><div class="text-xs text-slate-500">品类</div></div>
-        <div><div class="text-xl font-bold text-slate-900">A/B/C</div><div class="text-xs text-slate-500">来源等级</div></div>
+
+      <div class="relative">
+        <div class="rounded-lg border border-line bg-surface-2 p-4 sm:p-5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold tracking-wide text-ink-3 uppercase">能力骨架</span>
+            <span class="mono text-[11px] text-ink-3">04 layers</span>
+          </div>
+          <ol class="mt-4 space-y-2">
+            {LAYERS.map(layer => (
+              <li>
+                <a
+                  href={withBase(`/method.html#layers`)}
+                  class="group flex items-center gap-3 rounded-md border border-line bg-surface px-3 py-2.5 transition-colors hover:border-line-strong"
+                >
+                  <span class="mono text-[11px] text-ink-3">{layer.index}</span>
+                  <span class={`h-6 w-px ${layer.tone.replace('text-', 'bg-')}`} aria-hidden="true"></span>
+                  <span class="flex-1">
+                    <span class="block text-sm font-semibold text-ink">{layer.name}</span>
+                    <span class="block text-[11px] leading-5 text-ink-3">{layer.tagline}</span>
+                  </span>
+                  <span class="text-ink-3 transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="mt-10">
-    <div class="mb-4 flex items-end justify-between">
-      <div><h2 class="text-xl font-bold text-slate-900">按品类找</h2><p class="mt-1 text-sm text-slate-500">先锁定品类，再看参数和评价。</p></div>
-      <a href={withBase('/catalog.html')} class="text-sm font-medium text-blue-700 hover:underline">全部部件 →</a>
-    </div>
-    <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
-      {topCategories.map(c => (
-        <a href={`${withBase('/catalog.html')}?category=${c.id}`}>
-          <Card class="transition hover:border-blue-200 hover:shadow-sm">
-            <CardContent class="flex items-center justify-between p-4">
-              <div><div class="font-medium text-slate-900">{c.name}</div><div class="mt-1 text-xs text-slate-500">{c.count || 0} 个</div></div>
-              <span class="text-slate-300">→</span>
-            </CardContent>
-          </Card>
+  <section class="mt-6 overflow-hidden rounded-lg border border-line bg-surface">
+    <dl class="grid grid-cols-3 gap-px bg-line sm:grid-cols-6">
+      {stats.map(s => (
+        <a href={withBase(s.href)} class="group bg-surface px-4 py-3.5 transition-colors hover:bg-surface-2">
+          <dt class="text-[11px] text-ink-3">{s.label}</dt>
+          <dd class="mono tabular mt-0.5 text-xl font-bold text-ink group-hover:text-brand">{s.value}</dd>
         </a>
       ))}
-    </div>
+    </dl>
+    <p class="border-t border-line px-4 py-2.5 text-[11px] text-ink-3">
+      其中 3 条 C 级线索仅存档、不参与筛选；参数缺失一律写 <span class="mono">null</span>，不猜、不用同类填补。
+    </p>
   </section>
 
-  <section class="mt-10">
-    <div class="mb-4 flex items-end justify-between">
-      <div><h2 class="text-xl font-bold text-slate-900">值得先看</h2><p class="mt-1 text-sm text-slate-500">来源清楚、参数完整、社区关注度高。</p></div>
+  <section class="mt-12">
+    <div class="flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <h2 class="text-xl font-bold tracking-tight text-ink">从哪进去</h2>
+        <p class="mt-1 text-sm text-ink-3">四条主路径，各管一件事。</p>
+      </div>
     </div>
-    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-      {featuredParts.map(p => (
-        <a href={partHref(p)}>
-          <Card class="h-full overflow-hidden transition hover:-translate-y-0.5 hover:shadow-md">
-            <div class="flex h-32 items-center justify-center bg-slate-50">
-              {p.image ? <img src={imageUrl(p)} alt={`${p.vendor} ${p.model}`} loading="lazy" class="h-full w-full object-contain p-3" /> : null}
-            </div>
-            <CardContent class="space-y-1.5 p-4">
-              <div class="flex items-center gap-1.5"><Badge variant="secondary">{p.vendor}</Badge>{p.verified && <Badge variant="success">已核对</Badge>}</div>
-              <div class="font-semibold text-slate-900">{p.model}</div>
-              <div class="flex justify-between text-xs text-slate-500"><span>{formatPrice(p.price)}</span><span>{p.tauPeak ? `${p.tauPeak} N·m` : '参数待补'}</span></div>
-            </CardContent>
-          </Card>
-        </a>
-      ))}
-    </div>
-  </section>
-
-  <section class="mt-10">
-    <div class="mb-4"><h2 class="text-xl font-bold text-slate-900">继续找</h2><p class="mt-1 text-sm text-slate-500">整机、材质、软件、渠道与竞赛资料都在同一套数据口径下。</p></div>
-    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       {[
-        { href: '/robots.html', title: '整机库', desc: '21 套可复现方案，看自由度、算力与 URDF。' },
-        { href: '/materials.html', title: '材质库', desc: '材料参数与加工工艺的能力边界。' },
-        { href: '/software.html', title: '软件库', desc: '仿真、训练、部署工具的许可与硬件门槛。' },
-        { href: '/suppliers.html', title: '渠道库', desc: '加工与元件渠道的真实反馈。' },
-        { href: '/competitions.html', title: '竞赛资料', desc: '电控、机械、算法与硬件的可复用材料。' },
-        { href: '/community.html', title: '社区', desc: '提问、实测记录与选型讨论。' },
+        { href: '/start.html', title: '学习路径', desc: '从零到跑通，按天给判据', count: '1 条可用', eg: '另 2 条在写' },
+        { href: '/builds.html', title: '方案库', desc: '可复现方案，含 BOM 与步骤', count: `${robotsData.count} 套`, eg: '例：四足 5k 方案' },
+        { href: '/catalog.html', title: '部件库', desc: '参数带来源，缺失写 null', count: `${catalog.count} 个部件`, eg: '例：DM4310 参数' },
+        { href: '/suppliers.html', title: '采购渠道', desc: '报价、交期与真实反馈', count: `${suppliersData.count} 家`, eg: '例：嘉立创打样' },
       ].map(item => (
-        <a href={withBase(item.href)}>
-          <Card class="h-full transition hover:border-blue-200 hover:shadow-sm">
-            <CardContent class="space-y-1 p-5">
-              <div class="font-semibold text-slate-900">{item.title} →</div>
-              <p class="text-sm leading-6 text-slate-500">{item.desc}</p>
-            </CardContent>
-          </Card>
+        <a href={withBase(item.href)} class="card card-hover group flex flex-col p-5">
+          <div class="flex items-start justify-between">
+            <span class="text-[15px] font-semibold text-ink group-hover:text-brand">{item.title}</span>
+            <span class="text-ink-3 transition-transform group-hover:translate-x-0.5" aria-hidden="true">↗</span>
+          </div>
+          <p class="mt-2 text-xs leading-5 text-ink-3">{item.desc}</p>
+          <div class="mt-auto flex items-baseline justify-between gap-2 border-t border-line pt-3 text-[11px]">
+            <span class="mono tabular text-ink-2">{item.count}</span>
+            <span class="truncate text-ink-3">{item.eg}</span>
+          </div>
         </a>
       ))}
     </div>
   </section>
 
-  <section class="mt-10 grid gap-3 sm:grid-cols-3">
-    <Card><CardContent class="space-y-2 p-5"><div class="text-lg">◈</div><div class="font-semibold">来源可追溯</div><p class="text-sm leading-6 text-slate-500">每个参数标注来源等级与核对日期，缺的写 —，不猜。</p></CardContent></Card>
-    <Card><CardContent class="space-y-2 p-5"><div class="text-lg">◎</div><div class="font-semibold">真实使用经验</div><p class="text-sm leading-6 text-slate-500">评分和讨论来自用过的玩家，不用宣传语代替实测。</p></CardContent></Card>
-    <Card><CardContent class="space-y-2 p-5"><div class="text-lg">▦</div><div class="font-semibold">多端同一份数据</div><p class="text-sm leading-6 text-slate-500">网页、GitHub Pages 镜像、小程序和未来 App 共用同一套 API。</p></CardContent></Card>
+  <section class="mt-12 grid gap-4 lg:grid-cols-[minmax(0,1fr)_380px]">
+    <div class="card p-6">
+      <h2 class="text-lg font-bold tracking-tight text-ink">不知道怎么开始？</h2>
+      <p class="mt-1.5 text-sm leading-6 text-ink-3">四步走完一遍，比收藏一百个链接有用。</p>
+      <ol class="mt-5 grid gap-2 sm:grid-cols-2">
+        {steps.map((s, i) => (
+          <li>
+            <a href={withBase(s.href)} class="group flex h-full flex-col rounded-md border border-line bg-surface-2 p-4 transition-colors hover:border-line-strong hover:bg-surface">
+              <span class="mono text-[11px] text-ink-3">0{i + 1}</span>
+              <span class="mt-1.5 text-sm font-semibold text-ink group-hover:text-brand">{s.k}</span>
+              <span class="mt-1 text-[11px] leading-5 text-ink-3">{s.v}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <div class="card p-6">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-bold tracking-tight text-ink">按品类浏览</h2>
+        <a href={withBase('/catalog.html')} class="text-xs font-medium text-brand hover:underline">全部 →</a>
+      </div>
+      <div class="mt-4 flex flex-wrap gap-1.5">
+        {topCategories.map(c => (
+          <a
+            href={`${withBase('/catalog.html')}?category=${c.id}`}
+            class="inline-flex h-8 items-center gap-1.5 rounded-full border border-line bg-surface px-3 text-xs text-ink-2 transition-colors hover:border-line-strong hover:text-ink"
+          >
+            {c.name}
+            <span class="mono tabular text-[11px] text-ink-3">{c.count || 0}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-12">
+    <div class="flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <h2 class="text-xl font-bold tracking-tight text-ink">值得先看</h2>
+        <p class="mt-1 text-sm text-ink-3">来源清楚、参数完整、社区关注度高。</p>
+      </div>
+      <a href={withBase('/catalog.html')} class="text-sm font-medium text-brand hover:underline">全部部件 →</a>
+    </div>
+    <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {featuredParts.map(p => (
+        <a href={partHref(p)} class="card card-hover group flex h-full flex-col overflow-hidden">
+          <div class="flex h-32 items-center justify-center border-b border-line bg-surface-2">
+            {p.image ? (
+              <img
+                src={imageUrl(p)}
+                alt={`${p.vendor} ${p.model}`}
+                loading="lazy"
+                class="h-full w-full object-contain p-4 transition-transform duration-300 group-hover:scale-[1.03]"
+              />
+            ) : (
+              <span class="text-xs text-ink-3">暂无产品图</span>
+            )}
+          </div>
+          <div class="flex flex-1 flex-col gap-2 p-4">
+            <div class="flex flex-wrap items-center gap-1.5">
+              <span class="text-[11px] font-medium text-ink-3">{p.vendor}</span>
+              {p.verified && <span class="tier tier-a">已核对</span>}
+            </div>
+            <div class="text-sm font-semibold text-ink">{p.model}</div>
+            <div class="mt-auto flex items-baseline justify-between pt-1 text-xs">
+              <span class="mono tabular text-ink-2">{formatPrice(p.price)}</span>
+              <span class="mono tabular text-ink-3">{p.tauPeak ? `${p.tauPeak} N·m` : '参数待补'}</span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="mt-12 grid gap-3 sm:grid-cols-3">
+    <a href={withBase('/community.html')} class="card card-hover p-5">
+      <div class="text-sm font-semibold text-ink">提问与讨论</div>
+      <p class="mt-1.5 text-[13px] leading-6 text-ink-3">选型、调试、踩坑都可以问；答案会留在对应的零件页下。</p>
+    </a>
+    <a href={withBase('/submit.html')} class="card card-hover p-5">
+      <div class="text-sm font-semibold text-ink">纠正与补全</div>
+      <p class="mt-1.5 text-[13px] leading-6 text-ink-3">参数写错、价格过期、链接失效，都可以直接提交纠正。</p>
+    </a>
+    <a href={withBase('/contributors.html')} class="card card-hover p-5">
+      <div class="text-sm font-semibold text-ink">贡献者</div>
+      <p class="mt-1.5 text-[13px] leading-6 text-ink-3">谁整理了这些数据、谁提供了实测记录，逐条可查。</p>
+    </a>
+  </section>
+
+  <section class="mt-12">
+    <h2 class="text-xl font-bold tracking-tight text-ink">常见问题</h2>
+    <div class="mt-4 overflow-hidden rounded-lg border border-line bg-surface divide-y divide-line">
+      {faqs.map(item => (
+        <details class="group">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-3.5 text-sm font-medium text-ink hover:bg-surface-2">
+            {item.q}
+            <span class="text-ink-3 transition-transform group-open:rotate-45" aria-hidden="true">＋</span>
+          </summary>
+          <p class="px-5 pb-4 text-[13px] leading-6 text-ink-3">{item.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section class="mt-12 overflow-hidden rounded-lg border border-line bg-surface">
+    <div class="flex flex-col gap-5 p-7 sm:flex-row sm:items-center sm:justify-between sm:p-9">
+      <div>
+        <h2 class="text-lg font-bold tracking-tight text-ink">你知道某个参数的真实值，或者踩过坑？</h2>
+        <p class="mt-1.5 text-sm leading-6 text-ink-3">
+          一条纠正、一次实测、一个加工厂的报价，都会进入下一个 <span class="mono">data-v*</span> 版本。
+        </p>
+      </div>
+      <div class="flex shrink-0 gap-2">
+        <a
+          href={withBase('/submit.html')}
+          class="inline-flex h-10 items-center rounded-md bg-brand px-5 text-sm font-semibold text-brand-fg transition-colors hover:bg-brand-hover"
+        >
+          参与投稿
+        </a>
+        <a
+          href={withBase('/community.html')}
+          class="inline-flex h-10 items-center rounded-md border border-line px-4 text-sm text-ink transition-colors hover:bg-surface-2"
+        >
+          去社区
+        </a>
+      </div>
+    </div>
   </section>
 </Base>

@@ -121,23 +121,23 @@ function ActionModal({ report, action, onClose }: {
         }
       }}>
       <div className="space-y-3 pt-1">
-        <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-[12px] text-slate-600">
+        <div className="rounded-lg border border-line bg-surface-2 p-3 text-[12px] text-ink-2">
           <div className="mb-1 flex flex-wrap items-center gap-1.5">
             <Tag style={{ marginInlineEnd: 0 }}>{KIND[report.target_kind] || report.target_kind}</Tag>
-            <span className="text-[11.5px] text-slate-400">#{report.target_id}</span>
+            <span className="text-[11.5px] text-ink-3">#{report.target_id}</span>
             {report.target?.hidden && <Tag color="red" style={{ marginInlineEnd: 0 }}>当前已隐藏</Tag>}
             {href && (
               <a href={href} target="_blank" rel="noreferrer"
-                className="ml-auto text-[11px] text-blue-600 hover:underline">查看原文 ↗</a>
+                className="ml-auto text-[11px] text-brand hover:underline">查看原文 ↗</a>
             )}
           </div>
-          <div className="line-clamp-3 text-slate-800">
+          <div className="line-clamp-3 text-ink-2">
             {report.target?.title || report.target?.post_title || report.target?.body || '内容已删除'}
           </div>
           {report.target?.body && report.target?.title && (
-            <div className="mt-1 line-clamp-2 text-[11.5px] text-slate-500">{report.target.body}</div>
+            <div className="mt-1 line-clamp-2 text-[11.5px] text-ink-3">{report.target.body}</div>
           )}
-          <div className="mt-2 border-t border-slate-200 pt-1.5 text-[11.5px] text-slate-500">
+          <div className="mt-2 border-t border-line pt-1.5 text-[11.5px] text-ink-3">
             举报理由：{REASON[report.reason] || report.reason}
             {report.detail ? ` · ${report.detail}` : ''}
           </div>
@@ -160,7 +160,7 @@ function ActionModal({ report, action, onClose }: {
                   : '例如：重复举报，原文不违反社区规则'} />
           </Form.Item>
         </Form>
-        <div className="text-[11px] text-slate-400">
+        <div className="text-[11px] text-ink-3">
           隐藏是软操作：内容仍在库中，站务可在「已处置」里恢复。举报不会自动下架。
         </div>
       </div>
@@ -193,8 +193,8 @@ export default function ReportsPanel({ active }: { active: boolean }) {
     <div className="w-full min-w-0">
       <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
         <div className="min-w-0">
-          <h2 className="m-0 text-[18px] font-bold text-slate-900">举报与内容处置</h2>
-          <p className="m-0 mt-1 text-[12.5px] text-slate-500">
+          <h2 className="m-0 text-[18px] font-bold text-ink">举报与内容处置</h2>
+          <p className="m-0 mt-1 text-[12.5px] text-ink-3">
             举报不会自动下架；隐藏与驳回都必须写依据。隐藏是软操作，可恢复。
           </p>
         </div>
@@ -205,7 +205,7 @@ export default function ReportsPanel({ active }: { active: boolean }) {
         </div>
       </div>
 
-      <div className="mb-2 text-[11.5px] text-slate-400">
+      <div className="mb-2 text-[11.5px] text-ink-3">
         共 {queue.data?.total ?? 0} 条{queue.isFetching && !queue.isLoading ? ' · 刷新中…' : ''}
       </div>
 
@@ -230,25 +230,25 @@ export default function ReportsPanel({ active }: { active: boolean }) {
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-1.5">
                       <Tag style={{ marginInlineEnd: 0 }}>{KIND[r.target_kind] || r.target_kind}</Tag>
-                      <span className="text-[11.5px] text-slate-400">#{r.target_id}</span>
+                      <span className="text-[11.5px] text-ink-3">#{r.target_id}</span>
                       {r.target?.hidden && <Tag color="red" style={{ marginInlineEnd: 0 }}>已隐藏</Tag>}
                       {r.target?.author && (
-                        <span className="text-[11px] text-slate-400">@{r.target.author.handle}</span>
+                        <span className="text-[11px] text-ink-3">@{r.target.author.handle}</span>
                       )}
                       {href && (
                         <a href={href} target="_blank" rel="noreferrer"
-                          className="ml-auto text-[11px] text-blue-600 hover:underline">查看 ↗</a>
+                          className="ml-auto text-[11px] text-brand hover:underline">查看 ↗</a>
                       )}
                     </div>
-                    <div className="mt-1 line-clamp-2 break-all text-[12px] text-slate-700">
+                    <div className="mt-1 line-clamp-2 break-all text-[12px] text-ink-2">
                       {r.target?.title || r.target?.post_title || r.target?.body || '内容已删除'}
                     </div>
                     {r.target?.body && r.target?.title && (
-                      <div className="mt-0.5 line-clamp-1 text-[11.5px] text-slate-500">{r.target.body}</div>
+                      <div className="mt-0.5 line-clamp-1 text-[11.5px] text-ink-3">{r.target.body}</div>
                     )}
                     {r.target?.page && (
                       <a href={siteHref(`/${r.target.page}`)} target="_blank" rel="noreferrer"
-                        className="break-all text-[11px] text-blue-600 hover:underline">{r.target.page} ↗</a>
+                        className="break-all text-[11px] text-brand hover:underline">{r.target.page} ↗</a>
                     )}
                   </div>
                 )
@@ -258,16 +258,16 @@ export default function ReportsPanel({ active }: { active: boolean }) {
               title: '举报理由', width: 180,
               render: (_v, r) => (
                 <div className="text-[12px]">
-                  <div className="text-slate-700">{REASON[r.reason] || r.reason}</div>
-                  {r.detail && <div className="mt-0.5 line-clamp-2 text-[11.5px] text-slate-500">{r.detail}</div>}
+                  <div className="text-ink-2">{REASON[r.reason] || r.reason}</div>
+                  {r.detail && <div className="mt-0.5 line-clamp-2 text-[11.5px] text-ink-3">{r.detail}</div>}
                 </div>
               ),
             },
             {
               title: '举报人 / 时间', width: 140,
               render: (_v, r) => (
-                <div className="text-[11.5px] text-slate-500">
-                  <div className="text-slate-700">@{r.reporter?.handle || '—'}</div>
+                <div className="text-[11.5px] text-ink-3">
+                  <div className="text-ink-2">@{r.reporter?.handle || '—'}</div>
                   {when(r.created_at)}
                 </div>
               ),
@@ -283,12 +283,12 @@ export default function ReportsPanel({ active }: { active: boolean }) {
               title: '处置记录', width: 210,
               render: (_v, r) => r.resolution_note
                 ? (
-                  <div className="text-[11.5px] text-slate-600">
+                  <div className="text-[11.5px] text-ink-2">
                     <div className="line-clamp-2 break-words">{r.resolution_note}</div>
-                    {r.resolved_at && <div className="mt-0.5 text-[11px] text-slate-400">{when(r.resolved_at)}</div>}
+                    {r.resolved_at && <div className="mt-0.5 text-[11px] text-ink-3">{when(r.resolved_at)}</div>}
                   </div>
                 )
-                : <span className="text-slate-300">—</span>,
+                : <span className="text-ink-3">—</span>,
             },
             {
               title: '操作', width: 170,
@@ -307,7 +307,7 @@ export default function ReportsPanel({ active }: { active: boolean }) {
                       onClick={() => setActing({ report: r, action: 'restore' })}>恢复</Button>
                   )}
                   {r.status !== 'open' && !(r.status === 'resolved' && r.target?.hidden) && (
-                    <span className="text-[11.5px] text-slate-300">已处理</span>
+                    <span className="text-[11.5px] text-ink-3">已处理</span>
                   )}
                 </div>
               ),

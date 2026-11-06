@@ -271,3 +271,67 @@ def test_review_notifies_submitter(client, staff):
     hit = [n for n in notes["items"] if n["type"] == "moderation"]
     assert hit and "驳回" in hit[0]["subject"]
     assert "官网价格不对" in hit[0]["body"]
+
+
+# ── 提案字段的权限：verified 只能由站务提 ───────────────────────────────────
+def test_only_staff_can_propose_verified(client, staff):
+    """`verified` 会被渲染成「已核对」徽标，普通用户不能自证。"""
+    plain = auth(client, "demo1")
+    r = submit(client, plain, {"verified": True})
+    assert r.status_code == 403, r.text
+    # 同一个字段站务可以提（通过审核后才会写进 release）
+    r = submit(client, staff, {"verified": True})
+    assert r.status_code == 201, r.text
+
+
+# ── outbox：通过只入队一次 ──────────────────────────────────────────────────
+def test_accepted_proposal_enqueues_exactly_one_outbox_task(client, staff):
+    """409 之外还要保证「没有第二条 outbox」：重复入队等于同一提案发布两次。"""
+    sid = submit(client, staff, {"price_cny": 4567.0}).json()["id"]
+    assert review(client, staff, sid, "accepted", "ok", "第一次审核").status_code == 200
+    assert review(client, staff, sid, "accepted", "ok", "第二次审核").status_code == 409
+
+    rows = [t for t in client.get("/api/v1/submissions/outbox",
+                                  headers=staff).json()
+            if t["submission_id"] == sid]
+    assert len(rows) == 1, f"同一提案产生了 {len(rows)} 条 outbox 任务"
+    assert rows[0]["status"] == "pending"
+
+
+# ── outbox：重试的权限与状态守卫 ────────────────────────────────────────────
+def test_outbox_retry_requires_staff_and_skips_running_tasks(client, staff):
+    from app.core.db import session
+    from app.models import Outbox
+
+    db = session()
+    try:
+        row = Outbox(action="part_patch", payload={}, idempotency_key="retry-guard",
+                     status="running", attempts=1)
+        db.add(row)
+        db.commit()
+        db.refresh(row)
+        oid = row.id
+    finally:
+        db.close()
+
+    plain = auth(client, "demo1")
+    assert client.post(f"/api/v1/submissions/outbox/{oid}/retry",
+                       headers=plain).status_code == 403
+    # 正在跑的任务不能被重排，否则同一个提案会被并发发布两次
+    assert client.post(f"/api/v1/submissions/outbox/{oid}/retry",
+                       headers=staff).status_code == 409
+    assert client.post("/api/v1/submissions/outbox/999999/retry",
+                       headers=staff).status_code == 404
+
+
+# ── 列表分页参数不能突破上限 ────────────────────────────────────────────────
+def test_negative_limit_does_not_turn_into_unbounded_query(client, staff):
+    """`limit` 取负数在 SQLite 里等于「不设上限」（`LIMIT -1`），在 Postgres 里
+    直接报错（LIMIT must not be negative）。两种都不该出现：非法值按最小页处理。"""
+    for path in ("/api/v1/submissions/mine", "/api/v1/submissions/outbox",
+                 "/api/v1/submissions/queue"):
+        one = client.get(path, headers=staff, params={"limit": 1})
+        bad = client.get(path, headers=staff, params={"limit": -1})
+        assert bad.status_code == 200, f"{path}: {bad.status_code} {bad.text}"
+        assert [x["id"] for x in bad.json()] == [x["id"] for x in one.json()], \
+            f"{path} 的 limit=-1 退化成全表查询"

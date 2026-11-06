@@ -1,0 +1,123 @@
+---
+import Base from '@/layouts/Base.astro'
+import { withBase } from '@/lib/utils'
+import { getCollection } from 'astro:content'
+
+const learn = await getCollection('learn')
+const guides = learn.filter(e => e.id !== 'index').slice(0, 4)
+
+const paths = [
+  {
+    id: 'electrical-14d',
+    title: '电控入门：14 天让四个轮子转起来',
+    who: '刚学完 C、只点过灯',
+    budget: '旧件为主，新增 < 400 元',
+    days: 14,
+    href: '/paths/electrical-14d.html',
+    ready: true,
+  },
+  {
+    id: 'mechanical-14d',
+    title: '结构入门：从受力到加工下单',
+    who: '会一点 SolidWorks',
+    budget: '按件计',
+    days: 14,
+    href: '',
+    ready: false,
+  },
+  {
+    id: 'vision-14d',
+    title: '视觉入门：相机标定到目标跟踪',
+    who: '会 Python',
+    budget: '相机 300–1500 元',
+    days: 14,
+    href: '',
+    ready: false,
+  },
+]
+
+const questions = [
+  { q: '你想先解决哪一层？', options: ['让电路跑起来', '把结构装出来', '让算法看见东西'] },
+  { q: '你手上有什么？', options: ['一套旧车 + 电机', '只有开发板', '什么都没有'] },
+  { q: '你有多少时间？', options: ['两周冲刺', '一个月慢慢来', '有空就做'] },
+]
+---
+
+<Base
+  title="学习路径 · 从零到跑通 · RoboWiki"
+  description="按预算、基础和目标选一条机器人制作路径，每天一个动作和一个完成判据，配套部件、参数与出处。"
+>
+  <nav class="mb-4 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-ink-3" aria-label="面包屑">
+    <a href={withBase('/')} class="hover:text-brand">首页</a>
+    <span class="text-line-strong" aria-hidden="true">/</span>
+    <span class="text-ink-2" aria-current="page">学习路径</span>
+  </nav>
+
+  <header class="max-w-3xl">
+    <p class="text-xs font-semibold tracking-[0.14em] text-brand uppercase">Learning Paths</p>
+    <h1 class="mt-2 text-2xl font-extrabold tracking-tight text-ink sm:text-[32px]">从零到跑通的学习路径</h1>
+    <p class="mt-3 text-sm leading-7 text-ink-2">
+      每条路径按天拆开，每天一个动作、一个产出、一个判据。做完判据才算过关，不用猜自己有没有学会。
+    </p>
+  </header>
+
+  <section class="mt-7 grid gap-3 sm:grid-cols-3">
+    {questions.map((item, i) => (
+      <div class="card p-4">
+        <span class="mono text-[11px] text-ink-3">Q{i + 1}</span>
+        <div class="mt-1.5 text-[13px] font-semibold text-ink">{item.q}</div>
+        <ul class="mt-2 space-y-1">
+          {item.options.map(opt => (
+            <li class="text-[12px] leading-5 text-ink-3">· {opt}</li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </section>
+
+  <section class="mt-8">
+    <h2 class="text-sm font-semibold text-ink">可选路径</h2>
+    <div class="mt-3 grid gap-3 lg:grid-cols-3">
+      {paths.map(path => (
+        path.ready ? (
+          <a href={withBase(path.href)} class="card card-hover group flex flex-col p-5">
+            <div class="flex items-start justify-between">
+              <span class="mono text-[11px] text-ink-3">{path.days} 天</span>
+              <span class="text-ink-3 transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
+            </div>
+            <h3 class="mt-3 text-[15px] font-semibold text-ink">{path.title}</h3>
+            <p class="mt-2 text-[12px] leading-5 text-ink-3">适合：{path.who}</p>
+            <p class="mt-1 text-[12px] leading-5 text-ink-3">预算：{path.budget}</p>
+          </a>
+        ) : (
+          <div class="card flex flex-col border-dashed p-5 opacity-70">
+            <div class="flex items-start justify-between">
+              <span class="mono text-[11px] text-ink-3">{path.days} 天</span>
+              <span class="rounded-full border border-line px-2 py-0.5 text-[10px] text-ink-3">编写中</span>
+            </div>
+            <h3 class="mt-3 text-[15px] font-semibold text-ink-2">{path.title}</h3>
+            <p class="mt-2 text-[12px] leading-5 text-ink-3">适合：{path.who}</p>
+            <p class="mt-1 text-[12px] leading-5 text-ink-3">这条路径还没写完，先看电控那条或下面的方法类指南。</p>
+          </div>
+        )
+      ))}
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <div class="flex items-end justify-between">
+      <h2 class="text-sm font-semibold text-ink">先读这几篇（判断类）</h2>
+      <a href={withBase('/learn/index.html')} class="text-xs font-medium text-brand hover:underline">全部指南 →</a>
+    </div>
+    <ul class="mt-3 divide-y divide-line overflow-hidden rounded-lg border border-line bg-surface">
+      {guides.map(g => (
+        <li>
+          <a href={withBase(`/learn/${g.id}.html`)} class="block px-4 py-3 transition-colors hover:bg-surface-2">
+            <span class="block text-[13px] font-medium text-ink">{g.data.title}</span>
+            {g.data.description && <span class="mt-0.5 block text-[11px] leading-5 text-ink-3">{g.data.description}</span>}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>

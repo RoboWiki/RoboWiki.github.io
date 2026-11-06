@@ -1,0 +1,265 @@
+---
+import Base from '@/layouts/Base.astro'
+import Breadcrumbs from '@/components/library/Breadcrumbs.astro'
+import softwareData from '@/data/software.json'
+import { withBase } from '@/lib/utils'
+
+type Item = {
+  id: string
+  group: string
+  name: string
+  vendor: string
+  license?: string | null
+  version?: string | null
+  repo?: string | null
+  docs?: string | null
+  lang?: string | null
+  what?: string | null
+  when?: string | null
+  note?: string | null
+}
+
+const items = softwareData.items as unknown as Item[]
+const groups = softwareData.groups
+  .map(group => ({ ...group, items: items.filter(item => item.group === group.id) }))
+  .filter(group => group.items.length > 0)
+const repoCount = items.filter(item => item.repo).length
+const licensedCount = items.filter(item => item.license).length
+
+const searchText = (item: Item) =>
+  [item.name, item.vendor, item.lang ?? '', item.license ?? '', item.what ?? '', item.when ?? ''].join(' ')
+
+const stats = [
+  { label: '收录项目', value: items.length, unit: '个' },
+  { label: '用途分组', value: groups.length, unit: '组' },
+  { label: '官方仓库', value: repoCount, unit: '个' },
+  { label: '已标注许可', value: licensedCount, unit: '个' },
+]
+---
+
+<Base
+  title="工具链 · RoboWiki"
+  description={`${items.length} 个机器人仿真、训练、中间件与算法工具：按用途分组，标明许可证与官方仓库。`}
+>
+  <Breadcrumbs items={[{ label: '首页', href: '/' }, { label: '工具链' }]} />
+
+  <header class="relative overflow-hidden rounded-lg border border-line bg-surface p-6 sm:p-8">
+    <div
+      class="pointer-events-none absolute -right-20 -top-28 h-64 w-64 rounded-full bg-brand-soft opacity-80 blur-3xl"
+      aria-hidden="true"
+    >
+    </div>
+    <div class="relative">
+      <p class="text-xs font-semibold tracking-[0.14em] text-brand uppercase">工具链 / Toolchain</p>
+      <h1 class="mt-2 max-w-3xl text-3xl font-extrabold leading-tight tracking-tight text-ink sm:text-4xl">
+        先选许可证，再选框架。
+      </h1>
+      <p class="mt-3 max-w-2xl text-sm leading-6 text-ink-2">
+        收录 {items.length} 个项目，按「仿真 / 训练 / 方法 / 架构 / 中间件 / 数学 / 模仿学习」分组。许可证取自仓库，商用前请以仓库 LICENSE 为准。
+      </p>
+
+      <dl class="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-line bg-line sm:grid-cols-4">
+        {stats.map(stat => (
+          <div class="bg-surface-2 px-4 py-3">
+            <dt class="text-[11px] font-medium tracking-wide text-ink-3">{stat.label}</dt>
+            <dd class="mt-1 flex items-baseline gap-1">
+              <span class="mono tabular text-xl font-semibold leading-none text-ink">{stat.value}</span>
+              <span class="text-[11px] text-ink-3">{stat.unit}</span>
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </header>
+
+  <div class="sticky top-16 z-30 -mx-4 mt-6 border-b border-line bg-bg/90 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
+    <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+      <div class="chip-row" role="group" aria-label="按用途分组筛选">
+        <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">
+          全部<span class="mono tabular text-[11px] opacity-60">{items.length}</span>
+        </button>
+        {groups.map(group => (
+          <button type="button" class="chip" data-filter={group.id} aria-pressed="false">
+            {group.name}<span class="mono tabular text-[11px] opacity-60">{group.items.length}</span>
+          </button>
+        ))}
+      </div>
+      <label class="flex h-9 shrink-0 items-center gap-2 rounded-md border border-line bg-surface px-3 text-ink-3 focus-within:border-brand lg:w-60">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-3.5-3.5" stroke-linecap="round" />
+        </svg>
+        <input
+          id="software-search"
+          type="search"
+          placeholder="搜索项目 / 厂商 / 语言"
+          aria-label="搜索工具、厂商或语言"
+          class="w-full bg-transparent text-sm text-ink placeholder:text-ink-3 focus:outline-none"
+        />
+      </label>
+    </div>
+    <p class="mt-2 text-xs text-ink-3" aria-live="polite">
+      <span id="software-count" class="mono tabular text-ink-2">{items.length}</span> 个符合当前筛选
+    </p>
+  </div>
+
+  <div class="mt-8 space-y-10">
+    {groups.map(group => (
+      <section
+        id={`group-${group.id}`}
+        data-group={group.id}
+        aria-labelledby={`group-${group.id}-title`}
+        class="scroll-mt-40"
+      >
+        <div class="mb-3 flex flex-wrap items-baseline justify-between gap-2 border-b border-line pb-2.5">
+          <div>
+            <h2 id={`group-${group.id}-title`} class="text-lg font-bold tracking-tight text-ink sm:text-xl">
+              {group.name}
+            </h2>
+            <p class="mt-1 text-xs leading-5 text-ink-3">{group.hint}</p>
+          </div>
+          <span class="mono tabular text-xs text-ink-3">{group.items.length} 个</span>
+        </div>
+
+        <ul class="grid grid-cols-1 gap-4 lg:grid-cols-2" role="list">
+          {group.items.map(item => (
+            <li data-item data-group={group.id} data-search={searchText(item)} class="flex">
+              <article class="card card-hover flex h-full w-full flex-col p-5">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="min-w-0">
+                    <h3 class="text-base font-semibold leading-6 text-ink">{item.name}</h3>
+                    <p class="mt-0.5 truncate text-xs text-ink-3">{item.vendor}</p>
+                  </div>
+                  <span class="inline-flex h-6 shrink-0 items-center gap-1 whitespace-nowrap rounded-full border border-line bg-surface-2 px-2.5 text-[11px] font-semibold text-ink-2">
+                    许可<span class="mono text-ink">{item.license || '未标注'}</span>
+                  </span>
+                </div>
+
+                <div class="mt-2.5 flex flex-wrap gap-1.5">
+                  {item.lang && (
+                    <span class="inline-flex h-6 items-center whitespace-nowrap rounded-full bg-brand-soft px-2.5 text-[11px] font-medium text-brand">
+                      {item.lang}
+                    </span>
+                  )}
+                  <span class="inline-flex h-6 items-center whitespace-nowrap rounded-full border border-line bg-surface-2 px-2.5 text-[11px] text-ink-2">
+                    版本 <span class="mono ml-1">{item.version || '未标注'}</span>
+                  </span>
+                </div>
+
+                <dl class="mt-3.5 space-y-2.5 border-t border-line pt-3.5 text-sm">
+                  {item.what && (
+                    <div class="grid gap-0.5 sm:grid-cols-[64px_minmax(0,1fr)] sm:gap-2">
+                      <dt class="text-xs font-medium leading-6 text-ink-3">是什么</dt>
+                      <dd class="leading-6 text-ink-2">{item.what}</dd>
+                    </div>
+                  )}
+                  {item.when && (
+                    <div class="grid gap-0.5 sm:grid-cols-[64px_minmax(0,1fr)] sm:gap-2">
+                      <dt class="text-xs font-medium leading-6 text-ink-3">什么时候用</dt>
+                      <dd class="leading-6 text-ink-2">{item.when}</dd>
+                    </div>
+                  )}
+                  {item.note && (
+                    <div class="grid gap-0.5 sm:grid-cols-[64px_minmax(0,1fr)] sm:gap-2">
+                      <dt class="text-xs font-medium leading-6 text-ink-3">注意</dt>
+                      <dd class="leading-6 text-ink-3">{item.note}</dd>
+                    </div>
+                  )}
+                </dl>
+
+                {(item.repo || item.docs) && (
+                  <div class="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-line pt-3 text-sm">
+                    {item.repo && (
+                      <a
+                        href={item.repo}
+                        target="_blank"
+                        rel="noopener"
+                        class="inline-flex items-center gap-1 font-medium text-brand hover:underline"
+                      >
+                        仓库<span class="sr-only">（新窗口打开）</span><span class="text-xs" aria-hidden="true">↗</span>
+                      </a>
+                    )}
+                    {item.docs && item.docs !== item.repo && (
+                      <a
+                        href={item.docs}
+                        target="_blank"
+                        rel="noopener"
+                        class="inline-flex items-center gap-1 font-medium text-brand hover:underline"
+                      >
+                        文档<span class="sr-only">（新窗口打开）</span><span class="text-xs" aria-hidden="true">↗</span>
+                      </a>
+                    )}
+                  </div>
+                )}
+              </article>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+
+  <div id="software-empty" class="card mt-8 p-10 text-center" data-empty hidden>
+    <p class="text-sm font-semibold text-ink">没有匹配的项目</p>
+    <p class="mt-1 text-xs leading-5 text-ink-3">
+      换一个项目名、厂商或语言关键词试试；也可以点「全部」清除用途筛选。
+    </p>
+  </div>
+
+  <p class="mt-10 rounded-md border border-line bg-surface-2 p-4 text-xs leading-6 text-ink-3">
+    许可证以各仓库 LICENSE 文件为准；同一项目的子模块、模型权重与数据可能使用不同许可。采购渠道见
+    <a href={withBase('/suppliers.html')} class="mx-1 font-medium text-brand hover:underline">渠道库</a>。
+  </p>
+</Base>
+
+<style>
+  section[hidden],
+  li[data-item][hidden],
+  [data-empty][hidden] {
+    display: none !important;
+  }
+</style>
+
+<script>
+  const search = document.getElementById('software-search') as HTMLInputElement | null
+  const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip[data-filter]'))
+  const sections = Array.from(document.querySelectorAll<HTMLElement>('section[data-group]'))
+  const counter = document.getElementById('software-count')
+  const empty = document.getElementById('software-empty')
+  let active = 'all'
+
+  const apply = () => {
+    const query = (search?.value || '').trim().toLowerCase()
+    let visible = 0
+    for (const section of sections) {
+      const group = section.dataset.group || ''
+      if (active !== 'all' && group !== active) {
+        section.hidden = true
+        continue
+      }
+      let shown = 0
+      for (const item of Array.from(section.querySelectorAll<HTMLElement>('li[data-item]'))) {
+        const hit = !query || (item.dataset.search || '').toLowerCase().includes(query)
+        item.hidden = !hit
+        if (hit) shown += 1
+      }
+      section.hidden = shown === 0
+      visible += shown
+    }
+    if (counter) counter.textContent = String(visible)
+    if (empty) empty.hidden = visible !== 0
+  }
+
+  for (const chip of chips) {
+    chip.addEventListener('click', () => {
+      active = chip.dataset.filter || 'all'
+      for (const other of chips) {
+        const on = other === chip
+        other.classList.toggle('is-active', on)
+        other.setAttribute('aria-pressed', String(on))
+      }
+      apply()
+    })
+  }
+  search?.addEventListener('input', apply)
+</script>

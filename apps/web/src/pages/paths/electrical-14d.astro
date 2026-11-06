@@ -1,0 +1,200 @@
+---
+import Base from '@/layouts/Base.astro'
+import { withBase } from '@/lib/utils'
+
+const stages = [
+  {
+    day: 'D1–2',
+    title: '接线与通电',
+    goal: '把电池、分电板、电调、电机连成一条能安全断电的回路',
+    steps: [
+      '核对电调与电机型号是否配套，别混用额定电压不同的组合',
+      '电池 → 分电板 → 电调 → 电机，先不接主控',
+      'CAN_H / CAN_L 双绞，两端各一个 120Ω 终端电阻',
+      '串一个急停或开关，保证手能立刻断电',
+    ],
+    criteria: '上电不冒烟、电调指示灯常亮、按下急停能立即断电',
+    pitfalls: ['电源正负接反（最常见，直接烧电调）', 'CAN 少接终端电阻，短距离能通、长距离丢帧'],
+  },
+  {
+    day: 'D3–4',
+    title: 'CAN 收数',
+    goal: '让主控读到四个电机的 ID 与反馈帧',
+    steps: [
+      '波特率设 1 Mbps，过滤器先全开，避免“收不到”被误判成硬件问题',
+      '接收 0x201–0x204 四帧，解析转子机械角与转速',
+      '把原始值打到串口，肉眼确认四个 ID 都能稳定刷出',
+    ],
+    criteria: '串口稳定输出 4 个电机 ID，拔插任意一个不影响其余三个',
+    pitfalls: ['波特率不匹配 → 全 0 或乱码', '只开了一个过滤器，误以为另外三个电机坏了'],
+  },
+  {
+    day: 'D5',
+    title: '开环转起来',
+    goal: '发出第一帧电流指令，让电机转',
+    steps: [
+      '发送 0x200，按 1000–3000 / 16384 的占空给电流',
+      '四个轮子给同一指令，确认方向一致',
+      '反向只需取负，不用改接线',
+    ],
+    criteria: '四个轮子按指令同向转动，松手即停（无自转）',
+    pitfalls: ['电流给太大，第一次就烧电机', '方向不一致其实是电机安装方向不同，不必改线'],
+  },
+  {
+    day: 'D6',
+    title: '把波形画出来',
+    goal: '让“转没转”变成看得见的曲线',
+    steps: ['串口输出时间戳 + 电流 + 转速', '用串口绘图工具观察加减速过程'],
+    criteria: '能看到一条完整的加速—匀速—减速曲线',
+    pitfalls: ['采样周期不稳定，曲线锯齿严重', '把上位机刷新率当成控制周期'],
+  },
+  {
+    day: 'D7',
+    title: '取反馈',
+    goal: '读到可信的转速，知道输出端和电机端的差别',
+    steps: [
+      '从反馈帧解析 rpm，注意这是电机端还是输出端',
+      '按减速比换算到输出端，和实际手转的圈数对一遍',
+      '手转轮子，看符号与量级是否正确',
+    ],
+    criteria: '手转一圈的输出角度与读数一致，误差在可解释范围内',
+    pitfalls: ['减速比用错（19.2 与 19 混用）', '把转子机械角当成输出角度'],
+  },
+  {
+    day: 'D8–9',
+    title: '闭环：让转速听话',
+    goal: '给定目标转速，电机能稳定跟随',
+    steps: [
+      '先 P 后 I，Kp 从小往大加，直到刚好不抖',
+      '加 Ki 消稳态误差，注意积分饱和',
+      '目标从 100 → 300 rpm 阶跃，观察超调与恢复时间',
+    ],
+    criteria: '目标 100 rpm 时稳态误差 < 5%，超调 < 10%，无持续振荡',
+    pitfalls: ['Kp 一步到位 → 高频抖动', 'Ki 太大 → 低频摆动（积分饱和）'],
+  },
+  {
+    day: 'D10',
+    title: '调参：把现象对回参数',
+    goal: '看到现象就知道该动哪个参数',
+    steps: [
+      '响应慢但稳 → 加 Kp',
+      '有静差 → 加 Ki',
+      '抖动 → 降 Kp 或加 Kd',
+      '低频摆动 → 降 Ki',
+    ],
+    criteria: '能独立把三种异常现象调回稳定',
+    pitfalls: ['三个参数一起改，永远不知道是谁在起作用'],
+  },
+  {
+    day: 'D11–12',
+    title: '四个轮子一起转',
+    goal: '四路独立闭环，一条指令同时生效',
+    steps: ['每路独立 PID 状态', '统一指令包，逐路限幅', '同时给阶跃，看是否互相干扰'],
+    criteria: '四轮同时阶跃，任一轮都不拖累其他三轮',
+    pitfalls: ['共用一个积分变量 → 互相串扰', '总电流超限触发保护'],
+  },
+  {
+    day: 'D13–14',
+    title: '前馈与复盘',
+    goal: '让加减速不塌，并留下可复用的记录',
+    steps: [
+      '加速度前馈：按目标加速度补偿一部分输出',
+      '对比加前馈前后同一条阶跃曲线',
+      '把参数、现象、失败尝试写进记录',
+    ],
+    criteria: '同样阶跃下超调更小、恢复更快，且参数有据可查',
+    pitfalls: ['前馈系数拍脑袋，掩盖了 PID 本身的问题'],
+  },
+]
+
+const parts = [
+  { category: 'actuator', label: '关节电机与电调' },
+  { category: 'controller_low', label: '下位机主控' },
+  { category: 'battery', label: '电池与供电' },
+]
+---
+
+<Base
+  title="电控 14 天路径 · RoboWiki"
+  description="从接线、CAN 收数到四轮闭环的 14 天路径，每天一个动作和一个可验证的完成判据。"
+>
+  <nav class="mb-4 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-ink-3" aria-label="面包屑">
+    <a href={withBase('/')} class="hover:text-brand">首页</a>
+    <span class="text-line-strong" aria-hidden="true">/</span>
+    <a href={withBase('/start.html')} class="hover:text-brand">学习路径</a>
+    <span class="text-line-strong" aria-hidden="true">/</span>
+    <span class="text-ink-2" aria-current="page">电控 14 天</span>
+  </nav>
+
+  <header class="card p-6 sm:p-8">
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="rounded-full border border-line bg-surface-2 px-2.5 py-0.5 text-[11px] text-ink-2">14 天</span>
+      <span class="rounded-full border border-line bg-surface-2 px-2.5 py-0.5 text-[11px] text-ink-2">旧件为主</span>
+      <span class="rounded-full border border-line bg-surface-2 px-2.5 py-0.5 text-[11px] text-ink-2">C 语言即可</span>
+    </div>
+    <h1 class="mt-4 text-2xl font-extrabold tracking-tight text-ink sm:text-[30px]">电控入门：14 天让四个轮子转起来</h1>
+    <p class="mt-2 max-w-2xl text-sm leading-7 text-ink-2">
+      不按“先学理论再动手”排，按“先让它转”排。每天只做一件事，做完对着判据检查一遍再往下走。
+    </p>
+    <p class="mt-3 text-[12px] leading-6 text-ink-3">
+      配套：<a class="text-brand hover:underline" href={withBase('/catalog.html?category=actuator')}>关节电机</a> ·
+      <a class="text-brand hover:underline" href={withBase('/catalog.html?category=controller_low')}>下位机</a> ·
+      <a class="text-brand hover:underline" href={withBase('/catalog.html?category=battery')}>电池</a> ·
+      <a class="text-brand hover:underline" href={withBase('/learn/control-chain.html')}>电控链路怎么搭</a>
+    </p>
+  </header>
+
+  <ol class="mt-6 space-y-3">
+    {stages.map((stage, i) => (
+      <li class="card overflow-hidden">
+        <div class="flex flex-wrap items-center gap-3 border-b border-line bg-surface-2 px-5 py-3">
+          <span class="mono rounded-sm bg-brand-soft px-2 py-0.5 text-[11px] font-semibold text-brand">{stage.day}</span>
+          <h2 class="text-sm font-semibold text-ink">{stage.title}</h2>
+          <span class="mono ml-auto text-[11px] text-ink-3">{String(i + 1).padStart(2, '0')} / {stages.length}</span>
+        </div>
+        <div class="grid gap-4 p-5 lg:grid-cols-[minmax(0,1fr)_300px]">
+          <div>
+            <p class="text-[13px] leading-6 text-ink-2">{stage.goal}</p>
+            <ul class="mt-3 space-y-1.5">
+              {stage.steps.map(step => (
+                <li class="flex gap-2 text-[13px] leading-6 text-ink-2">
+                  <span class="mt-2 h-1 w-1 shrink-0 rounded-full bg-ink-3" aria-hidden="true"></span>
+                  <span>{step}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="space-y-3">
+            <div class="rounded-md border border-success/30 bg-success-soft px-3 py-2.5">
+              <div class="text-[11px] font-semibold text-success">完成判据</div>
+              <p class="mt-1 text-[12px] leading-5 text-ink-2">{stage.criteria}</p>
+            </div>
+            <div class="rounded-md border border-line bg-surface-2 px-3 py-2.5">
+              <div class="text-[11px] font-semibold text-ink-3">常见坑</div>
+              <ul class="mt-1 space-y-1">
+                {stage.pitfalls.map(pit => (
+                  <li class="text-[12px] leading-5 text-ink-3">· {pit}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </li>
+    ))}
+  </ol>
+
+  <section class="mt-6 grid gap-3 sm:grid-cols-3">
+    {parts.map(p => (
+      <a href={withBase(`/catalog.html?category=${p.category}`)} class="card card-hover p-4">
+        <div class="text-[13px] font-semibold text-ink">{p.label}</div>
+        <p class="mt-1 text-[11px] text-ink-3">按参数与来源等级筛选 →</p>
+      </a>
+    ))}
+  </section>
+
+  <p class="mt-6 text-[12px] leading-6 text-ink-3">
+    这条路径只覆盖“让它转”。后续的路径控制、姿态估计与整机联调，见
+    <a class="text-brand hover:underline" href={withBase('/learn/open-source-reading.html')}>开源项目怎么读</a>
+    与方案库里的整机条目。
+  </p>
+</Base>

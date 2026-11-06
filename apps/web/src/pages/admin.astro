@@ -1,6 +1,7 @@
 ---
 import Base from '@/layouts/Base.astro'
 import Breadcrumbs from '@/components/community/Breadcrumbs.astro'
+import IslandFallback from '@/components/community/IslandFallback.astro'
 import AdminConsole from '@/components/admin/admin-console'
 ---
 <Base
@@ -12,12 +13,17 @@ import AdminConsole from '@/components/admin/admin-console'
     { label: '社区', href: '/community.html' },
     { label: '后台' },
   ]} />
-  <div class="mb-4">
-    <p class="text-xs font-semibold uppercase tracking-wider text-blue-700">站务</p>
-    <h1 class="mt-1 text-3xl font-extrabold tracking-tight text-slate-950">后台</h1>
-    <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+
+  <header class="mb-4 max-w-3xl">
+    <p class="text-xs font-semibold uppercase tracking-[0.14em] text-brand">站务</p>
+    <h1 class="mt-1 text-3xl font-extrabold tracking-tight text-ink sm:text-[34px]">后台</h1>
+    <p class="mt-2 text-sm leading-6 text-ink-2">
       审核提案、处置举报、维护数据缺口。每次改动都要写清依据，并进入可追溯的修改记录。
     </p>
+  </header>
+
+  <div class="min-h-[60vh]">
+    <IslandFallback label="正在加载后台…（需要站务权限）" rows={0} />
+    <AdminConsole client:only="react" />
   </div>
-  <AdminConsole client:only="react" />
 </Base>

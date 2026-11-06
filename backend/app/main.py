@@ -18,7 +18,7 @@ from starlette.middleware.sessions import SessionMiddleware
 
 from .api.routes import (admin, auth, bot, catalog, community, export, mcp,
                          materials, media, notifications, protocols, ratings,
-                         reports, semantics, submissions, wiki)
+                         reproductions, reports, semantics, submissions, wiki)
 from .core.config import settings
 from .core.db import (bootstrap_admin, create_tables, ensure_catalog_present,
                       seed_catalog, seed_community, session)
@@ -82,7 +82,7 @@ app.add_middleware(
 
 _ROUTERS = (auth.router, catalog.router, community.router, export.router,
             semantics.router, admin.router, protocols.router, wiki.router,
-            ratings.router, submissions.router, bot.router, materials.router,
+            ratings.router, reproductions.router, submissions.router, bot.router, materials.router,
             reports.router, notifications.router, media.router)
 
 # 规范前缀 /api/v1；/api 只作旧客户端别名，不进入 OpenAPI。

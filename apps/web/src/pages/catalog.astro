@@ -2,12 +2,63 @@
 import Base from '@/layouts/Base.astro'
 import CatalogExplorer from '@/components/CatalogExplorer'
 import { catalog, parts } from '@/lib/catalog'
+import { withBase } from '@/lib/utils'
+
+const tierA = parts.filter(p => p.tier === 'A').length
+
+// 「全流程」是定位里的话，就得敢把还不全的地方摆出来：
+// 按品类统计条目数，低于 5 条的单独列一段，并给投稿入口。
+const countByCategory = parts.reduce((acc, part) => {
+  acc.set(part.category, (acc.get(part.category) || 0) + 1)
+  return acc
+}, new Map<string, number>())
+const thinCategories = (catalog.categories || [])
+  .map(c => ({ id: c.id, name: c.name, count: countByCategory.get(c.id) ?? 0 }))
+  .filter(c => c.count < 5)
+  .sort((a, b) => a.count - b.count)
+const vendors = new Set(parts.map(p => p.vendor).filter(Boolean)).size
+const stats = [
+  { label: '部件', value: catalog.count },
+  { label: 'A 级（逐项核对）', value: tierA },
+  { label: '厂商', value: vendors },
+  { label: '品类', value: catalog.categories?.length ?? 0 },
+]
 ---
 <Base title="部件库 · RoboWiki" description={`${catalog.count} 个机器人硬件部件，按品类、厂商与参数筛选。`}>
-  <div class="mb-5">
-    <p class="text-xs font-semibold uppercase tracking-wider text-blue-700">部件库</p>
-    <h1 class="mt-1 text-3xl font-extrabold tracking-tight text-slate-950">按任务找件，不按广告找件。</h1>
-    <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-500">所有条目来自可核对来源；价格缺就写询价，参数缺就写 —。</p>
-  </div>
+  <header class="mb-6">
+    <nav class="text-xs text-ink-3" aria-label="面包屑">
+      <a href="/" class="hover:text-ink">首页</a>
+      <span class="mx-1.5" aria-hidden="true">/</span>
+      <span class="text-ink-2">部件库</span>
+    </nav>
+
+    <div class="mt-3 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <h1 class="text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">按任务找件，不按广告找件。</h1>
+        <p class="mt-2 max-w-2xl text-sm leading-6 text-ink-3">
+          所有条目来自可核对来源；价格缺就写询价，参数缺就写 null。来源等级 A / B / C 标注在每张卡片上。
+        </p>
+        <div class="mt-3 flex flex-wrap items-center gap-3 text-[13px]">
+          <a href={withBase('/compare.html')} class="font-medium text-brand hover:underline">并排对比 2–4 个部件 →</a>
+          {thinCategories.length > 0 && (
+            <span class="text-ink-3">
+              ·
+              {thinCategories.slice(0, 4).map(c => `${c.name} ${c.count}`).join(' / ')} 条数还很少，欢迎补一条
+            </span>
+          )}
+          <a href={withBase('/open.html')} class="text-ink-2 hover:text-brand">只看带开源仓库的</a>
+        </div>
+      </div>
+      <dl class="grid shrink-0 grid-cols-4 gap-px overflow-hidden rounded-md border border-line bg-line sm:grid-cols-4">
+        {stats.map(s => (
+          <div class="bg-surface px-3 py-2.5">
+            <dt class="text-[11px] text-ink-3">{s.label}</dt>
+            <dd class="mono tabular mt-0.5 text-lg font-bold text-ink">{s.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </header>
+
   <CatalogExplorer client:load parts={parts} categories={catalog.categories || []} />
 </Base>

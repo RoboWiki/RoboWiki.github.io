@@ -5,6 +5,7 @@ page {
   --rw-radius-xs: 4px;
   --rw-radius-sm: 8px;
   --rw-radius-md: 12px;
+  --rw-radius-lg: 16px;
   --rw-radius-full: 999px;
 
   --rw-space-1: 4px;
@@ -14,6 +15,7 @@ page {
   --rw-space-5: 24px;
   --rw-space-6: 32px;
   --rw-space-7: 48px;
+  --rw-space-8: 64px;
 
   --rw-text-xs: 12px;
   --rw-text-sm: 13px;
@@ -23,6 +25,7 @@ page {
   --rw-text-xl: 20px;
   --rw-text-2xl: 24px;
   --rw-text-3xl: 30px;
+  --rw-text-4xl: 38px;
 
   --rw-control-sm: 32px;
   --rw-control-md: 36px;
@@ -32,13 +35,86 @@ page {
   --rw-dur-base: 180ms;
   --rw-dur-slow: 240ms;
 
+  /* ── 语义色：浅色 ─────────────────────────────────────────────── */
   --rw-primary: #2563eb;
+  --rw-primary-hover: #1d4ed8;
+  --rw-primary-soft: #eff5ff;
   --rw-primary-foreground: #ffffff;
+
   --rw-success: #15803d;
+  --rw-success-soft: #ecfdf3;
   --rw-warning: #b45309;
-  --rw-danger: #b91c1c;
-  --rw-muted: #64748b;
-  --rw-border: #e2e8f0;
+  --rw-warning-soft: #fffaeb;
+  --rw-danger: #b42318;
+  --rw-danger-soft: #fef3f2;
+
+  --rw-bg: #f5f7fa;
   --rw-surface: #ffffff;
-  --rw-bg: #f7f8fb;
+  --rw-surface-2: #f8fafc;
+  --rw-surface-3: #f1f4f8;
+  --rw-border: #e3e8ef;
+  --rw-border-strong: #cdd5df;
+
+  --rw-ink: #0b1220;
+  --rw-ink-2: #475467;
+  --rw-ink-3: #667085;
+  --rw-ink-inverse: #ffffff;
+
+  --rw-muted: var(--rw-ink-3);
+
+  /* 分层骨架色：机械 / 电气 / 算法 / 系统 */
+  --rw-layer-mech: #7c3aed;
+  --rw-layer-elec: #0e7490;
+  --rw-layer-algo: #b45309;
+  --rw-layer-sys: #1d4ed8;
+
+  --rw-shadow-xs: 0 1px 2px rgb(16 24 40 / 0.05);
+  --rw-shadow-sm: 0 1px 3px rgb(16 24 40 / 0.08), 0 1px 2px rgb(16 24 40 / 0.04);
+  --rw-shadow-md: 0 8px 24px -12px rgb(16 24 40 / 0.18);
+  --rw-shadow-lg: 0 24px 48px -24px rgb(16 24 40 / 0.28);
+
+  --rw-font-sans: "Inter", "Noto Sans SC", ui-sans-serif, system-ui, sans-serif;
+  --rw-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  color-scheme: light;
+}
+
+/* ── 语义色：深色 ───────────────────────────────────────────────── */
+.dark,
+page.dark {
+  --rw-primary: #4f8cff;
+  --rw-primary-hover: #6ba0ff;
+  --rw-primary-soft: #16233d;
+  --rw-primary-foreground: #06101f;
+
+  --rw-success: #3ccb7f;
+  --rw-success-soft: #0f2a1d;
+  --rw-warning: #f0b429;
+  --rw-warning-soft: #2b2109;
+  --rw-danger: #f97066;
+  --rw-danger-soft: #2d1414;
+
+  --rw-bg: #0a0f18;
+  --rw-surface: #121826;
+  --rw-surface-2: #161d2c;
+  --rw-surface-3: #1b2436;
+  --rw-border: #242e42;
+  --rw-border-strong: #33405a;
+
+  --rw-ink: #e8edf6;
+  --rw-ink-2: #a9b4c7;
+  --rw-ink-3: #7d8a9f;
+  --rw-ink-inverse: #0a0f18;
+
+  --rw-layer-mech: #a78bfa;
+  --rw-layer-elec: #22d3ee;
+  --rw-layer-algo: #f0b429;
+  --rw-layer-sys: #6ba0ff;
+
+  --rw-shadow-xs: 0 1px 2px rgb(0 0 0 / 0.4);
+  --rw-shadow-sm: 0 1px 3px rgb(0 0 0 / 0.5);
+  --rw-shadow-md: 0 8px 24px -12px rgb(0 0 0 / 0.6);
+  --rw-shadow-lg: 0 24px 48px -24px rgb(0 0 0 / 0.7);
+
+  color-scheme: dark;
 }

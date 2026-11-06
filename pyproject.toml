@@ -1,7 +1,7 @@
 [project]
 name = "robowiki"
 version = "0.1.0"
-description = "机器人开发的开放资料底稿：可核对的参数、可追溯的来源、真实使用者的经验"
+description = "面向机器人制作全流程的可追溯工程知识库：四层能力骨架 + 社区共建的部件选型、加工采购、教程案例与开源索引"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "GPL-3.0-only" }
@@ -33,6 +33,11 @@ Issues = "https://github.com/RoboWiki/RoboWiki.github.io/issues"
 
 [project.scripts]
 robowiki = "pipeline.__main__:main"
+
+[tool.setuptools]
+# 只打包 pipeline；apps/backend/clients 是各自独立的运行时，不是 Python 包。
+# 不显式声明时 setuptools 的 flat-layout 自动发现会因多个顶层目录而构建失败。
+packages = ["pipeline"]
 
 [tool.pytest.ini_options]
 # 两条测试线：pipeline（构建链）与 backend（API）。

@@ -106,15 +106,15 @@ function QueryFail({ what, error, onRetry, loading }: {
 }
 
 function DiffList({ preview }: { preview?: Preview[] }) {
-  if (!preview?.length) return <span className="text-slate-400">—</span>
+  if (!preview?.length) return <span className="text-ink-3">—</span>
   return (
     <div className="space-y-1">
       {preview.map(p => (
         <div key={p.field} className="text-[11.5px] leading-5">
-          <code className="text-[11px] text-sky-700">{p.field}</code>
-          <span className="mx-1.5 text-slate-500">{fmt(p.old_value)}</span>
-          <span className="text-slate-400">→</span>
-          <span className="ml-1.5 font-medium text-blue-600">{fmt(p.new_value)}</span>
+          <code className="text-[11px] text-brand">{p.field}</code>
+          <span className="mx-1.5 text-ink-3">{fmt(p.old_value)}</span>
+          <span className="text-ink-3">→</span>
+          <span className="ml-1.5 font-medium text-brand">{fmt(p.new_value)}</span>
         </div>
       ))}
     </div>
@@ -125,16 +125,16 @@ function DiffList({ preview }: { preview?: Preview[] }) {
 function Evidence({ sub }: { sub: Sub }) {
   const src = sub.evidence?.source_url
   return (
-    <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
-      <div className="mb-1.5 text-[10.5px] uppercase tracking-wider text-slate-400">
+    <div className="rounded-lg border border-line bg-surface-2 p-3">
+      <div className="mb-1.5 text-[10.5px] uppercase tracking-wider text-ink-3">
         服务端生成的变更预览（旧值 → 新值）
       </div>
       <DiffList preview={sub.evidence?.preview} />
-      <div className="mt-2 space-y-1 border-t border-slate-200 pt-2 text-[11.5px] text-slate-600">
+      <div className="mt-2 space-y-1 border-t border-line pt-2 text-[11.5px] text-ink-2">
         <div className="break-words">依据：{sub.evidence?.note || '—'}</div>
         <div className="break-all">
           来源：{isUrl(src)
-            ? <a href={src} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">
+            ? <a href={src} target="_blank" rel="noreferrer" className="text-brand hover:underline">
               {src} ↗
             </a>
             : (src || '—')}
@@ -151,21 +151,21 @@ function ReviewList({ reviews }: { reviews: Review[] }) {
   return (
     <div className="space-y-2">
       {reviews.map(r => (
-        <div key={r.id} className="rounded-lg border border-slate-200 p-2.5">
+        <div key={r.id} className="rounded-lg border border-line p-2.5">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11.5px]">
             <Tag color={r.decision === 'accepted' ? 'blue' : 'red'} style={{ marginInlineEnd: 0 }}>
               {r.decision === 'accepted' ? '通过' : '驳回'}
             </Tag>
-            <span className="text-slate-600">
+            <span className="text-ink-2">
               理由：{REASON_LABEL[r.reason_code] || r.reason_code || '—'}
             </span>
-            <span className="ml-auto text-slate-400">
+            <span className="ml-auto text-ink-3">
               {when(r.created_at)} · 审核人 #{r.reviewer_id ?? '?'}
             </span>
           </div>
           {r.note
-            ? <div className="mt-1 whitespace-pre-wrap text-[12px] text-slate-700">{r.note}</div>
-            : <div className="mt-1 text-[11.5px] text-slate-400">未写补充说明</div>}
+            ? <div className="mt-1 whitespace-pre-wrap text-[12px] text-ink-2">{r.note}</div>
+            : <div className="mt-1 text-[11.5px] text-ink-3">未写补充说明</div>}
         </div>
       ))}
     </div>
@@ -263,11 +263,11 @@ function ReviewModal({ sub, decision, onClose }: {
 
         {!!sub.reviews?.length && (
           <div>
-            <div className="mb-1.5 text-[10.5px] uppercase tracking-wider text-slate-400">历史审核</div>
+            <div className="mb-1.5 text-[10.5px] uppercase tracking-wider text-ink-3">历史审核</div>
             <ReviewList reviews={sub.reviews} />
           </div>
         )}
-        <div className="text-[11px] text-slate-400">
+        <div className="text-[11px] text-ink-3">
           通过只进入发布队列：worker 生成变更并随 release 发布后，目录才更新。
         </div>
       </div>
@@ -308,10 +308,10 @@ function DetailModal({ id, onClose }: { id: number; onClose: () => void }) {
                       {(STATUS[sub.status] || { label: sub.status }).label}
                     </Tag>
                     {rejected && (
-                      <div className="mt-1 break-words text-[11.5px] text-red-600">
+                      <div className="mt-1 break-words text-[11.5px] text-danger">
                         {REASON_LABEL[rejected.reason_code] || rejected.reason_code}
                         {rejected.note ? `：${rejected.note}` : ''}
-                        <span className="ml-1 text-slate-400">
+                        <span className="ml-1 text-ink-3">
                           （审核人 #{rejected.reviewer_id ?? '?'} · {when(rejected.created_at)}）
                         </span>
                       </div>
@@ -328,23 +328,23 @@ function DetailModal({ id, onClose }: { id: number; onClose: () => void }) {
           />
 
           <div>
-            <div className="mb-1.5 text-[10.5px] uppercase tracking-wider text-slate-400">
+            <div className="mb-1.5 text-[10.5px] uppercase tracking-wider text-ink-3">
               提案写入的值（payload）
             </div>
-            <div className="rounded-lg border border-slate-200">
+            <div className="rounded-lg border border-line">
               {Object.entries(sub.payload || {}).map(([k, v], i) => (
                 <div key={k}
                   className={`flex items-start justify-between gap-3 px-2.5 py-1.5 text-[12px]
-                    ${i ? 'border-t border-slate-100' : ''}`}>
+                    ${i ? 'border-t border-line' : ''}`}>
                   <span className="min-w-0 break-all">
-                    <span className="text-slate-700">{fieldLabel(k)}</span>
-                    <code className="ml-1.5 text-[11px] text-sky-700">{k}</code>
+                    <span className="text-ink-2">{fieldLabel(k)}</span>
+                    <code className="ml-1.5 text-[11px] text-brand">{k}</code>
                   </span>
-                  <span className="min-w-0 max-w-[65%] break-all text-right text-slate-800">{fmtValue(v)}</span>
+                  <span className="min-w-0 max-w-[65%] break-all text-right text-ink-2">{fmtValue(v)}</span>
                 </div>
               ))}
               {!Object.keys(sub.payload || {}).length && (
-                <div className="px-2.5 py-2 text-[12px] text-slate-400">没有字段</div>
+                <div className="px-2.5 py-2 text-[12px] text-ink-3">没有字段</div>
               )}
             </div>
           </div>
@@ -352,7 +352,7 @@ function DetailModal({ id, onClose }: { id: number; onClose: () => void }) {
           <Evidence sub={sub} />
 
           <div>
-            <div className="mb-1.5 text-[10.5px] uppercase tracking-wider text-slate-400">
+            <div className="mb-1.5 text-[10.5px] uppercase tracking-wider text-ink-3">
               审核记录（{sub.reviews?.length ?? 0}）
             </div>
             <ReviewList reviews={sub.reviews || []} />
@@ -401,8 +401,8 @@ export default function SubmissionsPanel({ active }: { active: boolean }) {
     <div className="w-full min-w-0">
       <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
         <div className="min-w-0">
-          <h2 className="m-0 text-[18px] font-bold text-slate-900">目录变更提案</h2>
-          <p className="m-0 mt-1 text-[12.5px] text-slate-500">
+          <h2 className="m-0 text-[18px] font-bold text-ink">目录变更提案</h2>
+          <p className="m-0 mt-1 text-[12.5px] text-ink-3">
             通过后只进入 outbox；目录要等 worker 生成 PR 并发布 release 才更新。
           </p>
         </div>
@@ -442,10 +442,10 @@ export default function SubmissionsPanel({ active }: { active: boolean }) {
               title: '目标 / 字段', width: 200,
               render: (_v, r) => (
                 <div className="min-w-0">
-                  <div className="break-all text-[12.5px] font-medium text-slate-800">
+                  <div className="break-all text-[12.5px] font-medium text-ink-2">
                     {r.target_id || '—'}
                   </div>
-                  <div className="break-all text-[11px] text-sky-700">
+                  <div className="break-all text-[11px] text-brand">
                     {Object.keys(r.payload || {}).join(', ') || '—'}
                   </div>
                 </div>
@@ -459,9 +459,9 @@ export default function SubmissionsPanel({ active }: { active: boolean }) {
               title: '依据', width: 220,
               render: (_v, r) => (
                 <div className="text-[11.5px]">
-                  <div className="line-clamp-2 text-slate-600">{r.evidence?.note || '—'}</div>
+                  <div className="line-clamp-2 text-ink-2">{r.evidence?.note || '—'}</div>
                   {isUrl(r.evidence?.source_url) && (
-                    <a className="text-blue-600 hover:underline" href={r.evidence.source_url}
+                    <a className="text-brand hover:underline" href={r.evidence.source_url}
                       target="_blank" rel="noreferrer">来源 ↗</a>
                   )}
                 </div>
@@ -477,7 +477,7 @@ export default function SubmissionsPanel({ active }: { active: boolean }) {
                     <Tag color={s.color} style={{ marginInlineEnd: 0 }}>{s.label}</Tag>
                     {rej && (
                       <Tooltip title={rej.note || REASON_LABEL[rej.reason_code] || rej.reason_code}>
-                        <div className="mt-1 line-clamp-2 text-[11px] text-red-600">
+                        <div className="mt-1 line-clamp-2 text-[11px] text-danger">
                           {REASON_LABEL[rej.reason_code] || rej.reason_code || '驳回'}
                           {rej.note ? `：${rej.note}` : ''}
                         </div>
@@ -490,7 +490,7 @@ export default function SubmissionsPanel({ active }: { active: boolean }) {
             {
               title: '提交', width: 110,
               render: (_v, r) => (
-                <div className="text-[11.5px] text-slate-500">
+                <div className="text-[11.5px] text-ink-3">
                   #{r.submitter_id ?? '?'}<br />{when(r.created_at)}
                 </div>
               ),
@@ -522,10 +522,10 @@ export default function SubmissionsPanel({ active }: { active: boolean }) {
 
       <div className="mt-8">
         <div className="mb-2 flex flex-wrap items-baseline justify-between gap-1">
-          <h2 className="m-0 text-[16px] font-bold text-slate-900">
+          <h2 className="m-0 text-[16px] font-bold text-ink">
             发布队列{runningCount > 0 ? `（进行中 ${runningCount}）` : ''}
           </h2>
-          <span className="text-[11.5px] text-slate-400">失败会自动退避重试；也可以手动重排</span>
+          <span className="text-[11.5px] text-ink-3">失败会自动退避重试；也可以手动重排</span>
         </div>
         {outbox.isError ? (
           <QueryFail what="发布队列" error={outbox.error}
@@ -557,10 +557,10 @@ export default function SubmissionsPanel({ active }: { active: boolean }) {
               {
                 title: '结果 / 错误',
                 render: (_v, r) => r.result?.pr_url
-                  ? <a href={r.result.pr_url} target="_blank" rel="noreferrer" className="text-blue-600">PR ↗</a>
+                  ? <a href={r.result.pr_url} target="_blank" rel="noreferrer" className="text-brand">PR ↗</a>
                   : r.result?.file
                     ? <code className="break-all text-[11px]">{r.result.file}</code>
-                    : <span className="break-all text-[11.5px] text-slate-500">
+                    : <span className="break-all text-[11.5px] text-ink-3">
                       {r.last_error || (r.result?.reason ?? '—')}
                     </span>,
               },
@@ -571,7 +571,7 @@ export default function SubmissionsPanel({ active }: { active: boolean }) {
                     loading={retry.isPending && retry.variables === r.id}
                     disabled={retry.isPending && retry.variables !== r.id}
                     onClick={() => retry.mutate(r.id)}>重试</Button>
-                  : <span className="text-slate-300">—</span>,
+                  : <span className="text-ink-3">—</span>,
               },
             ]}
             scroll={{ x: 720 }}

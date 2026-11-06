@@ -168,3 +168,52 @@ def test_invalid_action_is_rejected(client):
     rid = report(client, "post", pid).json()["id"]
     assert client.patch(f"/api/admin/reports/{rid}", headers=auth(client), json={
         "action": "delete-everything", "note": "测试非法动作"}).status_code == 422
+
+
+# ── 处置动作的权限与留痕 ────────────────────────────────────────────────────
+def test_resolve_requires_staff_and_a_note(client):
+    """举报人不能自己处置自己的举报；note 必须写清楚，否则队列里只剩一个状态。"""
+    pid = make_post(client, "处置权限测试")
+    rid = report(client, "post", pid).json()["id"]
+    staff = auth(client)
+
+    assert client.patch(f"/api/admin/reports/{rid}",
+                        headers=auth(client, "demo1"), json={
+                            "action": "dismiss", "note": "我是举报人"}).status_code == 403
+    assert client.patch(f"/api/admin/reports/{rid}", json={
+        "action": "dismiss", "note": "未登录"}).status_code == 401
+    # note 至少 2 个字的约束在 schema 层
+    assert client.patch(f"/api/admin/reports/{rid}", headers=staff, json={
+        "action": "dismiss", "note": "x"}).status_code == 422
+    assert client.patch("/api/admin/reports/999999", headers=staff, json={
+        "action": "dismiss", "note": "举报不存在"}).status_code == 404
+
+    # 以上全部被拒：举报状态必须还是 open，内容也没被隐藏
+    rows = client.get("/api/admin/reports", headers=staff).json()["items"]
+    assert next(r for r in rows if r["id"] == rid)["status"] == "open"
+    assert client.get(f"/api/posts/{pid}").status_code == 200
+
+
+def test_resolving_report_on_deleted_target_is_404(client):
+    """目标被硬删后，举报行还在队列里；处置必须给出 404 而不是 500。"""
+    from app.core.db import session
+    from app.models import Post
+
+    pid = make_post(client, "目标被删除的举报")
+    rid = report(client, "post", pid).json()["id"]
+
+    db = session()
+    try:
+        row = db.get(Post, pid)
+        assert row is not None
+        db.delete(row)
+        db.commit()
+    finally:
+        db.close()
+
+    r = client.patch(f"/api/admin/reports/{rid}", headers=auth(client), json={
+        "action": "hide", "note": "目标已删除"})
+    assert r.status_code == 404, r.text
+    # 举报本身没有被误标成 resolved
+    rows = client.get("/api/admin/reports", headers=auth(client)).json()["items"]
+    assert next(x for x in rows if x["id"] == rid)["status"] == "open"

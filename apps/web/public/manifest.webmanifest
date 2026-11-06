@@ -1,7 +1,7 @@
 {
   "name": "RoboWiki",
   "short_name": "RoboWiki",
-  "description": "机器人硬件选型底稿：参数、来源与真实使用经验。",
+  "description": "面向机器人制作全流程的可追溯工程知识库：部件选型、加工采购、教程案例与开源索引。",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

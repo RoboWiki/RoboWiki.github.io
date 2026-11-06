@@ -1,6 +1,7 @@
 ---
 import Base from '@/layouts/Base.astro'
 import Breadcrumbs from '@/components/community/Breadcrumbs.astro'
+import IslandFallback from '@/components/community/IslandFallback.astro'
 import LeaderboardIsland from '@/components/community/leaderboard'
 ---
 <Base
@@ -12,13 +13,17 @@ import LeaderboardIsland from '@/components/community/leaderboard'
     { label: '社区', href: '/community.html' },
     { label: '贡献榜' },
   ]} />
-  <div class="mb-4">
-    <p class="text-xs font-semibold uppercase tracking-wider text-blue-700">社区</p>
-    <h1 class="mt-1 text-3xl font-extrabold tracking-tight text-slate-950">贡献榜</h1>
-    <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+
+  <header class="mb-4 max-w-3xl">
+    <p class="text-xs font-semibold uppercase tracking-[0.14em] text-brand">社区</p>
+    <h1 class="mt-1 text-3xl font-extrabold tracking-tight text-ink sm:text-[34px]">贡献榜</h1>
+    <p class="mt-2 text-sm leading-6 text-ink-2">
       按声望排序（收到的赞之和）。写实测、回答问题都会涨。
     </p>
-  </div>
-  <LeaderboardIsland client:only="react" />
-</Base>
+  </header>
 
+  <div class="min-h-[60vh]">
+    <IslandFallback label="正在加载贡献榜…" rows={3} />
+    <LeaderboardIsland client:only="react" />
+  </div>
+</Base>
