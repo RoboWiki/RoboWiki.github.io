@@ -15,6 +15,7 @@ type Props = { parts: CatalogPart[]; categories: CategoryMeta[] }
 
 const PAGE = 24
 const INTERACTIVE_HOME = '/community.html'
+const DEFAULT_SORT = 'effective_price:asc'
 
 function PartRating({ rating }: { rating?: CatalogPart['rating'] }) {
   const count = Number(rating?.count) || 0
@@ -41,6 +42,20 @@ function hasOffer(p: CatalogPart) {
   })
 }
 
+function effectivePrice(p: CatalogPart): number | null {
+  const today = new Date().toISOString().slice(0, 10)
+  const prices = (p.offers ?? [])
+    .filter(o => {
+      const offer = o as { demo?: boolean; expires?: string | null; price?: unknown }
+      return !offer.demo && (!offer.expires || offer.expires >= today)
+        && offer.price !== null && offer.price !== undefined
+        && Number.isFinite(Number(offer.price))
+    })
+    .map(o => Number((o as { price?: unknown }).price))
+  if (typeof p.price === 'number' && Number.isFinite(p.price)) prices.push(p.price)
+  return prices.length ? Math.min(...prices) : null
+}
+
 function TierBadge({ tier }: { tier?: string }) {
   if (!tier) return null
   const cls = tier === 'A' ? 'tier tier-a' : tier === 'B' ? 'tier tier-b' : 'tier tier-c'
@@ -54,7 +69,7 @@ export default function CatalogExplorer({ parts, categories }: Props) {
   const [openOnly, setOpenOnly] = useState(false)
   const [offerOnly, setOfferOnly] = useState(false)
   const [vendor, setVendor] = useState('')
-  const [sort, setSort] = useState('')
+  const [sort, setSort] = useState(DEFAULT_SORT)
   // 对比托盘：最多 4 个，落 localStorage，跨页面（部件库 → 对比页）复用
   const [picked, setPicked] = useState<string[]>([])
   const [limit, setLimit] = useState(PAGE)
@@ -112,10 +127,11 @@ export default function CatalogExplorer({ parts, categories }: Props) {
   const sortOptions = useMemo(() => {
     const keySorts = (catMeta?.sorts || []).filter(item => !['price', 'rating'].includes(item.k))
     return [
+      { value: DEFAULT_SORT, label: '优惠价 / 价格从低到高（默认）' },
       { value: '', label: '综合排序' },
       ...keySorts.map(item => ({ value: `${item.k}:desc`, label: `${item.label} 从高到低` })),
-      { value: 'price:asc', label: '价格从低到高' },
-      { value: 'price:desc', label: '价格从高到低' },
+      { value: 'price:asc', label: '普通参考价从低到高' },
+      { value: 'price:desc', label: '普通参考价从高到低' },
       { value: 'rating:desc', label: '评分从高到低' },
     ]
   }, [catMeta])
@@ -131,6 +147,7 @@ export default function CatalogExplorer({ parts, categories }: Props) {
   }, [vendorBase])
 
   const sortValue = (p: CatalogPart, key: string): number | string | null => {
+    if (key === 'effective_price') return effectivePrice(p)
     if (key === 'price') return typeof p.price === 'number' ? p.price : null
     if (key === 'rating') return typeof p.rating?.avg === 'number' ? p.rating.avg : null
     const raw = (p.specs as Record<string, unknown> | undefined)?.[key] ?? (p as unknown as Record<string, unknown>)[key]
@@ -156,10 +173,21 @@ export default function CatalogExplorer({ parts, categories }: Props) {
       list = [...list].sort((a, b) => {
         const av = sortValue(a, key)
         const bv = sortValue(b, key)
-        if (av === null && bv === null) return 0
+        if (av === null && bv === null) {
+          const ra = Number(a.rating?.avg ?? -1)
+          const rb = Number(b.rating?.avg ?? -1)
+          return rb - ra || a.model.localeCompare(b.model, 'zh-CN')
+        }
         if (av === null) return 1
         if (bv === null) return -1
-        if (typeof av === 'number' && typeof bv === 'number') return (av - bv) * sign
+        if (typeof av === 'number' && typeof bv === 'number') {
+          if (av === bv) {
+            const ra = Number(a.rating?.avg ?? -1)
+            const rb = Number(b.rating?.avg ?? -1)
+            return rb - ra || a.model.localeCompare(b.model, 'zh-CN')
+          }
+          return (av - bv) * sign
+        }
         return String(av).localeCompare(String(bv), 'zh-CN') * sign
       })
     }
@@ -190,7 +218,7 @@ export default function CatalogExplorer({ parts, categories }: Props) {
 
   const shown = filtered.slice(0, limit)
   const needle = q.trim()
-  const hasFilter = Boolean(cat || needle || tier || openOnly || offerOnly || vendor || sort)
+  const hasFilter = Boolean(cat || needle || tier || openOnly || offerOnly || vendor || (sort && sort !== DEFAULT_SORT))
 
   const selectCategory = (next: string) => {
     setCat(next)
@@ -220,7 +248,7 @@ export default function CatalogExplorer({ parts, categories }: Props) {
     setOpenOnly(false)
     setOfferOnly(false)
     setVendor('')
-    setSort('')
+    setSort(DEFAULT_SORT)
     selectCategory('')
   }
 
