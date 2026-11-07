@@ -183,11 +183,11 @@ export const LAYERS: Layer[] = [
     tagline: '固件、总线与实时性',
     desc: '把主控、驱动器、总线与固件放在一条时间线上，算清周期、带宽与实时性预算。',
     role: 'layer',
-    categories: ['controller_low'],
+    categories: ['controller_low', 'motor_driver'],
     guides: ['control-chain'],
     questions: ['控制周期与实时性够不够？', '总线带宽与节点数上限是多少？', '固件、驱动与工具链是否成熟？'],
     tone: 'text-layer-emb',
-    hint: '下位机、电调与固件 / 总线',
+    hint: '下位机、电机驱动板、电调与固件 / 总线',
   },
   {
     id: 'algorithm',

@@ -365,6 +365,16 @@ def generic_table(items: list[dict], cat: str, href: dict[str, str] | None = Non
                     f"| {num(s.get('current_loop_khz'))} | {num(s.get('voltage_max_V'))} "
                     f"| {_price_cell(p.get('price_cny'))} "
                     f"| {tier_badge(p['source_tier'], p['verified'])} |")
+    elif cat == "motor_driver":
+        head = ("| 型号 | MCU | FOC 轴数 | CAN | 供电/最高 V | 价格 ¥ | 来源 |"
+                "|---|---|---|---|---|---|---|")
+        def row(p):
+            s = p["specs"]
+            return (f"| {mdl(p, (href or {}).get(p['id']))} | {s.get('mcu') or '—'} | {s.get('foc_axes') or '—'} "
+                    f"| {(str(s.get('can') or '—')) + (' FD' if s.get('canfd') else '')} "
+                    f"| {s.get('voltage_in_V') or '—'} / {num(s.get('voltage_max_V'))} "
+                    f"| {_price_cell(p.get('price_cny'))} "
+                    f"| {tier_badge(p['source_tier'], p['verified'])} |")
     elif cat == "remote_controller":
         head = ("| 型号 | 子类 | 通道 | 频段 GHz | 遥控距离 m | 输出协议 | 价格 ¥ | 来源 |\n"
                 "|---|---|---|---|---|---|---|---|")

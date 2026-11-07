@@ -125,6 +125,8 @@ _FACTS: dict[str, list[tuple[str, str, str]]] = {
                         ("内存", "ram_gb", " GB"), ("功耗", "power_max_w", " W")],
     "controller_low": [("MCU", "mcu", ""), ("CAN", "can", ""),
                        ("电压", "voltage_in_V", " V")],
+    "motor_driver": [("MCU", "mcu", ""), ("CAN", "can", ""),
+                      ("最高电压", "voltage_max_V", " V")],
     "imu": [("陀螺", "gyro_range_dps", " °/s"), ("接口", "iface", ""),
             ("噪声", "noise", "")],
     "camera": [("深度", "depth_range_m", " m"), ("视场", "fov", ""),

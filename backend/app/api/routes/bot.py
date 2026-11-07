@@ -36,6 +36,9 @@ _FACTS: dict[str, list[tuple[str, str]]] = {
     "controller_low": [
         ("mcu", "{}"), ("can", "CAN {}"), ("io", "{}"), ("voltage_in_V", "{} V"),
     ],
+    "motor_driver": [
+        ("mcu", "{}"), ("can", "CAN {}"), ("voltage_in_V", "{} V"),
+    ],
     "imu": [("gyro_range_dps", "陀螺 {} °/s"), ("iface", "{}"), ("noise", "{}")],
     "camera": [("depth_range_m", "{} m"), ("fov", "{}"), ("fps", "{} fps")],
     "lidar": [("range_m", "{} m"), ("fov", "{}"), ("points_per_s", "{} pts/s")],

@@ -14,7 +14,7 @@ description: 第一次做机器人要做的五件事：认词、读参数、算�
 它不是课程，也不卖零件：不教你怎么写第一行代码，也不替你下单。**它最大的用处是让你少买错一个件** ——
 一个买错的关节电机，比读十篇文章贵得多。
 
-30 秒确认规模：343 个部件、21 台整机、22 个软件、208 家加工与元件渠道。
+30 秒确认规模：236 个部件、16 台整机、22 个软件、208 家加工与元件渠道。
 
 ---
 
@@ -25,11 +25,11 @@ description: 第一次做机器人要做的五件事：认词、读参数、算�
 | 组成 | 干什么 | 第一次做要注意 | 本站入口 |
 |---|---|---|---|
 | 结构件与传动 | 机身、腿、同步带、减速箱 | 3D 打印能覆盖小尺寸件；承力的件才上 CNC | [渠道库](/suppliers.html) 找加工 |
-| 执行器（关节） | 把电变成扭矩 | 先分清「电机」和「集成驱动的关节模组」 | [关节电机 88](/catalog.html?category=actuator) · [舵机 4](/catalog.html?category=servo) |
+| 执行器（关节） | 把电变成扭矩 | 先分清「电机」和「集成驱动的关节模组」 | [关节电机 67](/catalog.html?category=actuator) · [舵机 4](/catalog.html?category=servo) |
 | 驱动与总线 | 把指令变成电流，把十几个关节串起来 | 12 个关节挂一路经典 CAN，1 kHz 下带宽不够 | [电调 3](/catalog.html?category=esc) · [电控链路怎么搭](/learn/control-chain.html) |
-| 主控与算力 | 跑控制环、跑策略、跑视觉 | 先想清算力跑在哪一环，「先买块 Jetson」常常用不上 | [下位机 3](/catalog.html?category=controller_low) · [上位机 9](/catalog.html?category=controller_high) |
-| 传感器 | 知道自己在哪、踩没踩到地 | 一项任务加一个就够，别堆 | [IMU 27](/catalog.html?category=imu) · [深度相机 9](/catalog.html?category=camera) · [激光雷达 13](/catalog.html?category=lidar) |
-| 电源与连接 | 供电、接线、别烧 | 全机电压平台要一致；连接器载流看标称电流 | [电池 2](/catalog.html?category=battery) · [连接器 23](/catalog.html?category=connector) |
+| 主控与算力 | 跑控制环、跑策略、跑视觉 | 先想清算力跑在哪一环，「先买块 Jetson」常常用不上 | [下位机 7](/catalog.html?category=controller_low) · [上位机 10](/catalog.html?category=controller_high) |
+| 传感器 | 知道自己在哪、踩没踩到地 | 一项任务加一个就够，别堆 | [IMU 14](/catalog.html?category=imu) · [深度相机 9](/catalog.html?category=camera) · [激光雷达 13](/catalog.html?category=lidar) |
+| 电源与连接 | 供电、接线、别烧 | 全机电压平台要一致；连接器载流看标称电流 | [电池 4](/catalog.html?category=battery) · [连接器 23](/catalog.html?category=connector) |
 | 软件 | 仿真、训练、部署 | 先看许可（GPL 进产品要开源），再看硬件门槛 | [软件库](/software.html) |
 
 > 这里没有独立的「结构件库」：结构件的可信参数依赖具体 BOM，本站宁可空着，也不拿典型值充数。
@@ -213,6 +213,17 @@ description: 第一次做机器人要做的五件事：认词、读参数、算�
 | [第一次做整机选型：先算什么，后算什么](/learn/selection-order.html) | 从任务倒推构型 → 自由度 → 扭矩 → 算力 → 传感器 | 入门 | 15 分钟 |
 | [电控链路怎么搭：总线、驱动器与频率预算](/learn/control-chain.html) | CAN 挂 12 个关节够不够？带宽、周期、ODR 一起算 | 进阶 | 18 分钟 |
 | [开源机器人项目怎么读：从 URDF 到训练配置](/learn/open-source-reading.html) | 看四样东西判断一个仓库能不能复现 | 进阶 | 14 分钟 |
+
+## 机械必读文档（4 份）
+
+这四份是哈工大竞技机器人队与加工厂的一手资料，建议机械组在画第一版总装前至少读完传动、结构逻辑和轻量化三份；加工指南在第一次送 CNC 前看。
+
+| 文档 | 解决什么问题 | 页数 | 原文件 |
+|---|---|---|---|
+| [传动机构简述](/learn/mechanical-transmission.html) | 齿轮、带、链、丝杠怎么选；模数、根切、变位与传动布置 | 40 | [PDF](/docs/mechanical/mechanical-transmission.pdf) |
+| [结构设计的思维逻辑](/learn/structural-design-logic.html) | 从需求倒推结构，用逻辑链和取舍控制复杂度 | 9 | [PDF](/docs/mechanical/structural-design-logic.pdf) |
+| [轻量化设计指南](/learn/lightweight-design.html) | 先砍结构、再减材料；标准板厚与板件减重 | 14 | [PDF](/docs/mechanical/lightweight-design.pdf) |
+| [铨洲 CNC 活动打样指南](/learn/machining-guide.html) | 6061 板厚、螺纹孔、倒角与 STEP 文件规则 | 9 | [PDF](/docs/mechanical/machining-guide.pdf) |
 
 **要打比赛**，这些材料和上面不是一回事 —— 那是别人写的一手训练材料（加工、传动、结构、
 项目管理、电控入门），在 [实战资料](/competitions.html)。

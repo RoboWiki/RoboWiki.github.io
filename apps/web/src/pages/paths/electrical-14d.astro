@@ -110,6 +110,7 @@ const stages = [
 const parts = [
   { category: 'actuator', label: '关节电机与电调' },
   { category: 'controller_low', label: '下位机主控' },
+  { category: 'motor_driver', label: '电机驱动板' },
   { category: 'battery', label: '电池与供电' },
 ]
 ---
@@ -139,6 +140,7 @@ const parts = [
     <p class="mt-3 text-[12px] leading-6 text-ink-3">
       配套：<a class="text-brand hover:underline" href={withBase('/catalog.html?category=actuator')}>关节电机</a> ·
       <a class="text-brand hover:underline" href={withBase('/catalog.html?category=controller_low')}>下位机</a> ·
+      <a class="text-brand hover:underline" href={withBase('/catalog.html?category=motor_driver')}>电机驱动板</a> ·
       <a class="text-brand hover:underline" href={withBase('/catalog.html?category=battery')}>电池</a> ·
       <a class="text-brand hover:underline" href={withBase('/learn/control-chain.html')}>电控链路怎么搭</a>
     </p>
