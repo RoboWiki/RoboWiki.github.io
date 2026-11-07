@@ -54,6 +54,7 @@ const urdfs = list(robot.specs.urdf_urls)
 const artifacts = robot.artifacts ?? {}
 const eco = robot.ecosystem ?? null
 const ecoProjects = (eco?.projects ?? []).filter(p => p && p.url)
+// 只展示可点开的公开链接；本地克隆的文件数不代表项目质量，已从数据中移除。
 const ECO_ROLE_ORDER = ['官方项目', '官方描述/资产', '官方 SDK', '仿真', '训练', '部署', '导航', '控制/MPC', '工具/资料']
 const ecoGroups = ECO_ROLE_ORDER
   .map(role => ({ role, items: ecoProjects.filter(p => p.role === role) }))
