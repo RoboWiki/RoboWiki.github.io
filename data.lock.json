@@ -1,17 +1,17 @@
 {
-  "data_version": "data-v2026.11.11",
+  "data_version": "data-v2026.11.12",
   "schema_version": "1.1.0",
   "source_repo": "RoboWiki/RoboWiki",
-  "release_asset": "robowiki-data-v2026.11.11.tar.gz",
-  "sha256": "76bab7fcc87b11a00dce2b7a44e99827e032934bd61081447ee972bb5fbf3a2c",
-  "manifest_sha256": "2fe4561d7f8a473f81478cb3a4c4f8644eb25e859fb3c72d7f7409bfcd67f377",
+  "release_asset": "robowiki-data-v2026.11.12.tar.gz",
+  "sha256": "69f1c3137dc0bb9ceb2c0eafaaca35f6ac3d346dfc968431e79887ea3b4a98a7",
+  "manifest_sha256": "91a70e6a17968c5a7424305650d75ab036cf9b86fe9c47c844781ba63c5b0a1c",
   "counts": {
-    "parts": 196,
-    "robots": 21,
+    "parts": 204,
+    "robots": 14,
     "software": 22,
-    "ids": 650,
+    "ids": 653,
     "semantics_version": "1.1.0",
-    "assets": 446,
+    "assets": 450,
     "materials": 27,
     "processes": 9
   }

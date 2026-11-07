@@ -113,7 +113,6 @@ def _eco_block(eco: dict | None) -> str:
 
 SUBTYPE = {"quadruped": "四足", "humanoid": "人形", "biped": "双足",
            "wheeled_quadruped": "四轮足",
-           "wheeled_quadruped_inward_knee": "四轮足·内膝肘",
            "infantry": "步兵", "sentry": "哨兵",
            "hero": "英雄", "engineer": "工程", "arm": "机械臂", "other": "其他"}
 
