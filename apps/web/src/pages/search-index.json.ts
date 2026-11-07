@@ -25,7 +25,7 @@ export const GET: APIRoute = async () => {
       t: part.model,
       d: `${part.vendor} · ${categoryLabel(part.category)}`,
       u: `${base}parts/${part.category}/${part.slug}.html`,
-      x: [part.vendor, categoryLabel(part.category), part.subtypeLabel ?? '', part.tier ? `${part.tier} 级` : '', part.verified ? '已核对' : ''].join(' '),
+      x: [part.vendor, categoryLabel(part.category), part.subtypeLabel ?? ''].join(' '),
     })
   }
 
@@ -100,7 +100,7 @@ export const GET: APIRoute = async () => {
     { t: '工具链', d: '仿真、固件、上位机与部署', u: `${base}tools.html`, x: '软件 工具 IDE ROS' },
     { t: '参数口径', d: '字段含义、单位与可比性', u: `${base}semantics.html`, x: '口径 单位 含义 参数' },
     { t: '方法与来源', d: '数据怎么来的、怎么核对', u: `${base}method.html`, x: '方法 来源 核对 可信度' },
-    { t: '来源清单', d: '每个数字的出处等级', u: `${base}sources.html`, x: '来源 A 级 B 级 C 级' },
+    { t: '来源清单', d: '每个数字的出处等级', u: `${base}sources.html`, x: '来源 核对 官方手册 数据表' },
   ]
   for (const page of standing) {
     entries.push({ k: 'page', t: page.t, d: page.d, u: page.u, x: page.x })

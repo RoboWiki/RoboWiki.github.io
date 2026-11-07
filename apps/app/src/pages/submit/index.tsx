@@ -12,7 +12,6 @@ import './index.css'
 const COMMON_FIELDS: Array<{ key: string; label: string }> = [
   { key: 'price_cny', label: '价格' },
   { key: 'url', label: '官方来源 URL' },
-  { key: 'source_tier', label: '来源等级 A/B/C' },
   { key: 'last_checked', label: '最近核对日期' },
   { key: 'notes', label: '备注' },
   { key: 'title', label: '标题' },
@@ -24,7 +23,7 @@ const FIELD_KEY_RE = /^(specs\.)?[A-Za-z0-9_]+$/
 
 /** 与网页 DataFix 同口径：价格是数，其余能转数字就转。 */
 function typedValue(field: string, raw: string): string | number {
-  if (field === 'source_tier' || field === 'last_checked' || field === 'url') return raw.trim()
+  if (field === 'last_checked' || field === 'url') return raw.trim()
   if (field === 'price_cny') {
     const n = Number(raw)
     return Number.isFinite(n) ? n : raw.trim()
@@ -138,9 +137,6 @@ export default function SubmitPage() {
     }
     if (key === 'last_checked' && !/^\d{4}-\d{2}-\d{2}$/.test(value.trim())) {
       return '日期格式为 YYYY-MM-DD'
-    }
-    if (key === 'source_tier' && !['A', 'B', 'C'].includes(value.trim())) {
-      return '来源等级只能是 A / B / C'
     }
     if ((key === 'url') && !/^https?:\/\/\S+$/i.test(value.trim())) {
       return '官方来源需要以 http:// 或 https:// 开头'

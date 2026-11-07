@@ -12,7 +12,6 @@ const TOKEN_KEY = 'roboselect.token'
 const COMMON_FIELDS = [
   { key: 'price_cny', label: '价格（元）' },
   { key: 'url', label: '官方来源 URL' },
-  { key: 'source_tier', label: '来源等级 A/B/C' },
   { key: 'last_checked', label: '最近核对日期' },
   { key: 'notes', label: '备注' },
   { key: 'title', label: '标题' },
@@ -25,7 +24,7 @@ const FIELD_KEY_RE = /^(specs\.)?[A-Za-z0-9_]+$/
 /** 与互动端同口径：价格是数，其余能转数字就转。 */
 function typedValue(field: string, raw: string): string | number {
   const text = raw.trim()
-  if (field === 'source_tier' || field === 'last_checked' || field === 'url') return text
+  if (field === 'last_checked' || field === 'url') return text
   if (field === 'price_cny') {
     const n = Number(text)
     return Number.isFinite(n) ? n : text

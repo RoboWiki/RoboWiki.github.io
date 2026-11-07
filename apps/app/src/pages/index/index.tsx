@@ -404,7 +404,6 @@ export default function IndexPage() {
                     <Text className="rw-caption">
                       {rating.count ? `★ ${rating.avg ?? '-'}（${rating.count}）` : '暂无评分'}
                     </Text>
-                    {part.verified ? <Text className="rw-badge">已核对</Text> : null}
                   </View>
                 </View>
 

@@ -12,7 +12,6 @@ import {
   buildImage,
   buildPrice,
   buildSubtype,
-  buildTier,
 } from '@/services/builds'
 import { useThemeMode } from '@/utils/theme'
 import './index.css'
@@ -197,8 +196,6 @@ export default function BuildsPage() {
                     {buildSubtype(build) ? (
                       <Text className="rw-badge">{buildSubtype(build)}</Text>
                     ) : null}
-                    <Text className="rw-badge">{buildTier(build)}</Text>
-                    {build.verified ? <Text className="rw-badge">已核对</Text> : null}
                   </View>
 
                   <View className="rw-row rw-row--between builds__foot">

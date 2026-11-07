@@ -79,7 +79,6 @@ const offerLink = (url?: string | null) => (url && /^https?:\/\//i.test(url) ? u
 const partPath = `/parts/${part.category}/${part.slug}.html`
 const title = `${part.vendor} ${part.model} · RoboWiki`
 const description = `${part.vendor} ${part.model} 的参数、来源、评分与真实使用经验。`
-const tierClass = part.tier === 'A' ? 'tier tier-a' : part.tier === 'B' ? 'tier tier-b' : 'tier tier-c'
 const layer = layerOfCategory(part.category)
 
 // 顶部统计格不能写死成电机字段：芯片没有扭矩，硬显示 null 等于告诉用户「这里没数据」。
@@ -139,8 +138,6 @@ const keyStats = STAT_PRIORITY
                 </a>
               )}
               {part.subtypeLabel && <span class="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-[11px] text-ink-2">{part.subtypeLabel}</span>}
-              {part.tier && <span class={tierClass}>来源 {part.tier} 级</span>}
-              {part.verified && <span class="tier tier-a">已核对</span>}
             </div>
             <h1 class="mt-3 text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">{part.model}</h1>
             <p class="mt-1 text-sm text-ink-3">{part.vendor}</p>
@@ -157,14 +154,14 @@ const keyStats = STAT_PRIORITY
               ))}
               <div class="bg-surface px-3 py-2.5">
                 <dt class="text-[11px] text-ink-3">
-                  {bestOffer !== null ? '活动价' : '参考价'}
+                  {bestOffer !== null ? '优惠价' : '参考价'}
                 </dt>
                 <dd class="mt-0.5 flex flex-wrap items-baseline gap-x-1.5">
                   <span class={`mono tabular text-sm font-semibold ${bestOffer !== null ? 'text-brand' : 'text-ink'}`}>
                     {formatPrice(bestOffer ?? regularReference)}
                   </span>
                   {showCompare && (
-                    <span class="mono tabular text-[10px] text-ink-3 line-through">参考 {formatPrice(regularReference)}</span>
+                    <span class="mono tabular text-[10px] text-ink-3 ">参考 {formatPrice(regularReference)}</span>
                   )}
                 </dd>
               </div>
@@ -180,7 +177,7 @@ const keyStats = STAT_PRIORITY
       {offers.length > 0 && (
         <section class="card p-5" aria-labelledby="offers">
           <div class="flex flex-wrap items-baseline justify-between gap-2">
-            <h2 id="offers" class="text-sm font-semibold text-ink">渠道优惠 / 活动价</h2>
+            <h2 id="offers" class="text-sm font-semibold text-ink">渠道优惠 / 优惠价</h2>
             <span class="mono tabular text-[11px] text-ink-3">{offers.length} 条</span>
           </div>
           <ul class="mt-3 space-y-3">
@@ -192,7 +189,7 @@ const keyStats = STAT_PRIORITY
                     <span class="flex flex-wrap items-baseline gap-x-1.5">
                       <span class="mono tabular text-sm font-semibold text-brand">¥{Number(offer.price).toLocaleString('zh-CN')}</span>
                       {regularReference !== null && Number(offer.price) < regularReference && (
-                        <span class="mono tabular text-[10px] text-ink-3 line-through">参考 {formatPrice(regularReference)}</span>
+                        <span class="mono tabular text-[10px] text-ink-3 ">参考 {formatPrice(regularReference)}</span>
                       )}
                     </span>
                   )}
@@ -211,7 +208,7 @@ const keyStats = STAT_PRIORITY
             ))}
           </ul>
           <p class="mt-3 text-[11px] leading-5 text-ink-3">
-            优惠信息按活动方公开口径整理，价格、资格与截止时间以下单页面为准；本站不卖货、不收佣金。
+            优惠价通常有资格限制（如学生、参赛队、首购等），不是所有用户都能享受；价格、资格与截止时间以下单页面为准。本站不卖货、不收佣金。
           </p>
         </section>
       )}
@@ -281,7 +278,7 @@ const keyStats = STAT_PRIORITY
         <h2 class="text-sm font-semibold text-ink">数据口径</h2>
         <ul class="mt-3 space-y-2 text-[13px] leading-6 text-ink-3">
           <li>缺失显示 <span class="mono">null</span>，表示厂商未公布，不是 0。</li>
-          <li>来源等级表示可信度：A 逐项对过手册，B 二手整理，C 仅线索。</li>
+          <li>参数均按厂商手册或官方数据表订正过，并保留来源与核对日期。</li>
           <li>评分少于 3 条时只显示样本，不给确定结论。</li>
         </ul>
         <a href={withBase('/method.html')} class="mt-3 inline-flex text-[13px] font-medium text-brand hover:underline">

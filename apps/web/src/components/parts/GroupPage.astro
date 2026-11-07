@@ -10,8 +10,6 @@ const groupParts = group.slugs
   .filter(Boolean) as CatalogPart[]
 const title = `${group.label} · ${categoryLabel(category)} · RoboWiki`
 const description = `${categoryLabel(category)} · ${group.label}，共 ${groupParts.length} 个型号的参数、价格、来源与真实使用经验。`
-const tierOf = (tier?: string) =>
-  tier === 'A' ? 'tier tier-a' : tier === 'B' ? 'tier tier-b' : 'tier tier-c'
 ---
 
 <Base title={title} description={description}>
@@ -46,7 +44,6 @@ const tierOf = (tier?: string) =>
               {p.image
                 ? <img src={imageUrl(p)} alt={`${p.vendor} ${p.model}`} loading="lazy" class="h-full w-full object-contain p-4 transition-transform duration-300 group-hover:scale-[1.03]" />
                 : <span class="px-4 text-center text-xs text-ink-3">暂无产品图</span>}
-              {p.tier && <span class={`${tierOf(p.tier)} absolute left-2 top-2`}>{p.tier} 级</span>}
             </div>
             <div class="flex flex-1 flex-col gap-2 p-4">
               <div class="truncate text-[11px] text-ink-3">{p.vendor}</div>
@@ -60,16 +57,15 @@ const tierOf = (tier?: string) =>
                       <>
                         <span class={`mono tabular truncate font-medium ${offer !== null ? 'text-brand' : 'text-ink-2'}`}>
                           {formatPrice(offer ?? regular)}
-                          {offer !== null && <span class="ml-1 text-[10px] font-normal">活动价</span>}
+                          {offer !== null && <span class="ml-1 text-[10px] font-normal">优惠价</span>}
                         </span>
                         {offer !== null && regular !== null && offer < regular && (
-                          <span class="mono tabular text-[10px] text-ink-3 line-through">参考 {formatPrice(regular)}</span>
+                          <span class="mono tabular text-[10px] text-ink-3 ">参考 {formatPrice(regular)}</span>
                         )}
                       </>
                     )
                   })()}
                 </span>
-                <span class="text-ink-3">{p.verified ? '已核对' : ''}</span>
               </div>
             </div>
           </div>

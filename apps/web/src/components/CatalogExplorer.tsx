@@ -43,16 +43,9 @@ function hasOffer(p: CatalogPart) {
   })
 }
 
-function TierBadge({ tier }: { tier?: string }) {
-  if (!tier) return null
-  const cls = tier === 'A' ? 'tier tier-a' : tier === 'B' ? 'tier tier-b' : 'tier tier-c'
-  return <span className={cls}>{tier} 级</span>
-}
-
 export default function CatalogExplorer({ parts, categories }: Props) {
   const [q, setQ] = useState('')
   const [cat, setCat] = useState(DEFAULT_CATEGORY)
-  const [tier, setTier] = useState('')
   const [openOnly, setOpenOnly] = useState(false)
   const [offerOnly, setOfferOnly] = useState(false)
   const [vendor, setVendor] = useState('')
@@ -150,8 +143,6 @@ export default function CatalogExplorer({ parts, categories }: Props) {
     let list = searched
     if (cat) list = list.filter(p => p.category === cat)
     if (vendor) list = list.filter(p => p.vendor === vendor)
-    if (tier === 'verified') list = list.filter(p => p.verified)
-    else if (tier) list = list.filter(p => p.tier === tier)
     if (openOnly) list = list.filter(hasRepo)
     if (offerOnly) list = list.filter(hasOffer)
     if (sort) {
@@ -179,18 +170,7 @@ export default function CatalogExplorer({ parts, categories }: Props) {
       })
     }
     return list
-  }, [searched, cat, vendor, tier, openOnly, offerOnly, sort])
-
-  const tierCounts = useMemo(() => {
-    const base = cat ? searched.filter(p => p.category === cat) : searched
-    return {
-      A: base.filter(p => p.tier === 'A').length,
-      B: base.filter(p => p.tier === 'B').length,
-      C: base.filter(p => p.tier === 'C').length,
-      verified: base.filter(p => p.verified).length,
-      all: base.length,
-    }
-  }, [searched, cat])
+  }, [searched, cat, vendor, openOnly, offerOnly, sort])
 
   const openCount = useMemo(() => {
     const base = cat ? searched.filter(p => p.category === cat) : searched
@@ -206,7 +186,7 @@ export default function CatalogExplorer({ parts, categories }: Props) {
   const shown = filtered.slice(0, limit)
   const needle = q.trim()
   const hasFilter = Boolean(
-    (cat && cat !== DEFAULT_CATEGORY) || needle || tier || openOnly || offerOnly || vendor
+    (cat && cat !== DEFAULT_CATEGORY) || needle || openOnly || offerOnly || vendor
     || (sort && sort !== DEFAULT_SORT),
   )
 
@@ -234,7 +214,6 @@ export default function CatalogExplorer({ parts, categories }: Props) {
 
   const reset = () => {
     setQ('')
-    setTier('')
     setOpenOnly(false)
     setOfferOnly(false)
     setVendor('')
@@ -354,26 +333,6 @@ export default function CatalogExplorer({ parts, categories }: Props) {
       </div>
 
       <div className="flex flex-wrap items-center gap-1.5">
-        <span className="text-[11px] text-ink-3">来源</span>
-        {[
-          { value: '', label: '全部', n: tierCounts.all },
-          { value: 'A', label: 'A 级', n: tierCounts.A },
-          { value: 'B', label: 'B 级', n: tierCounts.B },
-          ...(tierCounts.C > 0 ? [{ value: 'C', label: 'C 级', n: tierCounts.C }] : []),
-          { value: 'verified', label: '已核对', n: tierCounts.verified },
-        ].map(t => (
-          <button
-            key={t.value || 'all'}
-            type="button"
-            className="chip h-7 px-2.5 text-[12px]"
-            aria-pressed={tier === t.value}
-            onClick={() => { setTier(t.value); setLimit(PAGE) }}
-          >
-            {t.label}
-            <span className="mono tabular opacity-60">{t.n}</span>
-          </button>
-        ))}
-        <span className="mx-1 h-4 w-px bg-line" aria-hidden="true" />
         <button
           type="button"
           className={`chip h-7 px-2.5 text-[12px] ${offerOnly ? 'border-brand bg-brand-soft text-brand' : ''}`}
@@ -388,7 +347,7 @@ export default function CatalogExplorer({ parts, categories }: Props) {
               window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`)
             } catch { /* history unavailable */ }
           }}
-          title="只显示当前有活动价/渠道优惠的部件"
+          title="只显示当前有优惠价/渠道优惠的部件"
         >
           有优惠
           <span className="mono tabular opacity-60">{offerCount}</span>
@@ -486,7 +445,6 @@ export default function CatalogExplorer({ parts, categories }: Props) {
                       ? <img src={imageUrl(p)} alt={`${p.vendor} ${p.model}`} loading="lazy" className="h-full w-full object-contain p-4 transition-transform duration-300 group-hover:scale-[1.03]" />
                       : <span className="px-4 text-center text-xs text-ink-3">暂无产品图</span>}
                     <div className="absolute left-2 top-2">
-                      <TierBadge tier={p.tier} />
                       {hasOffer(p) && <span className="rounded-full border border-line bg-brand-soft px-2 py-0.5 text-[11px] font-medium text-brand">有优惠</span>}
                     </div>
                   </div>
@@ -509,9 +467,9 @@ export default function CatalogExplorer({ parts, categories }: Props) {
                                 <span className={`mono tabular truncate font-semibold ${offer !== null ? 'text-brand' : 'text-ink-2'}`}>
                                   {formatPrice(offer ?? regular)}
                                 </span>
-                                {offer !== null && <span className="shrink-0 text-[10px] font-medium text-brand">活动价</span>}
+                                {offer !== null && <span className="shrink-0 text-[10px] font-medium text-brand" title="需满足活动资格，详见详情">优惠价</span>}
                               </span>
-                              {showCompare && <span className="mono tabular text-[10px] text-ink-3 line-through">参考 {formatPrice(regular)}</span>}
+                              {showCompare && <span className="mono tabular text-[10px] text-ink-3 ">参考 {formatPrice(regular)}</span>}
                             </>
                           )
                         })()}

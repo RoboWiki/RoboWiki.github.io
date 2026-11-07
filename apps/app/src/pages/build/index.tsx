@@ -11,7 +11,6 @@ import {
   buildImage,
   buildPrice,
   buildSubtype,
-  buildTier,
   buildWebUrl,
   rawSpecs,
 } from '@/services/builds'
@@ -106,8 +105,6 @@ export default function BuildPage() {
 
         <View className="build__badges">
           {subtype ? <Text className="rw-badge">{subtype}</Text> : null}
-          <Text className="rw-badge">{buildTier(build)}</Text>
-          {build.verified ? <Text className="rw-badge">已核对</Text> : null}
           {build.last_checked ? (
             <Text className="rw-caption">核对于 {build.last_checked}</Text>
           ) : null}

@@ -39,11 +39,6 @@ export function buildPrice(build: BuildView | null): string {
   return `¥${Number(price).toLocaleString('zh-CN')}`
 }
 
-export function buildTier(build: BuildView | null): string {
-  const tier = String(build?.source_tier || '').trim()
-  return tier ? `来源 ${tier} 级` : '来源未标注'
-}
-
 export function buildSubtype(build: BuildView | null): string {
   if (!build) return ''
   return build.subtype_label || build.subtype || ''

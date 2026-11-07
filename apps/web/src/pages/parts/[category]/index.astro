@@ -13,10 +13,6 @@ const categoryParts = parts.filter(p => p.category === category)
 const groups = categoryGroups[category] || []
 const title = `${categoryLabel(category)} · RoboWiki`
 const description = `${categoryLabel(category)} 共 ${categoryParts.length} 个型号的参数、价格、来源与真实使用经验。`
-const tierCounts = categoryParts.reduce<Record<string, number>>((acc, p) => {
-  if (p.tier) acc[p.tier] = (acc[p.tier] || 0) + 1
-  return acc
-}, {})
 ---
 
 <Base title={title} description={description}>
@@ -35,11 +31,6 @@ const tierCounts = categoryParts.reduce<Record<string, number>>((acc, p) => {
         共 <span class="mono tabular font-semibold text-ink">{categoryParts.length}</span> 个型号 ·
         <span class="mono tabular font-semibold text-ink">{groups.length}</span> 个分组
       </p>
-      <div class="mt-2 flex items-center gap-1.5">
-        {tierCounts.A && <span class="tier tier-a">A {tierCounts.A}</span>}
-        {tierCounts.B && <span class="tier tier-b">B {tierCounts.B}</span>}
-        {tierCounts.C && <span class="tier tier-c">C {tierCounts.C}</span>}
-      </div>
     </div>
     <a href={`${withBase('/catalog.html')}?category=${category}`} class="text-sm font-medium text-brand hover:underline">
       在部件库筛选 →
@@ -83,19 +74,14 @@ const tierCounts = categoryParts.reduce<Record<string, number>>((acc, p) => {
                     <>
                       <span class={`mono tabular text-xs ${offer !== null ? 'font-semibold text-brand' : 'text-ink-2'}`}>
                         {formatPrice(offer ?? regular)}
-                        {offer !== null && <span class="ml-1 text-[10px] font-normal">活动价</span>}
+                        {offer !== null && <span class="ml-1 text-[10px] font-normal">优惠价</span>}
                       </span>
                       {offer !== null && regular !== null && offer < regular && (
-                        <span class="mono tabular text-[10px] text-ink-3 line-through">参考 {formatPrice(regular)}</span>
+                        <span class="mono tabular text-[10px] text-ink-3 ">参考 {formatPrice(regular)}</span>
                       )}
                     </>
                   )
                 })()}
-              </span>
-              <span class="w-14 text-right">
-                {p.tier && (
-                  <span class={p.tier === 'A' ? 'tier tier-a' : p.tier === 'B' ? 'tier tier-b' : 'tier tier-c'}>{p.tier}</span>
-                )}
               </span>
             </a>
           </li>

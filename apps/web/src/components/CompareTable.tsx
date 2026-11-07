@@ -8,8 +8,6 @@ type Part = {
   category: string
   vendor: string
   model: string
-  tier?: string | null
-  verified?: boolean
   price?: number | null
   offers?: Array<Record<string, unknown>>
   specs?: Record<string, unknown>
@@ -234,22 +232,6 @@ export default function CompareTable({ labels = {} }: { labels?: Labels }) {
             </thead>
             <tbody>
               <tr className="border-b border-line">
-                <th scope="row" className="sticky left-0 z-10 bg-surface px-3 py-2 text-left font-medium text-ink-2">来源等级</th>
-                {picked.map(p => (
-                  <td key={p.id} className="px-3 py-2">
-                    <span className={p.tier === 'A' ? 'tier tier-a' : p.tier === 'B' ? 'tier tier-b' : 'tier tier-c'}>
-                      {p.tier ?? '未标注'}
-                    </span>
-                  </td>
-                ))}
-              </tr>
-              <tr className="border-b border-line">
-                <th scope="row" className="sticky left-0 z-10 bg-surface px-3 py-2 text-left font-medium text-ink-2">核对状态</th>
-                {picked.map(p => (
-                  <td key={p.id} className="px-3 py-2 text-ink-2">{p.verified ? '已核对' : '未核对'}</td>
-                ))}
-              </tr>
-              <tr className="border-b border-line">
                 <th scope="row" className="sticky left-0 z-10 bg-surface px-3 py-2 text-left font-medium text-ink-2">价格</th>
                 {picked.map(p => {
                   const offer = bestOfferPrice(p.offers)
@@ -258,10 +240,10 @@ export default function CompareTable({ labels = {} }: { labels?: Labels }) {
                     <td key={p.id} className="mono tabular px-3 py-2 text-ink">
                       <span className={offer !== null ? 'font-semibold text-brand' : ''}>
                         {formatPrice(offer ?? regular)}
-                        {offer !== null && <span className="ml-1 text-[10px] font-normal">活动价</span>}
+                        {offer !== null && <span className="ml-1 text-[10px] font-normal">优惠价</span>}
                       </span>
                       {offer !== null && regular !== null && offer < regular && (
-                        <span className="ml-1.5 text-[10px] text-ink-3 line-through">{formatPrice(regular)}</span>
+                        <span className="ml-1.5 text-[10px] text-ink-3 ">{formatPrice(regular)}</span>
                       )}
                     </td>
                   )

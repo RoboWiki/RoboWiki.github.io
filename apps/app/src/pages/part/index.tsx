@@ -351,7 +351,6 @@ export default function PartPage() {
             <LayerBadge category={part.category} />
             <Text className="rw-caption">
               {partCategoryLabel(part)}
-              {part.verified ? ' · 已核对' : ''}
             </Text>
           </View>
           <Text className="part__price">{partPrice(part)}</Text>

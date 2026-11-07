@@ -4,13 +4,13 @@ import { withBase } from '@/lib/utils'
 import semantics from '@/data/semantics.json'
 
 const steps = [
-  { n: 1, title: '先看来源等级', body: 'A 逐项核对厂商手册；B 公开网页；C 二手转述。等级决定这个数能不能直接用于设计。' },
+  { n: 1, title: '先看来源', body: '所有条目按厂商手册或官方数据表订正；公开网页只作补充。来源决定这个数能不能直接用于设计。' },
   { n: 2, title: '再看口径字段', body: 'tau_basis 是 peak 还是 rated、inertia_basis 是 rotor 还是 output；口径不明就不参与比较。' },
   { n: 3, title: '缺的当缺的', body: '— 是「没公布」，不是「不支持」，也不是 0。三态里 unknown 既不算兼容也不算不兼容。' },
   { n: 4, title: '最后才比派生量', body: '扭矩密度、峰值/额定比、反射惯量占比是结果不是原因：用来发现异常，不用来选型。' },
 ]
 const governance = [
-  { title: '来源等级', body: 'A / B / C 三级标记核对程度；缺来源记「来源不明」，不参与比较。', href: '/sources.html', cta: '来源与溯源规则' },
+  { title: '来源与核对', body: '每条参数保留来源与最近核对日期；缺来源的条目不参与比较。', href: '/sources.html', cta: '来源与溯源规则' },
   { title: '口径唯一事实源', body: `字段语义写在 semantics.json（当前版本 ${semantics.version}），静态站、后端与 MCP 都读这一份。`, href: '/semantics.html', cta: '字段口径与红线' },
   { title: '改动留痕', body: '每次字段改动先成为提案（旧值、新值、依据、来源链接），审核后开 PR，发布 data-v* release 才更新目录。', href: '/sources.html', cta: '追溯链' },
   { title: '授权与撤下', body: 'GPL-3.0 发布；厂商手册与图片归原方，权利人要求撤下就先下架、后讨论。', href: '/notice.html', cta: '免责声明与许可' },
@@ -48,8 +48,8 @@ const brainReview = {
       <p class="text-[11px] font-semibold tracking-[0.14em] text-brand uppercase">方法</p>
       <h1 class="mt-2 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">先说怎么判，再谈推荐。</h1>
       <p class="mt-3 text-sm leading-7 text-ink-2">
-        本站不排序「最好」，只说明「这个数字在什么口径下、什么来源等级下、能不能比」。
-        评级由证据等级 + 口径可比性共同决定，缺一就不给结论。
+        本站不排序「最好」，只说明「这个数字在什么口径下、来源是什么、能不能比」。
+        评级由来源可追溯性与口径可比性共同决定，缺一就不给结论。
       </p>
     </header>
 

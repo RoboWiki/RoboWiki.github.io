@@ -1,12 +1,12 @@
 ---
 import Base from '@/layouts/Base.astro'
 ---
-<Base title="Parameter semantics · RoboWiki" description="How torque, speed, source tiers and missing values are defined.">
+<Base title="Parameter semantics · RoboWiki" description="How torque, speed, sources and missing values are defined.">
   <article class="prose mx-auto max-w-3xl py-6">
     <h1>Parameter semantics</h1>
     <p>One hard rule on this site: <strong>torque and speed always mean the output side (gearbox included).</strong></p>
     <ul>
-      <li><code>A</code> tier = every field checked against a vendor manual. <code>B</code> = public web page, not cross-checked. <code>C</code> = relayed.</li>
+      <li>Every part is checked against vendor manuals or official datasheets; no A/B/C tiers are shown.</li>
       <li><code>—</code> means <em>not published</em>, not <em>not supported</em>, and never <code>0</code>. Do not fill gaps from similar parts.</li>
       <li>Missing is missing: a blank field is a claim we could not source, not a value of zero.</li>
     </ul>

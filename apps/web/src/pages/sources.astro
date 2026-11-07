@@ -4,30 +4,10 @@ import { withBase } from '@/lib/utils'
 import semantics from '@/data/semantics.json'
 import protocolData from '@/data/protocols.json'
 
-const tiers = [
-  {
-    grade: 'A',
-    name: '一手手册',
-    what: '逐项核对过厂商 datasheet / 官方文档，含页码与型号',
-    use: '可以拿去算热设计、算余量，参与跨厂商比较',
-  },
-  {
-    grade: 'B',
-    name: '公开网页',
-    what: '厂商页面、官方商城或广泛引用，未逐项复核',
-    use: '可作候选与量级判断，关键数字要回手册确认',
-  },
-  {
-    grade: 'C',
-    name: '二手转述',
-    what: '社区文章、第三方整理；只作线索',
-    use: '默认不参与对比与推荐',
-  },
-]
 const rules = [
   {
-    rule: '每行必带 source_tier',
-    body: 'A / B / C 是核对程度的标记，不是质量评分。删掉它，数字的含义就变了。',
+    rule: '每行保留来源与核对日期',
+    body: '来源优先厂商手册、官方数据表与官方仓库；公开网页只作补充。',
     why: '让读者知道这个数敢不敢直接用于设计',
   },
   {
@@ -57,9 +37,9 @@ const refusals = [
   '不为过校验编一个峰值：手册只给额定，峰值就写 —。',
   '不混用电调口径：不同源的数据不拼成一个「峰值/额定比」。',
 ]
-const chain = ['提案：旧值 / 新值 / 依据 / 来源链接', '审核：口径与来源等级复核', 'PR：worker 自动开、人工合并', '发布：data-v* release 更新目录']
+const chain = ['提案：旧值 / 新值 / 依据 / 来源链接', '审核：口径与来源复核', 'PR：worker 自动开、人工合并', '发布：data-v* release 更新目录']
 const toc = [
-  { id: 'tiers', label: '来源等级' },
+  { id: 'tiers', label: '来源与核对' },
   { id: 'rules', label: '字段溯源规则' },
   { id: 'missing', label: '缺失与三态判定' },
   { id: 'comparability', label: '可比性' },
@@ -68,7 +48,7 @@ const toc = [
 ]
 ---
 
-<Base title="数据来源 · RoboWiki" description="来源等级 A/B/C、字段溯源规则、缺失语义与拒绝做的事：每个数字都要能指回一手来源。">
+<Base title="数据来源 · RoboWiki" description="字段溯源规则、缺失语义与拒绝做的事：每个数字都要能指回一手来源。">
   <div class="mx-auto max-w-6xl">
     <nav aria-label="面包屑" class="mb-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-ink-3">
       <a href={withBase('/')} class="transition-colors hover:text-brand">首页</a>
@@ -99,33 +79,16 @@ const toc = [
         <section aria-labelledby="tiers">
           <div class="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-line pb-2">
             <span class="mono text-[11px] font-semibold text-ink-3">01</span>
-            <h2 id="tiers" class="text-lg font-bold tracking-tight text-ink">来源等级</h2>
-            <span class="ml-auto text-[11px] text-ink-3">核对到什么程度</span>
+            <h2 id="tiers" class="text-lg font-bold tracking-tight text-ink">来源与核对</h2>
+            <span class="ml-auto text-[11px] text-ink-3">每条都可追溯</span>
           </div>
 
-          <div class="grid gap-3 sm:grid-cols-3">
-            {tiers.map(t => (
-              <article class="card flex flex-col p-4">
-                <div class="flex items-center gap-2">
-                  <span class={`tier tier-${t.grade.toLowerCase()}`}>{t.grade}</span>
-                  <h3 class="text-sm font-semibold text-ink">{t.name}</h3>
-                </div>
-                <dl class="mt-3 space-y-2.5 text-xs leading-6">
-                  <div>
-                    <dt class="text-[11px] text-ink-3">定义</dt>
-                    <dd class="text-ink-2">{t.what}</dd>
-                  </div>
-                  <div>
-                    <dt class="text-[11px] text-ink-3">用法</dt>
-                    <dd class="text-ink-2">{t.use}</dd>
-                  </div>
-                </dl>
-              </article>
-            ))}
+          <div class="card p-4 text-sm leading-7 text-ink-2">
+            所有条目都已按厂商手册或官方数据表订正，不再标注 A/B/C 等级。每条记录保留来源、最近核对日期与公开链接；查不到的值写 null，不用二手数字填补。
           </div>
 
           <p class="mt-3 border-l-2 border-line-strong pl-3 text-xs leading-6 text-ink-3">
-            来源不明时记 {semantics.field_semantics.source_tier.missing_means}，不参与比较。
+            来源不明时保留 null，不参与比较。
           </p>
         </section>
 

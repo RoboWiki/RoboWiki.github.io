@@ -1027,7 +1027,6 @@ def main() -> None:
             "category": r["category"], "subtype": r["subtype"],
             "subtypeLabel": r.get("subtype_label") or r["subtype"],
             "vendor": r["vendor"], "model": r["model"],
-            "tier": r["source_tier"], "verified": bool(r["verified"]),
             "price": r.get("price_cny"),
             "image": s.get("image_url") or None,
             "rating": {"avg": rt.get("avg"), "count": rt.get("count") or 0},

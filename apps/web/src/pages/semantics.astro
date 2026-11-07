@@ -17,7 +17,7 @@ type Field = {
 const fields = Object.entries(semantics.field_semantics as Record<string, Field>)
 const protocols = protocolData.protocols
 const steps = [
-  { n: 1, title: '先看来源等级', body: 'A 逐项对过厂商手册；B 来自公开网页；C 转述。等级决定这个数能不能直接拿去做热设计。' },
+  { n: 1, title: '先看来源', body: '所有参数按厂商手册或官方数据表订正；公开网页只作补充。来源决定这个数能不能直接拿去做热设计。' },
   { n: 2, title: '再看口径字段', body: 'tau_basis 是 peak 还是 rated、inertia_basis 是 rotor 还是 output。这两个字段读错，后面全错。' },
   { n: 3, title: '缺的要当缺的', body: '— 是「没公布」，不是「不支持」，也不是 0。不要用同类件填补，也不要假设额定 = 峰值 / 2。' },
   { n: 4, title: '最后才比派生量', body: '扭矩密度、峰值/额定比、反射惯量占比是结果不是原因：帮你发现异常，不帮你选型。' },

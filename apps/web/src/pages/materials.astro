@@ -35,7 +35,6 @@ const sections = materialsData.groups
   }))
   .filter(group => group.items.length > 0)
 const total = materials.length + processes.length
-const verifiedCount = [...materials, ...processes].filter(item => item.verified).length
 
 function summary(item: Item): Array<{ label: string; value: string }> {
   const specs = item.specs
@@ -51,8 +50,6 @@ function summary(item: Item): Array<{ label: string; value: string }> {
   return out
 }
 
-const tierClass = (tier?: string | null) =>
-  tier && ['a', 'b', 'c'].includes(tier.toLowerCase()) ? `tier tier-${tier.toLowerCase()}` : 'tier tier-c'
 const searchText = (item: Item) =>
   [item.title, item.name_en ?? '', item.family_label, item.group_label, (item.aliases ?? []).join(' ')].join(' ')
 
@@ -60,7 +57,6 @@ const stats = [
   { label: '结构材料', value: materials.length, unit: '种' },
   { label: '加工工艺', value: processes.length, unit: '种' },
   { label: '分类', value: sections.length, unit: '类' },
-  { label: '已核对', value: verifiedCount, unit: '条' },
 ]
 ---
 
@@ -165,8 +161,7 @@ const stats = [
                     >
                       {item.category === 'process' ? '加工工艺' : item.family_label}
                     </span>
-                    {item.source_tier && <span class={`${tierClass(item.source_tier)} shrink-0`}>来源 {item.source_tier}</span>}
-                  </div>
+                                      </div>
 
                   <h3 class="mt-2.5 text-sm font-semibold leading-5 text-ink transition-colors group-hover:text-brand">
                     {item.title}
