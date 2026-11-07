@@ -88,15 +88,15 @@ def _eco_block(eco: dict | None) -> str:
         if not items:
             continue
         rows = []
-        for proj in sorted(items, key=lambda x: -x["files"])[:8]:
+        for proj in sorted(items, key=lambda x: x["name"].lower())[:8]:
             name = proj["name"]
             label = f'<a href="{proj["url"]}" target="_blank" rel="noopener">{name}</a>' \
                 if proj.get("url") else name
-            rows.append(f'| {label} | {proj["desc"] or "—"} | {proj["files"]} |')
+            rows.append(f'| {label} | {proj["desc"] or "—"} |')
         blocks.append(f"""**{role}**（{len(items)} 个）
 
-| 项目 | 说明 | 文件数 |
-|---|---|---|
+| 项目 | 说明 |
+|---|---|
 {chr(10).join(rows)}
 """)
 

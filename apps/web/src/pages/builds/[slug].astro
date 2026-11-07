@@ -31,7 +31,7 @@ type Robot = {
     label?: string | null
     count?: number
     roles?: Record<string, number>
-    projects?: Array<{ name: string; role: string; desc?: string | null; files?: number; url: string }>
+    projects?: Array<{ name: string; role: string; desc?: string | null; url: string }>
   } | null
 }
 
@@ -56,7 +56,7 @@ const eco = robot.ecosystem ?? null
 const ecoProjects = (eco?.projects ?? []).filter(p => p && p.url)
 const ECO_ROLE_ORDER = ['官方项目', '官方描述/资产', '官方 SDK', '仿真', '训练', '部署', '导航', '控制/MPC', '工具/资料']
 const ecoGroups = ECO_ROLE_ORDER
-  .map(role => ({ role, items: ecoProjects.filter(p => p.role === role).sort((a, b) => (b.files || 0) - (a.files || 0)) }))
+  .map(role => ({ role, items: ecoProjects.filter(p => p.role === role) }))
   .filter(group => group.items.length > 0)
 const artifactLink = (key: string) => (artifacts[key] ? String(artifacts[key]) : '')
 const bom = (robot.bom ?? []).filter(item => item && item.name)
@@ -349,7 +349,7 @@ const docs = [
               <div>
                 <h3 class="text-[13px] font-semibold text-ink">{group.role} <span class="mono text-[11px] font-normal text-ink-3">{group.items.length}</span></h3>
                 <ul class="mt-1.5 space-y-1.5">
-                  {group.items.slice(0, 10).map(project => (
+                  {group.items.map(project => (
                     <li class="flex items-start gap-2 text-[13px] leading-6">
                       <span class="mt-2 h-1 w-1 shrink-0 rounded-full bg-line-strong" aria-hidden="true"></span>
                       <span class="min-w-0">
@@ -357,12 +357,10 @@ const docs = [
                           {project.name}
                         </a>
                         {project.desc && <span class="text-ink-3"> — {project.desc}</span>}
-                        {project.files ? <span class="mono ml-1 text-[11px] text-ink-3">{project.files} files</span> : null}
                       </span>
                     </li>
                   ))}
                 </ul>
-                {group.items.length > 10 && <p class="mt-1 text-[11px] text-ink-3">还有 {group.items.length - 10} 个未展开</p>}
               </div>
             ))}
           </div>
