@@ -413,7 +413,7 @@ def test_submission_review_enqueues_outbox(client):
     h = auth_header(client)  # robowiki / staff
     r = client.post("/api/v1/submissions", headers=h, json={
         "kind": "part_patch",
-        "target_id": "cubemars-ak80-6",
+        "target_id": "hota-d6-pro",
         "payload": {"price_cny": 3288.0},
         "evidence": {"source_url": "https://example.com/manual", "note": "test"},
     })

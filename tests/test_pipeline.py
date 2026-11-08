@@ -187,8 +187,11 @@ def test_sidebar_groups_parts(built):
 
 def test_type_pages_grouped_by_subtype(built):
     """传感器按测量类型、模块与开源硬件按功能分，厂商不再作为第二层。"""
+    from pipeline.load import cat_labels
     side = json.loads((built / ".vitepress" / "sidebar.json").read_text(encoding="utf-8"))
-    for cid, name in (("sensor", "传感器"), ("module", "其余模块"), ("open_hw", "开源硬件")):
+    name_by_id = {cid: name for cid, name, _ in cat_labels()}
+    for cid in ("sensor", "module", "open_hw"):
+        name = name_by_id[cid]
         text = (built / "parts" / cid / "index.md").read_text(encoding="utf-8")
         assert "## 类型" in text
         assert "## 厂商" not in text
@@ -218,12 +221,14 @@ def test_group_pages_show_product_gallery(built):
     ntc_page = (built / "parts" / "sensor" / "ntc.md").read_text(encoding="utf-8")
     assert ntc_page.count('class="part-gallery-card"') == len(ntc)
 
-    cm = [r for r in rows if r["vendor"] == "CubeMars"]
-    n_img = sum(1 for r in cm if (r.get("specs") or {}).get("image_url"))
-    cm_page = (built / "parts" / "actuator" / "cubemars.md").read_text(encoding="utf-8")
-    assert cm_page.count('class="part-gallery-card"') == n_img
-    if n_img < len(cm):
-        assert f"{len(cm)} 型中 {n_img} 款有可核实的产品图" in cm_page
+    # CubeMars 已在产品线收敛时整类删除（tombstone 不复用），
+    # 换成在售且有官方图的厂商：厂商聚合页的图库与「N 型 M 款有图」注记保持回归。
+    ut = [r for r in rows if r["category"] == "actuator" and r["vendor"] == "宇树 Unitree"]
+    n_img = sum(1 for r in ut if (r.get("specs") or {}).get("image_url"))
+    ut_page = (built / "parts" / "actuator" / "unitree.md").read_text(encoding="utf-8")
+    assert ut_page.count('class="part-gallery-card"') == n_img
+    if n_img < len(ut):
+        assert f"{len(ut)} 型中 {n_img} 款有可核实的产品图" in ut_page
 
     assert "part-gallery" not in (
         built / "parts" / "sensor" / "force_torque.md").read_text(encoding="utf-8")
