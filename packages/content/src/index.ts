@@ -152,11 +152,11 @@ export const LAYERS: Layer[] = [
     tagline: '构型、传动与材料边界',
     desc: '从自由度与载荷倒推结构，先把传动链、材料与加工工艺的边界算清楚，再谈装配。',
     role: 'layer',
-    categories: ['structural', 'actuator', 'servo'],
+    categories: ['structural', 'wheel', 'actuator', 'servo'],
     guides: ['selection-order', 'motor-specs'],
     questions: ['需要多大扭矩与转速余量？', '传动方案与背隙能不能接受？', '材料与工艺的能力边界在哪？'],
     tone: 'text-layer-mech',
-    hint: '结构件、关节电机与舵机',
+    hint: '结构件、轮组、关节电机与舵机',
   },
   {
     id: 'hardware',
@@ -168,7 +168,7 @@ export const LAYERS: Layer[] = [
     role: 'layer',
     categories: [
       'controller_high', 'battery', 'charger', 'power', 'connector', 'module',
-      'chip', 'open_hw', 'remote_controller', 'esc',
+      'chip', 'open_hw', 'remote_controller', 'esc', 'referee',
     ],
     guides: ['motor-specs', 'control-chain'],
     questions: ['峰值电流与母线压降够不够？', '接口、连接器与散热余量够不够？', '器件供货与替代方案是否可查？'],
@@ -309,6 +309,16 @@ const SPEC_LABELS: Record<string, [string, string]> = {
   storage_temp_range: ['存储温度', ''],
   doc_url: ['资料链接', ''],
   doc_pdf: ['数据表 PDF', ''],
+  diameter_mm: ['直径', 'mm'],
+  width_mm: ['宽度', 'mm'],
+  bore_mm: ['轴孔', 'mm'],
+  load_kg: ['额定负载', 'kg'],
+  module_type: ['模块类型', ''],
+  current_A: ['电流', 'A'],
+  led_count: ['灯珠数', '颗'],
+  sensor: ['传感器', ''],
+  mount: ['镜头接口', ''],
+  material: ['材料', ''],
 }
 
 // 顺序重要：长后缀在前，避免 `_mm` 被 `_m` 先匹配。

@@ -40,7 +40,7 @@ TOOLS: list[dict[str, Any]] = [
             "properties": {
                 "q": {"type": "string", "description": "关键词，可为空"},
                 "category": {"type": "string",
-                             "enum": ["actuator", "controller_high", "controller_low", "motor_driver", "sensor", "charger", "battery"]},
+                             "enum": ["actuator", "controller_high", "controller_low", "motor_driver", "sensor", "charger", "battery", "structural", "wheel", "referee"]},
                 "limit": {"type": "integer", "minimum": 1, "maximum": 50, "default": 10},
             },
         },

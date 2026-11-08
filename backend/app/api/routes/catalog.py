@@ -67,6 +67,9 @@ _FALLBACK_CATEGORY_LABELS = {
     "module": "其余模块",
     "chip": "硬件芯片",
     "open_hw": "开源硬件",
+    "structural": "结构件与紧固",
+    "wheel": "轮组与底盘",
+    "referee": "裁判系统",
 }
 
 CATEGORY_LABELS = {**_FALLBACK_CATEGORY_LABELS, **_labels_from_taxonomy()}
@@ -245,6 +248,14 @@ _CARD_FACTS = {
     "charger": [("充电功率", "charge_power_w", " W"), ("充电电流", "charge_current_a", ""),
                 ("平衡电流", "balance_current_ma", " mA"), ("串数", "cell_range", ""),
                 ("输入", "input_voltage", ""), ("重量", "weight_g", " g")],
+    "structural": [("规格", "size_mm", ""), ("材料", "material", ""),
+                   ("负载", "load_kg", " kg"), ("重量", "mass_g", " g")],
+    "wheel": [("直径", "diameter_mm", " mm"), ("宽度", "width_mm", " mm"),
+              ("轴孔", "bore_mm", " mm"), ("负载", "load_kg", " kg"),
+              ("重量", "mass_g", " g"), ("材料", "material", "")],
+    "referee": [("模块", "module_type", ""), ("电压", "voltage_V", " V"),
+                ("电流", "current_A", " A"), ("接口", "iface", ""),
+                ("重量", "mass_g", " g")],
     "connector": [("位数", "positions", " P"), ("间距", "pitch_mm", " mm"),
                   ("额定电流", "current_rated_A", " A"), ("额定电压", "voltage_rated_V", " V"),
                   ("安装", "mount_type", ""), ("接口", "iface", "")],

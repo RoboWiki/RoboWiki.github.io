@@ -51,6 +51,11 @@ SPEC_KEYS = {
     "input_voltage", "charge_power_w", "charge_current_a", "discharge_power_w",
     "discharge_current_a", "balance_current_ma", "cell_range", "chemistries",
     "usb_output", "wireless_charge_w", "display", "connectors", "smart_features",
+    # 结构件 / 轮组 / 裁判系统 / 视觉与传感扩展
+    "diameter_mm", "width_mm", "load_kg", "bore_mm", "module_type", "current_A",
+    "led_count", "sensor", "mount",
+    "focal_mm", "fov_deg",
+    "material", "speed_s_60deg", "stall_torque_Nm",
     # 立创采集 / 电源芯片
     "category_cn", "lcsc_part", "params", "price_tiers", "price_lead", "stock",
     "stock_lead", "lead_time", "jlc_library", "tags", "fetched_at", "voltage_in",

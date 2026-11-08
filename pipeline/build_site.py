@@ -482,6 +482,30 @@ def generic_table(items: list[dict], cat: str, href: dict[str, str] | None = Non
                     f"| {s.get('input_voltage') or '—'} "
                     f"| {_price_cell(p.get('price_cny'))} "
                     f"| {tier_badge(p['source_tier'], p['verified'])} |")
+    elif cat in ("structural", "wheel"):
+        head = ("| 型号 / 规格 | 厂商 | 类型 | 规格 | 负载 | 重量 | 价格 ¥ | 来源 |\n"
+                "|---|---|---|---|---|---|---|---|")
+        def row(p):
+            s = p["specs"]
+            spec = s.get("size_mm") or s.get("diameter_mm")
+            if s.get("diameter_mm") and s.get("width_mm"):
+                spec = f"{num(s['diameter_mm'])}×{num(s['width_mm'])} mm"
+            return (f"| {mdl(p, (href or {}).get(p['id']))} | {p['vendor']} "
+                    f"| {p.get('subtype_label') or p['subtype']} "
+                    f"| {spec or '—'} "
+                    f"| {num(s.get('load_kg'))} kg | {num(s.get('mass_g'))} g "
+                    f"| {_price_cell(p.get('price_cny'))} "
+                    f"| {tier_badge(p['source_tier'], p['verified'])} |")
+    elif cat == "referee":
+        head = ("| 型号 | 模块 | 电压 | 电流 | 接口 | 价格 ¥ | 来源 |\n"
+                "|---|---|---|---|---|---|---|")
+        def row(p):
+            s = p["specs"]
+            return (f"| {mdl(p, (href or {}).get(p['id']))} | {s.get('module_type') or (p.get('subtype_label') or p['subtype'])} "
+                    f"| {num(s.get('voltage_V'))} V | {num(s.get('current_A'))} A "
+                    f"| {s.get('iface') or '—'} "
+                    f"| {_price_cell(p.get('price_cny'))} "
+                    f"| {tier_badge(p['source_tier'], p['verified'])} |")
     else:
         head = "| 型号 | 子类 | 接口 | 关键参数 | 价格 ¥ | 来源 |\n|---|---|---|---|---|---|"
         def row(p):
@@ -1205,6 +1229,10 @@ def main() -> None:
         "repeatability_mm": "重复精度 (mm)", "scan_freq_hz": "开关频率",
         "spot_size_mm": "光斑尺寸 (mm)", "laser_class": "激光等级",
         "wavelength_nm": "波长 (nm)", "ambient_light_klx": "抗环境光 (klx)",
+        # 结构件 / 轮组 / 裁判 / 视觉扩展
+        "diameter_mm": "直径 (mm)", "width_mm": "宽度 (mm)", "bore_mm": "轴孔 (mm)",
+        "load_kg": "额定负载 (kg)", "module_type": "模块类型", "current_A": "电流 (A)",
+        "led_count": "灯珠数", "sensor": "传感器", "mount": "镜头接口", "material": "材料",
         "chip_function": "芯片类型",
         "charge_current": "最大充电电流",
         "v_float": "充电饱和电压",
