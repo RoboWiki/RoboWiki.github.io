@@ -167,13 +167,13 @@ export const LAYERS: Layer[] = [
     desc: '按电流回路、接口与散热设计硬件，把电池、电源、驱动与连接器的余量写成可核对的值。',
     role: 'layer',
     categories: [
-      'controller_high', 'battery', 'power', 'connector', 'module',
+      'controller_high', 'battery', 'charger', 'power', 'connector', 'module',
       'chip', 'open_hw', 'remote_controller', 'esc',
     ],
     guides: ['motor-specs', 'control-chain'],
     questions: ['峰值电流与母线压降够不够？', '接口、连接器与散热余量够不够？', '器件供货与替代方案是否可查？'],
     tone: 'text-layer-hw',
-    hint: '上位机、电池、电源、连接器、芯片与开源硬件',
+    hint: '上位机、电池、充电器、电源、连接器、芯片与开源硬件',
   },
   {
     id: 'embedded',

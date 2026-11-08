@@ -135,6 +135,14 @@ const FACTS: Record<string, PartFact[]> = {
     { label: '质量', unit: ' g', keys: ['mass_g'] },
     { label: '体系', keys: ['chem'] },
   ],
+  charger: [
+    { label: '充电功率', unit: ' W', keys: ['charge_power_w'] },
+    { label: '充电电流', keys: ['charge_current_a'] },
+    { label: '平衡电流', unit: ' mA', keys: ['balance_current_ma'] },
+    { label: '支持串数', keys: ['cell_range'] },
+    { label: '输入', keys: ['input_voltage'] },
+    { label: '重量', unit: ' g', keys: ['weight_g'] },
+  ],
   module: [
     { label: 'CAN', keys: ['can'], derived: canCell },
     { label: '速率', unit: ' Mbps', keys: ['can_speed_mbps'] },

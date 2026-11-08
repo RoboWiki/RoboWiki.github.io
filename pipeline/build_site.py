@@ -471,6 +471,17 @@ def generic_table(items: list[dict], cat: str, href: dict[str, str] | None = Non
                     f"| {s.get('iface') or '—'} | {kv or '—'} "
                     f"| {_price_cell(p.get('price_cny'))} "
                     f"| {tier_badge(p['source_tier'], p['verified'])} |")
+    elif cat == "charger":
+        head = ("| 型号 | 厂商 | 充电功率 | 充电电流 | 平衡电流 | 串数 | 输入 | 价格 ¥ | 来源 |\n"
+                "|---|---|---|---|---|---|---|---|---|")
+        def row(p):
+            s = p["specs"]
+            return (f"| {mdl(p, (href or {}).get(p['id']))} | {p['vendor']} "
+                    f"| {num(s.get('charge_power_w'))} W | {s.get('charge_current_a') or '—'} "
+                    f"| {num(s.get('balance_current_ma'))} mA | {s.get('cell_range') or '—'} "
+                    f"| {s.get('input_voltage') or '—'} "
+                    f"| {_price_cell(p.get('price_cny'))} "
+                    f"| {tier_badge(p['source_tier'], p['verified'])} |")
     else:
         head = "| 型号 | 子类 | 接口 | 关键参数 | 价格 ¥ | 来源 |\n|---|---|---|---|---|---|"
         def row(p):

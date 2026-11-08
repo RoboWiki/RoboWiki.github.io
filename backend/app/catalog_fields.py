@@ -47,6 +47,10 @@ SPEC_KEYS = {
     # 电池
     "capacity_mah", "energy_wh", "discharge_rate_c", "current_rated_A",
     "v_charge_V", "mass_g", "chem",
+    # 充电器（平衡充 / 充放管理）
+    "input_voltage", "charge_power_w", "charge_current_a", "discharge_power_w",
+    "discharge_current_a", "balance_current_ma", "cell_range", "chemistries",
+    "usb_output", "wireless_charge_w", "display", "connectors", "smart_features",
     # 立创采集 / 电源芯片
     "category_cn", "lcsc_part", "params", "price_tiers", "price_lead", "stock",
     "stock_lead", "lead_time", "jlc_library", "tags", "fetched_at", "voltage_in",

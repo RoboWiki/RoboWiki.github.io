@@ -162,6 +162,10 @@ KNOWN_SPEC_KEYS = {
     # 电池（智能电池 / 动力电池）
     "capacity_mah", "energy_wh", "discharge_rate_c", "current_rated_A",
     "v_charge_V", "mass_g", "chem",
+    # 充电器（平衡充 / 充放管理）
+    "input_voltage", "charge_power_w", "charge_current_a", "discharge_power_w",
+    "discharge_current_a", "balance_current_ma", "cell_range", "chemistries",
+    "usb_output", "wireless_charge_w", "display", "connectors", "smart_features",
     # 电源类芯片（立创商城采集）
     "category_cn", "lcsc_part", "params", "price_tiers", "price_lead", "stock", "stock_lead", "lead_time", "jlc_library", "tags", "fetched_at", "voltage_in", "voltage_out", "current_out", "function_type", "output_type", "polarity", "freq", "chip_function", "charge_current", "v_float", "battery_type", "cells", "switch_type", "channels", "logic", "features", "coupon",
     # 连接器
