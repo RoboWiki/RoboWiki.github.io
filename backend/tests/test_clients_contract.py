@@ -61,7 +61,7 @@ def test_part_list_has_share_fields_and_compact_shape(client):
     item = d["items"][0]
     assert "specs" not in item
     assert "rating_count" in item and "rating_avg" in item
-    assert 0 < len(item["key_specs"]) <= 3
+    assert 0 < len(item["key_specs"]) <= 6  # 与后端 _CARD_LIMIT 一致
     assert all(x.get("label") and x.get("value") for x in item["key_specs"])
     assert item["web_path"].startswith("/parts/")
     assert item["web_path"].endswith(".html")
