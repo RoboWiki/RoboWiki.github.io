@@ -482,6 +482,17 @@ def generic_table(items: list[dict], cat: str, href: dict[str, str] | None = Non
                     f"| {s.get('input_voltage') or '—'} "
                     f"| {_price_cell(p.get('price_cny'))} "
                     f"| {tier_badge(p['source_tier'], p['verified'])} |")
+    elif cat == "power":
+        head = ("| 型号 | 厂商 | 类型 | 输入 | 输出 | 输出电流 | 功率 | 价格 ¥ | 来源 |\n"
+                "|---|---|---|---|---|---|---|---|---|")
+        def row(p):
+            s = p["specs"]
+            return (f"| {mdl(p, (href or {}).get(p['id']))} | {p['vendor']} "
+                    f"| {p.get('subtype_label') or p['subtype']} "
+                    f"| {s.get('voltage_in') or '—'} | {s.get('voltage_out') or '—'} "
+                    f"| {num(s.get('current_out'))} A | {num(s.get('power_w'))} W "
+                    f"| {_price_cell(p.get('price_cny'))} "
+                    f"| {tier_badge(p['source_tier'], p['verified'])} |")
     elif cat in ("structural", "wheel"):
         head = ("| 型号 / 规格 | 厂商 | 类型 | 规格 | 负载 | 重量 | 价格 ¥ | 来源 |\n"
                 "|---|---|---|---|---|---|---|---|")

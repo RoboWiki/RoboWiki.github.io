@@ -70,6 +70,7 @@ _FALLBACK_CATEGORY_LABELS = {
     "structural": "结构件与紧固",
     "wheel": "轮组与底盘",
     "referee": "裁判系统",
+    "power": "电源与配电",
 }
 
 CATEGORY_LABELS = {**_FALLBACK_CATEGORY_LABELS, **_labels_from_taxonomy()}
@@ -256,6 +257,8 @@ _CARD_FACTS = {
     "referee": [("模块", "module_type", ""), ("电压", "voltage_V", " V"),
                 ("电流", "current_A", " A"), ("接口", "iface", ""),
                 ("重量", "mass_g", " g")],
+    "power": [("输入", "voltage_in", ""), ("输出", "voltage_out", ""),
+              ("输出电流", "current_out", " A"), ("功率", "power_w", " W")],
     "connector": [("位数", "positions", " P"), ("间距", "pitch_mm", " mm"),
                   ("额定电流", "current_rated_A", " A"), ("额定电压", "voltage_rated_V", " V"),
                   ("安装", "mount_type", ""), ("接口", "iface", "")],
