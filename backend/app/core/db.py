@@ -41,12 +41,22 @@ def session() -> Session:
 
 # ── 种子 ────────────────────────────────────────────────────────────────────
 
+#: parts.search 走 btree 索引，Postgres 单行索引项上限约 2704 字节；
+#: 中文按 UTF-8 每个字 3 字节，notes 长的条目（如 SICK DT35）会直接把索引撑爆。
+#: 截断按字节做、保留前面的厂商/型号/标题，notes 在最后，裁掉的只会是尾部。
+_SEARCH_MAX_BYTES = 1800
+
+
 def _search_blob(r: dict) -> str:
     sp = r.get("specs") or {}
-    return " ".join(str(x) for x in (
+    blob = " ".join(str(x) for x in (
         r.get("vendor"), r.get("vendor_cn"), r.get("model"), r.get("title"),
         sp.get("comm"), sp.get("encoder"), r.get("notes"),
     ) if x).lower()
+    raw = blob.encode("utf-8")
+    if len(raw) > _SEARCH_MAX_BYTES:
+        blob = raw[:_SEARCH_MAX_BYTES].decode("utf-8", "ignore")
+    return blob
 
 
 def iter_seed_files():
