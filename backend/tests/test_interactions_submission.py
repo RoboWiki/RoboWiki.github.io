@@ -31,7 +31,7 @@ from fastapi.testclient import TestClient  # noqa: E402
 
 from app.main import app  # noqa: E402
 
-PART = "cubemars-ak80-6"
+PART = "hota-d6-pro"
 
 
 @pytest.fixture(scope="module")
