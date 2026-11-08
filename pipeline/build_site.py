@@ -493,6 +493,37 @@ def generic_table(items: list[dict], cat: str, href: dict[str, str] | None = Non
                     f"| {num(s.get('current_out'))} A | {num(s.get('power_w'))} W "
                     f"| {_price_cell(p.get('price_cny'))} "
                     f"| {tier_badge(p['source_tier'], p['verified'])} |")
+    elif cat == "equipment":
+        head = ("|型号 | 厂商 | 类型 | 关键参数 | 价格 ¥ | 来源 |\n"
+                "|---|---|---|---|---|---|")
+        # 设备库按子类各列关键参数：打印机看成型尺寸、激光机看幅面与功率、仪器看带宽与采样率。
+        _EQ = {
+            "printer": [("成型尺寸", "build_volume_mm", ""), ("最大速度", "max_speed_mms", " mm/s"),
+                        ("最高温度", "temp_max_C", " ℃"), ("功率", "power_w", " W"),
+                        ("重量", "weight_g", " g")],
+            "laser": [("幅面", "cut_area_mm", ""), ("激光功率", "laser_power_w", " W"),
+                      ("波长", "wavelength_nm", " nm"), ("最大速度", "max_speed_mms", " mm/s")],
+            "solder": [("最高温度", "temp_max_C", " ℃"), ("功率", "power_w", " W"),
+                       ("尺寸", "dims", "")],
+            "supply": [("电压范围", "voltage_range_V", ""), ("输出电流", "current_out", " A"),
+                       ("功率", "power_w", " W"), ("尺寸", "dims", "")],
+            "meter": [("分辨率", "resolution", ""), ("带宽", "bandwidth_mhz", " MHz"),
+                      ("采样率", "sample_rate_msps", " MS/s"), ("输出频率", "max_freq_mhz", " MHz"),
+                      ("通道", "channels", ""), ("接口", "iface", "")],
+        }
+        def row(p):
+            s = p["specs"]
+            cells = []
+            for lb, k, unit in _EQ.get(p.get("subtype"), []):
+                v = s.get(k)
+                if v is None or v == "":
+                    continue
+                cells.append(f"{lb} {num(v)}{unit if isinstance(v, (int, float)) else ''}")
+            kv = "；".join(cells) or "—"
+            return (f"| {mdl(p, (href or {}).get(p['id']))} | {p['vendor']} "
+                    f"| {p.get('subtype_label') or p['subtype']} | {kv} "
+                    f"| {_price_cell(p.get('price_cny'))} "
+                    f"| {tier_badge(p['source_tier'], p['verified'])} |")
     elif cat in ("structural", "wheel"):
         head = ("| 型号 / 规格 | 厂商 | 类型 | 规格 | 负载 | 重量 | 价格 ¥ | 来源 |\n"
                 "|---|---|---|---|---|---|---|---|")

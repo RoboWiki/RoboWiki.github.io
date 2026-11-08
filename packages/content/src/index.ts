@@ -24,17 +24,24 @@ export const WEB_NAV: WebNavItem[] = [
   },
   {
     key: 'builds',
-    label: '方案',
+    label: '方案库',
     desc: '可复现方案，含 BOM 与步骤',
     href: '/builds.html',
     match: ['/builds', '/robots', '/competitions'],
   },
   {
     key: 'catalog',
-    label: '部件',
+    label: '部件库',
     desc: '参数带来源，缺失写 null',
     href: '/catalog.html',
     match: ['/catalog', '/parts', '/materials'],
+  },
+  {
+    key: 'equipment',
+    label: '设备库',
+    desc: '做机器人的工具与仪器',
+    href: '/catalog.html?category=equipment',
+    match: ['/catalog', '/parts'],
   },
   {
     key: 'community',
@@ -61,8 +68,8 @@ export type AppTab = {
 /** 小程序 tabBar：首页 / 部件 / 方案 / 社区 / 我的 */
 export const APP_TABS: AppTab[] = [
   { key: 'home', label: '首页', pagePath: 'pages/home/index' },
-  { key: 'catalog', label: '部件', pagePath: 'pages/index/index' },
-  { key: 'builds', label: '方案', pagePath: 'pages/builds/index' },
+  { key: 'catalog', label: '部件库', pagePath: 'pages/index/index' },
+  { key: 'builds', label: '方案库', pagePath: 'pages/builds/index' },
   { key: 'community', label: '社区', pagePath: 'pages/community/index' },
   { key: 'account', label: '我的', pagePath: 'pages/account/index' },
 ]
@@ -168,7 +175,7 @@ export const LAYERS: Layer[] = [
     role: 'layer',
     categories: [
       'controller_high', 'battery', 'charger', 'power', 'connector', 'module',
-      'chip', 'open_hw', 'remote_controller', 'esc', 'referee',
+      'chip', 'open_hw', 'remote_controller', 'esc', 'referee', 'equipment',
     ],
     guides: ['motor-specs', 'control-chain'],
     questions: ['峰值电流与母线压降够不够？', '接口、连接器与散热余量够不够？', '器件供货与替代方案是否可查？'],

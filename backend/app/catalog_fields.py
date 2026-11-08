@@ -56,6 +56,8 @@ SPEC_KEYS = {
     "led_count", "sensor", "mount",
     "focal_mm", "fov_deg",
     "material", "speed_s_60deg", "stall_torque_Nm",
+    "build_volume_mm", "max_speed_mms", "temp_max_C", "materials",
+    "connectivity",
     # 立创采集 / 电源芯片
     "category_cn", "lcsc_part", "params", "price_tiers", "price_lead", "stock",
     "stock_lead", "lead_time", "jlc_library", "tags", "fetched_at", "voltage_in",

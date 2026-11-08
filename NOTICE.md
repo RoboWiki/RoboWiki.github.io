@@ -13,18 +13,23 @@
 
 ## 许可证
 
-本仓库代码与整理成果按 **GNU General Public License v3.0** 发布，全文见 [`LICENSE`](https://github.com/RoboWiki/RoboWiki.github.io/blob/main/LICENSE)。
+本仓库代码与整理成果按 **GNU Affero General Public License v3.0**（AGPL-3.0）发布，全文见 [`LICENSE`](https://github.com/RoboWiki/RoboWiki.github.io/blob/main/LICENSE)。
 
-GPL-3.0 本身**允许商业使用**。上面那句「仅用于非商业」说的是**这个站点的定位**——
-我们不做商业售卖、不收佣金、不卖数据——不是给许可证附加限制（GPL 第 7 条也不允许附加限制）。
-换句话说：你可以拿它做任何 GPL 允许的事；我们只是自己不做生意。
+AGPL-3.0 本身**允许商业使用**。上面那句「仅用于非商业」说的是**这个站点的定位**——
+我们不做商业售卖、不收佣金、不卖数据——不是给许可证附加限制（AGPL 第 7 条也不允许附加限制）。
+换句话说：你可以拿它做任何 AGPL 允许的事；我们只是自己不做生意。
+
+**和 GPL-3.0 的关键区别是第 13 条**：如果你把本仓代码改过后架成对外提供服务的网络站点
+（API、网页、MCP 都算），你必须向那个服务的所有用户提供拿到对应源码的方式。
+直接用 Pages / GitHub 看这个站不算，我们没有改动它；但你自己起的副本算。
+源码入口就是这两个仓库本身：`RoboWiki/RoboWiki.github.io` 与 `RoboWiki/RoboWiki`。
 
 ## 仓库里混着四类东西
 
 | 内容 | 位置 | 谁的权利 | 你要注意什么 |
 |---|---|---|---|
-| **代码与整理成果** | 本仓 `pipeline/` `backend/` `apps/` `packages/` `tools/`；`RoboWiki` 仓 `data/` `schema/` | 按 GPL-3.0 发布 | 分发时附上 LICENSE 与源码 |
-| **厂商参数** | 各条目的 `specs` 字段 | 事实性数据不主张版权；**我们整理的口径与集合**适用 GPL-3.0 | 转载时保留 `source_tier`（A/B/C）与 `last_checked`，删掉这两个字段数字的含义就变了 |
+| **代码与整理成果** | 本仓 `pipeline/` `backend/` `apps/` `packages/` `tools/`；`RoboWiki` 仓 `data/` `schema/` | 按 AGPL-3.0 发布 | 分发时附上 LICENSE 与源码 |
+| **厂商参数** | 各条目的 `specs` 字段 | 事实性数据不主张版权；**我们整理的口径与集合**适用 AGPL-3.0 | 转载时保留 `source_tier`（A/B/C）与 `last_checked`，删掉这两个字段数字的含义就变了 |
 | **厂商手册 / 商品图** | `doc_pdf`、`image_url` | **版权归原厂 / 原商城**。手册原则上只给链接（当前唯一例外：用户提供并同意分发的 `Amass XT30(2+2)` 规格书，位于 `/docs/amass/xt30-2p2.pdf`，收到通知即下架）；**产品图随条目托管在`RoboWiki` 仓**（`assets/parts/`，页面走 `/parts/*.jpg`），出处逐条写在 `image_source` | 未逐张取得书面许可：你要用请回源头确认；权利人要求撤下，我们说撤就撤 |
 | **第三方仓库与代码** | `repo_urls` | 归各仓库作者，页面标了 `repo_license` | 按原方许可使用，本站不主张任何权利 |
 | **站点文章** | `apps/web/src/content/` 等编辑内容 | 新投稿按 CC BY-SA 4.0 | 署名、相同方式共享；图片仍归原方 |

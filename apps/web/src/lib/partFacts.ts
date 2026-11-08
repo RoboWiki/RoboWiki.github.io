@@ -211,6 +211,48 @@ const FACTS: Record<string, PartFact[]> = {
   ],
 }
 
+/**
+ * 设备库按子类各一张表：打印机看成型尺寸、激光机看幅面与功率、
+ * 仪器看带宽与采样率——共用一张表会让每个子类都露出一排无意义的「—」。
+ */
+const EQUIPMENT_FACTS: Record<string, PartFact[]> = {
+  printer: [
+    { label: '成型尺寸', keys: ['build_volume_mm', 'dims'] },
+    { label: '最大速度', unit: ' mm/s', keys: ['max_speed_mms'] },
+    { label: '最高温度', unit: ' ℃', keys: ['temp_max_C'] },
+    { label: '功率', unit: ' W', keys: ['power_w'] },
+    { label: '重量', unit: ' g', keys: ['weight_g'] },
+    { label: '适用材料', keys: ['materials'] },
+  ],
+  laser: [
+    { label: '切割幅面', keys: ['cut_area_mm', 'dims'] },
+    { label: '激光功率', unit: ' W', keys: ['laser_power_w'] },
+    { label: '波长', unit: ' nm', keys: ['wavelength_nm'] },
+    { label: '最大速度', unit: ' mm/s', keys: ['max_speed_mms'] },
+    { label: '适用材料', keys: ['materials'] },
+    { label: '重量', unit: ' g', keys: ['weight_g'] },
+  ],
+  solder: [
+    { label: '最高温度', unit: ' ℃', keys: ['temp_max_C'] },
+    { label: '功率', unit: ' W', keys: ['power_w'] },
+    { label: '尺寸', keys: ['dims'] },
+  ],
+  supply: [
+    { label: '电压范围', keys: ['voltage_range_V', 'voltage_in'] },
+    { label: '输出电流', unit: ' A', keys: ['current_out'] },
+    { label: '功率', unit: ' W', keys: ['power_w'] },
+    { label: '尺寸', keys: ['dims'] },
+  ],
+  meter: [
+    { label: '分辨率', keys: ['resolution'] },
+    { label: '带宽', unit: ' MHz', keys: ['bandwidth_mhz'] },
+    { label: '采样率', unit: ' MS/s', keys: ['sample_rate_msps'] },
+    { label: '输出频率', unit: ' MHz', keys: ['max_freq_mhz'] },
+    { label: '通道', keys: ['channels'] },
+    { label: '接口', keys: ['iface'] },
+  ],
+}
+
 /** 没单独定义口径的品类（结构件等）：退到通用硬件字段。 */
 const GENERIC: PartFact[] = [
   { label: '接口', keys: ['iface'] },
@@ -225,7 +267,9 @@ export type FactCell = { label: string; value: string }
 
 export function partFacts(p: CatalogPart): FactCell[] {
   const specs = (p.specs ?? {}) as Record<string, unknown>
-  const table = FACTS[p.category] || GENERIC
+  const table = p.category === 'equipment'
+    ? EQUIPMENT_FACTS[p.subtype ?? ''] || GENERIC
+    : FACTS[p.category] || GENERIC
   return table.map(fact => {
     let raw: number | string | null = null
     if (fact.derived) {

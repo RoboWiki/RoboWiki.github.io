@@ -16,7 +16,7 @@ const thinCategories = (catalog.categories || [])
   .sort((a, b) => a.count - b.count)
 const vendors = new Set(parts.map(p => p.vendor).filter(Boolean)).size
 const stats = [
-  { label: '部件', value: catalog.count },
+  { label: '部件库', value: catalog.count },
   { label: '厂商', value: vendors },
   { label: '品类', value: catalog.categories?.length ?? 0 },
 ]

@@ -171,6 +171,8 @@ KNOWN_SPEC_KEYS = {
     "led_count", "sensor", "mount",
     "focal_mm", "fov_deg",
     "material", "speed_s_60deg", "stall_torque_Nm",
+    "build_volume_mm", "max_speed_mms", "temp_max_C", "materials",
+    "connectivity",
     # 电源类芯片（立创商城采集）
     "category_cn", "lcsc_part", "params", "price_tiers", "price_lead", "stock", "stock_lead", "lead_time", "jlc_library", "tags", "fetched_at", "voltage_in", "voltage_out", "current_out", "function_type", "output_type", "polarity", "freq", "chip_function", "charge_current", "v_float", "battery_type", "cells", "switch_type", "channels", "logic", "features", "coupon",
     # 连接器
@@ -244,7 +246,7 @@ PLAUSIBLE = {
     "frequency_ghz": (0.3, 6.0),
     "control_range_m": (1.0, 100000.0),
     "can_speed_mbps": (0.01, 20.0),
-    "weight_g": (0.1, 10000.0),
+    "weight_g": (0.1, 100000.0),  # 整机设备（3D 打印机 30 kg 级）常见，放到 100 kg
     # 连接器
     "positions": (1, 100),
     "pitch_mm": (0.2, 30.0),

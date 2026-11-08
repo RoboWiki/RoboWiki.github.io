@@ -70,6 +70,7 @@ _FALLBACK_CATEGORY_LABELS = {
     "structural": "结构件与紧固",
     "wheel": "轮组与底盘",
     "referee": "裁判系统",
+    "equipment": "设备库",
     "power": "电源与配电",
 }
 
@@ -205,7 +206,7 @@ def public_part(p: Part) -> dict:
         "notes": p.notes,
         "image_url": (p.specs or {}).get("image_url"),
         "web_path": part_web_path(p),
-        "key_specs": _card_specs(p.category, p.specs or {}),
+        "key_specs": _card_specs(p.category, p.specs or {}, p.subtype or ""),
     }
 
 
@@ -259,6 +260,23 @@ _CARD_FACTS = {
                 ("重量", "mass_g", " g")],
     "power": [("输入", "voltage_in", ""), ("输出", "voltage_out", ""),
               ("输出电流", "current_out", " A"), ("功率", "power_w", " W")],
+    # 设备库按子类各一张表：打印机看成型尺寸、激光机看幅面与功率、仪器看带宽与采样率。
+    "equipment": [("成型尺寸", "build_volume_mm", ""), ("最大速度", "max_speed_mms", " mm/s"),
+                  ("最高温度", "temp_max_C", " ℃"), ("功率", "power_w", " W"),
+                  ("重量", "weight_g", " g")],
+    "equipment/printer": [("成型尺寸", "build_volume_mm", ""), ("最大速度", "max_speed_mms", " mm/s"),
+                          ("最高温度", "temp_max_C", " ℃"), ("功率", "power_w", " W"),
+                          ("重量", "weight_g", " g"), ("材料", "materials", "")],
+    "equipment/laser": [("幅面", "cut_area_mm", ""), ("激光功率", "laser_power_w", " W"),
+                        ("波长", "wavelength_nm", " nm"), ("最大速度", "max_speed_mms", " mm/s"),
+                        ("重量", "weight_g", " g")],
+    "equipment/solder": [("最高温度", "temp_max_C", " ℃"), ("功率", "power_w", " W"),
+                         ("尺寸", "dims", "")],
+    "equipment/supply": [("电压范围", "voltage_range_V", ""), ("输出电流", "current_out", " A"),
+                         ("功率", "power_w", " W"), ("尺寸", "dims", "")],
+    "equipment/meter": [("分辨率", "resolution", ""), ("带宽", "bandwidth_mhz", " MHz"),
+                        ("采样率", "sample_rate_msps", " MS/s"), ("输出频率", "max_freq_mhz", " MHz"),
+                        ("通道", "channels", ""), ("接口", "iface", "")],
     "connector": [("位数", "positions", " P"), ("间距", "pitch_mm", " mm"),
                   ("额定电流", "current_rated_A", " A"), ("额定电压", "voltage_rated_V", " V"),
                   ("安装", "mount_type", ""), ("接口", "iface", "")],
@@ -273,7 +291,7 @@ _CARD_GENERIC = [("接口", "iface", ""), ("电压", "voltage_V", " V"), ("CAN",
 _CARD_LIMIT = 6
 
 
-def _card_specs(category: str, specs: dict) -> list[dict]:
+def _card_specs(category: str, specs: dict, subtype: str = "") -> list[dict]:
     def val(v: object, unit: str, key: str = "") -> str:
         if isinstance(v, bool):
             return "是" if v else "否"
@@ -287,7 +305,12 @@ def _card_specs(category: str, specs: dict) -> list[dict]:
 
     out: list[dict] = []
     seen: set[str] = set()
-    for label, key, unit in _CARD_FACTS.get(category, []) + _CARD_GENERIC:
+    # 设备库先按 "equipment/<子类>" 找子类表，没有再退回哪形。
+    if category == "equipment" and subtype:
+        facts = _CARD_FACTS.get(f"equipment/{subtype}", []) or _CARD_FACTS.get("equipment", [])
+    else:
+        facts = _CARD_FACTS.get(category, [])
+    for label, key, unit in facts + _CARD_GENERIC:
         # 通用兜底会和品类表撞键（接口 / CAN / 电压），撞了就会同一行显示两遍。
         if key in seen:
             continue
@@ -332,7 +355,7 @@ def public_part_card(p: Part) -> dict:
         "price_cny": p.price_cny,
         "image_url": (p.specs or {}).get("image_url"),
         "web_path": part_web_path(p),
-        "key_specs": _card_specs(p.category, p.specs or {}),
+        "key_specs": _card_specs(p.category, p.specs or {}, p.subtype or ""),
     }
 
 
