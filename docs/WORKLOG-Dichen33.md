@@ -8,7 +8,7 @@
 
 | 时间 | 类型 | 分支 / 提交 | 修改内容 | 验证 |
 |---|---|---|---|---|
-| 19:04 | 功能 / 展示 | ccc（未提交） | 部件参数统一为「中文名 / 单位」：生成页与部件库弹窗共用同一套标签（语义表 → taxonomy → 内置字典 → 单位后缀兜底），保留 CPU/SoC 等专业缩写，布尔值译「是/否」、枚举译中文、`减速比` 不再显示 `:1`；资料页/数据表/仓库/URDF 在型号页与弹窗中可点；`catalog.json` 随构建产出 `specLabels` 与 `links` | `pytest -q tests/test_pipeline.py` 17 passed；`.data` v2026.11.2 重建后 VitePress 构建通过；浏览器核对 DM-J4340 `峰值扭矩 / N·m`、`关节反射惯量 / kg·m²`、`减速比 40`，Jetson `SoC` / `算力 / TOPS`、布尔值「是/否」，`/catalog.html` 弹窗中文标签且资料页链接可点；生成页不随本次提交，由 CI 按 `data.lock.json` 重建 |
+| 19:04 | 功能 / 展示 | ccc `c0eddc5` | 部件参数统一为「中文名 / 单位」：生成页与部件库弹窗共用同一套标签（语义表 → taxonomy → 内置字典 → 单位后缀兜底），保留 CPU/SoC 等专业缩写，布尔值译「是/否」、枚举译中文、`减速比` 不再显示 `:1`；资料页/数据表/仓库/URDF 在型号页与弹窗中可点；`catalog.json` 随构建产出 `specLabels` 与 `links` | `pytest -q tests/test_pipeline.py` 17 passed；`.data` v2026.11.2 重建后 VitePress 构建通过；浏览器核对 DM-J4340 `峰值扭矩 / N·m`、`关节反射惯量 / kg·m²`、`减速比 40`，Jetson `SoC` / `算力 / TOPS`、布尔值「是/否」，`/catalog.html` 弹窗中文标签且资料页链接可点；生成页不随本次提交，由 CI 按 `data.lock.json` 重建 |
 
 ## 2026-11-05
 
