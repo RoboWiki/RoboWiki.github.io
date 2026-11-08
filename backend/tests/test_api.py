@@ -556,16 +556,16 @@ BOT = {"X-Bot-Token": "test-bot-token"}
 
 
 def test_bot_answer_is_one_line_with_url_and_version(client):
-    r = client.get("/api/v1/bot/answer", params={"q": "gm6020"}, headers=BOT)
+    r = client.get("/api/v1/bot/answer", params={"q": "6203"}, headers=BOT)
     assert r.status_code == 200, r.text
     d = r.json()
     assert d["found"] is True
-    assert d["part"]["model"].lower().startswith("gm6020")
+    assert d["part"]["model"].lower().startswith("6203")
     assert d["url"].endswith(".html")
     assert d["data_version"]
     assert "\n" not in d["answer"]
     assert d["part"]["model"] in d["answer"]
-    assert "已核对" not in d["answer"]  # B 级不显示核对信号
+    assert "已核对" not in d["answer"]  # B 级不显示核对信号（6203-2RS 为 B 级在售件）
 
 
 def test_bot_answer_uses_connector_rated_fields(client):
