@@ -921,6 +921,15 @@ def main() -> None:
     n_share = build_share(rows, slugs, OUT, SITE_URL, _data_version())
     print(f"  分享卡 {n_share} 条 -> public/share")
 
+    pub = OUT / "public"
+    pub.mkdir(parents=True, exist_ok=True)
+    # 链接、图片、渠道标签与抓取元数据不进「公开参数」表 —— 它们在「资料与链接」
+    # 与卡片里各有专门位置，混进参数表只会让一张技术表格变成目录。
+    _SPEC_META_KEYS = {
+        "image_url", "image_source", "doc_url", "doc_pdf", "repo_urls",
+        "urdf_urls", "repo_license", "price_tiers", "tags", "coupon", "fetched_at",
+    }
+
     # ── 静态目录快照：让静态站也能做交互式检索 ────────────────────────
     # 数据本来就是静态的（data/*.json），排序 / 筛选 / 搜索都是客户端计算，
     # 浏览器做比 API 做更合适，而且静态站能深链、能被收录、不用养服务器。
@@ -988,6 +997,25 @@ def main() -> None:
         # 全部列出：同一型号可能并行多条（首购特价 + RC 买二赠一），按价格升序
         return [pack(o, p) for p, o in sorted(priced, key=lambda x: x[0])]
 
+    def part_links(r: dict) -> list[dict]:
+        """弹窗里的可点链接：资料页 / 数据表 / 仓库 / URDF，去重后按优先级排。"""
+        s = r.get("specs") or {}
+        out: list[dict] = []
+        seen: set[str] = set()
+
+        def add(kind: str, u) -> None:
+            if u and str(u) not in seen:
+                seen.add(str(u))
+                out.append({"kind": kind, "url": str(u)})
+
+        add("资料页", s.get("doc_url"))
+        add("数据表", s.get("doc_pdf"))
+        for u in (s.get("repo_urls") or []):
+            add("仓库", u)
+        for u in (s.get("urdf_urls") or []):
+            add("URDF", u)
+        return out
+
     digest = []
     for r in rows:
         s = r.get("specs") or {}
@@ -1014,28 +1042,11 @@ def main() -> None:
             "bits": s.get("bits"), "odrHz": s.get("odr_hz"), "fps": s.get("fps"),
             "depthRange": s.get("depth_range_m"), "rangeM": s.get("range_m"),
             "specs": {k: v for k, v in s.items()
-                      if v not in (None, "") and not k.startswith("image")},
+                      if v not in (None, "") and k not in _SPEC_META_KEYS},
+            "links": part_links(r),
             "featured": r["id"] in featured_set,
             "notes": (r.get("notes") or "")[:600],
         })
-    pub = OUT / "public"
-    pub.mkdir(parents=True, exist_ok=True)
-    (pub / "catalog.json").write_text(
-        json.dumps({"meta": _artifact_meta(len(digest)),
-                    "count": len(digest), "parts": digest,
-                    # 品类表随产物一起发：前端不再硬编码品类名，
-                    # 加品类 / 改名只动 data/taxonomy.json
-                    "featured": {"ids": featured_ids, "updated_at": _feat.get("updated_at")},
-                    "categories": [
-                        {"id": c["id"], "name": c.get("name", c["id"]),
-                         "hint": c.get("hint", ""),
-                         "subtypes": c.get("subtypes") or {},
-                         "keys": c.get("keys") or [],
-                         "sorts": c.get("sorts") or []}
-                        for c in (load_taxonomy().get("categories") or [])]},
-                   ensure_ascii=False, separators=(",", ":")),
-        encoding="utf-8")
-    print(f"  静态目录 {len(digest)} 条 / {(pub / 'catalog.json').stat().st_size // 1024} KB")
 
     # 产品图：从 console/public/parts 复制到文档站的 public。
     # 两站要能各自独立部署，所以不能靠相对路径引用另一棵树。
@@ -1087,7 +1098,7 @@ def main() -> None:
         "speed_rated_rpm": "额定转速 (rpm)", "gear": "减速比",
         "mass_kg": "质量 (kg)", "od_mm": "外径 (mm)", "l_mm": "长度 (mm)",
         "rotor_inertia_kgm2": "转子惯量 (kg·m²)", "inertia_basis": "惯量口径",
-        "armature_kgm2": "转子惯量 (kg·m²)", "voltage_V": "额定电压 (V)",
+        "armature_kgm2": "关节反射惯量 (kg·m²)", "voltage_V": "额定电压 (V)",
         "voltage_range_V": "电压范围 (V)", "kt_Nm_per_A": "转矩常数 (N·m/A)",
         "r_phase_ohm": "相电阻 (Ω)", "l_phase_uh": "相电感 (µH)",
         "pole_pairs": "极对数", "i_peak_A": "峰值电流 (A)", "i_rated_A": "额定电流 (A)",
@@ -1150,7 +1161,7 @@ def main() -> None:
         "lcsc_part": "立创编号",
         "params": "参数",
         "price_tiers": "价格梯度（含税）",
-        "price_lead": "立推价",
+        "price_lead": "立推价 (¥)",
         "stock": "库存",
         "stock_lead": "立推库存",
         "lead_time": "交期",
@@ -1186,10 +1197,138 @@ def main() -> None:
         "gear_material": "齿轮材料", "housing_material": "外壳材料",
         "bearing": "轴承", "mounting": "安装方式", "backlash_arcmin": "背隙 (arcmin)",
         "protocol": "协议", "mass_g": "质量 (g)", "params": "参数",
+        # 补齐目录里其余字段，避免新字段退回 snake_case
+        "ambient_light_lux": "抗环境光 (lx)", "angular_resolution": "角分辨率 (°)",
+        "bias_instability": "零偏不稳定性", "blind_m": "盲区 (m)",
+        "case": "外壳", "channel": "线数 (线)", "comm_upper": "上位通信",
+        "connector_wire": "连接线长 (cm)", "cpu": "CPU", "data_4d": "4D 数据",
+        "depth_resolution": "深度分辨率", "effective_points_per_s": "有效点频 (点/s)",
+        "eye_safety": "人眼安全等级", "feedback": "反馈", "fps_note": "帧率说明",
+        "i_idle_mA": "待机电流 (mA)", "i_noload_mA": "空载电流 (mA)",
+        "i_rated_mA": "额定电流 (mA)", "i_stall_A": "堵转电流 (A)",
+        "imu_rate_hz": "IMU 频率 (Hz)", "limit_angle": "限位角度",
+        "mag_range_gauss": "磁力计量程 (G)", "motor": "电机类型",
+        "output": "输出", "power_note": "供电说明", "power_peak_w": "峰值功率 (W)",
+        "ram_gb_note": "内存说明", "ram_options": "可选内存",
+        "range_min_m": "最小测距 (m)", "range_resolution": "测距分辨率 (mm)",
+        "rated_torque_Nm": "额定扭矩 (N·m)", "rgb_fov": "RGB 视场角",
+        "rgb_resolution": "RGB 分辨率", "rgb_sensor": "RGB 传感器",
+        "rgb_shutter": "RGB 快门", "scan": "扫描方式", "shock_g": "抗冲击 (g)",
+        "slam_accuracy": "SLAM 精度", "speed_raw": "速度说明",
+        "speed_rpm": "转速 (rpm)", "speed_s_60deg": "60° 用时 (s)",
+        "spline": "花键", "stall_torque_Nm": "堵转扭矩 (N·m)",
+        "torque_mode": "控制模式", "torque_raw": "扭矩说明",
+        "voltage_range": "电压范围", "wavelength_nm": "波长 (nm)",
     }
+
+    # 少数枚举值仍是英文，展示时换中文；键不在表里就原样返回。
+    _VALUE_ALIASES = {
+        "tau_basis": {"peak": "峰值", "rated": "额定"},
+        "inertia_basis": {"rotor": "转子侧", "output": "输出侧"},
+    }
+    # 顺序重要：长后缀在前，避免 `_mm` 被 `_m` 先匹配。
+    _UNIT_SUFFIXES = [
+        ("_kgm2", "kg·m²"), ("_mm2", "mm²"), ("_mm", "mm"), ("_cm", "cm"),
+        ("_km", "km"), ("_kg", "kg"), ("_g", "g"), ("_Nm", "N·m"),
+        ("_rpm", "rpm"), ("_Mbps", "Mbps"), ("_kHz", "kHz"), ("_Hz", "Hz"),
+        ("_V", "V"), ("_A", "A"), ("_W", "W"), ("_deg", "°"), ("_pct", "%"),
+        ("_TOPS", "TOPS"), ("_GB", "GB"), ("_bit", "bit"), ("_h", "h"),
+        ("_s", "s"), ("_m", "m"),
+    ]
+
+    def _prettify_key(key: str) -> str:
+        return " ".join(w[:1].upper() + w[1:] for w in re.split(r"[._-]+", key) if w)
+
+    def _split_unit(text: str) -> tuple[str, str]:
+        m = re.match(r"^(.*?)\s*\(([^()]+)\)$", str(text).strip())
+        return (m.group(1).strip(), m.group(2).strip()) if m else (str(text).strip(), "")
+
+    # 语义表（schema/semantics.json）是字段中文名与口径的第一来源：
+    # 型号页、口径页、前端都用它，三处对同一个字段必须是同一个名字。
+    _SEM_LABEL = {
+        k: (str(v.get("label") or "").strip(), str(v.get("unit") or "").strip())
+        for k, v in (json.loads((SCHEMA_DIR / "semantics.json").read_text(encoding="utf-8"))
+                     .get("field_semantics") or {}).items()
+    }
+
+    def label_parts(key: str, category: str = "",
+                    overrides: dict | None = None) -> tuple[str, str]:
+        """字段名与单位。覆盖 → 语义表 → taxonomy → SPEC_LABEL → 后缀，逐级兜底。"""
+        # 减速比的语义单位是 ":1"（40:1），标签写成「减速比 / :1」很怪；
+        # 正文已经写「减速比 40」，这里不挂单位。
+        def unit_of(u: str) -> str:
+            return "" if u == ":1" else u
+
+        override = (overrides or {}).get(key)
+        sem_label, sem_unit = _SEM_LABEL.get(key, ("", ""))
+        tax_label, tax_unit = _TAX_LABEL.get((category, key), ("", ""))
+        tax_unit = unit_of(tax_unit)
+        base_label, base_unit = _split_unit(SPEC_LABEL.get(key, ""))
+        base_unit = unit_of(base_unit)
+        if override:
+            name, unit = _split_unit(override)
+            return name, unit_of(unit) or sem_unit or tax_unit or base_unit
+        if sem_label:
+            return sem_label, unit_of(sem_unit) or tax_unit or base_unit
+        if tax_label:
+            return tax_label, tax_unit or base_unit
+        if base_label:
+            return base_label, base_unit
+        for suffix, suffix_unit in _UNIT_SUFFIXES:
+            if key.endswith(suffix) and len(key) > len(suffix):
+                return _prettify_key(key[:-len(suffix)]), suffix_unit
+        return _prettify_key(key), ""
+
+    def spec_value(key: str, v) -> str:
+        if isinstance(v, bool):
+            return "是" if v else "否"
+        if v is None or v == "" or v == []:
+            return "—"
+        if isinstance(v, list):
+            return "、".join(spec_value(key, x) for x in v) if v else "—"
+        if isinstance(v, dict):
+            return "；".join(f"{sk}={spec_value(str(sk), sv)}" for sk, sv in v.items()) or "—"
+        text = num(v, 4) if isinstance(v, (int, float)) else str(v)
+        return _VALUE_ALIASES.get(key, {}).get(text, text)
 
     _TAX_BY_CAT = {c["id"]: [k["k"] for k in (c.get("keys") or [])]
                    for c in (load_taxonomy().get("categories") or [])}
+    # 品类 key 自带的标签与单位（部件库卡片也读这份），详情页沿用同一口径。
+    _TAX_LABEL = {
+        (c["id"], k["k"]): (str(k.get("label") or "").strip(),
+                            str(k.get("unit") or "").strip())
+        for c in (load_taxonomy().get("categories") or [])
+        for k in (c.get("keys") or [])
+        if k.get("k")
+    }
+
+    # 参数中文名随目录一起发布：Vue 端不复制一份字典，避免两边标签漂移。
+    # 同一键在不同品类下单位可能不同，按「品类:字段」登记，前端按当前品类取。
+    spec_labels: dict[str, dict[str, str]] = {}
+    for r in rows:
+        _cat = r.get("category") or ""
+        for _k in (r.get("specs") or {}):
+            if _k in _SPEC_META_KEYS:
+                continue
+            _name, _unit = label_parts(_k, _cat)
+            spec_labels[f"{_cat}:{_k}"] = {"label": _name, "unit": _unit}
+    (pub / "catalog.json").write_text(
+        json.dumps({"meta": _artifact_meta(len(digest)),
+                    "count": len(digest), "parts": digest,
+                    "specLabels": spec_labels,
+                    # 品类表随产物一起发：前端不再硬编码品类名，
+                    # 加品类 / 改名只动 data/taxonomy.json
+                    "featured": {"ids": featured_ids, "updated_at": _feat.get("updated_at")},
+                    "categories": [
+                        {"id": c["id"], "name": c.get("name", c["id"]),
+                         "hint": c.get("hint", ""),
+                         "subtypes": c.get("subtypes") or {},
+                         "keys": c.get("keys") or [],
+                         "sorts": c.get("sorts") or []}
+                        for c in (load_taxonomy().get("categories") or [])]},
+                   ensure_ascii=False, separators=(",", ":")),
+        encoding="utf-8")
+    print(f"  静态目录 {len(digest)} 条 / {(pub / 'catalog.json').stat().st_size // 1024} KB")
     # 同一品类里字段口径不同的子类：详情页核心参数按子类走。
     _TAX_BY_SUBTYPE = {
         ("module", "power"): ["voltage_in", "voltage_out", "current_out",
@@ -1199,22 +1338,6 @@ def main() -> None:
     def cat_keys(r: dict) -> list[str]:
         sub = _TAX_BY_SUBTYPE.get((r.get("category") or "", r.get("subtype") or ""))
         return sub or _TAX_BY_CAT.get(r.get("category") or "", [])
-
-    def _val(v) -> str:
-        """把任意 specs 值渲染成单元格文本。
-
-        ccc 带来的数据里有列表（repo_urls / urdf_urls / sensors），
-        直接丢给 num() 会 TypeError。列表按顿号连，空列表给 —。
-        """
-        if v is None or v == "" or v == []:
-            return "—"
-        if isinstance(v, list):
-            return "、".join(str(x) for x in v) if v else "—"
-        if isinstance(v, dict):
-            return "；".join(f"{k}={x}" for k, x in v.items()) or "—"
-        if isinstance(v, str):
-            return v
-        return num(v, 4)
 
     _CAT_LABEL_OVERRIDES = {
         "remote_controller": {
@@ -1231,36 +1354,32 @@ def main() -> None:
 
     def spec_rows(specs: dict, cat_key_list: list[str] | None = None,
                   category: str = "") -> str:
-        """按品类出参数行。
+        """按品类出参数行，字段一律「中文名 / 单位」。
 
         品类 keys 永远出现（缺 = —，这是本站的诚实口径）；
         其它字段只在有值时出现 —— 否则 IMU 页面会显示一排「峰值扭矩 —」，
         让人以为数据缺失，其实是字段根本不属于这个品类。
+        链接、图片与渠道元数据不进这张表：它们各有专门位置。
         """
         overrides = _CAT_LABEL_OVERRIDES.get(category, {})
 
-        def cell(v) -> str:
-            if category == "module" and isinstance(v, bool):
-                return "是" if v else "否"
-            return _val(v)
+        def display_key(k: str) -> str:
+            name, unit = label_parts(k, category, overrides)
+            return f"{name} / {unit}" if unit else name
 
-        keys = [k for k in (cat_key_list or []) if k in specs or True]
+        def skip(k: str) -> bool:
+            return k in _SPEC_META_KEYS or k == "use_cases"
+
+        keys = [k for k in (cat_key_list or []) if not skip(k)]
         seen: set[str] = set()
         out = []
         for k in keys:
-            v = specs.get(k)
-            if k in ("image_url", "image_source", "use_cases"):
-                continue
             seen.add(k)
-            label = overrides.get(k) or SPEC_LABEL.get(k, k)
-            out.append(f"| {label} | {cell(v)} |")
+            out.append(f"| {display_key(k)} | {spec_value(k, specs.get(k))} |")
         for k, v in specs.items():
-            if k in seen or k in ("image_url", "image_source", "use_cases"):
+            if k in seen or skip(k) or v is None:
                 continue
-            if v is None:
-                continue
-            label = overrides.get(k) or SPEC_LABEL.get(k, k)
-            out.append(f"| {label} | {cell(v)} |")
+            out.append(f"| {display_key(k)} | {spec_value(k, v)} |")
         return "\n".join(out)
 
     # ── 每页要用的派生量（只对关节电机算，其它品类没有这些语义）─────────
@@ -1346,6 +1465,12 @@ def main() -> None:
             _lic = _lic_note(s.get("repo_license"))
             rows.append(("官方仓库 / SDK", str(u),
                          "驱动、例程与协议实现" + (f" · 许可 {_lic}" if _lic else "")))
+        for u in (s.get("urdf_urls") or []):
+            if str(u) in seen_urls:
+                continue
+            seen_urls.add(str(u))
+            rows.append(("URDF / 仿真模型", str(u),
+                         "直接用于 MuJoCo / Isaac 的模型文件"))
         if s.get("image_source"):
             rows.append(("产品图出处", "", str(s["image_source"])))
         if r.get("origin"):
@@ -1539,9 +1664,9 @@ def main() -> None:
         _over = _CAT_LABEL_OVERRIDES.get(cat, {})
 
         def key_row(k: str) -> str:
-            v = s.get(k)
-            val = ("是" if v else "否") if cat == "module" and isinstance(v, bool) else _val(v)
-            return f"| {_over.get(k) or SPEC_LABEL.get(k, k)} | {val} |"
+            name, unit = label_parts(k, cat, _over)
+            label = f"{name} / {unit}" if unit else name
+            return f"| {label} | {spec_value(k, s.get(k))} |"
 
         keyrows = "\n".join(key_row(k) for k in KEY if k in s)
         if not keyrows:

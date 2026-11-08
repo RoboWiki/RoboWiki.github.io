@@ -187,8 +187,12 @@ def test_sidebar_groups_parts(built):
 
 def test_type_pages_grouped_by_subtype(built):
     """传感器按测量类型、模块与开源硬件按功能分，厂商不再作为第二层。"""
+    from pipeline.load import load_parts
+    present = {r["category"] for r in load_parts()}
     side = json.loads((built / ".vitepress" / "sidebar.json").read_text(encoding="utf-8"))
     for cid, name in (("sensor", "传感器"), ("module", "其余模块"), ("open_hw", "开源硬件")):
+        if cid not in present:
+            continue  # 数据版本较旧时不收录该品类；不要为不存在的数据断言页面
         text = (built / "parts" / cid / "index.md").read_text(encoding="utf-8")
         assert "## 类型" in text
         assert "## 厂商" not in text
@@ -235,6 +239,73 @@ def test_catalog_json_matches_part_count(built):
     assert len(d["parts"]) == len(load_parts())
     for p in d["parts"]:
         assert {"id", "slug", "category", "vendor", "model", "offers"} <= set(p)
+
+
+#: 这些字段在「资料与链接」/ 卡片里各有位置，不该出现在参数表里。
+_META_SPEC_KEYS = {
+    "image_url", "image_source", "doc_url", "doc_pdf", "repo_urls",
+    "urdf_urls", "repo_license", "price_tiers", "tags", "coupon", "fetched_at",
+}
+
+
+def test_part_pages_use_chinese_labels_with_units(built):
+    """回归：参数表字段必须是「中文名 / 单位」。
+
+    以前核心字段直接用 SPEC_LABEL，非核心字段 fallback 到原始 key ——
+    同一张表里既有「峰值扭矩 (N·m)」也有 `rotor_inertia_kgm2`，
+    读者得自己去猜。现在统一走 label_parts()，并挡住 meta 字段混入。
+    """
+    raw_key = re.compile(r"\|\s*[a-z][a-z0-9]*(?:_[a-z0-9]+)+\s*\|")
+    meta_labels = ("产品图", "图片来源", "官方文档页", "数据表", "开源仓库",
+                   "仓库许可", "价格梯度（含税）", "标签", "优惠券 / 标签", "采集日期")
+    bad: list[str] = []
+    for p in (built / "parts").rglob("*.md"):
+        text = p.read_text(encoding="utf-8")
+        if "## 全部参数" not in text:
+            continue
+        section = text.split("## 全部参数", 1)[1].split("\n## ", 1)[0]
+        m = raw_key.search(section)
+        if m:
+            bad.append(f"{p.name}: 原始字段名 {m.group(0).strip()}")
+        for lab in meta_labels:
+            if f"| {lab} |" in section:
+                bad.append(f"{p.name}: meta 字段混入「{lab}」")
+        if "| True |" in section or "| False |" in section:
+            bad.append(f"{p.name}: 布尔值没译成 是/否")
+    assert not bad, "；".join(bad[:12])
+
+    dm = (built / "parts" / "actuator" / "damiao-dm-j4340-2ec-v1-1.md").read_text(encoding="utf-8")
+    assert "| 峰值扭矩 / N·m |" in dm
+    assert "| 关节反射惯量 / kg·m² |" in dm
+    assert "| 减速比 | 40 |" in dm and "减速比 / :1" not in dm
+
+    orin = (built / "parts" / "controller_high" / "nvidia-jetson-agx-orin-developer-kit.md").read_text(encoding="utf-8")
+    assert "| SoC | Tegra Orin" in orin, "专业缩写（SoC）应保留原文"
+    assert "| 算力 / TOPS | 275 |" in orin
+
+
+def test_catalog_carries_spec_labels_and_links(built):
+    """部件库弹窗与型号页共用一套中文名：标签随 catalog.json 发布。
+
+    前端不复制 Python 的字典 —— 两份字典一定漂移；这里守住
+    「每个 spec key 都有 label」与「meta 字段不进 specs」两条。
+    """
+    d = json.loads((built / "public" / "catalog.json").read_text(encoding="utf-8"))
+    labels = d.get("specLabels") or {}
+    assert labels, "catalog.json 缺 specLabels，弹窗会退回原始 key"
+    for p in d["parts"]:
+        assert not (set(p["specs"]) & _META_SPEC_KEYS), \
+            f"{p['id']} 把 meta 字段塞进了 specs"
+        for k in p["specs"]:
+            lab = labels.get(f"{p['category']}:{k}")
+            assert lab and lab.get("label"), f"{p['id']} 的 {k} 没有中文标签"
+            assert "_" not in lab["label"], f"{p['id']} 的 {k} 标签仍是原始键"
+        for link in p.get("links") or []:
+            assert link.get("kind"), f"{p['id']} 有链接没有类别"
+            url = str(link.get("url", ""))
+            assert url.startswith(("http://", "https://", "/")), \
+                f"{p['id']} 有非法链接：{link}"
+    assert any(p.get("links") for p in d["parts"]), "没有任何部件带资料链接"
 
 
 def test_part_pages_generated(built):

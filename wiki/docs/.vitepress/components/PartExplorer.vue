@@ -57,6 +57,7 @@ interface Part {
   len: number | null
   notes: string
   specs: Record<string, any>
+  links?: { kind: string; url: string }[]
 }
 
 const props = withDefaults(defineProps<{ lang?: 'zh' | 'en' }>(), { lang: 'zh' })
@@ -282,8 +283,45 @@ const EXTRA_LABELS: Record<string, string> = {
   freq_max_ghz: '最高频率 (GHz)', length_m: '长度 (m)', awg: '线规',
   positions_options: '可选位数',
 }
+/** 中文名与单位由构建期写进 catalog.json（源头是 Python 的 SPEC_LABEL +
+ *  taxonomy），前端不再抄一份字典 —— 两套字典一定会漂移。
+ *  键用「品类:字段」：同名键在不同品类下单位可能不同。 */
+const SPEC_LABELS: Record<string, { label: string; unit?: string }> =
+  (catalogData as any).specLabels || {}
+
 function labelFor(k: string): string {
-  return meta.value?.keys.find(x => x.k === k)?.label || EXTRA_LABELS[k] || k
+  const cat = detail.value?.category || ''
+  const entry = SPEC_LABELS[`${cat}:${k}`] || SPEC_LABELS[k]
+  let label: string
+  let unit = ''
+  if (entry) {
+    // 构建期已经定好单位（含「减速比」这种故意留空的），不要再回退到 taxonomy：
+    // 否则 taxonomy 的 ":1" 会把它补回来。
+    label = entry.label
+    unit = entry.unit || ''
+  } else {
+    const tax = meta.value?.keys.find(x => x.k === k)
+    label = tax?.label || EXTRA_LABELS[k] || k
+    unit = tax?.unit || ''
+  }
+  return unit ? `${label} / ${unit}` : label
+}
+
+/** 值与详情页同口径：布尔值说人话、列表顿号连、枚举译中文。 */
+const VALUE_ALIASES: Record<string, Record<string, string>> = {
+  tau_basis: { peak: '峰值', rated: '额定' },
+  inertia_basis: { rotor: '转子侧', output: '输出侧' },
+}
+function fmtSpec(k: string, v: any): string {
+  if (typeof v === 'boolean') return v ? '是' : '否'
+  if (v === null || v === undefined || v === '') return '—'
+  if (Array.isArray(v)) return v.length ? v.map(x => fmtSpec(k, x)).join('、') : '—'
+  if (typeof v === 'object') {
+    const parts = Object.entries(v).map(([sk, sv]) => `${sk}=${fmtSpec(sk, sv)}`)
+    return parts.join('；') || '—'
+  }
+  const text = typeof v === 'number' ? num(v) : String(v)
+  return VALUE_ALIASES[k]?.[text] ?? text
 }
 const sortOpts = computed(() => {
   const opts = meta.value?.sorts?.length ? meta.value.sorts : FALLBACK_SORTS
@@ -603,9 +641,14 @@ const COMPARE_FIELDS: { t: string; f: (p: Part) => string }[] = [
           <table class="pd-specs">
             <tr v-for="(v, k) in detail.specs" :key="k">
               <td class="pd-k">{{ labelFor(k) }}</td>
-              <td>{{ num(v) }}</td>
+              <td>{{ fmtSpec(k, v) }}</td>
             </tr>
           </table>
+          <p v-if="detail.links?.length" class="pd-links">
+            <a v-for="l in detail.links" :key="l.url" :href="l.url" target="_blank" rel="noopener">
+              {{ l.kind }} ↗
+            </a>
+          </p>
           <p v-if="detail.offer" class="pd-offer">
             <b>{{ detail.offer.title }}</b> —— {{ detail.offer.condition }}
             <span v-if="detail.offer.expires">（至 {{ detail.offer.expires }}）</span>
@@ -800,6 +843,9 @@ html.dark .card-rate .stars { color: var(--rw-accent-1); }
 .pd-specs { border-collapse: collapse; width: 100%; font-size: 0.78rem; }
 .pd-specs td { border-bottom: 1px solid var(--vp-c-divider); padding: 3px 6px;
   font-variant-numeric: tabular-nums; }
+.pd-links { display: flex; flex-wrap: wrap; gap: 0.35rem 0.9rem; margin: 0.6rem 0 0; font-size: 0.76rem; }
+.pd-links a { color: var(--vp-c-brand-1); text-decoration: none; }
+.pd-links a:hover { text-decoration: underline; }
 .pd-offer {
   margin: 0.6rem 0; font-size: 0.76rem; line-height: 1.7;
   color: var(--vp-c-text-2); padding: 0.5rem 0.6rem;
