@@ -215,7 +215,7 @@ const linkChipClass =
       <section class="card p-5 sm:p-6" aria-labelledby="suppliers">
         <div class="flex flex-wrap items-baseline justify-between gap-2">
           <h2 id="suppliers" class="text-base font-bold tracking-tight text-ink">渠道与价格</h2>
-          <a href={withBase('/suppliers.html')} class="text-xs font-medium text-brand hover:underline">渠道库 →</a>
+          <a href={withBase('/suppliers.html')} class="text-xs font-medium text-brand hover:underline">采购库 →</a>
         </div>
         {priceNote || priceLevel ? (
           <p class="mt-2 text-sm leading-6 text-ink-2">
@@ -253,7 +253,7 @@ const linkChipClass =
         ) : (
           <p class="mt-2 text-sm leading-6 text-ink-3">
             暂无可靠渠道收录 —— 这不等于买不到，只是还没找到可核对的店。欢迎在
-            <a href={withBase('/suppliers.html')} class="font-medium text-brand hover:underline">渠道库</a>补充。
+            <a href={withBase('/suppliers.html')} class="font-medium text-brand hover:underline">采购库</a>补充。
           </p>
         )}
       </section>

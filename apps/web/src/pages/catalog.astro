@@ -1,8 +1,13 @@
 ---
 import Base from '@/layouts/Base.astro'
 import CatalogExplorer from '@/components/CatalogExplorer'
-import { catalog, parts } from '@/lib/catalog'
+import { catalog, parts as allParts } from '@/lib/catalog'
 import { withBase } from '@/lib/utils'
+
+// 设备库已独立成页（/equipment.html）：部件库只装「进机器人身体」的零件，
+// equipment 品类从这里剔除，两个库的筛选、统计、导航不再互相串。
+const categories = (catalog.categories || []).filter(c => c.id !== 'equipment')
+const parts = allParts.filter(p => p.category !== 'equipment')
 
 // 「全流程」是定位里的话，就得敢把还不全的地方摆出来：
 // 按品类统计条目数，低于 5 条的单独列一段，并给投稿入口。
@@ -10,15 +15,15 @@ const countByCategory = parts.reduce((acc, part) => {
   acc.set(part.category, (acc.get(part.category) || 0) + 1)
   return acc
 }, new Map<string, number>())
-const thinCategories = (catalog.categories || [])
+const thinCategories = categories
   .map(c => ({ id: c.id, name: c.name, count: countByCategory.get(c.id) ?? 0 }))
   .filter(c => c.count < 5)
   .sort((a, b) => a.count - b.count)
 const vendors = new Set(parts.map(p => p.vendor).filter(Boolean)).size
 const stats = [
-  { label: '部件库', value: catalog.count },
+  { label: '部件库', value: parts.length },
   { label: '厂商', value: vendors },
-  { label: '品类', value: catalog.categories?.length ?? 0 },
+  { label: '品类', value: categories.length },
 ]
 ---
 <Base title="部件库 · RoboWiki" description={`${catalog.count} 个机器人硬件部件，按品类、厂商与参数筛选。`}>
@@ -44,6 +49,7 @@ const stats = [
             </span>
           )}
           <a href={withBase('/open.html')} class="text-ink-2 hover:text-brand">只看带开源仓库的</a>
+          <a href={withBase('/equipment.html')} class="text-ink-2 hover:text-brand">焊台、电源与仪器去设备库</a>
         </div>
       </div>
       <dl class="grid shrink-0 grid-cols-4 gap-px overflow-hidden rounded-md border border-line bg-line sm:grid-cols-4">
@@ -57,5 +63,5 @@ const stats = [
     </div>
   </header>
 
-  <CatalogExplorer client:load parts={parts} categories={catalog.categories || []} />
+  <CatalogExplorer client:load parts={parts} categories={categories} />
 </Base>

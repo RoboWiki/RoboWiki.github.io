@@ -64,7 +64,7 @@ export const GET: APIRoute = async () => {
     entries.push({
       k: 'supplier',
       t: supplier.display_name || supplier.name,
-      d: `${supplier.category ?? '渠道'} · ${supplier.kind ?? ''}`,
+      d: `${supplier.category ?? '采购库'} · ${supplier.kind ?? ''}`,
       u: `${base}suppliers.html`,
       x: [supplier.name, supplier.channel, supplier.grade, supplier.process].filter(Boolean).join(' '),
     })

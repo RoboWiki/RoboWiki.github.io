@@ -6,14 +6,14 @@
  */
 
 export type WebNavItem = {
-  key: 'learn' | 'builds' | 'catalog' | 'community' | 'suppliers'
+  key: 'learn' | 'builds' | 'catalog' | 'equipment' | 'suppliers' | 'community'
   label: string
   desc: string
   href: string
   match: string[]
 }
 
-/** 网页端一级导航：学习 / 方案 / 部件 / 社区 / 采购 */
+/** 网页端一级导航：学习 / 方案库 / 部件库 / 设备库 / 采购库 / 社区 */
 export const WEB_NAV: WebNavItem[] = [
   {
     key: 'learn',
@@ -40,8 +40,15 @@ export const WEB_NAV: WebNavItem[] = [
     key: 'equipment',
     label: '设备库',
     desc: '做机器人的工具与仪器',
-    href: '/catalog.html?category=equipment',
-    match: ['/catalog', '/parts'],
+    href: '/equipment.html',
+    match: ['/equipment'],
+  },
+  {
+    key: 'suppliers',
+    label: '采购库',
+    desc: '按加工品类找店，先看有没有坑',
+    href: '/suppliers.html',
+    match: ['/suppliers'],
   },
   {
     key: 'community',
@@ -49,13 +56,6 @@ export const WEB_NAV: WebNavItem[] = [
     desc: '写实测，不写「好用」',
     href: '/community.html',
     match: ['/community', '/post', '/u', '/top', '/contributors'],
-  },
-  {
-    key: 'suppliers',
-    label: '采购',
-    desc: '报价、交期与真实反馈',
-    href: '/suppliers.html',
-    match: ['/suppliers'],
   },
 ]
 
@@ -102,6 +102,11 @@ export const EMPTY = {
     hint: '内容正在整理，先去看看部件库',
     action: '去部件库',
   },
+  equipment: {
+    title: '没有匹配的设备',
+    hint: '换个关键词，或切回全部类型',
+    action: '清除筛选',
+  },
 } as const
 
 export const PAGE_SIZE = {
@@ -112,10 +117,11 @@ export const PAGE_SIZE = {
 
 export const SECTION_TITLES = {
   catalog: '部件库',
+  equipment: '设备库',
   builds: '方案库',
   community: '社区',
   learn: '学习',
-  suppliers: '采购渠道',
+  suppliers: '采购库',
 } as const
 
 // ── 项目定位与能力骨架 ────────────────────────────────────────────────

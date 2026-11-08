@@ -20,12 +20,15 @@ const layerBar: Record<string, string> = {
   algorithm: 'bg-layer-algo',
 }
 
+const equipmentCount = catalog.parts.filter((p: any) => p.category === 'equipment').length
+
 const stats = [
   { label: '部件库', value: catalog.count, href: '/catalog.html' },
+  { label: '设备库', value: equipmentCount, href: '/equipment.html' },
   { label: '整机', value: robotsData.count, href: '/robots.html' },
   { label: '材料与工艺', value: materialsData.count, href: '/materials.html' },
   { label: '软件', value: softwareData.count, href: '/software.html' },
-  { label: '渠道', value: suppliersData.count, href: '/suppliers.html' },
+  { label: '采购库', value: suppliersData.count, href: '/suppliers.html' },
   { label: '指南', value: learn.length, href: '/learn/index.html' },
 ]
 
@@ -192,16 +195,17 @@ const faqs = [
     <div class="flex flex-wrap items-end justify-between gap-3">
       <div>
         <h2 class="text-xl font-bold tracking-tight text-ink">从哪进去</h2>
-        <p class="mt-1 text-sm text-ink-3">五个一级入口，各管一件事。</p>
+        <p class="mt-1 text-sm text-ink-3">六个一级入口，各管一件事。</p>
       </div>
     </div>
-    <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+    <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
       {[
         { href: '/start.html', title: '学习路径', desc: '从零到跑通，按天给判据', count: '1 条可用', eg: '另 2 条在写' },
         { href: '/builds.html', title: '方案库', desc: '可复现方案，含 BOM 与步骤', count: `${robotsData.count} 套`, eg: '例：四足 5k 方案' },
         { href: '/catalog.html', title: '部件库', desc: '参数带来源，缺失写 null', count: `${catalog.count} 个部件`, eg: '例：DM4310 参数' },
+        { href: '/equipment.html', title: '设备库', desc: '做机器人的工具与仪器', count: `${equipmentCount} 台设备`, eg: '例：拓竹 A1、优利德 UT89X' },
+        { href: '/suppliers.html', title: '采购库', desc: '按加工品类找店，先看有没有坑', count: `${suppliersData.count} 家`, eg: '例：嘉立创打样' },
         { href: '/community.html', title: '社区', desc: '写实测，不写「好用」', count: '开放讨论', eg: '例：选型求助' },
-        { href: '/suppliers.html', title: '采购渠道', desc: '报价、交期与真实反馈', count: `${suppliersData.count} 家`, eg: '例：嘉立创打样' },
       ].map(item => (
         <a href={withBase(item.href)} class="card card-hover group flex flex-col p-5">
           <div class="flex items-start justify-between">
