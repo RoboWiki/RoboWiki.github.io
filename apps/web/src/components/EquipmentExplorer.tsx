@@ -24,12 +24,13 @@ function sortValue(p: CatalogPart, key: string): number | string | null {
 }
 
 /**
- * 设备库浏览器：与部件库同一种卡片语言，但只装 equipment 一个品类，
- * 筛选项换成设备子类（3D 打印机 / 激光 / 焊台 / 电源 / 仪器）。
+ * 设备库浏览器：与部件库同一种卡片与筛选语言（搜索 + 类型 chips + 厂商 chips + 排序），
+ * 但只装 equipment 一个品类，筛选项换成设备子类（3D 打印机 / 激光 / 焊台 / 电源 / 仪器）。
  */
 export default function EquipmentExplorer({ parts, subtypes }: Props) {
   const [q, setQ] = useState('')
   const [sub, setSub] = useState('')
+  const [vendor, setVendor] = useState('')
   const [sort, setSort] = useState('')
   const [limit, setLimit] = useState(PAGE)
   const searchId = useId()
@@ -43,7 +44,7 @@ export default function EquipmentExplorer({ parts, subtypes }: Props) {
     )
   }, [parts, q])
 
-  const counts = useMemo(() => {
+  const subCounts = useMemo(() => {
     const map: Record<string, number> = {}
     for (const p of searched) {
       const key = p.subtype || ''
@@ -52,9 +53,21 @@ export default function EquipmentExplorer({ parts, subtypes }: Props) {
     return map
   }, [searched])
 
+  // 厂商 chips 跟随当前选中的类型（与部件库「品类内选品牌」同构）
+  const subBase = useMemo(
+    () => (sub ? searched.filter(p => p.subtype === sub) : searched),
+    [searched, sub],
+  )
+  const vendors = useMemo(() => {
+    const map = new Map<string, number>()
+    for (const p of subBase) map.set(p.vendor, (map.get(p.vendor) || 0) + 1)
+    return [...map.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'zh-CN'))
+  }, [subBase])
+
   const filtered = useMemo(() => {
     let list = searched
     if (sub) list = list.filter(p => p.subtype === sub)
+    if (vendor) list = list.filter(p => p.vendor === vendor)
     if (sort) {
       const [key, dir] = sort.split(':')
       const sign = dir === 'asc' ? 1 : -1
@@ -69,15 +82,22 @@ export default function EquipmentExplorer({ parts, subtypes }: Props) {
       })
     }
     return list
-  }, [searched, sub, sort])
+  }, [searched, sub, vendor, sort])
 
   const shown = filtered.slice(0, limit)
-  const hasFilter = Boolean(sub || q.trim() || sort)
+  const hasFilter = Boolean(sub || vendor || q.trim() || sort)
 
   const reset = () => {
     setQ('')
     setSub('')
+    setVendor('')
     setSort('')
+    setLimit(PAGE)
+  }
+
+  const pickSub = (next: string) => {
+    setSub(next)
+    setVendor('')
     setLimit(PAGE)
   }
 
@@ -100,23 +120,37 @@ export default function EquipmentExplorer({ parts, subtypes }: Props) {
               value={q}
               onChange={e => { setQ(e.target.value); setLimit(PAGE) }}
               placeholder="例如：P1S、万用表、热风枪"
-              className="pl-9"
+              className="h-11 pl-9 text-base sm:h-9 sm:text-sm"
             />
+            {q && (
+              <button
+                type="button"
+                onClick={() => { setQ(''); setLimit(PAGE) }}
+                aria-label="清空搜索"
+                className="absolute right-1 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-sm text-lg leading-none text-ink-3 hover:bg-surface-3 hover:text-ink"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            )}
           </div>
-          <div className="flex items-center gap-2">
-            <label htmlFor={`${searchId}-sub`} className="text-[11px] text-ink-3">类型</label>
-            <select
-              id={`${searchId}-sub`}
-              value={sub}
-              onChange={e => { setSub(e.target.value); setLimit(PAGE) }}
-              className="h-9 min-w-32 rounded-md border border-line bg-surface px-2 text-sm text-ink focus-visible:border-brand focus-visible:outline-none"
-            >
-              <option value="">全部类型（{parts.length}）</option>
-              {subtypes.map(s => (
-                <option key={s.id} value={s.id}>{s.label}（{counts[s.id] || 0}）</option>
-              ))}
-            </select>
+          <div className="flex min-h-8 items-center justify-between gap-2 sm:justify-end">
+            <p className="text-xs text-ink-3" aria-live="polite" aria-atomic="true">
+              <span className="mono tabular font-semibold text-ink">{filtered.length}</span> 台设备
+              {sub && <span> · {subtypes.find(s => s.id === sub)?.label ?? sub}</span>}
+              {vendor && <span> · {vendor}</span>}
+            </p>
+            {hasFilter && (
+              <button
+                type="button"
+                onClick={reset}
+                className="inline-flex h-9 shrink-0 items-center rounded-md px-2 text-xs font-medium text-ink-3 transition-colors hover:text-ink"
+              >
+                重置
+              </button>
+            )}
           </div>
+        </div>
+        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2">
           <div className="flex items-center gap-2">
             <label htmlFor={`${searchId}-sort`} className="text-[11px] text-ink-3">排序</label>
             <select
@@ -131,19 +165,53 @@ export default function EquipmentExplorer({ parts, subtypes }: Props) {
               <option value="rating:desc">评分从高到低</option>
             </select>
           </div>
-          {hasFilter && (
-            <button
-              type="button"
-              onClick={reset}
-              className="inline-flex h-9 items-center rounded-md border border-line px-3 text-xs font-medium text-ink-2 transition-colors hover:border-line-strong hover:text-ink"
-            >
-              清除筛选
-            </button>
-          )}
         </div>
-        <p className="mono mt-2 text-[11px] text-ink-3" aria-live="polite">
-          显示 {shown.length} / {parts.length} 台设备
-        </p>
+      </div>
+
+      <div className="chip-row -mx-1 px-1" role="group" aria-label="按设备类型筛选">
+        <button
+          type="button"
+          className="chip"
+          aria-pressed={!sub}
+          onClick={() => pickSub('')}
+        >
+          全部类型<span className="mono tabular opacity-60">{searched.length}</span>
+        </button>
+        {subtypes.map(s => (
+          <button
+            key={s.id}
+            type="button"
+            className="chip"
+            aria-pressed={sub === s.id}
+            onClick={() => pickSub(sub === s.id ? '' : s.id)}
+          >
+            {s.label}
+            <span className="mono tabular opacity-60">{subCounts[s.id] || 0}</span>
+          </button>
+        ))}
+      </div>
+
+      <div className="chip-row -mx-1 px-1" role="group" aria-label="按厂商筛选">
+        <button
+          type="button"
+          className="chip h-7 px-2.5 text-[12px]"
+          aria-pressed={!vendor}
+          onClick={() => { setVendor(''); setLimit(PAGE) }}
+        >
+          全部厂商<span className="mono tabular opacity-60">{subBase.length}</span>
+        </button>
+        {vendors.slice(0, 10).map(([name, count]) => (
+          <button
+            key={name}
+            type="button"
+            className="chip h-7 px-2.5 text-[12px]"
+            aria-pressed={vendor === name}
+            onClick={() => { setVendor(vendor === name ? '' : name); setLimit(PAGE) }}
+          >
+            {name}
+            <span className="mono tabular opacity-60">{count}</span>
+          </button>
+        ))}
       </div>
 
       {shown.length === 0 ? (
