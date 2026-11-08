@@ -556,11 +556,11 @@ BOT = {"X-Bot-Token": "test-bot-token"}
 
 
 def test_bot_answer_is_one_line_with_url_and_version(client):
-    r = client.get("/api/v1/bot/answer", params={"q": "m3508"}, headers=BOT)
+    r = client.get("/api/v1/bot/answer", params={"q": "gm6020"}, headers=BOT)
     assert r.status_code == 200, r.text
     d = r.json()
     assert d["found"] is True
-    assert d["part"]["model"].lower().startswith("m3508")
+    assert d["part"]["model"].lower().startswith("gm6020")
     assert d["url"].endswith(".html")
     assert d["data_version"]
     assert "\n" not in d["answer"]
