@@ -58,6 +58,9 @@ SPEC_KEYS = {
     "material", "speed_s_60deg", "stall_torque_Nm",
     "build_volume_mm", "max_speed_mms", "temp_max_C", "materials",
     "connectivity",
+    # 设备库：激光切割/雘刹与测量仪器
+    "cut_area_mm", "laser_power_w", "bandwidth_mhz", "sample_rate_msps",
+    "max_freq_mhz", "waveform",
     # 立创采集 / 电源芯片
     "category_cn", "lcsc_part", "params", "price_tiers", "price_lead", "stock",
     "stock_lead", "lead_time", "jlc_library", "tags", "fetched_at", "voltage_in",
