@@ -413,7 +413,7 @@ def test_submission_review_enqueues_outbox(client):
     h = auth_header(client)  # robowiki / staff
     r = client.post("/api/v1/submissions", headers=h, json={
         "kind": "part_patch",
-        "target_id": "cubemars-ak80-6",
+        "target_id": "hota-d6-pro",
         "payload": {"price_cny": 3288.0},
         "evidence": {"source_url": "https://example.com/manual", "note": "test"},
     })
@@ -451,7 +451,7 @@ def test_submission_review_enqueues_outbox(client):
 def test_submission_requires_evidence(client):
     h = auth_header(client)
     r = client.post("/api/v1/submissions", headers=h, json={
-        "kind": "part_patch", "target_id": "cubemars-ak80-6",
+        "kind": "part_patch", "target_id": "hota-d6-pro",
         "payload": {"price_cny": 1.0}, "evidence": {},
     })
     assert r.status_code == 422
@@ -460,7 +460,7 @@ def test_submission_requires_evidence(client):
 def test_submission_preview_is_server_generated(client):
     h = auth_header(client)
     r = client.post("/api/v1/submissions", headers=h, json={
-        "kind": "part_patch", "target_id": "cubemars-ak80-6",
+        "kind": "part_patch", "target_id": "hota-d6-pro",
         "payload": {"price_cny": 1.0},
         "evidence": {"note": "test preview", "source_url": "https://example.com",
                      "preview": [{"field": "notes", "old_value": "a", "new_value": "b"}]},
@@ -477,7 +477,7 @@ def test_submission_rejects_bad_value_shapes(client):
                     {"specs.tau_peak_Nm": {"x": 1}},
                     {"specs.use_cases": [{"x": 1}]}):
         r = client.post("/api/v1/submissions", headers=h, json={
-            "kind": "part_patch", "target_id": "cubemars-ak80-6",
+            "kind": "part_patch", "target_id": "hota-d6-pro",
             "payload": payload,
             "evidence": {"note": "shape test", "source_url": "https://example.com"},
         })
@@ -490,7 +490,7 @@ def test_submission_rejects_bad_value_domains(client):
                     {"source_tier": "Z"}, {"last_checked": "not-a-date"},
                     {"url": "ftp://example.com/file"}):
         r = client.post("/api/v1/submissions", headers=h, json={
-            "kind": "part_patch", "target_id": "cubemars-ak80-6",
+            "kind": "part_patch", "target_id": "hota-d6-pro",
             "payload": payload,
             "evidence": {"note": "domain test", "source_url": "https://example.com"},
         })
@@ -530,13 +530,13 @@ def test_cannot_vote_own_content(client):
 def test_submission_rejects_non_http_source(client):
     h = auth_header(client)
     r = client.post("/api/v1/submissions", headers=h, json={
-        "kind": "part_patch", "target_id": "cubemars-ak80-6",
+        "kind": "part_patch", "target_id": "hota-d6-pro",
         "payload": {"price_cny": 1.0},
         "evidence": {"note": "测试来源校验", "source_url": "javascript:alert(1)"},
     })
     assert r.status_code == 422
     r = client.post("/api/v1/submissions", headers=h, json={
-        "kind": "part_patch", "target_id": "cubemars-ak80-6",
+        "kind": "part_patch", "target_id": "hota-d6-pro",
         "payload": {"price_cny": 1.0},
         "evidence": {"note": "", "source_url": "https://example.com"},
     })
@@ -556,16 +556,16 @@ BOT = {"X-Bot-Token": "test-bot-token"}
 
 
 def test_bot_answer_is_one_line_with_url_and_version(client):
-    r = client.get("/api/v1/bot/answer", params={"q": "cubemars ak80"}, headers=BOT)
+    r = client.get("/api/v1/bot/answer", params={"q": "6203"}, headers=BOT)
     assert r.status_code == 200, r.text
     d = r.json()
     assert d["found"] is True
-    assert d["part"]["model"].lower().startswith("ak80")
+    assert d["part"]["model"].lower().startswith("6203")
     assert d["url"].endswith(".html")
     assert d["data_version"]
     assert "\n" not in d["answer"]
     assert d["part"]["model"] in d["answer"]
-    assert "已核对" not in d["answer"]  # B 级不显示核对信号
+    assert "已核对" not in d["answer"]  # B 级不显示核对信号（6203-2RS 为 B 级在售件）
 
 
 def test_bot_answer_uses_connector_rated_fields(client):

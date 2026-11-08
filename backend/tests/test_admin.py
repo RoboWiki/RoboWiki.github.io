@@ -166,9 +166,25 @@ def test_patch_noop_returns_zero(client):
 
 def test_verify_creates_submission_instead_of_writing(client):
     h = staff(client)
+    # 目录条目现在全部 verified=True，「未验证」缺口查不到东西。
+    # 先借一个置回未验证（只动测试库，不走提案），验证端点仍应只建提案、不改目录。
+    from sqlmodel import select
+
+    from app.core.db import session
+    from app.models import Part
+
+    with session() as db:
+        part = db.exec(select(Part).limit(1)).first()
+        assert part is not None
+        part.verified = False
+        db.add(part)
+        db.commit()
+        db.refresh(part)
+        pid = part.id
+
     gap = client.get("/api/admin/parts", params={"gap": "unverified", "limit": 1},
                      headers=h).json()
-    pid = gap["items"][0]["id"]
+    assert any(i["id"] == pid for i in gap["items"]), "置回未验证的条目应出现在缺口里"
     r = client.post(f"/api/admin/parts/{pid}/verify", headers=h)
     assert r.status_code == 200, r.text
     sid = r.json()["submission_id"]
