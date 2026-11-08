@@ -208,46 +208,77 @@ def public_part(p: Part) -> dict:
 #: 列表卡片用关键参数：按品类取 3 个，宁缺毋滥。
 #: 不把整个 specs 塞进卡片——那是详情页的事。
 _CARD_FACTS = {
-    "actuator": [("峰值", "tau_peak_Nm", " N·m"), ("额定", "tau_rated_Nm", " N·m"),
-                 ("电压", "voltage_V", " V"), ("质量", "mass_kg", " kg")],
-    "controller_high": [("NPU", "npu_tops", " TOPS"), ("内存", "ram_gb", " GB"),
-                        ("功耗", "power_max_w", " W")],
-    "controller_low": [("MCU", "mcu", ""), ("CAN", "can", ""),
-                       ("电压", "voltage_in_V", " V")],
-    "motor_driver": [("MCU", "mcu", ""), ("CAN", "can", ""),
-                      ("最高电压", "voltage_max_V", " V")],
-    "imu": [("陀螺", "gyro_range_dps", " °/s"), ("接口", "iface", "")],
-    "camera": [("深度", "depth_range_m", " m"), ("视场", "fov", ""),
-               ("帧率", "fps", " fps")],
-    "lidar": [("量程", "range_m", " m"), ("视场", "fov", ""),
-              ("点频", "points_per_s", " pts/s")],
-    "connector": [("位数", "positions", " pin"), ("间距", "pitch_mm", " mm"),
-                  ("电流", "current_rated_A", " A")],
-    "module": [("接口", "iface", ""), ("CAN", "can", ""),
-               ("电压", "voltage_V", " V")],
-    "chip": [("封装", "package", ""), ("料号", "lcsc_part", "")],
-    "open_hw": [("输入", "voltage_in", ""), ("输出", "voltage_out", ""),
-                ("电流", "current_out", "")],
+    "actuator": [("额定扭矩", "tau_rated_Nm", " N·m"), ("峰值扭矩", "tau_peak_Nm", " N·m"),
+                 ("空载转速", "speed_noload_rpm", " rpm"), ("额定转速", "speed_rated_rpm", " rpm"),
+                 ("减速比", "gear", ":1"), ("质量", "mass_kg", " kg"),
+                 ("电压范围", "voltage_range_V", " V"), ("电压", "voltage_V", " V")],
+    "servo": [("额定扭矩", "rated_torque_Nm", " N·m"), ("堵转扭矩", "stall_torque_Nm", " N·m"),
+              ("空载转速", "speed_rpm", " rpm"), ("60° 用时", "speed_s_60deg", " s"),
+              ("工作电压", "voltage_range", " V"), ("电压", "voltage_V", " V")],
+    "esc": [("持续电流", "current_cont_A", " A"), ("峰值电流", "current_peak_A", " A"),
+            ("输入电压", "voltage_in_V", " V"), ("最高电压", "voltage_max_V", " V"),
+            ("控制频率", "ctrl_khz", " kHz"), ("通信", "comm", "")],
+    "controller_high": [("SoC", "soc", ""), ("CPU", "cpu", ""), ("NPU", "npu_tops", " TOPS"),
+                        ("内存", "ram_gb", " GB"), ("网口", "eth", ""), ("功耗", "power_max_w", " W")],
+    "controller_low": [("MCU", "mcu", ""), ("主频", "clock_mhz", " MHz"), ("CAN", "can", ""),
+                       ("最高电压", "voltage_max_V", " V"), ("上位通信", "comm_upper", ""),
+                       ("接口", "iface", "")],
+    "motor_driver": [("MCU", "mcu", ""), ("FOC 轴数", "foc_axes", ""), ("CAN", "can", ""),
+                     ("供电", "voltage_in_V", " V"), ("最高电压", "voltage_max_V", " V"),
+                     ("接口", "iface", "")],
+    "remote_controller": [("通道", "channels", " 路"), ("频段", "frequency_ghz", " GHz"),
+                          ("遥控距离", "control_range_m", " m"), ("协议", "protocol", ""),
+                          ("电池", "battery", "")],
+    "imu": [("陀螺量程", "gyro_range_dps", " °/s"), ("加计量程", "accel_range_g", " g"),
+            ("ODR", "odr_hz", " Hz"), ("接口", "iface", ""), ("封装", "package", "")],
+    "sensor": [("量程", "range_m", " m"), ("测量范围", "meas_range", ""), ("准确度", "accuracy", ""),
+               ("重复精度", "repeatability_mm", " mm"), ("分辨率", "resolution", ""),
+               ("接口", "iface", "")],
+    "camera": [("深度量程", "depth_range_m", " m"), ("帧率", "fps", " fps"), ("视场", "fov", ""),
+               ("分辨率", "resolution", ""), ("接口", "iface", ""), ("重量", "weight_g", " g")],
+    "lidar": [("量程", "range_m", " m"), ("点频", "points_per_s", " 点/s"), ("帧率", "fps", " Hz"),
+              ("视场", "fov", ""), ("接口", "iface", ""), ("电压", "voltage_V", " V")],
+    "battery": [("容量", "capacity_mah", " mAh"), ("电压", "voltage_V", " V"),
+                ("能量", "energy_wh", " Wh"), ("放电倍率", "discharge_rate_c", " C"),
+                ("质量", "mass_g", " g"), ("体系", "chem", "")],
+    "connector": [("位数", "positions", " P"), ("间距", "pitch_mm", " mm"),
+                  ("额定电流", "current_rated_A", " A"), ("额定电压", "voltage_rated_V", " V"),
+                  ("安装", "mount_type", ""), ("接口", "iface", "")],
+    "module": [("CAN", "can", ""), ("速率", "can_speed_mbps", " Mbps"), ("接口", "iface", ""),
+               ("尺寸", "dims", ""), ("电压", "voltage_V", " V")],
+    "chip": [("类型", "category_cn", ""), ("封装", "package", ""), ("料号", "lcsc_part", ""),
+             ("输出电流", "current_out", ""), ("库存", "stock", ""), ("交期", "lead_time", "")],
+    "open_hw": [("CAN", "can", ""), ("接口", "iface", ""), ("输入", "voltage_in", ""),
+                ("输出", "voltage_out", ""), ("电流", "current_out", ""), ("许可", "license", "")],
 }
-_CARD_GENERIC = [("电压", "voltage_V", " V"), ("接口", "iface", ""),
-                 ("CAN", "can", "")]
+_CARD_GENERIC = [("接口", "iface", ""), ("电压", "voltage_V", " V"), ("CAN", "can", "")]
+_CARD_LIMIT = 6
 
 
 def _card_specs(category: str, specs: dict) -> list[dict]:
-    def val(v: object, unit: str) -> str:
+    def val(v: object, unit: str, key: str = "") -> str:
         if isinstance(v, bool):
             return "是" if v else "否"
-        if isinstance(v, (int, float)):
-            return f"{v:g}{unit}"
-        return f"{v}{unit}" if unit and isinstance(v, str) else str(v)
+        if isinstance(v, str):
+            # 值里已带单位（DC 12 … 30、15-60V）就不再拼一次。
+            return f"{v}{unit}" if unit and not re.search(r"[A-Za-zµ°]", v) else v
+        text = f"{v:g}" if isinstance(v, (int, float)) else str(v)
+        if key == "can" and specs.get("canfd"):
+            return f"{text} · CAN FD"
+        return f"{text}{unit}"
 
     out: list[dict] = []
+    seen: set[str] = set()
     for label, key, unit in _CARD_FACTS.get(category, []) + _CARD_GENERIC:
+        # 通用兜底会和品类表撞键（接口 / CAN / 电压），撞了就会同一行显示两遍。
+        if key in seen:
+            continue
         v = specs.get(key)
         if v is None or v == "":
             continue
-        out.append({"key": key, "label": label, "value": val(v, unit)})
-        if len(out) >= 3:
+        seen.add(key)
+        out.append({"key": key, "label": label, "value": val(v, unit, key)})
+        if len(out) >= _CARD_LIMIT:
             return out
 
     # 传感器 / 芯片的结构化参数在 specs.params；分享卡已经这么读，列表卡保持一致。
@@ -257,7 +288,7 @@ def _card_specs(category: str, specs: dict) -> list[dict]:
             if v is None or v == "":
                 continue
             out.append({"key": str(k), "label": str(k), "value": str(v)})
-            if len(out) >= 3:
+            if len(out) >= _CARD_LIMIT:
                 break
     return out
 

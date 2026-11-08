@@ -463,7 +463,8 @@ def generic_table(items: list[dict], cat: str, href: dict[str, str] | None = Non
                 "|---|---|---|---|---|---|---|")
         def row(p):
             s = p["specs"]
-            keys = ("bits", "depth_range_m", "range_m", "fps", "odr_hz", "iface")
+            keys = ("range_m", "meas_range", "accuracy", "repeatability_mm",
+                    "resolution", "response_time")
             kv = "、".join(f"{k}={num(s[k])}" for k in keys if s.get(k))
             return (f"| {mdl(p, (href or {}).get(p['id']))} | {p['vendor']} "
                     f"| {p.get('subtype_label') or p['subtype']} "
@@ -1189,6 +1190,10 @@ def main() -> None:
         "polarity": "输出极性",
         "freq": "开关频率",
         "accuracy": "精度",
+        # 工业测距（单点 ToF / 激光测距）
+        "repeatability_mm": "重复精度 (mm)", "scan_freq_hz": "开关频率",
+        "spot_size_mm": "光斑尺寸 (mm)", "laser_class": "激光等级",
+        "wavelength_nm": "波长 (nm)", "ambient_light_klx": "抗环境光 (klx)",
         "chip_function": "芯片类型",
         "charge_current": "最大充电电流",
         "v_float": "充电饱和电压",

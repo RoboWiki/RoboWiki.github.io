@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { categoryLabel, imageUrl, type CatalogPart } from '@/lib/catalog'
+import { partFacts } from '@/lib/partFacts'
 import { bestOfferPrice, effectivePrice, formatPrice, partHref } from '@/lib/utils'
 
 type CategoryMeta = {
@@ -455,6 +456,14 @@ export default function CatalogExplorer({ parts, categories }: Props) {
                       <span className="truncate">{p.vendor}</span>
                     </div>
                     <div className="line-clamp-2 min-h-10 text-sm font-semibold leading-5 text-ink">{p.model}</div>
+                    <dl className="grid grid-cols-2 gap-x-3 gap-y-1.5">
+                      {partFacts(p).map(f => (
+                        <div key={f.label} className="min-w-0">
+                          <dt className="text-[10px] leading-4 text-ink-3">{f.label}</dt>
+                          <dd className="mono tabular truncate text-[12px] leading-5 text-ink-2">{f.value}</dd>
+                        </div>
+                      ))}
+                    </dl>
                     <div className="mt-auto flex items-center justify-between gap-2 border-t border-line pt-2 text-xs">
                       <span className="flex min-w-0 flex-col">
                         {(() => {

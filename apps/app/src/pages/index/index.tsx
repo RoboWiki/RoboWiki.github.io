@@ -366,7 +366,7 @@ export default function IndexPage() {
         <View className="rw-list index__list">
           {visibleItems.map((part) => {
             const image = partImage(part)
-            const facts = partFacts(part).slice(0, 3)
+            const facts = partFacts(part).slice(0, 4)
             const rating = partRating(part)
             const selected = compare.includes(String(part.id))
             return (

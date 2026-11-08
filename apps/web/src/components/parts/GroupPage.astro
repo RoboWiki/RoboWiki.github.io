@@ -2,6 +2,7 @@
 import Base from '@/layouts/Base.astro'
 import { categoryLabel, imageUrl, parts, type CatalogPart } from '@/lib/catalog'
 import { bestOfferPrice, formatPrice, partHref, withBase } from '@/lib/utils'
+import { partFacts } from '@/lib/partFacts'
 
 type Group = { key: string; label: string; slugs: string[] }
 const { category, group } = Astro.props as { category: string; group: Group }
@@ -48,6 +49,14 @@ const description = `${categoryLabel(category)} · ${group.label}，共 ${groupP
             <div class="flex flex-1 flex-col gap-2 p-4">
               <div class="truncate text-[11px] text-ink-3">{p.vendor}</div>
               <div class="line-clamp-2 min-h-10 text-sm font-semibold leading-5 text-ink">{p.model}</div>
+              <dl class="grid grid-cols-2 gap-x-3 gap-y-1.5">
+                {partFacts(p).map(f => (
+                  <div class="min-w-0">
+                    <dt class="text-[10px] leading-4 text-ink-3">{f.label}</dt>
+                    <dd class="mono tabular truncate text-[12px] leading-5 text-ink-2">{f.value}</dd>
+                  </div>
+                ))}
+              </dl>
               <div class="mt-auto flex items-center justify-between gap-2 border-t border-line pt-2 text-xs">
                 <span class="flex min-w-0 flex-col">
                   {(() => {

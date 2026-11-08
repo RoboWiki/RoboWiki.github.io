@@ -3,6 +3,7 @@ import Base from '@/layouts/Base.astro'
 import { getCollection } from 'astro:content'
 import { catalog, dataVersion, featuredParts, imageUrl, topCategories } from '@/lib/catalog'
 import { bestOfferPrice, formatPrice, partHref, withBase } from '@/lib/utils'
+import { partFacts } from '@/lib/partFacts'
 import { BRAIN_LAYER, POSITIONING, SKELETON_LAYERS } from '@/lib/layers'
 import robotsData from '@/data/robots.json'
 import materialsData from '@/data/materials.json'
@@ -281,7 +282,15 @@ const faqs = [
               <span class="text-[11px] font-medium text-ink-3">{p.vendor}</span>
             </div>
             <div class="text-sm font-semibold text-ink">{p.model}</div>
-            <div class="mt-auto flex items-baseline justify-between pt-1 text-xs">
+            <dl class="grid grid-cols-2 gap-x-3 gap-y-1.5">
+              {partFacts(p).map(f => (
+                <div class="min-w-0">
+                  <dt class="text-[10px] leading-4 text-ink-3">{f.label}</dt>
+                  <dd class="mono tabular truncate text-[12px] leading-5 text-ink-2">{f.value}</dd>
+                </div>
+              ))}
+            </dl>
+            <div class="mt-auto flex items-baseline justify-between border-t border-line pt-2 text-xs">
               <span class="flex flex-col">
                 {(() => {
                   const offer = bestOfferPrice(p.offers)
@@ -299,7 +308,6 @@ const faqs = [
                   )
                 })()}
               </span>
-              <span class="mono tabular text-ink-3">{p.tauPeak ? `${p.tauPeak} N·m` : '参数待补'}</span>
             </div>
           </div>
         </a>

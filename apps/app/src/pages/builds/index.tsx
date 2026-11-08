@@ -168,7 +168,7 @@ export default function BuildsPage() {
         <View className="rw-list builds__list">
           {items.map((build) => {
             const image = buildImage(build)
-            const facts = buildFacts(build).slice(0, 2)
+            const facts = buildFacts(build).slice(0, 3)
             return (
               <View
                 className="rw-list__row rw-list__row--tap builds__row"

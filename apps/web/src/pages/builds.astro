@@ -44,6 +44,13 @@ const specText = (robot: Robot, key: string) => {
   const value = robot.specs[key]
   return value === null || value === undefined || value === '' ? null : String(value)
 }
+/** 卡片参数格：厂商没公布就写「—」，与部件卡片同一口径，不留空白。 */
+const factText = (robot: Robot, key: string, unit = '') => {
+  const value = specText(robot, key)
+  if (!value) return '—'
+  // 值里已带单位（2–4h、4–6h（综合工况））就不再拼一次。
+  return unit && !/[A-Za-zµ°]/.test(value) ? `${value}${unit}` : value
+}
 const num = (robot: Robot, key: string) => {
   const value = Number(robot.specs[key])
   return Number.isFinite(value) ? value : -1
@@ -160,9 +167,12 @@ const searchText = (robot: Robot) =>
               {robot.subtype_label || '其他'} · 仓库/URDF/训练/部署等项目索引
             </p>
 
-            <dl class="mt-auto grid grid-cols-3 gap-2 border-t border-line pt-3">
-              <div class="min-w-0"><dt class="text-[11px] text-ink-3">自由度</dt><dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">{specText(robot, 'dof') || '—'}</dd></div>
-              <div class="min-w-0"><dt class="text-[11px] text-ink-3">质量</dt><dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">{specText(robot, 'mass_kg') ? `${specText(robot, 'mass_kg')} kg` : '—'}</dd></div>
+            <dl class="mt-auto grid grid-cols-3 gap-x-2 gap-y-2 border-t border-line pt-3">
+              <div class="min-w-0"><dt class="text-[11px] text-ink-3">自由度</dt><dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">{factText(robot, 'dof')}</dd></div>
+              <div class="min-w-0"><dt class="text-[11px] text-ink-3">质量</dt><dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">{factText(robot, 'mass_kg', ' kg')}</dd></div>
+              <div class="min-w-0"><dt class="text-[11px] text-ink-3">最大速度</dt><dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">{factText(robot, 'speed_max_mps', ' m/s')}</dd></div>
+              <div class="min-w-0"><dt class="text-[11px] text-ink-3">负载</dt><dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">{factText(robot, 'payload_kg', ' kg')}</dd></div>
+              <div class="min-w-0"><dt class="text-[11px] text-ink-3">续航</dt><dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">{factText(robot, 'endurance_h', ' h')}</dd></div>
               <div class="min-w-0"><dt class="text-[11px] text-ink-3">参考价</dt><dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">{formatPrice(robot.price_cny)}</dd></div>
             </dl>
           </div>
