@@ -289,11 +289,11 @@ function Detail({ postId }: { postId: number }) {
                     </span>
                   </div>
 
-                  <div className="mt-4 flex gap-3 sm:gap-4">
+                  <div className="mt-4 min-w-0">
+                    <MarkdownBody className="max-w-[70ch]">{p.body}</MarkdownBody>
+                  </div>
+                  <div className="mt-4 flex justify-end border-t border-line pt-3">
                     <VoteButtons score={p.score} myVote={p.my_vote} onVote={vote} />
-                    <div className="min-w-0 flex-1">
-                      <MarkdownBody className="max-w-[70ch]">{p.body}</MarkdownBody>
-                    </div>
                   </div>
                 </>
               )}

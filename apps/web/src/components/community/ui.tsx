@@ -1,6 +1,7 @@
 import { App as AntApp, Button, Form, Input, Modal, Rate, Select, Tooltip } from 'antd'
 import {
-  ArrowDownOutlined, ArrowUpOutlined, CheckCircleFilled, CommentOutlined, EyeOutlined,
+  CheckCircleFilled, CommentOutlined, DislikeFilled, DislikeOutlined, EyeOutlined,
+  LikeFilled, LikeOutlined,
 } from '@ant-design/icons'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Markdown, { type Components } from 'react-markdown'
@@ -42,21 +43,19 @@ export function EmptyState({ title, hint, action }: {
 export function PostSkeleton() {
   return (
     <div className="card mb-3 animate-pulse p-3.5 sm:p-4" aria-hidden="true">
-      <div className="flex items-start gap-3">
-        <div className="h-16 w-9 shrink-0 rounded-full bg-surface-3" />
-        <div className="min-w-0 flex-1 space-y-2">
-          <div className="flex gap-1.5">
-            <div className="h-4 w-12 rounded-full bg-surface-3" />
-            <div className="h-4 w-16 rounded-full bg-surface-3" />
-          </div>
-          <div className="h-4 w-4/5 rounded bg-surface-3" />
-          <div className="h-3 w-full rounded bg-surface-3" />
-          <div className="h-3 w-3/5 rounded bg-surface-3" />
-          <div className="flex gap-3 pt-1">
-            <div className="h-3 w-24 rounded bg-surface-3" />
-            <div className="h-3 w-14 rounded bg-surface-3" />
-            <div className="h-3 w-12 rounded bg-surface-3" />
-          </div>
+      <div className="space-y-2">
+        <div className="flex gap-1.5">
+          <div className="h-4 w-12 rounded-full bg-surface-3" />
+          <div className="h-4 w-16 rounded-full bg-surface-3" />
+        </div>
+        <div className="h-4 w-4/5 rounded bg-surface-3" />
+        <div className="h-3 w-full rounded bg-surface-3" />
+        <div className="h-3 w-3/5 rounded bg-surface-3" />
+        <div className="flex items-center gap-3 pt-1">
+          <div className="h-3 w-24 rounded bg-surface-3" />
+          <div className="h-3 w-14 rounded bg-surface-3" />
+          <div className="h-3 w-12 rounded bg-surface-3" />
+          <div className="ml-auto h-7 w-32 rounded-full bg-surface-3" />
         </div>
       </div>
     </div>
@@ -164,34 +163,51 @@ export function UserBadge({ user, size = 24 }: { user?: User | null; size?: numb
 export function VoteButtons({ score, myVote, onVote, disabled, compact = false }: {
   score: number; myVote: number; onVote: (v: number) => void; disabled?: boolean; compact?: boolean
 }) {
-  const base = 'grid place-items-center rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-50'
-  const box = compact ? 'h-6 w-6 text-[11px]' : 'h-7 w-7 text-[12px]'
-
+  const button = `inline-flex items-center justify-center gap-1.5 rounded-full font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
+    compact ? 'h-6 min-w-6 px-1.5 text-[11px]' : 'h-8 px-2.5 text-[12.5px]'
+  }`
   const tone = (dir: 1 | -1) => {
-    if (myVote !== dir) return 'text-ink-3 hover:bg-surface-3 hover:text-ink'
-    return dir === 1
-      ? 'bg-success-soft text-success'
-      : 'bg-danger-soft text-danger'
+    if (myVote !== dir) {
+      return dir === 1
+        ? 'text-ink-3 hover:bg-success-soft/70 hover:text-success'
+        : 'text-ink-3 hover:bg-danger-soft/70 hover:text-danger'
+    }
+    return dir === 1 ? 'bg-success-soft text-success' : 'bg-danger-soft text-danger'
+  }
+  const title = (dir: 1 | -1) => {
+    const name = dir === 1 ? '赞同' : '反对'
+    return myVote === dir ? `已${name}，再点取消` : name
   }
 
   return (
-    <div className={`relative z-10 flex ${compact ? 'min-w-7' : 'min-w-9'} flex-col items-center gap-0.5 self-start`}>
+    <div role="group" aria-label="投票"
+      className={`relative z-10 inline-flex shrink-0 items-center rounded-full border border-line bg-surface-2/70 p-0.5 ${
+        compact ? '' : 'shadow-[0_1px_0_rgba(0,0,0,0.04)]'
+      }`}>
       <button type="button" disabled={disabled}
         aria-label="赞同" aria-pressed={myVote === 1}
-        title={myVote === 1 ? '已赞同，再点取消' : '赞同'}
+        title={title(1)}
         onClick={e => { e.stopPropagation(); onVote(myVote === 1 ? 0 : 1) }}
-        className={`${base} ${box} ${tone(1)}`}>
-        <ArrowUpOutlined />
+        className={`${button} ${tone(1)}`}>
+        {myVote === 1 ? <LikeFilled aria-hidden="true" /> : <LikeOutlined aria-hidden="true" />}
+        {!compact && <span>赞同</span>}
       </button>
-      <span className={`mono tabular font-semibold ${myVote !== 0 ? 'text-ink' : 'text-ink-2'} ${compact ? 'text-[12px]' : 'text-[13px]'}`}>
+      <span aria-hidden="true" className="mx-0.5 h-4 w-px bg-line" />
+      <span aria-live="polite" aria-label={`净赞同 ${score}`}
+        title="净赞同数 = 赞同 − 反对"
+        className={`mono tabular text-center font-semibold ${myVote !== 0 ? 'text-ink' : 'text-ink-2'} ${
+          compact ? 'min-w-6 px-1 text-[12px]' : 'min-w-7 px-1.5 text-[13px]'
+        }`}>
         {score}
       </span>
+      <span aria-hidden="true" className="mx-0.5 h-4 w-px bg-line" />
       <button type="button" disabled={disabled}
         aria-label="反对" aria-pressed={myVote === -1}
-        title={myVote === -1 ? '已反对，再点取消' : '反对'}
+        title={title(-1)}
         onClick={e => { e.stopPropagation(); onVote(myVote === -1 ? 0 : -1) }}
-        className={`${base} ${box} ${tone(-1)}`}>
-        <ArrowDownOutlined />
+        className={`${button} ${tone(-1)}`}>
+        {!compact && <span>反对</span>}
+        {myVote === -1 ? <DislikeFilled aria-hidden="true" /> : <DislikeOutlined aria-hidden="true" />}
       </button>
     </div>
   )
@@ -229,58 +245,55 @@ export function PostCard({ post }: { post: Post }) {
 
   return (
     <article className="card card-hover relative mb-3 p-3.5 sm:p-4">
-      <div className="flex items-start gap-3">
-        <VoteButtons score={post.score} myVote={post.my_vote} onVote={v => vote.mutate(v)} />
+      <div className="flex flex-wrap items-center gap-1.5">
+        {post.pinned && <Pill tone="bg-warning-soft text-warning">置顶</Pill>}
+        <Pill tone={KIND_TONE[post.kind]}>{KIND_LABEL[post.kind]}</Pill>
+        {post.kind === 'discussion' && post.accepted_comment_id != null && (
+          <Pill tone="bg-success-soft text-success">已解决</Pill>
+        )}
+        {post.own_hardware && <Pill tone="bg-success-soft text-success">实测</Pill>}
+        {post.part_title && <Pill>{post.part_title}</Pill>}
+        {post.rating != null && (
+          <span className="inline-flex items-center gap-1">
+            <Rate disabled value={post.rating} className="text-[11px]" style={{ fontSize: 11 }} />
+          </span>
+        )}
+      </div>
 
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-1.5">
-            {post.pinned && <Pill tone="bg-warning-soft text-warning">置顶</Pill>}
-            <Pill tone={KIND_TONE[post.kind]}>{KIND_LABEL[post.kind]}</Pill>
-            {post.kind === 'discussion' && post.accepted_comment_id != null && (
-              <Pill tone="bg-success-soft text-success">已解决</Pill>
-            )}
-            {post.own_hardware && <Pill tone="bg-success-soft text-success">实测</Pill>}
-            {post.part_title && <Pill>{post.part_title}</Pill>}
-            {post.rating != null && (
-              <span className="inline-flex items-center gap-1">
-                <Rate disabled value={post.rating} className="text-[11px]" style={{ fontSize: 11 }} />
-              </span>
-            )}
-          </div>
+      <h3 className="mt-1.5 text-[15.5px] font-semibold leading-snug tracking-tight">
+        <a href={href}
+          className="text-ink transition-colors after:absolute after:inset-0 after:content-[''] hover:text-brand">
+          {post.title}
+        </a>
+      </h3>
 
-          <h3 className="mt-1.5 text-[15.5px] font-semibold leading-snug tracking-tight">
-            <a href={href}
-              className="text-ink transition-colors after:absolute after:inset-0 after:content-[''] hover:text-brand">
-              {post.title}
-            </a>
-          </h3>
+      {excerpt && (
+        <p className="mt-1 line-clamp-2 text-[13px] leading-6 text-ink-2">{excerpt}…</p>
+      )}
 
-          {excerpt && (
-            <p className="mt-1 line-clamp-2 text-[13px] leading-6 text-ink-2">{excerpt}…</p>
-          )}
-
-          <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] text-ink-3">
-            <UserBadge user={post.author} size={20} />
-            <span className="mono tabular">{ago(post.created_at)}</span>
-            <span className="inline-flex items-center gap-1">
-              <CommentOutlined aria-hidden="true" />
-              <span className="mono tabular">{post.comment_count}</span>
-              <span className="sr-only">条回复</span>
-            </span>
-            <span className="inline-flex items-center gap-1">
-              <EyeOutlined aria-hidden="true" />
-              <span className="mono tabular">{post.view_count}</span>
-              <span className="sr-only">次浏览</span>
-            </span>
-            {post.tags.length > 0 && (
-              <span className="flex flex-wrap items-center gap-1.5">
-                {post.tags.map(t => (
-                  <span key={t} className="mono text-[11.5px] text-ink-3">#{t}</span>
-                ))}
-              </span>
-            )}
-          </div>
-        </div>
+      <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-2 text-[12px] text-ink-3">
+        <UserBadge user={post.author} size={20} />
+        <span className="mono tabular">{ago(post.created_at)}</span>
+        <span className="inline-flex items-center gap-1">
+          <CommentOutlined aria-hidden="true" />
+          <span className="mono tabular">{post.comment_count}</span>
+          <span className="sr-only">条回复</span>
+        </span>
+        <span className="inline-flex items-center gap-1">
+          <EyeOutlined aria-hidden="true" />
+          <span className="mono tabular">{post.view_count}</span>
+          <span className="sr-only">次浏览</span>
+        </span>
+        {post.tags.length > 0 && (
+          <span className="flex flex-wrap items-center gap-1.5">
+            {post.tags.map(t => (
+              <span key={t} className="mono text-[11.5px] text-ink-3">#{t}</span>
+            ))}
+          </span>
+        )}
+        <span className="ml-auto">
+          <VoteButtons score={post.score} myVote={post.my_vote} onVote={v => vote.mutate(v)} />
+        </span>
       </div>
     </article>
   )
@@ -465,10 +478,8 @@ function CommentNode({ c, postId, depth = 0, acceptedId, canAccept, onAccept, ac
 
   return (
     <div className={nested ? 'mt-3 border-l border-line pl-3 sm:pl-4' : 'mt-3'}>
-      <div className={`flex gap-2.5 ${accepted ? 'rounded-lg border border-success/35 bg-success-soft/55 p-2.5 sm:p-3' : ''}`}>
-        <VoteButtons compact score={c.score} myVote={c.my_vote} onVote={v => vote.mutate(v)} />
-
-        <div className="min-w-0 flex-1">
+      <div className={accepted ? 'rounded-lg border border-success/35 bg-success-soft/55 p-2.5 sm:p-3' : ''}>
+        <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[12px] text-ink-3">
             <UserBadge user={c.author} size={20} />
             <span className="mono tabular">{ago(c.created_at)}</span>
@@ -507,6 +518,10 @@ function CommentNode({ c, postId, depth = 0, acceptedId, canAccept, onAccept, ac
                 onClick={() => text.trim().length >= 2 && reply.mutate()}>发送</Button>
             </div>
           )}
+
+          <div className="mt-1.5 flex justify-end">
+            <VoteButtons compact score={c.score} myVote={c.my_vote} onVote={v => vote.mutate(v)} />
+          </div>
         </div>
       </div>
 
