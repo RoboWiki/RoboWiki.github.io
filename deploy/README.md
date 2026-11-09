@@ -252,12 +252,12 @@ docker compose logs --tail=20 api | grep '\[email:dev\]'
 
 | 接口 | 作用 |
 |---|---|
-| `POST /api/v1/auth/wechat/qr` | 签发 32 位 hex 的一次性 ticket（5 分钟，Postgres `login_tickets` 表，不引入 Redis），调 `getwxacodeunlimit` 生成指向 `pages/login/confirm` 的小程序码（`scene` 只放 ticket） |
+| `POST /api/v1/auth/wechat/qr` | 签发 32 位 hex 的一次性 ticket（5 分钟，Postgres `login_tickets` 表，不引入 Redis），调 `getwxacodeunlimit` 生成指向 `pages/login/confirm/index` 的小程序码（`scene` 只放 ticket） |
 | `POST /api/v1/auth/wechat/qr/confirm` | 小程序确认页提交 `{ticket, code}`：code2session 换 openid → 建号/查号 → 原子占用票据 → 暂存会话 60 秒 |
 | `GET /api/v1/auth/wechat/qr/status?ticket=` | 网页轮询；`confirmed` 时返回会话并**立即删除票据**（一次性防重放） |
 
 `access_token` 走 `/cgi-bin/stable_token` 并在进程内缓存到过期前 10 分钟。
-小程序端确认页是 `pages/login/confirm`，**真机扫码前该页面至少要发布为体验版**
+小程序端确认页是 `pages/login/confirm/index`，**真机扫码前该页面至少要发布为体验版**
 （`check_path:false` 只解决出码，不解决页面不存在）。
 
 ---

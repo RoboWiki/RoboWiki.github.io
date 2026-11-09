@@ -955,7 +955,7 @@ async def _wechat_qr_image(ticket: str) -> bytes:
     async with httpx.AsyncClient(timeout=settings.wechat_timeout_s) as client:
         resp = await client.post(url, params={"access_token": token}, json={
             "scene": ticket,
-            "page": "pages/login/confirm",
+            "page": "pages/login/confirm/index",
             # 体验版 / 未发布页面也能出码；真机扫码要求该页面至少是体验版
             "check_path": False,
             "width": 280,

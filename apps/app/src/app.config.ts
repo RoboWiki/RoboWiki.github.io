@@ -16,7 +16,7 @@ export default defineAppConfig({
     'pages/compare/index',
     'pages/learn/index',
     'pages/login/index',
-    'pages/login/confirm',
+    'pages/login/confirm/index',
     'pages/submit/index',
     'pages/compose/index',
   ],
