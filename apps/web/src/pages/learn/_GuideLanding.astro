@@ -36,7 +36,7 @@ type Resource = {
 
 const resources = (learnData.resources || []) as Resource[]
 const pdfCount = resources.filter(r => r.type === 'pdf').length
-const noteCount = resources.filter(r => r.type === 'note').length
+const linkCount = resources.filter(r => r.type === 'link').length
 const TOPIC_ORDER = ['机械结构', '电控', '选型与流程', '算法与仿真', '竞赛与项目']
 const topicCounts = new Map<string, number>()
 for (const r of resources) for (const t of r.topics || []) topicCounts.set(t, (topicCounts.get(t) || 0) + 1)
@@ -46,7 +46,8 @@ const topics = [...topicCounts.entries()].sort(
 const sourceCounts = new Map<string, number>()
 for (const r of resources) sourceCounts.set(r.source, (sourceCounts.get(r.source) || 0) + 1)
 const sources = [...sourceCounts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'zh-CN'))
-const typeLabel = (r: Resource) => (r.type === 'pdf' ? 'PDF' : r.type === 'note' ? '本站笔记' : r.type)
+const typeLabel = (r: Resource) => (r.type === 'pdf' ? 'PDF' : r.type === 'note' ? '本站笔记' : r.type === 'link' ? '外链' : r.type)
+const cardHref = (r: Resource) => (r.type === 'link' && r.source_url ? r.source_url : withBase(r.web_path))
 const searchText = (r: Resource) =>
   [r.title, r.summary, r.source, ...(r.authors || []), ...(r.topics || []), ...(r.tags || [])]
     .filter(Boolean).join(' ').toLowerCase()
@@ -80,7 +81,7 @@ const reprint = learnData.reprint
       <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-ink-3">
         <span><span class="mono tabular font-semibold text-ink">{resources.length}</span> 份资料</span>
         <span><span class="mono tabular font-semibold text-ink">{pdfCount}</span> 份 PDF</span>
-        <span><span class="mono tabular font-semibold text-ink">{noteCount}</span> 篇本站笔记</span>
+        <span><span class="mono tabular font-semibold text-ink">{linkCount}</span> 个外链</span>
         <span>更新 {learnData.updated_at}</span>
       </div>
       <a href={withBase('/paths/electrical-14d.html')} class="mt-2 inline-flex items-center gap-1 text-[12px] font-medium text-brand hover:underline">
@@ -128,7 +129,7 @@ const reprint = learnData.reprint
           <span class="w-12 shrink-0 text-[11px] font-semibold text-ink-3">类型</span>
           <button type="button" class="chip h-7 px-2.5 text-[12px]" data-type-filter="all" aria-pressed="true">全部</button>
           <button type="button" class="chip h-7 px-2.5 text-[12px]" data-type-filter="pdf" aria-pressed="false">PDF <span class="mono opacity-60">{pdfCount}</span></button>
-          <button type="button" class="chip h-7 px-2.5 text-[12px]" data-type-filter="note" aria-pressed="false">本站笔记 <span class="mono opacity-60">{noteCount}</span></button>
+          <button type="button" class="chip h-7 px-2.5 text-[12px]" data-type-filter="link" aria-pressed="false">外链 <span class="mono opacity-60">{linkCount}</span></button>
           <label class="ml-auto inline-flex items-center gap-2 text-[11px] text-ink-3">
             排序
             <select id="learn-sort" class="h-8 rounded-md border border-line bg-surface px-2 text-[12px] text-ink">
@@ -154,7 +155,7 @@ const reprint = learnData.reprint
           data-pages={r.pages ?? 0}
           data-title={r.title}
         >
-          <a href={withBase(r.web_path)} class="card card-hover group flex h-full flex-col overflow-hidden">
+          <a href={cardHref(r)} target={r.type === 'link' ? '_blank' : undefined} rel={r.type === 'link' ? 'noopener' : undefined} class="card card-hover group flex h-full flex-col overflow-hidden">
             <div class="relative flex h-40 shrink-0 items-center justify-center overflow-hidden border-b border-line bg-surface-2">
               {r.cover_url ? (
                 <img src={withBase(r.cover_url)} alt={`${r.title}封面`} loading="lazy" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]" />
@@ -163,7 +164,7 @@ const reprint = learnData.reprint
                   <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
                     <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z" /><path d="M4 5.5v15" />
                   </svg>
-                  <span class="text-[11px] font-semibold">本站笔记</span>
+                  <span class="text-[11px] font-semibold">{typeLabel(r)}</span>
                 </div>
               )}
               <span class={`absolute left-2 top-2 rounded-full border px-2 py-0.5 text-[11px] font-semibold ${

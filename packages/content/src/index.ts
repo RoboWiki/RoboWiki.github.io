@@ -6,15 +6,22 @@
  */
 
 export type WebNavItem = {
-  key: 'learn' | 'builds' | 'catalog' | 'equipment' | 'suppliers' | 'community'
+  key: 'home' | 'learn' | 'builds' | 'catalog' | 'equipment' | 'suppliers' | 'community'
   label: string
   desc: string
   href: string
   match: string[]
 }
 
-/** 网页端一级导航：学习 / 方案库 / 部件库 / 设备库 / 采购库 / 社区 */
+/** 网页端一级导航：首页 / 教程库 / 方案库 / 部件库 / 设备库 / 采购库 / 社区 */
 export const WEB_NAV: WebNavItem[] = [
+  {
+    key: 'home',
+    label: '首页',
+    desc: '本站定位、使用说明与入口',
+    href: '/',
+    match: ['/'],
+  },
   {
     key: 'learn',
     label: '教程库',
@@ -166,7 +173,7 @@ export const LAYERS: Layer[] = [
     desc: '从自由度与载荷倒推结构，先把传动链、材料与加工工艺的边界算清楚，再谈装配。',
     role: 'layer',
     categories: ['structural', 'wheel', 'actuator', 'servo'],
-    guides: ['selection-order', 'motor-specs', 'mechanical-transmission-pdf', 'structural-design-logic-pdf', 'lightweight-design-pdf', 'machining-guide-pdf'],
+    guides: ['mechanical-transmission-pdf', 'structural-design-logic-pdf', 'lightweight-design-pdf', 'machining-guide-pdf'],
     questions: ['需要多大扭矩与转速余量？', '传动方案与背隙能不能接受？', '材料与工艺的能力边界在哪？'],
     tone: 'text-layer-mech',
     hint: '结构件、轮组、关节电机与舵机',
@@ -183,7 +190,7 @@ export const LAYERS: Layer[] = [
       'controller_high', 'battery', 'charger', 'power', 'connector', 'module',
       'chip', 'open_hw', 'remote_controller', 'esc', 'referee', 'equipment',
     ],
-    guides: ['motor-specs', 'control-chain', 'hw-what-we-do'],
+    guides: [],
     questions: ['峰值电流与母线压降够不够？', '接口、连接器与散热余量够不够？', '器件供货与替代方案是否可查？'],
     tone: 'text-layer-hw',
     hint: '上位机、电池、充电器、电源、连接器、芯片与开源硬件',
@@ -197,7 +204,7 @@ export const LAYERS: Layer[] = [
     desc: '把主控、驱动器、总线与固件放在一条时间线上，算清周期、带宽与实时性预算。',
     role: 'layer',
     categories: ['controller_low', 'motor_driver'],
-    guides: ['control-chain', 'how-to-begin', 'ec-basics-rm'],
+    guides: [],
     questions: ['控制周期与实时性够不够？', '总线带宽与节点数上限是多少？', '固件、驱动与工具链是否成熟？'],
     tone: 'text-layer-emb',
     hint: '下位机、电机驱动板、电调与固件 / 总线',
@@ -211,7 +218,7 @@ export const LAYERS: Layer[] = [
     desc: '算法决定传感器的精度与频率要求，反过来传感器也限制能跑什么算法。',
     role: 'layer',
     categories: ['sensor', 'imu', 'lidar', 'camera'],
-    guides: ['control-chain', 'open-source-reading'],
+    guides: [],
     questions: ['需要多高的更新率与精度？', '标定与噪声模型怎么验证？', '算力预算能不能覆盖整套估计？'],
     tone: 'text-layer-algo',
     hint: 'IMU、激光雷达、深度相机与传感器',
@@ -225,7 +232,7 @@ export const LAYERS: Layer[] = [
     desc: '把四层选择装进同一台机器，用整机方案、接口契约、联调记录与迭代复盘收口。',
     role: 'brain',
     categories: [],
-    guides: ['selection-order', 'open-source-reading', 'rp1-whitepaper'],
+    guides: ['rp1-whitepaper'],
     questions: ['整机质量与重心是否可接受？', '接口契约与预算冲突时砍谁？', '出问题能不能定位到具体一层？'],
     tone: 'text-layer-sys',
     hint: '整机方案、接口契约与联调记录',

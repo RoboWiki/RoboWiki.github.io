@@ -1,16 +1,10 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { Image, ScrollView, Text, View } from 'virtual:taro/components'
-import {
-  EMPTY,
-  LAYER_BY_ID,
-  SKELETON_LAYERS,
-  type LayerId,
-} from '@robowiki/content'
+import { Image, Text, View } from 'virtual:taro/components'
+import { EMPTY } from '@robowiki/content'
 import type { LearnArticle } from '@robowiki/core'
 
 import { EmptyState, ErrorState, SkeletonRows } from '@/components/Feedback'
-import { LayerDot } from '@/components/LayerBadge'
 import { API_ORIGIN, absoluteUrl, api, errorMessage } from '@/services/api'
 import { openExternal } from '@/utils/nav'
 import { useThemeMode } from '@/utils/theme'
@@ -20,17 +14,9 @@ export default function LearnPage() {
   const theme = useThemeMode()
   const [items, setItems] = useState<LearnArticle[]>([])
   const [updatedAt, setUpdatedAt] = useState('')
-  const [activeLayer, setActiveLayer] = useState<LayerId | ''>('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [reloadKey, setReloadKey] = useState(0)
-
-  // 只做客户端交集过滤：指南 slug 与 layer.guides 对齐，不发额外请求。
-  const visibleItems = useMemo(() => {
-    if (!activeLayer) return items
-    const guides = LAYER_BY_ID[activeLayer].guides
-    return items.filter((article) => guides.includes(article.slug))
-  }, [items, activeLayer])
 
   useEffect(() => {
     let alive = true
@@ -55,8 +41,9 @@ export default function LearnPage() {
   }, [reloadKey])
 
   const open = (article: LearnArticle) => {
-    // 正文仍在网页（Markdown 渲染、代码高亮、SEO 只有一份），端内只做列表与导读。
-    openExternal(`${API_ORIGIN}${article.web_path}`, article.title)
+    const path = article.web_path || ''
+    const url = /^https?:\/\//i.test(path) ? path : `${API_ORIGIN}${path}`
+    openExternal(url, article.title)
   }
 
   return (
@@ -65,47 +52,14 @@ export default function LearnPage() {
         <Text className="rw-title">教程库</Text>
         <Text className="rw-caption">
           {loading
-            ? '正在加载指南…'
+            ? '正在加载教程…'
             : error
-              ? '指南暂时无法加载'
-              : activeLayer
-                ? `能力层筛选 · ${visibleItems.length} 篇`
-                : updatedAt
-                  ? `内容快照 ${updatedAt}`
-                  : `${items.length} 篇站内指南`}
+              ? '教程库暂时无法加载'
+              : updatedAt
+                ? `内容快照 ${updatedAt}`
+                : `${items.length} 份资料`}
         </Text>
-        <Text className="rw-caption">先看思路，再回去选型；每篇都能回到对应的部件与来源。</Text>
-
-        <View className="learn__layer-filter">
-          <Text className="learn__layer-label">按能力层看</Text>
-          <ScrollView scrollX className="rw-chips" showScrollbar={false}>
-            <View className="learn__layer-chips">
-              <View
-                className={`rw-chip rw-chip--touch ${activeLayer ? '' : 'rw-chip--active'}`}
-                onClick={() => setActiveLayer('')}
-              >
-                全部
-              </View>
-              {SKELETON_LAYERS.map((layer) => (
-                <View
-                  key={layer.id}
-                  className={`rw-chip rw-chip--touch learn__layer-chip ${
-                    activeLayer === layer.id ? 'rw-chip--active' : ''
-                  }`}
-                  onClick={() => setActiveLayer(layer.id)}
-                >
-                  <LayerDot layer={layer} />
-                  <Text>{layer.name}</Text>
-                </View>
-              ))}
-            </View>
-          </ScrollView>
-          {activeLayer ? (
-            <Text className="rw-caption">
-              只看「{LAYER_BY_ID[activeLayer].name}」相关指南，点「全部」取消。
-            </Text>
-          ) : null}
-        </View>
+        <Text className="rw-caption">只收经典教程与资料；PDF 可在线阅读，导读回到本站。</Text>
       </View>
 
       {loading ? <SkeletonRows rows={4} /> : null}
@@ -114,24 +68,15 @@ export default function LearnPage() {
         <ErrorState message={error} onRetry={() => setReloadKey((key) => key + 1)} />
       ) : null}
 
-      {!loading && !error && visibleItems.length === 0 ? (
-        activeLayer ? (
-          <EmptyState
-            title="这个能力层还没有对应指南"
-            hint="先看全部指南，或去能力地图了解四层分工"
-            actionLabel="看全部指南"
-            onAction={() => setActiveLayer('')}
-          />
-        ) : (
-          <EmptyState title={EMPTY.learn.title} hint={EMPTY.learn.hint} />
-        )
+      {!loading && !error && items.length === 0 ? (
+        <EmptyState title={EMPTY.learn.title} hint={EMPTY.learn.hint} />
       ) : null}
 
-      {!loading && !error && visibleItems.length > 0 ? (
+      {!loading && !error && items.length > 0 ? (
         <View className="rw-list learn__list">
-          {visibleItems.map((article) => {
+          {items.map((article) => {
             const cover = article.cover_url ? absoluteUrl(article.cover_url) : ''
-            const kind = article.type === 'pdf' ? 'PDF' : '本站笔记'
+            const kind = article.type === 'pdf' ? 'PDF' : article.type === 'link' ? '外链' : '本站笔记'
             const meta = [
               kind,
               article.source,
@@ -149,9 +94,7 @@ export default function LearnPage() {
                 {cover ? (
                   <Image className="learn__thumb" src={cover} mode="aspectFill" />
                 ) : (
-                  <View className="learn__thumb learn__thumb--empty">
-                    {article.type === 'pdf' ? 'PDF' : '笔记'}
-                  </View>
+                  <View className="learn__thumb learn__thumb--empty">{kind}</View>
                 )}
                 <View className="rw-grow rw-stack" style={{ gap: '6px' }}>
                   <View className="rw-row rw-row--between">

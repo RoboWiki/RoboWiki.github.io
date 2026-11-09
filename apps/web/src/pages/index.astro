@@ -1,6 +1,5 @@
 ---
 import Base from '@/layouts/Base.astro'
-import { getCollection } from 'astro:content'
 import { catalog, dataVersion, featuredParts, imageUrl, topCategories } from '@/lib/catalog'
 import { bestOfferPrice, formatPrice, partHref, withBase } from '@/lib/utils'
 import { partFacts } from '@/lib/partFacts'
@@ -9,8 +8,9 @@ import robotsData from '@/data/robots.json'
 import materialsData from '@/data/materials.json'
 import softwareData from '@/data/software.json'
 import suppliersData from '@/data/suppliers.json'
+import learnData from '@/data/learn.json'
 
-const learn = await getCollection('learn')
+const resourcesCount = (learnData.resources || []).length
 
 // Tailwind 只能识别源码里的完整类名；tone 在 content 包里动态拼接不会被扫描到。
 const layerBar: Record<string, string> = {
@@ -29,7 +29,7 @@ const stats = [
   { label: '材料与工艺', value: materialsData.count, href: '/materials.html' },
   { label: '软件', value: softwareData.count, href: '/software.html' },
   { label: '采购库', value: suppliersData.count, href: '/suppliers.html' },
-  { label: '指南', value: learn.length, href: '/learn/index.html' },
+  { label: '教程库', value: resourcesCount, href: '/learn/index.html' },
 ]
 
 const steps = [
@@ -178,7 +178,7 @@ const faqs = [
   </section>
 
   <section class="mt-6 overflow-hidden rounded-lg border border-line bg-surface">
-    <dl class="grid grid-cols-3 gap-px bg-line sm:grid-cols-6">
+    <dl class="grid grid-cols-2 gap-px bg-line sm:grid-cols-4 lg:grid-cols-7">
       {stats.map(s => (
         <a href={withBase(s.href)} class="group bg-surface px-4 py-3.5 transition-colors hover:bg-surface-2">
           <dt class="text-[11px] text-ink-3">{s.label}</dt>
@@ -200,7 +200,7 @@ const faqs = [
     </div>
     <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
       {[
-        { href: '/learn/index.html', title: '教程库', desc: '经典 PDF 与导读，按方向筛选', count: '12 份资料', eg: '例：传动机构简述' },
+        { href: '/learn/index.html', title: '教程库', desc: '经典 PDF 与导读，按方向筛选', count: '6 份资料', eg: '例：传动机构简述' },
         { href: '/builds.html', title: '方案库', desc: '可复现方案，含 BOM 与步骤', count: `${robotsData.count} 套`, eg: '例：四足 5k 方案' },
         { href: '/catalog.html', title: '部件库', desc: '参数带来源，缺失写 null', count: `${catalog.count} 个部件`, eg: '例：DM4310 参数' },
         { href: '/equipment.html', title: '设备库', desc: '做机器人的工具与仪器', count: `${equipmentCount} 台设备`, eg: '例：拓竹 A1、优利德 UT89X' },
@@ -224,8 +224,8 @@ const faqs = [
 
   <section class="mt-12 grid gap-4 lg:grid-cols-[minmax(0,1fr)_380px]">
     <div class="card p-6">
-      <h2 class="text-lg font-bold tracking-tight text-ink">不知道怎么开始？</h2>
-      <p class="mt-1.5 text-sm leading-6 text-ink-3">四步走完一遍，比收藏一百个链接有用。</p>
+      <h2 class="text-lg font-bold tracking-tight text-ink">怎么用本站</h2>
+      <p class="mt-1.5 text-sm leading-6 text-ink-3">先看教程库打基础，再按四步走到能自己选型和复现。</p>
       <ol class="mt-5 grid gap-2 sm:grid-cols-2">
         {steps.map((s, i) => (
           <li>
