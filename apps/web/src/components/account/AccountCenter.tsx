@@ -1000,7 +1000,15 @@ function IdentityPanel({ account, onGoSecurity }: {
 }) {
   const qc = useQueryClient()
   const { modal } = AntApp.useApp()
-  const [status, setStatus] = useState<Status>(null)
+  const [status, setStatus] = useState<Status>(() => {
+    if (typeof window === 'undefined') return null
+    const flag = new URLSearchParams(window.location.search).get('github')
+    if (flag === 'bound') return { kind: 'ok', text: '已绑定 GitHub' }
+    if (flag === 'conflict') {
+      return { kind: 'error', text: '该 GitHub 已绑定其他账号，本次没有做任何变更' }
+    }
+    return null
+  })
   const [busy, setBusy] = useState<string | null>(null)
   const identities = useQuery({
     queryKey: ['account', 'identities'],
@@ -1010,14 +1018,31 @@ function IdentityPanel({ account, onGoSecurity }: {
   const bound = (provider: string): Identity | undefined =>
     identities.data?.find(i => i.provider === provider)
 
-  const connectGithub = () => {
+  const connectGithub = async () => {
+    if (busy) return
+    setBusy('github')
+    setStatus(null)
     try {
-      window.sessionStorage.setItem('rw-auth-return', '/account.html')
-    } catch {
-      // 隐私模式下 sessionStorage 可能不可写；授权后仍会回到登录桥。
+      const origin = window.location.origin
+      const res = await fetch(
+        `${API_BASE}/auth/github/bind?return_to=${encodeURIComponent(origin)}`,
+        {
+          method: 'POST',
+          credentials: 'include',
+          headers: auth.token ? { Authorization: `Bearer ${auth.token}` } : undefined,
+        },
+      )
+      if (!res.ok) {
+        const text = await res.text()
+        throw new Error(text || `HTTP ${res.status}`)
+      }
+      const data = await res.json() as { url?: string }
+      if (!data.url) throw new Error('没有拿到 GitHub 授权地址')
+      window.location.href = data.url
+    } catch (e) {
+      setStatus({ kind: 'error', text: errText(e) })
+      setBusy(null)
     }
-    const origin = window.location.origin
-    window.location.href = `${API_BASE}/auth/github/login?return_to=${encodeURIComponent(origin)}`
   }
 
   const unbind = (identity: Identity) => {

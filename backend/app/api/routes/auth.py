@@ -833,6 +833,26 @@ async def _github_profile(client, token: dict) -> dict:
     }
 
 
+@router.post("/github/bind")
+async def github_bind_start(request: Request, user: CurrentUser,
+                            return_to: str | None = None):
+    """账号页发起 GitHub 绑定：返回授权地址，绑定目标存在 session 里。
+
+    与 /github/login 的区别：回调时把身份绑到当前账号，不切换登录状态；
+    该 GitHub 已属于别的账号时返回 409，由前端提示。
+    """
+    client = _github_client()
+    rate_limit(request, "oauth-bind", 20, user.id)
+    origin = _normalize_return_to(return_to) or settings.site_url.rstrip("/")
+    request.session["oauth_bind_user"] = user.id
+    request.session["oauth_bind_return"] = origin
+    response = await client.authorize_redirect(request, _github_redirect_uri(request))
+    location = response.headers.get("location") or response.headers.get("Location")
+    if not location:
+        raise HTTPException(502, "无法发起 GitHub 授权")
+    return {"url": location}
+
+
 @router.get("/github/login", name="github_login")
 async def github_login(request: Request, return_to: str | None = None):
     """跳到 GitHub 授权页。state 由 Authlib 写进签名 cookie。
@@ -862,6 +882,8 @@ async def github_callback(request: Request, db: Db):
       · 未带 `return_to`（旧客户端/主站直连）→ 保持原有
         `site_url/login.html#token=<jwt>`，避免破坏既有调用方。
     """
+    bind_user_id = request.session.pop("oauth_bind_user", None)
+    bind_return = request.session.pop("oauth_bind_return", None)
     client = _github_client()          # 未配置 → 503
     rate_limit(request, "oauth-callback", 60)
     try:
@@ -881,6 +903,24 @@ async def github_callback(request: Request, db: Db):
         raise HTTPException(status.HTTP_502_BAD_GATEWAY,
                             "GitHub 返回的资料不完整")
     login = (info.get("login") or "").strip()
+
+    if bind_user_id is not None:
+        bind_user = db.get(User, int(bind_user_id))
+        if bind_user is None:
+            raise HTTPException(401, "绑定会话已失效，请重新登录后再试")
+        origin = bind_return or settings.site_url.rstrip("/")
+        try:
+            _bind_provider_identity(
+                db, bind_user, PROVIDER_GITHUB, subject,
+                email=(info.get("email") or None), raw=info.get("raw") or {})
+        except HTTPException as exc:
+            if exc.status_code == status.HTTP_409_CONFLICT:
+                return RedirectResponse(
+                    f"{origin}/account.html?github=conflict",
+                    status_code=status.HTTP_302_FOUND)
+            raise
+        return RedirectResponse(f"{origin}/account.html?github=bound",
+                                status_code=status.HTTP_302_FOUND)
     user = _user_for_identity(
         db, provider=PROVIDER_GITHUB, subject=subject,
         email=info.get("email"), email_verified=bool(info.get("email_verified")),
@@ -948,18 +988,9 @@ async def wechat_mini(payload: WechatMiniIn, request: Request, db: Db,
     unionid = (data.get("unionid") or "").strip()
     nickname = (payload.nickname or "").strip() or None
     if user is not None:
-        bound = db.exec(select(Identity).where(
-            Identity.provider == PROVIDER_WECHAT_MINI,
-            Identity.subject == openid)).first()
-        if bound is not None and bound.user_id != user.id:
-            raise HTTPException(
-                status.HTTP_409_CONFLICT,
-                "该微信已绑定其他账号；请先在网页账号中心解绑，或直接用该微信登录")
-        if bound is None:
-            db.add(Identity(user_id=user.id, provider=PROVIDER_WECHAT_MINI,
-                            subject=openid, email=None,
-                            raw={"unionid": unionid} if unionid else {}))
-            db.commit()
+        _bind_provider_identity(
+            db, user, PROVIDER_WECHAT_MINI, openid,
+            raw={"unionid": unionid} if unionid else {})
         return _issue_session(db, user, request,
                               scopes=(PROVIDER_WECHAT_MINI,), client="mini")
 
@@ -1219,6 +1250,30 @@ def _claim_unverified(db: Session, user: User) -> None:
     db.add(user)
     db.commit()
     _revoke_all_sessions(db, user.id)
+
+
+def _bind_provider_identity(db: Session, user: User, provider: str, subject: str,
+                            *, email: str | None = None,
+                            raw: dict | None = None) -> Identity:
+    """把第三方身份绑到指定账号；已被别的账号占用时 409，不做转移。"""
+    existing = db.exec(select(Identity).where(
+        Identity.provider == provider, Identity.subject == subject)).first()
+    if existing is not None:
+        if existing.user_id != user.id:
+            raise HTTPException(
+                status.HTTP_409_CONFLICT,
+                "该身份已绑定其他账号；请先在对应账号解绑，或直接用该渠道登录")
+        if email and not existing.email:
+            existing.email = email
+        existing.raw = raw or existing.raw
+        db.add(existing)
+        db.commit()
+        return existing
+    ident = Identity(user_id=user.id, provider=provider, subject=subject,
+                     email=email, raw=raw or {})
+    db.add(ident)
+    db.commit()
+    return ident
 
 
 def _user_for_identity(db: Session, *, provider: str, subject: str,

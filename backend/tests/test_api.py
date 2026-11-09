@@ -908,3 +908,27 @@ def test_provider_handle_can_be_set_once(client):
     again = client.patch("/api/auth/handle", json={"handle": "myname2"},
                          headers={"Authorization": f"Bearer {pair['access_token']}"})
     assert again.status_code == 403
+
+
+def test_bind_provider_identity_conflicts_without_transfer(client):
+    import pytest
+    from fastapi import HTTPException
+    from app.api.routes.auth import PROVIDER_GITHUB, _bind_provider_identity
+    from app.core.db import session
+    from app.models import User
+    from sqlmodel import select
+
+    for handle in ("binda", "bindb"):
+        assert client.post("/api/auth/register", json={
+            "handle": handle, "password": "pass1234"}).status_code == 201
+    with session() as db:
+        a = db.exec(select(User).where(User.handle == "binda")).first()
+        b = db.exec(select(User).where(User.handle == "bindb")).first()
+        ident = _bind_provider_identity(db, a, PROVIDER_GITHUB, "gh-999", email="a@x.com")
+        assert ident.user_id == a.id
+        # 重复绑定同一账号是幂等
+        again = _bind_provider_identity(db, a, PROVIDER_GITHUB, "gh-999")
+        assert again.id == ident.id
+        with pytest.raises(HTTPException) as err:
+            _bind_provider_identity(db, b, PROVIDER_GITHUB, "gh-999")
+        assert err.value.status_code == 409
