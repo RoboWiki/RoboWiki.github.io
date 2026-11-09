@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { specLabel } from '@robowiki/content'
+import { formatSpecValue, specLabel } from '@robowiki/content'
 import { bestOfferPrice, formatPrice } from '@/lib/utils'
 
 type Part = {
@@ -39,14 +39,52 @@ const PRIORITY = [
 const VALUE_KEYS = new Set(PRIORITY)
 
 const isScalar = (v: unknown) => ['string', 'number', 'boolean'].includes(typeof v)
-const show = (v: unknown) => (v === null || v === undefined || v === '' ? '—' : String(v))
+const show = (v: unknown) => formatSpecValue(v)
+const isUrl = (v: string) => /^https?:\/\//i.test(v.trim())
+const safeHref = (url: string) => url.trim().replace(/[^\x21-\x7E]+/g, chunk => encodeURIComponent(chunk))
+
+/** 链接列只展示短名；完整 URL 放 title，避免一长串地址把表格撑开。 */
+function shortUrl(url: string): string {
+  try {
+    const parsed = new URL(url)
+    const host = parsed.hostname.replace(/^www\./, '')
+    const rawPath = parsed.pathname.replace(/^\/|\/$/g, '')
+    let path = rawPath
+    try { path = decodeURIComponent(rawPath) } catch { /* 保留原编码 */ }
+    if (/(^|\.)(github|gitee)\.com$/.test(host)) return path || host
+    return `${host}${path ? `/${path}` : ''}`
+  } catch {
+    return url
+  }
+}
+
+function cellContent(key: string, value: string) {
+  const items = value.split('、').filter(Boolean)
+  if (!items.length || !items.every(isUrl)) return value
+  return (
+    <span className="inline-flex max-w-full flex-wrap justify-end gap-x-2 gap-y-0.5">
+      {items.map(item => (
+        <a
+          key={item}
+          href={safeHref(item)}
+          target="_blank"
+          rel="noopener"
+          title={item}
+          className="max-w-[220px] truncate text-brand hover:underline"
+        >
+          {key === 'doc_pdf' ? '查看 PDF' : shortUrl(item)} ↗
+        </a>
+      ))}
+    </span>
+  )
+}
 
 /** 把 specs 里的标量摊平；对象与数组不进对比表（避免 [object Object] 与噪声）。 */
 function flatten(specs: Record<string, unknown> = {}): Record<string, string> {
   const out: Record<string, string> = {}
   for (const [k, v] of Object.entries(specs)) {
     if (isScalar(v)) out[k] = show(v)
-    else if (Array.isArray(v) && v.length && v.every(isScalar)) out[k] = v.join('、')
+    else if (Array.isArray(v) && v.length && v.every(isScalar)) out[k] = show(v)
     else if (v && typeof v === 'object') {
       for (const [sk, sv] of Object.entries(v as Record<string, unknown>)) {
         if (isScalar(sv)) out[`${k}.${sk}`] = show(sv)
@@ -266,7 +304,7 @@ export default function CompareTable({ labels = {} }: { labels?: Labels }) {
                       {unit && <span className="ml-1 text-[10px] text-ink-3">({unit})</span>}
                     </th>
                     {row.values.map((v, i) => (
-                      <td key={i} className="mono tabular px-3 py-2 text-ink">{v}</td>
+                      <td key={i} className="mono tabular px-3 py-2 text-ink">{cellContent(row.key, v)}</td>
                     ))}
                   </tr>
                 )

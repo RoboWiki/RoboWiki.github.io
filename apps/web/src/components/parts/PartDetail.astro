@@ -5,7 +5,7 @@ import SeoJsonLd from '@/components/SeoJsonLd.astro'
 import { categoryLabel, imageUrl, type CatalogPart } from '@/lib/catalog'
 import { bestOfferPrice, formatPrice, withBase } from '@/lib/utils'
 import semantics from '@/data/semantics.json'
-import { specLabel as contentSpecLabel } from '@robowiki/content'
+import { formatSpecValue, specLabel as contentSpecLabel } from '@robowiki/content'
 import { layerOfCategory } from '@/lib/layers'
 
 const { part } = Astro.props as { part: CatalogPart }
@@ -13,13 +13,43 @@ type FieldMeta = { label?: string; unit?: string; meaning?: string; missing_mean
 const fieldSemantics = (semantics as { field_semantics?: Record<string, FieldMeta> }).field_semantics ?? {}
 // 语义表优先；目录里出现的新字段（尚未写进 semantics.json）用内容包兜底，
 // 至少把单位后缀剥掉、把 snake_case 变成可读词，而不是原样抛出 key。
-const specLabel = (key: string) => fieldSemantics[key]?.label ?? contentSpecLabel(key).label
-const specUnit = (key: string) => fieldSemantics[key]?.unit ?? contentSpecLabel(key).unit
+const specLabel = (key: string) => fieldSemantics[key]?.label || contentSpecLabel(key).label
+const specUnit = (key: string) => fieldSemantics[key]?.unit || contentSpecLabel(key).unit
 const specMeaning = (key: string) => fieldSemantics[key]?.meaning ?? ''
-type SpecRow = { key: string; label: string; value: string; unit: string; meaning: string }
+type SpecLink = { href: string; text: string }
+type SpecRow = { key: string; label: string; value: string; unit: string; meaning: string; links?: SpecLink[] }
 const isScalar = (v: unknown) => ['string', 'number', 'boolean'].includes(typeof v)
 // 这些字段在「资料与仓库」里单独渲染成可点链接，不再进参数表。
 const LINK_SPEC_KEYS = new Set(['doc_url', 'doc_pdf', 'repo_urls', 'urdf_urls', 'repo_license'])
+const isUrl = (v: string) => /^https?:\/\//i.test(v.trim())
+// 少数舵机把 gear 当「齿轮材质」用（钢齿 / 金属齿），不能显示成减速比。
+const isNumericText = (v: unknown) => typeof v === 'number' || (typeof v === 'string' && /^[\d.:\s]+$/.test(v))
+// 数据里的 PDF 地址有的带空格和中文，href 需要转义，但不能二次转义已有的 %xx。
+const safeHref = (url: string) => url.trim().replace(/[^\x21-\x7E]+/g, chunk => encodeURIComponent(chunk))
+
+/** 参数表里的链接只展示可读短名，完整 URL 放 title，避免把一长串地址塞进右栏。 */
+const shortUrl = (url: string): string => {
+  try {
+    const parsed = new URL(url)
+    const host = parsed.hostname.replace(/^www\./, '')
+    const rawPath = parsed.pathname.replace(/^\/|\/$/g, '')
+    let path = rawPath
+    try { path = decodeURIComponent(rawPath) } catch { /* 保留原编码 */ }
+    if (/(^|\.)(github|gitee)\.com$/.test(host)) return path || host
+    return `${host}${path ? `/${path}` : ''}`
+  } catch {
+    return url
+  }
+}
+const linkText = (key: string, url: string) => (key === 'doc_pdf' ? '查看 PDF' : shortUrl(url))
+/** 单位不重复追加；减速比的 :1 直接贴成 9:1，避免显示成「9 :1」。 */
+const withUnit = (key: string, text: string, unit: string): { value: string; unit: string } => {
+  if (!unit || text.includes(unit)) return { value: text, unit: '' }
+  if (key === 'gear' && unit === ':1') {
+    return /^[\d.]+$/.test(text) ? { value: `${text}:1`, unit: '' } : { value: text, unit: '' }
+  }
+  return { value: text, unit }
+}
 
 /**
  * 参数值有三种形态：标量、数组、对象。
@@ -34,9 +64,21 @@ const toSpecRows = (specs: Record<string, unknown> = {}): SpecRow[] => {
   for (const [key, value] of Object.entries(specs)) {
     if (LINK_SPEC_KEYS.has(key)) continue
     if (value === null || value === undefined || value === '') continue
+    const label = key === 'connector_wire' && typeof value === 'string' && !/\d\s*(?:cm|mm|m)\b/i.test(value)
+      ? '接线 / 接口'
+      : key === 'gear' && !isNumericText(value) ? '齿轮材质' : specLabel(key)
+    const meaning = specMeaning(key)
     if (Array.isArray(value)) {
       if (value.length && value.every(isScalar)) {
-        rows.push({ key, label: specLabel(key), value: value.join('、'), unit: '', meaning: specMeaning(key) })
+        if (value.every(item => typeof item === 'string' && isUrl(item))) {
+          rows.push({
+            key, label, value: '', unit: '', meaning,
+            links: value.map(item => ({ href: safeHref(item as string), text: linkText(key, item as string) })),
+          })
+        } else {
+          const text = value.map(item => formatSpecValue(item)).join('、')
+          rows.push({ key, label, ...withUnit(key, text, specUnit(key)), meaning })
+        }
       }
       continue
     }
@@ -45,12 +87,17 @@ const toSpecRows = (specs: Record<string, unknown> = {}): SpecRow[] => {
       if (entries.length && entries.every(([, v]) => isScalar(v) || v === null)) {
         for (const [subKey, subValue] of entries) {
           if (subValue === null || subValue === undefined || subValue === '') continue
-          rows.push({ key: `${key}.${subKey}`, label: subKey, value: String(subValue), unit: '', meaning: '' })
+          rows.push({ key: `${key}.${subKey}`, label: subKey, value: formatSpecValue(subValue), unit: '', meaning: '' })
         }
       }
       continue
     }
-    rows.push({ key, label: specLabel(key), value: String(value), unit: specUnit(key), meaning: specMeaning(key) })
+    if (typeof value === 'string' && isUrl(value)) {
+      rows.push({ key, label, value: '', unit: '', meaning, links: [{ href: safeHref(value), text: linkText(key, value) }] })
+      continue
+    }
+    const text = formatSpecValue(value)
+    rows.push({ key, label, ...withUnit(key, text, specUnit(key)), meaning })
   }
   return rows
 }
@@ -111,9 +158,14 @@ const STAT_PRIORITY: Array<{ key: string; label: string; unit: string }> = [
 ]
 const specSource = (part.specs ?? {}) as Record<string, unknown>
 const keyStats = STAT_PRIORITY
-  .filter(item => specSource[item.key] !== null && specSource[item.key] !== undefined && specSource[item.key] !== '')
+  .filter(item => {
+    const value = specSource[item.key]
+    if (value === null || value === undefined || value === '') return false
+    if (item.key === 'gear' && !isNumericText(value)) return false
+    return true
+  })
   .slice(0, 3)
-  .map(item => ({ label: item.label, value: specSource[item.key] as string | number, unit: item.unit }))
+  .map(item => ({ label: item.label, ...withUnit(item.key, formatSpecValue(specSource[item.key]), item.unit) }))
 ---
 
 <Base title={title} description={description} image={imageUrl(part)}>
@@ -161,8 +213,8 @@ const keyStats = STAT_PRIORITY
                 <div class="bg-surface px-3 py-2.5">
                   <dt class="text-[11px] text-ink-3">{s.label}</dt>
                   <dd class="mono tabular mt-0.5 text-sm font-semibold text-ink">
-                    {s.value ?? <span class="text-ink-3">null</span>}
-                    {s.value != null && <span class="ml-0.5 text-[11px] font-normal text-ink-3">{s.unit}</span>}
+                    {s.value}
+                    {s.unit && <span class="ml-0.5 text-[11px] font-normal text-ink-3">{s.unit}</span>}
                   </dd>
                 </div>
               ))}
@@ -244,7 +296,23 @@ const keyStats = STAT_PRIORITY
                 )}
               </dt>
               <dd class="mono tabular min-w-0 break-words text-right font-medium text-ink">
-                {row.value}{row.unit && <span class="ml-1 text-[11px] font-normal text-ink-3">{row.unit}</span>}
+                {row.links?.length ? (
+                  <span class="inline-flex max-w-full flex-wrap justify-end gap-x-2 gap-y-0.5">
+                    {row.links.map(link => (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener"
+                        title={link.href}
+                        class="max-w-[220px] truncate align-bottom text-brand hover:underline"
+                      >
+                        {link.text} ↗
+                      </a>
+                    ))}
+                  </span>
+                ) : (
+                  <>{row.value}{row.unit && <span class="ml-1 text-[11px] font-normal text-ink-3">{row.unit}</span>}</>
+                )}
               </dd>
             </div>
           ))}
