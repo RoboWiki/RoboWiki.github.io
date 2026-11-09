@@ -6,10 +6,12 @@
 """
 from __future__ import annotations
 
+import base64
 import hashlib
 import logging
 import re
 import secrets
+import time
 import warnings
 from datetime import datetime, timedelta, timezone
 from urllib.parse import urlparse
@@ -17,7 +19,7 @@ from urllib.parse import urlparse
 import httpx
 from fastapi import APIRouter, HTTPException, Request, status
 from fastapi.responses import JSONResponse, RedirectResponse
-from sqlalchemy import update
+from sqlalchemy import delete, update
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, select
 
@@ -28,12 +30,13 @@ from ...core.security import (create_token, dummy_password_hash, hash_password,
 from ...crud import posts_out, user_out
 from ...email_templates import render_email
 from ...mailer import MailError, enqueue_email, send_email
-from ...models import (Comment, EmailToken, HandoffCode, Identity, Part, Post,
-                       Rating, RefreshToken, Submission, User)
+from ...models import (Comment, EmailToken, HandoffCode, Identity, LoginTicket, Part,
+                       Post, Rating, RefreshToken, Submission, User, UserBan)
 from ...schemas import (AccountExportOut, AccountOut, AccountUpdateIn,
                         CommentExportOut, EmailChangeConfirmIn, EmailChangeIn,
                         ForgotIn, HandoffIn, IdentityOut, LoginIn, LogoutIn,
                         PasswordChangeIn, PasswordSetIn, ProvidersOut,
+                        QrConfirmIn, QrCreateOut, QrStatusOut,
                         RatingExportOut, RefreshIn, RegisterIn, ResetPasswordIn,
                         SessionOut, SubmissionExportOut, TokenOut,
                         VerifyEmailIn, WechatMiniIn)
@@ -240,6 +243,13 @@ def _issue_session(db: Session, user: User, request: Request, *,
     refresh 原文只在这里返回一次，库里只留 sha256。`family` 相同即同一条
     会话链；刷新时传旧 family，复用检测才能整链撤销。
     """
+    # 封禁账号：登录 / 刷新 / handoff 都在这里被挡住（一条生效中的 UserBan）
+    active_ban = db.exec(select(UserBan).where(
+        UserBan.user_id == user.id, UserBan.lifted_at.is_(None))).first()
+    if active_ban is not None:
+        raise HTTPException(status.HTTP_403_FORBIDDEN,
+                            "该账号已被封禁，如有疑问请通过站内通知联系站务")
+
     raw_refresh = new_refresh_token()
     db.add(RefreshToken(
         user_id=user.id,
@@ -897,6 +907,167 @@ async def wechat_mini(payload: WechatMiniIn, request: Request, db: Db):
     )
     return _issue_session(db, user, request,
                           scopes=(PROVIDER_WECHAT_MINI,), client="mini")
+
+
+# ── 微信扫码登录（网页意图 + 个人小程序确认器）────────────────────────────────
+# 流程：网页 POST /auth/wechat/qr 拿小程序码 → 用户扫码进小程序确认页 →
+# 小程序 POST /auth/wechat/qr/confirm（ticket + wx.login code）→ 网页轮询
+# GET /auth/wechat/qr/status，confirmed 时取走会话。ticket 一次性、5 分钟过期。
+_QR_TICKET_TTL = 300          # 二维码有效期（秒）
+_wx_token_cache: dict[str, tuple[str, float]] = {}
+
+
+def _qr_ticket_ttl() -> int:
+    return _QR_TICKET_TTL
+
+
+async def _wechat_access_token() -> str:
+    """stable_token：不会像旧接口那样一取就顶掉别的 token，缓存到过期前 10 分钟。"""
+    now = time.time()
+    cached = _wx_token_cache.get("default")
+    if cached and cached[1] > now:
+        return cached[0]
+    payload = {
+        "grant_type": "client_credential",
+        "appid": (settings.wechat_mp_appid or "").strip(),
+        "secret": (settings.wechat_mp_secret or "").strip(),
+        "force_refresh": False,
+    }
+    url = f"{settings.wechat_api_base.rstrip('/')}/cgi-bin/stable_token"
+    async with httpx.AsyncClient(timeout=settings.wechat_timeout_s) as client:
+        resp = await client.post(url, json=payload)
+        resp.raise_for_status()
+        data = resp.json() or {}
+    token = (data.get("access_token") or "").strip()
+    if not token:
+        log.warning("wechat stable_token failed: errcode=%s", data.get("errcode"))
+        raise HTTPException(status.HTTP_502_BAD_GATEWAY,
+                            "获取微信 access_token 失败，请稍后再试")
+    ttl = max(600, min(int(data.get("expires_in") or 7200), 7200) - 600)
+    _wx_token_cache["default"] = (token, now + ttl)
+    return token
+
+
+async def _wechat_qr_image(ticket: str) -> bytes:
+    """调 getwxacodeunlimit 拿小程序码；失败时微信返回 JSON 而不是图片。"""
+    token = await _wechat_access_token()
+    url = f"{settings.wechat_api_base.rstrip('/')}/wxa/getwxacodeunlimit"
+    async with httpx.AsyncClient(timeout=settings.wechat_timeout_s) as client:
+        resp = await client.post(url, params={"access_token": token}, json={
+            "scene": ticket,
+            "page": "pages/login/confirm",
+            # 体验版 / 未发布页面也能出码；真机扫码要求该页面至少是体验版
+            "check_path": False,
+            "width": 280,
+        })
+        resp.raise_for_status()
+        if "image" not in (resp.headers.get("content-type") or ""):
+            data = resp.json() or {}
+            raise HTTPException(
+                status.HTTP_502_BAD_GATEWAY,
+                f"生成小程序码失败（errcode={data.get('errcode')}）")
+        return resp.content
+
+
+def _prune_tickets(db: Session) -> None:
+    """过期票据顺手清掉：这张表只存 5 分钟的状态，别让它长草。"""
+    db.execute(delete(LoginTicket).where(LoginTicket.expires_at <= _utcnow()))
+    db.commit()
+
+
+@router.post("/wechat/qr", response_model=QrCreateOut)
+async def wechat_qr_create(request: Request, db: Db):
+    """网页发起扫码登录：签发 ticket 并生成指向小程序确认页的小程序码。"""
+    if not settings.wechat_mini_enabled:
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE,
+                            "微信扫码登录未配置")
+    rate_limit(request, "wechat-qr", 30)
+    _prune_tickets(db)
+    # 32 位 hex 正好是 scene 上限（32 个可见字符）；scene 里只放 ticket。
+    ticket = secrets.token_hex(16)
+    db.add(LoginTicket(ticket=ticket,
+                       expires_at=_utcnow() + timedelta(seconds=_qr_ticket_ttl())))
+    db.commit()
+
+    try:
+        qrcode = base64.b64encode(await _wechat_qr_image(ticket)).decode()
+    except (httpx.HTTPError, ValueError) as exc:
+        log.warning("wechat qrcode failed: %s", type(exc).__name__)
+        raise HTTPException(status.HTTP_502_BAD_GATEWAY,
+                            "生成小程序码失败，请稍后再试") from exc
+    return QrCreateOut(ticket=ticket, qrcode=qrcode, expires_in=_qr_ticket_ttl())
+
+
+@router.post("/wechat/qr/confirm", response_model=dict)
+async def wechat_qr_confirm(payload: QrConfirmIn, request: Request, db: Db):
+    """小程序确认页调用：把这次 ticket 与扫码人的微信身份绑定，签发会话。"""
+    if not settings.wechat_mini_enabled:
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE,
+                            "微信扫码登录未配置")
+    rate_limit(request, "wechat-qr-confirm", 60)
+    now = _utcnow()
+    ticket = db.get(LoginTicket, payload.ticket.strip())
+    if ticket is None or ticket.expires_at <= now:
+        raise HTTPException(status.HTTP_410_GONE,
+                            "二维码已过期，请在网页刷新后重试")
+    if ticket.status != "pending":
+        raise HTTPException(status.HTTP_409_CONFLICT,
+                            "这次登录已确认过，请在网页重新生成二维码")
+
+    try:
+        data = await _wechat_code2session(payload.code)
+    except (httpx.HTTPError, ValueError) as exc:
+        log.warning("wechat qr confirm code2session failed: %s", type(exc).__name__)
+        raise HTTPException(status.HTTP_502_BAD_GATEWAY,
+                            "微信登录服务暂不可用，请稍后再试") from exc
+    openid = (data.get("openid") or "").strip()
+    if not openid:
+        log.warning("wechat qr confirm rejected: errcode=%s", data.get("errcode"))
+        raise HTTPException(status.HTTP_400_BAD_REQUEST,
+                            "微信登录失败，请重新扫码")
+
+    unionid = (data.get("unionid") or "").strip()
+    user = _user_for_identity(
+        db, provider=PROVIDER_WECHAT_MINI, subject=openid,
+        email=None, email_verified=False, display_name=None,
+        handle_hint=_slug(f"wx-{hashlib.sha256(openid.encode()).hexdigest()[:10]}"),
+        raw={"unionid": unionid} if unionid else {},
+    )
+    out = _issue_session(db, user, request,
+                         scopes=(PROVIDER_WECHAT_MINI,), client="web-qr")
+
+    # 原子占用：并发两次确认只能成功一次（status 条件更新）
+    result = db.execute(update(LoginTicket).where(
+        LoginTicket.ticket == ticket.ticket,
+        LoginTicket.status == "pending",
+        LoginTicket.expires_at > now,
+    ).values(status="confirmed",
+             session=out.model_dump(mode="json"),
+             confirmed_at=now))
+    db.commit()
+    if not result.rowcount:
+        raise HTTPException(status.HTTP_409_CONFLICT,
+                            "这次登录已确认过，请在网页重新生成二维码")
+    return {"ok": True}
+
+
+@router.get("/wechat/qr/status", response_model=QrStatusOut)
+def wechat_qr_status(ticket: str, request: Request, db: Db):
+    """网页轮询：confirmed 时返回会话并**立刻删除票据**（一次性，防重放）。"""
+    rate_limit(request, "wechat-qr-status", 120)
+    row = db.get(LoginTicket, ticket.strip())
+    if row is None:
+        return QrStatusOut(status="expired")
+    if row.expires_at <= _utcnow():
+        db.delete(row)
+        db.commit()
+        return QrStatusOut(status="expired")
+    if row.status != "confirmed" or not row.session:
+        return QrStatusOut(status="pending")
+    payload = QrStatusOut(status="confirmed", token=TokenOut(**row.session))
+    db.delete(row)
+    db.commit()
+    return payload
 
 
 # ── 身份管理 ────────────────────────────────────────────────────────────────

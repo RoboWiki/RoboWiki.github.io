@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import re
+from typing import Literal
 from datetime import datetime
 from urllib.parse import urlparse
 
@@ -211,6 +212,28 @@ class ProvidersOut(BaseModel):
     email: bool = True
     github: bool = False
     wechat_mini: bool = False
+
+
+class QrCreateOut(BaseModel):
+    """`POST /auth/wechat/qr`：ticket 给前端轮询，qrcode 是 base64 图。"""
+
+    ticket: str
+    qrcode: str
+    expires_in: int = 300
+
+
+class QrConfirmIn(BaseModel):
+    """小程序确认页提交：scene 里的 ticket + wx.login 的 code。"""
+
+    ticket: str = Field(min_length=16, max_length=64)
+    code: str = Field(min_length=1, max_length=128)
+
+
+class QrStatusOut(BaseModel):
+    """网页轮询结果；confirmed 时带一次性会话（TokenOut）。"""
+
+    status: Literal["pending", "confirmed", "expired"]
+    token: TokenOut | None = None
 
 
 class WechatMiniIn(BaseModel):
