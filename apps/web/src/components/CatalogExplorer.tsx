@@ -428,13 +428,14 @@ export default function CatalogExplorer({ parts, categories }: Props) {
                 aria-pressed={picked.includes(p.id)}
                 aria-label={`${picked.includes(p.id) ? '移出对比' : '加入对比'}：${p.vendor} ${p.model}`}
                 title={picked.includes(p.id) ? '移出对比' : '加入对比（最多 4 个）'}
-                className={`absolute right-2 top-2 z-10 grid h-7 w-7 place-items-center rounded-sm border text-[12px] transition-colors ${
+                className={`absolute right-2 top-2 z-10 inline-flex h-7 items-center gap-1 rounded-full border px-2 text-[11px] font-medium transition-colors ${
                   picked.includes(p.id)
                     ? 'border-brand bg-brand text-brand-fg'
-                    : 'border-line bg-surface/90 text-ink-3 backdrop-blur hover:border-line-strong hover:text-ink'
+                    : 'border-line bg-surface/90 text-ink-2 backdrop-blur hover:border-line-strong hover:text-ink'
                 }`}
               >
-                {picked.includes(p.id) ? '✓' : '+'}
+                <span aria-hidden="true" className="text-[12px] leading-none">{picked.includes(p.id) ? '✓' : '+'}</span>
+                {picked.includes(p.id) ? '已加入' : '加入对比'}
               </button>
               <a
                 href={partHref(p)}

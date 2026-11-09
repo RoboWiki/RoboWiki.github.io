@@ -27,8 +27,9 @@ type Supplier = {
 const suppliers = (suppliersData.suppliers || []) as unknown as Supplier[]
 const total = suppliers.length
 const redCount = suppliers.filter(s => s.listing === '红榜').length
-const blackCount = suppliers.filter(s => s.listing === '黑榜').length
 const invoiceCount = suppliers.filter(s => s.signals?.invoice === 'yes').length
+const fastCount = suppliers.filter(s => s.signals?.punctual === 'fast').length
+const lowPriceCount = suppliers.filter(s => s.signals?.price === 'low').length
 
 // 采购库的两个划分轴：①采购加工品类（shop_type）②有没有坑。
 // 「有坑」= 上过黑榜，或社区原话点名质量有坑；其余记「未见坑」（不等于背书）。
@@ -99,7 +100,7 @@ const searchText = (item: Supplier) =>
 
 <Base
   title="采购库 · RoboWiki"
-  description={`${total} 家机器人零件与加工店铺：按采购加工品类分组、按有没有坑划分，直接看社区评价原文。`}
+  description={`${total} 家机器人零件与加工店铺：先按加工品类找店，再按红榜、踩坑、开票、交期、价格筛选采购目的，直接看社区评价原文。`}
 >
   <div class="mx-auto max-w-6xl">
     <nav aria-label="面包屑" class="mb-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-ink-3">
@@ -114,8 +115,8 @@ const searchText = (item: Supplier) =>
         按加工品类找店，先看有没有坑。
       </h1>
       <p class="mt-3 max-w-3xl text-sm leading-7 text-ink-2">
-        两个轴：<span class="font-medium text-ink">采购加工品类</span>（元件电商、标准件/紧固件、CNC/车铣、钣金/激光、3D 打印、轴承传动、工具耗材、踩雷记录）
-        和<span class="font-medium text-ink">有没有坑</span>（上过黑榜或社区原话点名质量有坑）。
+        先按<span class="font-medium text-ink">买什么</span>（加工品类）缩小范围，再按<span class="font-medium text-ink">怎么买</span>
+        挑出符合自己采购目的的记录：红榜优先、避开有坑、需要开票、交期快、价格低。
         每张卡保留社区原话里的质量、交期、价格、发票和踩雷原因，不做“适合所有人”的抽象推荐。
       </p>
 
@@ -127,66 +128,70 @@ const searchText = (item: Supplier) =>
       </dl>
     </header>
 
-    <nav aria-label="按店铺类型筛选" class="mt-6">
-      <div class="chip-row" role="group">
-        <button type="button" class="chip is-active" data-type-chip="" aria-pressed="true">
-          全部<span class="mono text-[11px] opacity-60">{total}</span>
-        </button>
-        {types.map(([type, count]) => (
-          <button type="button" class="chip" data-type-chip={type} aria-pressed="false">
-            {type}<span class="mono text-[11px] opacity-60">{count}</span>
-          </button>
-        ))}
+    <form id="supplier-filters" class="card mt-6 p-4" role="search" aria-label="筛选采购库">
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
+        <input
+          id="sup-q"
+          type="search"
+          placeholder="搜索店名、工艺或评价原文，例如：钣金、轴承、拖工期"
+          class="h-10 w-full rounded-md border border-line bg-surface px-3 text-sm text-ink placeholder:text-ink-3 focus-visible:border-brand focus-visible:outline-none sm:flex-1"
+          autoComplete="off"
+        />
+        <p id="sup-count" class="mono text-[11px] text-ink-3 sm:ml-auto" aria-live="polite">显示 {total} / {total} 家</p>
       </div>
-    </nav>
 
-    <form id="supplier-filters" class="card mt-4 p-4" role="search" aria-label="筛选采购库">
-      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-        <div class="sm:col-span-2">
-          <label for="sup-q" class="text-[11px] font-medium text-ink-3">搜索店名 / 工艺 / 评价原文</label>
-          <input id="sup-q" type="search" placeholder="例如：钣金、轴承、拖工期、能开票" class="mt-1 h-9 w-full rounded-md border border-line bg-surface px-3 text-sm text-ink placeholder:text-ink-3 focus-visible:border-brand focus-visible:outline-none" />
-        </div>
-        <div>
-          <label for="sup-type" class="text-[11px] font-medium text-ink-3">加工品类</label>
-          <select id="sup-type" class="mt-1 h-9 w-full rounded-md border border-line bg-surface px-2 text-sm text-ink">
-            <option value="">全部品类</option>
-            {types.map(([type, count]) => <option value={type}>{type}（{count}）</option>)}
-          </select>
-        </div>
-        <div>
-          <label for="sup-listing" class="text-[11px] font-medium text-ink-3">榜单</label>
-          <select id="sup-listing" class="mt-1 h-9 w-full rounded-md border border-line bg-surface px-2 text-sm text-ink">
-            <option value="">全部记录</option>
-            <option value="红榜">红榜（{redCount}）</option>
-            <option value="黑榜">踩雷（{blackCount}）</option>
-            <option value="__none">未入榜（{total - redCount - blackCount}）</option>
-          </select>
-        </div>
-        <div>
-          <label for="sup-pitfall" class="text-[11px] font-medium text-ink-3">有没有坑</label>
-          <select id="sup-pitfall" class="mt-1 h-9 w-full rounded-md border border-line bg-surface px-2 text-sm text-ink">
-            <option value="">全部（{total}）</option>
-            <option value="yes">有坑（{pitfallCount}）</option>
-            <option value="no">未见坑（{total - pitfallCount}）</option>
-          </select>
-        </div>
-      </div>
-      <div class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
-        <label class="inline-flex items-center gap-2 text-xs text-ink-2">
-          <input id="sup-invoice" type="checkbox" class="h-4 w-4 rounded border-line" />
-          只看可开票
-        </label>
-        <span class="text-[11px] text-ink-3">能力：</span>
-        <div class="chip-row" role="group" aria-label="按能力筛选">
-          <button type="button" class="chip is-active" data-service="" aria-pressed="true">全部</button>
-          {services.slice(0, 12).map(({ service, count }) => (
-            <button type="button" class="chip" data-service={service} aria-pressed="false">
-              {service}<span class="mono text-[11px] opacity-60">{count}</span>
+      <div class="mt-4 space-y-3">
+        <div class="flex items-start gap-2">
+          <span id="sup-type-label" class="w-14 shrink-0 pt-1.5 text-[11px] font-semibold text-ink-3">买什么</span>
+          <div class="chip-row min-w-0 flex-1" role="group" aria-labelledby="sup-type-label">
+            <button type="button" class="chip is-active" data-type-chip="" aria-pressed="true">
+              全部<span class="mono text-[11px] opacity-60">{total}</span>
             </button>
-          ))}
+            {types.map(([type, count]) => (
+              <button type="button" class="chip" data-type-chip={type} aria-pressed="false">
+                {type}<span class="mono text-[11px] opacity-60">{count}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div class="flex items-start gap-2">
+          <span id="sup-purpose-label" class="w-14 shrink-0 pt-1.5 text-[11px] font-semibold text-ink-3">怎么买</span>
+          <div class="chip-row min-w-0 flex-1" role="group" aria-labelledby="sup-purpose-label">
+            <button type="button" class="chip is-active" data-purpose="" aria-pressed="true">不限</button>
+            <button type="button" class="chip" data-purpose="listing:红榜" aria-pressed="false">
+              红榜优先<span class="mono text-[11px] opacity-60">{redCount}</span>
+            </button>
+            <button type="button" class="chip" data-purpose="pitfall:no" aria-pressed="false">
+              未见坑<span class="mono text-[11px] opacity-60">{total - pitfallCount}</span>
+            </button>
+            <button type="button" class="chip" data-purpose="pitfall:yes" aria-pressed="false">
+              避开有坑<span class="mono text-[11px] opacity-60">{pitfallCount}</span>
+            </button>
+            <button type="button" class="chip" data-purpose="invoice:yes" aria-pressed="false">
+              可开票<span class="mono text-[11px] opacity-60">{invoiceCount}</span>
+            </button>
+            <button type="button" class="chip" data-purpose="punctual:fast" aria-pressed="false">
+              交期快<span class="mono text-[11px] opacity-60">{fastCount}</span>
+            </button>
+            <button type="button" class="chip" data-purpose="price:low" aria-pressed="false">
+              价格低<span class="mono text-[11px] opacity-60">{lowPriceCount}</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-2">
+          <span id="sup-service-label" class="w-14 shrink-0 pt-1.5 text-[11px] font-semibold text-ink-3">工艺能力</span>
+          <div class="chip-row min-w-0 flex-1" role="group" aria-labelledby="sup-service-label">
+            <button type="button" class="chip is-active" data-service="" aria-pressed="true">全部</button>
+            {services.slice(0, 12).map(({ service, count }) => (
+              <button type="button" class="chip" data-service={service} aria-pressed="false">
+                {service}<span class="mono text-[11px] opacity-60">{count}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
-      <p id="sup-count" class="mono mt-3 text-[11px] text-ink-3" aria-live="polite">显示 {total} / {total} 家</p>
     </form>
 
     <p class="mt-4 rounded-md border border-amber-200 bg-amber-50 p-3 text-[12px] leading-6 text-amber-900">
@@ -196,7 +201,7 @@ const searchText = (item: Supplier) =>
 
     <div id="supplier-empty" class="card mt-6 p-10 text-center" hidden>
       <p class="text-sm font-semibold text-ink">没有匹配的店铺</p>
-      <p class="mt-1 text-xs leading-5 text-ink-3">换一个类型、能力或关键词试试。</p>
+      <p class="mt-1 text-xs leading-5 text-ink-3">换一个品类、采购目的、工艺能力或关键词试试。</p>
     </div>
 
     <ul class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" role="list">
@@ -216,6 +221,8 @@ const searchText = (item: Supplier) =>
             data-listing={item.listing || ''}
             data-pitfall={hasPitfall(item) ? 'yes' : 'no'}
             data-invoice={signals.invoice === 'yes' ? 'yes' : 'no'}
+            data-punctual={signals.punctual || ''}
+            data-price={signals.price || ''}
             data-search={searchText(item)}
             class="min-w-0"
           >
@@ -303,39 +310,52 @@ const searchText = (item: Supplier) =>
 <script>
   const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-supplier]'))
   const q = document.getElementById('sup-q') as HTMLInputElement | null
-  const type = document.getElementById('sup-type') as HTMLSelectElement | null
-  const listing = document.getElementById('sup-listing') as HTMLSelectElement | null
-  const pitfall = document.getElementById('sup-pitfall') as HTMLSelectElement | null
-  const invoice = document.getElementById('sup-invoice') as HTMLInputElement | null
   const count = document.getElementById('sup-count')
   const empty = document.getElementById('supplier-empty')
-  const serviceButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip[data-service]'))
-  let activeService = ''
 
   const typeChips = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-type-chip]'))
-  const syncTypeChips = () => {
-    for (const chip of typeChips) {
-      const on = (chip.dataset.typeChip || '') === (type?.value || '')
+  const serviceChips = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip[data-service]'))
+  const purposeChips = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-purpose]'))
+
+  let activeType = ''
+  let activeService = ''
+  // 采购目的：每组中最多选一个（坑 / 榜单 / 发票 / 交期 / 价格），组间可叠加。
+  const activePurposes = new Map<string, string>()
+
+  const sync = (chips: HTMLButtonElement[], isActive: (chip: HTMLButtonElement) => boolean) => {
+    for (const chip of chips) {
+      const on = isActive(chip)
       chip.classList.toggle('is-active', on)
       chip.setAttribute('aria-pressed', String(on))
     }
   }
 
+  const isPurposeOn = (chip: HTMLButtonElement) => {
+    const raw = chip.dataset.purpose || ''
+    if (!raw) return activePurposes.size === 0
+    const [key, val] = raw.split(':')
+    return activePurposes.get(key) === val
+  }
+
+  const matchesPurposes = (card: HTMLElement) => {
+    for (const [key, val] of activePurposes) {
+      if (key === 'pitfall' && card.dataset.pitfall !== val) return false
+      if (key === 'listing' && card.dataset.listing !== val) return false
+      if (key === 'invoice' && card.dataset.invoice !== 'yes') return false
+      if (key === 'punctual' && card.dataset.punctual !== val) return false
+      if (key === 'price' && card.dataset.price !== val) return false
+    }
+    return true
+  }
+
   const apply = () => {
     const needle = (q?.value || '').trim().toLowerCase()
-    const wantType = type?.value || ''
-    const wantListing = listing?.value || ''
-    const wantPitfall = pitfall?.value || ''
-    const wantInvoice = Boolean(invoice?.checked)
     let shown = 0
     for (const card of cards) {
-      const hitType = !wantType || card.dataset.type === wantType
+      const hitType = !activeType || card.dataset.type === activeType
       const hitService = !activeService || (card.dataset.services || '').split(' ').includes(activeService)
-      const hitListing = !wantListing || (wantListing === '__none' ? !card.dataset.listing : card.dataset.listing === wantListing)
-      const hitPitfall = !wantPitfall || (wantPitfall === 'yes' ? card.dataset.pitfall === 'yes' : card.dataset.pitfall !== 'yes')
-      const hitInvoice = !wantInvoice || card.dataset.invoice === 'yes'
       const hitQuery = !needle || (card.dataset.search || '').includes(needle)
-      const visible = hitType && hitService && hitListing && hitPitfall && hitInvoice && hitQuery
+      const visible = hitType && hitService && hitQuery && matchesPurposes(card)
       card.hidden = !visible
       if (visible) shown += 1
     }
@@ -343,25 +363,31 @@ const searchText = (item: Supplier) =>
     if (empty) empty.hidden = shown !== 0
   }
 
-  serviceButtons.forEach(button => button.addEventListener('click', () => {
-    activeService = activeService === button.dataset.service ? '' : (button.dataset.service || '')
-    for (const other of serviceButtons) {
-      const on = other.dataset.service === activeService
-      other.classList.toggle('is-active', on)
-      other.setAttribute('aria-pressed', String(on))
-    }
-    apply()
-  }))
-  q?.addEventListener('input', apply)
-  type?.addEventListener('change', () => { syncTypeChips(); apply() })
   typeChips.forEach(chip => chip.addEventListener('click', () => {
-    if (type) type.value = chip.dataset.typeChip || ''
-    syncTypeChips()
+    activeType = chip.dataset.typeChip || ''
+    sync(typeChips, item => (item.dataset.typeChip || '') === activeType)
     apply()
   }))
-  listing?.addEventListener('change', apply)
-  pitfall?.addEventListener('change', apply)
-  invoice?.addEventListener('change', apply)
-  syncTypeChips()
+
+  serviceChips.forEach(chip => chip.addEventListener('click', () => {
+    activeService = activeService === (chip.dataset.service || '') ? '' : (chip.dataset.service || '')
+    sync(serviceChips, item => (item.dataset.service || '') === activeService)
+    apply()
+  }))
+
+  purposeChips.forEach(chip => chip.addEventListener('click', () => {
+    const raw = chip.dataset.purpose || ''
+    if (!raw) {
+      activePurposes.clear()
+    } else {
+      const [key, val] = raw.split(':')
+      if (activePurposes.get(key) === val) activePurposes.delete(key)
+      else activePurposes.set(key, val)
+    }
+    sync(purposeChips, isPurposeOn)
+    apply()
+  }))
+
+  q?.addEventListener('input', apply)
   apply()
 </script>
