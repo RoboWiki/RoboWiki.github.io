@@ -1,4 +1,4 @@
-import { Text, View } from '@tarojs/components'
+import { Text, View } from 'virtual:taro/components'
 import {
   BRAIN_LAYER,
   POSITIONING,

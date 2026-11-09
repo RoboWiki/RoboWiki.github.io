@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { Image, Text, View } from '@tarojs/components'
+import { Image, Text, View } from 'virtual:taro/components'
 import type { User } from '@robowiki/core'
 
 import { absoluteUrl } from '@/services/api'

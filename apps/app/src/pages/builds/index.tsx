@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { Button, Image, Input, ScrollView, Text, View } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import { Button, Image, Input, ScrollView, Text, View } from 'virtual:taro/components'
+import Taro from 'virtual:taro/api'
 import { EMPTY, PAGE_SIZE } from '@robowiki/content'
 import type { BuildSummary } from '@robowiki/core'
 

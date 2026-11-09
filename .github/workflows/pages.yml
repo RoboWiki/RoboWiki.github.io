@@ -1,6 +1,6 @@
 name: Deploy wiki to GitHub Pages
 
-# Astro 根站 + Taro /app：目录数据从 `RoboWiki` 仓的锁定 release 取。
+# Astro 根站 + VPT /app：目录数据从 `RoboWiki` 仓的锁定 release 取。
 # 不在本仓保存 schema/、catalog 或产品图副本。
 #
 # 唯一的例外是社区快照（data/ratings_snapshot.json、data/reviews_snapshot.json）：
@@ -96,7 +96,7 @@ jobs:
       - name: build Astro site
         run: pnpm --filter @robowiki/web build
 
-      - name: build Taro H5
+      - name: build app H5
         env:
           APP_BASE: /app/
         run: pnpm --filter @robowiki/app build:h5

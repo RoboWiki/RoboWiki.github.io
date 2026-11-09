@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { Button, Input, Text, Textarea, View } from '@tarojs/components'
-import Taro, { useRouter } from '@tarojs/taro'
+import { Button, Input, Text, Textarea, View } from 'virtual:taro/components'
+import Taro, { useRouter } from 'virtual:taro/api'
 import { ApiError, type Submission, type User } from '@robowiki/core'
 
 import { api, errorMessage, loadMe } from '@/services/api'

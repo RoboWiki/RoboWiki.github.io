@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import { Button, Text, Textarea, View } from '@tarojs/components'
-import Taro, { useDidShow, useRouter } from '@tarojs/taro'
+import { Button, Text, Textarea, View } from 'virtual:taro/components'
+import Taro, { useDidShow, useRouter } from 'virtual:taro/api'
 import { DISCUSSION } from '@robowiki/content'
 import type { PostComment, PostSummary, User } from '@robowiki/core'
 

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { Button, ScrollView, Text, View } from '@tarojs/components'
-import { useRouter } from '@tarojs/taro'
+import { Button, ScrollView, Text, View } from 'virtual:taro/components'
+import { useRouter } from 'virtual:taro/api'
 
 import { EmptyState, ErrorState } from '@/components/Feedback'
 import { api, errorMessage } from '@/services/api'

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import { Button, Input, Text, Textarea, View } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import { Button, Input, Text, Textarea, View } from 'virtual:taro/components'
+import Taro from 'virtual:taro/api'
 import type { AuthSession, Identity, Submission, User } from '@robowiki/core'
 
 import { Avatar } from '@/components/Avatar'

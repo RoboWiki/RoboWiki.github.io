@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import Taro from '@tarojs/taro'
+import Taro from 'virtual:taro/api'
 
 export type ThemeMode = 'light' | 'dark'
 

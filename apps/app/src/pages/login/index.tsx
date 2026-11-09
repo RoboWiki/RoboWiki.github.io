@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-import { Button, Input, Text, View } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import { Button, Input, Text, View } from 'virtual:taro/components'
+import Taro from 'virtual:taro/api'
 import { ApiError } from '@robowiki/core'
 
 import { errorMessage, loginWithPassword, loginWithWechat, registerAccount } from '@/services/api'

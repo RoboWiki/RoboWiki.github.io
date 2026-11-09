@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { Button, Image, Input, ScrollView, Text, View } from '@tarojs/components'
-import Taro, { useDidShow, useRouter } from '@tarojs/taro'
+import { Button, Image, Input, ScrollView, Text, View } from 'virtual:taro/components'
+import Taro, { useDidShow, useRouter } from 'virtual:taro/api'
 import {
   LAYER_BY_ID,
   LAYER_OF_CATEGORY,

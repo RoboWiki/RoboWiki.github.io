@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import Taro from 'virtual:taro/api'
 
 /** 首页 → 部件 tab 的搜索词。switchTab 不能带 query，这里用 storage 交接。 */
 const PENDING_SEARCH_KEY = 'rw.app.search'

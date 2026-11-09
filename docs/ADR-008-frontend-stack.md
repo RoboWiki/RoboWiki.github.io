@@ -61,7 +61,7 @@ backend/      FastAPI / PostgreSQL / worker
 ## 验证门槛
 
 - `pnpm --filter @robowiki/web build` 生成全部静态型号页；
-- Taro `build:h5` 与 `build:weapp` 均通过；
+- 互动端 `build:h5` 与 `build:wx` 均通过；
 - 两种 Web 产物都能直连 `https://robowiki.org.cn/api/v1`；
 - 同一账号在 Web、H5、小程序评分/评论为同一条数据；
 - GitHub Pages 上 404、sitemap、canonical、OG 正常；

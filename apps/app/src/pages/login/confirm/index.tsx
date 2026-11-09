@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import { Text, View } from '@tarojs/components'
-import Taro, { useRouter } from '@tarojs/taro'
+import { Text, View } from 'virtual:taro/components'
+import Taro, { useRouter } from 'virtual:taro/api'
 
 import { confirmQrLogin } from '@/services/api'
 import { useThemeMode } from '@/utils/theme'

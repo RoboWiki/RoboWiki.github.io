@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
-import { Button, Image, Input, ScrollView, Text, View } from '@tarojs/components'
-import Taro, { useDidShow } from '@tarojs/taro'
+import { Button, Image, Input, ScrollView, Text, View } from 'virtual:taro/components'
+import Taro, { useDidShow } from 'virtual:taro/api'
 import { POSITIONING } from '@robowiki/content'
 import type { PartList } from '@robowiki/core'
 
