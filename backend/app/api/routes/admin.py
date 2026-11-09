@@ -239,11 +239,13 @@ def admin_patch_user(user_id: int, payload: UserPatchIn, user: CurrentUser, db: 
 
     db.commit()
     db.refresh(target)
+    # 对外状态按本次请求的结果算：body 没提 banned 才看操作前的生效记录
+    banned_now = payload.banned if payload.banned is not None else (active is not None)
     return {
         "id": target.id,
         "handle": target.handle,
         "is_staff": bool(target.is_staff),
-        "banned": active is not None and payload.banned is not False,
+        "banned": bool(banned_now),
     }
 
 
