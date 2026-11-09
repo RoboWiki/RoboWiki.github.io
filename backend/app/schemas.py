@@ -56,7 +56,8 @@ def _normalize_avatar_url(v: str | None) -> str | None:
 # ── 认证 ────────────────────────────────────────────────────────────────────
 class RegisterIn(BaseModel):
     handle: str = Field(min_length=2, max_length=24)
-    display_name: str = Field(min_length=1, max_length=32)
+    #: 昵称可选；不填时用 handle
+    display_name: str | None = Field(default=None, max_length=32)
     password: str = Field(min_length=6, max_length=128)
     email: str | None = Field(default=None, max_length=200)
 

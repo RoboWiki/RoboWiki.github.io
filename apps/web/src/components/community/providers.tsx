@@ -447,7 +447,7 @@ export function AuthForm({ onSuccess, compact = false }: {
         ? await api.login({ handle: String(v.handle).trim(), password: v.password })
         : await api.register({
           handle: String(v.handle).trim(),
-          display_name: String(v.display_name).trim(),
+          display_name: String(v.display_name || '').trim() || String(v.handle).trim(),
           password: v.password,
           // 空邮箱不发，避免占用「空邮箱」唯一约束
           email: v.email ? String(v.email).trim() : undefined,
@@ -458,7 +458,12 @@ export function AuthForm({ onSuccess, compact = false }: {
       form.resetFields()
       onSuccess?.(r.user)
     } catch (e) {
-      setError(e instanceof Error ? e.message : '请求失败，请检查网络后重试')
+      if (mode === 'register' && e instanceof ApiError
+          && (e.status === 400 || e.status === 409)) {
+        setError('账号或邮箱可能已被占用；如果邮箱已注册，请直接登录或点「忘记密码」找回')
+      } else {
+        setError(e instanceof Error ? e.message : '请求失败，请检查网络后重试')
+      }
     } finally {
       setBusy(false)
     }
@@ -517,10 +522,10 @@ export function AuthForm({ onSuccess, compact = false }: {
         </Form.Item>
         {mode === 'register' && (
           <>
-            <Form.Item name="display_name" label="显示名"
+            <Form.Item name="display_name" label="昵称（可选）"
               normalize={v => (v || '').trim()}
-              rules={[{ required: true, message: '请填写显示名' }, { max: 32 }]}>
-              <Input placeholder="别人看到的名字" autoComplete="nickname" />
+              rules={[{ max: 32, message: '昵称最多 32 个字符' }]}>
+              <Input placeholder="别人看到的名字，默认同账号" autoComplete="nickname" />
             </Form.Item>
             <Form.Item name="email" label="邮箱（建议填写）"
               normalize={v => (v || '').trim()}

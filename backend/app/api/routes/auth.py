@@ -112,7 +112,8 @@ def register(payload: RegisterIn, request: Request, db: Db):
         verify_password(payload.password, dummy_password_hash())
         raise HTTPException(status.HTTP_400_BAD_REQUEST, _REGISTER_FAILED)
 
-    u = User(handle=payload.handle, display_name=payload.display_name,
+    nickname = (payload.display_name or "").strip() or payload.handle
+    u = User(handle=payload.handle, display_name=nickname,
              email=email, password_hash=hash_password(payload.password),
              avatar_hue=abs(hash(payload.handle)) % 360)
     db.add(u)
@@ -160,7 +161,7 @@ def update_me(payload: AccountUpdateIn, request: Request, user: CurrentUser, db:
     if "display_name" in data:
         name = (data["display_name"] or "").strip()
         if not name:
-            raise HTTPException(422, "显示名不能为空")
+            raise HTTPException(422, "昵称不能为空")
         user.display_name = name
     if "bio" in data:
         user.bio = (data["bio"] or "").strip()

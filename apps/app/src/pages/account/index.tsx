@@ -314,7 +314,7 @@ export default function AccountPage() {
     reset()
     const name = displayName.trim()
     if (!name) {
-      setError('显示名不能为空')
+      setError('昵称不能为空')
       return
     }
     if (bio.length > 500) {
@@ -734,7 +734,7 @@ export default function AccountPage() {
         </View>
         <View className="account__form">
           <View className="rw-stack" style={{ gap: '8px' }}>
-            <Text className="rw-caption">显示名</Text>
+            <Text className="rw-caption">昵称</Text>
             <View className="rw-field">
               <Input
                 className="rw-input"

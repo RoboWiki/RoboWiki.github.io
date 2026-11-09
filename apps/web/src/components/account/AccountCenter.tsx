@@ -344,15 +344,15 @@ function ProfilePanel({ account, onAccount }: {
       </section>
 
       <section className="card p-4 sm:p-6">
-        <SectionHead title="公开资料" hint="显示名与简介会出现在帖子、评价和主页上" />
+        <SectionHead title="公开资料" hint="昵称与简介会出现在帖子、评价和主页上" />
 
         <Form form={form} layout="vertical" requiredMark={false} onFinish={save} disabled={saving}
           initialValues={{ display_name: account.display_name, bio: account.bio || '' }}>
-          <Form.Item name="display_name" label="显示名" className="mb-3"
+          <Form.Item name="display_name" label="昵称" className="mb-3"
             normalize={v => v || ''}
             rules={[
-              { required: true, message: '请填写显示名' },
-              { max: 32, message: '显示名最多 32 个字符' },
+              { required: true, message: '请填写昵称' },
+              { max: 32, message: '昵称最多 32 个字符' },
             ]}>
             <Input placeholder="别人看到的名字" maxLength={32} autoComplete="nickname" />
           </Form.Item>

@@ -67,10 +67,6 @@ export default function LoginPage() {
       setError('用户名需 2–24 个字符')
       return
     }
-    if (!displayName.trim()) {
-      setError('请填写显示名')
-      return
-    }
     if (email.trim() && !EMAIL_RE.test(email.trim())) {
       setError('邮箱格式不对')
       return
@@ -82,7 +78,7 @@ export default function LoginPage() {
     setBusy(true)
     setError('')
     try {
-      await registerAccount(handle, displayName, password, email)
+      await registerAccount(handle, displayName.trim() || handle.trim(), password, email)
       if (email.trim()) {
         // 注册后顺手发验证邮件；发信失败不阻断注册。
         api.request('/auth/email/verify/request', { method: 'POST' }).catch(() => {})
@@ -90,7 +86,9 @@ export default function LoginPage() {
       finish(email.trim() ? '注册成功，验证邮件已发送' : '注册成功')
     } catch (err) {
       if (err instanceof ApiError && err.status === 409) {
-        setError('这个用户名已被占用')
+        setError('这个账号已被占用')
+      } else if (err instanceof ApiError && err.status === 400) {
+        setError('账号或邮箱可能已被占用；如果邮箱已注册，请直接登录或使用「忘记密码」找回')
       } else {
         setError(errorMessage(err))
       }
@@ -232,13 +230,13 @@ export default function LoginPage() {
           </View>
 
           <View className="rw-stack" style={{ gap: '8px' }}>
-            <Text className="rw-caption">显示名</Text>
+            <Text className="rw-caption">昵称（可选）</Text>
             <View className="rw-field">
               <Input
                 className="rw-input"
                 value={displayName}
                 name="display_name"
-                placeholder="公开显示的昵称"
+                placeholder="别人看到的名字，默认同账号"
                 onInput={(event) => setDisplayName(event.detail.value)}
               />
             </View>

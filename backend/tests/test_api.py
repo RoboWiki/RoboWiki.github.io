@@ -834,3 +834,10 @@ def test_email_register_is_optional(client):
     r = client.post("/api/auth/register", json={
         "handle": "optionalmail", "display_name": "Optional", "password": "pass1234"})
     assert r.status_code == 201, r.text
+
+
+def test_register_nickname_is_optional(client):
+    r = client.post("/api/auth/register", json={
+        "handle": "nonick", "password": "pass1234"})
+    assert r.status_code == 201, r.text
+    assert r.json()["user"]["display_name"] == "nonick"
