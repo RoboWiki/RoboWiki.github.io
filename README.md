@@ -22,7 +22,7 @@
 | 仓库 | 负责 |
 |---|---|
 | [`RoboWiki/RoboWiki`](https://github.com/RoboWiki/RoboWiki) | `data/`、`schema/`、`assets/`、数据闸门与 `data-v*` release |
-| [`RoboWiki/RoboWiki.github.io`](https://github.com/RoboWiki/RoboWiki.github.io)（本仓） | Astro 根站、Taro 互动端、FastAPI、部署与客户端契约 |
+| [`RoboWiki/RoboWiki.github.io`](https://github.com/RoboWiki/RoboWiki.github.io)（本仓） | Astro 根站、VPT 互动端、FastAPI、部署与客户端契约 |
 
 本仓不保存数据副本。`data.lock.json` 锁定数据仓的 release，构建时下载、校验 SHA-256 后再生成页面与 API 投影。
 
@@ -30,13 +30,13 @@
 
 ```text
 Astro 7 + React islands + Tailwind 4   → 根站：公开内容、社区/站务、SEO、PWA
-Taro 4 + React 19 + TypeScript         → /app/：H5 与微信小程序
+Vite 8 + React 19 + Taro runtime（VPT）→ /app/：H5 与微信小程序
 FastAPI + PostgreSQL + worker          → 唯一写域：账号、评分、评论、通知、投稿、审核
 ```
 
 - 公开内容（首页、部件、整机、材质、软件、渠道、指南、竞赛、方法、投稿、贡献者、英文页）由 Astro 静态渲染。
 - 社区（帖子、评论、投票、用户主页、排行榜）与站务（提案审核、举报处置、数据缺口）是 Astro 内的 React 岛。
-- 移动端登录、完整账号、评分、讨论、通知、投稿纠错在 Taro；与网页共用 `packages/core` 和 `packages/tokens`。
+- 移动端登录、完整账号、评分、讨论、通知、投稿纠错在互动端；与网页共用 `packages/core` 和 `packages/tokens`。
 - 页面保持 `.html` 深链；部件页使用数据里的 `slug`，不是 `id`。路由与构建细节见 [docs/FRONTEND.md](docs/FRONTEND.md)。
 
 ## 本地运行
@@ -66,7 +66,7 @@ cd backend && python -m uvicorn app.main:app --port 8018
 PUBLIC_API_BASE=http://127.0.0.1:8018/api/v1 pnpm dev:web
 ```
 
-Taro H5：
+互动端 H5：
 
 ```bash
 PUBLIC_API_BASE=http://127.0.0.1:8018/api/v1 pnpm --filter @robowiki/app dev:h5
@@ -97,7 +97,7 @@ UGC（评分、评论、投票）写 Postgres，不回写 git。
 
 ```text
 apps/web/       Astro 根站、社区/站务 React 岛、PWA
-apps/app/       Taro 互动端（H5 / 微信小程序）
+apps/app/       VPT 互动端（H5 / 微信小程序）
 packages/       共享 API 客户端与设计 token
 backend/        FastAPI、模型、Alembic、worker
 pipeline/       JSON / 分享 / 站点数据生成，web_export 写入 apps/web
@@ -112,7 +112,7 @@ scripts/        取数、部署、小程序上传
 ```bash
 pnpm --filter @robowiki/web build
 APP_BASE=/app/ pnpm --filter @robowiki/app build:h5
-pnpm --filter @robowiki/app build:weapp
+pnpm --filter @robowiki/app build:wx
 ```
 
 - 静态站：推 `main` 后 GitHub Pages 自动构建 Astro 根站与 `/app/`。

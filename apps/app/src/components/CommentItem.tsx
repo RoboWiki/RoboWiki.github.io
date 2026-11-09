@@ -1,5 +1,5 @@
-import { Image, Text, View } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import { Image, Text, View } from 'virtual:taro/components'
+import Taro from 'virtual:taro/api'
 import type { Comment } from '@robowiki/core'
 
 import { authorName, formatTime, parseCommentContent } from '@/utils/format'

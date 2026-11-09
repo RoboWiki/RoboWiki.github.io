@@ -7,7 +7,7 @@
     "build:web": "pnpm --filter @robowiki/web build",
     "dev:app": "pnpm --filter @robowiki/app dev:h5",
     "build:app:h5": "pnpm --filter @robowiki/app build:h5",
-    "build:app:weapp": "pnpm --filter @robowiki/app build:weapp",
+    "build:app:wx": "pnpm --filter @robowiki/app build:wx",
     "typecheck": "pnpm -r typecheck"
   }
 }

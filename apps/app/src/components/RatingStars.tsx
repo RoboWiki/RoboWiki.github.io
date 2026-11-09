@@ -1,4 +1,4 @@
-import { Text, View } from '@tarojs/components'
+import { Text, View } from 'virtual:taro/components'
 
 type RatingStarsProps = {
   value: number

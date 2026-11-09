@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import Taro from 'virtual:taro/api'
 import {
   ApiClient,
   ApiError,

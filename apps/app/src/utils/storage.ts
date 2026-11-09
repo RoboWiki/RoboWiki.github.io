@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import Taro from 'virtual:taro/api'
 
 /** 读写字符串列表：兼容直接存数组和旧版本存 JSON 字符串两种情况。 */
 export function readStringList(key: string, max: number): string[] {

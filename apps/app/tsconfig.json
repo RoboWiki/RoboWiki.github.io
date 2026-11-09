@@ -15,8 +15,8 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "types": ["@tarojs/taro", "node"]
+    "types": ["vite/client", "vite-plugin-taro/client", "node"]
   },
-  "include": ["src", "config", "global.d.ts"],
+  "include": ["src", "vite.config.ts", "global.d.ts"],
   "exclude": ["dist", "node_modules"]
 }

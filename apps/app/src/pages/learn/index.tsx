@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { ScrollView, Text, View } from '@tarojs/components'
+import { ScrollView, Text, View } from 'virtual:taro/components'
 import {
   EMPTY,
   LAYER_BY_ID,

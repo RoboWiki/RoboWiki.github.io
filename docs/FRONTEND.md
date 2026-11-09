@@ -1,4 +1,4 @@
-# 前端：Astro 根站 + Taro 互动端
+# 前端：Astro 根站 + Vite/VPT 互动端
 
 这是唯一前端形态。VitePress、独立 console、原生小程序壳已在 2026-11-05 收口时删除。
 
@@ -7,8 +7,8 @@
 | 产物 | 来源 | 发布位置 |
 |---|---|---|
 | Astro 根站 | `apps/web` | `https://robowiki.org.cn/` |
-| Taro H5 | `apps/app`（`build:h5`） | `/app/` |
-| Taro 微信小程序 | `apps/app`（`build:weapp`） | 微信后台，AppID `wx13bffd77b0b597e2` |
+| VPT H5 | `apps/app`（`build:h5`） | `/app/` |
+| VPT 微信小程序 | `apps/app`（`build:wx`） | 微信后台，AppID `wx13bffd77b0b597e2` |
 
 GitHub Pages 的 CI 只上传两份产物：`apps/web/dist` 作为根，`apps/app/dist/h5` 放进 `/app/`。
 
@@ -31,7 +31,7 @@ Astro 构建（构建期直接 import JSON）
 
 - Astro：全部公开内容、SEO、canonical/OG/JSON-LD、sitemap、PWA 外壳、每页评论区。
 - React 岛（仅在 Astro 内）：社区流、帖子、用户页、排行榜、站务后台、登录跳板。
-- Taro：移动端登录/注册、完整账号、评分、讨论、通知、投稿纠错、媒体上传。
+- 互动端（VPT）：移动端登录/注册、完整账号、评分、讨论、通知、投稿纠错、媒体上传。
 - 写操作只落在 FastAPI `/api/v1`；没有第二个写域。
 
 ## URL 约定
@@ -56,7 +56,7 @@ PUBLIC_API_BASE=http://127.0.0.1:8018/api/v1 pnpm dev:web
 PUBLIC_API_BASE=http://127.0.0.1:8018/api/v1 pnpm --filter @robowiki/app dev:h5
 ```
 
-Windows 下给 Taro 传 `APP_BASE=/app/` 时要加 `MSYS_NO_PATHCONV=1`；配置里也会拒绝被路径转换后的 `C:/...` 值。
+Windows 下给互动端传 `APP_BASE=/app/` 时要加 `MSYS_NO_PATHCONV=1`；配置里也会拒绝被路径转换后的 `C:/...` 值。
 
 ## 微信小程序上传
 
@@ -64,18 +64,18 @@ Windows 下给 Taro 传 `APP_BASE=/app/` 时要加 `MSYS_NO_PATHCONV=1`；配置
 
 1. 微信开发者工具已安装并登录；
 2. IDE → 设置 → 安全设置 → **服务端口开启**；
-3. `apps/app` 已运行 `pnpm --filter @robowiki/app build:weapp`。
+3. `apps/app` 已运行 `pnpm --filter @robowiki/app build:wx`，产物在 `apps/app/dist/wx`。
 
 上传：
 
 ```bash
 "D:/微信web开发者工具/cli.bat" upload \
-  --project "C:/Users/31560/Documents/00_open/RoboWiki/RoboWiki.github.io/apps/app" \
+  --project "C:/Users/31560/Documents/00_open/RoboWiki/RoboWiki.github.io/apps/app/dist/wx" \
   -v 1.0.6 \
-  -d "Astro/Taro 收口：账号、投稿纠错、评论配图"
+  -d "RoboWiki 小程序：账号、投稿纠错、评论配图"
 ```
 
-版本号只在 CLI 参数里；`apps/app/project.config.json` 的 `appid` 不要改。
+版本号只在 CLI 参数里；`dist/wx/project.config.json` 由 `vite.config.ts` 生成，`appid` 不要改。
 上传完成后到微信公众平台提交审核/发布；只上传不等于上线。
 
 > 若 CLI 报 `IDE service port disabled`，先手动打开 IDE 的安全设置开启服务端口；CLI 不能代替这一步。
@@ -86,7 +86,7 @@ Windows 下给 Taro 传 `APP_BASE=/app/` 时要加 `MSYS_NO_PATHCONV=1`；配置
 pnpm --filter @robowiki/web build
 pnpm --filter @robowiki/app typecheck
 APP_BASE=/app/ pnpm --filter @robowiki/app build:h5
-pnpm --filter @robowiki/app build:weapp
+pnpm --filter @robowiki/app build:wx
 python -m pytest
 ```
 

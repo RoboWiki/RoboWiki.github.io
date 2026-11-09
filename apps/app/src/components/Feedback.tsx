@@ -1,4 +1,4 @@
-import { Button, Text, View } from '@tarojs/components'
+import { Button, Text, View } from 'virtual:taro/components'
 
 type SkeletonRowsProps = {
   rows?: number

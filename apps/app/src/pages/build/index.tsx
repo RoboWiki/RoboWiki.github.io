@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import { Button, Image, Text, View } from '@tarojs/components'
-import Taro, { useRouter } from '@tarojs/taro'
+import { Button, Image, Text, View } from 'virtual:taro/components'
+import Taro, { useRouter } from 'virtual:taro/api'
 import type { BuildDetail } from '@robowiki/core'
 
 import { ErrorState } from '@/components/Feedback'
