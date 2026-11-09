@@ -354,6 +354,18 @@ function join(base: string, path: string): string {
   return `${base.replace(/\/+$/, '')}${path.startsWith('/') ? '' : '/'}${path}`
 }
 
+
+/** 小程序运行时没有 URLSearchParams；统一用这个拼查询串。 */
+function queryString(params: Record<string, unknown>): string {
+  const parts: string[] = []
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== '' && value !== null) {
+      parts.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)
+    }
+  })
+  return parts.length ? `?${parts.join('&')}` : ''
+}
+
 export class ApiClient {
   private refreshing: Promise<boolean> | null = null
 
@@ -435,12 +447,7 @@ export class ApiClient {
     offset?: number
     compact?: boolean
   } = {}) {
-    const q = new URLSearchParams()
-    Object.entries(params).forEach(([k, v]) => {
-      if (v !== undefined && v !== '' && v !== null) q.set(k, String(v))
-    })
-    const s = q.toString()
-    return this.request<PartList>(`/parts${s ? `?${s}` : ''}`)
+    return this.request<PartList>(`/parts${queryString(params)}`)
   }
 
   getPart(id: string) {
@@ -599,12 +606,7 @@ export class ApiClient {
     limit?: number
     offset?: number
   } = {}) {
-    const q = new URLSearchParams()
-    Object.entries(params).forEach(([k, v]) => {
-      if (v !== undefined && v !== '' && v !== null) q.set(k, String(v))
-    })
-    const s = q.toString()
-    return this.request<BuildList>(`/builds${s ? `?${s}` : ''}`)
+    return this.request<BuildList>(`/builds${queryString(params)}`)
   }
 
   getBuild(id: string) {
@@ -628,12 +630,7 @@ export class ApiClient {
     limit?: number
     offset?: number
   } = {}) {
-    const q = new URLSearchParams()
-    Object.entries(params).forEach(([k, v]) => {
-      if (v !== undefined && v !== '' && v !== null) q.set(k, String(v))
-    })
-    const s = q.toString()
-    return this.request<PostList>(`/posts${s ? `?${s}` : ''}`)
+    return this.request<PostList>(`/posts${queryString(params)}`)
   }
 
   getPost(id: number) {

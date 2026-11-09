@@ -133,3 +133,38 @@ def test_qr_login_reuses_same_wechat_identity(client, wechat_ready):
                           params={"ticket": ticket}).json()
         handles.append(body["token"]["user"]["handle"])
     assert handles[0] == handles[1]
+
+
+def test_wechat_mini_offline_login_creates_account(client, wechat_ready):
+    r = client.post("/api/auth/wechat/mini", json={"code": "login-only"})
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["user"]["handle"].startswith("wx-")
+
+
+def test_wechat_mini_binds_to_current_account(client, wechat_ready):
+    reg = client.post("/api/auth/register", json={
+        "handle": "bind-a", "display_name": "绑定测试 A", "password": "secret-1",
+    })
+    assert reg.status_code == 201, reg.text
+    headers = {"Authorization": f"Bearer {reg.json()['access_token']}"}
+
+    r = client.post("/api/auth/wechat/mini", json={"code": "bind-openid"},
+                    headers=headers)
+    assert r.status_code == 200, r.text
+    assert r.json()["user"]["handle"] == "bind-a"
+
+    identities = client.get("/api/auth/identities", headers=headers).json()
+    assert any(i["provider"] == "wechat_mini" for i in identities)
+
+
+def test_wechat_mini_bind_conflict(client, wechat_ready):
+    reg = client.post("/api/auth/register", json={
+        "handle": "bind-b", "display_name": "绑定测试 B", "password": "secret-2",
+    })
+    assert reg.status_code == 201, reg.text
+    headers = {"Authorization": f"Bearer {reg.json()['access_token']}"}
+
+    r = client.post("/api/auth/wechat/mini", json={"code": "bind-openid"},
+                    headers=headers)
+    assert r.status_code == 409

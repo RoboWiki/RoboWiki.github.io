@@ -247,6 +247,18 @@ export async function loginWithWechat(): Promise<User> {
   return pair.user
 }
 
+/** 已登录时把当前微信绑定到本账号；该微信属于别的账号时后端返回 409。 */
+export async function bindWechat(): Promise<User> {
+  const login = await Taro.login()
+  if (!login.code) throw new Error('微信没有返回 code，请重试')
+  const pair = await api.request<TokenPair>('/auth/wechat/mini', {
+    method: 'POST',
+    body: { code: login.code },
+  })
+  saveSession(pair)
+  return pair.user
+}
+
 /** 网页发起的扫码登录：把 scene 里的 ticket 与本次 wx.login 的 code 一起交给后端确认。 */
 export async function confirmQrLogin(ticket: string, code: string): Promise<void> {
   await api.request<{ ok: boolean }>('/auth/wechat/qr/confirm', {

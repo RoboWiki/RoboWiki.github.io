@@ -22,6 +22,7 @@ import {
   uploadImage,
   API_ORIGIN,
   type AppNotification,
+  bindWechat,
 } from '@/services/api'
 import { matchPartLink, resolvePartId } from '@/services/parts'
 import { openExternal } from '@/utils/nav'
@@ -516,6 +517,28 @@ export default function AccountPage() {
     })
   }
 
+  const bindWechatIdentity = () => {
+    if (busy) return
+    Taro.showModal({
+      title: '绑定微信',
+      content: '绑定后可用这个微信直接登录当前账号；不会新建账号。',
+      confirmText: '绑定',
+    }).then(async (res) => {
+      if (!res.confirm) return
+      reset()
+      setBusy(true)
+      try {
+        await bindWechat()
+        await loadIdentities()
+        setNotice('已绑定微信小程序')
+      } catch (err) {
+        setError(errorMessage(err))
+      } finally {
+        setBusy(false)
+      }
+    })
+  }
+
   const readAll = async () => {
     if (busy || !unread) return
     setBusy(true)
@@ -951,6 +974,10 @@ export default function AccountPage() {
                   <Text className="rw-link rw-link--tap rw-link--danger" onClick={() => unlinkIdentity(row.identity!)}>
                     解绑
                   </Text>
+                ) : row.id === 'wechat_mini' && !IS_H5 ? (
+                  <Text className="rw-link rw-link--tap" onClick={bindWechatIdentity}>
+                    绑定微信
+                  </Text>
                 ) : (
                   <Text className="rw-link rw-link--tap" onClick={openAccountCenter}>
                     去网页绑定 ›
@@ -961,7 +988,7 @@ export default function AccountPage() {
           </View>
         )}
         <Text className="rw-caption account__hint">
-          OAuth 跳转只在网页账号中心提供：{IS_H5 ? '点击上方链接会在新窗口打开。' : '点击后复制链接，请在手机浏览器打开。'}
+          GitHub 绑定需要网页 OAuth：{IS_H5 ? '点击上方链接会在新窗口打开。' : '点击后复制链接，请在手机浏览器打开。'}微信可在本页直接绑定。
         </Text>
       </View>
 

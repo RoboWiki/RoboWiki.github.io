@@ -40,7 +40,7 @@ from ...schemas import (AccountExportOut, AccountOut, AccountUpdateIn,
                         RatingExportOut, RefreshIn, RegisterIn, ResetPasswordIn,
                         SessionOut, SubmissionExportOut, TokenOut,
                         VerifyEmailIn, WechatMiniIn)
-from ..deps import CurrentUser, Db, rate_limit
+from ..deps import CurrentUser, Db, MaybeUser, rate_limit
 
 # OAuth/OIDC 的协议细节（授权码、state、PKCE）全部交给 Authlib。
 # 未安装时不能让整个应用起不来：降级成「该渠道 503」。
@@ -875,8 +875,14 @@ async def _wechat_code2session(code: str) -> dict:
 
 
 @router.post("/wechat/mini", response_model=TokenOut)
-async def wechat_mini(payload: WechatMiniIn, request: Request, db: Db):
-    """小程序登录：`wx.login()` 拿到的 code 换 openid，之后与口令登录等价。"""
+async def wechat_mini(payload: WechatMiniIn, request: Request, db: Db,
+                     user: MaybeUser):
+    """小程序登录 / 绑定微信。
+
+    未登录：按 openid 找/建账号并签会话（与口令登录等价）。
+    已登录：把该 openid 绑到当前账号（用于邮箱 / GitHub 账号补一种登录方式）；
+    若 openid 已属于别的账号则 409，避免把两个账号误并。
+    """
     if not settings.wechat_mini_enabled:
         raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE,
                             "微信小程序登录未配置")
@@ -897,6 +903,22 @@ async def wechat_mini(payload: WechatMiniIn, request: Request, db: Db):
 
     unionid = (data.get("unionid") or "").strip()
     nickname = (payload.nickname or "").strip() or None
+    if user is not None:
+        bound = db.exec(select(Identity).where(
+            Identity.provider == PROVIDER_WECHAT_MINI,
+            Identity.subject == openid)).first()
+        if bound is not None and bound.user_id != user.id:
+            raise HTTPException(
+                status.HTTP_409_CONFLICT,
+                "该微信已绑定其他账号；请先在网页账号中心解绑，或直接用该微信登录")
+        if bound is None:
+            db.add(Identity(user_id=user.id, provider=PROVIDER_WECHAT_MINI,
+                            subject=openid, email=None,
+                            raw={"unionid": unionid} if unionid else {}))
+            db.commit()
+        return _issue_session(db, user, request,
+                              scopes=(PROVIDER_WECHAT_MINI,), client="mini")
+
     user = _user_for_identity(
         db, provider=PROVIDER_WECHAT_MINI, subject=openid,
         email=None, email_verified=False, display_name=nickname,
