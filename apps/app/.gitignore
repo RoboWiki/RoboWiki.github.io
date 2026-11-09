@@ -4,3 +4,4 @@ node_modules/
 .swc/
 *.log
 project.private.config.json
+project.config.json
