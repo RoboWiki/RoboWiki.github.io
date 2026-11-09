@@ -301,3 +301,37 @@
   margin-top: var(--rw-space-2);
   line-height: 1.5;
 }
+
+.part__link-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rw-space-2);
+}
+
+.part__link {
+  display: flex;
+  align-items: center;
+  gap: var(--rw-space-2);
+  padding: var(--rw-space-2) var(--rw-space-3);
+  background: var(--rw-surface);
+  border: 1px solid var(--rw-border);
+  border-radius: var(--rw-radius-md);
+}
+
+.part__link-kind {
+  flex: 0 0 auto;
+  padding: 0 6px;
+  font-size: var(--rw-text-xs);
+  color: var(--rw-muted);
+  border: 1px solid var(--rw-border);
+  border-radius: 6px;
+}
+
+.part__link-url {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--rw-text-sm);
+}

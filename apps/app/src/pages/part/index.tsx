@@ -204,6 +204,12 @@ export default function PartPage() {
     }
   }
 
+  const copyPartLink = (url: string) => {
+    Taro.setClipboardData({ data: url })
+      .then(() => Taro.showToast({ title: '链接已复制', icon: 'success' }))
+      .catch(() => Taro.showToast({ title: '复制失败', icon: 'none' }))
+  }
+
   const openFix = () => {
     if (!part) return
     Taro.navigateTo({ url: `/pages/submit/index?id=${encodeURIComponent(String(part.id))}` })
@@ -315,7 +321,20 @@ export default function PartPage() {
     )
   }
 
-  const facts = partFacts(part)
+  const specRecord = ((part as unknown as { specs?: Record<string, unknown> } | null)?.specs) || {}
+  const PART_LINK_KEYS = new Set(['doc_url', 'doc_pdf', 'repo_urls', 'urdf_urls', 'repo_license'])
+  const facts = partFacts(part).filter((fact) => !PART_LINK_KEYS.has(fact.key))
+  const partLinks: Array<{ kind: string; url: string }> = []
+  const pushLink = (kind: string, raw: unknown) => {
+    const url = String(raw ?? '').trim()
+    if (!/^https?:\/\//i.test(url)) return
+    if (partLinks.some((link) => link.url === url)) return
+    partLinks.push({ kind, url })
+  }
+  pushLink('资料页', specRecord.doc_url)
+  pushLink('数据表', specRecord.doc_pdf)
+  for (const url of (specRecord.repo_urls as string[] | undefined) || []) pushLink('仓库', url)
+  for (const url of (specRecord.urdf_urls as string[] | undefined) || []) pushLink('URDF', url)
   const image = partImage(part)
   const offers = (part.offers || []).filter(o => o && !o.demo)
   const copyOffer = (url?: string | null) => {
@@ -390,6 +409,23 @@ export default function PartPage() {
         <Text className="rw-caption">参数或价格不对？提交纠错，站务审核后更新目录。</Text>
         <Text className="rw-link" onClick={openFix}>纠错</Text>
       </View>
+
+      {partLinks.length > 0 ? (
+        <View className="part__section">
+          <View className="rw-row rw-row--between part__section-head">
+            <Text className="rw-subtitle">资料与仓库</Text>
+            <Text className="rw-caption">{partLinks.length} 个 · 点击复制</Text>
+          </View>
+          <View className="part__link-list">
+            {partLinks.map((link) => (
+              <View className="part__link" key={link.url} onClick={() => copyPartLink(link.url)}>
+                <Text className="part__link-kind">{link.kind}</Text>
+                <Text className="part__link-url">{link.url.replace(/^https?:\/\/(www\.)?/, '')}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+      ) : null}
 
       <View className="part__section">
         <View className="rw-row rw-row--between part__section-head">
