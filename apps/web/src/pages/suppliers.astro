@@ -63,12 +63,6 @@ const types = [...typeCounts.entries()]
     const ib = TYPE_ORDER.indexOf(b[0])
     return (ia < 0 ? 999 : ia) - (ib < 0 ? 999 : ib) || b[1] - a[1]
   })
-const groups = types.map(([type, count]) => ({
-  type,
-  count,
-  items: suppliers.filter(s => (s.shop_type || '其他') === type),
-}))
-
 const services = [...new Set(suppliers.flatMap(s => (s.services || []).filter(x => x !== '风险记录')))]
   .map(service => ({ service, count: suppliers.filter(s => (s.services || []).includes(service)).length }))
   .sort((a, b) => b.count - a.count)
@@ -133,12 +127,15 @@ const searchText = (item: Supplier) =>
       </dl>
     </header>
 
-    <nav aria-label="按店铺类型跳转" class="mt-6">
-      <div class="chip-row">
+    <nav aria-label="按店铺类型筛选" class="mt-6">
+      <div class="chip-row" role="group">
+        <button type="button" class="chip is-active" data-type-chip="" aria-pressed="true">
+          全部<span class="mono text-[11px] opacity-60">{total}</span>
+        </button>
         {types.map(([type, count]) => (
-          <a href={`#type-${encodeURIComponent(type)}`} class="chip">
+          <button type="button" class="chip" data-type-chip={type} aria-pressed="false">
             {type}<span class="mono text-[11px] opacity-60">{count}</span>
-          </a>
+          </button>
         ))}
       </div>
     </nav>
@@ -202,90 +199,100 @@ const searchText = (item: Supplier) =>
       <p class="mt-1 text-xs leading-5 text-ink-3">换一个类型、能力或关键词试试。</p>
     </div>
 
-    <div class="mt-8 space-y-9">
-      {groups.map(group => (
-        <section id={`type-${encodeURIComponent(group.type)}`} data-supplier-section data-type-group={group.type} class="scroll-mt-24">
-          <div class="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-line pb-2">
-            <h2 class="text-lg font-bold tracking-tight text-ink">{group.type}</h2>
-            <span class="mono text-[11px] text-ink-3">{group.count} 家</span>
-            <span class="ml-auto flex gap-3 text-[11px] text-ink-3">
-              {group.items.some(s => s.listing === '红榜') && <span class="text-success">红榜 {group.items.filter(s => s.listing === '红榜').length}</span>}
-              {group.items.some(hasPitfall) && <span class="text-danger">有坑 {group.items.filter(hasPitfall).length}</span>}
-            </span>
-          </div>
-          <ul class="grid grid-cols-1 gap-3 lg:grid-cols-2" role="list">
-            {group.items.map(item => {
-              const signals = item.signals || {}
-              const raw = feedback(item)
-              const full = fullFeedback(item)
-              return (
-                <li
-                  data-supplier
-                  data-type={item.shop_type || '其他'}
-                  data-services={(item.services || []).join(' ')}
-                  data-listing={item.listing || ''}
-                  data-pitfall={hasPitfall(item) ? 'yes' : 'no'}
-                  data-invoice={signals.invoice === 'yes' ? 'yes' : 'no'}
-                  data-search={searchText(item)}
-                  class="min-w-0"
+    <ul class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" role="list">
+      {suppliers.map(item => {
+        const signals = item.signals || {}
+        const raw = feedback(item)
+        const full = fullFeedback(item)
+        const name = item.display_name || item.name
+        const initials = name.replace(/\s+/g, '').slice(0, 2).toUpperCase()
+        let hue = 200
+        for (let i = 0; i < name.length; i += 1) hue = (hue * 31 + name.charCodeAt(i)) % 360
+        return (
+          <li
+            data-supplier
+            data-type={item.shop_type || '其他'}
+            data-services={(item.services || []).join(' ')}
+            data-listing={item.listing || ''}
+            data-pitfall={hasPitfall(item) ? 'yes' : 'no'}
+            data-invoice={signals.invoice === 'yes' ? 'yes' : 'no'}
+            data-search={searchText(item)}
+            class="min-w-0"
+          >
+            <article class="card card-hover relative flex h-full flex-col overflow-hidden">
+              {item.listing && <span class={`absolute inset-x-0 top-0 h-[3px] ${listingBar(item.listing)}`} aria-hidden="true" />}
+
+              <div class="flex items-start gap-3 p-4 pb-3">
+                <div
+                  class="grid h-14 w-14 shrink-0 place-items-center rounded-lg text-[18px] font-extrabold"
+                  style={`background-color: hsl(${hue} 70% 93%); color: hsl(${hue} 45% 30%)`}
+                  aria-hidden="true"
                 >
-                  <article class="card card-hover relative flex h-full flex-col gap-3 overflow-hidden py-4 pr-4 pl-5">
-                    {item.listing && <span class={`absolute inset-y-0 left-0 w-[3px] ${listingBar(item.listing)}`} aria-hidden="true" />}
-                    <div class="flex flex-wrap items-start gap-x-2 gap-y-1.5">
-                      <h3 class="mr-auto text-[15px] font-semibold leading-6 text-ink">{item.display_name || item.name}</h3>
-                      <span class={`inline-flex rounded-full border px-2 py-px text-[11px] font-semibold leading-5 ${
-                        hasPitfall(item)
-                          ? 'border-danger/30 bg-danger-soft text-danger'
-                          : 'border-line bg-surface-2 text-ink-3'
-                      }`}>
-                        {hasPitfall(item) ? '有坑' : '未见坑'}
-                      </span>
-                      <span class={`inline-flex rounded-full border px-2 py-px text-[11px] font-semibold leading-5 ${listingTone(item.listing)}`}>
-                        {item.listing || '未入榜'}
-                      </span>
-                      {item.grade && <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-[11px] leading-5 text-ink-2">{item.grade}</span>}
-                    </div>
+                  {initials}
+                </div>
+                <div class="min-w-0 flex-1">
+                  <h3 class="truncate text-[15px] font-semibold leading-6 text-ink">{name}</h3>
+                  <p class="truncate text-[11px] leading-5 text-ink-3">
+                    {item.shop_type || '其他'}{item.channel ? ` · ${item.channel}` : ''}
+                  </p>
+                  <div class="mt-1.5 flex flex-wrap gap-1">
+                    <span class={`inline-flex rounded-full border px-2 py-px text-[11px] font-semibold leading-5 ${
+                      hasPitfall(item)
+                        ? 'border-danger/30 bg-danger-soft text-danger'
+                        : 'border-line bg-surface-2 text-ink-3'
+                    }`}>
+                      {hasPitfall(item) ? '有坑' : '未见坑'}
+                    </span>
+                    <span class={`inline-flex rounded-full border px-2 py-px text-[11px] font-semibold leading-5 ${listingTone(item.listing)}`}>
+                      {item.listing || '未入榜'}
+                    </span>
+                    {item.grade && <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-[11px] leading-5 text-ink-2">{item.grade}</span>}
+                  </div>
+                </div>
+              </div>
 
-                    <p class="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] leading-5 text-ink-3">
-                      <span>{item.shop_type || '其他'}</span>
-                      {item.channel && <><span aria-hidden="true">·</span><span>{item.channel}</span></>}
-                      {item.reported_at && <><span aria-hidden="true">·</span><span>反馈 {item.reported_at}</span></>}
+              <div class="flex flex-1 flex-col gap-2.5 px-4 pb-4">
+                <div class="flex flex-wrap gap-1">
+                  {(item.services || []).filter(s => s !== '风险记录').slice(0, 3).map(service => (
+                    <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-[11px] text-ink-2">{service}</span>
+                  ))}
+                  {(item.services || []).filter(s => s !== '风险记录').length > 3 && (
+                    <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-[11px] text-ink-3">
+                      +{(item.services || []).filter(s => s !== '风险记录').length - 3}
+                    </span>
+                  )}
+                </div>
+
+                <dl class="grid grid-cols-2 gap-x-3 gap-y-1.5 rounded-md border border-line bg-surface-2 p-2.5 text-[12px] leading-5">
+                  <div><dt class="text-[10px] text-ink-3">质量</dt><dd class="truncate text-ink-2">{rawOrSignal(item.quality_raw, signals, 'quality')}</dd></div>
+                  <div><dt class="text-[10px] text-ink-3">交期</dt><dd class="truncate text-ink-2">{rawOrSignal(item.punctual_raw, signals, 'punctual')}</dd></div>
+                  <div><dt class="text-[10px] text-ink-3">价格</dt><dd class="truncate text-ink-2">{rawOrSignal(item.price_raw, signals, 'price')}</dd></div>
+                  <div><dt class="text-[10px] text-ink-3">发票</dt><dd class="truncate text-ink-2">{rawOrSignal(item.invoice_raw, signals, 'invoice')}</dd></div>
+                </dl>
+
+                {raw && (
+                  <div class="text-[12px] leading-5 text-ink-2">
+                    <p class={`m-0 line-clamp-2 ${item.listing === '黑榜' ? 'text-danger' : ''}`}>
+                      <span class="font-medium">{item.listing === '黑榜' ? '踩雷：' : '评价：'}</span>{raw}
                     </p>
-
-                    <div class="flex flex-wrap gap-1">
-                      {(item.services || []).filter(s => s !== '风险记录').map(service => (
-                        <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-[11px] text-ink-2">{service}</span>
-                      ))}
-                    </div>
-
-                    <dl class="grid grid-cols-2 gap-x-4 gap-y-1 rounded-md border border-line bg-surface-2 p-2.5 text-[12px] leading-5 sm:grid-cols-4">
-                      <div><dt class="text-[10px] text-ink-3">质量</dt><dd class="text-ink-2">{rawOrSignal(item.quality_raw, signals, 'quality')}</dd></div>
-                      <div><dt class="text-[10px] text-ink-3">交期</dt><dd class="text-ink-2">{rawOrSignal(item.punctual_raw, signals, 'punctual')}</dd></div>
-                      <div><dt class="text-[10px] text-ink-3">价格</dt><dd class="text-ink-2">{rawOrSignal(item.price_raw, signals, 'price')}</dd></div>
-                      <div><dt class="text-[10px] text-ink-3">发票</dt><dd class="text-ink-2">{rawOrSignal(item.invoice_raw, signals, 'invoice')}</dd></div>
-                    </dl>
-
-                    {raw && (
-                      <div class="text-[12.5px] leading-6 text-ink-2">
-                        <p class={item.listing === '黑榜' ? 'text-danger' : ''}>
-                          <span class="font-medium">{item.listing === '黑榜' ? '踩雷经过：' : '社区评价：'}</span>{raw}
-                        </p>
-                        {full.length > 220 && (
-                          <details class="mt-1.5">
-                            <summary class="cursor-pointer select-none text-[11px] text-brand">展开完整反馈</summary>
-                            <p class={`mt-1 whitespace-pre-line text-[12px] leading-6 ${item.listing === '黑榜' ? 'text-danger' : 'text-ink-2'}`}>{full}</p>
-                          </details>
-                        )}
-                      </div>
+                    {full.length > 220 && (
+                      <details class="mt-1">
+                        <summary class="cursor-pointer select-none text-[11px] text-brand">展开完整反馈</summary>
+                        <p class={`mt-1 whitespace-pre-line text-[12px] leading-5 ${item.listing === '黑榜' ? 'text-danger' : 'text-ink-2'}`}>{full}</p>
+                      </details>
                     )}
-                  </article>
-                </li>
-              )
-            })}
-          </ul>
-        </section>
-      ))}
-    </div>
+                  </div>
+                )}
+
+                <p class="mt-auto text-[10px] text-ink-3">
+                  {item.reported_at ? `反馈 ${item.reported_at}` : '社区记录'}
+                </p>
+              </div>
+            </article>
+          </li>
+        )
+      })}
+    </ul>
 
     <p class="mt-10 rounded-md border border-line bg-surface-2 p-4 text-xs leading-6 text-ink-3">
       店铺名来自社区表与公开名录；链接、掌柜 ID、填写人和联系方式均已移除。记录仅供参考，不代表本站推荐或背书。
@@ -295,7 +302,6 @@ const searchText = (item: Supplier) =>
 
 <script>
   const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-supplier]'))
-  const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-supplier-section]'))
   const q = document.getElementById('sup-q') as HTMLInputElement | null
   const type = document.getElementById('sup-type') as HTMLSelectElement | null
   const listing = document.getElementById('sup-listing') as HTMLSelectElement | null
@@ -305,6 +311,15 @@ const searchText = (item: Supplier) =>
   const empty = document.getElementById('supplier-empty')
   const serviceButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip[data-service]'))
   let activeService = ''
+
+  const typeChips = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-type-chip]'))
+  const syncTypeChips = () => {
+    for (const chip of typeChips) {
+      const on = (chip.dataset.typeChip || '') === (type?.value || '')
+      chip.classList.toggle('is-active', on)
+      chip.setAttribute('aria-pressed', String(on))
+    }
+  }
 
   const apply = () => {
     const needle = (q?.value || '').trim().toLowerCase()
@@ -324,9 +339,6 @@ const searchText = (item: Supplier) =>
       card.hidden = !visible
       if (visible) shown += 1
     }
-    for (const section of sections) {
-      section.hidden = !Array.from(section.querySelectorAll<HTMLElement>('[data-supplier]')).some(card => !card.hidden)
-    }
     if (count) count.textContent = `显示 ${shown} / ${cards.length} 家`
     if (empty) empty.hidden = shown !== 0
   }
@@ -341,9 +353,15 @@ const searchText = (item: Supplier) =>
     apply()
   }))
   q?.addEventListener('input', apply)
-  type?.addEventListener('change', apply)
+  type?.addEventListener('change', () => { syncTypeChips(); apply() })
+  typeChips.forEach(chip => chip.addEventListener('click', () => {
+    if (type) type.value = chip.dataset.typeChip || ''
+    syncTypeChips()
+    apply()
+  }))
   listing?.addEventListener('change', apply)
   pitfall?.addEventListener('change', apply)
   invoice?.addEventListener('change', apply)
+  syncTypeChips()
   apply()
 </script>
