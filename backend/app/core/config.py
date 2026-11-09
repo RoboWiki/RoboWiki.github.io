@@ -40,6 +40,8 @@ class Settings(BaseSettings):
     smtp_password: str | None = None
     smtp_from: str = "RoboWiki <no-reply@robowiki.org.cn>"
     smtp_starttls: bool = True
+    #: 465 端口用隐式 SSL（阿里云 DirectMail 推荐）；为 true 时不再 STARTTLS
+    smtp_ssl: bool = False
     email_token_minutes: int = 30
 
     #: worker 发布：dryrun（默认，写本地产物）| github（开 PR）

@@ -157,10 +157,11 @@ curl -sSI https://robowiki.org.cn/ | grep -iE \
 | `SITE_URL` | canonical / 邮件链接 / 机器人回复 | `https://robowiki.org.cn` |
 | `ADMIN_HANDLE` / `ADMIN_PASSWORD` | 每次启动确保站务账号存在并重置密码 | 必填强密码 |
 | `EMAIL_MODE` | `log`（令牌进日志，仅开发）/ `smtp` | 生产 `smtp` |
-| `SMTP_HOST` / `SMTP_PORT` | 发信服务器与端口（587 = STARTTLS） | 生产必填 |
+| `SMTP_HOST` / `SMTP_PORT` | 发信服务器与端口（587=STARTTLS，465=SSL） | 生产必填 |
 | `SMTP_FROM` | 发件人（建议与登录账号同域，便于过 SPF） | 生产必填 |
 | `SMTP_USER` / `SMTP_PASSWORD` | 服务商要求认证时填写；密码只进 env | 按服务商要求 |
-| `SMTP_STARTTLS` | 587 端口保持 `true` | `true` |
+| `SMTP_STARTTLS` | 587 端口保持 `true`；465 时设 `false` | `true` |
+| `SMTP_SSL` | 465 隐式 SSL 时设 `true`（阿里云 DirectMail 推荐） | `false` |
 | `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | GitHub OAuth App；两项都填才启用 | 可选；留空按钮禁用 |
 | `OAUTH_REDIRECT_BASE` | 反代后回调的对外根 | `https://robowiki.org.cn` |
 | `WECHAT_MP_APPID` / `WECHAT_MP_SECRET` | 小程序 code2session；Secret 只在服务端 | 按需 |
@@ -187,6 +188,7 @@ curl -sSI https://robowiki.org.cn/ | grep -iE \
 | `SMTP_FROM` | 发件人，如 `RoboWiki <no-reply@robowiki.org.cn>` |
 | `SMTP_USER` / `SMTP_PASSWORD` | 服务商要求认证时必填；密码只放 env |
 | `SMTP_STARTTLS` | 587 端口保持 `true`；证书会做默认校验 |
+| `SMTP_SSL` | 465 端口用隐式 SSL；开启后不再 STARTTLS |
 
 缺 `SMTP_HOST`、认证失败、连接失败都会抛 `MailError`：`POST /api/v1/auth/email/verify/request`
 回 **503**，日志里是 `robowiki.mailer` 的明确原因；`POST /api/v1/auth/password/forgot`

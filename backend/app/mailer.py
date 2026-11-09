@@ -92,11 +92,16 @@ def _send_smtp(to: str, subject: str, text: str, html: str | None = None) -> Non
 
     server: smtplib.SMTP | None = None
     try:
-        server = smtplib.SMTP(host, port, timeout=_SMTP_TIMEOUT_S)
+        ctx = ssl.create_default_context()
+        if settings.smtp_ssl or port == 465:
+            # 465 是隐式 SSL（阿里云 DirectMail 推荐），连上就是 TLS，不再 STARTTLS
+            server = smtplib.SMTP_SSL(host, port, timeout=_SMTP_TIMEOUT_S, context=ctx)
+        else:
+            server = smtplib.SMTP(host, port, timeout=_SMTP_TIMEOUT_S)
         server.ehlo()
-        if settings.smtp_starttls:
+        if not settings.smtp_ssl and port != 465 and settings.smtp_starttls:
             # 默认上下文会校验证书链；不要用无校验的 _create_unverified_context
-            server.starttls(context=ssl.create_default_context())
+            server.starttls(context=ctx)
             server.ehlo()
         if user:
             server.login(user, settings.smtp_password or "")
