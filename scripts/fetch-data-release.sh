@@ -80,7 +80,6 @@ fetch_asset() {
 }
 fetch_asset "$ASSET"
 fetch_asset MANIFEST.json
-fetch_asset SHA256SUMS.txt
 echo "$SHA  $STAGE/$ASSET" | sha256sum -c -
 echo "$MANIFEST_SHA  $STAGE/MANIFEST.json" | sha256sum -c -
 "$PY" - "$STAGE" <<'PY'
