@@ -273,6 +273,16 @@ export async function verifyEmail(token: string): Promise<User> {
   return user
 }
 
+/** 第三方首登的临时账号名改为自己的（仅一次），会换发新会话。 */
+export async function changeHandle(handle: string): Promise<User> {
+  const pair = await api.request<TokenPair>('/auth/handle', {
+    method: 'PATCH',
+    body: { handle: handle.trim() },
+  })
+  saveSession(pair)
+  return pair.user
+}
+
 /** 已登录时把当前微信绑定到本账号；该微信属于别的账号时后端返回 409。 */
 export async function bindWechat(): Promise<User> {
   const login = await Taro.login()

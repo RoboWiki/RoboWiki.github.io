@@ -209,6 +209,9 @@ function ProfilePanel({ account, onAccount }: {
   const [avatarStatus, setAvatarStatus] = useState<Status>(null)
   const [profileStatus, setProfileStatus] = useState<Status>(null)
   const [notifyStatus, setNotifyStatus] = useState<Status>(null)
+  const [handleDraft, setHandleDraft] = useState('')
+  const [handleStatus, setHandleStatus] = useState<Status>(null)
+  const [handleBusy, setHandleBusy] = useState(false)
 
   const save = async (v: ProfileValues) => {
     if (saving) return
@@ -226,6 +229,30 @@ function ProfilePanel({ account, onAccount }: {
       setProfileStatus({ kind: 'error', text: errText(e) })
     } finally {
       setSaving(false)
+    }
+  }
+
+  const saveHandle = async () => {
+    const value = (handleDraft || account.handle).trim()
+    if (!/^[a-z0-9][a-z0-9_-]{1,23}$/i.test(value)) {
+      setHandleStatus({ kind: 'error', text: '账号名 2–24 位，只能使用 a-z、0-9、- 和 _' })
+      return
+    }
+    setHandleBusy(true)
+    setHandleStatus(null)
+    try {
+      const pair = await v1Req<TokenPair>('/auth/handle', {
+        method: 'PATCH',
+        body: JSON.stringify({ handle: value }),
+      })
+      auth.setTokens(pair.access_token, pair.refresh_token ?? null)
+      onAccount(pair.user)
+      setHandleDraft('')
+      setHandleStatus({ kind: 'ok', text: '账号名已设置；这是唯一一次修改机会' })
+    } catch (e) {
+      setHandleStatus({ kind: 'error', text: errText(e) })
+    } finally {
+      setHandleBusy(false)
     }
   }
 
@@ -345,6 +372,29 @@ function ProfilePanel({ account, onAccount }: {
 
       <section className="card p-4 sm:p-6">
         <SectionHead title="公开资料" hint="昵称与简介会出现在帖子、评价和主页上" />
+
+        {account.handle_provisional && (
+          <div className="mb-4 rounded-md border border-warning/35 bg-warning-soft p-3">
+            <p className="m-0 text-[13px] font-semibold text-ink">设置账号名（仅一次）</p>
+            <p className="m-0 mt-1 text-[12px] text-ink-2">
+              第三方登录会自动生成临时账号名；设置后不可再修改，也会作为主页地址。
+            </p>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <Input value={handleDraft || account.handle}
+                onChange={(e) => setHandleDraft(e.target.value)}
+                placeholder={account.handle} className="max-w-[220px]" />
+              <button type="button" onClick={saveHandle} disabled={handleBusy}
+                className="inline-flex h-9 items-center rounded-md bg-brand px-3 text-[13px] font-semibold text-brand-fg transition-colors hover:bg-brand-hover disabled:opacity-60">
+                {handleBusy ? '保存中…' : '保存账号名'}
+              </button>
+            </div>
+            {handleStatus && (
+              <p className={'m-0 mt-2 text-[12px] ' + (handleStatus.kind === 'ok' ? 'text-success' : 'text-danger')}>
+                {handleStatus.text}
+              </p>
+            )}
+          </div>
+        )}
 
         <Form form={form} layout="vertical" requiredMark={false} onFinish={save} disabled={saving}
           initialValues={{ display_name: account.display_name, bio: account.bio || '' }}>
@@ -1191,7 +1241,8 @@ function Center() {
         <div className="min-w-0 flex-1">
           <p className="m-0 truncate text-[14px] font-semibold text-ink">{account.display_name}</p>
           <p className="m-0 truncate text-[12px] text-ink-3">
-            用户 ID：{account.handle} · 声望 <span className="mono tabular">{account.reputation}</span>
+            用户 ID：{account.handle} · 可信度 Lv.{account.trust_level ?? 0}/3 · 声望{' '}
+            <span className="mono tabular">{account.reputation}</span>
             {account.is_staff && <span className="ml-1 text-warning">· 站务</span>}
           </p>
         </div>

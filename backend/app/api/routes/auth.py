@@ -34,7 +34,7 @@ from ...models import (Comment, EmailToken, HandoffCode, Identity, LoginTicket, 
                        Post, Rating, RefreshToken, Submission, User, UserBan)
 from ...schemas import (AccountExportOut, AccountOut, AccountUpdateIn,
                         CommentExportOut, EmailChangeConfirmIn, EmailChangeIn,
-                        ForgotIn, HandoffIn, IdentityOut, LoginIn, LogoutIn,
+                        ForgotIn, HandleIn, HandoffIn, IdentityOut, LoginIn, LogoutIn,
                         PasswordChangeIn, PasswordSetIn, ProvidersOut,
                         QrConfirmIn, QrCreateOut, QrStatusOut,
                         RatingExportOut, RefreshIn, RegisterIn, ResetPasswordIn,
@@ -68,9 +68,13 @@ _REGISTER_FAILED = "注册未完成，请检查邮箱或稍后再试"
 def _account_out(db: Session, u: User) -> AccountOut:
     """UserOut（公开资料）+ 仅本人可见的邮箱 / 口令状态。"""
     base = user_out(db, u)
+    from ...trust import trust_level, trust_sources
     return AccountOut(**base.model_dump(), email=u.email,
                       password_set=u.password_set,
-                      email_notify=u.email_notify)
+                      email_notify=u.email_notify,
+                      trust_level=trust_level(db, u),
+                      trust_sources=trust_sources(db, u),
+                      handle_provisional=bool(u.handle_provisional))
 
 
 def _queue_security_mail(db: Session, user: User, title: str, body: str) -> None:
@@ -176,6 +180,35 @@ def update_me(payload: AccountUpdateIn, request: Request, user: CurrentUser, db:
     db.commit()
     db.refresh(user)
     return _account_out(db, user)
+
+
+@router.patch("/handle", response_model=TokenOut)
+def change_handle(payload: HandleIn, request: Request,
+                  user: CurrentUser, db: Db):
+    """把第三方首登生成的临时账号名改成自己的，只允许一次。
+
+    JWT 的 subject 是 handle，改名后旧令牌自然失效；这里主动换一对新令牌，
+    并吊销旧 refresh，客户端直接用返回值替换本地会话即可。
+    """
+    if not user.handle_provisional:
+        raise HTTPException(status.HTTP_403_FORBIDDEN,
+                            "账号名已经确定，不能再修改")
+    new_handle = payload.handle
+    if new_handle != user.handle:
+        exists = db.exec(select(User).where(User.handle == new_handle,
+                                            User.id != user.id)).first()
+        if exists is not None:
+            raise HTTPException(status.HTTP_409_CONFLICT, "账号名已被占用")
+        user.handle = new_handle
+    user.handle_provisional = False
+    db.add(user)
+    db.execute(update(RefreshToken).where(
+        RefreshToken.user_id == user.id,
+        RefreshToken.revoked_at.is_(None),
+    ).values(revoked_at=_utcnow()))
+    db.commit()
+    db.refresh(user)
+    return _issue_session(db, user, request)
 
 
 @router.get("/export", response_model=AccountExportOut)
@@ -1244,6 +1277,8 @@ def _user_for_identity(db: Session, *, provider: str, subject: str,
             # 没人知道这串口令：账号只能靠已绑定的身份进来
             password_hash=unusable_password_hash(),
             password_set=False,
+            # 首登自动生成的名字是临时的，允许用户改一次
+            handle_provisional=True,
             avatar_hue=abs(hash(handle)) % 360,
         )
         db.add(user)

@@ -23,6 +23,7 @@ import {
   API_ORIGIN,
   type AppNotification,
   bindWechat,
+  changeHandle,
   verifyEmail,
 } from '@/services/api'
 import { matchPartLink, resolvePartId } from '@/services/parts'
@@ -106,6 +107,7 @@ export default function AccountPage() {
   const [emailPending, setEmailPending] = useState(false)
   const [emailToken, setEmailToken] = useState('')
   const [verifyEmailToken, setVerifyEmailToken] = useState('')
+  const [handleDraft, setHandleDraft] = useState('')
 
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
@@ -541,6 +543,27 @@ export default function AccountPage() {
     })
   }
 
+  const saveHandle = async () => {
+    if (!user || busy) return
+    reset()
+    const value = (handleDraft || user.handle).trim()
+    if (!/^[a-z0-9][a-z0-9_-]{1,23}$/i.test(value)) {
+      setError('账号名 2–24 位，只能使用 a-z、0-9、- 和 _')
+      return
+    }
+    setBusy(true)
+    try {
+      const next = await changeHandle(value)
+      applyUser(next)
+      setHandleDraft('')
+      setNotice('账号名已设置')
+    } catch (err) {
+      setError(errorMessage(err))
+    } finally {
+      setBusy(false)
+    }
+  }
+
   const bindWechatIdentity = () => {
     if (busy) return
     Taro.showModal({
@@ -696,9 +719,26 @@ export default function AccountPage() {
         </View>
         <View className="rw-grow account__identity">
           <Text className="rw-title">{user.display_name || user.handle}</Text>
-          <Text className="rw-caption">
-            用户 ID：{user.handle}（不可修改）{user.is_staff ? ' · 站务' : ''}
-          </Text>
+          {user.handle_provisional ? (
+            <View className="rw-stack" style={{ gap: '8px' }}>
+              <Text className="rw-caption">设置账号名（仅一次，设置后不可再改）</Text>
+              <View className="rw-field">
+                <Input
+                  className="rw-input"
+                  value={handleDraft || user.handle}
+                  placeholder={user.handle}
+                  onInput={(event) => setHandleDraft(event.detail.value)}
+                />
+              </View>
+              <Button className="rw-btn rw-btn--primary" disabled={busy} onClick={saveHandle}>
+                保存账号名
+              </Button>
+            </View>
+          ) : (
+            <Text className="rw-caption">
+              用户 ID：{user.handle}（不可修改）{user.is_staff ? ' · 站务' : ''}
+            </Text>
+          )}
           <Text className="rw-caption">
             {user.password_set ? '本站账号' : '第三方登录建号，还没有本站密码'}
           </Text>
@@ -707,6 +747,12 @@ export default function AccountPage() {
               未验证邮箱且未绑定微信/GitHub 时只能浏览；验证邮箱或绑定后即可参与。
             </Text>
           ) : null}
+          <Text className="rw-caption">
+            可信度 Lv.{user.trust_level ?? 0}/3
+            {user.trust_sources?.length
+              ? ` · ${user.trust_sources.map((s) => ({ email: '邮箱已验证', wechat_mini: '微信', github: 'GitHub', staff: '站务' } as Record<string, string>)[s] || s).join(' + ')}`
+              : '（任一种来源即可参与）'}
+          </Text>
         </View>
       </View>
 

@@ -841,3 +841,70 @@ def test_register_nickname_is_optional(client):
         "handle": "nonick", "password": "pass1234"})
     assert r.status_code == 201, r.text
     assert r.json()["user"]["display_name"] == "nonick"
+
+
+def test_trust_level_counts_sources_without_changing_permissions(client):
+    from app.core.db import session
+    from app.models import Identity, User
+    from sqlmodel import select
+
+    reg = client.post("/api/auth/register", json={
+        "handle": "trustuser", "display_name": "Trust", "password": "pass1234",
+        "email": "trust@example.com"})
+    assert reg.status_code == 201, reg.text
+    token = reg.json()["access_token"]
+    h = {"Authorization": f"Bearer {token}"}
+
+    me = client.get("/api/auth/me", headers=h).json()
+    assert me["trust_level"] == 0 and me["trust_sources"] == []
+
+    verify_user("trustuser")
+    me = client.get("/api/auth/me", headers=h).json()
+    assert me["trust_level"] == 1 and me["trust_sources"] == ["email"]
+
+    with session() as db:
+        u = db.exec(select(User).where(User.handle == "trustuser")).first()
+        db.add(Identity(user_id=u.id, provider="github", subject="trust-gh"))
+        db.add(Identity(user_id=u.id, provider="wechat_mini", subject="trust-wx"))
+        db.commit()
+
+    me = client.get("/api/auth/me", headers=h).json()
+    assert me["trust_level"] == 3
+    assert set(me["trust_sources"]) == {"email", "github", "wechat_mini"}
+
+    admin = client.get("/api/auth/me", headers=auth_header(client)).json()
+    assert admin["trust_level"] == 3 and admin["trust_sources"] == ["staff"]
+
+
+def test_provider_handle_can_be_set_once(client):
+    reg = client.post("/api/auth/register", json={
+        "handle": "wxtmp1", "password": "pass1234"})
+    assert reg.status_code == 201, reg.text
+    old_token = reg.json()["access_token"]
+    from app.core.db import session
+    from app.models import User
+    from sqlmodel import select
+    with session() as db:
+        u = db.exec(select(User).where(User.handle == "wxtmp1")).first()
+        u.handle_provisional = True
+        db.add(u)
+        db.commit()
+
+    st, pair = None, None
+    r = client.patch("/api/auth/handle", json={"handle": "myname1"},
+                     headers={"Authorization": f"Bearer {old_token}"})
+    assert r.status_code == 200, r.text
+    pair = r.json()
+    assert pair["user"]["handle"] == "myname1"
+    assert pair["user"]["handle_provisional"] is False
+
+    # 旧令牌的 sub 是旧 handle，改名后自然失效
+    old = client.get("/api/auth/me", headers={"Authorization": f"Bearer {old_token}"})
+    assert old.status_code == 401
+    new = client.get("/api/auth/me",
+                     headers={"Authorization": f"Bearer {pair['access_token']}"})
+    assert new.status_code == 200 and new.json()["handle"] == "myname1"
+
+    again = client.patch("/api/auth/handle", json={"handle": "myname2"},
+                         headers={"Authorization": f"Bearer {pair['access_token']}"})
+    assert again.status_code == 403

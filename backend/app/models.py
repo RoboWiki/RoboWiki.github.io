@@ -68,6 +68,8 @@ class User(SQLModel, table=True):
 
     id: int | None = Field(default=None, primary_key=True)
     handle: str = Field(index=True, unique=True)       # 登录名 / URL
+    #: 第三方首登自动生成的临时账号名；用户可一次性改成自己的
+    handle_provisional: bool = False
     display_name: str
     email: str | None = Field(default=None, unique=True)
     email_verified: bool = False

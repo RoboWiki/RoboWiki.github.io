@@ -52,6 +52,10 @@ export type User = {
   rating_count?: number
   submission_count?: number
   accepted_count?: number
+  /** 可信度：可信来源数量（邮箱/微信/GitHub），站务固定 3；不改变权限 */
+  trust_level?: number
+  trust_sources?: string[]
+  handle_provisional?: boolean
 }
 
 export type TokenPair = {

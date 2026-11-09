@@ -161,6 +161,9 @@ export interface User {
   comment_count: number
   rating_count?: number
   submission_count?: number
+  trust_level?: number
+  trust_sources?: string[]
+  handle_provisional?: boolean
   accepted_count?: number
   badges: string[]
 }

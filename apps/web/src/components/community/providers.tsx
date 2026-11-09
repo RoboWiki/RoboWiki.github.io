@@ -456,6 +456,11 @@ export function AuthForm({ onSuccess, compact = false }: {
       setUser(r.user)
       message.success(mode === 'login' ? `欢迎回来，${r.user.display_name}` : '注册成功')
       form.resetFields()
+      if (r.user.handle_provisional) {
+        message.info('请先设置账号名')
+        window.location.replace(siteHref('/account.html'))
+        return
+      }
       onSuccess?.(r.user)
     } catch (e) {
       if (mode === 'register' && e instanceof ApiError

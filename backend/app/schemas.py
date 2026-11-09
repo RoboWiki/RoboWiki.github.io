@@ -141,6 +141,28 @@ class AccountOut(UserOut):
     #: False = 第三方建号（口令是随机串，没人知道），只能靠绑定的身份进来
     password_set: bool = False
     email_notify: bool = False
+    #: 可信度 0–3（来源数量；站务固定 3）。权限不按等级细分。
+    trust_level: int = 0
+    trust_sources: list[str] = Field(default_factory=list)
+    #: 第三方首登的临时账号名，可调用 PATCH /auth/handle 改一次
+    handle_provisional: bool = False
+
+
+class HandleIn(BaseModel):
+    """第三方首登的临时账号名改成自己的；只允许一次。"""
+
+    handle: str = Field(min_length=2, max_length=24)
+
+    @field_validator("handle")
+    @classmethod
+    def _handle_ok(cls, v: str) -> str:
+        low = v.lower()
+        if not low[0].isascii() or not low[0].isalnum() or                 any(not (c.isascii() and (c.isalnum() or c in "-_")) for c in low[1:]):
+            raise ValueError("账号名只能使用 a-z、0-9、- 和 _，且以字母或数字开头")
+        if low in {"admin", "robowiki", "api", "mcp", "community", "account",
+                   "root", "support", "staff", "system", "official"}:
+            raise ValueError("这个账号名不可用")
+        return low
 
 
 class AccountUpdateIn(BaseModel):

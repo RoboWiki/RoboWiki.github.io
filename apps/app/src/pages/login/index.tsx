@@ -46,8 +46,15 @@ export default function LoginPage() {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
 
-  const finish = (title = '登录成功') => {
+  const finish = (title = '登录成功', nextUser?: { handle_provisional?: boolean }) => {
     Taro.showToast({ title, icon: 'success', duration: 1200 })
+    if (nextUser?.handle_provisional) {
+      setTimeout(() => {
+        Taro.showToast({ title: '请先设置账号名', icon: 'none' })
+        Taro.reLaunch({ url: '/pages/account/index' })
+      }, 500)
+      return
+    }
     setTimeout(backOrHome, 500)
   }
 
@@ -78,12 +85,12 @@ export default function LoginPage() {
     setBusy(true)
     setError('')
     try {
-      await registerAccount(handle, displayName.trim() || handle.trim(), password, email)
+      const nextUser = await registerAccount(handle, displayName.trim() || handle.trim(), password, email)
       if (email.trim()) {
         // 注册后顺手发验证邮件；发信失败不阻断注册。
         api.request('/auth/email/verify/request', { method: 'POST' }).catch(() => {})
       }
-      finish(email.trim() ? '注册成功，验证邮件已发送' : '注册成功')
+      finish(email.trim() ? '注册成功，验证邮件已发送' : '注册成功', nextUser)
     } catch (err) {
       if (err instanceof ApiError && err.status === 409) {
         setError('这个账号已被占用')
@@ -110,8 +117,8 @@ export default function LoginPage() {
     setBusy(true)
     setError('')
     try {
-      await loginWithPassword(account, password)
-      finish()
+      const nextUser = await loginWithPassword(account, password)
+      finish('登录成功', nextUser)
     } catch (err) {
       if (err instanceof ApiError && err.status === 401) {
         setError('账号或密码不对')
@@ -128,8 +135,8 @@ export default function LoginPage() {
     setBusy(true)
     setError('')
     try {
-      await loginWithWechat()
-      finish()
+      const nextUser = await loginWithWechat()
+      finish('登录成功', nextUser)
     } catch (err) {
       if (err instanceof ApiError && err.status === 503) {
         setError('微信登录暂未开放（服务端未配置小程序 Secret）')
