@@ -161,7 +161,8 @@ class UserPatchIn(BaseModel):
 
 
 def _now() -> datetime:
-    return datetime.now(timezone.utc).replace(tzinfo=None)
+    # SQLModel 的 DateTime 要求带时区；去掉 tzinfo 会被拒（NaiveDatetime 才允许裸值）
+    return datetime.now(timezone.utc)
 
 
 @router.get("/users")
