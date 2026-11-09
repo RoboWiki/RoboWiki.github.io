@@ -159,12 +159,6 @@ export default function HomePage() {
       action: () => openTab('/pages/index/index'),
     },
     {
-      key: 'equipment',
-      label: '设备库',
-      desc: '打印机 / 示波器 / 焊台 / 仪器',
-      action: () => Taro.navigateTo({ url: '/pages/equipment/index' }),
-    },
-    {
       key: 'builds',
       label: '方案库',
       desc: '可复现方案，含 BOM 与步骤',
@@ -174,13 +168,12 @@ export default function HomePage() {
       key: 'community',
       label: '社区',
       desc: '写实测，不写「好用」',
-      action: () => openTab('/pages/community/index'),
+      action: () => Taro.navigateTo({ url: '/pages/community/index' }),
     },
     {
       key: 'learn',
       label: '学习',
       desc: '从零到跑通，按天给判据',
-      wide: true,
       action: () => Taro.navigateTo({ url: '/pages/learn/index' }),
     },
   ]

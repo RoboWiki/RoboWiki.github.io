@@ -1,6 +1,5 @@
 import path from 'node:path'
 
-import { APP_TABS } from '@robowiki/content'
 import unitConverter, { presets } from 'postcss-rule-unit-converter'
 import { defineConfig } from 'vite'
 import vpt, { type VptJsonObject, type VptTarget } from 'vite-plugin-taro'
@@ -50,6 +49,15 @@ const pages = [
   { path: 'pages/compose/index', config: { navigationBarTitleText: '发帖' } },
 ]
 
+// 小程序底部菜单：社区不进 tab（从首页卡片进入），设备库独立成 tab。
+const MINI_TABS = [
+  { pagePath: 'pages/home/index', text: '首页' },
+  { pagePath: 'pages/index/index', text: '部件库' },
+  { pagePath: 'pages/equipment/index', text: '设备库' },
+  { pagePath: 'pages/builds/index', text: '方案库' },
+  { pagePath: 'pages/account/index', text: '我的' },
+]
+
 const appJson: VptJsonObject = {
   lazyCodeLoading: 'requiredComponents',
   tabBar: {
@@ -58,7 +66,7 @@ const appJson: VptJsonObject = {
     backgroundColor: '#ffffff',
     borderStyle: 'white',
     // 不引入图标依赖：微信小程序 tabBar 的 iconPath 是可选项，纯文字即可构建。
-    list: APP_TABS.map((tab) => ({ pagePath: tab.pagePath, text: tab.label })),
+    list: MINI_TABS,
   },
   window: {
     backgroundTextStyle: 'dark',
