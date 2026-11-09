@@ -479,6 +479,8 @@ def catalog(db: Db, category: str | None = None):
 def list_parts(
     db: Db,
     category: str | None = None,
+    #: 目录里混着设备库；部件库页面用 exclude_category=equipment 排除。
+    exclude_category: str | None = None,
     subtype: str | None = None,
     vendor: str | None = None,
     q: str | None = None,
@@ -495,6 +497,8 @@ def list_parts(
     stmt = select(Part)
     if category:
         stmt = stmt.where(Part.category == category)
+    if exclude_category:
+        stmt = stmt.where(Part.category != exclude_category)
     if subtype:
         stmt = stmt.where(Part.subtype == subtype)
     if vendor:

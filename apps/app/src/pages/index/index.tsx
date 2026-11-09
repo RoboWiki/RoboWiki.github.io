@@ -77,11 +77,13 @@ export default function IndexPage() {
   )
 
   // 能力层筛选时只展示该层覆盖的品类，避免选了层又切到不相干品类。
+  // 设备库有独立页面；部件库不展示它的品类 chip，也不把设备混进结果。
   const facetCategories = useMemo(
     () =>
-      layerInfo
+      (layerInfo
         ? categories.filter((item) => layerInfo.categories.includes(item.category))
-        : categories,
+        : categories
+      ).filter((item) => item.category !== 'equipment'),
     [categories, layerInfo],
   )
 
@@ -133,6 +135,7 @@ export default function IndexPage() {
             listPartCards({
               q: query || undefined,
               category: cat,
+              excludeCategory: 'equipment',
               limit: LAYER_FETCH_LIMIT,
               offset: 0,
             }),
@@ -156,6 +159,7 @@ export default function IndexPage() {
         const res = await listPartCards({
           q: query || undefined,
           category: category || undefined,
+          excludeCategory: 'equipment',
           limit: PAGE_SIZE,
           offset: 0,
         })
@@ -186,6 +190,7 @@ export default function IndexPage() {
       const res = await listPartCards({
         q: query || undefined,
         category: category || undefined,
+        excludeCategory: 'equipment',
         limit: PAGE_SIZE,
         offset: offsetRef.current,
       })

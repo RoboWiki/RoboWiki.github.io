@@ -297,6 +297,7 @@ export type CatalogFacet = {
   category: string
   category_label: string
   subtype?: string
+  subtype_label?: string
   n: number
 }
 
@@ -304,6 +305,15 @@ export type CatalogResponse = {
   total: number
   facets: CatalogFacet[]
   categories: Record<string, string>
+}
+
+/** 某个品类的子类 facets（设备库按 16 个子类筛选）。 */
+export async function listCategoryFacets(category: string): Promise<CatalogFacet[]> {
+  const data = await api.request<CatalogResponse>('/catalog')
+  return (data.facets || [])
+    .filter((f) => f && f.category === category && f.subtype && f.n > 0)
+    .sort((a, b) => b.n - a.n)
+    .map((f) => ({ ...f, category_label: f.category_label || f.category }))
 }
 
 /** 品类 chips：只展示确实有条目的品类，标签取服务端，不在客户端硬编码。 */

@@ -756,3 +756,15 @@ def test_material_detail_carries_data_version(client):
     mid = rows["items"][0]["id"]
     detail = client.get(f"/api/v1/materials/{mid}").json()
     assert detail.get("data_version")
+
+
+def test_parts_exclude_category(client):
+    """部件库排除设备库：/parts?exclude_category=equipment 不含设备条目。"""
+    res = client.get("/api/v1/parts", params={"exclude_category": "equipment", "limit": 200})
+    assert res.status_code == 200
+    body = res.json()
+    assert all(item["category"] != "equipment" for item in body["items"])
+
+    only = client.get("/api/v1/parts", params={"category": "equipment", "limit": 200}).json()
+    assert only["total"] > 0
+    assert body["total"] < only["total"] + body["total"]

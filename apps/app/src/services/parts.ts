@@ -45,12 +45,16 @@ export type PartListResponse = {
 export function listPartCards(params: {
   q?: string
   category?: string
+  subtype?: string
+  excludeCategory?: string
   limit: number
   offset: number
 }): Promise<PartListResponse> {
   const query: string[] = []
   if (params.q) query.push(`q=${encodeURIComponent(params.q)}`)
   if (params.category) query.push(`category=${encodeURIComponent(params.category)}`)
+  if (params.subtype) query.push(`subtype=${encodeURIComponent(params.subtype)}`)
+  if (params.excludeCategory) query.push(`exclude_category=${encodeURIComponent(params.excludeCategory)}`)
   query.push(`limit=${params.limit}`, `offset=${params.offset}`, 'compact=true')
   return api.request<PartListResponse>(`/parts?${query.join('&')}`)
 }

@@ -39,6 +39,7 @@ const pages = [
   // 非 tab 页面
   { path: 'pages/layers/index', config: { navigationBarTitleText: '能力地图', enablePullDownRefresh: false } },
   { path: 'pages/part/index', config: { navigationBarTitleText: '部件详情' } },
+  { path: 'pages/equipment/index', config: { navigationBarTitleText: '设备库', enablePullDownRefresh: false } },
   { path: 'pages/build/index', config: { navigationBarTitleText: '方案详情', enablePullDownRefresh: false } },
   { path: 'pages/post/index', config: { navigationBarTitleText: '帖子', enablePullDownRefresh: false } },
   { path: 'pages/compare/index', config: { navigationBarTitleText: '部件对比', enablePullDownRefresh: false } },
