@@ -583,3 +583,5 @@ export function formatSpecValue(value: unknown, unit = ''): string {
   const text = typeof value === 'number' ? formatNumber(value) : (VALUE_LABELS[String(value)] ?? String(value))
   return unit && !text.includes(unit) ? `${text} ${unit}` : text
 }
+
+export * from './ratingTags'

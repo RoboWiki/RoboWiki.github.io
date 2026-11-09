@@ -353,7 +353,7 @@ const keyStats = STAT_PRIORITY
       <section class="card p-5">
         <h2 class="text-sm font-semibold text-ink">实际使用</h2>
         <div class="mt-3">
-          <RatingSummary client:load partId={part.id} />
+          <RatingSummary client:load partId={part.id} category={part.category} />
         </div>
       </section>
 

@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Button, Image, Input, Text, Textarea, View } from 'virtual:taro/components'
 import Taro, { useDidShow, useRouter } from 'virtual:taro/api'
 import type { Comment, RatingSummary, User } from '@robowiki/core'
+import { TAG_LABELS, UNIVERSAL_TAGS, categoryTagSet, tagsForCategory } from '@robowiki/content'
 
 import { CommentItem } from '@/components/CommentItem'
 import { EmptyState, ErrorState } from '@/components/Feedback'
@@ -55,8 +56,22 @@ export default function PartPage() {
   const [ratingError, setRatingError] = useState('')
   const [score, setScore] = useState(0)
   const [ownHardware, setOwnHardware] = useState(false)
+  const [reasonTags, setReasonTags] = useState<string[]>([])
   const [ratingBusy, setRatingBusy] = useState(false)
   const [ratingKey, setRatingKey] = useState(0)
+
+  const universalTags = UNIVERSAL_TAGS.map((value) => ({ value, label: TAG_LABELS[value] }))
+  const specificKeys = categoryTagSet(part?.category)
+  const specificTags = tagsForCategory(part?.category)
+    .filter((value) => specificKeys.has(value))
+    .map((value) => ({ value, label: TAG_LABELS[value] || value }))
+  const toggleReason = (value: string) => {
+    setReasonTags((prev) => {
+      if (prev.includes(value)) return prev.filter((item) => item !== value)
+      if (prev.length >= 3) return prev
+      return [...prev, value]
+    })
+  }
 
   const [comments, setComments] = useState<Comment[]>([])
   const [commentsLoading, setCommentsLoading] = useState(false)
@@ -113,6 +128,7 @@ export default function PartPage() {
         setRating(data)
         setScore(data.mine?.score || 0)
         setOwnHardware(Boolean(data.mine?.own_hardware))
+        setReasonTags(data.mine?.reason_tags || [])
       })
       .catch((err) => {
         if (alive) setRatingError(errorMessage(err))
@@ -175,9 +191,17 @@ export default function PartPage() {
       toast('先选择 1–5 星')
       return
     }
+    if (!reasonTags.length) {
+      toast('至少选一个理由')
+      return
+    }
     setRatingBusy(true)
     try {
-      const data = await api.putRating(id, { score, own_hardware: ownHardware })
+      const data = await api.putRating(id, {
+        score,
+        own_hardware: ownHardware,
+        reason_tags: reasonTags,
+      })
       setRating(data)
       setScore(data.mine?.score || score)
       toast(data.created ? '评分已提交' : '评分已更新')
@@ -195,6 +219,7 @@ export default function PartPage() {
       await api.deleteRating(id)
       setScore(0)
       setOwnHardware(false)
+      setReasonTags([])
       setRatingKey((key) => key + 1)
       toast('已撤销评分')
     } catch (err) {
@@ -346,6 +371,9 @@ export default function PartPage() {
   const avg = rating?.avg
   const count = rating?.count || 0
   const histogram = rating?.histogram || {}
+  const reasonCounts = Object.entries(rating?.reason_tag_counts || {})
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6)
 
   return (
     <View className={`rw-page part ${darkClass}`}>
@@ -489,6 +517,19 @@ export default function PartPage() {
           </View>
         ) : null}
 
+        {reasonCounts.length ? (
+          <View className="part__rating-tags">
+            <Text className="part__rating-tag-label">评价理由</Text>
+            <View className="part__rating-tag-row">
+              {reasonCounts.map(([key, n]) => (
+                <Text className="rw-badge" key={key}>
+                  {TAG_LABELS[key] || key} {n}
+                </Text>
+              ))}
+            </View>
+          </View>
+        ) : null}
+
         <View className="part__rate-box">
           <View className="rw-row rw-row--between">
             <RatingStars value={score} onChange={setScore} />
@@ -498,6 +539,37 @@ export default function PartPage() {
             >
               我实际用过
             </View>
+          </View>
+          <View className="part__rating-tags">
+            <Text className="part__rating-tag-label">通用理由</Text>
+            <View className="part__rating-tag-row">
+              {universalTags.map((item) => (
+                <View
+                  key={item.value}
+                  className={`rw-chip ${reasonTags.includes(item.value) ? 'rw-chip--active' : ''}`}
+                  onClick={() => toggleReason(item.value)}
+                >
+                  {item.label}
+                </View>
+              ))}
+            </View>
+            {specificTags.length ? (
+              <>
+                <Text className="part__rating-tag-label">本品类理由</Text>
+                <View className="part__rating-tag-row">
+                  {specificTags.map((item) => (
+                    <View
+                      key={item.value}
+                      className={`rw-chip ${reasonTags.includes(item.value) ? 'rw-chip--active' : ''}`}
+                      onClick={() => toggleReason(item.value)}
+                    >
+                      {item.label}
+                    </View>
+                  ))}
+                </View>
+              </>
+            ) : null}
+            <Text className="rw-caption">最多选 3 个，当前 {reasonTags.length}/3</Text>
           </View>
           {rating?.mine ? (
             <Text className="rw-caption">

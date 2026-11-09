@@ -4,6 +4,7 @@ import RatingEditor from '@/components/RatingEditor'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { withBase } from '@/lib/utils'
+import { TAG_LABELS } from '@robowiki/content'
 import type { RatingSummary as RatingData } from '@robowiki/core'
 
 // 账号中心是静态站内的真实入口；互动版 /app/ 不在静态构建里。
@@ -14,23 +15,7 @@ const USAGE_LABELS: Record<string, string> = {
   short: '短期用过（<1 个月）',
   unboxed: '只开箱测过',
 }
-const TAG_LABELS: Record<string, string> = {
-  good_value: '性价比高',
-  better_than_spec: '比标称好',
-  overstated: '参数虚标',
-  heat: '发热/功耗',
-  build_quality: '做工问题',
-  docs_missing: '文档缺失',
-  shipping: '发货/售后',
-  not_recommend: '不推荐',
-  encoder_drift: '编码器漂移',
-  backlash: '背隙大',
-  fake_chip: '假货/翻新',
-  hard_to_solder: '封装难焊',
-  calibration: '标定困难',
-  drift: '漂移',
-  lighting: '受光照影响',
-}
+
 const DIM_LABELS: Record<string, string> = {
   value: '性价比',
   build: '做工',
@@ -54,7 +39,7 @@ function Stars({ value }: { value: number }) {
   )
 }
 
-export default function RatingSummary({ partId }: { partId: string }) {
+export default function RatingSummary({ partId, category }: { partId: string; category?: string | null }) {
   const [state, setState] = useState<State>({ status: 'loading' })
   const [attempt, setAttempt] = useState(0)
   const [signedIn, setSignedIn] = useState(false)
@@ -205,7 +190,7 @@ export default function RatingSummary({ partId }: { partId: string }) {
         </div>
       )}
 
-      <RatingEditor partId={partId} onDone={() => setAttempt(v => v + 1)} />
+      <RatingEditor partId={partId} category={category} onDone={() => setAttempt(v => v + 1)} />
 
       {data.dims_avg && Object.keys(data.dims_avg).length > 0 && (
         <dl className="grid grid-cols-2 gap-2" aria-label="分维度评分">

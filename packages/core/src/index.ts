@@ -266,6 +266,8 @@ export type RatingSummary = {
   own_hardware_count?: number | null
   own_hardware_avg?: number | null
   usage_count?: number | null
+  usage_level_counts?: Record<string, number>
+  reason_tag_counts?: Record<string, number>
   low_sample?: boolean
   mine?: {
     score: number
@@ -273,6 +275,8 @@ export type RatingSummary = {
     note?: string
     updated_at?: string
     hidden?: boolean
+    usage_level?: string
+    reason_tags?: string[]
   } | null
 }
 

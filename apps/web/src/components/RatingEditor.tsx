@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { api } from '@/lib/api'
+import { TAG_LABELS, UNIVERSAL_TAGS, categoryTagSet, tagsForCategory } from '@robowiki/content'
 
 /**
  * L0 一点打分：星级 + 使用时长 + 理由标签。
@@ -15,27 +16,13 @@ const USAGE = [
   { value: 'unboxed', label: '只开箱测过', hint: '' },
 ]
 
-const TAGS = [
-  { value: 'good_value', label: '性价比高' },
-  { value: 'better_than_spec', label: '比标称好' },
-  { value: 'overstated', label: '参数虚标' },
-  { value: 'heat', label: '发热/功耗' },
-  { value: 'build_quality', label: '做工问题' },
-  { value: 'docs_missing', label: '文档缺失' },
-  { value: 'shipping', label: '发货/售后' },
-  { value: 'not_recommend', label: '不推荐' },
-  { value: 'encoder_drift', label: '编码器漂移' },
-  { value: 'backlash', label: '背隙大' },
-  { value: 'fake_chip', label: '假货/翻新' },
-  { value: 'hard_to_solder', label: '封装难焊' },
-  { value: 'calibration', label: '标定困难' },
-  { value: 'drift', label: '漂移' },
-  { value: 'lighting', label: '受光照影响' },
-]
-
 const TOKEN_KEY = 'roboselect.token'
 
-export default function RatingEditor({ partId, onDone }: { partId: string; onDone?: () => void }) {
+export default function RatingEditor({ partId, category, onDone }: {
+  partId: string
+  category?: string | null
+  onDone?: () => void
+}) {
   const [signedIn, setSignedIn] = useState<boolean | null>(null)
   const [score, setScore] = useState(0)
   const [usage, setUsage] = useState('')
@@ -43,6 +30,12 @@ export default function RatingEditor({ partId, onDone }: { partId: string; onDon
   const [note, setNote] = useState('')
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState<{ kind: 'ok' | 'err'; text: string } | null>(null)
+
+  const universalTags = UNIVERSAL_TAGS.map(value => ({ value, label: TAG_LABELS[value] }))
+  const specificKeys = categoryTagSet(category)
+  const specificTags = tagsForCategory(category)
+    .filter(value => specificKeys.has(value))
+    .map(value => ({ value, label: TAG_LABELS[value] || value }))
 
   useEffect(() => {
     try {
@@ -155,22 +148,49 @@ export default function RatingEditor({ partId, onDone }: { partId: string; onDon
           <span className="text-[12px] text-ink-3">为什么给这个分（最多 3 个）</span>
           <span className="mono text-[10px] text-ink-3">{tags.length}/3</span>
         </div>
-        <div className="mt-1.5 flex flex-wrap gap-1">
-          {TAGS.map(item => (
-            <button
-              key={item.value}
-              type="button"
-              onClick={() => toggleTag(item.value)}
-              aria-pressed={tags.includes(item.value)}
-              className={`inline-flex h-6 items-center rounded-full border px-2 text-[11px] transition-colors ${
-                tags.includes(item.value)
-                  ? 'border-brand bg-brand-soft text-brand'
-                  : 'border-line bg-surface text-ink-2 hover:border-line-strong hover:text-ink'
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
+        <div className="mt-1.5 space-y-1.5">
+          <div>
+            <span className="text-[10px] text-ink-3">通用</span>
+            <div className="mt-1 flex flex-wrap gap-1">
+              {universalTags.map(item => (
+                <button
+                  key={item.value}
+                  type="button"
+                  onClick={() => toggleTag(item.value)}
+                  aria-pressed={tags.includes(item.value)}
+                  className={`inline-flex h-6 items-center rounded-full border px-2 text-[11px] transition-colors ${
+                    tags.includes(item.value)
+                      ? 'border-brand bg-brand-soft text-brand'
+                      : 'border-line bg-surface text-ink-2 hover:border-line-strong hover:text-ink'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          {specificTags.length > 0 && (
+            <div>
+              <span className="text-[10px] text-ink-3">本品类</span>
+              <div className="mt-1 flex flex-wrap gap-1">
+                {specificTags.map(item => (
+                  <button
+                    key={item.value}
+                    type="button"
+                    onClick={() => toggleTag(item.value)}
+                    aria-pressed={tags.includes(item.value)}
+                    className={`inline-flex h-6 items-center rounded-full border px-2 text-[11px] transition-colors ${
+                      tags.includes(item.value)
+                        ? 'border-brand bg-brand-soft text-brand'
+                        : 'border-line bg-surface text-ink-2 hover:border-line-strong hover:text-ink'
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

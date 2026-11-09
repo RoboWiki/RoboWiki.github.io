@@ -335,3 +335,22 @@
   white-space: nowrap;
   font-size: var(--rw-text-sm);
 }
+
+.part__rating-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+.part__rating-tag-label {
+  font-size: var(--rw-text-xs);
+  font-weight: 600;
+  color: var(--rw-muted);
+}
+
+.part__rating-tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}

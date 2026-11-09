@@ -24,19 +24,15 @@ from sqlmodel import select
 from ...crud import shadowed_review_keys
 from ...models import Part, Rating, utcnow
 from ...rating_stats import aggregate
+from ...rating_tags import ALL_TAGS
 from ..deps import CurrentUser, Db, MaybeUser, VerifiedUser
 
 router = APIRouter(prefix="/ratings", tags=["ratings"])
 
 
 USAGE_LEVELS = ("long", "short", "unboxed")
-#: 理由标签白名单。前端只展示这些，避免自由文本导致无法聚合。
-REASON_TAGS = (
-    "good_value", "better_than_spec", "overstated", "heat",
-    "build_quality", "docs_missing", "shipping", "not_recommend",
-    "encoder_drift", "backlash", "fake_chip", "hard_to_solder",
-    "calibration", "drift", "lighting",
-)
+#: 理由标签白名单：通用 + 品类专属的并集。前端按品类展示，后端只做全集校验。
+REASON_TAGS = ALL_TAGS
 
 
 class RateIn(BaseModel):
