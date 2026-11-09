@@ -78,6 +78,15 @@ def register(client: TestClient) -> tuple[dict, int, str]:
     r = client.post("/api/v1/auth/register", json={
         "handle": handle, "display_name": handle, "password": "pass1234"})
     assert r.status_code == 201, r.text
+    from app.core.db import session
+    from app.models import User
+    from sqlmodel import select
+    with session() as db:
+        u = db.exec(select(User).where(User.handle == handle)).first()
+        if u is not None:
+            u.email_verified = True
+            db.add(u)
+            db.commit()
     token = r.json()["access_token"]
     me = client.get("/api/v1/auth/me",
                     headers={"Authorization": f"Bearer {token}"}).json()

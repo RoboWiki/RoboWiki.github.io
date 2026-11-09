@@ -16,7 +16,7 @@ from sqlmodel import select
 from ...core.config import settings
 from ...crud import touch_comment_count
 from ...models import Comment, Post, Report, User, WikiComment
-from ..deps import CurrentUser, Db, rate_limit, require_verified_email
+from ..deps import CurrentUser, Db, rate_limit, VerifiedUser
 from .notifications import create_notification
 
 router = APIRouter(tags=["reports"])
@@ -161,8 +161,7 @@ def _target_link(db, kind: str, target_id: int) -> str | None:
 
 @router.post("/reports", status_code=201)
 def create_report(payload: ReportIn, request: Request, db: Db,
-                  user: CurrentUser):
-    require_verified_email(user)
+                  user: VerifiedUser):
     rate_limit(request, "report", settings.rate_max_reports, user.id)
     if _get_target(db, payload.target_kind, payload.target_id) is None:
         raise HTTPException(404, "举报对象不存在")

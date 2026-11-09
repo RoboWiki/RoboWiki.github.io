@@ -32,9 +32,6 @@ class Settings(BaseSettings):
     #: 群机器人只读问答的共享令牌；未设置则禁用该接口
     bot_token: str | None = None
 
-    #: 邮箱注册是否强制要求填写邮箱。测试库可关掉，生产必须为 true。
-    require_register_email: bool = True
-
     #: 邮件：log（开发，打印到日志）| smtp
     email_mode: str = "log"
     smtp_host: str | None = None

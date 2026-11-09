@@ -261,6 +261,15 @@ def test_review_notifies_submitter(client, staff):
         "password": "pass1234",
     })
     assert r.status_code == 201, r.text
+    from app.core.db import session
+    from app.models import User
+    from sqlmodel import select
+    with session() as db:
+        u = db.exec(select(User).where(User.handle == "notify-submitter")).first()
+        if u is not None:
+            u.email_verified = True
+            db.add(u)
+            db.commit()
     user = {"Authorization": f"Bearer {r.json()['access_token']}"}
 
     sid = submit(client, user, {"price_cny": 3111.0}).json()["id"]

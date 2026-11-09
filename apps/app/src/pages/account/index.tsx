@@ -704,7 +704,7 @@ export default function AccountPage() {
           </Text>
           {user.email && !user.email_verified ? (
             <Text className="rw-caption">
-              未验证邮箱只能浏览；验证后才能评分、发帖和评论。
+              未验证邮箱且未绑定微信/GitHub 时只能浏览；验证邮箱或绑定后即可参与。
             </Text>
           ) : null}
         </View>

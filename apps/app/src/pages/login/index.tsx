@@ -71,11 +71,7 @@ export default function LoginPage() {
       setError('请填写显示名')
       return
     }
-    if (!email.trim()) {
-      setError('请填写邮箱，用于验证与找回密码')
-      return
-    }
-    if (!EMAIL_RE.test(email.trim())) {
+    if (email.trim() && !EMAIL_RE.test(email.trim())) {
       setError('邮箱格式不对')
       return
     }
@@ -249,7 +245,7 @@ export default function LoginPage() {
           </View>
 
           <View className="rw-stack" style={{ gap: '8px' }}>
-            <Text className="rw-caption">邮箱（必填）</Text>
+            <Text className="rw-caption">邮箱（建议填写）</Text>
             <View className="rw-field">
               <Input
                 className="rw-input"
@@ -285,7 +281,7 @@ export default function LoginPage() {
           </Button>
 
           <Text className="rw-caption login__note">
-            注册后会自动发送验证邮件；未验证只能浏览，验证后才能评分、发帖和评论。
+            邮箱用于验证与找回密码。验证邮箱或绑定微信/GitHub 后，才能评分、发帖和评论。
           </Text>
         </>
       ) : (

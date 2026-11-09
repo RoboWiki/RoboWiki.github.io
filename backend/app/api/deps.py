@@ -95,12 +95,24 @@ def optional_user(
 CurrentUser = Annotated[User, Depends(current_user)]
 MaybeUser = Annotated[Optional[User], Depends(optional_user)]
 
-def require_verified_email(user: User) -> None:
-    """邮箱账号必须验证后才能写入；没有邮箱的第三方账号不受影响。"""
-    if user.email and not user.email_verified:
-        raise HTTPException(
-            status.HTTP_403_FORBIDDEN,
-            "请先验证邮箱：未验证邮箱只能浏览，验证后才能评分、发帖或评论")
+def verified_user(user: Annotated[User, Depends(current_user)], db: Db) -> User:
+    """敏感写入需要可信身份：已验证邮箱，或绑定了 GitHub / 微信。
+
+    邮箱口令注册的账号在验证前只能浏览；第三方登录本身由提供方验证身份，
+    所以绑过 GitHub / 微信的账号即使邮箱没验证也可以写。
+    """
+    if user.is_staff or user.email_verified:
+        return user
+    from ..models import Identity
+    ident = db.exec(select(Identity).where(Identity.user_id == user.id)).first()
+    if ident is not None:
+        return user
+    raise HTTPException(
+        status.HTTP_403_FORBIDDEN,
+        "请先验证邮箱或绑定 GitHub / 微信，之后才能评分、发帖或评论")
+
+
+VerifiedUser = Annotated[User, Depends(verified_user)]
 
 
 

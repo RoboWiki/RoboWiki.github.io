@@ -43,6 +43,19 @@ def client():
     shutil.rmtree(_TMP, ignore_errors=True)
 
 
+def verify_user(handle: str) -> None:
+    """测试里把邮箱账号置为已验证，避免依赖 SMTP。"""
+    from app.core.db import session
+    from app.models import User
+    from sqlmodel import select
+    with session() as db:
+        u = db.exec(select(User).where(User.handle == handle)).first()
+        if u is not None:
+            u.email_verified = True
+            db.add(u)
+            db.commit()
+
+
 def auth_header(c: TestClient, handle="robowiki", password="robowiki") -> dict:
     r = c.post("/api/auth/login", json={"handle": handle, "password": password})
     assert r.status_code == 200, r.text
@@ -233,6 +246,7 @@ def test_post_and_vote_updates_reputation(client):
     pid = r.json()["id"]
 
     # 换一个用户来点赞
+    verify_user("demo1")
     h2 = auth_header(client, "demo1")
     v = client.post("/api/votes", headers=h2,
                     json={"target_kind": "post", "target_id": pid, "value": 1})
@@ -502,6 +516,7 @@ def test_review_post_updates_rating_aggregate(client):
         "handle": "reviewrating", "display_name": "Review Rating",
         "password": "pass1234"})
     assert reg.status_code == 201, reg.text
+    verify_user("reviewrating")
     h = {"Authorization": f"Bearer {reg.json()['access_token']}"}
     part = "feetech-st-3250-c001"
     before = client.get(f"/api/v1/ratings/{part}").json()["count"]
@@ -770,43 +785,52 @@ def test_parts_exclude_category(client):
     assert body["total"] < only["total"] + body["total"]
 
 
-def test_register_requires_email_when_enabled(client, monkeypatch):
-    from app.core.config import settings
-    monkeypatch.setattr(settings, "require_register_email", True)
-    r = client.post("/api/auth/register", json={
-        "handle": "noemail", "display_name": "No Email", "password": "pass1234"})
-    assert r.status_code == 422
-    assert "邮箱" in r.json()["detail"]
-
-
-def test_unverified_email_reads_but_cannot_write(client, monkeypatch):
+def test_write_requires_verified_email_or_provider(client, monkeypatch):
     import re
     from app.api.routes import auth as auth_route
-    from app.core.config import settings
+    from app.core.db import session
+    from app.models import Identity, User
+    from sqlmodel import select
 
-    monkeypatch.setattr(settings, "require_register_email", True)
     sent: list[tuple[str, str, str]] = []
     monkeypatch.setattr(auth_route, "send_email",
                         lambda to, subject, text, html=None: sent.append((to, subject, text)))
 
+    # 1) 无邮箱的邮箱口令账号：可以登录浏览，但不能写
+    plain = client.post("/api/auth/register", json={
+        "handle": "plainuser", "display_name": "Plain", "password": "pass1234"})
+    assert plain.status_code == 201, plain.text
+    h_plain = {"Authorization": f"Bearer {plain.json()['access_token']}"}
+    body = {"score": 5, "note": "gate"}
+    assert client.post("/api/v1/ratings/feetech-st-3250-c001", json=body,
+                       headers=h_plain).status_code == 403
+
+    # 2) 绑定第三方身份后可以写（模拟 GitHub/微信身份）
+    with session() as db:
+        u = db.exec(select(User).where(User.handle == "plainuser")).first()
+        db.add(Identity(user_id=u.id, provider="wechat_mini", subject="test-openid"))
+        db.commit()
+    allowed = client.post("/api/v1/ratings/feetech-st-3250-c001", json=body,
+                          headers=h_plain)
+    assert allowed.status_code == 201, allowed.text
+    client.delete("/api/v1/ratings/feetech-st-3250-c001", headers=h_plain)
+
+    # 3) 邮箱未验证仍被拦，验证后放行
     reg = client.post("/api/auth/register", json={
         "handle": "gateuser", "display_name": "Gate User",
         "email": "gate@example.com", "password": "pass1234"})
-    assert reg.status_code == 201, reg.text
-    token = reg.json()["access_token"]
-    headers = {"Authorization": f"Bearer {token}"}
-    assert sent, "注册时应自动发验证邮件"
-    assert client.post("/api/auth/login", json={
-        "handle": "gateuser", "password": "pass1234"}).status_code == 200
+    assert reg.status_code == 201 and sent
+    h = {"Authorization": f"Bearer {reg.json()['access_token']}"}
+    assert client.post("/api/v1/ratings/feetech-st-3250-c001", json=body,
+                       headers=h).status_code == 403
+    token = re.search(r"令牌：(\S+)", sent[0][2]).group(1)
+    assert client.post("/api/auth/email/verify", json={"token": token}).status_code == 200
+    ok = client.post("/api/v1/ratings/feetech-st-3250-c001", json=body, headers=h)
+    assert ok.status_code == 201, ok.text
+    client.delete("/api/v1/ratings/feetech-st-3250-c001", headers=h)
 
-    body = {"score": 5, "note": "verify gate"}
-    blocked = client.post("/api/v1/ratings/feetech-st-3250-c001", json=body, headers=headers)
-    assert blocked.status_code == 403
-    assert "验证邮箱" in blocked.json()["detail"]
 
-    verify_token = re.search(r"令牌：(\S+)", sent[0][2]).group(1)
-    assert client.post("/api/auth/email/verify", json={"token": verify_token}).status_code == 200
-
-    allowed = client.post("/api/v1/ratings/feetech-st-3250-c001", json=body, headers=headers)
-    assert allowed.status_code == 201, allowed.text
-    client.delete("/api/v1/ratings/feetech-st-3250-c001", headers=headers)
+def test_email_register_is_optional(client):
+    r = client.post("/api/auth/register", json={
+        "handle": "optionalmail", "display_name": "Optional", "password": "pass1234"})
+    assert r.status_code == 201, r.text

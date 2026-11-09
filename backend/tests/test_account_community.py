@@ -57,6 +57,15 @@ def register(client: TestClient, prefix: str = "acct") -> tuple[dict, dict]:
         "handle": handle, "display_name": handle, "password": "pass1234"})
     assert r.status_code == 201, r.text
     data = r.json()
+    from app.core.db import session
+    from app.models import User
+    from sqlmodel import select
+    with session() as db:
+        u = db.exec(select(User).where(User.handle == handle)).first()
+        if u is not None:
+            u.email_verified = True
+            db.add(u)
+            db.commit()
     return {"Authorization": f"Bearer {data['access_token']}"}, data["user"]
 
 

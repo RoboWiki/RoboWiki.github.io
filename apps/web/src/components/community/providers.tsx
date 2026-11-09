@@ -522,10 +522,9 @@ export function AuthForm({ onSuccess, compact = false }: {
               rules={[{ required: true, message: '请填写显示名' }, { max: 32 }]}>
               <Input placeholder="别人看到的名字" autoComplete="nickname" />
             </Form.Item>
-            <Form.Item name="email" label="邮箱（必填）"
+            <Form.Item name="email" label="邮箱（建议填写）"
               normalize={v => (v || '').trim()}
               rules={[
-                { required: true, message: '请填写邮箱，用于验证与找回密码' },
                 { type: 'email', message: '邮箱格式不正确，例如 name@example.com' },
                 { max: 200, message: '邮箱过长' },
               ]}>

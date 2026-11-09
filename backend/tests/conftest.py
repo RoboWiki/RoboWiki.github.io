@@ -18,9 +18,6 @@ import pytest
 
 _ROOT = pathlib.Path(__file__).resolve().parents[2]
 
-#: 测试不验证真实邮箱；邮箱必填与只读门禁由专门用例开启后覆盖。
-os.environ.setdefault("ROBOWIKI_REQUIRE_REGISTER_EMAIL", "false")
-
 #: 每个变量按「下载到 .data 的 release 产物」→「同级 RoboWiki 仓」的顺序找，
 #: 找到就 setdefault；找不到就留空，让 semantics.py 自己给出可执行的报错。
 _DIR_CANDIDATES = {

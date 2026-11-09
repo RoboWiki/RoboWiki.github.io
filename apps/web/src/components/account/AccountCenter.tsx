@@ -567,7 +567,7 @@ function SecurityPanel({ account, onAccount }: {
           hint={account.email
             ? (account.email_verified
               ? '邮箱已验证，可用于找回密码、接收回复与审核通知。'
-              : '未验证的邮箱只能浏览；验证后才能评分、发帖、评论和接收通知。')
+              : '未验证邮箱且未绑定 GitHub/微信时只能浏览；验证或绑定后即可参与。')
             : '还没有绑定邮箱。可在小程序「我的 → 账号」绑定，绑定后即可用邮箱登录。'} />
         <div className="flex flex-wrap items-center gap-3 text-[13px] text-ink-2">
           <MailOutlined />

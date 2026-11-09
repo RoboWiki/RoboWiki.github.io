@@ -18,7 +18,7 @@ from ...crud import (apply_vote, comments_out, posts_out, touch_comment_count,
 from ...models import Comment, Part, Post, Rating, User, utcnow
 from ...schemas import (AcceptIn, CommentIn, CommentOut, PostIn, PostListOut,
                         PostOut, PostPatchIn, UserOut, VoteIn, VoteOut)
-from ..deps import CurrentUser, Db, MaybeUser, rate_limit, require_verified_email
+from ..deps import CurrentUser, Db, MaybeUser, rate_limit, VerifiedUser
 from .notifications import create_notification
 
 router = APIRouter(tags=["community"])
@@ -79,8 +79,7 @@ def list_posts(
 
 
 @router.post("/posts", response_model=PostOut, status_code=201)
-def create_post(payload: PostIn, request: Request, db: Db, user: CurrentUser):
-    require_verified_email(user)
+def create_post(payload: PostIn, request: Request, db: Db, user: VerifiedUser):
     rate_limit(request, "post", settings.rate_max_posts, user.id)
 
     if payload.kind == "review":
@@ -273,8 +272,7 @@ def list_comments(post_id: int, db: Db, user: MaybeUser):
 
 @router.post("/posts/{post_id}/comments", response_model=CommentOut, status_code=201)
 def create_comment(post_id: int, payload: CommentIn, request: Request, db: Db,
-                   user: CurrentUser):
-    require_verified_email(user)
+                   user: VerifiedUser):
     rate_limit(request, "comment", settings.rate_max_comments, user.id)
     post = db.get(Post, post_id)
     if post is None or post.hidden:
@@ -316,8 +314,7 @@ def create_comment(post_id: int, payload: CommentIn, request: Request, db: Db,
 
 
 @router.post("/posts/{post_id}/accept", response_model=PostOut)
-def accept_comment(post_id: int, payload: AcceptIn, db: Db, user: CurrentUser):
-    require_verified_email(user)
+def accept_comment(post_id: int, payload: AcceptIn, db: Db, user: VerifiedUser):
     """采纳本楼的一条回答，给回答者发通知。
 
     采纳状态只存在帖子上的 `accepted_comment_id`：不复制到评论行，
@@ -379,8 +376,7 @@ def unaccept_comment(post_id: int, db: Db, user: CurrentUser):
 
 
 @router.post("/votes", response_model=VoteOut)
-def vote(payload: VoteIn, db: Db, user: CurrentUser):
-    require_verified_email(user)
+def vote(payload: VoteIn, db: Db, user: VerifiedUser):
     try:
         score, mine = apply_vote(db, user, payload.target_kind, payload.target_id,
                                  payload.value)

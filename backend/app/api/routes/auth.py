@@ -104,8 +104,6 @@ def providers():
 def register(payload: RegisterIn, request: Request, db: Db):
     rate_limit(request, "register", 20)
     email = payload.email.strip().lower() if payload.email else None
-    if settings.require_register_email and not email:
-        raise HTTPException(422, "注册必须填写邮箱，用于验证与找回密码")
     if db.exec(select(User).where(User.handle == payload.handle)).first():
         raise HTTPException(status.HTTP_409_CONFLICT, "这个 handle 已被占用")
     if email and db.exec(select(User).where(User.email == email)).first():

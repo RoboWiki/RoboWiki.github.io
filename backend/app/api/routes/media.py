@@ -19,7 +19,7 @@ from sqlmodel import select
 from ...core.config import settings
 from ...models import Media
 from ...schemas import MediaOut
-from ..deps import CurrentUser, Db, require_verified_email, rate_limit
+from ..deps import CurrentUser, Db, VerifiedUser, rate_limit
 
 router = APIRouter(prefix="/media", tags=["media"])
 
@@ -56,10 +56,9 @@ def _path(m: Media) -> pathlib.Path:
 
 
 @router.post("", response_model=MediaOut, status_code=201)
-async def upload(request: Request, user: CurrentUser, db: Db,
+async def upload(request: Request, user: VerifiedUser, db: Db,
                  file: UploadFile = File(...)):
     """上传一张图（jpeg / png / webp，≤ 5 MB）。"""
-    require_verified_email(user)
     rate_limit(request, "media", 60, user.id)
 
     declared = (file.content_type or "").split(";")[0].strip().lower()

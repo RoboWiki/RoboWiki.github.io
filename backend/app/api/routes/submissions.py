@@ -18,7 +18,7 @@ from ...catalog_fields import allowed, split_field
 from ...models import Outbox, Part, Submission, SubmissionReview, User
 from ...schemas import (OutboxOut, ReviewIn, ReviewOut, SubmissionIn,
                         SubmissionOut)
-from ..deps import CurrentUser, Db, MaybeUser, rate_limit, require_verified_email
+from ..deps import CurrentUser, Db, MaybeUser, rate_limit, VerifiedUser
 from .notifications import create_notification
 
 router = APIRouter(prefix="/submissions", tags=["submissions"])
@@ -154,8 +154,7 @@ def _out(db: Db, s: Submission) -> SubmissionOut:
 
 @router.post("", response_model=SubmissionOut, status_code=201)
 def create_submission(payload: SubmissionIn, request: Request, db: Db,
-                      user: CurrentUser):
-    require_verified_email(user)
+                      user: VerifiedUser):
     rate_limit(request, "submission", 20, user.id)
     _check_payload(payload.payload, user)
     if not payload.evidence:

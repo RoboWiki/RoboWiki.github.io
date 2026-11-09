@@ -16,7 +16,7 @@ from pydantic import BaseModel, Field, field_validator
 from sqlmodel import select
 
 from ...models import Reproduction, utcnow
-from ..deps import CurrentUser, Db, require_verified_email, MaybeUser
+from ..deps import CurrentUser, Db, VerifiedUser, MaybeUser
 
 router = APIRouter(prefix="/reproductions", tags=["reproductions"])
 
@@ -67,8 +67,7 @@ def get_reproductions(build_id: str, db: Db, user: MaybeUser):
 
 
 @router.post("/{build_id}", status_code=201)
-def record_reproduction(build_id: str, payload: ReproductionIn, user: CurrentUser, db: Db):
-    require_verified_email(user)
+def record_reproduction(build_id: str, payload: ReproductionIn, user: VerifiedUser, db: Db):
     """记录或更新一次复现结论。同一人同一方案只保留一条。"""
     if not build_id.strip():
         raise HTTPException(422, "build_id 不能为空")

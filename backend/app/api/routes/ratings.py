@@ -24,7 +24,7 @@ from sqlmodel import select
 from ...crud import shadowed_review_keys
 from ...models import Part, Rating, utcnow
 from ...rating_stats import aggregate
-from ..deps import CurrentUser, Db, MaybeUser, require_verified_email
+from ..deps import CurrentUser, Db, MaybeUser, VerifiedUser
 
 router = APIRouter(prefix="/ratings", tags=["ratings"])
 
@@ -152,8 +152,7 @@ def get_part_rating(part_id: str, db: Db, user: MaybeUser):
 
 
 @router.post("/{part_id}", status_code=201)
-def rate_part(part_id: str, payload: RateIn, user: CurrentUser, db: Db):
-    require_verified_email(user)
+def rate_part(part_id: str, payload: RateIn, user: VerifiedUser, db: Db):
     """打分 OR 改分。同一人同一件只有一条记录。"""
     if db.get(Part, part_id) is None:
         raise HTTPException(404, "零件不存在")
