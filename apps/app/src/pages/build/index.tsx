@@ -80,6 +80,28 @@ export default function BuildPage() {
   const specs = rawSpecs(build)
   const webUrl = buildWebUrl(build)
   const subtype = buildSubtype(build)
+  const isFull = build.openness === 'full'
+  const artifacts = build.artifacts || {}
+  const ARTIFACTS: Array<{ key: string; label: string }> = [
+    { key: 'urdf', label: 'URDF' },
+    { key: 'cad', label: '机械 CAD' },
+    { key: 'bom', label: 'BOM 表' },
+    { key: 'hardware', label: '硬件 / PCB' },
+    { key: 'firmware', label: '固件' },
+    { key: 'assembly', label: '装配说明' },
+    { key: 'docs', label: '文档' },
+  ]
+  const artifactLinks = ARTIFACTS
+    .map((item) => ({ ...item, url: artifacts[item.key] }))
+    .filter((item): item is { key: string; label: string; url: string } => Boolean(item.url))
+  const bom = build.bom || []
+  const origins = build.artifacts_origin || {}
+  const artifactName = (key: string, label: string) => origins[key] === 'community' ? `${label}（社区）` : label
+  const eco = build.ecosystem || null
+  const ECO_ROLES = ['官方项目', '官方描述/资产', '官方 SDK', '仿真', '训练', '部署', '导航', '控制/MPC', '社区复刻', 'BOM/复现', '工具/资料']
+  const ecoProjects = (eco?.projects || []).filter((p) => p && p.url) as Array<{
+    name: string; url: string; role: string; desc?: string | null
+  }>
 
   return (
     <View className={`rw-page build ${theme === 'dark' ? 'dark' : ''}`}>
@@ -104,6 +126,11 @@ export default function BuildPage() {
         </Text>
 
         <View className="build__badges">
+          {build.openness ? (
+            <Text className={`rw-badge ${isFull ? 'rw-badge--success' : ''}`}>
+              {isFull ? '全开源' : '半开源'}
+            </Text>
+          ) : null}
           {subtype ? <Text className="rw-badge">{subtype}</Text> : null}
           {build.last_checked ? (
             <Text className="rw-caption">核对于 {build.last_checked}</Text>
@@ -133,6 +160,76 @@ export default function BuildPage() {
         <View className="build__section">
           <Text className="rw-subtitle">说明</Text>
           <Text className="build__notes">{build.notes}</Text>
+        </View>
+      ) : null}
+
+      {build.openness_note ? (
+        <View className="build__section build__note-warn">
+          <Text className="rw-subtitle">开源边界</Text>
+          <Text className="build__notes">{build.openness_note}</Text>
+        </View>
+      ) : null}
+
+      {artifactLinks.length || bom.length ? (
+        <View className="build__section">
+          <View className="rw-row rw-row--between">
+            <Text className="rw-subtitle">可复现资料</Text>
+            <Text className="rw-caption">
+              {bom.length ? `BOM ${bom.length} 项` : artifactLinks.length ? `${artifactLinks.length} 份` : ''}
+            </Text>
+          </View>
+          <Text className="rw-caption">
+            {build.openness
+              ? isFull
+                ? '全开源方案：下列资料来自官方仓库，缺哪项就不显示。'
+                : '半开源方案：机械与硬件未公开，以下为已开放的资料入口。'
+              : '资料入口来自官方仓库，缺哪项就不显示。'}
+          </Text>
+          <View className="build__links">
+            {artifactLinks.map((item) => (
+              <View
+                className="build__link"
+                key={item.key}
+                onClick={() => openExternal(item.url, item.label)}
+              >
+                <Text className="build__link-label">{artifactName(item.key, item.label)}</Text>
+                <Text className="build__link-arrow">↗</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+      ) : null}
+
+      {ecoProjects.length ? (
+        <View className="build__section">
+          <View className="rw-row rw-row--between">
+            <Text className="rw-subtitle">仓库与子项目</Text>
+            <Text className="rw-caption">{ecoProjects.length} 个</Text>
+          </View>
+          <Text className="rw-caption">
+            官方子仓、资料与社区复刻按角色分组；社区项目不代表官方支持。
+          </Text>
+          {ECO_ROLES.map((role) => {
+            const list = ecoProjects.filter((p) => p.role === role)
+            if (!list.length) return null
+            return (
+              <View className="build__eco-group" key={role}>
+                <Text className="build__eco-role">{role}（{list.length}）</Text>
+                <View className="build__links">
+                  {list.map((p) => (
+                    <View
+                      className="build__link"
+                      key={p.url}
+                      onClick={() => openExternal(p.url, p.name)}
+                    >
+                      <Text className="build__link-label">{p.name}</Text>
+                      <Text className="build__link-arrow">↗</Text>
+                    </View>
+                  ))}
+                </View>
+              </View>
+            )
+          })}
         </View>
       ) : null}
 

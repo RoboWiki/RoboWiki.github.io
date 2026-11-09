@@ -25,11 +25,18 @@ const SUBTYPES = [
   { value: 'wheeled_quadruped_inward_knee', label: '四轮足 · 内膝肘' },
 ]
 
+const OPENNESS = [
+  { value: '', label: '全部' },
+  { value: 'full', label: '全开源' },
+  { value: 'partial', label: '半开源' },
+] as const
+
 export default function BuildsPage() {
   const theme = useThemeMode()
   const [searchInput, setSearchInput] = useState('')
   const [query, setQuery] = useState('')
   const [subtype, setSubtype] = useState('')
+  const [openness, setOpenness] = useState('')
   const [items, setItems] = useState<BuildSummary[]>([])
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -54,6 +61,7 @@ export default function BuildsPage() {
       const res = await api.listBuilds({
         q: query || undefined,
         subtype: subtype || undefined,
+        openness: (openness || undefined) as 'full' | 'partial' | undefined,
         limit: PAGE_SIZE.builds,
         offset: 0,
       })
@@ -67,7 +75,7 @@ export default function BuildsPage() {
     } finally {
       if (requestId === requestIdRef.current) setLoading(false)
     }
-  }, [query, subtype])
+  }, [query, subtype, openness])
 
   useEffect(() => {
     loadFirst()
@@ -81,6 +89,7 @@ export default function BuildsPage() {
       const res = await api.listBuilds({
         q: query || undefined,
         subtype: subtype || undefined,
+        openness: (openness || undefined) as 'full' | 'partial' | undefined,
         limit: PAGE_SIZE.builds,
         offset: offsetRef.current,
       })
@@ -100,7 +109,7 @@ export default function BuildsPage() {
     Taro.navigateTo({ url: `/pages/build/index?id=${encodeURIComponent(String(build.id))}` })
   }
 
-  const hasFilter = Boolean(query || subtype)
+  const hasFilter = Boolean(query || subtype || openness)
 
   return (
     <View className={`rw-page builds ${theme === 'dark' ? 'dark' : ''}`}>
@@ -128,6 +137,22 @@ export default function BuildsPage() {
 
         <ScrollView scrollX className="rw-chips" showScrollbar={false}>
           <View className="builds__chips">
+            <Text className="builds__chips-label">开源程度</Text>
+            {OPENNESS.map((item) => (
+              <View
+                key={item.value || 'all-openness'}
+                className={`rw-chip rw-chip--touch ${openness === item.value ? 'rw-chip--active' : ''}`}
+                onClick={() => setOpenness(item.value)}
+              >
+                {item.label}
+              </View>
+            ))}
+          </View>
+        </ScrollView>
+
+        <ScrollView scrollX className="rw-chips" showScrollbar={false}>
+          <View className="builds__chips">
+            <Text className="builds__chips-label">形态</Text>
             {SUBTYPES.map((item) => (
               <View
                 key={item.value || 'all'}
@@ -158,6 +183,7 @@ export default function BuildsPage() {
                   setSearchInput('')
                   setQuery('')
                   setSubtype('')
+                  setOpenness('')
                 }
               : undefined
           }
@@ -193,6 +219,11 @@ export default function BuildsPage() {
                   </Text>
 
                   <View className="builds__badges">
+                    {build.openness ? (
+                      <Text className={`rw-badge ${build.openness === 'full' ? 'rw-badge--success' : ''}`}>
+                        {build.openness === 'full' ? '全开源' : '半开源'}
+                      </Text>
+                    ) : null}
                     {buildSubtype(build) ? (
                       <Text className="rw-badge">{buildSubtype(build)}</Text>
                     ) : null}

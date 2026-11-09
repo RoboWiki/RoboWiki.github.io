@@ -123,6 +123,8 @@ export type BuildSummary = {
   last_checked?: string | null
   price_cny?: number | null
   image_url?: string | null
+  openness?: 'full' | 'partial' | null
+  openness_note?: string | null
   key_specs?: SpecFact[]
   web_path?: string
 }
@@ -131,6 +133,10 @@ export type BuildDetail = BuildSummary & {
   specs?: Record<string, unknown>
   notes?: string | null
   origin?: string | null
+  bom?: Array<{ part_id?: string | null; name: string; qty: number; note?: string | null }> | null
+  artifacts?: Record<string, string | null> | null
+  artifacts_origin?: Record<string, 'official' | 'community'> | null
+  steps?: Array<Record<string, unknown>> | null
   ecosystem?: {
     count?: number
     roles?: Record<string, number>
@@ -607,6 +613,7 @@ export class ApiClient {
   listBuilds(params: {
     q?: string
     subtype?: string
+    openness?: 'full' | 'partial'
     limit?: number
     offset?: number
   } = {}) {

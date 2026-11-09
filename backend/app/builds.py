@@ -128,6 +128,8 @@ def public_build(r: dict) -> dict:
         "last_checked": r.get("last_checked"),
         "price_cny": r.get("price_cny"),
         "image_url": specs.get("image_url"),
+        "openness": r.get("openness"),
+        "openness_note": r.get("openness_note"),
         "key_specs": key_specs(r),
         "web_path": r.get("web_path") or f"/builds/{_slug(str(r.get('id') or ''))}.html",
     }
@@ -141,6 +143,10 @@ def build_detail(r: dict, eco: dict) -> dict:
         "specs": specs,
         "notes": r.get("notes") or "",
         "origin": r.get("origin"),
+        "bom": r.get("bom") or [],
+        "artifacts": r.get("artifacts") or {},
+        "artifacts_origin": r.get("artifacts_origin") or {},
+        "steps": r.get("steps") or [],
         "ecosystem": eco.get(str(specs.get("ecosystem_id") or "")),
     })
     return out

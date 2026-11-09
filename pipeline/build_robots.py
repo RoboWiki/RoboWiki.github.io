@@ -52,7 +52,7 @@ LABEL = {
 }
 
 ROLE_ORDER = ["官方项目", "官方描述/资产", "官方 SDK", "仿真", "训练", "部署", "导航",
-              "控制/MPC", "工具/资料"]
+              "控制/MPC", "社区复刻", "BOM/复现", "工具/资料"]
 
 
 def _eco(root: pathlib.Path) -> dict:

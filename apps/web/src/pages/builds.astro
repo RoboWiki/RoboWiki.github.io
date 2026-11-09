@@ -16,6 +16,9 @@ type Robot = {
   source_tier?: string | null
   verified?: number
   specs: Record<string, unknown>
+  openness?: 'full' | 'partial' | null
+  bom?: Array<{ name: string; qty: number }> | null
+  artifacts?: Record<string, string | null> | null
   ecosystem?: {
     count?: number
     projects?: Array<{ name?: string; url?: string; role?: string }>
@@ -27,13 +30,32 @@ const robots = robotsData.robots as unknown as Robot[]
 const ecoCount = (robot: Robot) =>
   Number(robot.ecosystem?.count ?? robot.specs.ecosystem_count ?? 0) || 0
 const ecoProjects = (robot: Robot) => (robot.ecosystem?.projects || []).filter(p => p?.url).length
+const isFull = (robot: Robot) => robot.openness === 'full'
+const artifact = (robot: Robot, key: string) => {
+  const value = robot.artifacts?.[key]
+  return typeof value === 'string' && value ? value : ''
+}
+const hasBom = (robot: Robot) => Boolean(robot.bom?.length || artifact(robot, 'bom'))
+const FULL_COUNT = robots.filter(isFull).length
+const PARTIAL_COUNT = robots.length - FULL_COUNT
+const BOM_COUNT = robots.filter(robot => isFull(robot) && hasBom(robot)).length
+const CAD_COUNT = robots.filter(robot => Boolean(artifact(robot, 'cad'))).length
+/** 卡片上的资料徽标：只列仓库里真有的，不拿“全开源”三个字代替。 */
+const packageBadges = (robot: Robot) => {
+  if (!isFull(robot)) return []
+  const badges: string[] = []
+  if (hasBom(robot)) badges.push('BOM')
+  if (artifact(robot, 'cad')) badges.push('机械')
+  if (artifact(robot, 'hardware')) badges.push('硬件')
+  if (artifact(robot, 'firmware')) badges.push('固件')
+  if (artifact(robot, 'assembly')) badges.push('装配')
+  return badges
+}
 const defaultSort = [...robots].sort((a, b) =>
   ecoCount(b) - ecoCount(a) || ecoProjects(b) - ecoProjects(a) || a.model.localeCompare(b.model, 'zh-CN'))
 
 const vendorCount = new Set(robots.map(robot => robot.vendor)).size
 const pricedCount = robots.filter(robot => robot.price_cny != null).length
-const ecoTotal = robots.reduce((sum, robot) => sum + ecoCount(robot), 0)
-const ecoCovered = robots.filter(robot => ecoCount(robot) > 0).length
 const groups = [...new Set(robots.map(robot => robot.subtype_label || '其他'))]
   .map(label => ({ label, count: robots.filter(robot => (robot.subtype_label || '其他') === label).length }))
   .sort((a, b) => b.count - a.count)
@@ -62,7 +84,7 @@ const searchText = (robot: Robot) =>
 
 <Base
   title="方案库 · RoboWiki"
-  description={`${robots.length} 套可复现整机方案，默认按开源生态丰富度排序：URDF、SDK、训练与部署项目。`}
+  description={`${robots.length} 套整机方案：${FULL_COUNT} 套全开源（BOM、机械设计与硬件资料）与 ${PARTIAL_COUNT} 套半开源（SDK/URDF/训练开放）。`}
 >
   <Breadcrumbs items={[{ label: '首页', href: '/' }, { label: '方案库' }]} />
 
@@ -71,38 +93,57 @@ const searchText = (robot: Robot) =>
     <div class="relative">
       <p class="text-xs font-semibold tracking-[0.14em] text-brand uppercase">方案库 / Builds</p>
       <h1 class="mt-2 max-w-3xl text-3xl font-extrabold leading-tight tracking-tight text-ink sm:text-4xl">
-        先看开源生态有多厚，再看参数。
+        先看能不能复现，再看开源生态。
       </h1>
       <p class="mt-3 max-w-2xl text-sm leading-6 text-ink-2">
-        默认按开源生态项目数排序：URDF/模型、SDK、仿真、训练、部署、导航与控制项目越多，越容易找到能直接跑的实现。
-        生态数不代表性能，也不代表这些项目都适配这台机器。
+        方案分两类：<span class="font-medium text-ink">全开源</span>公开 BOM、机械设计与硬件资料，能照着做一台；
+        <span class="font-medium text-ink">半开源</span>开放 SDK、URDF、训练或部署，但机械结构与硬件不公开。
+        卡片按仓库里真实存在的资料标 BOM / 机械 / 硬件，不用“全开源”三个字代替证据。
       </p>
 
       <dl class="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-line bg-line sm:grid-cols-4">
         <div class="bg-surface-2 px-4 py-3"><dt class="text-[11px] font-medium tracking-wide text-ink-3">收录方案</dt><dd class="mt-1 flex items-baseline gap-1"><span class="mono tabular text-xl font-semibold leading-none text-ink">{robots.length}</span><span class="text-[11px] text-ink-3">套</span></dd></div>
-        <div class="bg-surface-2 px-4 py-3"><dt class="text-[11px] font-medium tracking-wide text-ink-3">有开源生态</dt><dd class="mt-1 flex items-baseline gap-1"><span class="mono tabular text-xl font-semibold leading-none text-ink">{ecoCovered}</span><span class="text-[11px] text-ink-3">套</span></dd></div>
-        <div class="bg-surface-2 px-4 py-3"><dt class="text-[11px] font-medium tracking-wide text-ink-3">生态项目</dt><dd class="mt-1 flex items-baseline gap-1"><span class="mono tabular text-xl font-semibold leading-none text-ink">{ecoTotal}</span><span class="text-[11px] text-ink-3">个索引</span></dd></div>
-        <div class="bg-surface-2 px-4 py-3"><dt class="text-[11px] font-medium tracking-wide text-ink-3">厂商</dt><dd class="mt-1 flex items-baseline gap-1"><span class="mono tabular text-xl font-semibold leading-none text-ink">{vendorCount}</span><span class="text-[11px] text-ink-3">家</span></dd></div>
+        <div class="bg-surface-2 px-4 py-3"><dt class="text-[11px] font-medium tracking-wide text-ink-3">全开源</dt><dd class="mt-1 flex items-baseline gap-1"><span class="mono tabular text-xl font-semibold leading-none text-success">{FULL_COUNT}</span><span class="text-[11px] text-ink-3">套</span></dd></div>
+        <div class="bg-surface-2 px-4 py-3"><dt class="text-[11px] font-medium tracking-wide text-ink-3">有 BOM 表</dt><dd class="mt-1 flex items-baseline gap-1"><span class="mono tabular text-xl font-semibold leading-none text-ink">{BOM_COUNT}</span><span class="text-[11px] text-ink-3">套</span></dd></div>
+        <div class="bg-surface-2 px-4 py-3"><dt class="text-[11px] font-medium tracking-wide text-ink-3">半开源</dt><dd class="mt-1 flex items-baseline gap-1"><span class="mono tabular text-xl font-semibold leading-none text-ink">{PARTIAL_COUNT}</span><span class="text-[11px] text-ink-3">套</span></dd></div>
       </dl>
       <p class="mt-2.5 text-[11px] text-ink-3">
-        覆盖 {vendorCount} 家厂商，{pricedCount} 台有厂商公开标价；生态是参考库索引，不等于官方支持。
+        覆盖 {vendorCount} 家厂商，{CAD_COUNT} 套公开机械 CAD，{pricedCount} 台有厂商公开标价；生态是参考库索引，不等于官方支持。
       </p>
     </div>
   </header>
 
   <div class="sticky top-16 z-30 -mx-4 mt-6 border-b border-line bg-bg/90 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
-    <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-      <div class="chip-row" role="group" aria-label="按整机形态筛选">
-        <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">
-          全部<span class="mono tabular text-[11px] opacity-60">{robots.length}</span>
-        </button>
-        {groups.map(group => (
-          <button type="button" class="chip" data-filter={group.label} aria-pressed="false">
-            {group.label}<span class="mono tabular text-[11px] opacity-60">{group.count}</span>
+    <div class="space-y-2">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold text-ink-3">开源程度</span>
+        <div class="chip-row min-w-0 flex-1" role="group" aria-label="按开源程度筛选">
+          <button type="button" class="chip is-active" data-openness-filter="all" aria-pressed="true">
+            全部<span class="mono tabular text-[11px] opacity-60">{robots.length}</span>
           </button>
-        ))}
+          <button type="button" class="chip" data-openness-filter="full" aria-pressed="false">
+            全开源<span class="mono tabular text-[11px] opacity-60">{FULL_COUNT}</span>
+          </button>
+          <button type="button" class="chip" data-openness-filter="partial" aria-pressed="false">
+            半开源<span class="mono tabular text-[11px] opacity-60">{PARTIAL_COUNT}</span>
+          </button>
+        </div>
       </div>
-      <div class="flex flex-wrap items-center gap-2">
+      <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div class="flex min-w-0 items-center gap-2">
+          <span class="shrink-0 text-[11px] font-semibold text-ink-3">形态</span>
+          <div class="chip-row min-w-0 flex-1" role="group" aria-label="按整机形态筛选">
+            <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">
+              全部<span class="mono tabular text-[11px] opacity-60">{robots.length}</span>
+            </button>
+            {groups.map(group => (
+              <button type="button" class="chip" data-filter={group.label} aria-pressed="false">
+                {group.label}<span class="mono tabular text-[11px] opacity-60">{group.count}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
         <label class="flex h-9 shrink-0 items-center gap-2 rounded-md border border-line bg-surface px-3 text-ink-3 focus-within:border-brand lg:w-52">
           <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" stroke-linecap="round" />
@@ -125,6 +166,7 @@ const searchText = (robot: Robot) =>
     <p class="mt-2 text-xs text-ink-3" aria-live="polite">
       <span id="robot-count" class="mono tabular text-ink-2">{robots.length}</span> 台符合当前筛选
     </p>
+    </div>
   </div>
 
   <ul id="build-grid" class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" role="list">
@@ -132,6 +174,7 @@ const searchText = (robot: Robot) =>
       <li
         data-item
         data-type={robot.subtype_label || '其他'}
+        data-openness={isFull(robot) ? 'full' : 'partial'}
         data-search={searchText(robot)}
         data-eco={ecoCount(robot)}
         data-projects={ecoProjects(robot)}
@@ -151,6 +194,13 @@ const searchText = (robot: Robot) =>
                 暂无产品图
               </span>
             )}
+            <span class={`absolute left-3 top-3 rounded-full border px-2 py-0.5 text-[11px] font-semibold ${
+              isFull(robot)
+                ? 'border-success/30 bg-success-soft text-success'
+                : 'border-line bg-surface/90 text-ink-2 backdrop-blur'
+            }`}>
+              {isFull(robot) ? '全开源' : '半开源'}
+            </span>
             <span class="absolute right-3 top-3 rounded-full border border-brand/20 bg-brand-soft px-2 py-0.5 text-[11px] font-semibold text-brand">
               生态 {ecoCount(robot)}
             </span>
@@ -163,9 +213,27 @@ const searchText = (robot: Robot) =>
               </div>
             </div>
 
-            <p class="text-[11px] leading-5 text-ink-3">
-              {robot.subtype_label || '其他'} · 仓库/URDF/训练/部署等项目索引
-            </p>
+            <div class="flex flex-wrap items-center gap-1 text-[11px] leading-5 text-ink-3">
+              <span>{robot.subtype_label || '其他'}</span>
+              {isFull(robot) ? (
+                packageBadges(robot).length ? (
+                  <>
+                    {packageBadges(robot).slice(0, 4).map(badge => (
+                      <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-[11px] text-ink-2">{badge}</span>
+                    ))}
+                    {packageBadges(robot).length > 4 && (
+                      <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-[11px] text-ink-3">
+                        +{packageBadges(robot).length - 4}
+                      </span>
+                    )}
+                  </>
+                ) : (
+                  <span class="rounded-full border border-dashed border-line px-2 py-px text-[11px] text-ink-3">资料待补</span>
+                )
+              ) : (
+                <span class="rounded-full border border-line bg-surface-2 px-2 py-px text-[11px] text-ink-3">SDK / URDF / 训练开放</span>
+              )}
+            </div>
 
             <dl class="mt-auto grid grid-cols-3 gap-x-2 gap-y-2 border-t border-line pt-3">
               <div class="min-w-0"><dt class="text-[11px] text-ink-3">自由度</dt><dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">{factText(robot, 'dof')}</dd></div>
@@ -183,10 +251,11 @@ const searchText = (robot: Robot) =>
 
   <div id="robot-empty" class="card mt-8 p-10 text-center" data-empty hidden>
     <p class="text-sm font-semibold text-ink">没有匹配的整机</p>
-    <p class="mt-1 text-xs leading-5 text-ink-3">换一个型号或厂商关键词，或点「全部」清除形态筛选。</p>
+    <p class="mt-1 text-xs leading-5 text-ink-3">换一个型号或厂商关键词，或点「全部」清除开源程度与形态筛选。</p>
   </div>
 
   <p class="mt-10 rounded-md border border-line bg-surface-2 p-4 text-xs leading-6 text-ink-3">
+    全开源/半开源按官方仓库里实际公开的资料判定：BOM、机械 CAD、硬件/PCB、固件与装配说明分别标注，缺哪项就不亮哪项。
     生态项目数来自参考库索引，只说明「哪些环节有现成开源实现」，不代表官方支持或可直接适配。
     参数与价格来自厂商官网、官方仓库与 URDF；价格只在厂商公开标价时展示，其余写询价。
     <a href={withBase('/method.html')} class="ml-1 font-medium text-brand hover:underline">方法与来源 →</a>
@@ -199,9 +268,11 @@ const searchText = (robot: Robot) =>
   const search = document.getElementById('robot-search') as HTMLInputElement | null
   const sortSelect = document.getElementById('robot-sort') as HTMLSelectElement | null
   const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip[data-filter]'))
+  const opennessChips = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip[data-openness-filter]'))
   const counter = document.getElementById('robot-count')
   const empty = document.getElementById('robot-empty')
   let activeType = 'all'
+  let activeOpenness = 'all'
 
   const number = (card: HTMLElement, key: string) => Number(card.dataset[key] || -1)
   const sortCards = () => {
@@ -225,8 +296,9 @@ const searchText = (robot: Robot) =>
     let visible = 0
     for (const card of cards) {
       const hitType = activeType === 'all' || card.dataset.type === activeType
+      const hitOpenness = activeOpenness === 'all' || card.dataset.openness === activeOpenness
       const hitQuery = !needle || (card.dataset.search || '').includes(needle)
-      const show = hitType && hitQuery
+      const show = hitType && hitOpenness && hitQuery
       card.hidden = !show
       if (show) visible += 1
     }
@@ -239,6 +311,15 @@ const searchText = (robot: Robot) =>
     activeType = button.dataset.filter || 'all'
     for (const other of chips) {
       const on = other.dataset.filter === activeType
+      other.classList.toggle('is-active', on)
+      other.setAttribute('aria-pressed', String(on))
+    }
+    apply()
+  }))
+  opennessChips.forEach(button => button.addEventListener('click', () => {
+    activeOpenness = button.dataset.opennessFilter || 'all'
+    for (const other of opennessChips) {
+      const on = other.dataset.opennessFilter === activeOpenness
       other.classList.toggle('is-active', on)
       other.setAttribute('aria-pressed', String(on))
     }

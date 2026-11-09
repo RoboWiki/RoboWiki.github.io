@@ -23,10 +23,13 @@ type Robot = {
   specs: Record<string, unknown>
   notes?: string | null
   origin?: string | null
+  openness?: 'full' | 'partial' | null
+  openness_note?: string | null
   _slug: string
   bom?: Array<{ part_id?: string | null; name: string; qty: number; note?: string | null }> | null
   steps?: Array<{ order?: number | null; title: string; detail?: string | null; criteria?: string | null; pitfall?: string | null }> | null
   artifacts?: Record<string, string | null> | null
+  artifacts_origin?: Record<string, 'official' | 'community'> | null
   ecosystem?: {
     label?: string | null
     count?: number
@@ -55,12 +58,23 @@ const artifacts = robot.artifacts ?? {}
 const eco = robot.ecosystem ?? null
 const ecoProjects = (eco?.projects ?? []).filter(p => p && p.url)
 // 只展示可点开的公开链接；本地克隆的文件数不代表项目质量，已从数据中移除。
-const ECO_ROLE_ORDER = ['官方项目', '官方描述/资产', '官方 SDK', '仿真', '训练', '部署', '导航', '控制/MPC', '工具/资料']
+const ECO_ROLE_ORDER = ['官方项目', '官方描述/资产', '官方 SDK', '仿真', '训练', '部署', '导航', '控制/MPC', '社区复刻', 'BOM/复现', '工具/资料']
 const ecoGroups = ECO_ROLE_ORDER
   .map(role => ({ role, items: ecoProjects.filter(p => p.role === role) }))
   .filter(group => group.items.length > 0)
 const artifactLink = (key: string) => (artifacts[key] ? String(artifacts[key]) : '')
+const artifactTag = (key: string) => robot.artifacts_origin?.[key] === 'community' ? '社区' : ''
+const artifactLabel = (key: string, label: string) => `${label}${artifactTag(key) ? '（社区）' : ''}`
+const isFull = robot.openness === 'full'
 const bom = (robot.bom ?? []).filter(item => item && item.name)
+const hasBom = bom.length > 0 || Boolean(artifactLink('bom'))
+const packageBadges = [
+  { key: 'bom', label: 'BOM', ok: hasBom },
+  { key: 'cad', label: '机械', ok: Boolean(artifactLink('cad')) },
+  { key: 'hardware', label: '硬件', ok: Boolean(artifactLink('hardware')) },
+  { key: 'firmware', label: '固件', ok: Boolean(artifactLink('firmware')) },
+  { key: 'assembly', label: '装配', ok: Boolean(artifactLink('assembly')) },
+].filter(item => item.ok).map(item => ({ ...item, label: artifactLabel(item.key, item.label) }))
 const steps = [...(robot.steps ?? [])]
   .filter(step => step && step.title)
   .sort((a, b) => (a.order ?? 999) - (b.order ?? 999))
@@ -142,6 +156,18 @@ const docs = [
             {robot.subtype_label}
           </span>
         )}
+        <span class={`inline-flex h-7 items-center whitespace-nowrap rounded-full border px-2.5 text-xs font-semibold ${
+          isFull
+            ? 'border-success/30 bg-success-soft text-success'
+            : 'border-line bg-surface-2 text-ink-2'
+        }`}>
+          {isFull ? '全开源' : '半开源'}
+        </span>
+        {packageBadges.map(item => (
+          <span class="inline-flex h-7 items-center whitespace-nowrap rounded-full border border-line bg-surface px-2.5 text-xs text-ink-2">
+            {item.label}
+          </span>
+        ))}
         {ecoProjects.length > 0 && (
           <a href="#ecosystem" class="inline-flex h-7 items-center whitespace-nowrap rounded-full border border-brand/30 bg-brand-soft px-2.5 text-xs font-medium text-brand hover:border-brand">
             生态 {ecoProjects.length} 个项目
@@ -165,6 +191,11 @@ const docs = [
 
   <div class="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
     <div class="space-y-5">
+      {robot.openness_note && (
+        <section class="rounded-md border border-amber-200 bg-amber-50 p-4 text-[13px] leading-6 text-amber-900" aria-label="开源边界">
+          <span class="font-semibold">开源边界：</span>{robot.openness_note}
+        </section>
+      )}
       {robot.notes && (
         <section class="card p-5 sm:p-6" aria-labelledby="notes">
           <h2 id="notes" class="text-base font-bold tracking-tight text-ink">简介</h2>
@@ -190,7 +221,11 @@ const docs = [
               note: repos.length ? `${repos.length} 个` : artifactLink('firmware') ? '固件' : '未提供',
             },
             { label: '许可', ok: Boolean(license), note: license ?? '未标注' },
-            { label: 'BOM（型号 + 数量）', ok: bom.length > 0, note: bom.length ? `${bom.length} 项` : '未收录' },
+            {
+              label: 'BOM（型号 + 数量）',
+              ok: hasBom,
+              note: bom.length ? `${bom.length} 项` : hasBom ? (artifactTag('bom') ? '社区清单' : '外部清单') : '未收录',
+            },
           ].map(item => (
             <li class="flex items-center gap-2.5 rounded-md border border-line bg-surface-2 px-3 py-2">
               <span class={item.ok ? 'h-2 w-2 rounded-full bg-success' : 'h-2 w-2 rounded-full bg-line-strong'} aria-hidden="true"></span>
@@ -200,13 +235,17 @@ const docs = [
           ))}
         </ul>
 
-        {(bom.length > 0 || steps.length > 0) && (
+        {(hasBom || steps.length > 0) && (
           <div class="mt-4 flex flex-wrap gap-2">
-            {bom.length > 0 && (
+            {bom.length > 0 ? (
               <a href="#bom" class="inline-flex h-8 items-center rounded-full border border-line px-3 text-[12px] text-ink-2 hover:border-line-strong">
                 BOM {bom.length} 项
               </a>
-            )}
+            ) : hasBom ? (
+              <a href={artifactLink('bom')} target="_blank" rel="noopener" class="inline-flex h-8 items-center rounded-full border border-line px-3 text-[12px] text-ink-2 hover:border-line-strong">
+                {artifactLabel('bom', 'BOM 清单')} <span class="ml-1 text-ink-3" aria-hidden="true">↗</span>
+              </a>
+            ) : null}
             {steps.length > 0 && (
               <a href="#steps" class="inline-flex h-8 items-center rounded-full border border-line px-3 text-[12px] text-ink-2 hover:border-line-strong">
                 步骤 {steps.length} 步
@@ -215,7 +254,7 @@ const docs = [
           </div>
         )}
 
-        {bom.length === 0 && (
+        {!hasBom && (
           <p class="mt-3 text-[12px] leading-6 text-ink-3">
             这份清单还没人整理。如果你装过这台机器，欢迎
             <a href={withBase('/submit.html')} class="text-brand hover:underline">补一条 BOM</a>——
@@ -224,12 +263,12 @@ const docs = [
         )}
       </section>
 
-      {(bom.length > 0 || artifactLink('cad') || artifactLink('firmware') || artifactLink('assembly')) && (
+      {(bom.length > 0 || artifactLink('urdf') || artifactLink('cad') || artifactLink('bom') || artifactLink('hardware') || artifactLink('firmware') || artifactLink('assembly')) && (
         <section class="card p-5 sm:p-6" aria-labelledby="bom">
           <div class="flex flex-wrap items-baseline justify-between gap-2">
             <h2 id="bom" class="text-base font-bold tracking-tight text-ink">物料清单</h2>
             <span class="mono tabular text-xs text-ink-3">
-              {bom.length > 0 ? `${bom.length} 项 · 合计 ${bomTotal} 件` : '未收录'}
+              {bom.length > 0 ? `${bom.length} 项 · 合计 ${bomTotal} 件` : hasBom ? (artifactTag('bom') ? '社区清单' : '外部清单') : '未收录'}
             </span>
           </div>
 
@@ -255,13 +294,17 @@ const docs = [
               </table>
             </div>
           ) : (
-            <p class="mt-3 text-[13px] text-ink-3">清单还在整理，先看下面这些交付物。</p>
+            <p class="mt-3 text-[13px] text-ink-3">
+              {hasBom ? '本站还没拆成结构化表格；先点下方 BOM 链接看原始清单。' : '清单还在整理，先看下面这些交付物。'}
+            </p>
           )}
 
           <div class="mt-4 flex flex-wrap gap-2 border-t border-line pt-3">
             {[
               { key: 'urdf', label: 'URDF' },
               { key: 'cad', label: 'CAD' },
+              { key: 'bom', label: 'BOM 表' },
+              { key: 'hardware', label: '硬件/PCB' },
               { key: 'firmware', label: '固件' },
               { key: 'assembly', label: '装配说明' },
               { key: 'docs', label: '文档' },
@@ -272,7 +315,7 @@ const docs = [
                 rel="noopener"
                 class="inline-flex h-8 items-center rounded-full border border-line px-3 text-[12px] text-ink-2 hover:border-line-strong hover:text-ink"
               >
-                {item.label} <span class="ml-1 text-ink-3" aria-hidden="true">↗</span>
+                {artifactLabel(item.key, item.label)} <span class="ml-1 text-ink-3" aria-hidden="true">↗</span>
               </a>
             ))}
           </div>
@@ -332,7 +375,7 @@ const docs = [
             <span class="mono tabular text-xs text-ink-3">{ecoProjects.length} 个项目 · {eco?.count ?? ecoProjects.length} 个索引</span>
           </div>
           <p class="mt-1 text-xs leading-5 text-ink-3">
-            来自参考库的项目索引，只说明哪些环节有现成开源实现；不代表这些项目都直接适配这台机器。
+            官方子仓、官方资料与社区复刻按角色分组；社区项目不代表官方支持，也不代表全部直接适配这台机器。
           </p>
           <div class="mt-3 flex flex-wrap gap-1.5">
             {ECO_ROLE_ORDER.filter(role => eco?.roles?.[role]).map(role => (

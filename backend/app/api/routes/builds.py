@@ -22,12 +22,15 @@ def _matches(r: dict, q: str) -> bool:
 def list_builds(
     q: str | None = None,
     subtype: str | None = None,
+    openness: str | None = None,
     limit: Annotated[int, Query(ge=1, le=100)] = 20,
     offset: Annotated[int, Query(ge=0)] = 0,
 ):
     rows = load_builds()
     if subtype:
         rows = [r for r in rows if r.get("subtype") == subtype]
+    if openness in ("full", "partial"):
+        rows = [r for r in rows if r.get("openness") == openness]
     if q:
         rows = [r for r in rows if _matches(r, q)]
     return {

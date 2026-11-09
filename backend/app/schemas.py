@@ -540,6 +540,8 @@ class BuildSummaryOut(BaseModel):
     last_checked: str | None = None
     price_cny: float | None = None
     image_url: str | None = None
+    openness: str | None = None
+    openness_note: str | None = None
     key_specs: list[KeySpecOut] = []
     web_path: str
 
@@ -548,6 +550,10 @@ class BuildDetailOut(BuildSummaryOut):
     specs: dict = {}
     notes: str = ""
     origin: str | None = None
+    bom: list[dict] = []
+    artifacts: dict = {}
+    artifacts_origin: dict = {}
+    steps: list[dict] = []
     ecosystem: dict | None = None
 
 

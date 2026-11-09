@@ -21,8 +21,16 @@
 
 .builds__chips {
   display: flex;
+  align-items: center;
   gap: var(--rw-space-2);
   padding-right: var(--rw-space-4);
+}
+
+.builds__chips-label {
+  flex: 0 0 auto;
+  font-size: var(--rw-text-xs);
+  font-weight: 600;
+  color: var(--rw-muted);
 }
 
 .builds__list {
