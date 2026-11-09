@@ -11,7 +11,7 @@ const description = '这个地址没有对应页面。回到 RoboWiki 首页，�
 const links = [
   { href: catalogHref, title: '部件库', desc: '按品类、厂商与参数筛选硬件。' },
   { href: `${base}builds.html`, title: '方案库', desc: '看可复现方案的结构、电控与踩坑。' },
-  { href: `${base}start.html`, title: '学习路径', desc: '按天拆解，每步都有完成判据。' },
+  { href: `${base}learn/index.html`, title: '教程库', desc: '经典 PDF 与本站导读，按方向筛选。' },
 ]
 ---
 
@@ -49,11 +49,10 @@ const links = [
         <nav class="ml-2 hidden items-center gap-0.5 lg:flex" aria-label="主导航">
           <a href={homeHref} class="rounded-md px-3 py-1.5 text-[13px] text-ink-2 hover:bg-surface-3 hover:text-ink">首页</a>
           <a href={catalogHref} class="rounded-md px-3 py-1.5 text-[13px] text-ink-2 hover:bg-surface-3 hover:text-ink">部件库</a>
-          <a href={`${base}start.html`} class="rounded-md px-3 py-1.5 text-[13px] text-ink-2 hover:bg-surface-3 hover:text-ink">学习路径</a>
+          <a href={`${base}learn/index.html`} class="rounded-md px-3 py-1.5 text-[13px] text-ink-2 hover:bg-surface-3 hover:text-ink">教程库</a>
           <a href={`${base}builds.html`} class="rounded-md px-3 py-1.5 text-[13px] text-ink-2 hover:bg-surface-3 hover:text-ink">方案库</a>
           <a href={`${base}materials.html`} class="rounded-md px-3 py-1.5 text-[13px] text-ink-2 hover:bg-surface-3 hover:text-ink">材质库</a>
           <a href={`${base}suppliers.html`} class="rounded-md px-3 py-1.5 text-[13px] text-ink-2 hover:bg-surface-3 hover:text-ink">采购库</a>
-          <a href={`${base}learn/index.html`} class="rounded-md px-3 py-1.5 text-[13px] text-ink-2 hover:bg-surface-3 hover:text-ink">指南</a>
         </nav>
         <div class="ml-auto flex items-center gap-2">
           <a href="https://github.com/RoboWiki/RoboWiki" class="hidden rounded-md px-3 py-1.5 text-[13px] text-ink-2 hover:bg-surface-3 sm:flex" target="_blank" rel="noopener">GitHub 仓库</a>

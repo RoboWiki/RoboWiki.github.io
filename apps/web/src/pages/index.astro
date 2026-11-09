@@ -87,10 +87,10 @@ const faqs = [
 
         <div class="mt-7 flex flex-wrap items-center gap-3">
           <a
-            href={withBase('/start.html')}
+            href={withBase('/learn/index.html')}
             class="inline-flex h-11 items-center rounded-md bg-brand px-5 text-sm font-semibold text-brand-fg transition-colors hover:bg-brand-hover"
           >
-            从学习路径开始
+            从教程库开始
             <span aria-hidden="true">→</span>
           </a>
           <a
@@ -200,7 +200,7 @@ const faqs = [
     </div>
     <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
       {[
-        { href: '/start.html', title: '学习路径', desc: '从零到跑通，按天给判据', count: '1 条可用', eg: '另 2 条在写' },
+        { href: '/learn/index.html', title: '教程库', desc: '经典 PDF 与导读，按方向筛选', count: '12 份资料', eg: '例：传动机构简述' },
         { href: '/builds.html', title: '方案库', desc: '可复现方案，含 BOM 与步骤', count: `${robotsData.count} 套`, eg: '例：四足 5k 方案' },
         { href: '/catalog.html', title: '部件库', desc: '参数带来源，缺失写 null', count: `${catalog.count} 个部件`, eg: '例：DM4310 参数' },
         { href: '/equipment.html', title: '设备库', desc: '做机器人的工具与仪器', count: `${equipmentCount} 台设备`, eg: '例：拓竹 A1、优利德 UT89X' },

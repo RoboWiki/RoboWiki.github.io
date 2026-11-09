@@ -17,10 +17,10 @@ export type WebNavItem = {
 export const WEB_NAV: WebNavItem[] = [
   {
     key: 'learn',
-    label: '学习',
-    desc: '从零到跑通，按天给判据',
-    href: '/start.html',
-    match: ['/start', '/paths', '/learn'],
+    label: '教程库',
+    desc: '经典 PDF 与本站导读，按方向筛选',
+    href: '/learn/index.html',
+    match: ['/learn', '/paths'],
   },
   {
     key: 'builds',
@@ -120,7 +120,7 @@ export const SECTION_TITLES = {
   equipment: '设备库',
   builds: '方案库',
   community: '社区',
-  learn: '学习',
+  learn: '教程库',
   suppliers: '采购库',
 } as const
 

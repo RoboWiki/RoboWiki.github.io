@@ -60,16 +60,16 @@ const metaText = (r: Resource) => {
 const reprint = learnData.reprint
 ---
 
-<Base title={`学习资料库 · RoboWiki`} description={`${resources.length} 份机器人学习资料：经典教程 PDF 与本站导读，按方向、来源、难度筛选。`}>
+<Base title={`教程库 · RoboWiki`} description={`${resources.length} 份机器人教程：经典 PDF 与本站导读，按方向、来源、难度筛选。`}>
   <div class="mx-auto max-w-6xl">
     <nav aria-label="面包屑" class="mb-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-ink-3">
       <a href={withBase('/')} class="transition-colors hover:text-brand">首页</a>
       <span aria-hidden="true" class="text-line-strong">/</span>
-      <span class="text-ink-2" aria-current="page">学习</span>
+      <span class="text-ink-2" aria-current="page">教程库</span>
     </nav>
 
     <header>
-      <p class="text-[11px] font-semibold tracking-[0.14em] text-brand uppercase">学习 / Library</p>
+      <p class="text-[11px] font-semibold tracking-[0.14em] text-brand uppercase">教程库 / Library</p>
       <h1 class="mt-2 max-w-3xl text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
         先看经典教程，再回到选型与复现。
       </h1>
@@ -83,6 +83,9 @@ const reprint = learnData.reprint
         <span><span class="mono tabular font-semibold text-ink">{noteCount}</span> 篇本站笔记</span>
         <span>更新 {learnData.updated_at}</span>
       </div>
+      <a href={withBase('/paths/electrical-14d.html')} class="mt-2 inline-flex items-center gap-1 text-[12px] font-medium text-brand hover:underline">
+        想按天推进？14 天电控路径<span aria-hidden="true">→</span>
+      </a>
     </header>
 
     <div class="sticky top-16 z-30 -mx-4 mt-6 border-y border-line bg-bg/90 px-4 py-3 backdrop-blur-md sm:mx-0 sm:rounded-lg sm:border sm:px-3">
@@ -205,7 +208,7 @@ const reprint = learnData.reprint
     </section>
 
     <details class="mt-4 rounded-lg border border-line bg-surface p-4">
-      <summary class="cursor-pointer select-none text-sm font-semibold text-ink">怎么用这个学习库</summary>
+      <summary class="cursor-pointer select-none text-sm font-semibold text-ink">怎么用教程库</summary>
       <div class="prose mt-4 max-w-3xl [&_h2]:scroll-mt-24 [&_h3]:scroll-mt-24 [&_table]:block [&_table]:overflow-x-auto">
         <Content />
       </div>

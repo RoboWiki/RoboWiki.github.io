@@ -93,7 +93,7 @@ export const GET: APIRoute = async () => {
   }
 
   const standing = [
-    { t: '学习路径', d: '从零到跑通，按天给判据', u: `${base}start.html`, x: '入门 教程 路径 新手' },
+    { t: '教程库', d: '经典 PDF 与本站导读，按方向筛选', u: `${base}learn/index.html`, x: '入门 教程 PDF 资料库 学习' },
     { t: '电控 14 天路径', d: '接线 → CAN → 闭环 → 四轮联动', u: `${base}paths/electrical-14d.html`, x: '电机 电调 CAN PID 闭环 底盘' },
     { t: '部件对比', d: '2–4 个部件并排比较', u: `${base}compare.html`, x: '对比 选型 差异' },
     { t: '开源索引', d: '带仓库与许可的机型、部件、工具', u: `${base}open.html`, x: '开源 仓库 许可 GPL MIT 复现' },

@@ -51,12 +51,12 @@ const facts = [
 const pdfHref = withBase(resource.file_url || '')
 ---
 
-<Base title={`${resource.title} · 学习资料 · RoboWiki`} description={resource.summary}>
+<Base title={`${resource.title} · 教程库 · RoboWiki`} description={resource.summary}>
   <div class="mx-auto max-w-6xl">
     <nav aria-label="面包屑" class="mb-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-ink-3">
       <a href={withBase('/')} class="transition-colors hover:text-brand">首页</a>
       <span aria-hidden="true" class="text-line-strong">/</span>
-      <a href={withBase('/learn/index.html')} class="transition-colors hover:text-brand">学习</a>
+      <a href={withBase('/learn/index.html')} class="transition-colors hover:text-brand">教程库</a>
       <span aria-hidden="true" class="text-line-strong">/</span>
       <span class="text-ink-2" aria-current="page">{resource.title}</span>
     </nav>

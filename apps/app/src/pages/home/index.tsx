@@ -172,8 +172,8 @@ export default function HomePage() {
     },
     {
       key: 'learn',
-      label: '学习',
-      desc: '从零到跑通，按天给判据',
+      label: '教程库',
+      desc: '经典 PDF 与导读，按方向筛选',
       action: () => Taro.navigateTo({ url: '/pages/learn/index' }),
     },
   ]

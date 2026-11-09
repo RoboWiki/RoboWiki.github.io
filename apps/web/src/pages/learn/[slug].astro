@@ -29,13 +29,13 @@ const toc = (rendered?.headings ?? []).filter(h => h.depth === 2 || h.depth === 
       <nav aria-label="面包屑" class="mb-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-ink-3">
         <a href={withBase('/')} class="transition-colors hover:text-brand">首页</a>
         <span aria-hidden="true" class="text-line-strong">/</span>
-        <a href={withBase('/learn/index.html')} class="transition-colors hover:text-brand">指南</a>
+        <a href={withBase('/learn/index.html')} class="transition-colors hover:text-brand">教程库</a>
         <span aria-hidden="true" class="text-line-strong">/</span>
         <span class="text-ink-2" aria-current="page">{entry.data.title}</span>
       </nav>
 
       <header class="max-w-3xl">
-        <p class="text-[11px] font-semibold tracking-[0.14em] text-brand uppercase">指南</p>
+        <p class="text-[11px] font-semibold tracking-[0.14em] text-brand uppercase">教程库</p>
         <h1 class="mt-2 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">{entry.data.title}</h1>
         {entry.data.description && <p class="mt-3 text-sm leading-7 text-ink-2">{entry.data.description}</p>}
       </header>
@@ -46,7 +46,7 @@ const toc = (rendered?.headings ?? []).filter(h => h.depth === 2 || h.depth === 
             {ArticleContent && <ArticleContent />}
           </div>
 
-          <nav aria-label="其它指南" class="mt-12 max-w-3xl border-t border-line pt-6">
+          <nav aria-label="其它教程" class="mt-12 max-w-3xl border-t border-line pt-6">
             <h2 class="text-sm font-semibold text-ink">接着读</h2>
             <ul class="mt-3 grid list-none gap-2 p-0 sm:grid-cols-2" role="list">
               <li class="min-w-0">
@@ -54,7 +54,7 @@ const toc = (rendered?.headings ?? []).filter(h => h.depth === 2 || h.depth === 
                   href={withBase('/learn/index.html')}
                   class="card card-hover flex h-full flex-col gap-1 px-3 py-2.5"
                 >
-                  <span class="text-[13px] font-medium text-ink">指南总览 · 从零开始学</span>
+                  <span class="text-[13px] font-medium text-ink">教程库总览 · 经典资料与导读</span>
                   <span class="text-[11px] leading-5 text-ink-3">第一次做机器人要做的五件事</span>
                 </a>
               </li>

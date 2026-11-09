@@ -62,7 +62,7 @@ export default function LearnPage() {
   return (
     <View className={`rw-page learn ${theme === 'dark' ? 'dark' : ''}`}>
       <View className="learn__head">
-        <Text className="rw-title">学习</Text>
+        <Text className="rw-title">教程库</Text>
         <Text className="rw-caption">
           {loading
             ? '正在加载指南…'
