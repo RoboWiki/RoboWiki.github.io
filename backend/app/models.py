@@ -92,6 +92,25 @@ class User(SQLModel, table=True):
     #: 帖子数 / 评论数在个人页按需聚合，不落库
 
 
+class UserBan(SQLModel, table=True):
+    """封禁记录：存在一条 lifted_at 为空的行即生效。
+
+    不往 users 上加 banned 列：那是又一条要迁移的列，而且丢了「谁、为什么、
+    什么时候解的」历史。封禁时顺手把 session_epoch 加一、吊销全部 refresh，
+    已签发的 access 立刻作废；登录入口再查一次生效中的封禁，防止重新登进来。
+    """
+
+    __tablename__ = "user_bans"
+    __table_args__ = (Index("ix_user_bans_user_active", "user_id", "lifted_at"),)
+
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="users.id", index=True)
+    reason: str = ""
+    banned_by: int | None = Field(default=None, foreign_key="users.id")
+    created_at: datetime = Field(default_factory=utcnow)
+    lifted_at: datetime | None = None
+
+
 class EmailToken(SQLModel, table=True):
     """邮箱验证 / 找回密码的一次性令牌；只存 hash，不存原文。"""
 
@@ -179,6 +198,28 @@ class HandoffCode(SQLModel, table=True):
     expires_at: datetime = Field(index=True)
     used_at: datetime | None = None
     created_at: datetime = Field(default_factory=utcnow)
+
+
+class LoginTicket(SQLModel, table=True):
+    """微信扫码登录的一次性票据。
+
+    网页生成 ticket，把它塞进小程序码的 scene；小程序确认时带 wx.login 的
+    code；网页轮询状态，confirmed 时取走会话。**不用 Redis**：这套栈里只有
+    Postgres，一张带 expires_at 的小表就能承担 5 分钟的临时状态，多 worker
+    也天然共享。ticket 里没有任何身份信息，只做「这次登录」的锚点。
+    """
+
+    __tablename__ = "login_tickets"
+    __table_args__ = (Index("ix_login_tickets_expires", "expires_at"),)
+
+    ticket: str = Field(primary_key=True, max_length=64)
+    #: pending（等确认）| confirmed（等网页取走）
+    status: str = Field(default="pending", index=True)
+    #: 确认后暂存的 TokenOut JSON，仅保留 60 秒供网页取走
+    session: dict | None = Field(default=None, sa_column=Column(JSON))
+    created_at: datetime = Field(default_factory=utcnow)
+    expires_at: datetime = Field(index=True)
+    confirmed_at: datetime | None = None
 
 
 class Identity(SQLModel, table=True):

@@ -4,9 +4,9 @@ import {
 import { GithubOutlined, LogoutOutlined } from '@ant-design/icons'
 import { QueryClient, QueryClientProvider, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
-  Component, createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode,
+  Component, createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode,
 } from 'react'
-import { API_BASE, ApiError, api, auth, siteHref, type User } from '@/lib/community-api'
+import { API_BASE, ApiError, api, auth, siteHref, v1Req, type TokenPair, type User } from '@/lib/community-api'
 import { Avatar } from './ui'
 
 // ── 设计令牌桥接 ──────────────────────────────────────────────────────────
@@ -304,6 +304,109 @@ function AuthProvider({ children }: { children: ReactNode }) {
 }
 
 // ── 登录 / 注册表单 ───────────────────────────────────────────────────────
+
+/**
+ * 微信扫码登录：网页只拿 ticket 和小程序码，身份确认发生在小程序里。
+ * 轮询 1.5s；confirmed 时取走一次性会话并跳转，expired 时提示重新生成。
+ */
+function WechatQrLogin() {
+  const [open, setOpen] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [qr, setQr] = useState<{ ticket: string; src: string } | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const timer = useRef<number | null>(null)
+
+  const stop = useCallback(() => {
+    if (timer.current !== null) {
+      window.clearInterval(timer.current)
+      timer.current = null
+    }
+  }, [])
+
+  useEffect(() => stop, [stop])
+
+  const poll = useCallback((ticket: string) => {
+    stop()
+    timer.current = window.setInterval(async () => {
+      try {
+        const r = await v1Req<{ status: 'pending' | 'confirmed' | 'expired'; token?: TokenPair }>(
+          `/auth/wechat/qr/status?ticket=${encodeURIComponent(ticket)}`,
+        )
+        if (r.status === 'confirmed' && r.token) {
+          stop()
+          auth.setTokens(r.token.access_token, r.token.refresh_token ?? null)
+          window.location.replace(siteHref('/community.html'))
+        } else if (r.status === 'expired') {
+          stop()
+          setQr(null)
+          setError('二维码已过期，请重新生成')
+        }
+      } catch {
+        // 单次轮询失败不打断，下一次再试；二维码过期由状态接口给出
+      }
+    }, 1500)
+  }, [stop])
+
+  const start = async () => {
+    setBusy(true)
+    setError(null)
+    setOpen(true)
+    try {
+      const r = await v1Req<{ ticket: string; qrcode: string }>('/auth/wechat/qr', { method: 'POST' })
+      setQr({ ticket: r.ticket, src: `data:image/png;base64,${r.qrcode}` })
+      poll(r.ticket)
+    } catch (e) {
+      setError(e instanceof Error ? e.message : '生成二维码失败，请稍后再试')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const close = () => {
+    stop()
+    setOpen(false)
+    setQr(null)
+    setError(null)
+  }
+
+  return (
+    <div className="mb-4">
+      {!open ? (
+        <button type="button" onClick={start} disabled={busy}
+          className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-md border border-line bg-surface px-4 text-sm font-semibold text-ink transition-colors hover:border-line-strong hover:bg-surface-2 disabled:cursor-not-allowed disabled:opacity-60">
+          微信扫码登录
+        </button>
+      ) : (
+        <div className="rounded-lg border border-line bg-surface-2 p-4 text-center" aria-live="polite">
+          {qr ? (
+            <>
+              <img src={qr.src} alt="微信扫码登录二维码" width={200} height={200}
+                className="mx-auto rounded-md bg-white p-2" />
+              <p className="mt-2 text-[12.5px] leading-5 text-ink-2">
+                用微信扫一扫，在小程序里点「确认登录」
+              </p>
+              <p className="mt-1 text-[11px] text-ink-3">二维码 5 分钟内有效</p>
+            </>
+          ) : (
+            <p className="py-10 text-[12.5px] text-ink-3">{busy ? '正在生成二维码…' : '二维码不可用'}</p>
+          )}
+          {error && <p className="mt-2 text-[12px] text-danger">{error}</p>}
+          <div className="mt-3 flex justify-center gap-2">
+            <button type="button" onClick={start} disabled={busy}
+              className="inline-flex h-8 items-center rounded-md border border-line px-3 text-xs font-medium text-ink-2 hover:text-ink">
+              重新生成
+            </button>
+            <button type="button" onClick={close}
+              className="inline-flex h-8 items-center rounded-md px-3 text-xs text-ink-3 hover:text-ink">
+              收起
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function AuthForm({ onSuccess, compact = false }: {
   onSuccess?: (u: User) => void
   compact?: boolean
@@ -324,6 +427,7 @@ export function AuthForm({ onSuccess, compact = false }: {
     retry: false,
   })
   const githubEnabled = providers.data?.github === true
+  const wechatQrEnabled = providers.data?.wechat_mini === true
   const startGithub = () => {
     const origin = typeof window !== 'undefined' ? window.location.origin : ''
     if (!origin) return
@@ -373,12 +477,17 @@ export function AuthForm({ onSuccess, compact = false }: {
             <GithubOutlined aria-hidden="true" />
             使用 GitHub 登录
           </button>
-          <div className="mb-4 flex items-center gap-3 text-[11px] text-ink-3" aria-hidden="true">
-            <span className="h-px flex-1 bg-line" />
-            或使用邮箱
-            <span className="h-px flex-1 bg-line" />
-          </div>
         </>
+      )}
+
+      {wechatQrEnabled && <WechatQrLogin />}
+
+      {(githubEnabled || wechatQrEnabled) && (
+        <div className="mb-4 flex items-center gap-3 text-[11px] text-ink-3" aria-hidden="true">
+          <span className="h-px flex-1 bg-line" />
+          或使用邮箱
+          <span className="h-px flex-1 bg-line" />
+        </div>
       )}
 
       <Segmented block value={mode} className="mb-4" disabled={busy}

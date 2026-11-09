@@ -8,18 +8,18 @@ note 与 source_url 必填 —— 没有依据的改动和编造数据没有区�
 """
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, datetime, timezone
 from typing import Annotated, Any
 
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
-from sqlalchemy import func
+from sqlalchemy import func, update
 from sqlmodel import select
 
 from ...catalog_fields import SPEC_KEYS, TOP_FIELDS, split_field
 from ...email_templates import render_email
 from ...mailer import MailError, send_email
-from ...models import Part, PartEdit, Submission, User
+from ...models import Comment, Part, PartEdit, Post, RefreshToken, Submission, User, UserBan
 from ..deps import CurrentUser, Db
 from .catalog import _attach_reviews, part_out
 
@@ -145,6 +145,104 @@ def admin_stats(user: CurrentUser, db: Db):
             "no_rated_torque": f"仅 {act_total} 个执行器（该字段对主控/传感器无意义）",
             "no_armature": f"仅 {act_total} 个执行器",
         },
+    }
+
+
+# ── 用户管理（站务）────────────────────────────────────────────────────────
+# 借鉴 Discourse / NodeBB 的 moderator 口径：能查、能改角色、能封禁，
+# 但三条护栏必须有——不能动自己、不能把最后一名站务降级、封禁即下线。
+
+
+class UserPatchIn(BaseModel):
+    is_staff: bool | None = None
+    banned: bool | None = None
+    reason: str | None = Field(default=None, max_length=200,
+                               description="封禁原因，进审计与用户通知")
+
+
+def _now() -> datetime:
+    return datetime.now(timezone.utc).replace(tzinfo=None)
+
+
+@router.get("/users")
+def admin_users(user: CurrentUser, db: Db,
+                q: str | None = None,
+                limit: Annotated[int, Query(ge=1, le=200)] = 50):
+    """账号列表：站务 / 封禁 / 发帖评论数。按注册时间倒序。"""
+    _staff(user)
+    stmt = select(User)
+    if q and q.strip():
+        like = f"%{q.strip().lower()}%"
+        stmt = stmt.where(func.lower(User.handle).like(like)
+                          | func.lower(User.display_name).like(like))
+    stmt = stmt.order_by(User.created_at.desc()).limit(limit)
+    rows = db.exec(stmt).all()
+
+    post_counts = dict(db.exec(select(Post.author_id, func.count(Post.id))
+                               .group_by(Post.author_id)).all())
+    comment_counts = dict(db.exec(select(Comment.author_id, func.count(Comment.id))
+                                  .group_by(Comment.author_id)).all())
+    active_bans = {b.user_id: b for b in db.exec(
+        select(UserBan).where(UserBan.lifted_at.is_(None))).all()}
+
+    return {
+        "total": int(db.exec(select(func.count(User.id))).one()),
+        "items": [{
+            "id": u.id,
+            "handle": u.handle,
+            "display_name": u.display_name,
+            "email": u.email,
+            "is_staff": bool(u.is_staff),
+            "reputation": int(u.reputation or 0),
+            "posts": int(post_counts.get(u.id, 0)),
+            "comments": int(comment_counts.get(u.id, 0)),
+            "banned": u.id in active_bans,
+            "ban_reason": (active_bans.get(u.id).reason if u.id in active_bans else None),
+            "created_at": u.created_at,
+        } for u in rows],
+    }
+
+
+@router.patch("/users/{user_id}")
+def admin_patch_user(user_id: int, payload: UserPatchIn, user: CurrentUser, db: Db):
+    """改角色 / 封禁 / 解封。封禁会立刻让该账号所有会话失效。"""
+    _staff(user)
+    target = db.get(User, user_id)
+    if target is None:
+        raise HTTPException(404, "用户不存在")
+    if target.id == user.id:
+        raise HTTPException(409, "不能修改自己的站务权限或封禁状态")
+
+    if payload.is_staff is not None and payload.is_staff != bool(target.is_staff):
+        if not payload.is_staff:
+            staff_left = int(db.exec(select(func.count(User.id))
+                                     .where(User.is_staff == True)).one())  # noqa: E712
+            if staff_left <= 1:
+                raise HTTPException(409, "至少要保留一名站务")
+        target.is_staff = payload.is_staff
+
+    now = _now()
+    active = db.exec(select(UserBan).where(
+        UserBan.user_id == target.id, UserBan.lifted_at.is_(None))).first()
+    if payload.banned is True and active is None:
+        db.add(UserBan(user_id=target.id, reason=(payload.reason or "")[:200],
+                       banned_by=user.id))
+        # 立即下线：access 靠 session_epoch 作废，refresh 直接吊销
+        target.session_epoch = int(target.session_epoch or 0) + 1
+        db.execute(update(RefreshToken).where(
+            RefreshToken.user_id == target.id,
+            RefreshToken.revoked_at.is_(None),
+        ).values(revoked_at=now))
+    elif payload.banned is False and active is not None:
+        active.lifted_at = now
+
+    db.commit()
+    db.refresh(target)
+    return {
+        "id": target.id,
+        "handle": target.handle,
+        "is_staff": bool(target.is_staff),
+        "banned": active is not None and payload.banned is not False,
     }
 
 

@@ -5,8 +5,9 @@ import { CommunityHeader, IslandProvider, useAuth } from '@/components/community
 import SubmissionsPanel from './submissions-panel'
 import ReportsPanel from './reports-panel'
 import GapsPanel from './gaps-panel'
+import UsersPanel from './users-panel'
 
-type TabKey = 'submissions' | 'reports' | 'gaps'
+type TabKey = 'submissions' | 'reports' | 'users' | 'gaps'
 
 function Console() {
   const { user, ready, openAuth } = useAuth()
@@ -40,6 +41,7 @@ function Console() {
           items={[
             { key: 'submissions', label: '投稿审核', children: <SubmissionsPanel active={tab === 'submissions'} /> },
             { key: 'reports', label: '举报处置', children: <ReportsPanel active={tab === 'reports'} /> },
+            { key: 'users', label: '用户管理', children: <UsersPanel /> },
             { key: 'gaps', label: '数据缺口', children: <GapsPanel active={tab === 'gaps'} /> },
           ]}
         />
