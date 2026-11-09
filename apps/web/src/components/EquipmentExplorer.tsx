@@ -11,6 +11,15 @@ type Props = { parts: CatalogPart[]; subtypes: SubtypeMeta[] }
 
 const PAGE = 24
 
+/** 16 个子类按家族分组展示，避免一排 chips 拉得过长。 */
+const SUBTYPE_FAMILIES: Array<{ label: string; ids: string[] }> = [
+  { label: '加工设备', ids: ['fdm', 'resin', 'cnc', 'laser'] },
+  { label: '焊接与返修', ids: ['solder', 'hotair'] },
+  { label: '电源', ids: ['supply'] },
+  { label: '测量仪器', ids: ['multimeter', 'clamp', 'scope', 'siggen', 'load', 'logic', 'tester'] },
+  { label: '调试与工具', ids: ['debug', 'tool'] },
+]
+
 function sortValue(p: CatalogPart, key: string): number | string | null {
   if (key === 'price') return typeof p.price === 'number' ? p.price : null
   if (key === 'rating') return typeof p.rating?.avg === 'number' ? p.rating.avg : null
@@ -168,27 +177,40 @@ export default function EquipmentExplorer({ parts, subtypes }: Props) {
         </div>
       </div>
 
-      <div className="chip-row -mx-1 px-1" role="group" aria-label="按设备类型筛选">
-        <button
-          type="button"
-          className="chip"
-          aria-pressed={!sub}
-          onClick={() => pickSub('')}
-        >
-          全部类型<span className="mono tabular opacity-60">{searched.length}</span>
-        </button>
-        {subtypes.map(s => (
+      <div className="space-y-2" role="group" aria-label="按设备类型筛选">
+        <div className="chip-row -mx-1 px-1">
           <button
-            key={s.id}
             type="button"
             className="chip"
-            aria-pressed={sub === s.id}
-            onClick={() => pickSub(sub === s.id ? '' : s.id)}
+            aria-pressed={!sub}
+            onClick={() => pickSub('')}
           >
-            {s.label}
-            <span className="mono tabular opacity-60">{subCounts[s.id] || 0}</span>
+            全部类型<span className="mono tabular opacity-60">{searched.length}</span>
           </button>
-        ))}
+        </div>
+        {SUBTYPE_FAMILIES.map(fam => {
+          const items = fam.ids.map(id => subtypes.find(s => s.id === id)).filter(Boolean) as SubtypeMeta[]
+          if (items.length === 0) return null
+          return (
+            <div key={fam.label} className="flex flex-wrap items-center gap-x-2 gap-y-1">
+              <span className="w-16 shrink-0 text-[11px] text-ink-3">{fam.label}</span>
+              <div className="chip-row -mx-1 min-w-0 flex-1 px-1">
+                {items.map(s => (
+                  <button
+                    key={s.id}
+                    type="button"
+                    className="chip"
+                    aria-pressed={sub === s.id}
+                    onClick={() => pickSub(sub === s.id ? '' : s.id)}
+                  >
+                    {s.label}
+                    <span className="mono tabular opacity-60">{subCounts[s.id] || 0}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )
+        })}
       </div>
 
       <div className="chip-row -mx-1 px-1" role="group" aria-label="按厂商筛选">

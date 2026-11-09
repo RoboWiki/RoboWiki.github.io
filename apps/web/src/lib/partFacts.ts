@@ -212,17 +212,32 @@ const FACTS: Record<string, PartFact[]> = {
 }
 
 /**
- * 设备库按子类各一张表：打印机看成型尺寸、激光机看幅面与功率、
- * 仪器看带宽与采样率——共用一张表会让每个子类都露出一排无意义的「—」。
+ * 设备库按子类各一张表：16 个子类各看各的关键参数——
+ * 打印机看成型尺寸、激光机看幅面与功率、示波器看带宽与采样率、
+ * 信号发生器看频率与波形、电子负载看功率与电流、万用表看分辨率与量程。
+ * 共用一张表会让每个子类都露出一排无意义的「—」。
  */
 const EQUIPMENT_FACTS: Record<string, PartFact[]> = {
-  printer: [
+  fdm: [
     { label: '成型尺寸', keys: ['build_volume_mm', 'dims'] },
     { label: '最大速度', unit: ' mm/s', keys: ['max_speed_mms'] },
     { label: '最高温度', unit: ' ℃', keys: ['temp_max_C'] },
     { label: '功率', unit: ' W', keys: ['power_w'] },
     { label: '重量', unit: ' g', keys: ['weight_g'] },
     { label: '适用材料', keys: ['materials'] },
+  ],
+  resin: [
+    { label: '成型尺寸', keys: ['build_volume_mm', 'dims'] },
+    { label: '分辨率', keys: ['resolution'] },
+    { label: '波长', unit: ' nm', keys: ['wavelength_nm'] },
+    { label: '适用材料', keys: ['materials'] },
+    { label: '重量', unit: ' g', keys: ['weight_g'] },
+  ],
+  cnc: [
+    { label: '加工幅面', keys: ['cut_area_mm', 'build_volume_mm'] },
+    { label: '主轴功率', unit: ' W', keys: ['power_w'] },
+    { label: '适用材料', keys: ['materials'] },
+    { label: '重量', unit: ' g', keys: ['weight_g'] },
   ],
   laser: [
     { label: '切割幅面', keys: ['cut_area_mm', 'dims'] },
@@ -237,19 +252,63 @@ const EQUIPMENT_FACTS: Record<string, PartFact[]> = {
     { label: '功率', unit: ' W', keys: ['power_w'] },
     { label: '尺寸', keys: ['dims'] },
   ],
+  hotair: [
+    { label: '最高温度', unit: ' ℃', keys: ['temp_max_C'] },
+    { label: '功率', unit: ' W', keys: ['power_w'] },
+    { label: '尺寸', keys: ['dims'] },
+  ],
   supply: [
     { label: '电压范围', keys: ['voltage_range_V', 'voltage_in'] },
     { label: '输出电流', unit: ' A', keys: ['current_out'] },
     { label: '功率', unit: ' W', keys: ['power_w'] },
     { label: '尺寸', keys: ['dims'] },
   ],
-  meter: [
+  multimeter: [
     { label: '分辨率', keys: ['resolution'] },
+    { label: '接口', keys: ['iface'] },
+    { label: '电压范围', keys: ['voltage_range_V'] },
+    { label: '重量', unit: ' g', keys: ['weight_g'] },
+  ],
+  clamp: [
+    { label: '分辨率', keys: ['resolution'] },
+    { label: '接口', keys: ['iface'] },
+    { label: '电流量程', keys: ['current_out'] },
+    { label: '重量', unit: ' g', keys: ['weight_g'] },
+  ],
+  scope: [
     { label: '带宽', unit: ' MHz', keys: ['bandwidth_mhz'] },
     { label: '采样率', unit: ' MS/s', keys: ['sample_rate_msps'] },
-    { label: '输出频率', unit: ' MHz', keys: ['max_freq_mhz'] },
     { label: '通道', keys: ['channels'] },
     { label: '接口', keys: ['iface'] },
+  ],
+  siggen: [
+    { label: '输出频率', unit: ' MHz', keys: ['max_freq_mhz'] },
+    { label: '波形', keys: ['waveform'] },
+    { label: '通道', keys: ['channels'] },
+    { label: '采样率', unit: ' MS/s', keys: ['sample_rate_msps'] },
+  ],
+  load: [
+    { label: '功率', unit: ' W', keys: ['power_w'] },
+    { label: '输出电流', unit: ' A', keys: ['current_out'] },
+    { label: '电压范围', keys: ['voltage_range_V'] },
+    { label: '通道', keys: ['channels'] },
+  ],
+  logic: [
+    { label: '通道', keys: ['channels'] },
+    { label: '采样率', unit: ' MS/s', keys: ['sample_rate_msps'] },
+    { label: '电压范围', keys: ['voltage_range_V'] },
+  ],
+  tester: [
+    { label: '分辨率', keys: ['resolution'] },
+    { label: '接口', keys: ['iface'] },
+  ],
+  debug: [
+    { label: '接口', keys: ['iface'] },
+    { label: '尺寸', keys: ['dims'] },
+  ],
+  tool: [
+    { label: '功率', unit: ' W', keys: ['power_w'] },
+    { label: '尺寸', keys: ['dims'] },
   ],
 }
 
