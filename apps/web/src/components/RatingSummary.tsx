@@ -8,6 +8,7 @@ import type { RatingSummary as RatingData } from '@robowiki/core'
 
 // 账号中心是静态站内的真实入口；互动版 /app/ 不在静态构建里。
 const ACCOUNT_HREF = withBase('/account.html')
+const TOKEN_KEY = 'roboselect.token'
 const USAGE_LABELS: Record<string, string> = {
   long: '长期用过（>6 个月）',
   short: '短期用过（<1 个月）',
@@ -56,6 +57,15 @@ function Stars({ value }: { value: number }) {
 export default function RatingSummary({ partId }: { partId: string }) {
   const [state, setState] = useState<State>({ status: 'loading' })
   const [attempt, setAttempt] = useState(0)
+  const [signedIn, setSignedIn] = useState(false)
+
+  useEffect(() => {
+    try {
+      setSignedIn(Boolean(localStorage.getItem(TOKEN_KEY)))
+    } catch {
+      setSignedIn(false)
+    }
+  }, [])
 
   useEffect(() => {
     let alive = true
@@ -216,23 +226,27 @@ export default function RatingSummary({ partId }: { partId: string }) {
         </p>
       )}
 
-      <div className="space-y-2 rounded-lg border border-line bg-surface-2/70 p-3">
-        {mine ? (
-          <p className="text-xs leading-5 text-ink-2">
-            你已打分 <span className="font-semibold tabular-nums">{mine.score}</span> 分
-            {mine.own_hardware && <span className="text-ink-3"> · 基于自有硬件</span>}
-            {mine.hidden && <span className="text-ink-3"> · 待审核</span>}
-          </p>
-        ) : (
-          <p className="text-xs leading-5 text-ink-3">未登录或还没打分。登录后可以打分、写使用备注。</p>
-        )}
-        <a
-          href={ACCOUNT_HREF}
-          className="inline-flex min-h-11 items-center gap-1 rounded-lg bg-brand px-3 text-xs font-medium text-brand-fg hover:bg-brand-hover sm:min-h-9"
-        >
-          登录后评分 / 评论<span aria-hidden="true">→</span>
-        </a>
-      </div>
+      {(mine || !signedIn) && (
+        <div className="space-y-2 rounded-lg border border-line bg-surface-2/70 p-3">
+          {mine ? (
+            <p className="text-xs leading-5 text-ink-2">
+              你已打分 <span className="font-semibold tabular-nums">{mine.score}</span> 分
+              {mine.own_hardware && <span className="text-ink-3"> · 基于自有硬件</span>}
+              {mine.hidden && <span className="text-ink-3"> · 待审核</span>}
+            </p>
+          ) : (
+            <>
+              <p className="text-xs leading-5 text-ink-3">未登录或还没打分。登录后可以打分、写使用备注。</p>
+              <a
+                href={ACCOUNT_HREF}
+                className="inline-flex min-h-11 items-center gap-1 rounded-lg bg-brand px-3 text-xs font-medium text-brand-fg hover:bg-brand-hover sm:min-h-9"
+              >
+                登录后评分 / 评论<span aria-hidden="true">→</span>
+              </a>
+            </>
+          )}
+        </div>
+      )}
     </div>
   )
 }
