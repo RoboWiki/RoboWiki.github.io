@@ -156,9 +156,19 @@ export type LearnArticle = {
   slug: string
   title: string
   summary: string
+  type?: string
+  topics?: string[]
   tags: string[]
   level: string
-  minutes: number
+  minutes?: number
+  lang?: string
+  source?: string
+  authors?: string[]
+  year?: number
+  pages?: number
+  file_url?: string
+  cover_url?: string
+  note_slug?: string
   web_path?: string
 }
 

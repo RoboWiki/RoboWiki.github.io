@@ -57,3 +57,20 @@
   flex-wrap: wrap;
   gap: var(--rw-space-1);
 }
+
+.learn__thumb {
+  width: 64px;
+  height: 84px;
+  flex: 0 0 64px;
+  border-radius: var(--rw-radius-sm);
+  background: var(--rw-surface-3);
+}
+
+.learn__thumb--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rw-muted);
+  font-size: var(--rw-text-xs);
+  font-weight: 600;
+}

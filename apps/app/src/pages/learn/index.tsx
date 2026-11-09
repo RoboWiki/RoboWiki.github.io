@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { ScrollView, Text, View } from 'virtual:taro/components'
+import { Image, ScrollView, Text, View } from 'virtual:taro/components'
 import {
   EMPTY,
   LAYER_BY_ID,
@@ -11,7 +11,7 @@ import type { LearnArticle } from '@robowiki/core'
 
 import { EmptyState, ErrorState, SkeletonRows } from '@/components/Feedback'
 import { LayerDot } from '@/components/LayerBadge'
-import { API_ORIGIN, api, errorMessage } from '@/services/api'
+import { API_ORIGIN, absoluteUrl, api, errorMessage } from '@/services/api'
 import { openExternal } from '@/utils/nav'
 import { useThemeMode } from '@/utils/theme'
 import './index.css'
@@ -129,35 +129,52 @@ export default function LearnPage() {
 
       {!loading && !error && visibleItems.length > 0 ? (
         <View className="rw-list learn__list">
-          {visibleItems.map((article) => (
-            <View
-              className="rw-list__row rw-list__row--tap learn__row"
-              key={article.slug}
-              onClick={() => open(article)}
-            >
-              <View className="rw-grow rw-stack" style={{ gap: '6px' }}>
-                <View className="rw-row rw-row--between">
-                  <Text className="learn__meta">
-                    {article.level || '指南'} · {article.minutes || '—'} 分钟
-                  </Text>
-                  <Text className="rw-link">阅读 ›</Text>
-                </View>
-                <Text className="rw-subtitle learn__title">{article.title}</Text>
-                {article.summary ? (
-                  <Text className="rw-caption learn__summary">{article.summary}</Text>
-                ) : null}
-                {article.tags?.length ? (
-                  <View className="learn__tags">
-                    {article.tags.map((tag) => (
-                      <Text className="rw-badge" key={tag}>
-                        {tag}
-                      </Text>
-                    ))}
+          {visibleItems.map((article) => {
+            const cover = article.cover_url ? absoluteUrl(article.cover_url) : ''
+            const kind = article.type === 'pdf' ? 'PDF' : '本站笔记'
+            const meta = [
+              kind,
+              article.source,
+              article.year ? String(article.year) : '',
+              article.pages ? `${article.pages} 页` : '',
+              article.minutes ? `${article.minutes} 分钟` : '',
+              article.level,
+            ].filter(Boolean).join(' · ')
+            return (
+              <View
+                className="rw-list__row rw-list__row--tap learn__row"
+                key={article.slug}
+                onClick={() => open(article)}
+              >
+                {cover ? (
+                  <Image className="learn__thumb" src={cover} mode="aspectFill" />
+                ) : (
+                  <View className="learn__thumb learn__thumb--empty">
+                    {article.type === 'pdf' ? 'PDF' : '笔记'}
                   </View>
-                ) : null}
+                )}
+                <View className="rw-grow rw-stack" style={{ gap: '6px' }}>
+                  <View className="rw-row rw-row--between">
+                    <Text className="learn__meta">{meta}</Text>
+                    <Text className="rw-link">阅读 ›</Text>
+                  </View>
+                  <Text className="rw-subtitle learn__title">{article.title}</Text>
+                  {article.summary ? (
+                    <Text className="rw-caption learn__summary">{article.summary}</Text>
+                  ) : null}
+                  {article.tags?.length ? (
+                    <View className="learn__tags">
+                      {article.tags.map((tag) => (
+                        <Text className="rw-badge" key={tag}>
+                          {tag}
+                        </Text>
+                      ))}
+                    </View>
+                  ) : null}
+                </View>
               </View>
-            </View>
-          ))}
+            )
+          })}
         </View>
       ) : null}
 

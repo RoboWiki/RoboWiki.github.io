@@ -12,7 +12,7 @@ from .core.config import settings
 
 _cache: dict[str, object] = {
     "stamp": None,
-    "doc": {"updated_at": None, "routes": [], "articles": []},
+    "doc": {"updated_at": None, "routes": [], "resources": []},
 }
 
 
@@ -36,16 +36,31 @@ def load_learn() -> dict:
         data = {}
     data.setdefault("updated_at", None)
     data.setdefault("routes", [])
-    data.setdefault("articles", [])
+    data.setdefault("resources", [])
     _cache["stamp"], _cache["doc"] = stamp, data
     return data
 
 
-def public_articles() -> list[dict]:
-    """每条文章元数据补上静态站路径，小程序不再自己拼 slug。"""
+def public_resources() -> list[dict]:
+    """资料元数据补上静态站路径，小程序不再自己拼 slug。
+
+    旧 release 只有 articles；新 release 用 resources。回滚/灰度时两者都能读。
+    """
+    doc = load_learn()
+    resources = doc.get("resources") or []
+    if not resources:
+        resources = [
+            {**a, "type": "note", "topics": a.get("tags", []), "source": "本站原创"}
+            for a in doc.get("articles") or []
+            if isinstance(a, dict) and a.get("slug")
+        ]
     out: list[dict] = []
-    for a in load_learn().get("articles") or []:
+    for a in resources:
         if not isinstance(a, dict) or not a.get("slug"):
             continue
-        out.append({**a, "web_path": f"/learn/{a['slug']}.html"})
+        slug = a["slug"]
+        path = a.get("web_path") or (
+            f"/learn/resource/{slug}.html" if a.get("type") == "pdf" else f"/learn/{slug}.html"
+        )
+        out.append({**a, "web_path": path})
     return out

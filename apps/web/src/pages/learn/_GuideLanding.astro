@@ -9,76 +9,280 @@ const index = entries.find(e => e.id === 'index')
 if (!index) throw new Error('learn/index.md 缺失')
 const { Content } = await render(index)
 
-const cards = learnData.articles.map(a => ({
-  title: a.title,
-  href: `/learn/${a.slug}.html`,
-  meta: `${a.level} · ${a.minutes} 分钟`,
-  tags: a.tags,
-  what: a.summary,
-}))
+type Resource = {
+  id: string
+  slug: string
+  type: 'pdf' | 'note' | string
+  title: string
+  summary: string
+  topics: string[]
+  tags: string[]
+  level: string
+  minutes?: number | null
+  lang?: string | null
+  source: string
+  authors?: string[]
+  year?: number | null
+  date?: string | null
+  pages?: number | null
+  file_url?: string | null
+  cover_url?: string | null
+  note_slug?: string | null
+  license?: string | null
+  mirror?: string | null
+  source_url?: string | null
+  web_path: string
+}
+
+const resources = (learnData.resources || []) as Resource[]
+const pdfCount = resources.filter(r => r.type === 'pdf').length
+const noteCount = resources.filter(r => r.type === 'note').length
+const TOPIC_ORDER = ['机械结构', '电控', '选型与流程', '算法与仿真', '竞赛与项目']
+const topicCounts = new Map<string, number>()
+for (const r of resources) for (const t of r.topics || []) topicCounts.set(t, (topicCounts.get(t) || 0) + 1)
+const topics = [...topicCounts.entries()].sort(
+  (a, b) => (TOPIC_ORDER.indexOf(a[0]) + 99) % 99 - (TOPIC_ORDER.indexOf(b[0]) + 99) % 99 || b[1] - a[1],
+)
+const sourceCounts = new Map<string, number>()
+for (const r of resources) sourceCounts.set(r.source, (sourceCounts.get(r.source) || 0) + 1)
+const sources = [...sourceCounts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'zh-CN'))
+const typeLabel = (r: Resource) => (r.type === 'pdf' ? 'PDF' : r.type === 'note' ? '本站笔记' : r.type)
+const searchText = (r: Resource) =>
+  [r.title, r.summary, r.source, ...(r.authors || []), ...(r.topics || []), ...(r.tags || [])]
+    .filter(Boolean).join(' ').toLowerCase()
+const metaText = (r: Resource) => {
+  const bits = [r.source]
+  if (r.year) bits.push(String(r.year))
+  if (r.type === 'pdf' && r.pages) bits.push(`${r.pages} 页`)
+  if (r.type === 'note' && r.minutes) bits.push(`${r.minutes} 分钟`)
+  return bits.join(' · ')
+}
 const reprint = learnData.reprint
 ---
 
-<Base title={`${index.data.title} · RoboWiki`} description={index.data.description}>
+<Base title={`学习资料库 · RoboWiki`} description={`${resources.length} 份机器人学习资料：经典教程 PDF 与本站导读，按方向、来源、难度筛选。`}>
   <div class="mx-auto max-w-6xl">
     <nav aria-label="面包屑" class="mb-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-ink-3">
       <a href={withBase('/')} class="transition-colors hover:text-brand">首页</a>
       <span aria-hidden="true" class="text-line-strong">/</span>
-      <span class="text-ink-2" aria-current="page">指南</span>
+      <span class="text-ink-2" aria-current="page">学习</span>
     </nav>
 
-    <header class="max-w-3xl">
-      <p class="text-[11px] font-semibold tracking-[0.14em] text-brand uppercase">指南</p>
-      <h1 class="mt-2 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">{index.data.title}</h1>
-      {index.data.description && <p class="mt-3 text-sm leading-7 text-ink-2">{index.data.description}</p>}
-      <p class="mono mt-3 text-[11px] text-ink-3">
-        内容快照 {learnData.updated_at} · {cards.length} 篇站内文章
+    <header>
+      <p class="text-[11px] font-semibold tracking-[0.14em] text-brand uppercase">学习 / Library</p>
+      <h1 class="mt-2 max-w-3xl text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
+        先看经典教程，再回到选型与复现。
+      </h1>
+      <p class="mt-3 max-w-3xl text-sm leading-7 text-ink-2">
+        按部件库的方式组织资料：按方向、来源、类型筛选，卡片先看封面和关键信息，详情页可直接读 PDF。
+        教程以 PDF 为主，本站导读负责把结论落到部件与方案上。
       </p>
+      <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-ink-3">
+        <span><span class="mono tabular font-semibold text-ink">{resources.length}</span> 份资料</span>
+        <span><span class="mono tabular font-semibold text-ink">{pdfCount}</span> 份 PDF</span>
+        <span><span class="mono tabular font-semibold text-ink">{noteCount}</span> 篇本站笔记</span>
+        <span>更新 {learnData.updated_at}</span>
+      </div>
     </header>
 
-    <section class="mt-8" aria-labelledby="articles">
-      <div class="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-line pb-2">
-        <h2 id="articles" class="text-lg font-bold tracking-tight text-ink">文章</h2>
-        <span class="ml-auto text-[11px] text-ink-3">什么时候看：第一次做机器人、准备下单之前。</span>
+    <div class="sticky top-16 z-30 -mx-4 mt-6 border-y border-line bg-bg/90 px-4 py-3 backdrop-blur-md sm:mx-0 sm:rounded-lg sm:border sm:px-3">
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
+        <div role="search" class="relative w-full sm:flex-1">
+          <label for="learn-search" class="sr-only">搜索资料标题、来源或关键词</label>
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-3">
+            <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
+          </svg>
+          <input id="learn-search" type="search" placeholder="搜索标题、来源、关键词…" autocomplete="off"
+            class="h-10 w-full rounded-md border border-line bg-surface pl-9 pr-3 text-sm text-ink placeholder:text-ink-3 focus-visible:border-brand focus-visible:outline-none" />
+        </div>
+        <p id="learn-count" class="mono text-[11px] text-ink-3 sm:ml-auto" aria-live="polite">{resources.length} 份资料</p>
       </div>
 
-      <ul class="grid list-none gap-3 p-0 sm:grid-cols-2" role="list">
-        {cards.map(card => (
-          <li class="min-w-0">
-            <a href={withBase(card.href)} class="card card-hover group flex h-full flex-col gap-2.5 p-4">
-              <div class="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-1">
-                <h3 class="text-[15px] font-semibold leading-6 text-ink transition-colors group-hover:text-brand">{card.title}</h3>
-                <span class="mono shrink-0 text-[11px] text-ink-3">{card.meta}</span>
-              </div>
-              <p class="text-xs leading-6 text-ink-2">{card.what}</p>
-              <div class="mt-auto flex flex-wrap items-center gap-1.5 pt-1">
-                {card.tags.map(tag => (
-                  <span class="rounded border border-line bg-surface-2 px-1.5 py-0.5 text-[11px] text-ink-2">{tag}</span>
+      <div class="mt-3 space-y-2">
+        <div class="flex items-start gap-2">
+          <span class="w-12 shrink-0 pt-1.5 text-[11px] font-semibold text-ink-3">方向</span>
+          <div class="chip-row min-w-0 flex-1" role="group" aria-label="按方向筛选">
+            <button type="button" class="chip is-active" data-topic-filter="all" aria-pressed="true">全部<span class="mono text-[11px] opacity-60">{resources.length}</span></button>
+            {topics.map(([topic, count]) => (
+              <button type="button" class="chip" data-topic-filter={topic} aria-pressed="false">
+                {topic}<span class="mono text-[11px] opacity-60">{count}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div class="flex items-start gap-2">
+          <span class="w-12 shrink-0 pt-1.5 text-[11px] font-semibold text-ink-3">来源</span>
+          <div class="chip-row min-w-0 flex-1" role="group" aria-label="按来源筛选">
+            <button type="button" class="chip is-active" data-source-filter="all" aria-pressed="true">全部<span class="mono text-[11px] opacity-60">{resources.length}</span></button>
+            {sources.map(([source, count]) => (
+              <button type="button" class="chip" data-source-filter={source} aria-pressed="false">
+                {source}<span class="mono text-[11px] opacity-60">{count}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="w-12 shrink-0 text-[11px] font-semibold text-ink-3">类型</span>
+          <button type="button" class="chip h-7 px-2.5 text-[12px]" data-type-filter="all" aria-pressed="true">全部</button>
+          <button type="button" class="chip h-7 px-2.5 text-[12px]" data-type-filter="pdf" aria-pressed="false">PDF <span class="mono opacity-60">{pdfCount}</span></button>
+          <button type="button" class="chip h-7 px-2.5 text-[12px]" data-type-filter="note" aria-pressed="false">本站笔记 <span class="mono opacity-60">{noteCount}</span></button>
+          <label class="ml-auto inline-flex items-center gap-2 text-[11px] text-ink-3">
+            排序
+            <select id="learn-sort" class="h-8 rounded-md border border-line bg-surface px-2 text-[12px] text-ink">
+              <option value="recommended">推荐顺序</option>
+              <option value="new">最新</option>
+              <option value="pages">页数从多到少</option>
+              <option value="name">名称</option>
+            </select>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <ul id="learn-grid" class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" role="list">
+      {resources.map(r => (
+        <li
+          data-resource
+          data-topic={(r.topics || []).join('|')}
+          data-source={r.source}
+          data-type={r.type}
+          data-search={searchText(r)}
+          data-year={r.year ?? 0}
+          data-pages={r.pages ?? 0}
+          data-title={r.title}
+        >
+          <a href={withBase(r.web_path)} class="card card-hover group flex h-full flex-col overflow-hidden">
+            <div class="relative flex h-40 shrink-0 items-center justify-center overflow-hidden border-b border-line bg-surface-2">
+              {r.cover_url ? (
+                <img src={withBase(r.cover_url)} alt={`${r.title}封面`} loading="lazy" class="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]" />
+              ) : (
+                <div class="flex h-full w-full flex-col items-center justify-center gap-1.5 bg-gradient-to-br from-brand-soft to-surface-2 text-brand">
+                  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                    <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z" /><path d="M4 5.5v15" />
+                  </svg>
+                  <span class="text-[11px] font-semibold">本站笔记</span>
+                </div>
+              )}
+              <span class={`absolute left-2 top-2 rounded-full border px-2 py-0.5 text-[11px] font-semibold ${
+                r.type === 'pdf'
+                  ? 'border-line bg-surface/90 text-ink-2 backdrop-blur'
+                  : 'border-brand/30 bg-brand-soft text-brand'
+              }`}>
+                {typeLabel(r)}
+              </span>
+            </div>
+            <div class="flex flex-1 flex-col gap-2 p-4">
+              <h2 class="line-clamp-2 min-h-10 text-sm font-semibold leading-5 text-ink transition-colors group-hover:text-brand">{r.title}</h2>
+              <p class="truncate text-[11px] text-ink-3">{metaText(r)}</p>
+              <p class="line-clamp-2 text-[12px] leading-5 text-ink-2">{r.summary}</p>
+              <div class="mt-auto flex flex-wrap items-center gap-1.5 border-t border-line pt-2">
+                {(r.topics || []).slice(0, 2).map(topic => (
+                  <span class="rounded border border-line bg-surface-2 px-1.5 py-0.5 text-[10px] text-ink-2">{topic}</span>
                 ))}
+                <span class="rounded border border-line bg-surface-2 px-1.5 py-0.5 text-[10px] text-ink-3">{r.level}</span>
                 <span class="ml-auto text-[11px] font-medium text-brand" aria-hidden="true">阅读 →</span>
               </div>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </section>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
 
-    <section class="mt-4 rounded-lg border border-line bg-surface-2 p-4" aria-labelledby="reprint">
+    <div id="learn-empty" class="card mt-6 p-10 text-center" hidden>
+      <p class="text-sm font-semibold text-ink">没有匹配的资料</p>
+      <p class="mt-1 text-xs leading-5 text-ink-3">换一个方向、来源或关键词试试。</p>
+    </div>
+
+    <section class="mt-8 rounded-lg border border-line bg-surface-2 p-4" aria-labelledby="reprint">
       <h2 id="reprint" class="text-sm font-semibold text-ink">{reprint.title}</h2>
       <p class="mt-1 text-xs leading-6 text-ink-2">{reprint.summary}</p>
       <ul class="mt-2 list-disc space-y-1 pl-5 text-xs leading-6 text-ink-2">
         {reprint.rules.map(rule => <li>{rule}</li>)}
       </ul>
-      <a
-        href={withBase(`${reprint.link}.html`)}
-        class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-brand hover:underline"
-      >
+      <a href={withBase(`${reprint.link}.html`)} class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-brand hover:underline">
         转载规范全文<span aria-hidden="true">→</span>
       </a>
     </section>
 
-    <div class="prose mt-10 max-w-3xl [&_h2]:scroll-mt-24 [&_h3]:scroll-mt-24 [&_table]:block [&_table]:overflow-x-auto">
-      <Content />
-    </div>
+    <details class="mt-4 rounded-lg border border-line bg-surface p-4">
+      <summary class="cursor-pointer select-none text-sm font-semibold text-ink">怎么用这个学习库</summary>
+      <div class="prose mt-4 max-w-3xl [&_h2]:scroll-mt-24 [&_h3]:scroll-mt-24 [&_table]:block [&_table]:overflow-x-auto">
+        <Content />
+      </div>
+    </details>
   </div>
 </Base>
+
+<script>
+  const grid = document.getElementById('learn-grid')
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-resource]'))
+  const search = document.getElementById('learn-search') as HTMLInputElement | null
+  const sortSelect = document.getElementById('learn-sort') as HTMLSelectElement | null
+  const counter = document.getElementById('learn-count')
+  const empty = document.getElementById('learn-empty')
+  const topicChips = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-topic-filter]'))
+  const sourceChips = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-source-filter]'))
+  const typeChips = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-type-filter]'))
+  let activeTopic = 'all'
+  let activeSource = 'all'
+  let activeType = 'all'
+
+  const sync = (chips: HTMLButtonElement[], active: string, key: string) => {
+    for (const chip of chips) {
+      const on = chip.dataset[key] === active
+      chip.classList.toggle('is-active', on)
+      chip.setAttribute('aria-pressed', String(on))
+    }
+  }
+
+  const apply = () => {
+    const needle = (search?.value || '').trim().toLowerCase()
+    let shown = 0
+    for (const card of cards) {
+      const hitTopic = activeTopic === 'all' || (card.dataset.topic || '').split('|').includes(activeTopic)
+      const hitSource = activeSource === 'all' || card.dataset.source === activeSource
+      const hitType = activeType === 'all' || card.dataset.type === activeType
+      const hitQuery = !needle || (card.dataset.search || '').includes(needle)
+      const visible = hitTopic && hitSource && hitType && hitQuery
+      card.hidden = !visible
+      if (visible) shown += 1
+    }
+    if (counter) counter.textContent = `${shown} 份资料`
+    if (empty) empty.hidden = shown !== 0
+    if (grid) grid.hidden = shown === 0
+  }
+
+  const sortCards = () => {
+    const key = sortSelect?.value || 'recommended'
+    if (key === 'recommended') return
+    const sorted = [...cards].sort((a, b) => {
+      if (key === 'name') return (a.dataset.title || '').localeCompare(b.dataset.title || '', 'zh-CN')
+      if (key === 'pages') return Number(b.dataset.pages || 0) - Number(a.dataset.pages || 0)
+      return Number(b.dataset.year || 0) - Number(a.dataset.year || 0)
+    })
+    for (const card of sorted) grid?.appendChild(card)
+  }
+
+  topicChips.forEach(chip => chip.addEventListener('click', () => {
+    activeTopic = chip.dataset.topicFilter || 'all'
+    sync(topicChips, activeTopic, 'topicFilter'); apply()
+  }))
+  sourceChips.forEach(chip => chip.addEventListener('click', () => {
+    activeSource = chip.dataset.sourceFilter || 'all'
+    sync(sourceChips, activeSource, 'sourceFilter'); apply()
+  }))
+  typeChips.forEach(chip => chip.addEventListener('click', () => {
+    activeType = chip.dataset.typeFilter || 'all'
+    sync(typeChips, activeType, 'typeFilter'); apply()
+  }))
+  search?.addEventListener('input', apply)
+  sortSelect?.addEventListener('change', sortCards)
+  apply()
+</script>
+
+<style>
+  [data-resource][hidden],
+  #learn-empty[hidden] {
+    display: none !important;
+  }
+</style>

@@ -10,13 +10,13 @@ const index = entries.find(e => e.id === 'index')
 if (!index) throw new Error('learn/index.md 缺失')
 const { Content } = await render(index)
 
-const cards = learnData.articles.map(a => ({
+const cards = (learnData.resources || []).map(a => ({
   title: a.title,
-  href: `/learn/${a.slug}.html`,
-  meta: `${a.level} · ${a.minutes} 分钟`,
+  href: a.web_path,
+  meta: a.type === 'pdf' ? `${a.pages || '—'} 页 · ${a.level}` : `${a.minutes || '—'} 分钟 · ${a.level}`,
   tags: a.tags,
   what: a.summary,
-  when: '第一次做机器人、准备下单之前。',
+  when: a.source,
 }))
 
 const reprint = learnData.reprint

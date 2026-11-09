@@ -2310,16 +2310,18 @@ html.dark .rl-th {{ color: #e0b159; }}
 
     # ── 贡献者 ──────────────────────────────────────────────────────────
     # 交给 pipeline/contrib_page.py：GitHub 快照 + 手工名单，生成中英两版。
-    # 学习路线：data/learn.json -> public/learn.json（路线、文章索引、转载规范）
+    # 学习资料库：data/learn.json -> public/learn.json（路线、资料索引、转载规范）
     try:
         learn = json.loads((DATA_DIR / "learn.json").read_text(encoding="utf-8"))
+        resources = learn.get("resources") or []
     except Exception:
-        learn = {"routes": [], "articles": []}
+        learn = {"routes": [], "resources": []}
+        resources = []
     (pub / "learn.json").write_text(
-        json.dumps({"meta": _artifact_meta(len(learn.get("articles", []))), **learn},
+        json.dumps({"meta": _artifact_meta(len(resources)), **learn},
                        ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print(f"  学习路线 {len(learn.get('routes', []))} 条 / "
-          f"{len(learn.get('articles', []))} 篇 -> public/learn.json")
+          f"{len(resources)} 份资料 -> public/learn.json")
 
     build_robots(ROOT, OUT, pub)
     build_materials(ROOT, OUT, pub, SITE_URL, _data_version())

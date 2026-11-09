@@ -569,9 +569,19 @@ class LearnArticleOut(BaseModel):
     slug: str
     title: str
     summary: str | None = None
+    type: str = 'note'
+    topics: list[str] = []
     tags: list[str] = []
     level: str | None = None
     minutes: int | None = None
+    lang: str | None = None
+    source: str | None = None
+    authors: list[str] = []
+    year: int | None = None
+    pages: int | None = None
+    file_url: str | None = None
+    cover_url: str | None = None
+    note_slug: str | None = None
     web_path: str
 
 
