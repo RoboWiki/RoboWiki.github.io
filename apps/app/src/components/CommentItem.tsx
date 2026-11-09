@@ -60,7 +60,6 @@ export function CommentItem({
                   className="comment__image"
                   src={url}
                   mode="widthFix"
-                  lazyLoad
                   onClick={() => preview(url)}
                 />
               ))}

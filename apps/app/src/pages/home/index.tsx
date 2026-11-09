@@ -247,7 +247,7 @@ export default function HomePage() {
                     onClick={() => openPart(String(part.id))}
                   >
                     {image ? (
-                      <Image className="home__hot-image" src={image} mode="aspectFill" lazyLoad />
+                      <Image className="home__hot-image" src={image} mode="aspectFill" />
                     ) : (
                       <View className="home__hot-image home__hot-image--empty">
                         {String(part.model || '?').slice(0, 2)}
@@ -296,7 +296,7 @@ export default function HomePage() {
                   onClick={() => openPart(String(part.id))}
                 >
                   {image ? (
-                    <Image className="home__recent-thumb" src={image} mode="aspectFill" lazyLoad />
+                    <Image className="home__recent-thumb" src={image} mode="aspectFill" />
                   ) : (
                     <View className="home__recent-thumb home__recent-thumb--empty">
                       {String(part.model || '?').slice(0, 2)}

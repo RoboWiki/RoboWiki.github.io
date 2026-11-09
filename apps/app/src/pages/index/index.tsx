@@ -376,7 +376,7 @@ export default function IndexPage() {
                 onClick={() => openPart(part)}
               >
                 {image ? (
-                  <Image className="rw-thumb" src={image} mode="aspectFill" lazyLoad />
+                  <Image className="rw-thumb" src={image} mode="aspectFill" />
                 ) : (
                   <View className="rw-empty-thumb">{String(part.model || '?').slice(0, 2)}</View>
                 )}

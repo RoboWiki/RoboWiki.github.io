@@ -176,7 +176,7 @@ export default function BuildsPage() {
                 onClick={() => openBuild(build)}
               >
                 {image ? (
-                  <Image className="builds__thumb" src={image} mode="aspectFill" lazyLoad />
+                  <Image className="builds__thumb" src={image} mode="aspectFill" />
                 ) : (
                   <View className="builds__thumb builds__thumb--empty">
                     {String(build.model || '?').slice(0, 2)}
