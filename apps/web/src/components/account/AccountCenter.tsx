@@ -9,7 +9,7 @@ import {
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
 import {
-  API_BASE, ApiError, api, auth, siteHref, uploadMedia,
+  API_BASE, ApiError, api, auth, siteHref, uploadMedia, v1Req,
   type Account, type AuthSession, type Identity, type Media, type Notification,
   type Submission, type TokenPair,
 } from '@/lib/community-api'
@@ -422,6 +422,44 @@ function SecurityPanel({ account, onAccount }: {
   const [exporting, setExporting] = useState(false)
   const [endingAll, setEndingAll] = useState(false)
   const [revoking, setRevoking] = useState<number | null>(null)
+  const [emailToken, setEmailToken] = useState('')
+  const [emailStatus, setEmailStatus] = useState<Status>(null)
+  const [emailBusy, setEmailBusy] = useState(false)
+
+  const sendVerifyMail = async () => {
+    setEmailBusy(true)
+    setEmailStatus(null)
+    try {
+      await v1Req('/auth/email/verify/request', { method: 'POST' })
+      setEmailStatus({ kind: 'ok', text: '验证邮件已发送，把邮件里的令牌填在下面。' })
+    } catch (e) {
+      setEmailStatus({ kind: 'error', text: errText(e) })
+    } finally {
+      setEmailBusy(false)
+    }
+  }
+
+  const verifyEmail = async () => {
+    if (emailToken.trim().length < 10) {
+      setEmailStatus({ kind: 'error', text: '请输入邮件里的验证令牌' })
+      return
+    }
+    setEmailBusy(true)
+    setEmailStatus(null)
+    try {
+      const next = await v1Req<Account>('/auth/email/verify', {
+        method: 'POST',
+        body: JSON.stringify({ token: emailToken.trim() }),
+      })
+      onAccount(next)
+      setEmailToken('')
+      setEmailStatus({ kind: 'ok', text: '邮箱已验证，可以接收邮件通知。' })
+    } catch (e) {
+      setEmailStatus({ kind: 'error', text: errText(e) })
+    } finally {
+      setEmailBusy(false)
+    }
+  }
 
   const sessions = useQuery({
     queryKey: ['account', 'sessions'],
@@ -524,6 +562,43 @@ function SecurityPanel({ account, onAccount }: {
 
   return (
     <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <section className="card p-4 sm:p-6 lg:col-span-2">
+        <SectionHead title="邮箱验证"
+          hint={account.email
+            ? (account.email_verified
+              ? '邮箱已验证，可用于找回密码、接收回复与审核通知。'
+              : '未验证的邮箱不能接收通知，也不能作为找回密码的凭据。')
+            : '还没有绑定邮箱。可在小程序「我的 → 账号」绑定，绑定后即可用邮箱登录。'} />
+        <div className="flex flex-wrap items-center gap-3 text-[13px] text-ink-2">
+          <MailOutlined />
+          <span>{account.email || '未填写邮箱'}</span>
+          {account.email && (
+            <span className={account.email_verified ? 'text-success' : 'text-warning'}>
+              {account.email_verified ? '已验证' : '未验证'}
+            </span>
+          )}
+        </div>
+        {account.email && !account.email_verified && (
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <button type="button" onClick={sendVerifyMail} disabled={emailBusy}
+              className="inline-flex h-9 items-center rounded-md border border-line bg-surface px-3 text-[13px] font-semibold text-ink transition-colors hover:border-line-strong hover:bg-surface-2 disabled:opacity-60">
+              {emailBusy ? '发送中…' : '发送验证邮件'}
+            </button>
+            <Input value={emailToken} onChange={(e) => setEmailToken(e.target.value)}
+              placeholder="粘贴邮件中的令牌" className="max-w-[220px]" />
+            <button type="button" onClick={verifyEmail} disabled={emailBusy}
+              className="inline-flex h-9 items-center rounded-md bg-brand px-3 text-[13px] font-semibold text-brand-fg transition-colors hover:bg-brand-hover disabled:opacity-60">
+              验证邮箱
+            </button>
+          </div>
+        )}
+        {emailStatus && (
+          <p className={'m-0 mt-2 text-[12.5px] ' + (emailStatus.kind === 'ok' ? 'text-success' : 'text-danger')}>
+            {emailStatus.text}
+          </p>
+        )}
+      </section>
+
       <section className="card p-4 sm:p-6">
         <SectionHead title={account.password_set ? '修改密码' : '设置本站密码'}
           hint={account.password_set

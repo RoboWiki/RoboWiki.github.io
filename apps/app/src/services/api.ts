@@ -247,6 +247,32 @@ export async function loginWithWechat(): Promise<User> {
   return pair.user
 }
 
+/** 未登录找回密码：向邮箱发送一次性令牌（不暴露邮箱是否存在）。 */
+export async function requestPasswordReset(email: string): Promise<void> {
+  await api.request('/auth/password/forgot', {
+    method: 'POST',
+    body: { email: email.trim() },
+  })
+}
+
+/** 用邮件里的令牌重置密码。 */
+export async function resetPassword(token: string, password: string): Promise<void> {
+  await api.request('/auth/password/reset', {
+    method: 'POST',
+    body: { token: token.trim(), password },
+  })
+}
+
+/** 验证邮箱：邮件里的令牌由 /auth/email/verify/request 发出。 */
+export async function verifyEmail(token: string): Promise<User> {
+  const user = await api.request<User>('/auth/email/verify', {
+    method: 'POST',
+    body: { token: token.trim() },
+  })
+  cacheUser(user)
+  return user
+}
+
 /** 已登录时把当前微信绑定到本账号；该微信属于别的账号时后端返回 409。 */
 export async function bindWechat(): Promise<User> {
   const login = await Taro.login()

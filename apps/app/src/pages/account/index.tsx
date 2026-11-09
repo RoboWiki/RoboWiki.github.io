@@ -23,6 +23,7 @@ import {
   API_ORIGIN,
   type AppNotification,
   bindWechat,
+  verifyEmail,
 } from '@/services/api'
 import { matchPartLink, resolvePartId } from '@/services/parts'
 import { openExternal } from '@/utils/nav'
@@ -104,6 +105,7 @@ export default function AccountPage() {
   const [emailPassword, setEmailPassword] = useState('')
   const [emailPending, setEmailPending] = useState(false)
   const [emailToken, setEmailToken] = useState('')
+  const [verifyEmailToken, setVerifyEmailToken] = useState('')
 
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
@@ -354,6 +356,28 @@ export default function AccountPage() {
     try {
       await api.request('/auth/email/verify/request', { method: 'POST' })
       Taro.showToast({ title: '验证邮件已发送', icon: 'success' })
+    } catch (err) {
+      setError(errorMessage(err))
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const confirmVerifyEmail = async () => {
+    if (busy) return
+    reset()
+    const token = verifyEmailToken.trim()
+    if (token.length < 10) {
+      setError('请输入邮件里的验证令牌')
+      return
+    }
+    setBusy(true)
+    try {
+      const next = await verifyEmail(token)
+      applyUser(next)
+      withStats(next).then(applyUser)
+      setVerifyEmailToken('')
+      setNotice('邮箱已验证')
     } catch (err) {
       setError(errorMessage(err))
     } finally {
@@ -811,6 +835,23 @@ export default function AccountPage() {
             <Text className="rw-link rw-link--tap" onClick={sendVerifyMail}>发送验证邮件</Text>
           ) : null}
         </View>
+
+        {user.email && !user.email_verified ? (
+          <View className="rw-list__row account__form-row">
+            <Text className="rw-caption">把邮件里的验证令牌填在这里</Text>
+            <View className="rw-field">
+              <Input
+                className="rw-input"
+                value={verifyEmailToken}
+                placeholder="粘贴邮件中的令牌"
+                onInput={(event) => setVerifyEmailToken(event.detail.value)}
+              />
+            </View>
+            <Button className="rw-btn rw-btn--primary" disabled={busy} onClick={confirmVerifyEmail}>
+              验证邮箱
+            </Button>
+          </View>
+        ) : null}
 
         <View className="rw-list__row account__row">
           <View className="rw-grow">

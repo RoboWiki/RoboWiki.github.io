@@ -416,6 +416,7 @@ export function AuthForm({ onSuccess, compact = false }: {
   const [mode, setMode] = useState<'login' | 'register'>('login')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [forgot, setForgot] = useState(false)
   const [form] = Form.useForm()
 
   // GitHub OAuth 只有在服务端配了 client id/secret 时才出现；
@@ -432,6 +433,10 @@ export function AuthForm({ onSuccess, compact = false }: {
     const origin = typeof window !== 'undefined' ? window.location.origin : ''
     if (!origin) return
     window.location.href = `${API_BASE}/auth/github/login?return_to=${encodeURIComponent(origin)}`
+  }
+
+  if (forgot) {
+    return <ForgotPasswordPanel onBack={() => setForgot(false)} />
   }
 
   const submit = async (v: Record<string, string>) => {
@@ -551,6 +556,122 @@ export function AuthForm({ onSuccess, compact = false }: {
           className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-md bg-brand px-4 text-sm font-semibold text-brand-fg transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-60">
           {busy ? '提交中…' : mode === 'login' ? '登录' : '注册并登录'}
         </button>
+        {mode === 'login' && (
+          <button type="button" onClick={() => setForgot(true)}
+            className="mt-2 w-full text-center text-[12.5px] text-ink-3 underline-offset-2 hover:text-brand hover:underline">
+            忘记密码？
+          </button>
+        )}
+      </Form>
+    </div>
+  )
+}
+
+function ForgotPasswordPanel({ onBack }: { onBack: () => void }) {
+  const { message } = AntApp.useApp()
+  const [form] = Form.useForm()
+  const [sent, setSent] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const sendMail = async ({ email }: { email: string }) => {
+    setBusy(true)
+    setError(null)
+    try {
+      await v1Req('/auth/password/forgot', {
+        method: 'POST',
+        body: JSON.stringify({ email: email.trim() }),
+      })
+      setSent(true)
+      message.success('如果该邮箱已注册，重置邮件已发送')
+    } catch (e) {
+      setError(e instanceof Error ? e.message : '发送失败，请稍后再试')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const reset = async (v: Record<string, string>) => {
+    setBusy(true)
+    setError(null)
+    try {
+      await v1Req('/auth/password/reset', {
+        method: 'POST',
+        body: JSON.stringify({ token: String(v.token).trim(), password: v.password }),
+      })
+      message.success('密码已重置，请用新密码登录')
+      form.resetFields()
+      onBack()
+    } catch (e) {
+      setError(e instanceof Error ? e.message : '重置失败，令牌可能已过期')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <div>
+      <div className="mb-4">
+        <h2 className="m-0 text-[18px] font-extrabold text-ink">找回密码</h2>
+        <p className="m-0 mt-1 text-[12.5px] leading-5 text-ink-3">
+          {sent ? '把邮件里的令牌和新密码填在下面。' : '输入注册邮箱，我们会发一封含重置令牌的邮件。'}
+        </p>
+      </div>
+      <Form form={form} layout="vertical" requiredMark={false} onFinish={sent ? reset : sendMail}
+        disabled={busy}>
+        {!sent ? (
+          <Form.Item name="email" label="注册邮箱" className="mb-3"
+            rules={[{ required: true, message: '请填写邮箱' }, { type: 'email', message: '邮箱格式不正确' }]}>
+            <Input placeholder="name@example.com" autoComplete="email" inputMode="email" />
+          </Form.Item>
+        ) : (
+          <>
+            <Form.Item name="token" label="邮件里的令牌" className="mb-3"
+              rules={[{ required: true, message: '请填写令牌' }, { min: 10, message: '令牌不完整' }]}>
+              <Input placeholder="粘贴邮件中的令牌" />
+            </Form.Item>
+            <Form.Item name="password" label="新密码" className="mb-3"
+              rules={[{ required: true, message: '请填写新密码' }, { min: 6, message: '密码至少 6 位' }]}>
+              <Input.Password placeholder="至少 6 位" autoComplete="new-password" />
+            </Form.Item>
+            <Form.Item name="confirm" label="确认新密码" className="mb-3"
+              dependencies={['password']}
+              rules={[
+                { required: true, message: '请再次输入新密码' },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    return !value || getFieldValue('password') === value
+                      ? Promise.resolve()
+                      : Promise.reject(new Error('两次输入不一致'))
+                  },
+                }),
+              ]}>
+              <Input.Password placeholder="再输入一次" autoComplete="new-password" />
+            </Form.Item>
+          </>
+        )}
+        <div aria-live="polite" className="mb-3">
+          {error && (
+            <div role="alert"
+              className="rounded-md border border-danger/35 bg-danger-soft px-3 py-2 text-[12.5px] leading-5 text-danger">
+              {error}
+            </div>
+          )}
+        </div>
+        <button type="submit" disabled={busy}
+          className="inline-flex h-10 w-full items-center justify-center rounded-md bg-brand px-4 text-sm font-semibold text-brand-fg transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-60">
+          {busy ? '提交中…' : sent ? '重置密码' : '发送重置邮件'}
+        </button>
+        <div className="mt-2 flex items-center justify-between text-[12.5px] text-ink-3">
+          {sent ? (
+            <button type="button" onClick={() => setSent(false)} className="hover:text-brand">
+              换一个邮箱
+            </button>
+          ) : <span />}
+          <button type="button" onClick={onBack} className="hover:text-brand">
+            返回登录
+          </button>
+        </div>
       </Form>
     </div>
   )
