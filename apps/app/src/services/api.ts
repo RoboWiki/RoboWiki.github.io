@@ -122,7 +122,7 @@ export function absoluteUrl(url: string | null | undefined): string {
 export function errorMessage(err: unknown): string {
   if (err instanceof ApiError) {
     if (err.status === 401) return '登录已失效，请重新登录'
-    if (err.status === 403) return '没有权限执行这个操作'
+    if (err.status === 403) return err.message || '没有权限执行这个操作'
     if (err.status === 404) return '内容不存在或已被删除'
     if (err.status === 429) return '操作太频繁，请稍后再试'
     if (err.status === 503) return '服务暂未开放，请稍后再试'

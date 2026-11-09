@@ -697,12 +697,16 @@ export default function AccountPage() {
         <View className="rw-grow account__identity">
           <Text className="rw-title">{user.display_name || user.handle}</Text>
           <Text className="rw-caption">
-            @{user.handle}
-            {user.is_staff ? ' · 站务' : ''}
+            用户 ID：{user.handle}（不可修改）{user.is_staff ? ' · 站务' : ''}
           </Text>
           <Text className="rw-caption">
             {user.password_set ? '本站账号' : '第三方登录建号，还没有本站密码'}
           </Text>
+          {user.email && !user.email_verified ? (
+            <Text className="rw-caption">
+              未验证邮箱只能浏览；验证后才能评分、发帖和评论。
+            </Text>
+          ) : null}
         </View>
       </View>
 

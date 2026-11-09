@@ -719,7 +719,7 @@ def test_email_verify_and_password_reset(client, monkeypatch):
     assert client.post("/api/auth/email/verify", json={"token": token}).status_code == 400
 
     r = client.post("/api/auth/password/forgot", json={"email": "mailuser@example.com"})
-    assert r.status_code == 202 and len(sent) == 2
+    assert r.status_code == 202 and len(sent) == 3
     token = re.search(r"令牌：(\S+)", sent[-1][2]).group(1)
     r = client.post("/api/auth/password/reset",
                     json={"token": token, "password": "newpass123"})
@@ -768,3 +768,45 @@ def test_parts_exclude_category(client):
     only = client.get("/api/v1/parts", params={"category": "equipment", "limit": 200}).json()
     assert only["total"] > 0
     assert body["total"] < only["total"] + body["total"]
+
+
+def test_register_requires_email_when_enabled(client, monkeypatch):
+    from app.core.config import settings
+    monkeypatch.setattr(settings, "require_register_email", True)
+    r = client.post("/api/auth/register", json={
+        "handle": "noemail", "display_name": "No Email", "password": "pass1234"})
+    assert r.status_code == 422
+    assert "邮箱" in r.json()["detail"]
+
+
+def test_unverified_email_reads_but_cannot_write(client, monkeypatch):
+    import re
+    from app.api.routes import auth as auth_route
+    from app.core.config import settings
+
+    monkeypatch.setattr(settings, "require_register_email", True)
+    sent: list[tuple[str, str, str]] = []
+    monkeypatch.setattr(auth_route, "send_email",
+                        lambda to, subject, text, html=None: sent.append((to, subject, text)))
+
+    reg = client.post("/api/auth/register", json={
+        "handle": "gateuser", "display_name": "Gate User",
+        "email": "gate@example.com", "password": "pass1234"})
+    assert reg.status_code == 201, reg.text
+    token = reg.json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+    assert sent, "注册时应自动发验证邮件"
+    assert client.post("/api/auth/login", json={
+        "handle": "gateuser", "password": "pass1234"}).status_code == 200
+
+    body = {"score": 5, "note": "verify gate"}
+    blocked = client.post("/api/v1/ratings/feetech-st-3250-c001", json=body, headers=headers)
+    assert blocked.status_code == 403
+    assert "验证邮箱" in blocked.json()["detail"]
+
+    verify_token = re.search(r"令牌：(\S+)", sent[0][2]).group(1)
+    assert client.post("/api/auth/email/verify", json={"token": verify_token}).status_code == 200
+
+    allowed = client.post("/api/v1/ratings/feetech-st-3250-c001", json=body, headers=headers)
+    assert allowed.status_code == 201, allowed.text
+    client.delete("/api/v1/ratings/feetech-st-3250-c001", headers=headers)

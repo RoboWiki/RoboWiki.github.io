@@ -104,6 +104,8 @@ def providers():
 def register(payload: RegisterIn, request: Request, db: Db):
     rate_limit(request, "register", 20)
     email = payload.email.strip().lower() if payload.email else None
+    if settings.require_register_email and not email:
+        raise HTTPException(422, "注册必须填写邮箱，用于验证与找回密码")
     if db.exec(select(User).where(User.handle == payload.handle)).first():
         raise HTTPException(status.HTTP_409_CONFLICT, "这个 handle 已被占用")
     if email and db.exec(select(User).where(User.email == email)).first():
@@ -118,6 +120,16 @@ def register(payload: RegisterIn, request: Request, db: Db):
     db.add(u)
     db.commit()
     db.refresh(u)
+
+    # 注册即发验证邮件；发信失败不影响建号（邮箱账号仍可读，写入要等验证）。
+    if email:
+        try:
+            raw = _issue(db, u, "verify")
+            subject, text, html = render_email("verify", token=raw)
+            send_email(email, subject, text, html)
+        except Exception as exc:  # noqa: BLE001 — 邮件通道异常不能阻断注册
+            log.warning("register verify mail failed: %s", type(exc).__name__)
+
     return _issue_session(db, u, request, scopes=("password",))
 
 

@@ -95,6 +95,14 @@ def optional_user(
 CurrentUser = Annotated[User, Depends(current_user)]
 MaybeUser = Annotated[Optional[User], Depends(optional_user)]
 
+def require_verified_email(user: User) -> None:
+    """邮箱账号必须验证后才能写入；没有邮箱的第三方账号不受影响。"""
+    if user.email and not user.email_verified:
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN,
+            "请先验证邮箱：未验证邮箱只能浏览，验证后才能评分、发帖或评论")
+
+
 
 # ── 简易限流（进程内；多副本部署要换 Redis）─────────────────────────────────
 #: 桶表硬上限。API 端口若暴露且 X-Forwarded-For 可伪造，键数会随请求无限涨；

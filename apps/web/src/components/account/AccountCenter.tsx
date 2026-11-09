@@ -567,7 +567,7 @@ function SecurityPanel({ account, onAccount }: {
           hint={account.email
             ? (account.email_verified
               ? '邮箱已验证，可用于找回密码、接收回复与审核通知。'
-              : '未验证的邮箱不能接收通知，也不能作为找回密码的凭据。')
+              : '未验证的邮箱只能浏览；验证后才能评分、发帖、评论和接收通知。')
             : '还没有绑定邮箱。可在小程序「我的 → 账号」绑定，绑定后即可用邮箱登录。'} />
         <div className="flex flex-wrap items-center gap-3 text-[13px] text-ink-2">
           <MailOutlined />
@@ -1191,7 +1191,7 @@ function Center() {
         <div className="min-w-0 flex-1">
           <p className="m-0 truncate text-[14px] font-semibold text-ink">{account.display_name}</p>
           <p className="m-0 truncate text-[12px] text-ink-3">
-            @{account.handle} · 声望 <span className="mono tabular">{account.reputation}</span>
+            用户 ID：{account.handle} · 声望 <span className="mono tabular">{account.reputation}</span>
             {account.is_staff && <span className="ml-1 text-warning">· 站务</span>}
           </p>
         </div>

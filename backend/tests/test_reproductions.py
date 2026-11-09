@@ -49,6 +49,16 @@ def register(c: TestClient, handle: str) -> dict:
         "display_name": handle,
     })
     assert r.status_code in (200, 201), r.text
+    # 只读门禁：邮箱账号需验证后才能写；这里直接置位，避免依赖 SMTP。
+    from app.core.db import session
+    from app.models import User
+    from sqlmodel import select
+    with session() as db:
+        u = db.exec(select(User).where(User.handle == handle)).first()
+        if u is not None:
+            u.email_verified = True
+            db.add(u)
+            db.commit()
     return {"Authorization": f"Bearer {r.json()['access_token']}"}
 
 
