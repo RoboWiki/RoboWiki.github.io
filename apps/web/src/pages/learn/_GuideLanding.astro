@@ -179,6 +179,9 @@ const reprint = learnData.reprint
               <h2 class="line-clamp-2 min-h-10 text-sm font-semibold leading-5 text-ink transition-colors group-hover:text-brand">{r.title}</h2>
               <p class="truncate text-[11px] text-ink-3">{metaText(r)}</p>
               <p class="line-clamp-2 text-[12px] leading-5 text-ink-2">{r.summary}</p>
+              {r.type === 'link' && r.license && (
+                <p class="text-[10px] leading-4 text-ink-3">{r.license}</p>
+              )}
               <div class="mt-auto flex flex-wrap items-center gap-1.5 border-t border-line pt-2">
                 {(r.topics || []).slice(0, 2).map(topic => (
                   <span class="rounded border border-line bg-surface-2 px-1.5 py-0.5 text-[10px] text-ink-2">{topic}</span>
