@@ -9,7 +9,7 @@
 
 | 时间 | 类型 | 分支 / 提交 | 修改内容 | 验证 |
 |---|---|---|---|---|
-| 17:50 | 功能 / 展示 | 站点 ccc（未提交） | 页头账号入口改为按登录态显示：未登录显示「登录/注册」胶囊并指向 `/login.html`；登录后显示 36px 圆形头像并指向 `/account.html`，有 `avatar_url` 用图，无图用 `avatar_hue` 底色 + 首字，图片加载失败自动回退首字，昵称放在 `title` / `aria-label`。加载时用 `/auth/me` 校验，access 过期则用 refresh 轮换；只有后端明确拒绝 refresh 才清理令牌并回退，网络 / 5xx / 限流失败保留会话显示占位头像。`community-api` 在 `setTokens` / `clear` 时派发 `rw:auth`，站内登录、退出即时更新；页头与社区岛屿通过 `__rwCommunityAuth` / `__rwHeaderRefresh` 协调刷新，避免同一枚 refresh 被使用两次 | `tsc --noEmit` 仅原有 `catalog.ts` 报错；按 `data.lock.json`（data-v2026.11.10.8）下载并校验数据后，Astro 构建 699 页通过（Node 24）；浏览器验证未登录胶囊（86×36、蓝底、指向 `/login.html`）、登录后圆形头像（36×36、色底 + 首字、指向 `/account.html`、title 显示昵称）、自定义头像图覆盖色底、mock 验证刷新网络失败保留令牌、401 拒绝清令牌、轮换成功显示头像；截图核对页头布局无溢出 |
+| 17:50 | 功能 / 展示 | 站点 ccc f5c485f | 页头账号入口改为按登录态显示：未登录显示「登录/注册」胶囊并指向 `/login.html`；登录后显示 36px 圆形头像并指向 `/account.html`，有 `avatar_url` 用图，无图用 `avatar_hue` 底色 + 首字，图片加载失败自动回退首字，昵称放在 `title` / `aria-label`。加载时用 `/auth/me` 校验，access 过期则用 refresh 轮换；只有后端明确拒绝 refresh 才清理令牌并回退，网络 / 5xx / 限流失败保留会话显示占位头像。`community-api` 在 `setTokens` / `clear` 时派发 `rw:auth`，站内登录、退出即时更新；页头与社区岛屿通过 `__rwCommunityAuth` / `__rwHeaderRefresh` 协调刷新，避免同一枚 refresh 被使用两次 | `tsc --noEmit` 仅原有 `catalog.ts` 报错；按 `data.lock.json`（data-v2026.11.10.8）下载并校验数据后，Astro 构建 699 页通过（Node 24）；浏览器验证未登录胶囊（86×36、蓝底、指向 `/login.html`）、登录后圆形头像（36×36、色底 + 首字、指向 `/account.html`、title 显示昵称）、自定义头像图覆盖色底、mock 验证刷新网络失败保留令牌、401 拒绝清令牌、轮换成功显示头像；截图核对页头布局无溢出 |
 
 ## 2026-11-09
 
