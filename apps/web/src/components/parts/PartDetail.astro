@@ -16,6 +16,51 @@ const squareShareFile = path.join(process.cwd(), 'public', squareShare)
 const shareImage = imageUrl(part) && fs.existsSync(squareShareFile)
   ? withBase(squareShare)
   : imageUrl(part)
+
+const sim = (() => {
+  if (part.category !== 'actuator') return null
+  const s = (part.specs ?? {}) as Record<string, unknown>
+  const num = (v: unknown) => {
+    const n = typeof v === 'number' ? v : Number(v)
+    return Number.isFinite(n) ? n : null
+  }
+  const fmt = (v: number | null) => (v == null ? null : String(Number(v.toPrecision(6))))
+  const peak = num(s.tau_peak_Nm)
+  const rated = num(s.tau_rated_Nm)
+  const mass = num(s.mass_kg)
+  const inertia = num(s.armature_kgm2) ?? num(s.rotor_inertia_kgm2)
+  const gear = num(s.gear)
+  const rpm = num(s.speed_noload_rpm)
+  const vel = rpm == null ? null : rpm * Math.PI / 30
+  if (peak == null && rated == null && mass == null && inertia == null && vel == null) return null
+  const p = fmt(peak) ?? 'TODO_peak'
+  const v = fmt(vel) ?? 'TODO_velocity'
+  const json = JSON.stringify({
+    joint_name: 'TODO_joint',
+    mass_kg: mass,
+    armature_kgm2: inertia,
+    effort_Nm: peak,
+    velocity_rad_s: vel,
+    gear,
+  }, null, 2)
+  const mjcf = `<!-- ${part.vendor} ${part.model}；替换 joint_name 与 range -->
+<joint name="joint_name" type="hinge" range="-3.1416 3.1416" armature="${fmt(inertia) ?? 'TODO_inertia'}" limited="true"/>
+<actuator>
+  <motor name="joint_name_motor" joint="joint_name" gear="1" ctrlrange="-${p} ${p}"/>
+</actuator>
+<!-- 若 MJCF 用 gear=减速比，ctrlrange 改为 ±峰值扭矩/减速比；本机减速比 ${fmt(gear) ?? 'TODO'} -->`
+  const urdf = `<!-- 替换 parent_link / child_link / origin / axis / 限位 -->
+<joint name="joint_name" type="revolute">
+  <parent link="parent_link"/>
+  <child link="child_link"/>
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+  <axis xyz="0 0 1"/>
+  <limit lower="-3.1416" upper="3.1416" effort="${p}" velocity="${v}"/>
+  <dynamics damping="0.05" friction="0.01"/>
+</joint>
+<!-- child link inertial：mass=${fmt(mass) ?? 'TODO_mass'} kg；ixx=iyy=izz=${fmt(inertia) ?? 'TODO_inertia'} -->`
+  return { json, mjcf, urdf }
+})()
 type FieldMeta = { label?: string; unit?: string; meaning?: string; missing_means?: string }
 const fieldSemantics = (semantics as { field_semantics?: Record<string, FieldMeta> }).field_semantics ?? {}
 // 语义表优先；目录里出现的新字段（尚未写进 semantics.json）用内容包兜底，
@@ -314,6 +359,43 @@ const keyStats = STAT_PRIORITY
         </section>
       )}
 
+      {sim && (
+        <section class="card p-5" aria-labelledby="sim">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 id="sim" class="text-sm font-semibold text-ink">仿真参数（MJCF / URDF）</h2>
+            <span class="text-[11px] text-ink-3">数值来自公开参数；TODO 需按整机替换</span>
+          </div>
+          <p class="mt-1.5 text-[12px] leading-6 text-ink-3">
+            复制后替换关节名、父子连杆、轴向与限位。峰值扭矩按 datasheet 峰值填写，速度按空载转速换算为 rad/s。
+          </p>
+          <div class="mt-3 grid gap-3 lg:grid-cols-2">
+            <div class="min-w-0 rounded-md border border-line bg-surface-2">
+              <div class="flex items-center justify-between border-b border-line px-3 py-2">
+                <span class="text-[12px] font-semibold text-ink">MJCF</span>
+                <button type="button" data-copy-target="sim-mjcf" class="inline-flex h-7 items-center rounded-md border border-line bg-surface px-2.5 text-[11px] font-medium text-brand hover:border-brand/50">复制 MJCF</button>
+              </div>
+              <pre id="sim-mjcf" class="max-h-64 overflow-auto px-3 py-2 text-[11px] leading-5 text-ink-2">{sim.mjcf}</pre>
+            </div>
+            <div class="min-w-0 rounded-md border border-line bg-surface-2">
+              <div class="flex items-center justify-between border-b border-line px-3 py-2">
+                <span class="text-[12px] font-semibold text-ink">URDF</span>
+                <button type="button" data-copy-target="sim-urdf" class="inline-flex h-7 items-center rounded-md border border-line bg-surface px-2.5 text-[11px] font-medium text-brand hover:border-brand/50">复制 URDF</button>
+              </div>
+              <pre id="sim-urdf" class="max-h-64 overflow-auto px-3 py-2 text-[11px] leading-5 text-ink-2">{sim.urdf}</pre>
+            </div>
+          </div>
+          <details class="mt-3 rounded-md border border-line bg-surface-2">
+            <summary class="cursor-pointer list-none px-3 py-2 text-[12px] font-medium text-ink-2">参数 JSON</summary>
+            <div class="border-t border-line">
+              <div class="flex justify-end px-3 pt-2">
+                <button type="button" data-copy-target="sim-json" class="inline-flex h-7 items-center rounded-md border border-line bg-surface px-2.5 text-[11px] font-medium text-brand hover:border-brand/50">复制 JSON</button>
+              </div>
+              <pre id="sim-json" class="max-h-48 overflow-auto px-3 pb-3 text-[11px] leading-5 text-ink-2">{sim.json}</pre>
+            </div>
+          </details>
+        </section>
+      )}
+
       <section class="card" aria-labelledby="specs">
         <div class="flex flex-wrap items-baseline justify-between gap-2 border-b border-line px-5 py-4">
           <h2 id="specs" class="text-sm font-semibold text-ink">公开参数</h2>
@@ -471,6 +553,34 @@ const keyStats = STAT_PRIORITY
             return
           }
           window.location.href = href
+        })
+      })
+    })()
+  </script>
+
+  <script is:inline>
+    // 仿真参数一键复制：clipboard 不可用时退回选中文本，避免 HTTP/旧内核下点了没反应。
+    (() => {
+      document.querySelectorAll('[data-copy-target]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const id = btn.getAttribute('data-copy-target')
+          const el = id && document.getElementById(id)
+          if (!el) return
+          const text = el.textContent || ''
+          const label = btn.textContent
+          try {
+            await navigator.clipboard.writeText(text)
+          } catch {
+            const range = document.createRange()
+            range.selectNodeContents(el)
+            const sel = window.getSelection()
+            sel?.removeAllRanges()
+            sel?.addRange(range)
+            try { document.execCommand('copy') } catch {}
+            sel?.removeAllRanges()
+          }
+          btn.textContent = '已复制'
+          setTimeout(() => { btn.textContent = label }, 1600)
         })
       })
     })()

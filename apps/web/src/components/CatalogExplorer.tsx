@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { categoryLabel, imageUrl, type CatalogPart } from '@/lib/catalog'
 import { partFacts } from '@/lib/partFacts'
-import { bestOfferPrice, effectivePrice, formatPrice, partHref, withBase } from '@/lib/utils'
+import { effectivePrice, formatPrice, partHref, withBase } from '@/lib/utils'
 
 type CategoryMeta = {
   id: string
@@ -66,15 +66,34 @@ function hasOffer(p: CatalogPart) {
   })
 }
 
+/** 当前有效的最低价 offer；赞助价/优惠价都从这里取，避免两个口径。 */
+function bestOffer(p: CatalogPart): Record<string, unknown> | null {
+  const today = new Date().toISOString().slice(0, 10)
+  const candidates = (p.offers ?? []).filter(o => {
+    const offer = o as { demo?: boolean; expires?: string | null; price?: unknown }
+    return !offer.demo && (!offer.expires || offer.expires >= today)
+      && offer.price !== null && offer.price !== undefined
+      && Number.isFinite(Number(offer.price))
+  })
+  candidates.sort((a, b) => Number(a.price) - Number(b.price))
+  return candidates[0] ?? null
+}
+
+function offerKindLabel(offer: Record<string, unknown> | null): string {
+  return offer?.kind === 'sponsor' ? '赞助价' : '优惠价'
+}
+
 export default function CatalogExplorer({ parts, categories, materials = [] }: Props) {
   const [q, setQ] = useState('')
   const [cat, setCat] = useState(DEFAULT_CATEGORY)
   const [openOnly, setOpenOnly] = useState(false)
   const [offerOnly, setOfferOnly] = useState(false)
+  const [buildOnly, setBuildOnly] = useState(false)
   const [vendor, setVendor] = useState('')
   const [sort, setSort] = useState(DEFAULT_SORT)
   // 对比托盘：最多 4 个，落 localStorage，跨页面（部件库 → 对比页）复用
   const [picked, setPicked] = useState<string[]>([])
+  const [compareOpen, setCompareOpen] = useState(false)
   const [limit, setLimit] = useState(PAGE)
   const searchId = useId()
 
@@ -85,7 +104,11 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
     try {
       const raw = localStorage.getItem('rw-compare')
       const list = raw ? (JSON.parse(raw) as unknown) : []
-      if (Array.isArray(list)) setPicked(list.filter((v): v is string => typeof v === 'string').slice(0, 4))
+      if (Array.isArray(list)) {
+        const restored = list.filter((v): v is string => typeof v === 'string').slice(0, 4)
+        setPicked(restored)
+        if (restored.length) setCompareOpen(true)
+      }
     } catch { /* 存储不可用时忽略 */ }
   }, [])
 
@@ -104,6 +127,7 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
     if (fromUrl && categories.some(c => c.id === fromUrl)) setCat(fromUrl)
     if (fromQuery) setQ(fromQuery)
     if (params.get('offer') === '1') setOfferOnly(true)
+    if (params.get('build') === '1') setBuildOnly(true)
   }, [categories])
 
   const searched = useMemo(() => {
@@ -179,6 +203,7 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
     if (vendor) list = list.filter(p => p.vendor === vendor)
     if (openOnly) list = list.filter(hasRepo)
     if (offerOnly) list = list.filter(hasOffer)
+    if (buildOnly) list = list.filter(p => (p.builds?.length ?? 0) > 0)
     if (sort) {
       const [key, dir] = sort.split(':')
       const sign = dir === 'asc' ? 1 : -1
@@ -204,7 +229,7 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
       })
     }
     return list
-  }, [searched, cat, vendor, openOnly, offerOnly, sort])
+  }, [searched, cat, vendor, openOnly, offerOnly, buildOnly, sort])
 
   const openCount = useMemo(() => {
     const base = cat ? searched.filter(p => p.category === cat) : searched
@@ -217,13 +242,19 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
     return base.filter(hasOffer).length
   }, [searched, cat, vendor])
 
+  const buildCount = useMemo(() => {
+    let base = cat ? searched.filter(p => p.category === cat) : searched
+    if (vendor) base = base.filter(p => p.vendor === vendor)
+    return base.filter(p => (p.builds?.length ?? 0) > 0).length
+  }, [searched, cat, vendor])
+
   const shown = filtered.slice(0, limit)
   const shownMaterials = searchedMaterials.slice(0, limit)
   const resultCount = isMaterials ? searchedMaterials.length : filtered.length
   const shownCount = isMaterials ? shownMaterials.length : shown.length
   const needle = q.trim()
   const hasFilter = Boolean(
-    (cat && cat !== DEFAULT_CATEGORY) || needle || openOnly || offerOnly || vendor
+    (cat && cat !== DEFAULT_CATEGORY) || needle || openOnly || offerOnly || buildOnly || vendor
     || (sort && sort !== DEFAULT_SORT),
   )
 
@@ -242,17 +273,34 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
   }
 
   const togglePick = (id: string) => {
+    const adding = !picked.includes(id)
     setPicked(prev => {
       if (prev.includes(id)) return prev.filter(item => item !== id)
       if (prev.length >= 4) return prev
       return [...prev, id]
     })
+    if (adding) setCompareOpen(true)
   }
+
+  const pickedParts = useMemo(
+    () => picked.map(id => parts.find(p => p.id === id)).filter((p): p is CatalogPart => Boolean(p)),
+    [picked, parts],
+  )
+  const compareLabels = useMemo(() => {
+    const labels: string[] = []
+    for (const p of pickedParts) {
+      for (const fact of partFacts(p)) {
+        if (!labels.includes(fact.label)) labels.push(fact.label)
+      }
+    }
+    return labels
+  }, [pickedParts])
 
   const reset = () => {
     setQ('')
     setOpenOnly(false)
     setOfferOnly(false)
+    setBuildOnly(false)
     setVendor('')
     setSort(DEFAULT_SORT)
     selectCategory(DEFAULT_CATEGORY)
@@ -390,6 +438,25 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
             >
               有优惠
               <span className="mono tabular opacity-60">{offerCount}</span>
+            </button>
+            <button
+              type="button"
+              className={`chip h-7 px-2.5 text-[12px] ${buildOnly ? 'border-brand bg-brand-soft text-brand' : ''}`}
+              aria-pressed={buildOnly}
+              onClick={() => {
+                setBuildOnly(v => !v)
+                setLimit(PAGE)
+                try {
+                  const url = new URL(window.location.href)
+                  if (!buildOnly) url.searchParams.set('build', '1')
+                  else url.searchParams.delete('build')
+                  window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`)
+                } catch { /* history unavailable */ }
+              }}
+              title="只显示被全开源方案 BOM 用到的部件"
+            >
+              有方案
+              <span className="mono tabular opacity-60">{buildCount}</span>
             </button>
             <button
               type="button"
@@ -564,16 +631,17 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
                     <div className="mt-auto flex items-center justify-between gap-2 border-t border-line pt-2 text-xs">
                       <span className="flex min-w-0 flex-col">
                         {(() => {
-                          const offer = bestOfferPrice(p.offers)
+                          const offer = bestOffer(p)
+                          const offerPrice = offer ? Number(offer.price) : null
                           const regular = typeof p.price === 'number' ? p.price : null
-                          const showCompare = offer !== null && regular !== null && offer < regular
+                          const showCompare = offerPrice !== null && regular !== null && offerPrice < regular
                           return (
                             <>
                               <span className="flex items-baseline gap-1.5">
-                                <span className={`mono tabular truncate font-semibold ${offer !== null ? 'text-brand' : 'text-ink-2'}`}>
-                                  {formatPrice(offer ?? regular)}
+                                <span className={`mono tabular truncate font-semibold ${offerPrice !== null ? 'text-brand' : 'text-ink-2'}`}>
+                                  {formatPrice(offerPrice ?? regular)}
                                 </span>
-                                {offer !== null && <span className="shrink-0 text-[10px] font-medium text-brand" title="需满足活动资格，详见详情">优惠价</span>}
+                                {offerPrice !== null && <span className="shrink-0 text-[10px] font-medium text-brand" title="需满足活动资格，详见详情">{offerKindLabel(offer)}</span>}
                               </span>
                               {showCompare && <span className="mono tabular text-[10px] text-ink-3 ">参考 {formatPrice(regular)}</span>}
                             </>
@@ -591,21 +659,106 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
       )}
 
       {!isMaterials && picked.length > 0 && (
-        <div className="fixed inset-x-3 bottom-4 z-40 mx-auto flex max-w-xl items-center gap-3 rounded-lg border border-line bg-surface px-3 py-2 shadow-lg sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2">
-          <span className="mono tabular text-[12px] text-ink-2">已选 {picked.length}/4</span>
-          <a
-            href={`${import.meta.env.BASE_URL}compare.html?ids=${picked.join(',')}`}
-            className="inline-flex h-8 items-center rounded-md bg-brand px-3 text-[12px] font-semibold text-brand-fg hover:bg-brand-hover"
-          >
-            去对比
-          </a>
-          <button
-            type="button"
-            onClick={() => setPicked([])}
-            className="ml-auto text-[12px] text-ink-3 hover:text-ink"
-          >
-            清空
-          </button>
+        <div className="fixed inset-x-2 bottom-2 z-40 mx-auto w-[calc(100%-1rem)] max-w-5xl overflow-hidden rounded-xl border border-line bg-surface/98 shadow-2xl backdrop-blur">
+          <div className="flex flex-wrap items-center gap-2 border-b border-line px-3 py-2">
+            <span className="mono tabular text-[12px] text-ink-2">对比 {picked.length}/4</span>
+            <button
+              type="button"
+              onClick={() => setCompareOpen(v => !v)}
+              className="inline-flex h-7 items-center rounded-md border border-line bg-surface-2 px-2.5 text-[12px] font-medium text-ink-2 hover:border-line-strong hover:text-ink"
+              aria-expanded={compareOpen}
+            >
+              {compareOpen ? '收起对比' : '展开对比'}
+            </button>
+            <a
+              href={`${import.meta.env.BASE_URL}compare.html?ids=${picked.join(',')}`}
+              className="inline-flex h-7 items-center rounded-md bg-brand px-2.5 text-[12px] font-semibold text-brand-fg hover:bg-brand-hover"
+            >
+              完整对比 →
+            </a>
+            <button
+              type="button"
+              onClick={() => { setPicked([]); setCompareOpen(false) }}
+              className="ml-auto text-[12px] text-ink-3 hover:text-ink"
+            >
+              清空
+            </button>
+          </div>
+          {compareOpen && (
+            <div className="max-h-[55vh] overflow-auto p-3">
+              <table className="w-full min-w-[680px] border-collapse text-left text-xs">
+                <thead>
+                  <tr>
+                    <th className="sticky left-0 z-10 w-20 bg-surface p-2 align-top font-medium text-ink-3">参数</th>
+                    {pickedParts.map(p => (
+                      <th key={p.id} className="min-w-[170px] p-2 align-top">
+                        <div className="flex items-start gap-2">
+                          {p.image && (
+                            <img
+                              src={imageUrl(p)}
+                              alt=""
+                              className="h-10 w-10 shrink-0 rounded border border-line bg-surface-2 object-contain p-1"
+                            />
+                          )}
+                          <div className="min-w-0 flex-1">
+                            <a href={partHref(p)} className="block truncate font-semibold text-ink hover:text-brand">
+                              {p.model}
+                            </a>
+                            <span className="mt-0.5 block truncate text-[11px] text-ink-3">{p.vendor}</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => togglePick(p.id)}
+                            className="grid h-5 w-5 shrink-0 place-items-center rounded text-ink-3 hover:bg-surface-3 hover:text-ink"
+                            aria-label={`移出对比：${p.model}`}
+                            title="移出对比"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-t border-line">
+                    <th className="sticky left-0 z-10 bg-surface p-2 font-medium text-ink-3">价格</th>
+                    {pickedParts.map(p => {
+                      const offer = bestOffer(p)
+                      const offerPrice = offer ? Number(offer.price) : null
+                      const regular = typeof p.price === 'number' ? p.price : null
+                      return (
+                        <td key={p.id} className="p-2 align-top">
+                          <span className={`mono tabular font-semibold ${offerPrice !== null ? 'text-brand' : 'text-ink-2'}`}>
+                            {formatPrice(offerPrice ?? regular)}
+                          </span>
+                          {offerPrice !== null && (
+                            <span className="ml-1 text-[10px] font-medium text-brand">{offerKindLabel(offer)}</span>
+                          )}
+                          {offerPrice !== null && regular !== null && offerPrice < regular && (
+                            <span className="mt-0.5 block mono tabular text-[10px] text-ink-3">参考 {formatPrice(regular)}</span>
+                          )}
+                        </td>
+                      )
+                    })}
+                  </tr>
+                  {compareLabels.map(label => (
+                    <tr key={label} className="border-t border-line">
+                      <th className="sticky left-0 z-10 bg-surface p-2 font-medium text-ink-3">{label}</th>
+                      {pickedParts.map(p => {
+                        const cell = partFacts(p).find(f => f.label === label)
+                        return (
+                          <td key={p.id} className="p-2 mono tabular text-ink-2">
+                            {cell?.value ?? '—'}
+                          </td>
+                        )
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       )}
 

@@ -12,8 +12,16 @@ const parts = allParts.filter(p => p.category !== 'equipment')
 
 // 材料工艺库并入部件库：常用材料合成一个品类，卡片直接给适用场景；
 // 加工工艺仍留在材质库页面。
+// 部件库里的「常用加工材料」只放这张收敛清单；材质库仍保留全量材料。
+const COMMON_MATERIAL_IDS = new Set([
+  'mat-alu-6061-t6', 'mat-alu-7075-t6', 'mat-alu-5052-h32', 'mat-ti-tc4',
+  'mat-steel-sus304', 'mat-steel-sus316', 'mat-steel-45',
+  'mat-pla', 'mat-petg', 'mat-abs-fdm', 'mat-pla-cf', 'mat-tpu',
+  'mat-cfrp-t300', 'mat-gfrp', 'mat-fr4', 'mat-bakelite',
+])
 const groupOrder = new Map(materialsData.groups.map((group, index) => [group.id, index]))
-const materials = [...materialsData.materials]
+const materials = materialsData.materials
+  .filter(m => COMMON_MATERIAL_IDS.has(m.id))
   .sort((a, b) => (groupOrder.get(a.group) ?? groupOrder.size) - (groupOrder.get(b.group) ?? groupOrder.size))
   .map(m => ({
     id: m.id,
