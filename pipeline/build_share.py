@@ -9,6 +9,34 @@ import json
 import shutil
 from pathlib import Path
 
+try:
+    from PIL import Image
+except Exception:  # 分享 JSON 不依赖图片库；装了 Pillow 才生成正方形分享图
+    Image = None
+
+from .paths import ASSETS_DIR
+
+
+def _square_share(image: str | None, out: Path, size: int = 600) -> bool:
+    """把商品图放进白底正方形，QQ/微信群缩略图不裁切、不会被判成非正方形。"""
+    if not image or Image is None:
+        return False
+    name = Path(str(image)).name
+    src = ASSETS_DIR / name
+    if not src.exists():
+        return False
+    try:
+        with Image.open(src) as im:
+            im = im.convert("RGB")
+            im.thumbnail((size - 48, size - 48), Image.LANCZOS)
+            canvas = Image.new("RGB", (size, size), "white")
+            canvas.paste(im, ((size - im.width) // 2, (size - im.height) // 2))
+            out.parent.mkdir(parents=True, exist_ok=True)
+            canvas.save(out, "JPEG", quality=84, optimize=True)
+        return True
+    except Exception:
+        return False
+
 
 def _fmt(v, unit: str = "") -> str | None:
     if v is None or v == "":
@@ -225,6 +253,11 @@ def build(rows: list[dict], slugs: dict[str, str], pub: Path,
         }
         d = base / "parts" / cat
         d.mkdir(parents=True, exist_ok=True)
+        square = d / f"{slug}-square.jpg"
+        if _square_share(image, square):
+            payload["square_image_url"] = (
+                site_url.rstrip("/") + f"/share/parts/{cat}/{slug}-square.jpg"
+            )
         (d / f"{slug}.json").write_text(
             json.dumps(payload, ensure_ascii=False, indent=1), encoding="utf-8")
         index.append({

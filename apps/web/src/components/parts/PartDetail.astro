@@ -2,6 +2,8 @@
 import Base from '@/layouts/Base.astro'
 import RatingSummary from '@/components/RatingSummary'
 import SeoJsonLd from '@/components/SeoJsonLd.astro'
+import fs from 'node:fs'
+import path from 'node:path'
 import { categoryLabel, imageUrl, type CatalogPart } from '@/lib/catalog'
 import { bestOfferPrice, formatPrice, withBase } from '@/lib/utils'
 import semantics from '@/data/semantics.json'
@@ -9,6 +11,11 @@ import { formatSpecValue, specLabel as contentSpecLabel } from '@robowiki/conten
 import { layerOfCategory } from '@/lib/layers'
 
 const { part } = Astro.props as { part: CatalogPart }
+const squareShare = `/share/parts/${part.category}/${part.slug}-square.jpg`
+const squareShareFile = path.join(process.cwd(), 'public', squareShare)
+const shareImage = imageUrl(part) && fs.existsSync(squareShareFile)
+  ? withBase(squareShare)
+  : imageUrl(part)
 type FieldMeta = { label?: string; unit?: string; meaning?: string; missing_means?: string }
 const fieldSemantics = (semantics as { field_semantics?: Record<string, FieldMeta> }).field_semantics ?? {}
 // 语义表优先；目录里出现的新字段（尚未写进 semantics.json）用内容包兜底，
@@ -168,10 +175,10 @@ const keyStats = STAT_PRIORITY
   .map(item => ({ label: item.label, ...withUnit(item.key, formatSpecValue(specSource[item.key]), item.unit) }))
 ---
 
-<Base title={title} description={description} image={imageUrl(part)}>
+<Base title={title} description={description} image={shareImage}>
   <SeoJsonLd type="Product" title={`${part.vendor} ${part.model}`}
     description={`${part.model} 的参数、来源、评分与真实使用经验。`}
-    url={partPath} image={imageUrl(part)} />
+    url={partPath} image={shareImage} />
 
   <nav class="mb-4 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-ink-3" aria-label="面包屑">
     <a href={withBase('/')} class="hover:text-brand">首页</a>
