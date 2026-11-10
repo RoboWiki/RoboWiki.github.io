@@ -14,6 +14,11 @@ export const API_BASE = (envBase || (mirror ? 'https://robowiki.org.cn/api/v1' :
 
 const storage = () => (typeof window === 'undefined' ? null : window.localStorage)
 
+// 页头账号入口是静态 HTML，不经过 React；登录/退出后靠这个事件通知它刷新。
+function announceAuth() {
+  if (typeof window !== 'undefined') window.dispatchEvent(new Event('rw:auth'))
+}
+
 export const auth = {
   get token(): string | null {
     return storage()?.getItem(ACCESS_KEY) ?? null
@@ -28,11 +33,13 @@ export const auth = {
     else s.removeItem(ACCESS_KEY)
     if (refresh) s.setItem(REFRESH_KEY, refresh)
     else s.removeItem(REFRESH_KEY)
+    announceAuth()
   },
   clear() {
     const s = storage()
     s?.removeItem(ACCESS_KEY)
     s?.removeItem(REFRESH_KEY)
+    announceAuth()
   },
 }
 
@@ -48,6 +55,15 @@ export class ApiError extends Error {
 let refreshing: Promise<boolean> | null = null
 
 async function doRefresh(): Promise<boolean> {
+  // 页头脚本可能正在用同一枚 refresh 换令牌；等它结束，避免轮换冲突。
+  const header = (typeof window === 'undefined'
+    ? undefined
+    : (window as unknown as { __rwHeaderRefresh?: Promise<boolean> }).__rwHeaderRefresh)
+  if (header) {
+    const before = auth.token
+    const rotated = await header.catch(() => false)
+    if (rotated || (auth.token && auth.token !== before)) return true
+  }
   const rt = auth.refreshToken
   if (!rt) return false
   try {

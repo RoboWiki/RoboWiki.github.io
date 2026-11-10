@@ -239,6 +239,8 @@ export function IslandProvider({ children }: { children: ReactNode }) {
   // 岛屿真正挂载后才撤掉页面里的静态骨架；没挂载（chunk 404/JS 报错）时骨架继续留着。
   useEffect(() => {
     document.querySelectorAll('[data-island-fallback]').forEach(el => el.remove())
+    // 告诉页头脚本：本页的令牌刷新由这里的 AuthProvider 负责，不要重复轮换。
+    ;(window as unknown as { __rwCommunityAuth?: boolean }).__rwCommunityAuth = true
   }, [])
 
   return (
