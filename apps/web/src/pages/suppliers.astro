@@ -86,11 +86,9 @@ const signalLabel: Record<string, Record<string, string>> = {
 const rawOrSignal = (raw: string | null | undefined, signals: Record<string, Signal> | undefined, key: string) =>
   raw || signalLabel[key]?.[signals?.[key] || 'unknown'] || '未评'
 
-const feedback = (item: Supplier) => {
-  const text = [item.reason, item.notes].filter(Boolean).join('\n').trim()
-  return text.length > 220 ? `${text.slice(0, 220)}…` : text
-}
+const feedback = (item: Supplier) => [item.reason, item.notes].filter(Boolean).join('\n').trim()
 const fullFeedback = (item: Supplier) => [item.reason, item.notes].filter(Boolean).join('\n').trim()
+const feedbackChars = (item: Supplier) => fullFeedback(item).replace(/\s+/g, '').length
 const searchText = (item: Supplier) =>
   [
     item.name, item.display_name, item.shop_type, item.category, item.notes, item.reason,
@@ -204,7 +202,7 @@ const searchText = (item: Supplier) =>
       <p class="mt-1 text-xs leading-5 text-ink-3">换一个品类、采购目的、工艺能力或关键词试试。</p>
     </div>
 
-    <ul class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" role="list">
+    <ul class="mt-6 grid grid-cols-1 items-start gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" role="list">
       {suppliers.map(item => {
         const signals = item.signals || {}
         const raw = feedback(item)
@@ -238,7 +236,7 @@ const searchText = (item: Supplier) =>
                   {initials}
                 </div>
                 <div class="min-w-0 flex-1">
-                  <h3 class="truncate text-[15px] font-semibold leading-6 text-ink">{name}</h3>
+                  <h3 class="truncate text-[15px] font-semibold leading-6 text-ink" title={name}>{name}</h3>
                   <p class="truncate text-[11px] leading-5 text-ink-3">
                     {item.shop_type || '其他'}{item.channel ? ` · ${item.channel}` : ''}
                   </p>
@@ -259,37 +257,53 @@ const searchText = (item: Supplier) =>
               </div>
 
               <div class="flex flex-1 flex-col gap-2.5 px-4 pb-4">
+                {full && (
+                  <div class="rounded-md border border-line bg-surface-2/60 p-2.5">
+                    <div class="flex items-baseline justify-between gap-2">
+                      <span class={`text-[10px] font-semibold ${item.listing === '黑榜' ? 'text-danger' : 'text-ink-3'}`}>
+                        {item.listing === '黑榜' ? '踩雷记录' : '社区评价'}
+                      </span>
+                      <span class="mono text-[10px] text-ink-3">{feedbackChars(item)} 字</span>
+                    </div>
+                    <p
+                      data-feedback
+                      id={`fb-${item.id}`}
+                      class={`m-0 mt-1 whitespace-pre-line line-clamp-4 text-[12px] leading-5 ${item.listing === '黑榜' ? 'text-danger' : 'text-ink-2'}`}
+                    >
+                      {raw}
+                    </p>
+                    {feedbackChars(item) > 50 && (
+                      <button
+                        type="button"
+                        data-feedback-toggle
+                        aria-expanded="false"
+                        aria-controls={`fb-${item.id}`}
+                        class="mt-1.5 inline-flex h-7 items-center gap-1 rounded-full border border-line bg-surface px-2.5 text-[11px] font-medium text-brand hover:border-brand/50"
+                      >
+                        <span data-feedback-label>展开完整评价</span>
+                        <span aria-hidden="true">↓</span>
+                      </button>
+                    )}
+                  </div>
+                )}
+
                 <div class="flex flex-wrap gap-1">
-                  {(item.services || []).filter(s => s !== '风险记录').slice(0, 3).map(service => (
+                  {(item.services || []).filter(s => s !== '风险记录').slice(0, 2).map(service => (
                     <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-[11px] text-ink-2">{service}</span>
                   ))}
-                  {(item.services || []).filter(s => s !== '风险记录').length > 3 && (
+                  {(item.services || []).filter(s => s !== '风险记录').length > 2 && (
                     <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-[11px] text-ink-3">
-                      +{(item.services || []).filter(s => s !== '风险记录').length - 3}
+                      +{(item.services || []).filter(s => s !== '风险记录').length - 2}
                     </span>
                   )}
                 </div>
 
-                <dl class="grid grid-cols-2 gap-x-3 gap-y-1.5 rounded-md border border-line bg-surface-2 p-2.5 text-[12px] leading-5">
-                  <div><dt class="text-[10px] text-ink-3">质量</dt><dd class="truncate text-ink-2">{rawOrSignal(item.quality_raw, signals, 'quality')}</dd></div>
-                  <div><dt class="text-[10px] text-ink-3">交期</dt><dd class="truncate text-ink-2">{rawOrSignal(item.punctual_raw, signals, 'punctual')}</dd></div>
-                  <div><dt class="text-[10px] text-ink-3">价格</dt><dd class="truncate text-ink-2">{rawOrSignal(item.price_raw, signals, 'price')}</dd></div>
-                  <div><dt class="text-[10px] text-ink-3">发票</dt><dd class="truncate text-ink-2">{rawOrSignal(item.invoice_raw, signals, 'invoice')}</dd></div>
+                <dl class="grid grid-cols-2 gap-x-3 gap-y-1 rounded-md border border-line bg-surface-2 px-2.5 py-2 text-[11px] leading-4">
+                  <div><dt class="text-[10px] text-ink-3">质量</dt><dd class="line-clamp-1 text-ink-2" title={rawOrSignal(item.quality_raw, signals, 'quality')}>{rawOrSignal(item.quality_raw, signals, 'quality')}</dd></div>
+                  <div><dt class="text-[10px] text-ink-3">交期</dt><dd class="line-clamp-1 text-ink-2" title={rawOrSignal(item.punctual_raw, signals, 'punctual')}>{rawOrSignal(item.punctual_raw, signals, 'punctual')}</dd></div>
+                  <div><dt class="text-[10px] text-ink-3">价格</dt><dd class="line-clamp-1 text-ink-2" title={rawOrSignal(item.price_raw, signals, 'price')}>{rawOrSignal(item.price_raw, signals, 'price')}</dd></div>
+                  <div><dt class="text-[10px] text-ink-3">发票</dt><dd class="line-clamp-1 text-ink-2" title={rawOrSignal(item.invoice_raw, signals, 'invoice')}>{rawOrSignal(item.invoice_raw, signals, 'invoice')}</dd></div>
                 </dl>
-
-                {raw && (
-                  <div class="text-[12px] leading-5 text-ink-2">
-                    <p class={`m-0 line-clamp-2 ${item.listing === '黑榜' ? 'text-danger' : ''}`}>
-                      <span class="font-medium">{item.listing === '黑榜' ? '踩雷：' : '评价：'}</span>{raw}
-                    </p>
-                    {full.length > 220 && (
-                      <details class="mt-1">
-                        <summary class="cursor-pointer select-none text-[11px] text-brand">展开完整反馈</summary>
-                        <p class={`mt-1 whitespace-pre-line text-[12px] leading-5 ${item.listing === '黑榜' ? 'text-danger' : 'text-ink-2'}`}>{full}</p>
-                      </details>
-                    )}
-                  </div>
-                )}
 
                 <p class="mt-auto text-[10px] text-ink-3">
                   {item.reported_at ? `反馈 ${item.reported_at}` : '社区记录'}
@@ -312,6 +326,29 @@ const searchText = (item: Supplier) =>
   const q = document.getElementById('sup-q') as HTMLInputElement | null
   const count = document.getElementById('sup-count')
   const empty = document.getElementById('supplier-empty')
+
+  // 评价展开/收起：默认 4 行；长评价才渲染按钮，不靠测量高度隐藏。
+  const FEEDBACK_CLAMP = 'line-clamp-4'
+
+  for (const card of cards) {
+    const body = card.querySelector<HTMLElement>('[data-feedback]')
+    const btn = card.querySelector<HTMLButtonElement>('[data-feedback-toggle]')
+    const label = card.querySelector<HTMLElement>('[data-feedback-label]')
+    if (!body || !btn || !label) continue
+    const toggle = () => {
+      const next = body.dataset.expanded !== 'true'
+      body.dataset.expanded = String(next)
+      body.classList.toggle(FEEDBACK_CLAMP, !next)
+      btn.setAttribute('aria-expanded', String(next))
+      label.textContent = next ? '收起评价' : '展开完整评价'
+      body.classList.toggle('cursor-pointer', !next)
+    }
+    btn.addEventListener('click', toggle)
+    // 点被截断的评价正文也能展开，扩大有效点击区
+    body.addEventListener('click', () => {
+      if (body.dataset.expanded !== 'true') toggle()
+    })
+  }
 
   const typeChips = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-type-chip]'))
   const serviceChips = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip[data-service]'))
@@ -390,4 +427,5 @@ const searchText = (item: Supplier) =>
 
   q?.addEventListener('input', apply)
   apply()
+
 </script>
