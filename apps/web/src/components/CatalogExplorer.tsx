@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { categoryLabel, imageUrl, type CatalogPart } from '@/lib/catalog'
 import { partFacts } from '@/lib/partFacts'
-import { bestOfferPrice, effectivePrice, formatPrice, partHref } from '@/lib/utils'
+import { bestOfferPrice, effectivePrice, formatPrice, partHref, withBase } from '@/lib/utils'
 
 type CategoryMeta = {
   id: string
@@ -12,12 +12,34 @@ type CategoryMeta = {
   keys?: Array<{ k: string; label?: string; unit?: string }>
   sorts?: Array<{ k: string; label: string }>
 }
-type Props = { parts: CatalogPart[]; categories: CategoryMeta[] }
+export type MaterialItem = {
+  id: string
+  group_label: string
+  family_label: string
+  title: string
+  name_en?: string | null
+  aliases?: string[]
+  notes?: string | null
+  applications?: string[] | null
+  specs: Record<string, unknown>
+  _href: string
+}
+type Props = { parts: CatalogPart[]; categories: CategoryMeta[]; materials?: MaterialItem[] }
 
 const PAGE = 24
 const INTERACTIVE_HOME = '/community.html'
 const DEFAULT_SORT = 'effective_price:asc'
 const DEFAULT_CATEGORY = 'actuator'
+const MATERIAL_CATEGORY = 'materials'
+
+function materialFacts(m: MaterialItem) {
+  const specs = m.specs || {}
+  const out: Array<{ label: string; value: string }> = []
+  if (specs.density_g_cm3 != null) out.push({ label: '密度', value: `${String(specs.density_g_cm3)} g/cm³` })
+  if (specs.modulus_GPa != null) out.push({ label: '模量', value: `${String(specs.modulus_GPa)} GPa` })
+  if (specs.service_temp_C != null) out.push({ label: '耐温', value: `${String(specs.service_temp_C)} °C` })
+  return out
+}
 
 function PartRating({ rating }: { rating?: CatalogPart['rating'] }) {
   const count = Number(rating?.count) || 0
@@ -44,7 +66,7 @@ function hasOffer(p: CatalogPart) {
   })
 }
 
-export default function CatalogExplorer({ parts, categories }: Props) {
+export default function CatalogExplorer({ parts, categories, materials = [] }: Props) {
   const [q, setQ] = useState('')
   const [cat, setCat] = useState(DEFAULT_CATEGORY)
   const [openOnly, setOpenOnly] = useState(false)
@@ -93,11 +115,22 @@ export default function CatalogExplorer({ parts, categories }: Props) {
     )
   }, [parts, q])
 
+  const isMaterials = cat === MATERIAL_CATEGORY
+  const searchedMaterials = useMemo(() => {
+    const needle = q.trim().toLowerCase()
+    if (!needle) return materials
+    return materials.filter(m =>
+      [m.id, m.title, m.name_en, m.family_label, m.group_label, (m.aliases ?? []).join(' '), (m.applications ?? []).join(' '), m.notes]
+        .filter(Boolean).join(' ').toLowerCase().includes(needle),
+    )
+  }, [materials, q])
+
   const counts = useMemo(() => {
     const map: Record<string, number> = {}
     for (const p of searched) map[p.category] = (map[p.category] || 0) + 1
+    if (materials.length) map[MATERIAL_CATEGORY] = searchedMaterials.length
     return map
-  }, [searched])
+  }, [searched, materials.length, searchedMaterials.length])
 
   const hasRepo = (p: CatalogPart) => {
     const repos = (p.specs as Record<string, unknown> | undefined)?.repo_urls
@@ -185,6 +218,9 @@ export default function CatalogExplorer({ parts, categories }: Props) {
   }, [searched, cat, vendor])
 
   const shown = filtered.slice(0, limit)
+  const shownMaterials = searchedMaterials.slice(0, limit)
+  const resultCount = isMaterials ? searchedMaterials.length : filtered.length
+  const shownCount = isMaterials ? shownMaterials.length : shown.length
   const needle = q.trim()
   const hasFilter = Boolean(
     (cat && cat !== DEFAULT_CATEGORY) || needle || openOnly || offerOnly || vendor
@@ -251,7 +287,7 @@ export default function CatalogExplorer({ parts, categories }: Props) {
                   window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`)
                 } catch { /* history unavailable: search still works */ }
               }}
-              placeholder="搜索型号、厂商、用途…"
+              placeholder={isMaterials ? '搜索材料、别名或用途…' : '搜索型号、厂商、用途…'}
               className="h-11 pl-9 pr-11 text-base sm:h-9 sm:text-sm"
               autoComplete="off"
               enterKeyHint="search"
@@ -269,8 +305,8 @@ export default function CatalogExplorer({ parts, categories }: Props) {
           </div>
           <div className="flex min-h-8 items-center justify-between gap-2 sm:justify-end">
             <p className="text-xs text-ink-3" aria-live="polite" aria-atomic="true">
-              <span className="mono tabular font-semibold text-ink">{filtered.length}</span> 个结果
-              {cat && <span> · {categoryLabel(cat)}</span>}
+              <span className="mono tabular font-semibold text-ink">{isMaterials ? searchedMaterials.length : filtered.length}</span> 个结果
+              {cat && <span> · {catMeta?.name || categoryLabel(cat)}</span>}
               {needle && <span> · 含“{needle}”</span>}
             </p>
             {hasFilter && (
@@ -311,85 +347,89 @@ export default function CatalogExplorer({ parts, categories }: Props) {
         ))}
       </div>
 
-      <div className="chip-row -mx-1 px-1" role="group" aria-label="按品牌筛选">
-        <button
-          type="button"
-          className="chip h-7 px-2.5 text-[12px]"
-          aria-pressed={!vendor}
-          onClick={() => { setVendor(''); setLimit(PAGE) }}
-        >
-          全部品牌<span className="mono tabular opacity-60">{vendorBase.length}</span>
-        </button>
-        {vendors.slice(0, 10).map(([name, count]) => (
-          <button
-            key={name}
-            type="button"
-            className="chip h-7 px-2.5 text-[12px]"
-            aria-pressed={vendor === name}
-            onClick={() => { setVendor(vendor === name ? '' : name); setLimit(PAGE) }}
-          >
-            {name}<span className="mono tabular opacity-60">{count}</span>
-          </button>
-        ))}
-      </div>
+      {!isMaterials && (
+        <>
+          <div className="chip-row -mx-1 px-1" role="group" aria-label="按品牌筛选">
+            <button
+              type="button"
+              className="chip h-7 px-2.5 text-[12px]"
+              aria-pressed={!vendor}
+              onClick={() => { setVendor(''); setLimit(PAGE) }}
+            >
+              全部品牌<span className="mono tabular opacity-60">{vendorBase.length}</span>
+            </button>
+            {vendors.slice(0, 10).map(([name, count]) => (
+              <button
+                key={name}
+                type="button"
+                className="chip h-7 px-2.5 text-[12px]"
+                aria-pressed={vendor === name}
+                onClick={() => { setVendor(vendor === name ? '' : name); setLimit(PAGE) }}
+              >
+                {name}<span className="mono tabular opacity-60">{count}</span>
+              </button>
+            ))}
+          </div>
 
-      <div className="flex flex-wrap items-center gap-1.5">
-        <button
-          type="button"
-          className={`chip h-7 px-2.5 text-[12px] ${offerOnly ? 'border-brand bg-brand-soft text-brand' : ''}`}
-          aria-pressed={offerOnly}
-          onClick={() => {
-            setOfferOnly(v => !v)
-            setLimit(PAGE)
-            try {
-              const url = new URL(window.location.href)
-              if (!offerOnly) url.searchParams.set('offer', '1')
-              else url.searchParams.delete('offer')
-              window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`)
-            } catch { /* history unavailable */ }
-          }}
-          title="只显示当前有优惠价/渠道优惠的部件"
-        >
-          有优惠
-          <span className="mono tabular opacity-60">{offerCount}</span>
-        </button>
-        <button
-          type="button"
-          className="chip h-7 px-2.5 text-[12px]"
-          aria-pressed={openOnly}
-          onClick={() => { setOpenOnly(v => !v); setLimit(PAGE) }}
-          title="只显示带开源仓库的条目"
-        >
-          开源
-          <span className="mono tabular opacity-60">{openCount}</span>
-        </button>
-      </div>
+          <div className="flex flex-wrap items-center gap-1.5">
+            <button
+              type="button"
+              className={`chip h-7 px-2.5 text-[12px] ${offerOnly ? 'border-brand bg-brand-soft text-brand' : ''}`}
+              aria-pressed={offerOnly}
+              onClick={() => {
+                setOfferOnly(v => !v)
+                setLimit(PAGE)
+                try {
+                  const url = new URL(window.location.href)
+                  if (!offerOnly) url.searchParams.set('offer', '1')
+                  else url.searchParams.delete('offer')
+                  window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`)
+                } catch { /* history unavailable */ }
+              }}
+              title="只显示当前有优惠价/渠道优惠的部件"
+            >
+              有优惠
+              <span className="mono tabular opacity-60">{offerCount}</span>
+            </button>
+            <button
+              type="button"
+              className="chip h-7 px-2.5 text-[12px]"
+              aria-pressed={openOnly}
+              onClick={() => { setOpenOnly(v => !v); setLimit(PAGE) }}
+              title="只显示带开源仓库的条目"
+            >
+              开源
+              <span className="mono tabular opacity-60">{openCount}</span>
+            </button>
+          </div>
 
-      <div className="flex flex-wrap items-center gap-2">
-        <label className="inline-flex items-center gap-2 text-[11px] text-ink-3">
-          品牌
-          <select
-            value={vendor}
-            onChange={event => { setVendor(event.target.value); setLimit(PAGE) }}
-            className="h-8 rounded-md border border-line bg-surface px-2 text-[12px] text-ink"
-          >
-            <option value="">全部品牌（{vendorBase.length}）</option>
-            {vendors.map(([name, count]) => <option value={name}>{name}（{count}）</option>)}
-          </select>
-        </label>
-        <label className="inline-flex items-center gap-2 text-[11px] text-ink-3">
-          排序
-          <select
-            value={sort}
-            onChange={event => { setSort(event.target.value); setLimit(PAGE) }}
-            className="h-8 rounded-md border border-line bg-surface px-2 text-[12px] text-ink"
-          >
-            {sortOptions.map(item => <option value={item.value}>{item.label}</option>)}
-          </select>
-        </label>
-      </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <label className="inline-flex items-center gap-2 text-[11px] text-ink-3">
+              品牌
+              <select
+                value={vendor}
+                onChange={event => { setVendor(event.target.value); setLimit(PAGE) }}
+                className="h-8 rounded-md border border-line bg-surface px-2 text-[12px] text-ink"
+              >
+                <option value="">全部品牌（{vendorBase.length}）</option>
+                {vendors.map(([name, count]) => <option value={name}>{name}（{count}）</option>)}
+              </select>
+            </label>
+            <label className="inline-flex items-center gap-2 text-[11px] text-ink-3">
+              排序
+              <select
+                value={sort}
+                onChange={event => { setSort(event.target.value); setLimit(PAGE) }}
+                className="h-8 rounded-md border border-line bg-surface px-2 text-[12px] text-ink"
+              >
+                {sortOptions.map(item => <option value={item.value}>{item.label}</option>)}
+              </select>
+            </label>
+          </div>
+        </>
+      )}
 
-      {shown.length === 0 ? (
+      {(isMaterials ? searchedMaterials.length === 0 : shown.length === 0) ? (
         <div className="card border-dashed px-6 py-16 text-center">
           <div aria-hidden="true" className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-surface-3 text-ink-3">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -397,12 +437,16 @@ export default function CatalogExplorer({ parts, categories }: Props) {
             </svg>
           </div>
           <p className="mt-4 font-semibold text-ink">
-            {parts.length === 0 ? '目录数据尚未就绪' : '没有匹配的部件'}
+            {parts.length === 0
+              ? '目录数据尚未就绪'
+              : isMaterials ? '没有匹配的材料' : '没有匹配的部件'}
           </p>
           <p className="mx-auto mt-1.5 max-w-sm text-sm leading-6 text-ink-3">
             {parts.length === 0
               ? '数据集还在生成中，稍后刷新即可。'
-              : '换个关键词，或清空品类筛选。也可以把需求发到互动版，让用过的同行补充。'}
+              : isMaterials
+                ? '换个材料名、别名或用途试试；完整参数与加工工艺在材质库。'
+                : '换个关键词，或清空品类筛选。也可以把需求发到互动版，让用过的同行补充。'}
           </p>
           <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
             {hasFilter && (
@@ -410,14 +454,58 @@ export default function CatalogExplorer({ parts, categories }: Props) {
                 清空筛选
               </Button>
             )}
-            <a
-              href={INTERACTIVE_HOME}
-              className="inline-flex min-h-11 items-center gap-1 rounded-md px-3 text-sm font-medium text-brand hover:bg-brand-soft sm:min-h-9"
-            >
-              去社区提问<span aria-hidden="true">→</span>
-            </a>
+            {isMaterials ? (
+              <a
+                href={withBase('/materials.html')}
+                className="inline-flex min-h-11 items-center gap-1 rounded-md px-3 text-sm font-medium text-brand hover:bg-brand-soft sm:min-h-9"
+              >
+                查看完整材质库<span aria-hidden="true">→</span>
+              </a>
+            ) : (
+              <a
+                href={INTERACTIVE_HOME}
+                className="inline-flex min-h-11 items-center gap-1 rounded-md px-3 text-sm font-medium text-brand hover:bg-brand-soft sm:min-h-9"
+              >
+                去社区提问<span aria-hidden="true">→</span>
+              </a>
+            )}
           </div>
         </div>
+      ) : isMaterials ? (
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" role="list">
+          {shownMaterials.map(m => (
+            <li key={m.id} className="min-w-0">
+              <a
+                href={withBase(`/materials/${m._href}.html`)}
+                className="group flex h-full rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2"
+              >
+                <Card className="flex h-full w-full flex-col p-4 transition duration-200 group-hover:-translate-y-0.5 group-hover:border-line-strong group-hover:shadow-md">
+                  <div className="flex items-center justify-between gap-2 text-[11px] text-ink-3">
+                    <span className="rounded-full bg-brand-soft px-2 py-0.5 font-semibold text-brand">{m.family_label}</span>
+                    <span>{m.group_label}</span>
+                  </div>
+                  <h3 className="mt-2.5 text-sm font-semibold leading-5 text-ink transition-colors group-hover:text-brand">{m.title}</h3>
+                  {m.name_en && <p className="mt-0.5 line-clamp-1 text-xs text-ink-3">{m.name_en}</p>}
+                  <dl className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1.5 border-t border-line pt-3">
+                    {materialFacts(m).map(f => (
+                      <div key={f.label} className="min-w-0">
+                        <dt className="text-[10px] leading-4 text-ink-3">{f.label}</dt>
+                        <dd className="mono tabular truncate text-[12px] leading-5 text-ink-2">{f.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                  {(m.applications?.length ?? 0) > 0 && (
+                    <p className="mt-2.5 line-clamp-2 text-xs leading-5 text-ink-2">
+                      <span className="text-ink-3">适合：</span>
+                      {(m.applications ?? []).join('、')}
+                    </p>
+                  )}
+                  <span className="mt-auto pt-3 text-xs font-medium text-brand">查看参数<span aria-hidden="true"> →</span></span>
+                </Card>
+              </a>
+            </li>
+          ))}
+        </ul>
       ) : (
         <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" role="list">
           {shown.map(p => (
@@ -494,7 +582,7 @@ export default function CatalogExplorer({ parts, categories }: Props) {
         </ul>
       )}
 
-      {picked.length > 0 && (
+      {!isMaterials && picked.length > 0 && (
         <div className="fixed inset-x-3 bottom-4 z-40 mx-auto flex max-w-xl items-center gap-3 rounded-lg border border-line bg-surface px-3 py-2 shadow-lg sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2">
           <span className="mono tabular text-[12px] text-ink-2">已选 {picked.length}/4</span>
           <a
@@ -513,22 +601,24 @@ export default function CatalogExplorer({ parts, categories }: Props) {
         </div>
       )}
 
-      {filtered.length > PAGE && (
+      {resultCount > PAGE && (
         <div className="flex flex-col items-center gap-2 pt-1">
           <p className="mono tabular text-xs text-ink-3" aria-live="polite">
-            已显示 {shown.length} / {filtered.length}
+            已显示 {shownCount} / {resultCount}
           </p>
-          {limit < filtered.length ? (
+          {limit < resultCount ? (
             <Button
               type="button"
               variant="outline"
               className="min-h-11 w-full sm:min-h-9 sm:w-auto"
               onClick={() => setLimit(v => v + PAGE)}
             >
-              加载更多（剩余 {filtered.length - limit}）
+              加载更多（剩余 {resultCount - limit}）
             </Button>
           ) : (
-            <p className="text-xs text-ink-3">已显示全部 {filtered.length} 个部件</p>
+            <p className="text-xs text-ink-3">
+              已显示全部 {resultCount} {isMaterials ? '种材料' : '个部件'}
+            </p>
           )}
         </div>
       )}

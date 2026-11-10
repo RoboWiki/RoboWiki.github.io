@@ -3,11 +3,38 @@ import Base from '@/layouts/Base.astro'
 import CatalogExplorer from '@/components/CatalogExplorer'
 import { catalog, parts as allParts } from '@/lib/catalog'
 import { withBase } from '@/lib/utils'
+import materialsData from '@/data/materials.json'
 
 // 设备库已独立成页（/equipment.html）：部件库只装「进机器人身体」的零件，
 // equipment 品类从这里剔除，两个库的筛选、统计、导航不再互相串。
-const categories = (catalog.categories || []).filter(c => c.id !== 'equipment')
+const partCategories = (catalog.categories || []).filter(c => c.id !== 'equipment')
 const parts = allParts.filter(p => p.category !== 'equipment')
+
+// 材料工艺库并入部件库：常用材料合成一个品类，卡片直接给适用场景；
+// 加工工艺仍留在材质库页面。
+const groupOrder = new Map(materialsData.groups.map((group, index) => [group.id, index]))
+const materials = [...materialsData.materials]
+  .sort((a, b) => (groupOrder.get(a.group) ?? groupOrder.size) - (groupOrder.get(b.group) ?? groupOrder.size))
+  .map(m => ({
+    id: m.id,
+    group_label: m.group_label,
+    family_label: m.family_label,
+    title: m.title,
+    name_en: m.name_en,
+    aliases: m.aliases,
+    notes: m.notes,
+    applications: m.applications,
+    specs: {
+      density_g_cm3: m.specs.density_g_cm3 ?? null,
+      modulus_GPa: m.specs.modulus_GPa ?? null,
+      service_temp_C: m.specs.service_temp_C ?? null,
+    },
+    _href: m._href,
+  }))
+const categories = [
+  ...partCategories,
+  { id: 'materials', name: '常用加工材料' },
+]
 
 // 「全流程」是定位里的话，就得敢把还不全的地方摆出来：
 // 按品类统计条目数，低于 5 条的单独列一段，并给投稿入口。
@@ -15,7 +42,7 @@ const countByCategory = parts.reduce((acc, part) => {
   acc.set(part.category, (acc.get(part.category) || 0) + 1)
   return acc
 }, new Map<string, number>())
-const thinCategories = categories
+const thinCategories = partCategories
   .map(c => ({ id: c.id, name: c.name, count: countByCategory.get(c.id) ?? 0 }))
   .filter(c => c.count < 5)
   .sort((a, b) => a.count - b.count)
@@ -23,7 +50,7 @@ const vendors = new Set(parts.map(p => p.vendor).filter(Boolean)).size
 const stats = [
   { label: '部件库', value: parts.length },
   { label: '厂商', value: vendors },
-  { label: '品类', value: categories.length },
+  { label: '品类', value: partCategories.length },
 ]
 ---
 <Base title="部件库 · RoboWiki" description={`${catalog.count} 个机器人硬件部件，按品类、厂商与参数筛选。`}>
@@ -63,5 +90,5 @@ const stats = [
     </div>
   </header>
 
-  <CatalogExplorer client:load parts={parts} categories={categories} />
+  <CatalogExplorer client:load parts={parts} categories={categories} materials={materials} />
 </Base>
