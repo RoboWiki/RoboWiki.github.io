@@ -19,6 +19,14 @@ const stripped = BASE && rawPath.startsWith(BASE) ? (rawPath.slice(BASE.length) 
 // 避免 /next/ 与 /next/index.html 两份内容互为重复页。
 const path = stripped.replace(/\/index\.html$/, '/')
 const canonical = new URL(withBase(path), Astro.site ?? Astro.url).href
+// 微信 / QQ 只认绝对地址；页面传相对路径时按站点 origin 补全，没图时回退默认分享卡。
+const siteUrl = Astro.site ?? new URL(Astro.url.origin)
+const shareImage = (() => {
+  const value = String(image || '').trim()
+  if (/^https?:\/\//i.test(value)) return value
+  if (value.startsWith('//')) return `https:${value}`
+  return new URL(withBase(value || '/og-default.png'), siteUrl).href
+})()
 // 讨论串按旧站路径存库：parts/actuator/xxx、learn/control-chain。
 const commentsPage = path === '/' ? 'index' : path.replace(/^\//, '').replace(/\.html$/, '')
 // 工具型页面（搜索、对比、路径选择、开源索引）不挂讨论区：那里没有可讨论的对象。
@@ -90,8 +98,11 @@ const footerGroups = [
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    {image && <meta property="og:image" content={image} />}
-    <meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
+    <meta property="og:image" content={shareImage} />
+    <meta property="og:image:alt" content={title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={shareImage} />
+    <meta name="twitter:image:alt" content={title} />
     <title>{title}</title>
     <script is:inline>
       // 主题在首帧前落定，避免闪白。默认跟随系统。
