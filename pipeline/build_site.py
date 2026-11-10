@@ -58,6 +58,52 @@ def slug(s: str) -> str:
     return a
 
 
+def _robot_slug(r: dict) -> str:
+    base = str(r.get("id") or f"{r.get('vendor', 'x')}-{r['model']}")
+    if base.startswith("struct-"):
+        base = base[len("struct-"):]
+    keep = "".join(ch if (ch.isalnum() and ch.isascii()) else "-" for ch in base.lower())
+    while "--" in keep:
+        keep = keep.replace("--", "-")
+    return keep.strip("-") or "robot"
+
+
+def _load_part_builds() -> dict[str, list[dict]]:
+    """BOM 里的 catalog_part_id -> 包含该部件的全开源整机。"""
+    robots: dict[str, dict] = {}
+    for f in sorted((DATA_DIR / "robots").glob("*.json")):
+        for r in json.loads(f.read_text(encoding="utf-8")):
+            if r.get("openness") == "full":
+                robots[r["id"]] = r
+    out: dict[str, list[dict]] = {}
+    for f in sorted((DATA_DIR / "boms").glob("*.json")):
+        try:
+            doc = json.loads(f.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        r = robots.get(doc.get("robot_id"))
+        if not r:
+            continue
+        entry = {
+            "id": r["id"],
+            "slug": _robot_slug(r),
+            "model": r.get("model"),
+            "vendor": r.get("vendor_cn") or r.get("vendor"),
+            "name": f"{r.get('vendor_cn') or r.get('vendor')} {r.get('model')}",
+            "url": f"/builds/{_robot_slug(r)}.html",
+        }
+        for line in doc.get("lines") or []:
+            pid = line.get("catalog_part_id")
+            if not pid:
+                continue
+            lst = out.setdefault(pid, [])
+            if entry not in lst:
+                lst.append(entry)
+    for lst in out.values():
+        lst.sort(key=lambda x: x["name"])
+    return out
+
+
 def vendor_slugs(items: list[dict], *, legacy: bool = False) -> dict[str, str]:
     """品类内的厂商 URL 片段。
 
@@ -1123,6 +1169,7 @@ def main() -> None:
         return [pack(o, p) for p, o in sorted(priced, key=lambda x: x[0])]
 
     digest = []
+    part_builds = _load_part_builds()
     for r in rows:
         s = r.get("specs") or {}
         rt = ratings.get(r["id"]) or {}
@@ -1134,6 +1181,7 @@ def main() -> None:
             "vendor": r["vendor"], "model": r["model"],
             "price": r.get("price_cny"),
             "image": s.get("image_url") or None,
+            "builds": part_builds.get(r["id"]) or [],
             "rating": {"avg": rt.get("avg"), "count": rt.get("count") or 0},
             # 全部优惠按价格升序；卡片取第一条显示优惠价，其余在部件页列出
             "offers": of,

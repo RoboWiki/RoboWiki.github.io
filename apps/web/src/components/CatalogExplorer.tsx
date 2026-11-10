@@ -534,8 +534,16 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
                     {p.image
                       ? <img src={imageUrl(p)} alt={`${p.vendor} ${p.model}`} loading="lazy" className="h-full w-full object-contain p-4 transition-transform duration-300 group-hover:scale-[1.03]" />
                       : <span className="px-4 text-center text-xs text-ink-3">暂无产品图</span>}
-                    <div className="absolute left-2 top-2">
+                    <div className="absolute left-2 top-2 flex flex-wrap gap-1">
                       {hasOffer(p) && <span className="rounded-full border border-line bg-brand-soft px-2 py-0.5 text-[11px] font-medium text-brand">有优惠</span>}
+                      {(p.builds?.length ?? 0) > 0 && (
+                        <span
+                          className="rounded-full border border-success/30 bg-success-soft px-2 py-0.5 text-[11px] font-medium text-success"
+                          title={p.builds!.map(b => b.name).join('、')}
+                        >
+                          有方案
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className="flex flex-1 flex-col gap-2 p-4">

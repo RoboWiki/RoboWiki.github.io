@@ -1,6 +1,15 @@
 import raw from '@/data/catalog.json'
 import siteMeta from '@/data/site-meta.json'
 
+export type PartBuild = {
+  id: string
+  slug: string
+  name: string
+  model?: string
+  vendor?: string
+  url: string
+}
+
 export type CatalogPart = {
   id: string
   slug: string
@@ -13,6 +22,7 @@ export type CatalogPart = {
   verified?: boolean
   price?: number | null
   image?: string | null
+  builds?: PartBuild[]
   rating?: { avg?: number | null; count?: number }
   offers?: Array<Record<string, unknown>>
   offer?: Record<string, unknown> | null
