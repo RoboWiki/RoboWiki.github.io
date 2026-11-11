@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "@robowiki/tokens/tokens.css";
+@import "./style-themes.css";
 
 /* 深色由 <html class="dark"> 决定；默认跟随系统，由布局里的内联脚本落定。 */
 @custom-variant dark (&:where(.dark, .dark *));

@@ -1,5 +1,6 @@
 ---
 import Base from '@/layouts/Base.astro'
+import Intro from '@/components/Intro.astro'
 import RatingSummary from '@/components/RatingSummary'
 import SeoJsonLd from '@/components/SeoJsonLd.astro'
 import fs from 'node:fs'
@@ -235,62 +236,72 @@ const keyStats = STAT_PRIORITY
     <span class="text-ink-2" aria-current="page">{part.model}</span>
   </nav>
 
-  <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
-    <div class="space-y-4">
-      <header class="card overflow-hidden">
-        <div class="grid gap-5 p-5 sm:grid-cols-[220px_minmax(0,1fr)] sm:p-6">
-          <div class="flex h-44 items-center justify-center rounded-md border border-line bg-surface-2">
-            {part.image
-              ? <img src={imageUrl(part)} alt={`${part.vendor} ${part.model}`} class="h-full w-full object-contain p-4" />
-              : <span class="text-xs text-ink-3">暂无产品图</span>}
+  <header class="card grid gap-6 p-5 sm:p-6 lg:grid-cols-[minmax(0,260px)_minmax(0,1fr)]">
+    <div class="flex h-52 items-center justify-center overflow-hidden rounded-md border border-line bg-surface-2 lg:h-full">
+      {part.image
+        ? <img src={imageUrl(part)} alt={`${part.vendor} ${part.model}`} class="h-full w-full object-contain p-4" />
+        : (
+          <span class="flex flex-col items-center gap-1.5 text-xs text-ink-3">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <rect x="4" y="7" width="16" height="12" rx="2" />
+              <path d="M12 3v4M9 12h.01M15 12h.01" stroke-linecap="round" />
+            </svg>
+            暂无产品图
+          </span>
+        )}
+    </div>
+
+    <div class="flex min-w-0 flex-col">
+      <div class="flex flex-wrap items-center gap-1.5">
+        <span class="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-xs text-ink-2">{categoryLabel(part.category)}</span>
+        {layer && (
+          <a
+            href={withBase(`/layers/${layer.id}.html`)}
+            class="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-xs text-ink-3 transition-colors hover:border-line-strong hover:text-brand"
+          >
+            {layer.index} {layer.name}
+          </a>
+        )}
+        {part.subtypeLabel && <span class="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-xs text-ink-2">{part.subtypeLabel}</span>}
+      </div>
+      <h1 class="mt-3 text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">{part.model}</h1>
+      <p class="mt-1 text-sm text-ink-3">{part.vendor}</p>
+
+      <dl class="mt-5 flex flex-wrap gap-2">
+        {keyStats.map(s => (
+          <div class="min-w-[7.5rem] rounded-md border border-line bg-surface-2 px-3.5 py-2.5">
+            <dt class="text-xs text-ink-3">{s.label}</dt>
+            <dd class="mono tabular mt-0.5 text-sm font-semibold text-ink">
+              {s.value}
+              {s.unit && <span class="ml-0.5 text-xs font-normal text-ink-3">{s.unit}</span>}
+            </dd>
           </div>
-          <div class="min-w-0">
-            <div class="flex flex-wrap items-center gap-1.5">
-              <span class="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-xs text-ink-2">{categoryLabel(part.category)}</span>
-              {layer && (
-                <a
-                  href={withBase(`/layers/${layer.id}.html`)}
-                  class="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-xs text-ink-3 transition-colors hover:border-line-strong hover:text-brand"
-                >
-                  {layer.index} {layer.name}
-                </a>
-              )}
-              {part.subtypeLabel && <span class="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-xs text-ink-2">{part.subtypeLabel}</span>}
-            </div>
-            <h1 class="mt-3 text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">{part.model}</h1>
-            <p class="mt-1 text-sm text-ink-3">{part.vendor}</p>
-
-            <dl class="mt-5 grid grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] gap-px overflow-hidden rounded-md border border-line bg-line">
-              {keyStats.map(s => (
-                <div class="bg-surface px-3 py-3">
-                  <dt class="text-xs text-ink-3">{s.label}</dt>
-                  <dd class="mono tabular mt-0.5 text-sm font-semibold text-ink">
-                    {s.value}
-                    {s.unit && <span class="ml-0.5 text-xs font-normal text-ink-3">{s.unit}</span>}
-                  </dd>
-                </div>
-              ))}
-              <div class="bg-surface px-3 py-3">
-                <dt class="text-xs text-ink-3">
-                  {bestOffer !== null ? '优惠价' : '参考价'}
-                </dt>
-                <dd class="mt-0.5 flex flex-wrap items-baseline gap-x-1.5">
-                  <span class={`mono tabular text-sm font-semibold ${bestOffer !== null ? 'text-brand' : 'text-ink'}`}>
-                    {formatPrice(bestOffer ?? regularReference)}
-                  </span>
-                  {showCompare && (
-                    <span class="mono tabular text-xs text-ink-3 ">参考 {formatPrice(regularReference)}</span>
-                  )}
-                </dd>
-              </div>
-            </dl>
-
-            {part.notes && (
-              <p class="mt-4 border-l-2 border-brand/40 pl-3 text-sm leading-6 text-ink-2">{part.notes}</p>
+        ))}
+        <div class="min-w-[7.5rem] rounded-md border border-line bg-surface-2 px-3.5 py-2.5">
+          <dt class="text-xs text-ink-3">
+            {bestOffer !== null ? '优惠价' : '参考价'}
+          </dt>
+          <dd class="mt-0.5 flex flex-wrap items-baseline gap-x-1.5">
+            <span class={`mono tabular text-sm font-semibold ${bestOffer !== null ? 'text-brand' : 'text-ink'}`}>
+              {formatPrice(bestOffer ?? regularReference)}
+            </span>
+            {showCompare && (
+              <span class="mono tabular text-xs text-ink-3">参考 {formatPrice(regularReference)}</span>
             )}
-          </div>
+          </dd>
         </div>
-      </header>
+      </dl>
+    </div>
+  </header>
+
+  <div class="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
+    <div class="space-y-4">
+      {part.notes && (
+        <section class="card p-5 sm:p-6" aria-labelledby="notes">
+          <h2 id="notes" class="text-base font-bold tracking-tight text-ink">简介</h2>
+          <Intro text={part.notes} class="mt-3" />
+        </section>
+      )}
 
       {offers.length > 0 && (
         <section class="card p-5" aria-labelledby="offers">
