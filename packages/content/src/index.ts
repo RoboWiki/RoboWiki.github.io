@@ -6,7 +6,7 @@
  */
 
 export type WebNavItem = {
-  key: 'home' | 'learn' | 'builds' | 'catalog' | 'equipment' | 'suppliers' | 'community'
+  key: 'home' | 'learn' | 'builds' | 'catalog' | 'selector' | 'equipment' | 'suppliers' | 'community'
   label: string
   desc: string
   href: string
@@ -42,6 +42,13 @@ export const WEB_NAV: WebNavItem[] = [
     desc: '参数带来源，缺失写 null',
     href: '/catalog.html',
     match: ['/catalog', '/parts', '/materials'],
+  },
+  {
+    key: 'selector',
+    label: '选型台',
+    desc: '按构型与功能推导 BOM 和 MJCF',
+    href: '/selector.html',
+    match: ['/selector'],
   },
   {
     key: 'equipment',

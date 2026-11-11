@@ -1,0 +1,60 @@
+---
+import Base from '@/layouts/Base.astro'
+import SelectorConsole from '@/components/SelectorConsole'
+import { parts as allParts } from '@/lib/catalog'
+import { withBase } from '@/lib/utils'
+import modelsData from '@/data/selector-models.json'
+import type { SelectorModel } from '@/lib/selector'
+
+const models = modelsData as SelectorModel[]
+const parts = allParts.filter(p => p.category !== 'equipment')
+const counts = models.reduce((acc, m) => {
+  acc[m.type] = (acc[m.type] || 0) + 1
+  return acc
+}, {} as Record<string, number>)
+---
+
+<Base
+  title="选型台 · RoboWiki"
+  description="按机器人构型、档位和功能需求，从 54 个可信参考机型推导执行器、主控、传感器、电池与线束 BOM，并导出 MJCF。"
+>
+  <header class="mb-6">
+    <nav class="text-xs text-ink-3" aria-label="面包屑">
+      <a href={withBase('/')} class="hover:text-ink">首页</a>
+      <span class="mx-1.5" aria-hidden="true">/</span>
+      <span class="text-ink-2">选型台</span>
+    </nav>
+    <div class="mt-3 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <h1 class="text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">先定构型，再定功能，最后才是零件。</h1>
+        <p class="mt-2 max-w-3xl text-sm leading-6 text-ink-3">
+          54 个经 URDF 校验的参考机型 → 执行器/主控/电池/传感器/线束 BOM → 可导入导出、可分享、可下 MJCF。
+          结构件、紧固件和 3D 打印件不在范围内。
+        </p>
+        <div class="mt-3 flex flex-wrap items-center gap-3 text-[12px] text-ink-3">
+          <span>四足 {counts.quadruped ?? 0}</span>
+          <span>四轮足 {counts.wheel_legged ?? 0}</span>
+          <span>人形 {counts.humanoid ?? 0}</span>
+          <span>机械臂 {counts.arm ?? 0}</span>
+          <a href={withBase('/catalog.html')} class="font-medium text-brand hover:underline">去部件库核对参数 →</a>
+        </div>
+      </div>
+      <div class="grid shrink-0 grid-cols-3 gap-px overflow-hidden rounded-md border border-line bg-line">
+        <div class="bg-surface px-3 py-2.5">
+          <div class="text-[11px] text-ink-3">参考机型</div>
+          <div class="mono tabular mt-0.5 text-lg font-bold text-ink">{models.length}</div>
+        </div>
+        <div class="bg-surface px-3 py-2.5">
+          <div class="text-[11px] text-ink-3">可选部件</div>
+          <div class="mono tabular mt-0.5 text-lg font-bold text-ink">{parts.length}</div>
+        </div>
+        <div class="bg-surface px-3 py-2.5">
+          <div class="text-[11px] text-ink-3">覆盖品类</div>
+          <div class="mono tabular mt-0.5 text-lg font-bold text-ink">5</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <SelectorConsole client:load parts={parts} models={models} />
+</Base>

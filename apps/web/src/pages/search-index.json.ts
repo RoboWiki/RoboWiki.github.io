@@ -29,6 +29,14 @@ export const GET: APIRoute = async () => {
     })
   }
 
+  entries.push({
+    k: 'page',
+    t: '选型台',
+    d: '按构型、档位与功能需求生成 BOM 和 MJCF',
+    u: `${base}selector.html`,
+    x: '选型台 配置 BOM MJCF 四足 四轮足 人形 机械臂 执行器 主控 电池 传感器 线束',
+  })
+
   for (const robot of (robotsData.robots as unknown as Array<Record<string, any>>)) {
     entries.push({
       k: 'build',

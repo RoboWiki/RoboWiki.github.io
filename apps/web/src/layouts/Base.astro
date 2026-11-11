@@ -34,7 +34,7 @@ const imageMeta = imageSize(String(image || '').trim() || '/og-default.png', BAS
 // 讨论串按旧站路径存库：parts/actuator/xxx、learn/control-chain。
 const commentsPage = path === '/' ? 'index' : path.replace(/^\//, '').replace(/\.html$/, '')
 // 工具型页面（搜索、对比、路径选择、开源索引）不挂讨论区：那里没有可讨论的对象。
-const showComments = !/^(admin|login|account|community|post|top|u|404|search|compare|start|open|paths)/.test(commentsPage)
+const showComments = !/^(admin|login|account|community|post|top|u|404|search|compare|start|open|paths|selector)/.test(commentsPage)
 // 一级入口与小程序共用一份：学习 / 方案 / 部件 / 社区 / 采购。
 const nav = WEB_NAV
 
@@ -58,6 +58,7 @@ const footerGroups = [
     title: '找东西',
     links: [
       { href: '/catalog.html', label: '部件库' },
+      { href: '/selector.html', label: '选型台' },
       { href: '/equipment.html', label: '设备库' },
       { href: '/builds.html', label: '方案库' },
       { href: '/materials.html', label: '材质与工艺' },
