@@ -1,6 +1,6 @@
 /* RoboWiki design tokens. Primitive -> semantic; apps may override brand hue only. */
 /* 同时挂到 page：微信小程序 WXSS 不保证 :root 生效，page 是稳定根选择器。 */
-/* 默认主题为暖纸（降亮度、降眩光）；深色与高对比由 [data-theme] 覆盖。 */
+/* 默认主题为浅色青碧暖纸（降亮度、降眩光）；深色与 iOS 由 [data-theme] 覆盖。 */
 :root,
 page {
   --rw-radius-xs: 4px;
@@ -41,29 +41,29 @@ page {
   --rw-dur-base: 180ms;
   --rw-dur-slow: 240ms;
 
-  /* ── 语义色：暖纸（默认浅色） ───────────────────────────────────── */
-  --rw-primary: #2563eb;
-  --rw-primary-hover: #1d4ed8;
-  --rw-primary-soft: #eef4ff;
+  /* ── 语义色：浅色（青碧暖纸，默认） ─────────────────────────────── */
+  --rw-primary: #0e7a6d;
+  --rw-primary-hover: #0b6257;
+  --rw-primary-soft: #e2f0ec;
   --rw-primary-foreground: #ffffff;
 
   --rw-success: #15803d;
-  --rw-success-soft: #ecfdf3;
+  --rw-success-soft: #e7f3ea;
   --rw-warning: #b45309;
-  --rw-warning-soft: #fffaeb;
+  --rw-warning-soft: #fbf0df;
   --rw-danger: #b42318;
-  --rw-danger-soft: #fef3f2;
+  --rw-danger-soft: #fbe9e7;
 
-  --rw-bg: #f7f5f0;
-  --rw-surface: #fffdf8;
-  --rw-surface-2: #f3efe6;
-  --rw-surface-3: #ece6da;
-  --rw-border: #e2dbcc;
-  --rw-border-strong: #cbc1ae;
+  --rw-bg: #f5f1e8;
+  --rw-surface: #fdfbf6;
+  --rw-surface-2: #efe9dc;
+  --rw-surface-3: #e6dfce;
+  --rw-border: #e2d9c6;
+  --rw-border-strong: #cdc2a8;
 
-  --rw-ink: #1f2328;
-  --rw-ink-2: #4a4a48;
-  --rw-ink-3: #6b6a66;
+  --rw-ink: #1f2823;
+  --rw-ink-2: #414f47;
+  --rw-ink-3: #5f6a59;
   --rw-ink-inverse: #ffffff;
 
   --rw-muted: var(--rw-ink-3);
@@ -76,10 +76,10 @@ page {
   --rw-layer-algo: #b45309;
   --rw-layer-sys: #1d4ed8;
 
-  --rw-shadow-xs: 0 1px 2px rgb(40 32 16 / 0.06);
-  --rw-shadow-sm: 0 1px 3px rgb(40 32 16 / 0.09), 0 1px 2px rgb(40 32 16 / 0.05);
-  --rw-shadow-md: 0 8px 24px -12px rgb(40 32 16 / 0.18);
-  --rw-shadow-lg: 0 24px 48px -24px rgb(40 32 16 / 0.28);
+  --rw-shadow-xs: 0 1px 2px rgb(40 48 32 / 0.06);
+  --rw-shadow-sm: 0 1px 3px rgb(40 48 32 / 0.09), 0 1px 2px rgb(40 48 32 / 0.05);
+  --rw-shadow-md: 0 8px 24px -12px rgb(40 48 32 / 0.18);
+  --rw-shadow-lg: 0 24px 48px -24px rgb(40 48 32 / 0.28);
 
   --rw-font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
     "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei",
@@ -89,33 +89,33 @@ page {
   color-scheme: light;
 }
 
-/* ── 语义色：深色 ───────────────────────────────────────────────── */
+/* ── 语义色：深色（薄荷暖炭） ─────────────────────────────────── */
 [data-theme="dark"],
 .dark,
 page.dark {
-  --rw-primary: #6ea8ff;
-  --rw-primary-hover: #8cbbff;
-  --rw-primary-soft: #14233b;
-  --rw-primary-foreground: #06101f;
+  --rw-primary: #45d6b8;
+  --rw-primary-hover: #6ce2c9;
+  --rw-primary-soft: #14322b;
+  --rw-primary-foreground: #06120f;
 
   --rw-success: #4ade80;
-  --rw-success-soft: #0f2a1d;
+  --rw-success-soft: #122a1c;
   --rw-warning: #fbbf24;
   --rw-warning-soft: #2b2109;
   --rw-danger: #fb7185;
   --rw-danger-soft: #2d1414;
 
-  --rw-bg: #0f1217;
-  --rw-surface: #161a21;
-  --rw-surface-2: #1b2028;
-  --rw-surface-3: #222833;
-  --rw-border: #2a3240;
-  --rw-border-strong: #3a4557;
+  --rw-bg: #14120d;
+  --rw-surface: #1d1a14;
+  --rw-surface-2: #242019;
+  --rw-surface-3: #2c2820;
+  --rw-border: #38342b;
+  --rw-border-strong: #4a453a;
 
-  --rw-ink: #e6e9ee;
-  --rw-ink-2: #b0b7c3;
-  --rw-ink-3: #8a93a3;
-  --rw-ink-inverse: #0f1217;
+  --rw-ink: #ece7da;
+  --rw-ink-2: #c3bda9;
+  --rw-ink-3: #948e7c;
+  --rw-ink-inverse: #14120d;
 
   --rw-layer-mech: #a78bfa;
   --rw-layer-hw: #22d3ee;
@@ -232,10 +232,10 @@ page.dark {
   color-scheme: dark;
 }
 
-/* ── test 主题：青碧暖纸 · 大字号易读（网页专属模式，与 iOS 同口径） ── */
+/* ── 浅色 / 深色：青碧暖纸 · 大字号易读（网页专属模式，与 iOS 同口径） ── */
 /* 小程序只切 .dark，不会落到这些 data-theme；浅/深共用字体、字号、圆角。 */
-[data-theme="test"],
-[data-theme="test-dark"] {
+[data-theme="light"],
+[data-theme="dark"] {
   --rw-font-sans: "Trebuchet MS", "Microsoft YaHei", "PingFang SC",
     "Hiragino Sans GB", "Noto Sans SC", ui-sans-serif, system-ui, sans-serif;
   --rw-font-mono: "Cascadia Code", "Cascadia Mono", Consolas, "JetBrains Mono",
@@ -278,71 +278,4 @@ page.dark {
   --rw-leading-tight: 1.4;
   --rw-leading-base: 1.7;
   --rw-leading-relaxed: 1.85;
-}
-
-[data-theme="test"] {
-  --rw-primary: #0e7a6d;
-  --rw-primary-hover: #0b6257;
-  --rw-primary-soft: #e2f0ec;
-  --rw-primary-foreground: #ffffff;
-
-  --rw-success: #15803d;
-  --rw-success-soft: #e7f3ea;
-  --rw-warning: #b45309;
-  --rw-warning-soft: #fbf0df;
-  --rw-danger: #b42318;
-  --rw-danger-soft: #fbe9e7;
-
-  --rw-bg: #f5f1e8;
-  --rw-surface: #fdfbf6;
-  --rw-surface-2: #efe9dc;
-  --rw-surface-3: #e6dfce;
-  --rw-border: #e2d9c6;
-  --rw-border-strong: #cdc2a8;
-
-  --rw-ink: #1f2823;
-  --rw-ink-2: #414f47;
-  --rw-ink-3: #5f6a59;
-  --rw-ink-inverse: #ffffff;
-
-  --rw-shadow-xs: 0 1px 2px rgb(40 48 32 / 0.06);
-  --rw-shadow-sm: 0 1px 3px rgb(40 48 32 / 0.09), 0 1px 2px rgb(40 48 32 / 0.05);
-  --rw-shadow-md: 0 8px 24px -12px rgb(40 48 32 / 0.18);
-  --rw-shadow-lg: 0 24px 48px -24px rgb(40 48 32 / 0.28);
-
-  color-scheme: light;
-}
-
-/* ── test 深色：薄荷暖炭（脚本同时挂 .dark，specificity 压过默认 .dark） ── */
-.dark[data-theme="test-dark"] {
-  --rw-primary: #45d6b8;
-  --rw-primary-hover: #6ce2c9;
-  --rw-primary-soft: #14322b;
-  --rw-primary-foreground: #06120f;
-
-  --rw-success: #4ade80;
-  --rw-success-soft: #122a1c;
-  --rw-warning: #fbbf24;
-  --rw-warning-soft: #2b2109;
-  --rw-danger: #fb7185;
-  --rw-danger-soft: #2d1414;
-
-  --rw-bg: #14120d;
-  --rw-surface: #1d1a14;
-  --rw-surface-2: #242019;
-  --rw-surface-3: #2c2820;
-  --rw-border: #38342b;
-  --rw-border-strong: #4a453a;
-
-  --rw-ink: #ece7da;
-  --rw-ink-2: #c3bda9;
-  --rw-ink-3: #948e7c;
-  --rw-ink-inverse: #14120d;
-
-  --rw-shadow-xs: 0 1px 2px rgb(0 0 0 / 0.4);
-  --rw-shadow-sm: 0 1px 3px rgb(0 0 0 / 0.5);
-  --rw-shadow-md: 0 8px 24px -12px rgb(0 0 0 / 0.6);
-  --rw-shadow-lg: 0 24px 48px -24px rgb(0 0 0 / 0.7);
-
-  color-scheme: dark;
 }

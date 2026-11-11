@@ -39,12 +39,10 @@ const showComments = !/^(admin|login|account|community|post|top|u|404|search|com
 // 一级入口与小程序共用一份：学习 / 方案 / 部件 / 社区 / 采购。
 const nav = WEB_NAV
 const themeOptions = [
-  { key: 'warm', label: '暖纸', swatch: '#f7f5f0' },
-  { key: 'dark', label: '深色', swatch: '#0f1217' },
+  { key: 'light', label: '浅色', swatch: '#0e7a6d' },
+  { key: 'dark', label: '深色', swatch: '#45d6b8' },
   { key: 'ios', label: 'iOS 浅色', swatch: '#f2f2f7' },
   { key: 'ios-dark', label: 'iOS 深色', swatch: '#000000' },
-  { key: 'test', label: 'test 浅色', swatch: '#0e7a6d' },
-  { key: 'test-dark', label: 'test 深色', swatch: '#45d6b8' },
 ]
 
 const isCurrent = (item: (typeof WEB_NAV)[number]) => {
@@ -127,27 +125,28 @@ const footerGroups = [
     <meta name="twitter:image:alt" content={title} />
     <title>{title}</title>
     <script is:inline>
-      // 主题在首帧前落定：暖纸 / 深色 / iOS 浅色 / iOS 深色 / test 浅色 / test 深色。
+      // 主题在首帧前落定：浅色 / 深色 / iOS 浅色 / iOS 深色。
       (() => {
         const root = document.documentElement
         const KEY = 'rw-theme'
-        const modes = ['warm', 'dark', 'ios', 'ios-dark', 'test', 'test-dark']
-        let mode = 'warm'
-        try { mode = localStorage.getItem(KEY) || 'warm' } catch {}
-        // 旧版浅色 / 跟随系统 / 高对比统一回落到暖纸。
-        if (mode === 'light' || mode === 'system' || mode === 'contrast') mode = 'warm'
-        if (!modes.includes(mode)) mode = 'warm'
+        const modes = ['light', 'dark', 'ios', 'ios-dark']
+        let mode = 'light'
+        try { mode = localStorage.getItem(KEY) || 'light' } catch {}
+        // 旧版暖纸 / test / 跟随系统 / 高对比统一回落到浅色；旧 test 深色回落到深色。
+        if (mode === 'warm' || mode === 'test' || mode === 'system' || mode === 'contrast') mode = 'light'
+        if (mode === 'test-dark') mode = 'dark'
+        if (!modes.includes(mode)) mode = 'light'
         const apply = (m, persist) => {
-          const theme = modes.includes(m) ? m : 'warm'
+          const theme = modes.includes(m) ? m : 'light'
           root.dataset.theme = theme
           root.dataset.themeMode = theme
           // 保留 .dark：组件里的 dark: 工具类与小程序端都依赖它。
-          root.classList.toggle('dark', theme === 'dark' || theme === 'ios-dark' || theme === 'test-dark')
-          root.style.colorScheme = theme === 'dark' || theme === 'ios-dark' || theme === 'test-dark' ? 'dark' : 'light'
+          root.classList.toggle('dark', theme === 'dark' || theme === 'ios-dark')
+          root.style.colorScheme = theme === 'dark' || theme === 'ios-dark' ? 'dark' : 'light'
           if (persist) { try { localStorage.setItem(KEY, theme) } catch {} }
           document.dispatchEvent(new CustomEvent('rw:themechange', { detail: { mode: theme, theme } }))
         }
-        window.__rwTheme = { modes, apply, get mode() { return root.dataset.themeMode || 'warm' } }
+        window.__rwTheme = { modes, apply, get mode() { return root.dataset.themeMode || 'light' } }
         apply(mode, false)
       })()
     </script>
@@ -630,12 +629,12 @@ const footerGroups = [
       const themeMenu = document.querySelector<HTMLDetailsElement>('details.theme-menu')
       const themeButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-theme-option]'))
       const syncThemeMenu = () => {
-        const mode = (window as any).__rwTheme?.mode || 'warm'
+        const mode = (window as any).__rwTheme?.mode || 'light'
         themeButtons.forEach(btn => btn.setAttribute('aria-pressed', String(btn.dataset.themeOption === mode)))
       }
       themeButtons.forEach(btn => {
         btn.addEventListener('click', () => {
-          ;(window as any).__rwTheme?.apply(btn.dataset.themeOption || 'warm', true)
+          ;(window as any).__rwTheme?.apply(btn.dataset.themeOption || 'light', true)
           themeMenu?.removeAttribute('open')
         })
       })

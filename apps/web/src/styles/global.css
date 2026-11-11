@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "@robowiki/tokens/tokens.css";
 
-/* 深色由 <html class="dark"> 决定；默认跟随系统，由布局里的内联脚本落定。 */
+/* 深色由 <html class="dark"> 决定；默认浅色，由布局里的内联脚本落定。 */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
@@ -64,7 +64,7 @@ body {
   font-feature-settings: "cv11", "ss01";
 }
 
-/* Tailwind Typography 的 prose 页面（教程详情、竞赛资料等）统一走暖纸/深色 token。 */
+/* Tailwind Typography 的 prose 页面（教程详情、竞赛资料等）统一走浅色/深色 token。 */
 .prose {
   --tw-prose-body: var(--rw-ink-2);
   --tw-prose-headings: var(--rw-ink);
@@ -86,11 +86,6 @@ body {
 }
 .prose :where(table) { font-size: 0.9rem; }
 .prose :where(thead th) { background: var(--rw-surface-2); color: var(--rw-ink); }
-
-/* 高对比主题：焦点环加粗，避免在纯黑/纯白背景上丢失。 */
-[data-theme="contrast"] :focus-visible {
-  outline-width: 3px;
-}
 
 /* 主题菜单：当前项高亮 + 勾选。 */
 .theme-menu [data-theme-option][aria-pressed="true"] {
@@ -470,7 +465,7 @@ main :where(dd) {
 }
 }
 
-/* driver.js 提示层：跟随暖纸/深色主题。 */
+/* driver.js 提示层：跟随浅色/深色主题。 */
 :root {
   --driver-hint-color: var(--rw-primary);
   --driver-hint-size: 20px;
@@ -537,22 +532,22 @@ main :where(dd) {
   border: 1px solid var(--rw-border);
 }
 
-/* ── test 主题外观：坐标纸底纹 + 放宽标题字距（仅 test 浅/深，不影响其它主题） ── */
+/* ── 浅色 / 深色外观：3% 坐标纸底纹 + 放宽标题字距（不影响 iOS） ── */
 /* body 的 background 简写会把 image 重置为 none，这里用更高 specificity 叠回网格；
    卡片仍是不透明 surface，网格只露在页边与卡片间隙，不干扰正文阅读。 */
-[data-theme="test"] body {
+[data-theme="light"] body {
   background-image:
-    linear-gradient(color-mix(in srgb, var(--rw-primary) 5%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--rw-primary) 5%, transparent) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--rw-primary) 3%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--rw-primary) 3%, transparent) 1px, transparent 1px);
   background-size: 24px 24px;
 }
-.dark[data-theme="test-dark"] body {
+.dark[data-theme="dark"] body {
   background-image:
-    linear-gradient(color-mix(in srgb, var(--rw-primary) 7%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--rw-primary) 7%, transparent) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--rw-primary) 3%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--rw-primary) 3%, transparent) 1px, transparent 1px);
   background-size: 24px 24px;
 }
-[data-theme="test"] :is(h1, h2, h3),
-[data-theme="test-dark"] :is(h1, h2, h3) {
+[data-theme="light"] :is(h1, h2, h3),
+[data-theme="dark"] :is(h1, h2, h3) {
   letter-spacing: normal;
 }
