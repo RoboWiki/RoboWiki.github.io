@@ -537,14 +537,14 @@ main :where(dd) {
    卡片仍是不透明 surface，网格只露在页边与卡片间隙，不干扰正文阅读。 */
 [data-theme="light"] body {
   background-image:
-    linear-gradient(color-mix(in srgb, var(--rw-primary) 3%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--rw-primary) 3%, transparent) 1px, transparent 1px);
+    linear-gradient(var(--rw-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--rw-grid-line) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 .dark[data-theme="dark"] body {
   background-image:
-    linear-gradient(color-mix(in srgb, var(--rw-primary) 3%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--rw-primary) 3%, transparent) 1px, transparent 1px);
+    linear-gradient(var(--rw-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--rw-grid-line) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 [data-theme="light"] :is(h1, h2, h3),

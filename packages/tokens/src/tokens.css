@@ -65,6 +65,7 @@ page {
   --rw-ink-2: #414f47;
   --rw-ink-3: #5f6a59;
   --rw-ink-inverse: #ffffff;
+  --rw-grid-line: rgb(14 122 109 / 0.03);
 
   --rw-muted: var(--rw-ink-3);
 
@@ -116,6 +117,7 @@ page.dark {
   --rw-ink-2: #c3bda9;
   --rw-ink-3: #948e7c;
   --rw-ink-inverse: #14120d;
+  --rw-grid-line: rgb(69 214 184 / 0.03);
 
   --rw-layer-mech: #a78bfa;
   --rw-layer-hw: #22d3ee;
