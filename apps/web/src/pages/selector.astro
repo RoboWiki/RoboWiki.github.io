@@ -8,6 +8,7 @@ import type { SelectorModel } from '@/lib/selector'
 
 const models = modelsData as SelectorModel[]
 const parts = allParts.filter(p => p.category !== 'equipment')
+const categoryCount = new Set(parts.map(p => p.category)).size
 const counts = models.reduce((acc, m) => {
   acc[m.type] = (acc[m.type] || 0) + 1
   return acc
@@ -16,7 +17,7 @@ const counts = models.reduce((acc, m) => {
 
 <Base
   title="选型台 · RoboWiki"
-  description="按机器人构型、档位和功能需求，从 54 个可信参考机型推导执行器、主控、传感器、电池与线束 BOM，并导出 MJCF。"
+  description={`按机器人构型、档位和功能需求，从 ${models.length} 个可信参考机型推导虚拟件需求，参考选项附评价自选，覆盖执行器、电源、主控、感知与线束小件，并导出 MJCF。`}
 >
   <header class="mb-6">
     <nav class="text-xs text-ink-3" aria-label="面包屑">
@@ -28,7 +29,8 @@ const counts = models.reduce((acc, m) => {
       <div>
         <h1 class="text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">先定构型，再定功能，最后才是零件。</h1>
         <p class="mt-2 max-w-3xl text-sm leading-6 text-ink-3">
-          54 个经 URDF 校验的参考机型 → 执行器/主控/电池/传感器/线束 BOM → 可导入导出、可分享、可下 MJCF。
+          {models.length} 个经 URDF 校验的参考机型 → 每个角色先给虚拟件需求，参考选项附评价、自己挑 →
+          电池/总线/分线板随执行器联动，可导入导出、可分享、可下 MJCF。
           结构件、紧固件和 3D 打印件不在范围内。
         </p>
         <div class="mt-3 flex flex-wrap items-center gap-3 text-[12px] text-ink-3">
@@ -50,7 +52,7 @@ const counts = models.reduce((acc, m) => {
         </div>
         <div class="bg-surface px-3 py-2.5">
           <div class="text-[11px] text-ink-3">覆盖品类</div>
-          <div class="mono tabular mt-0.5 text-lg font-bold text-ink">5</div>
+          <div class="mono tabular mt-0.5 text-lg font-bold text-ink">{categoryCount}</div>
         </div>
       </div>
     </div>
