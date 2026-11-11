@@ -9,6 +9,7 @@
 
 | 时间 | 类型 | 分支 / 提交 | 修改内容 | 验证 |
 |---|---|---|---|---|
+| 22:02 | 重构 / 主题 | 站点 ccc 5deac04 | 接受 main 的 `data-theme` 主题架构：ccc 合并 `origin/main`（e97cc2b），移除 `data-rw-style` A/B 轴与 `style-themes.css`；把原 test 风格重新表达为 main 口径的两个网页专属模式「test 浅色 / test 深色」——`tokens.css` 新增 `[data-theme=test]` / `.dark[data-theme=test-dark]` 全套语义色 + 抬字号令牌（`--text-*` 与 `--rw-text-*` 双写）+ Trebuchet/Cascadia 字体，`global.css` 加坐标纸底纹，`Base.astro` 菜单/boot 与 `404.astro` boot 白名单同步加 test/test-dark；既有暖纸/深色/iOS 浅深四模式与小程序令牌不动 | Astro 生产构建 700 页通过（Node 24，6.2s）；计算样式探针确认 test 浅=青碧 `#0e7a6d`/暖纸 `#f5f1e8`、test 深=薄荷 `#45d6b8`/`#14120d`，`text-sm` 15px、`base` 17px、h1 32/40px（`--text-*` 覆盖确实抬升 utility），坐标纸底纹生效；test 深禁用过渡后 0 处露浅底；暖纸/深色/iOS 浅深四模式色值/字号/字体均无变化；`rw-theme` 持久化并经首页/部件库/部件详情/方案详情刷新回归；对比度 AA（浅 ink 13.4 / primary 4.63、深 ink 15.2 / primary 10.3）；SitePet 看板娘挂载；控制台仅本地取生产 API 的 CORS。360px 页头右溢出与主题面板左溢出为 main 既有（暖纸同样 15px / -35px，test 面板 -34px 反优 1px），本次仅增第三行不改宽度 |
 | 20:00 | 功能 / 展示 | 站点 ccc c354415 | 页头主题选择器合并为单一菜单：保留原版 / test 风格主题（`data-rw-style`，与配色正交、`rw-style` 独立持久化），并入上游跟随系统 / 暖纸 / 深色 / 高对比配色（`data-theme`）；部件详情改为全宽头卡（260px 图 + 信息 + 参数胶囊）+ 简介独立卡，新增 `Intro` 组件按句拆段限宽（部件 / 方案详情共用），适配上游暖纸默认与舒适字号，修复 ≤640px 主题面板向左溢出 | Astro 生产构建 700 页通过（Node 24，7.1s）；浏览器验证单一菜单含 2 风格卡 + 4 配色项，8 种组合均正确（原版×4 = 上游默认；test×暖纸 = 青碧 `#0e7a6d`、test×深色 = 薄荷 `#45d6b8`、原版×高对比 = `#000`/`#fff`），`rw-theme` / `rw-style` 独立记忆；部件详情头卡 1065px、4 参数胶囊、简介 2 段限宽 604px，方案简介 4 段无裸 markdown；360px 单列、侧栏 static、面板 fixed 铺满 12–333px 不溢出；控制台仅本地静态服务跨域取生产 API 的 CORS（非本次改动） |
 
 ## 2026-11-10
