@@ -34,7 +34,7 @@ const PAGES: Page[] = [
   {
     test: /^\/$/,
     tips: [
-      { text: '先看参数，别急着下单。', href: '/catalog.html', label: '去部件库' },
+      { text: '先看资料和评价，别急着下单。', href: '/catalog.html', label: '去部件库' },
       { text: '数都有出处；null 是没公布。', href: '/method.html', label: '看方法' },
       { text: '均分不算数，看具体差评。', href: '/community.html', label: '去社区' },
     ],
@@ -54,8 +54,7 @@ const PAGES: Page[] = [
   {
     test: /^\/parts\//,
     tips: [
-      { text: '装过机就写一句；没用过就看看别人踩的坑。', href: '#reviews', label: '去写一句' },
-      { text: '参数拿不准就回原厂核；没出处的数别做热设计。', href: '/method.html', label: '看方法' },
+      { text: '实际用过就写一句；没用过想买先看看别人踩的坑' },
       { text: 'null 是没公布，不是 0。' },
     ],
     guides: [
@@ -95,7 +94,7 @@ const PAGES: Page[] = [
   {
     test: /^\/learn/,
     tips: [
-      { text: '看完回部件库核参数。', href: '/catalog.html', label: '去部件库' },
+      { text: '必看经典教程，等级+1' },
       { text: '机械组先读传动和结构。' },
     ],
     guides: [

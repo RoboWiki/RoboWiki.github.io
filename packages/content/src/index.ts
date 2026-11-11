@@ -67,7 +67,7 @@ export const WEB_NAV: WebNavItem[] = [
   {
     key: 'community',
     label: '社区',
-    desc: '写实测，不写「好用」',
+    desc: '提出您的宝贵建议',
     href: '/community.html',
     match: ['/community', '/post', '/u', '/top', '/contributors'],
   },

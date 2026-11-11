@@ -82,7 +82,7 @@ const faqs = [
         </h1>
 
         <p class="mt-5 max-w-2xl text-base leading-7 text-ink-2 sm:text-base">
-          教程库看资料，选型台试配 BOM，部件库查参数与价格；方案库看整机与 BOM，采购库找加工和元件，设备库找工具仪器，社区写实测。
+          教程库看教程，选型台试配 BOM，部件库查评价与资料；方案库看开源生态与 BOM，采购库找加工和商家，设备库找工具仪器，社区写实测和建议。
         </p>
 
         <div class="mt-7 flex flex-wrap items-center gap-3">
@@ -206,7 +206,7 @@ const faqs = [
         { href: '/builds.html', title: '方案库', desc: '可复现方案，含 BOM 与步骤', count: `${robotsData.count} 套`, eg: '例：四足 5k 方案' },
         { href: '/suppliers.html', title: '采购库', desc: '按加工品类找店，先看有没有坑', count: `${suppliersData.count} 家`, eg: '例：嘉立创打样' },
         { href: '/equipment.html', title: '设备库', desc: '做机器人的工具与仪器', count: `${equipmentCount} 台设备`, eg: '例：拓竹 A1、优利德 UT89X' },
-        { href: '/community.html', title: '社区', desc: '写实测，不写「好用」', count: '开放讨论', eg: '例：选型求助' },
+        { href: '/community.html', title: '社区', desc: '提出您的宝贵建议', count: '开放讨论', eg: '例：选型求助' },
       ].map(item => (
         <a href={withBase(item.href)} class="card card-hover group flex flex-col p-5">
           <div class="flex items-start justify-between">
