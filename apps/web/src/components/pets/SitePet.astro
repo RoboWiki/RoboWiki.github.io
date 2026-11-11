@@ -1,0 +1,360 @@
+---
+import 'driver.js/dist/driver.css'
+import 'driver.js/dist/hints.css'
+---
+
+<div class="site-pet" data-site-pet hidden title="社区素材 ds-pet（MIT），非 DeepSeek 官方">
+  <div class="site-pet__bar">
+    <span class="site-pet__title">鲸鲸娘</span>
+    <span class="site-pet__note">社区</span>
+    <div class="site-pet__actions">
+      <button type="button" data-site-pet-guide title="显示页面上的使用提示">提示</button>
+      <button type="button" data-site-pet-hide title="收起看板娘" aria-label="收起看板娘">×</button>
+    </div>
+  </div>
+  <div class="site-pet__mount" data-site-pet-mount></div>
+  <a class="site-pet__link" data-site-pet-link hidden>去看看 →</a>
+</div>
+<button class="site-pet-tab" type="button" data-site-pet-tab hidden aria-label="打开社区看板娘">
+  看板娘
+</button>
+
+<style is:global>
+  .site-pet {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 30;
+    width: 184px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border: 1px solid var(--rw-border);
+    border-radius: 14px;
+    background: var(--rw-surface);
+    box-shadow: var(--rw-shadow-md);
+  }
+  .site-pet[hidden],
+  .site-pet-tab[hidden] {
+    display: none !important;
+  }
+  .site-pet__bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 2px 0;
+    font-size: 12px;
+    color: var(--rw-ink-3);
+  }
+  .site-pet__title {
+    font-weight: 650;
+    color: var(--rw-ink);
+  }
+  .site-pet__note {
+    border: 1px solid var(--rw-border);
+    border-radius: 999px;
+    padding: 0 5px;
+    font-size: 11px;
+  }
+  .site-pet__actions {
+    margin-left: auto;
+    display: flex;
+    gap: 4px;
+  }
+  .site-pet__actions button,
+  .site-pet-tab {
+    border: 1px solid var(--rw-border);
+    border-radius: 7px;
+    background: var(--rw-surface-2);
+    padding: 3px 7px;
+    color: var(--rw-ink-2);
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .site-pet__actions button:hover,
+  .site-pet-tab:hover {
+    border-color: var(--rw-border-strong);
+    color: var(--rw-ink);
+  }
+  .site-pet__mount {
+    min-height: 180px;
+    border-radius: 10px;
+  }
+  .site-pet__link {
+    padding: 0 2px 2px;
+    color: var(--rw-primary);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .site-pet__link:hover {
+    text-decoration: underline;
+  }
+  .site-pet-tab {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 30;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: var(--rw-surface);
+    box-shadow: var(--rw-shadow-sm);
+    font-weight: 600;
+  }
+  @media (max-width: 640px) {
+    .site-pet {
+      right: 12px;
+      bottom: 12px;
+      width: 168px;
+    }
+    .site-pet__mount {
+      min-height: 172px;
+    }
+    .site-pet-tab {
+      right: 12px;
+      bottom: 12px;
+    }
+  }
+</style>
+
+<script>
+  import { REACTIONS, WELCOME, greetingFor, guideRulesFor, tipsFor } from '@/lib/site-tips'
+
+  const HIDE_KEY = 'rw-guide-hidden'
+  const WELCOME_KEY = 'rw-guide-welcomed'
+  const GREETED_KEY = 'rw-guide-greeted'
+  const dock = document.querySelector<HTMLElement>('[data-site-pet]')
+  const tab = document.querySelector<HTMLElement>('[data-site-pet-tab]')
+  const mountEl = dock?.querySelector<HTMLElement>('[data-site-pet-mount]')
+  const tipLink = dock?.querySelector<HTMLAnchorElement>('[data-site-pet-link]')
+  const guideBtn = dock?.querySelector<HTMLButtonElement>('[data-site-pet-guide]')
+  const hideBtn = dock?.querySelector<HTMLButtonElement>('[data-site-pet-hide]')
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '')
+
+  let pet: any = null
+  let tipIndex = 0
+  let hintsApi: any = null
+  let lastSpoke = -1e9
+
+  const pageTips = tipsFor(location.pathname)
+  const firstEver = localStorage.getItem(WELCOME_KEY) !== '1'
+  const greeted = sessionStorage.getItem(GREETED_KEY) === '1'
+  const lead = firstEver ? WELCOME : !greeted ? greetingFor(new Date().getHours()) : null
+  const tips = lead ? [{ text: lead }, ...pageTips] : pageTips
+  try {
+    sessionStorage.setItem(GREETED_KEY, '1')
+  } catch {}
+
+  const pick = (items: readonly string[]) => items[Math.floor(Math.random() * items.length)]
+
+  const speak = (text: string, minGap = 5000) => {
+    if (!pet || dock?.hidden) return false
+    const now = performance.now()
+    if (now - lastSpoke < minGap) return false
+    lastSpoke = now
+    pet.say?.(text, 6500)
+    return true
+  }
+
+  const waitForPet = () =>
+    new Promise<any>(resolve => {
+      const found = () => (window as any).__rwPet
+      if (found()) return resolve(found())
+      const timer = window.setInterval(() => {
+        if (found()) {
+          window.clearInterval(timer)
+          resolve(found())
+        }
+      }, 50)
+      window.setTimeout(() => {
+        window.clearInterval(timer)
+        resolve(found() ?? null)
+      }, 5000)
+    })
+
+  const showTip = () => {
+    if (!pet || tips.length === 0) return
+    const tip = tips[tipIndex % tips.length]
+    lastSpoke = performance.now()
+    pet.play?.('waving')
+    pet.say?.(tip.text, 9000)
+    if (tipLink) {
+      if (tip.href) {
+        tipLink.hidden = false
+        tipLink.href = tip.href.startsWith('#') ? tip.href : `${base}${tip.href}`
+        tipLink.textContent = `${tip.label ?? '去看看'} →`
+      } else {
+        tipLink.hidden = true
+      }
+    }
+    try {
+      localStorage.setItem(WELCOME_KEY, '1')
+    } catch {}
+  }
+
+  const loadPet = async () => {
+    if (pet || !mountEl) return
+    const api = await waitForPet()
+    if (!api) return
+    try {
+      localStorage.setItem('robowiki-guide', JSON.stringify({ size: 128, follow: true }))
+    } catch {}
+    pet = await api.mount(mountEl, { storageKey: 'robowiki-guide' })
+    if (!pet?.shadowRoot) return
+    const style = document.createElement('style')
+    style.textContent = `
+      .hint, .controls, .tools, details { display: none !important; }
+      .stage {
+        height: 180px !important;
+        border-radius: 10px !important;
+        background: radial-gradient(ellipse at 50% 78%,
+          color-mix(in srgb, var(--rw-primary) 14%, transparent), transparent 66%) !important;
+      }
+      .bubble {
+        background: var(--rw-surface) !important;
+        color: var(--rw-ink) !important;
+        border-color: var(--rw-border) !important;
+        font-size: 12px !important;
+      }
+      .bubble:after {
+        background: var(--rw-surface) !important;
+        border-color: var(--rw-border) !important;
+      }
+      @media (max-width: 640px) {
+        .stage { height: 172px !important; }
+      }
+    `
+    pet.shadowRoot.append(style)
+    await new Promise<void>(resolve => {
+      const timer = window.setInterval(() => {
+        if (pet.dataset.asset) {
+          window.clearInterval(timer)
+          resolve()
+        }
+      }, 80)
+      window.setTimeout(() => {
+        window.clearInterval(timer)
+        resolve()
+      }, 6000)
+    })
+    showTip()
+  }
+
+  const setHidden = (hidden: boolean, persist = true) => {
+    if (!dock || !tab) return
+    dock.hidden = hidden
+    tab.hidden = !hidden
+    if (persist) {
+      try {
+        localStorage.setItem(HIDE_KEY, hidden ? '1' : '0')
+      } catch {}
+    }
+    if (!hidden) loadPet()
+  }
+
+  // 后台与登录页不放看板娘，避免挡住表单。
+  const quietPage = /^\/(admin|login)/.test(location.pathname)
+  if (quietPage) {
+    if (dock) dock.hidden = true
+    if (tab) tab.hidden = true
+  } else {
+    // 桌面默认出窝；移动端首次默认收成小标签，避免挡住筛选区；用户选过就按选择来。
+    const storedHidden = localStorage.getItem(HIDE_KEY)
+    const mobileFirstVisit = storedHidden === null && window.matchMedia('(max-width: 639px)').matches
+    setHidden(storedHidden === '1' || mobileFirstVisit, false)
+  }
+
+  hideBtn?.addEventListener('click', () => setHidden(true))
+  tab?.addEventListener('click', () => {
+    setHidden(false)
+    window.setTimeout(() => speak(pick(REACTIONS.restored), 0), 900)
+  })
+  mountEl?.addEventListener('click', () => {
+    window.setTimeout(() => {
+      tipIndex = (tipIndex + 1) % tips.length
+      showTip()
+    }, 0)
+  })
+
+  // 动作联动：只在有意义的时候接一句，避免刷屏。
+  document.addEventListener('click', event => {
+    const target = event.target as Element | null
+    if (!target || target.closest('[data-site-pet]')) return
+    const label = target.closest('button')?.textContent?.trim()
+    if (label === '选择') {
+      speak(pick(REACTIONS.select), 2500)
+      return
+    }
+    if (label === '导出 BOM JSON') {
+      speak(pick(REACTIONS.exportBom), 2500)
+      return
+    }
+    if (label === '清空筛选' || label === '重置') {
+      speak(pick(REACTIONS.cleared), 2500)
+    }
+  })
+
+  let clearTimer = 0
+  document.addEventListener('input', event => {
+    const el = event.target as HTMLInputElement | null
+    if (!el || !el.matches('input[type="search"]') || el.value.trim()) return
+    window.clearTimeout(clearTimer)
+    clearTimer = window.setTimeout(() => speak(pick(REACTIONS.cleared), 8000), 500)
+  }, true)
+
+  let emptyTimer = 0
+  let lastEmptySpoke = -1e9
+  const checkEmpty = () => {
+    if (!document.querySelector('[data-empty]:not([hidden])')) return
+    const now = performance.now()
+    if (now - lastEmptySpoke < 15000) return
+    lastEmptySpoke = now
+    speak(pick(REACTIONS.empty), 0)
+  }
+  new MutationObserver(() => {
+    window.clearTimeout(emptyTimer)
+    emptyTimer = window.setTimeout(checkEmpty, 400)
+  }).observe(document.body, {
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['hidden'],
+    childList: true,
+  })
+
+  guideBtn?.addEventListener('click', async () => {
+    if (hintsApi?.isVisible?.()) {
+      hintsApi.hide()
+      hintsApi = null
+      speak(pick(REACTIONS.hintsOff), 0)
+      return
+    }
+    const rules = guideRulesFor(location.pathname).filter(rule => document.querySelector(rule.selector))
+    if (rules.length === 0) {
+      speak(pick(REACTIONS.noHints), 0)
+      return
+    }
+    try {
+      const { hints } = await import('driver.js/hints')
+      hintsApi = hints({
+        overlay: false,
+        hints: rules.map(rule => ({
+          element: rule.selector,
+          popover: { title: rule.title, description: rule.text, showButton: true, buttonText: '知道了' },
+        })),
+      })
+      hintsApi.show()
+      speak(pick(REACTIONS.hintsOn), 0)
+    } catch {
+      speak('提示没加载出来；刷新再试。', 0)
+    }
+  })
+
+  if (!dock?.hidden && !quietPage) {
+    if ('requestIdleCallback' in window) {
+      ;(window as any).requestIdleCallback(() => loadPet(), { timeout: 1500 })
+    } else {
+      window.setTimeout(loadPet, 600)
+    }
+  }
+</script>

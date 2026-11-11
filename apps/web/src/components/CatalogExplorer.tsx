@@ -492,6 +492,7 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
             <Input
               id={searchId}
               type="search"
+              data-guide="catalog-search"
               value={q}
               onChange={e => {
                 const value = e.target.value
@@ -542,7 +543,7 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
         </div>
       </div>
 
-      <div className="chip-row -mx-1 px-1" role="group" aria-label="按品类筛选">
+      <div className="chip-row -mx-1 px-1" role="group" aria-label="按品类筛选" data-guide="catalog-cats">
         <button
           type="button"
           className="chip"

@@ -1,6 +1,5 @@
 ---
 import Base from '@/layouts/Base.astro'
-import JingjingPet from '@/components/pets/JingjingPet.astro'
 import { catalog, dataVersion, featuredParts, imageUrl, topCategories } from '@/lib/catalog'
 import { bestOfferPrice, formatPrice, partHref, withBase } from '@/lib/utils'
 import { partFacts } from '@/lib/partFacts'
@@ -79,13 +78,12 @@ const faqs = [
         </div>
 
         <h1 class="mt-5 text-[32px] leading-[1.15] font-extrabold tracking-tight text-ink sm:text-[46px]">
-          先把部件选对，<br class="hidden sm:block" />再把机器人做出来。
+          机器人制作工程知识库
         </h1>
 
         <p class="mt-5 max-w-2xl text-base leading-7 text-ink-2 sm:text-base">
-          以参数可追溯的部件库为核心，先把「这个件到底怎么样、多少钱、谁用过」做扎实；选型台是试验工具，用来按构型试配 BOM；社区共建每个部件的实测与评价，再逐步打通机械—硬件—嵌入式—算法与系统集成的全链路。
+          教程库看资料，选型台试配 BOM，部件库查参数与价格；方案库看整机与 BOM，采购库找加工和元件，设备库找工具仪器，社区写实测。
         </p>
-        <p class="mt-2 text-xs font-medium text-brand">{POSITIONING.tagline}</p>
 
         <div class="mt-7 flex flex-wrap items-center gap-3">
           <a
@@ -137,7 +135,7 @@ const faqs = [
       <div class="relative">
         <div class="rounded-lg border border-line bg-surface-2 p-4 sm:p-5">
           <div class="flex items-center justify-between gap-2">
-            <span class="text-xs font-semibold tracking-wide text-ink-3 uppercase">全链路骨架</span>
+            <span class="text-xs font-semibold tracking-wide text-ink-3 uppercase">能力分层</span>
             <span class="mono text-xs text-ink-3">4 层 + 1 大脑</span>
           </div>
           <ol class="mt-4 space-y-2">
@@ -335,10 +333,6 @@ const faqs = [
       <div class="text-sm font-semibold text-ink">贡献者</div>
       <p class="mt-1.5 text-sm leading-6 text-ink-3">谁整理了这些数据、谁提供了实测记录，逐条可查。</p>
     </a>
-  </section>
-
-  <section class="mt-12">
-    <JingjingPet auto={true} class="mx-auto max-w-md" />
   </section>
 
   <section class="mt-12">

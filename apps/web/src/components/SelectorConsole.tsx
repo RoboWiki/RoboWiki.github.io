@@ -442,6 +442,7 @@ export default function SelectorConsole({ parts, models }: Props) {
             <label className="block text-xs text-ink-3">
               参考机型
               <select
+                data-guide="selector-model"
                 value={modelId ?? ''}
                 onChange={e => selectModel(e.target.value || null)}
                 className="mt-1 h-9 w-full rounded-md border border-line bg-surface px-2 text-xs text-ink"
@@ -608,7 +609,7 @@ export default function SelectorConsole({ parts, models }: Props) {
         )}
 
         <div className="flex flex-wrap items-center justify-between gap-2 px-0.5">
-          <h2 className="text-sm font-semibold text-ink">
+          <h2 className="text-sm font-semibold text-ink" data-guide="selector-roles">
             BOM · 虚拟件打底，参考选项自选
             <span className="ml-2 text-xs font-normal text-ink-3">已选 {chosenCount}/{result.roles.length} 项</span>
           </h2>

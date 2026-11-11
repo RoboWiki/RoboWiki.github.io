@@ -66,6 +66,8 @@ export function registerJingjingPet() {
         transient = name; actionUntil = performance.now() + 1500;
         if (text) say(text);
       };
+      // RoboWiki patch: expose public speak/play for the site guide controller.
+      this.play = play; this.say = say;
       const layout = () => {
         const width = Math.min(size, scene().clientWidth);
         const height = width * 208 / 192;

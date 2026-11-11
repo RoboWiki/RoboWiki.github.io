@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css'
 import SeoJsonLd from '@/components/SeoJsonLd.astro'
-import JingjingPet from '@/components/pets/JingjingPet.astro'
+import SitePet from '@/components/pets/SitePet.astro'
 
 // GitHub Pages 支持根路径，也支持项目页（/repo/）。链接统一走 BASE_URL，避免写死。
 const base = import.meta.env.BASE_URL
@@ -28,17 +28,15 @@ const links = [
       (() => {
         try {
           const root = document.documentElement
-          const modes = ['system', 'warm', 'dark', 'contrast']
-          let mode = localStorage.getItem('rw-theme') || 'system'
-          if (mode === 'light') mode = 'warm'
-          if (!modes.includes(mode)) mode = 'system'
-          const theme = mode === 'system'
-            ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'warm')
-            : mode
+          const modes = ['warm', 'dark', 'ios', 'ios-dark']
+          let mode = localStorage.getItem('rw-theme') || 'warm'
+          if (mode === 'light' || mode === 'system' || mode === 'contrast') mode = 'warm'
+          if (!modes.includes(mode)) mode = 'warm'
+          const theme = mode
           root.dataset.theme = theme
-          root.dataset.themeMode = mode
-          root.classList.toggle('dark', theme === 'dark' || theme === 'contrast')
-          root.style.colorScheme = theme === 'dark' || theme === 'contrast' ? 'dark' : 'light'
+          root.dataset.themeMode = theme
+          root.classList.toggle('dark', theme === 'dark' || theme === 'ios-dark')
+          root.style.colorScheme = theme === 'dark' || theme === 'ios-dark' ? 'dark' : 'light'
         } catch {}
       })()
     </script>
@@ -114,20 +112,14 @@ const links = [
         ))}
       </section>
 
-      <section class="mx-auto mt-8 max-w-md">
-        <JingjingPet
-          auto={true}
-          title="看板娘也没找到这个页面"
-          note="社区素材 ds-pet（MIT），非 DeepSeek 官方；她只在这类空页面出现。"
-        />
-      </section>
-
       <SeoJsonLd type="WebPage" title={title} description={description} url={Astro.url} />
     </main>
 
+    <SitePet />
+
     <footer class="mt-16 border-t border-line bg-surface">
       <div class="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-8 text-xs text-ink-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-        <p>RoboWiki · 数据带来源，口径可追溯，不卖零件不收佣金。</p>
+        <p>RoboWiki · 机器人制作工程知识库 · 教程、方案、采购、设备、社区与部件库都在同一站。不卖零件，不收佣金。</p>
         <p>AGPL-3.0 · 内容与数据来源见页面底部说明</p>
       </div>
     </footer>
