@@ -43,6 +43,8 @@ const themeOptions = [
   { key: 'dark', label: '深色', swatch: '#0f1217' },
   { key: 'ios', label: 'iOS 浅色', swatch: '#f2f2f7' },
   { key: 'ios-dark', label: 'iOS 深色', swatch: '#000000' },
+  { key: 'test', label: 'test 浅色', swatch: '#0e7a6d' },
+  { key: 'test-dark', label: 'test 深色', swatch: '#45d6b8' },
 ]
 
 const isCurrent = (item: (typeof WEB_NAV)[number]) => {
@@ -125,11 +127,11 @@ const footerGroups = [
     <meta name="twitter:image:alt" content={title} />
     <title>{title}</title>
     <script is:inline>
-      // 主题在首帧前落定：暖纸 / 深色 / iOS 浅色 / iOS 深色。
+      // 主题在首帧前落定：暖纸 / 深色 / iOS 浅色 / iOS 深色 / test 浅色 / test 深色。
       (() => {
         const root = document.documentElement
         const KEY = 'rw-theme'
-        const modes = ['warm', 'dark', 'ios', 'ios-dark']
+        const modes = ['warm', 'dark', 'ios', 'ios-dark', 'test', 'test-dark']
         let mode = 'warm'
         try { mode = localStorage.getItem(KEY) || 'warm' } catch {}
         // 旧版浅色 / 跟随系统 / 高对比统一回落到暖纸。
@@ -140,8 +142,8 @@ const footerGroups = [
           root.dataset.theme = theme
           root.dataset.themeMode = theme
           // 保留 .dark：组件里的 dark: 工具类与小程序端都依赖它。
-          root.classList.toggle('dark', theme === 'dark' || theme === 'ios-dark')
-          root.style.colorScheme = theme === 'dark' || theme === 'ios-dark' ? 'dark' : 'light'
+          root.classList.toggle('dark', theme === 'dark' || theme === 'ios-dark' || theme === 'test-dark')
+          root.style.colorScheme = theme === 'dark' || theme === 'ios-dark' || theme === 'test-dark' ? 'dark' : 'light'
           if (persist) { try { localStorage.setItem(KEY, theme) } catch {} }
           document.dispatchEvent(new CustomEvent('rw:themechange', { detail: { mode: theme, theme } }))
         }

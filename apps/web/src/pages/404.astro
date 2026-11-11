@@ -28,15 +28,15 @@ const links = [
       (() => {
         try {
           const root = document.documentElement
-          const modes = ['warm', 'dark', 'ios', 'ios-dark']
+          const modes = ['warm', 'dark', 'ios', 'ios-dark', 'test', 'test-dark']
           let mode = localStorage.getItem('rw-theme') || 'warm'
           if (mode === 'light' || mode === 'system' || mode === 'contrast') mode = 'warm'
           if (!modes.includes(mode)) mode = 'warm'
           const theme = mode
           root.dataset.theme = theme
           root.dataset.themeMode = theme
-          root.classList.toggle('dark', theme === 'dark' || theme === 'ios-dark')
-          root.style.colorScheme = theme === 'dark' || theme === 'ios-dark' ? 'dark' : 'light'
+          root.classList.toggle('dark', theme === 'dark' || theme === 'ios-dark' || theme === 'test-dark')
+          root.style.colorScheme = theme === 'dark' || theme === 'ios-dark' || theme === 'test-dark' ? 'dark' : 'light'
         } catch {}
       })()
     </script>

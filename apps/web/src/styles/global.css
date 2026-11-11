@@ -536,3 +536,23 @@ main :where(dd) {
   border-radius: 999px;
   border: 1px solid var(--rw-border);
 }
+
+/* ── test 主题外观：坐标纸底纹 + 放宽标题字距（仅 test 浅/深，不影响其它主题） ── */
+/* body 的 background 简写会把 image 重置为 none，这里用更高 specificity 叠回网格；
+   卡片仍是不透明 surface，网格只露在页边与卡片间隙，不干扰正文阅读。 */
+[data-theme="test"] body {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--rw-primary) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--rw-primary) 5%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.dark[data-theme="test-dark"] body {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--rw-primary) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--rw-primary) 7%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+[data-theme="test"] :is(h1, h2, h3),
+[data-theme="test-dark"] :is(h1, h2, h3) {
+  letter-spacing: normal;
+}
