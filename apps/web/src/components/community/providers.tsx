@@ -106,15 +106,8 @@ function useDesignTheme(): { dark: boolean; vars: ThemeVars } {
     const observer = new MutationObserver(sync)
     observer.observe(root, { attributes: true, attributeFilter: ['class', 'data-theme'] })
 
-    // 没有手动选择过主题时，系统主题变化也要跟上
-    const mq = window.matchMedia('(prefers-color-scheme: dark)')
-    const onScheme = (e: MediaQueryListEvent) => {
-      if (!window.localStorage.getItem('rw-theme')) setDark(e.matches)
-    }
-    mq.addEventListener('change', onScheme)
     return () => {
       observer.disconnect()
-      mq.removeEventListener('change', onScheme)
     }
   }, [])
 
@@ -633,7 +626,7 @@ export function CommunityHeader({ current, onCompose }: {
 
       <div className="ml-auto flex items-center gap-2">
         {onCompose && (
-          <button onClick={() => (user ? onCompose() : openAuth())}
+          <button data-guide="community-post" onClick={() => (user ? onCompose() : openAuth())}
             className="inline-flex min-h-9 items-center rounded-full bg-brand px-3.5 text-sm font-semibold text-brand-fg transition-colors hover:bg-brand-hover">
             发帖
           </button>

@@ -43,14 +43,14 @@ const crumbs = isGroupIndex
 
   <Fragment slot="after">
     {isGroupIndex && siblings.length > 0 && (
-      <section class="mt-12 border-t border-slate-200 pt-6" aria-labelledby="group-articles">
-        <h2 id="group-articles" class="text-sm font-semibold text-slate-900">本组文章</h2>
+      <section class="mt-12 border-t border-line pt-6" aria-labelledby="group-articles">
+        <h2 id="group-articles" class="text-sm font-semibold text-ink">本组文章</h2>
         <ul class="mt-3 grid gap-2 sm:grid-cols-2">
           {siblings.map(item => (
             <li>
               <a
                 href={withBase(`/competitions/${item.id}.html`)}
-                class="block h-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 hover:border-blue-300 hover:text-blue-700"
+                class="block h-full rounded-lg border border-line px-3 py-2 text-sm text-ink-2 hover:border-brand/40 hover:text-brand"
               >
                 {item.data.title}
               </a>
@@ -61,9 +61,9 @@ const crumbs = isGroupIndex
     )}
 
     {!isGroupIndex && (
-      <nav aria-label="返回模块" class="mt-12 flex flex-wrap gap-x-5 gap-y-2 border-t border-slate-200 pt-6 text-sm font-medium">
-        <a href={withBase(groupHref)} class="text-blue-700 hover:underline">← 返回{groupLabel}</a>
-        <a href={withBase('/competitions.html')} class="text-blue-700 hover:underline">全部竞赛资料</a>
+      <nav aria-label="返回模块" class="mt-12 flex flex-wrap gap-x-5 gap-y-2 border-t border-line pt-6 text-sm font-medium">
+        <a href={withBase(groupHref)} class="text-brand hover:underline">← 返回{groupLabel}</a>
+        <a href={withBase('/competitions.html')} class="text-brand hover:underline">全部竞赛资料</a>
       </nav>
     )}
   </Fragment>

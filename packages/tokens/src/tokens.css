@@ -132,44 +132,102 @@ page.dark {
   color-scheme: dark;
 }
 
-/* ── 语义色：高对比（黑底白字；同时挂 .dark 让 dark: 工具类生效） ── */
-[data-theme="contrast"] {
-  --rw-primary: #8ecbff;
-  --rw-primary-hover: #b3dcff;
-  --rw-primary-soft: #10233a;
-  --rw-primary-foreground: #000000;
 
-  --rw-success: #6ee7a8;
-  --rw-success-soft: #06281a;
-  --rw-warning: #ffd166;
-  --rw-warning-soft: #2a1f05;
-  --rw-danger: #ff9a9a;
+
+/* ── 语义色：iOS 浅色 ───────────────────────────────────────── */
+[data-theme="ios"] {
+  --rw-primary: #0066cc;
+  --rw-primary-hover: #0055b3;
+  --rw-primary-soft: #e8f1ff;
+  --rw-primary-foreground: #ffffff;
+
+  --rw-success: #248a3d;
+  --rw-success-soft: #e8f7ec;
+  --rw-warning: #b25000;
+  --rw-warning-soft: #fff3e6;
+  --rw-danger: #d70015;
+  --rw-danger-soft: #ffecec;
+
+  --rw-bg: #f2f2f7;
+  --rw-surface: #ffffff;
+  --rw-surface-2: #f7f7fa;
+  --rw-surface-3: #ececf1;
+  --rw-border: #d1d1d6;
+  --rw-border-strong: #b8b8bf;
+
+  --rw-ink: #1c1c1e;
+  --rw-ink-2: #3c3c43;
+  --rw-ink-3: #636366;
+  --rw-ink-inverse: #ffffff;
+
+  --rw-layer-mech: #af52de;
+  --rw-layer-hw: #32ade6;
+  --rw-layer-emb: #30b0c7;
+  --rw-layer-elec: #32ade6;
+  --rw-layer-algo: #ff9500;
+  --rw-layer-sys: #007aff;
+
+  --rw-radius-xs: 6px;
+  --rw-radius-sm: 10px;
+  --rw-radius-md: 12px;
+  --rw-radius-lg: 16px;
+
+  --rw-font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+
+  --rw-shadow-xs: 0 1px 2px rgb(0 0 0 / 0.05);
+  --rw-shadow-sm: 0 1px 3px rgb(0 0 0 / 0.08), 0 1px 2px rgb(0 0 0 / 0.04);
+  --rw-shadow-md: 0 8px 24px -12px rgb(0 0 0 / 0.16);
+  --rw-shadow-lg: 0 24px 48px -24px rgb(0 0 0 / 0.24);
+
+  color-scheme: light;
+}
+
+/* ── 语义色：iOS 深色（脚本同时挂 .dark） ───────────────────── */
+.dark[data-theme="ios-dark"] {
+  --rw-primary: #0a84ff;
+  --rw-primary-hover: #409cff;
+  --rw-primary-soft: #0b2542;
+  --rw-primary-foreground: #06101f;
+
+  --rw-success: #30d158;
+  --rw-success-soft: #0b2a16;
+  --rw-warning: #ff9f0a;
+  --rw-warning-soft: #2b1d05;
+  --rw-danger: #ff453a;
   --rw-danger-soft: #2d0b0b;
 
   --rw-bg: #000000;
-  --rw-surface: #0a0a0a;
-  --rw-surface-2: #141414;
-  --rw-surface-3: #1a1a1a;
-  --rw-border: #8a8a8a;
-  --rw-border-strong: #b0b0b0;
+  --rw-surface: #1c1c1e;
+  --rw-surface-2: #2c2c2e;
+  --rw-surface-3: #3a3a3c;
+  --rw-border: #38383a;
+  --rw-border-strong: #545458;
 
   --rw-ink: #ffffff;
-  --rw-ink-2: #e8e8e8;
-  --rw-ink-3: #cfcfcf;
+  --rw-ink-2: #ebebf5;
+  --rw-ink-3: #a1a1aa;
   --rw-ink-inverse: #000000;
 
-  --rw-layer-mech: #c4b5fd;
-  --rw-layer-hw: #67e8f9;
-  --rw-layer-emb: #5eead4;
-  --rw-layer-elec: #67e8f9;
-  --rw-layer-algo: #ffd166;
-  --rw-layer-sys: #8ecbff;
+  --rw-layer-mech: #bf5af2;
+  --rw-layer-hw: #64d2ff;
+  --rw-layer-emb: #40cbe0;
+  --rw-layer-elec: #64d2ff;
+  --rw-layer-algo: #ffd60a;
+  --rw-layer-sys: #0a84ff;
 
-  --rw-shadow-xs: 0 1px 2px rgb(0 0 0 / 0.8);
-  --rw-shadow-sm: 0 1px 3px rgb(0 0 0 / 0.9);
-  --rw-shadow-md: 0 8px 24px -12px rgb(0 0 0 / 1);
-  --rw-shadow-lg: 0 24px 48px -24px rgb(0 0 0 / 1);
+  --rw-radius-xs: 6px;
+  --rw-radius-sm: 10px;
+  --rw-radius-md: 12px;
+  --rw-radius-lg: 16px;
 
-  --rw-focus: 0 0 0 3px #ffffff, 0 0 0 5px #000000;
+  --rw-font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+
+  --rw-shadow-xs: 0 1px 2px rgb(0 0 0 / 0.4);
+  --rw-shadow-sm: 0 1px 3px rgb(0 0 0 / 0.5);
+  --rw-shadow-md: 0 8px 24px -12px rgb(0 0 0 / 0.6);
+  --rw-shadow-lg: 0 24px 48px -24px rgb(0 0 0 / 0.7);
+
   color-scheme: dark;
 }

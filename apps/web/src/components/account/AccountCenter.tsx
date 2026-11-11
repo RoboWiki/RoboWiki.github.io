@@ -37,7 +37,7 @@ const CLIENT_LABEL: Record<string, string> = {
 }
 
 const PROVIDERS: { id: string; label: string; hint: string }[] = [
-  { id: 'github', label: 'GitHub', hint: '用 GitHub 授权登录，适合在电脑上参与共建。' },
+  { id: 'github', label: 'GitHub', hint: '用 GitHub 授权登录，适合在电脑上参与编辑。' },
 ]
 
 const STATUS_META: Record<string, { label: string; tone: string }> = {

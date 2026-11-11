@@ -1,0 +1,45 @@
+---
+import { splitIntro, introInline } from '@/lib/intro'
+
+type Props = { text: string; class?: string }
+const { text, class: className = '' } = Astro.props
+const paragraphs = splitIntro(text)
+---
+
+<div class:list={['rw-intro', className]}>
+  {paragraphs.map(p => <p set:html={introInline(p)} />)}
+</div>
+
+<style>
+  /* 限宽 + 段距：长简介按句拆段后保持可扫读，首段领读略重。 */
+  .rw-intro {
+    max-width: 70ch;
+  }
+  .rw-intro p {
+    margin: 0;
+    color: var(--rw-ink-2);
+    font-size: var(--rw-text-base);
+    line-height: 1.9;
+    overflow-wrap: break-word;
+  }
+  .rw-intro p + p {
+    margin-top: 0.7em;
+  }
+  .rw-intro p:first-child {
+    color: var(--rw-ink);
+    font-size: var(--rw-text-md);
+    font-weight: 500;
+    line-height: 1.75;
+  }
+  .rw-intro :global(strong) {
+    color: var(--rw-ink);
+    font-weight: 600;
+  }
+  .rw-intro :global(code) {
+    background: var(--rw-surface-3);
+    border-radius: 4px;
+    padding: 0.1em 0.35em;
+    font-family: var(--rw-font-mono);
+    font-size: 0.9em;
+  }
+</style>

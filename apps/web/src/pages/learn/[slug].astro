@@ -42,7 +42,7 @@ const toc = (rendered?.headings ?? []).filter(h => h.depth === 2 || h.depth === 
 
       <div class="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_13rem] lg:gap-12">
         <article class="min-w-0">
-          <div class="prose max-w-3xl [&_h2]:scroll-mt-24 [&_h3]:scroll-mt-24 [&_table]:block [&_table]:overflow-x-auto">
+          <div class="prose max-w-[44rem] [&_h2]:scroll-mt-24 [&_h3]:scroll-mt-24 [&_table]:block [&_table]:overflow-x-auto">
             {ArticleContent && <ArticleContent />}
           </div>
 

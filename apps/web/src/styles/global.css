@@ -64,6 +64,29 @@ body {
   font-feature-settings: "cv11", "ss01";
 }
 
+/* Tailwind Typography 的 prose 页面（教程详情、竞赛资料等）统一走暖纸/深色 token。 */
+.prose {
+  --tw-prose-body: var(--rw-ink-2);
+  --tw-prose-headings: var(--rw-ink);
+  --tw-prose-lead: var(--rw-ink-2);
+  --tw-prose-links: var(--rw-primary);
+  --tw-prose-bold: var(--rw-ink);
+  --tw-prose-counters: var(--rw-ink-3);
+  --tw-prose-bullets: var(--rw-ink-3);
+  --tw-prose-hr: var(--rw-border);
+  --tw-prose-quotes: var(--rw-ink-2);
+  --tw-prose-quote-borders: var(--rw-border-strong);
+  --tw-prose-captions: var(--rw-ink-3);
+  --tw-prose-code: var(--rw-ink);
+  --tw-prose-pre-code: #e2e8f0;
+  --tw-prose-pre-bg: #0b1220;
+  --tw-prose-th-borders: var(--rw-border);
+  --tw-prose-td-borders: var(--rw-border);
+  max-width: 44rem;
+}
+.prose :where(table) { font-size: 0.9rem; }
+.prose :where(thead th) { background: var(--rw-surface-2); color: var(--rw-ink); }
+
 /* 高对比主题：焦点环加粗，避免在纯黑/纯白背景上丢失。 */
 [data-theme="contrast"] :focus-visible {
   outline-width: 3px;
@@ -445,4 +468,71 @@ main :where(dd) {
   border-radius: var(--rw-radius-md);
   border: 1px solid var(--rw-border);
 }
+}
+
+/* driver.js 提示层：跟随暖纸/深色主题。 */
+:root {
+  --driver-hint-color: var(--rw-primary);
+  --driver-hint-size: 20px;
+  --driver-popover-font-family: var(--rw-font-sans);
+}
+.driver-popover {
+  background: var(--rw-surface) !important;
+  color: var(--rw-ink) !important;
+  border: 1px solid var(--rw-border) !important;
+  border-radius: 10px !important;
+  box-shadow: var(--rw-shadow-md) !important;
+}
+.driver-popover-title {
+  color: var(--rw-ink) !important;
+  font-size: 15px !important;
+}
+.driver-popover-description {
+  color: var(--rw-ink-2) !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+}
+.driver-popover-close-btn {
+  color: var(--rw-ink-3) !important;
+}
+.driver-popover-close-btn:hover,
+.driver-popover-close-btn:focus-visible {
+  color: var(--rw-ink) !important;
+}
+.driver-popover-arrow {
+  display: none !important;
+}
+.driver-popover-footer-btn {
+  background: var(--rw-surface-2) !important;
+  color: var(--rw-ink) !important;
+  border: 1px solid var(--rw-border) !important;
+}
+.driver-popover-footer-btn:hover,
+.driver-popover-footer-btn:focus {
+  background: var(--rw-surface-3) !important;
+}
+.driver-popover-progress-text {
+  color: var(--rw-ink-3) !important;
+}
+
+/* 主题按钮：文字 + 状态点，不再用太阳/月亮图标。 */
+.theme-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--rw-primary);
+  border: 1.5px solid var(--rw-surface);
+}
+.theme-option[aria-pressed='true'] {
+  border-color: color-mix(in srgb, var(--rw-primary) 40%, transparent);
+  background: var(--rw-primary-soft);
+  color: var(--rw-primary);
+  font-weight: 600;
+}
+.theme-swatch {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  border: 1px solid var(--rw-border);
 }

@@ -178,7 +178,7 @@ const reprint = learnData.reprint
             <div class="flex flex-1 flex-col gap-2 p-4">
               <h2 class="line-clamp-2 min-h-10 text-sm font-semibold leading-5 text-ink transition-colors group-hover:text-brand">{r.title}</h2>
               <p class="truncate text-xs text-ink-3">{metaText(r)}</p>
-              <p class="line-clamp-2 text-xs leading-5 text-ink-2">{r.summary}</p>
+              <p class="line-clamp-2 text-sm leading-5 text-ink-2">{r.summary}</p>
               {r.type === 'link' && r.license && (
                 <p class="text-xs leading-4 text-ink-3">{r.license}</p>
               )}
@@ -197,12 +197,12 @@ const reprint = learnData.reprint
 
     <div id="learn-empty" class="card mt-6 p-10 text-center" hidden>
       <p class="text-sm font-semibold text-ink">没有匹配的资料</p>
-      <p class="mt-1 text-xs leading-5 text-ink-3">换一个方向、来源或关键词试试。</p>
+      <p class="mt-1 text-sm leading-6 text-ink-3">换一个方向、来源或关键词试试。</p>
     </div>
 
     <section class="mt-8 rounded-lg border border-line bg-surface-2 p-4" aria-labelledby="reprint">
       <h2 id="reprint" class="text-sm font-semibold text-ink">{reprint.title}</h2>
-      <p class="mt-1 text-xs leading-6 text-ink-2">{reprint.summary}</p>
+      <p class="mt-1 text-sm leading-6 text-ink-2">{reprint.summary}</p>
       <ul class="mt-2 list-disc space-y-1 pl-5 text-xs leading-6 text-ink-2">
         {reprint.rules.map(rule => <li>{rule}</li>)}
       </ul>

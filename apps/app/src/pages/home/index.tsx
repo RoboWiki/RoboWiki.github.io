@@ -148,7 +148,7 @@ export default function HomePage() {
     {
       key: 'layers',
       label: '能力地图',
-      desc: '全链路骨架：机械 / 硬件 / 嵌入式 / 算法 + 集成',
+      desc: '能力分层：机械 / 硬件 / 嵌入式 / 算法 + 集成',
       wide: true,
       action: () => Taro.navigateTo({ url: '/pages/layers/index' }),
     },
@@ -181,10 +181,10 @@ export default function HomePage() {
   return (
     <View className={`rw-page home ${theme === 'dark' ? 'dark' : ''}`}>
       <View className="home__hero">
-        <Text className="home__eyebrow">可追溯工程知识库</Text>
-        <Text className="rw-title home__title">先选对部件，再打通全链路</Text>
+        <Text className="home__eyebrow">机器人制作工程知识库</Text>
+        <Text className="rw-title home__title">机器人制作工程知识库</Text>
         <Text className="rw-caption">
-          {POSITIONING.short}。{POSITIONING.tagline}
+          {POSITIONING.full}
         </Text>
 
         <View className="rw-field home__search">

@@ -27,7 +27,7 @@ export default function LayersPage() {
         <Text className="layers__eyebrow">能力地图</Text>
         <Text className="rw-title layers__title">{POSITIONING.short}</Text>
         <Text className="layers__tagline">{POSITIONING.tagline}</Text>
-        <Text className="rw-caption layers__lede">全链路骨架：四层能力 + 系统集成。核心是部件库，选型台为试验版。</Text>
+        <Text className="rw-caption layers__lede">能力分层：机械 / 硬件 / 嵌入式 / 算法 + 集成。核心是部件库，选型台为试验版。</Text>
       </View>
 
       <View className="layers__section">
