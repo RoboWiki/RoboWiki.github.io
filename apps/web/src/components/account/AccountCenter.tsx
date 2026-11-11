@@ -100,7 +100,7 @@ function StatusLine({ value }: { value: Status }) {
   return (
     <div aria-live="polite" className="mb-3">
       <p role={value.kind === 'error' ? 'alert' : 'status'}
-        className={`m-0 rounded-md border px-3 py-2 text-[13px] leading-5 ${
+        className={`m-0 rounded-md border px-3 py-2 text-sm leading-5 ${
           value.kind === 'error'
             ? 'border-danger/35 bg-danger-soft text-danger'
             : 'border-success/35 bg-success-soft text-success'
@@ -117,8 +117,8 @@ function SectionHead({ title, hint, action }: {
   return (
     <header className="mb-3 flex flex-wrap items-start justify-between gap-2 border-b border-line pb-3">
       <div className="min-w-0">
-        <h2 className="m-0 text-[16px] font-semibold text-ink">{title}</h2>
-        {hint && <p className="m-0 mt-1 text-[12px] leading-5 text-ink-3">{hint}</p>}
+        <h2 className="m-0 text-base font-semibold text-ink">{title}</h2>
+        {hint && <p className="m-0 mt-1 text-xs leading-5 text-ink-3">{hint}</p>}
       </div>
       {action}
     </header>
@@ -139,10 +139,10 @@ function RowsSkeleton({ rows = 2 }: { rows?: number }) {
   )
 }
 
-const BTN_PRIMARY = 'inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-brand px-4 text-[13px] font-semibold text-brand-fg transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-60 sm:min-h-9'
-const BTN_SECONDARY = 'inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-line bg-surface px-4 text-[13px] text-ink-2 transition-colors hover:border-line-strong hover:text-ink disabled:cursor-not-allowed disabled:opacity-60 sm:min-h-9'
-const BTN_GHOST = 'inline-flex min-h-11 items-center justify-center rounded-md px-3 text-[13px] text-ink-3 transition-colors hover:bg-surface-3 hover:text-ink disabled:cursor-not-allowed disabled:opacity-50 sm:min-h-8'
-const BTN_DANGER = 'inline-flex min-h-11 items-center justify-center rounded-md border border-danger/35 bg-surface px-4 text-[13px] font-medium text-danger transition-colors hover:bg-danger-soft disabled:cursor-not-allowed disabled:opacity-60 sm:min-h-8'
+const BTN_PRIMARY = 'inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-brand px-4 text-sm font-semibold text-brand-fg transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-60 sm:min-h-9'
+const BTN_SECONDARY = 'inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-line bg-surface px-4 text-sm text-ink-2 transition-colors hover:border-line-strong hover:text-ink disabled:cursor-not-allowed disabled:opacity-60 sm:min-h-9'
+const BTN_GHOST = 'inline-flex min-h-11 items-center justify-center rounded-md px-3 text-sm text-ink-3 transition-colors hover:bg-surface-3 hover:text-ink disabled:cursor-not-allowed disabled:opacity-50 sm:min-h-8'
+const BTN_DANGER = 'inline-flex min-h-11 items-center justify-center rounded-md border border-danger/35 bg-surface px-4 text-sm font-medium text-danger transition-colors hover:bg-danger-soft disabled:cursor-not-allowed disabled:opacity-60 sm:min-h-8'
 
 // ── 未登录 ────────────────────────────────────────────────────────────────
 const GUEST_POINTS = [
@@ -158,23 +158,23 @@ function LoggedOut() {
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
         <div className="min-w-0">
           <h2 className="m-0 text-[20px] font-bold tracking-tight text-ink">登录后能做什么</h2>
-          <p className="mb-4 mt-2 max-w-prose text-[13px] leading-6 text-ink-2">
+          <p className="mb-4 mt-2 max-w-prose text-sm leading-6 text-ink-2">
             网页端现在可以完成资料、密码、会话、通知和投稿管理，不需要再跳小程序。
             账号与社区、App 共用一套会话。
           </p>
           <ul className="m-0 list-none space-y-3 p-0">
             {GUEST_POINTS.map(point => (
-              <li key={point} className="flex items-start gap-2 text-[13px] leading-6 text-ink-2">
+              <li key={point} className="flex items-start gap-2 text-sm leading-6 text-ink-2">
                 <CheckCircleFilled aria-hidden="true" className="mt-1 shrink-0 text-success" />
                 <span>{point}</span>
               </li>
             ))}
           </ul>
           <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-line pt-4">
-            <a href={siteHref('/community.html')} className="text-[13px] text-ink-3 hover:text-brand">
+            <a href={siteHref('/community.html')} className="text-sm text-ink-3 hover:text-brand">
               先去社区看看 →
             </a>
-            <a href={siteHref('/submit.html')} className="text-[13px] text-ink-3 hover:text-brand">
+            <a href={siteHref('/submit.html')} className="text-sm text-ink-3 hover:text-brand">
               投稿说明
             </a>
           </div>
@@ -182,7 +182,7 @@ function LoggedOut() {
 
         <div className="min-w-0 rounded-lg border border-line bg-surface-2 p-4">
           <AuthForm compact />
-          <p className="m-0 mt-3 border-t border-line pt-3 text-[12px] leading-5 text-ink-3">
+          <p className="m-0 mt-3 border-t border-line pt-3 text-xs leading-5 text-ink-3">
             从 App 或 GitHub 回跳？走
             <a href={siteHref('/login.html')} className="ml-1 text-brand hover:underline">登录桥</a>
             ，一次性凭证 60 秒内有效。
@@ -349,7 +349,7 @@ function ProfilePanel({ account, onAccount }: {
               </button>
             )}
           </div>
-          <p className="m-0 text-center text-[12px] leading-5 text-ink-3">
+          <p className="m-0 text-center text-xs leading-5 text-ink-3">
             JPEG / PNG / WebP，≤ 5 MB。没有头像时用名字首字母和账号底色。
           </p>
           <div className="w-full">
@@ -357,7 +357,7 @@ function ProfilePanel({ account, onAccount }: {
           </div>
         </div>
 
-        <dl className="m-0 mt-4 space-y-2 border-t border-line pt-3 text-[12px]">
+        <dl className="m-0 mt-4 space-y-2 border-t border-line pt-3 text-xs">
           <div className="flex items-baseline justify-between gap-2">
             <dt className="text-ink-3">账号</dt>
             <dd className="mono m-0 truncate text-ink-2">@{account.handle}</dd>
@@ -374,8 +374,8 @@ function ProfilePanel({ account, onAccount }: {
 
         {account.handle_provisional && (
           <div className="mb-4 rounded-md border border-warning/35 bg-warning-soft p-3">
-            <p className="m-0 text-[13px] font-semibold text-ink">设置账号名（仅一次）</p>
-            <p className="m-0 mt-1 text-[12px] text-ink-2">
+            <p className="m-0 text-sm font-semibold text-ink">设置账号名（仅一次）</p>
+            <p className="m-0 mt-1 text-xs text-ink-2">
               第三方登录会自动生成临时账号名；设置后不可再修改，也会作为主页地址。
             </p>
             <div className="mt-2 flex flex-wrap items-center gap-2">
@@ -383,12 +383,12 @@ function ProfilePanel({ account, onAccount }: {
                 onChange={(e) => setHandleDraft(e.target.value)}
                 placeholder={account.handle} className="max-w-[220px]" />
               <button type="button" onClick={saveHandle} disabled={handleBusy}
-                className="inline-flex h-9 items-center rounded-md bg-brand px-3 text-[13px] font-semibold text-brand-fg transition-colors hover:bg-brand-hover disabled:opacity-60">
+                className="inline-flex h-9 items-center rounded-md bg-brand px-3 text-sm font-semibold text-brand-fg transition-colors hover:bg-brand-hover disabled:opacity-60">
                 {handleBusy ? '保存中…' : '保存账号名'}
               </button>
             </div>
             {handleStatus && (
-              <p className={'m-0 mt-2 text-[12px] ' + (handleStatus.kind === 'ok' ? 'text-success' : 'text-danger')}>
+              <p className={'m-0 mt-2 text-xs ' + (handleStatus.kind === 'ok' ? 'text-success' : 'text-danger')}>
                 {handleStatus.text}
               </p>
             )}
@@ -421,21 +421,21 @@ function ProfilePanel({ account, onAccount }: {
         <div className="mt-6 border-t border-line pt-4">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0">
-              <p className="m-0 flex items-center gap-2 text-[14px] font-medium text-ink">
+              <p className="m-0 flex items-center gap-2 text-sm font-medium text-ink">
                 <MailOutlined aria-hidden="true" className="text-ink-3" />
                 邮件通知
               </p>
-              <p className="m-0 mt-1 max-w-prose text-[12px] leading-5 text-ink-3">
+              <p className="m-0 mt-1 max-w-prose text-xs leading-5 text-ink-3">
                 有人回复、采纳你的内容或处理举报时，发一封邮件。站内通知不受影响。
               </p>
-              <p className="m-0 mt-1 text-[12px] text-ink-3">
+              <p className="m-0 mt-1 text-xs text-ink-3">
                 {account.email
                   ? <>发送到 <span className="mono">{account.email}</span>{account.email_verified ? '（已验证）' : '（未验证）'}</>
                   : '还没有绑定邮箱，暂时收不到邮件。'}
               </p>
             </div>
             <div className="flex items-center gap-2">
-              {notifyBusy && <span className="text-[12px] text-ink-3">保存中…</span>}
+              {notifyBusy && <span className="text-xs text-ink-3">保存中…</span>}
               <Switch checked={!!account.email_notify} loading={notifyBusy}
                 disabled={!account.email}
                 onChange={toggleNotify} aria-label="开启邮件通知" />
@@ -618,7 +618,7 @@ function SecurityPanel({ account, onAccount }: {
               ? '邮箱已验证，可用于找回密码、接收回复与审核通知。'
               : '未验证邮箱且未绑定 GitHub/微信时只能浏览；验证或绑定后即可参与。')
             : '还没有绑定邮箱。可在小程序「我的 → 账号」绑定，绑定后即可用邮箱登录。'} />
-        <div className="flex flex-wrap items-center gap-3 text-[13px] text-ink-2">
+        <div className="flex flex-wrap items-center gap-3 text-sm text-ink-2">
           <MailOutlined />
           <span>{account.email || '未填写邮箱'}</span>
           {account.email && (
@@ -630,19 +630,19 @@ function SecurityPanel({ account, onAccount }: {
         {account.email && !account.email_verified && (
           <div className="mt-3 flex flex-wrap items-center gap-2">
             <button type="button" onClick={sendVerifyMail} disabled={emailBusy}
-              className="inline-flex h-9 items-center rounded-md border border-line bg-surface px-3 text-[13px] font-semibold text-ink transition-colors hover:border-line-strong hover:bg-surface-2 disabled:opacity-60">
+              className="inline-flex h-9 items-center rounded-md border border-line bg-surface px-3 text-sm font-semibold text-ink transition-colors hover:border-line-strong hover:bg-surface-2 disabled:opacity-60">
               {emailBusy ? '发送中…' : '发送验证邮件'}
             </button>
             <Input value={emailToken} onChange={(e) => setEmailToken(e.target.value)}
               placeholder="粘贴邮件中的令牌" className="max-w-[220px]" />
             <button type="button" onClick={verifyEmail} disabled={emailBusy}
-              className="inline-flex h-9 items-center rounded-md bg-brand px-3 text-[13px] font-semibold text-brand-fg transition-colors hover:bg-brand-hover disabled:opacity-60">
+              className="inline-flex h-9 items-center rounded-md bg-brand px-3 text-sm font-semibold text-brand-fg transition-colors hover:bg-brand-hover disabled:opacity-60">
               验证邮箱
             </button>
           </div>
         )}
         {emailStatus && (
-          <p className={'m-0 mt-2 text-[12.5px] ' + (emailStatus.kind === 'ok' ? 'text-success' : 'text-danger')}>
+          <p className={'m-0 mt-2 text-sm ' + (emailStatus.kind === 'ok' ? 'text-success' : 'text-danger')}>
             {emailStatus.text}
           </p>
         )}
@@ -692,11 +692,11 @@ function SecurityPanel({ account, onAccount }: {
         </Form>
 
         <div className="mt-6 border-t border-line pt-4">
-          <p className="m-0 flex items-center gap-2 text-[14px] font-medium text-ink">
+          <p className="m-0 flex items-center gap-2 text-sm font-medium text-ink">
             <ExportOutlined aria-hidden="true" className="text-ink-3" />
             导出账号数据
           </p>
-          <p className="mb-3 mt-1 text-[12px] leading-5 text-ink-3">
+          <p className="mb-3 mt-1 text-xs leading-5 text-ink-3">
             下载账号资料、帖子与评论的 JSON 副本，用于备份或迁移。
           </p>
           <button type="button" className={BTN_SECONDARY} onClick={exportData} disabled={exporting}>
@@ -722,7 +722,7 @@ function SecurityPanel({ account, onAccount }: {
         {sessions.isLoading ? (
           <RowsSkeleton rows={2} />
         ) : sessions.isError ? (
-          <div role="alert" className="rounded-md border border-danger/35 bg-danger-soft p-3 text-[13px] leading-5 text-danger">
+          <div role="alert" className="rounded-md border border-danger/35 bg-danger-soft p-3 text-sm leading-5 text-danger">
             <p className="m-0">会话列表没能加载：{errText(sessions.error)}</p>
             <div className="mt-2 flex flex-wrap items-center gap-3">
               <button type="button" className="inline-flex items-center gap-1 font-semibold hover:underline"
@@ -733,14 +733,14 @@ function SecurityPanel({ account, onAccount }: {
             </div>
           </div>
         ) : !sessions.data?.length ? (
-          <p className="m-0 text-[13px] leading-6 text-ink-3">没有可用的会话。下次登录会重新出现。</p>
+          <p className="m-0 text-sm leading-6 text-ink-3">没有可用的会话。下次登录会重新出现。</p>
         ) : (
           <ul className="m-0 list-none divide-y divide-line p-0">
             {sessions.data.map(session => (
               <li key={session.id} className="flex flex-wrap items-start justify-between gap-2 py-3 first:pt-0 last:pb-0">
                 <div className="min-w-0">
-                  <p className="m-0 text-[13px] font-medium text-ink">{clientLabel(session.client)}</p>
-                  <p className="m-0 mt-1 text-[12px] leading-5 text-ink-3">
+                  <p className="m-0 text-sm font-medium text-ink">{clientLabel(session.client)}</p>
+                  <p className="m-0 mt-1 text-xs leading-5 text-ink-3">
                     登录 <time dateTime={session.created_at}>{when(session.created_at)}</time>
                     <br className="sm:hidden" />
                     <span className="hidden sm:inline"> · </span>
@@ -805,8 +805,8 @@ function NotificationPanel() {
     <section>
       <div className="mb-3 flex flex-wrap items-end justify-between gap-2 border-b border-line pb-3">
         <div className="min-w-0">
-          <h2 className="m-0 text-[16px] font-semibold text-ink">通知</h2>
-          <p className="m-0 mt-1 text-[12px] leading-5 text-ink-3">
+          <h2 className="m-0 text-base font-semibold text-ink">通知</h2>
+          <p className="m-0 mt-1 text-xs leading-5 text-ink-3">
             {unread > 0 ? `${unread} 条未读` : '没有未读通知'} · 回复、采纳与站务处理结果都会出现在这里
           </p>
         </div>
@@ -822,8 +822,8 @@ function NotificationPanel() {
         <RowsSkeleton rows={3} />
       ) : feed.isError ? (
         <div role="alert" className="card p-4">
-          <p className="m-0 text-[13px] font-semibold text-ink">通知加载失败</p>
-          <p className="mb-3 mt-1 text-[13px] leading-5 text-ink-2">{errText(feed.error)}</p>
+          <p className="m-0 text-sm font-semibold text-ink">通知加载失败</p>
+          <p className="mb-3 mt-1 text-sm leading-5 text-ink-2">{errText(feed.error)}</p>
           <div className="flex flex-wrap items-center gap-2">
             <button type="button" className={BTN_SECONDARY} onClick={() => feed.refetch()}>
               <ReloadOutlined aria-hidden="true" /> 重试
@@ -850,7 +850,7 @@ function NotificationPanel() {
                     className={`mt-2 h-2 w-2 shrink-0 rounded-full ${n.read_at ? 'bg-line-strong' : 'bg-brand'}`} />
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                      <span className="rounded-full border border-line bg-surface-2 px-2 py-1 text-[12px] font-medium text-ink-3">
+                      <span className="rounded-full border border-line bg-surface-2 px-2 py-1 text-xs font-medium text-ink-3">
                         {NOTIFICATION_LABEL[n.type] || n.type}
                       </span>
                       {href ? (
@@ -860,20 +860,20 @@ function NotificationPanel() {
                             e.preventDefault()
                             void markOne(n).finally(() => window.location.assign(href))
                           }}
-                          className={`text-[14px] font-semibold hover:text-brand ${n.read_at ? 'text-ink-2' : 'text-ink'}`}>
+                          className={`text-sm font-semibold hover:text-brand ${n.read_at ? 'text-ink-2' : 'text-ink'}`}>
                           {n.subject || '查看详情'}
                         </a>
                       ) : (
-                        <span className={`text-[14px] font-semibold ${n.read_at ? 'text-ink-2' : 'text-ink'}`}>
+                        <span className={`text-sm font-semibold ${n.read_at ? 'text-ink-2' : 'text-ink'}`}>
                           {n.subject || '通知'}
                         </span>
                       )}
                       {!n.read_at && <span className="sr-only">未读</span>}
                     </div>
                     {n.body && (
-                      <p className="m-0 mt-1 line-clamp-2 text-[13px] leading-5 text-ink-2">{n.body}</p>
+                      <p className="m-0 mt-1 line-clamp-2 text-sm leading-5 text-ink-2">{n.body}</p>
                     )}
-                    <p className="m-0 mt-1 text-[12px] text-ink-3">
+                    <p className="m-0 mt-1 text-xs text-ink-3">
                       <time dateTime={n.created_at}>{when(n.created_at)}</time>
                     </p>
                   </div>
@@ -911,7 +911,7 @@ function SubmissionPanel() {
     <section>
       <SectionHead title="我的投稿" hint="参数纠错与数据提案的审核进度。合并并发布数据后，目录才会更新。" />
 
-      <p className="m-0 mb-3 rounded-md border border-warning/35 bg-warning-soft px-3 py-2 text-[12px] leading-5 text-warning">
+      <p className="m-0 mb-3 rounded-md border border-warning/35 bg-warning-soft px-3 py-2 text-xs leading-5 text-warning">
         审核通过不等于页面已更新；数据在下一个 <span className="mono">data-v*</span> 发布后生效。
       </p>
 
@@ -919,8 +919,8 @@ function SubmissionPanel() {
         <RowsSkeleton rows={3} />
       ) : submissions.isError ? (
         <div role="alert" className="card p-4">
-          <p className="m-0 text-[13px] font-semibold text-ink">投稿记录加载失败</p>
-          <p className="mb-3 mt-1 text-[13px] leading-5 text-ink-2">{errText(submissions.error)}</p>
+          <p className="m-0 text-sm font-semibold text-ink">投稿记录加载失败</p>
+          <p className="mb-3 mt-1 text-sm leading-5 text-ink-2">{errText(submissions.error)}</p>
           <div className="flex flex-wrap items-center gap-2">
             <button type="button" className={BTN_SECONDARY} onClick={() => submissions.refetch()}>
               <ReloadOutlined aria-hidden="true" /> 重试
@@ -949,31 +949,31 @@ function SubmissionPanel() {
                 <li key={sub.id} className="flex flex-wrap items-start gap-3 p-4">
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className={`inline-flex items-center rounded-full border border-line px-2 py-1 text-[12px] font-medium ${meta.tone}`}>
+                      <span className={`inline-flex items-center rounded-full border border-line px-2 py-1 text-xs font-medium ${meta.tone}`}>
                         {meta.label}
                       </span>
-                      <span className="mono text-[12px] text-ink-3">#{sub.id}</span>
-                      <span className="text-[12px] text-ink-3">
+                      <span className="mono text-xs text-ink-3">#{sub.id}</span>
+                      <span className="text-xs text-ink-3">
                         <time dateTime={sub.created_at}>{day(sub.created_at)}</time>
                       </span>
                     </div>
-                    <p className="m-0 mt-2 break-words text-[14px] font-medium text-ink">
+                    <p className="m-0 mt-2 break-words text-sm font-medium text-ink">
                       {href ? (
                         <a href={href} className="hover:text-brand">{sub.target_id}</a>
                       ) : (sub.target_id || '未指定目标')}
                     </p>
-                    <p className="m-0 mt-1 break-words text-[12px] leading-5 text-ink-3">
+                    <p className="m-0 mt-1 break-words text-xs leading-5 text-ink-3">
                       {fields.length ? `涉及字段：${fields.join('、')}` : '没有字段变更'}
                       {sub.revision > 1 ? ` · 第 ${sub.revision} 版` : ''}
                     </p>
                     {reject && (
-                      <p className="m-0 mt-2 rounded-md border border-danger/25 bg-danger-soft px-3 py-2 text-[12px] leading-5 text-danger">
+                      <p className="m-0 mt-2 rounded-md border border-danger/25 bg-danger-soft px-3 py-2 text-xs leading-5 text-danger">
                         驳回：{reject.note || reject.reason_code || '未写明原因'}
                       </p>
                     )}
                   </div>
                   <a href={siteHref('/submit.html')}
-                    className="inline-flex min-h-11 items-center text-[12px] text-ink-3 transition-colors hover:text-brand sm:min-h-8">
+                    className="inline-flex min-h-11 items-center text-xs text-ink-3 transition-colors hover:text-brand sm:min-h-8">
                     再投一条 →
                   </a>
                 </li>
@@ -1080,7 +1080,7 @@ function IdentityPanel({ account, onGoSecurity }: {
         {identities.isLoading ? (
           <RowsSkeleton rows={2} />
         ) : identities.isError ? (
-          <div role="alert" className="rounded-md border border-danger/35 bg-danger-soft p-3 text-[13px] leading-5 text-danger">
+          <div role="alert" className="rounded-md border border-danger/35 bg-danger-soft p-3 text-sm leading-5 text-danger">
             <p className="m-0">绑定状态没能加载：{errText(identities.error)}</p>
             <div className="mt-2 flex flex-wrap items-center gap-3">
               <button type="button" className="inline-flex items-center gap-1 font-semibold hover:underline"
@@ -1099,16 +1099,16 @@ function IdentityPanel({ account, onGoSecurity }: {
               return (
                 <li key={provider.id} className="flex flex-wrap items-start justify-between gap-3 py-3 first:pt-0 last:pb-0">
                   <div className="min-w-0">
-                    <p className="m-0 flex items-center gap-2 text-[14px] font-medium text-ink">
-                      <span className="text-[16px] text-ink-2">{providerIcon(provider.id)}</span>
+                    <p className="m-0 flex items-center gap-2 text-sm font-medium text-ink">
+                      <span className="text-base text-ink-2">{providerIcon(provider.id)}</span>
                       {provider.label}
-                      <span className={`inline-flex items-center rounded-full border border-line px-2 py-1 text-[12px] font-medium ${
+                      <span className={`inline-flex items-center rounded-full border border-line px-2 py-1 text-xs font-medium ${
                         identity ? 'bg-success-soft text-success' : 'bg-surface-2 text-ink-3'
                       }`}>
                         {identity ? '已绑定' : '未绑定'}
                       </span>
                     </p>
-                    <p className="m-0 mt-1 max-w-prose text-[12px] leading-5 text-ink-3">
+                    <p className="m-0 mt-1 max-w-prose text-xs leading-5 text-ink-3">
                       {identity
                         ? `绑定于 ${day(identity.created_at)}${identity.email ? ` · ${identity.email}` : ''}`
                         : provider.hint}
@@ -1126,7 +1126,7 @@ function IdentityPanel({ account, onGoSecurity }: {
                       绑定 {provider.label}
                     </button>
                   ) : (
-                    <span className="text-[12px] text-ink-3">小程序登录已停用</span>
+                    <span className="text-xs text-ink-3">小程序登录已停用</span>
                   )}
                 </li>
               )
@@ -1139,11 +1139,11 @@ function IdentityPanel({ account, onGoSecurity }: {
 
       <div className="card p-4 sm:p-6">
         <SectionHead title="本站密码" hint="除第三方身份外的另一种登录方式" />
-        <p className="m-0 flex flex-wrap items-center gap-2 text-[13px] text-ink-2">
+        <p className="m-0 flex flex-wrap items-center gap-2 text-sm text-ink-2">
           <LockOutlined aria-hidden="true" className="text-ink-3" />
           {account.password_set ? '已设置，可用账号密码登录。' : '未设置，目前只能通过第三方身份登录。'}
         </p>
-        <p className="mb-3 mt-2 text-[12px] leading-5 text-ink-3">
+        <p className="mb-3 mt-2 text-xs leading-5 text-ink-3">
           解绑第三方身份前，请确认至少保留一种能进来的方式；站务端会拒绝把账号锁死的解绑。
         </p>
         <button type="button" className={BTN_SECONDARY} onClick={onGoSecurity}>
@@ -1244,8 +1244,8 @@ function Center() {
     return (
       <div className="mx-auto max-w-4xl">
         <div role="alert" className="card p-6">
-          <h2 className="m-0 text-[16px] font-semibold text-ink">账号信息没能加载</h2>
-          <p className="mb-4 mt-2 text-[13px] leading-6 text-ink-2">
+          <h2 className="m-0 text-base font-semibold text-ink">账号信息没能加载</h2>
+          <p className="mb-4 mt-2 text-sm leading-6 text-ink-2">
             {accountQ.error ? errText(accountQ.error) : '会话可能已过期。'}
             <br />
             可以先重试；如果一直失败，退出后重新登录。
@@ -1267,15 +1267,15 @@ function Center() {
       <section className="card mb-4 flex flex-wrap items-center gap-3 p-4">
         <Avatar user={account} size={44} />
         <div className="min-w-0 flex-1">
-          <p className="m-0 truncate text-[14px] font-semibold text-ink">{account.display_name}</p>
-          <p className="m-0 truncate text-[12px] text-ink-3">
+          <p className="m-0 truncate text-sm font-semibold text-ink">{account.display_name}</p>
+          <p className="m-0 truncate text-xs text-ink-3">
             用户 ID：{account.handle} · 可信度 Lv.{account.trust_level ?? 0}/3 · 声望{' '}
             <span className="mono tabular">{account.reputation}</span>
             {account.is_staff && <span className="ml-1 text-warning">· 站务</span>}
           </p>
         </div>
         <a href={siteHref(`/u.html?handle=${encodeURIComponent(account.handle)}`)}
-          className="inline-flex min-h-11 items-center text-[12px] text-ink-3 transition-colors hover:text-brand sm:min-h-8">
+          className="inline-flex min-h-11 items-center text-xs text-ink-3 transition-colors hover:text-brand sm:min-h-8">
           我的主页
         </a>
         <button type="button" className={BTN_GHOST} onClick={logout}>退出</button>
@@ -1293,12 +1293,12 @@ function Center() {
               tabIndex={active ? 0 : -1}
               ref={el => { tabRefs.current[i] = el }}
               onClick={() => changeTab(t.id)}
-              className={`relative inline-flex min-h-11 items-center gap-2 rounded-t-md px-3 text-[14px] transition-colors sm:min-h-9 ${
+              className={`relative inline-flex min-h-11 items-center gap-2 rounded-t-md px-3 text-sm transition-colors sm:min-h-9 ${
                 active ? 'font-semibold text-brand' : 'text-ink-2 hover:text-ink'
               }`}>
               {t.label}
               {t.id === 'notifications' && unread > 0 && (
-                <span className="mono tabular rounded-full bg-brand px-2 text-[12px] font-semibold text-brand-fg">
+                <span className="mono tabular rounded-full bg-brand px-2 text-xs font-semibold text-brand-fg">
                   {unread > 99 ? '99+' : unread}
                 </span>
               )}

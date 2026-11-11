@@ -29,7 +29,7 @@ const href = (h: string) => (isExternal(h) ? h : withBase(h))
         <span class="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-1">
           <span class="text-sm font-semibold text-slate-900">{item.title}</span>
           {item.meta && (
-            <span class="rounded-full border border-slate-200 px-2 py-0.5 text-[11px] text-slate-500">{item.meta}</span>
+            <span class="rounded-full border border-slate-200 px-2 py-0.5 text-xs text-slate-500">{item.meta}</span>
           )}
         </span>
 
@@ -38,13 +38,13 @@ const href = (h: string) => (isExternal(h) ? h : withBase(h))
         {item.tags && item.tags.length > 0 && (
           <span class="flex flex-wrap gap-1.5">
             {item.tags.map(tag => (
-              <span class="rounded-md bg-slate-100 px-1.5 py-0.5 text-[11px] text-slate-600">{tag}</span>
+              <span class="rounded-md bg-slate-100 px-1.5 py-0.5 text-xs text-slate-600">{tag}</span>
             ))}
           </span>
         )}
 
         {item.when && (
-          <span class="mt-auto text-[11px] leading-5 text-slate-500">
+          <span class="mt-auto text-xs leading-5 text-slate-500">
             <span class="font-medium text-slate-600">{whenLabel}</span>：{item.when}
           </span>
         )}

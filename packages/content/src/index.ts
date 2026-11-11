@@ -13,7 +13,7 @@ export type WebNavItem = {
   match: string[]
 }
 
-/** 网页端一级导航：首页 / 教程库 / 方案库 / 部件库 / 设备库 / 采购库 / 社区 */
+/** 网页端一级导航：首页 / 教程库 / 选型台 / 部件库 / 方案库 / 采购库 / 设备库 / 社区 */
 export const WEB_NAV: WebNavItem[] = [
   {
     key: 'home',
@@ -30,11 +30,11 @@ export const WEB_NAV: WebNavItem[] = [
     match: ['/learn', '/paths'],
   },
   {
-    key: 'builds',
-    label: '方案库',
-    desc: '可复现方案，含 BOM 与步骤',
-    href: '/builds.html',
-    match: ['/builds', '/robots', '/competitions'],
+    key: 'selector',
+    label: '选型台',
+    desc: '按构型与功能推导 BOM 和 MJCF',
+    href: '/selector.html',
+    match: ['/selector'],
   },
   {
     key: 'catalog',
@@ -44,18 +44,11 @@ export const WEB_NAV: WebNavItem[] = [
     match: ['/catalog', '/parts', '/materials'],
   },
   {
-    key: 'selector',
-    label: '选型台',
-    desc: '按构型与功能推导 BOM 和 MJCF',
-    href: '/selector.html',
-    match: ['/selector'],
-  },
-  {
-    key: 'equipment',
-    label: '设备库',
-    desc: '做机器人的工具与仪器',
-    href: '/equipment.html',
-    match: ['/equipment'],
+    key: 'builds',
+    label: '方案库',
+    desc: '可复现方案，含 BOM 与步骤',
+    href: '/builds.html',
+    match: ['/builds', '/robots', '/competitions'],
   },
   {
     key: 'suppliers',
@@ -63,6 +56,13 @@ export const WEB_NAV: WebNavItem[] = [
     desc: '按加工品类找店，先看有没有坑',
     href: '/suppliers.html',
     match: ['/suppliers'],
+  },
+  {
+    key: 'equipment',
+    label: '设备库',
+    desc: '做机器人的工具与仪器',
+    href: '/equipment.html',
+    match: ['/equipment'],
   },
   {
     key: 'community',
@@ -143,8 +143,8 @@ export const SECTION_TITLES = {
 // 同一台机器并收口。两端、文档、数据页都从这里取同一套命名，避免各写一套。
 
 export const POSITIONING = {
-  short: '面向机器人制作全流程的可追溯工程知识库',
-  full: '以「机械—硬件—嵌入式—算法」四层能力为骨架，以系统集成能力为大脑，以社区共建方式汇聚部件选型与评价、加工与采购经验、教程、案例与开源索引，贯通需求定义、方案设计、工程实现、测试验证与迭代优化，让机器人制作经验沉淀为可检索、可复现、可追溯的工程知识。',
+  short: '面向机器人部件的可追溯工程知识库',
+  full: '以参数可追溯的部件库为核心，先把「这个件到底怎么样、多少钱、谁用过」做扎实；选型台作为试验工具辅助按构型试配 BOM；社区共建每个部件的实测与评价；再逐步打通机械—硬件—嵌入式—算法与系统集成的制作全链路，把参数、方案、采购与实测沉淀为可检索、可复现、可追溯的工程知识。',
   tagline: '每一步都有来源，每一套都能复现。',
 } as const
 

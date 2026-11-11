@@ -49,8 +49,8 @@ export default function RangeFilter({ label, unit = '', min, max, step, value, o
   return (
     <div className="min-w-0">
       <div className="flex items-baseline justify-between gap-2">
-        <label htmlFor={`${id}-lo`} className="text-[12px] font-medium text-ink-2">{label}</label>
-        <span className="mono tabular text-[11px] text-ink-3">
+        <label htmlFor={`${id}-lo`} className="text-xs font-medium text-ink-2">{label}</label>
+        <span className="mono tabular text-xs text-ink-3">
           {formatSpecNumber(lo)}–{formatSpecNumber(hi)}{unit}
         </span>
       </div>
@@ -95,9 +95,9 @@ export default function RangeFilter({ label, unit = '', min, max, step, value, o
           onBlur={() => commitText('lo')}
           onKeyDown={event => { if (event.key === 'Enter') commitText('lo') }}
           aria-label={`${label}最小值输入`}
-          className="mono tabular h-7 w-full min-w-0 rounded-md border border-line bg-surface px-2 text-[12px] text-ink"
+          className="mono tabular h-7 w-full min-w-0 rounded-md border border-line bg-surface px-2 text-xs text-ink"
         />
-        <span aria-hidden="true" className="text-[11px] text-ink-3">–</span>
+        <span aria-hidden="true" className="text-xs text-ink-3">–</span>
         <input
           type="number"
           inputMode="decimal"
@@ -109,7 +109,7 @@ export default function RangeFilter({ label, unit = '', min, max, step, value, o
           onBlur={() => commitText('hi')}
           onKeyDown={event => { if (event.key === 'Enter') commitText('hi') }}
           aria-label={`${label}最大值输入`}
-          className="mono tabular h-7 w-full min-w-0 rounded-md border border-line bg-surface px-2 text-[12px] text-ink"
+          className="mono tabular h-7 w-full min-w-0 rounded-md border border-line bg-surface px-2 text-xs text-ink"
         />
       </div>
     </div>

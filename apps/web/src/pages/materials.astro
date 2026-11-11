@@ -84,10 +84,10 @@ const stats = [
       <dl class="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-line bg-line sm:grid-cols-4">
         {stats.map(stat => (
           <div class="bg-surface-2 px-4 py-3">
-            <dt class="text-[11px] font-medium tracking-wide text-ink-3">{stat.label}</dt>
+            <dt class="text-xs font-medium tracking-wide text-ink-3">{stat.label}</dt>
             <dd class="mt-1 flex items-baseline gap-1">
               <span class="mono tabular text-xl font-semibold leading-none text-ink">{stat.value}</span>
-              <span class="text-[11px] text-ink-3">{stat.unit}</span>
+              <span class="text-xs text-ink-3">{stat.unit}</span>
             </dd>
           </div>
         ))}
@@ -99,11 +99,11 @@ const stats = [
     <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
       <div class="chip-row" role="group" aria-label="按材质分类筛选">
         <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">
-          全部<span class="mono tabular text-[11px] opacity-60">{total}</span>
+          全部<span class="mono tabular text-xs opacity-60">{total}</span>
         </button>
         {sections.map(group => (
           <button type="button" class="chip" data-filter={group.id} aria-pressed="false">
-            {group.label}<span class="mono tabular text-[11px] opacity-60">{group.items.length}</span>
+            {group.label}<span class="mono tabular text-xs opacity-60">{group.items.length}</span>
           </button>
         ))}
       </div>
@@ -153,7 +153,7 @@ const stats = [
                 >
                   <div class="flex items-start justify-between gap-2">
                     <span
-                      class={`inline-flex h-6 items-center rounded-full px-2.5 text-[11px] font-semibold ${
+                      class={`inline-flex h-6 items-center rounded-full px-2.5 text-xs font-semibold ${
                         item.category === 'process'
                           ? 'bg-warning-soft text-warning'
                           : 'bg-brand-soft text-brand'

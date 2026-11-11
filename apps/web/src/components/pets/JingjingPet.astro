@@ -1,0 +1,86 @@
+---
+type Props = {
+  auto?: boolean
+  class?: string
+  title?: string
+  note?: string
+}
+
+const {
+  auto = false,
+  class: className = '',
+  title = '看板娘 · 大肥鱼',
+  note = '社区素材 ds-pet（MIT），非 DeepSeek 官方；只在首页、空态与 404 出现。',
+} = Astro.props
+---
+
+<section class={`card overflow-hidden p-5 ${className}`} data-jingjing-card data-auto={auto ? '1' : '0'}>
+  <div class="flex items-start justify-between gap-3">
+    <div class="min-w-0">
+      <h2 class="text-sm font-semibold text-ink">{title}</h2>
+      <p class="mt-1 text-xs leading-5 text-ink-3">{note}</p>
+    </div>
+    {!auto && (
+      <button
+        type="button"
+        data-jingjing-load
+        class="inline-flex h-8 shrink-0 items-center rounded-md border border-line bg-surface px-3 text-xs font-medium text-ink-2 transition-colors hover:border-line-strong hover:text-ink"
+      >
+        召唤
+      </button>
+    )}
+  </div>
+  <div class="mt-4 min-h-[260px] rounded-xl bg-surface-2/60" data-jingjing-mount>
+    <p class="grid min-h-[260px] place-items-center px-4 text-xs text-ink-3" data-jingjing-hint>
+      {auto ? '看板娘正在出窝…' : '点「召唤」加载看板娘；不点击不会下载素材。'}
+    </p>
+  </div>
+</section>
+
+<script>
+  const waitForPet = () =>
+    new Promise<any>(resolve => {
+      const found = () => (window as any).__rwPet
+      if (found()) return resolve(found())
+      const timer = window.setInterval(() => {
+        if (found()) {
+          window.clearInterval(timer)
+          resolve(found())
+        }
+      }, 50)
+      window.setTimeout(() => {
+        window.clearInterval(timer)
+        resolve(found() ?? null)
+      }, 5000)
+    })
+
+  document.querySelectorAll<HTMLElement>('[data-jingjing-card]').forEach(card => {
+    const mountEl = card.querySelector<HTMLElement>('[data-jingjing-mount]')
+    if (!mountEl) return
+    const hint = card.querySelector<HTMLElement>('[data-jingjing-hint]')
+    const button = card.querySelector<HTMLButtonElement>('[data-jingjing-load]')
+
+    const load = async () => {
+      const pet = await waitForPet()
+      if (!pet) {
+        if (hint) hint.textContent = '看板娘加载失败，刷新后再试。'
+        return
+      }
+      hint?.remove()
+      button?.remove()
+      await pet.mount(mountEl)
+    }
+
+    if (card.dataset.auto === '1') {
+      const io = new IntersectionObserver(entries => {
+        if (entries.some(entry => entry.isIntersecting)) {
+          io.disconnect()
+          load()
+        }
+      }, { rootMargin: '240px' })
+      io.observe(card)
+    } else {
+      button?.addEventListener('click', load)
+    }
+  })
+</script>

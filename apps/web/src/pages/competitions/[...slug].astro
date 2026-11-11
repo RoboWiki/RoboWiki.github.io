@@ -67,7 +67,7 @@ const toc = headings.filter(h => h.depth === 2 || h.depth === 3)
     </nav>
 
     <header class="max-w-3xl">
-      <p class="text-[11px] font-semibold tracking-[0.14em] text-brand uppercase">
+      <p class="text-xs font-semibold tracking-[0.14em] text-brand uppercase">
         {isGroupIndex ? `实战资料 · ${groupLabel}` : groupLabel}
       </p>
       <h1 class="mt-2 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">{entry.data.title}</h1>
@@ -90,9 +90,9 @@ const toc = headings.filter(h => h.depth === 2 || h.depth === 3)
                     href={withBase(`/competitions/${item.id}.html`)}
                     class="card card-hover flex h-full flex-col gap-1 px-3 py-2.5"
                   >
-                    <span class="text-[13px] font-medium text-ink">{item.data.title}</span>
+                    <span class="text-sm font-medium text-ink">{item.data.title}</span>
                     {item.data.description && (
-                      <span class="line-clamp-2 text-[11px] leading-5 text-ink-3">{item.data.description}</span>
+                      <span class="line-clamp-2 text-xs leading-5 text-ink-3">{item.data.description}</span>
                     )}
                   </a>
                 </li>
@@ -112,12 +112,12 @@ const toc = headings.filter(h => h.depth === 2 || h.depth === 3)
       {toc.length > 1 && (
         <aside aria-labelledby="toc-title" class="min-w-0">
           <nav class="lg:sticky lg:top-24" aria-labelledby="toc-title">
-            <p id="toc-title" class="text-[11px] font-semibold tracking-[0.14em] text-ink-3 uppercase">本篇目录</p>
+            <p id="toc-title" class="text-xs font-semibold tracking-[0.14em] text-ink-3 uppercase">本篇目录</p>
             <ol class="mt-2 flex flex-wrap gap-x-4 gap-y-1.5 lg:flex-col lg:gap-1 lg:border-l lg:border-line lg:pl-3">
               {toc.map((h, i) => (
                 <li class={`min-w-0 ${h.depth === 3 ? 'lg:pl-3' : ''}`}>
-                  <a href={`#${h.slug}`} class="group flex items-baseline gap-2 rounded-sm py-0.5 text-[13px] text-ink-2 transition-colors hover:text-brand">
-                    <span class="mono text-[10px] text-ink-3 group-hover:text-brand">{String(i + 1).padStart(2, '0')}</span>
+                  <a href={`#${h.slug}`} class="group flex items-baseline gap-2 rounded-sm py-0.5 text-sm text-ink-2 transition-colors hover:text-brand">
+                    <span class="mono text-xs text-ink-3 group-hover:text-brand">{String(i + 1).padStart(2, '0')}</span>
                     <span class="truncate">{h.text}</span>
                   </a>
                 </li>

@@ -7,8 +7,8 @@ import { DISCUSSION, POSITIONING, WEB_NAV } from '@robowiki/content'
 
 type Props = { title?: string; description?: string; accountHref?: string; image?: string; noindex?: boolean }
 const {
-  title = 'RoboWiki · 机器人制作全流程工程知识库',
-  description = `${POSITIONING.short}：以「机械—硬件—嵌入式—算法」四层能力为骨架，以系统集成能力为大脑，社区共建部件选型与评价、加工与采购经验、教程、案例与开源索引。`,
+  title = 'RoboWiki · 机器人部件与制作工程知识库',
+  description = POSITIONING.full,
   accountHref = withBase('/account.html'),
   image = '',
   noindex = false,
@@ -37,13 +37,19 @@ const commentsPage = path === '/' ? 'index' : path.replace(/^\//, '').replace(/\
 const showComments = !/^(admin|login|account|community|post|top|u|404|search|compare|start|open|paths|selector)/.test(commentsPage)
 // 一级入口与小程序共用一份：学习 / 方案 / 部件 / 社区 / 采购。
 const nav = WEB_NAV
+const themeOptions = [
+  { key: 'system', label: '跟随系统' },
+  { key: 'warm', label: '暖纸' },
+  { key: 'dark', label: '深色' },
+  { key: 'contrast', label: '高对比' },
+]
 
 const isCurrent = (item: (typeof WEB_NAV)[number]) => {
   const targets = item.match?.length ? item.match : [item.href]
   return targets.some(t => (t === '/' ? path === '/' : path.startsWith(t)))
 }
 const linkClass = (current: boolean) =>
-  `inline-flex items-center rounded-md px-3 py-1.5 text-[13px] transition-colors ${
+  `inline-flex items-center rounded-md px-3 py-1.5 text-sm transition-colors ${
     current
       ? 'bg-brand-soft font-semibold text-brand'
       : 'text-ink-2 hover:bg-surface-3 hover:text-ink'
@@ -57,20 +63,20 @@ const footerGroups = [
   {
     title: '找东西',
     links: [
-      { href: '/catalog.html', label: '部件库' },
       { href: '/selector.html', label: '选型台' },
-      { href: '/equipment.html', label: '设备库' },
+      { href: '/catalog.html', label: '部件库' },
       { href: '/builds.html', label: '方案库' },
-      { href: '/materials.html', label: '材质与工艺' },
       { href: '/suppliers.html', label: '采购库' },
+      { href: '/equipment.html', label: '设备库' },
+      { href: '/materials.html', label: '材质与工艺' },
     ],
   },
   {
     title: '教程与参与',
     links: [
       { href: '/learn/index.html', label: '教程库' },
-      { href: '/paths/electrical-14d.html', label: '14 天电控路径' },
       { href: '/community.html', label: '社区' },
+      { href: '/paths/electrical-14d.html', label: '14 天电控路径' },
       { href: '/tools.html', label: '工具链' },
       { href: '/open.html', label: '开源索引' },
       { href: '/submit.html', label: '参与投稿' },
@@ -118,15 +124,37 @@ const footerGroups = [
     <meta name="twitter:image:alt" content={title} />
     <title>{title}</title>
     <script is:inline>
-      // 主题在首帧前落定，避免闪白。默认跟随系统。
+      // 主题在首帧前落定：system 解析为 warm/dark；contrast 只由用户显式选择。
       (() => {
-        try {
-          const saved = localStorage.getItem('rw-theme')
-          const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches
-          document.documentElement.classList.toggle('dark', dark)
-        } catch {}
+        const root = document.documentElement
+        const KEY = 'rw-theme'
+        const modes = ['system', 'warm', 'dark', 'contrast']
+        let mode = 'system'
+        try { mode = localStorage.getItem(KEY) || 'system' } catch {}
+        // 兼容旧版两态主题：显式选过浅色的用户保留浅色（映射到暖纸）。
+        if (mode === 'light') mode = 'warm'
+        if (!modes.includes(mode)) mode = 'system'
+        const resolve = (m) => (m === 'system'
+          ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'warm')
+          : m)
+        const apply = (m, persist) => {
+          const theme = resolve(m)
+          root.dataset.theme = theme
+          root.dataset.themeMode = m
+          // 保留 .dark：组件里的 dark: 工具类与小程序端都依赖它。
+          root.classList.toggle('dark', theme === 'dark' || theme === 'contrast')
+          root.style.colorScheme = theme === 'dark' || theme === 'contrast' ? 'dark' : 'light'
+          if (persist) { try { localStorage.setItem(KEY, m) } catch {} }
+          document.dispatchEvent(new CustomEvent('rw:themechange', { detail: { mode: m, theme } }))
+        }
+        window.__rwTheme = { modes, resolve, apply, get mode() { return root.dataset.themeMode || 'system' } }
+        apply(mode, false)
+        matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', () => {
+          if ((root.dataset.themeMode || 'system') === 'system') apply('system', false)
+        })
       })()
     </script>
+    <script is:inline src={withBase('/vendor/ds-pet/mount.js')} data-base={withBase('/')} defer></script>
   </head>
   <body class="min-h-screen bg-bg text-ink antialiased">
     <a href="#main" class="skip-link">跳到主要内容</a>
@@ -142,8 +170,8 @@ const footerGroups = [
             class="h-7 w-10 object-contain dark:invert"
           />
           <span class="flex flex-col leading-none">
-            <span class="text-[15px] font-bold tracking-tight text-ink">RoboWiki</span>
-            <span class="mt-0.5 hidden text-[10px] font-medium tracking-wide text-ink-3 sm:block">
+            <span class="text-base font-bold tracking-tight text-ink">RoboWiki</span>
+            <span class="mt-0.5 hidden text-xs font-medium tracking-wide text-ink-3 sm:block">
               机器人制作工程知识库
             </span>
           </span>
@@ -177,7 +205,7 @@ const footerGroups = [
                 type="search"
                 placeholder="搜索全站 · 型号 / 厂商 / 品类"
                 autocomplete="off"
-                class="h-9 w-56 rounded-md border border-line bg-surface-2 pl-8 pr-3 text-[13px] text-ink transition-[width,border-color,background-color] duration-200 placeholder:text-ink-3 focus:w-72 focus:border-brand focus:bg-surface focus:outline-none"
+                class="h-9 w-56 rounded-md border border-line bg-surface-2 pl-8 pr-3 text-sm text-ink transition-[width,border-color,background-color] duration-200 placeholder:text-ink-3 focus:w-72 focus:border-brand focus:bg-surface focus:outline-none"
               />
             </div>
           </form>
@@ -195,20 +223,33 @@ const footerGroups = [
             </svg>
           </a>
 
-          <button
-            type="button"
-            id="theme-toggle"
-            class="grid h-9 w-9 place-items-center rounded-md border border-line text-ink-2 transition-colors hover:bg-surface-3 hover:text-ink"
-            aria-label="切换深色模式"
-            title="切换深色模式"
-          >
-            <svg class="hidden dark:block" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-              <circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4" stroke-linecap="round" />
-            </svg>
-            <svg class="block dark:hidden" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-              <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 0 0 9.8 9.8Z" stroke-linejoin="round" />
-            </svg>
-          </button>
+          <details class="theme-menu relative">
+            <summary
+              class="grid h-9 w-9 cursor-pointer list-none place-items-center rounded-md border border-line text-ink-2 transition-colors hover:bg-surface-3 hover:text-ink [&::-webkit-details-marker]:hidden"
+              aria-label="切换主题"
+              title="切换主题"
+            >
+              <svg class="hidden dark:block" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4" stroke-linecap="round" />
+              </svg>
+              <svg class="block dark:hidden" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.5 6.5 0 0 0 9.8 9.8Z" stroke-linejoin="round" />
+              </svg>
+            </summary>
+            <div class="absolute right-0 top-full z-50 mt-2 w-44 rounded-lg border border-line bg-surface p-1.5 shadow-md">
+              {themeOptions.map(opt => (
+                <button
+                  type="button"
+                  data-theme-option={opt.key}
+                  aria-pressed="false"
+                  class="flex w-full items-center justify-between rounded-md px-2.5 py-2 text-left text-sm text-ink-2 transition-colors hover:bg-surface-2"
+                >
+                  {opt.label}
+                  <span data-theme-check class="hidden text-brand" aria-hidden="true">✓</span>
+                </button>
+              ))}
+            </div>
+          </details>
 
           <a
             id="account-link"
@@ -219,12 +260,12 @@ const footerGroups = [
             data-state="guest"
             title="登录或注册"
             aria-label="登录或注册"
-            class="inline-flex h-9 items-center justify-center text-[13px] font-semibold transition-colors"
+            class="inline-flex h-9 items-center justify-center text-sm font-semibold transition-colors"
           >
             <span data-account-label class="max-w-[7.5rem] truncate sm:max-w-[10rem]">登录/注册</span>
             <span
               data-account-avatar
-              class="is-hidden relative h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-full border border-line bg-surface-3 text-[14px] font-bold text-white"
+              class="is-hidden relative h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-full border border-line bg-surface-3 text-sm font-bold text-white"
             >
               <span data-account-initial aria-hidden="true"></span>
               <img data-account-avatar-img alt="" class="is-hidden absolute inset-0 h-full w-full object-cover" />
@@ -253,7 +294,7 @@ const footerGroups = [
                   type="search"
                   placeholder="搜索全站 · 型号 / 厂商"
                   autocomplete="off"
-                  class="h-9 w-full rounded-md border border-line bg-surface-2 px-3 text-[13px] text-ink placeholder:text-ink-3 focus:border-brand focus:bg-surface focus:outline-none"
+                  class="h-9 w-full rounded-md border border-line bg-surface-2 px-3 text-sm text-ink placeholder:text-ink-3 focus:border-brand focus:bg-surface focus:outline-none"
                 />
               </form>
               <nav aria-label="移动导航">
@@ -267,7 +308,7 @@ const footerGroups = [
                       >
                         <span class="min-w-0">
                           <span class="block">{item.label}</span>
-                          {item.desc && <span class="block text-[11px] font-normal text-ink-3">{item.desc}</span>}
+                          {item.desc && <span class="block text-xs font-normal text-ink-3">{item.desc}</span>}
                         </span>
                         {isCurrent(item) && <span class="text-xs text-brand">当前</span>}
                       </a>
@@ -523,7 +564,7 @@ const footerGroups = [
           >
             <span class="flex min-w-0 flex-col gap-0.5">
               <span>{DISCUSSION.title}与纠错</span>
-              <span class="text-[11px] font-normal text-ink-3">{DISCUSSION.collapsedHint}</span>
+              <span class="text-xs font-normal text-ink-3">{DISCUSSION.collapsedHint}</span>
             </span>
             <span
               class="grid h-6 w-6 shrink-0 place-items-center rounded-md border border-line text-ink-3 transition-transform group-open:rotate-180"
@@ -556,7 +597,7 @@ const footerGroups = [
               <span class="text-sm font-bold text-ink">RoboWiki</span>
             </div>
             <p class="mt-3 max-w-xs text-xs leading-6 text-ink-3">
-              面向机器人制作全流程的可追溯工程知识库。四层能力打底，系统集成收口，社区共建。不卖零件、不收佣金。
+              面向机器人部件的可追溯工程知识库。核心是部件库，选型台为试验版；不卖零件、不收佣金。
             </p>
           </div>
           {footerGroups.map(group => (
@@ -565,7 +606,7 @@ const footerGroups = [
               <ul class="mt-3 space-y-2">
                 {group.links.map(link => (
                   <li>
-                    <a href={withBase(link.href)} class="text-[13px] text-ink-2 transition-colors hover:text-brand">
+                    <a href={withBase(link.href)} class="text-sm text-ink-2 transition-colors hover:text-brand">
                       {link.label}
                     </a>
                   </li>
@@ -586,19 +627,24 @@ const footerGroups = [
         window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}))
       }
 
-      // 主题切换：写入 localStorage，切换 <html class="dark">。
-      const toggle = document.getElementById('theme-toggle')
-      toggle?.addEventListener('click', () => {
-        const dark = document.documentElement.classList.toggle('dark')
-        try {
-          localStorage.setItem('rw-theme', dark ? 'dark' : 'light')
-        } catch {}
-        toggle.setAttribute('aria-label', dark ? '切换浅色模式' : '切换深色模式')
+      // 主题菜单：选择后持久化；system 模式跟随系统变化。
+      const themeMenu = document.querySelector<HTMLDetailsElement>('details.theme-menu')
+      const themeButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-theme-option]'))
+      const syncThemeMenu = () => {
+        const mode = (window as any).__rwTheme?.mode || 'system'
+        themeButtons.forEach(btn => btn.setAttribute('aria-pressed', String(btn.dataset.themeOption === mode)))
+      }
+      themeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          ;(window as any).__rwTheme?.apply(btn.dataset.themeOption || 'system', true)
+          themeMenu?.removeAttribute('open')
+        })
       })
+      document.addEventListener('rw:themechange', syncThemeMenu)
+      syncThemeMenu()
 
-      // Small enhancement for the <details> menu: close on outside click / Escape.
-      const menu = document.querySelector<HTMLDetailsElement>('details.mobile-nav')
-      if (menu) {
+      // <details> 菜单：点击外部 / Esc 关闭。
+      document.querySelectorAll<HTMLDetailsElement>('details.mobile-nav, details.theme-menu').forEach(menu => {
         const summary = menu.querySelector<HTMLElement>('summary')
         document.addEventListener('click', event => {
           if (menu.open && event.target instanceof Node && !menu.contains(event.target)) menu.open = false
@@ -609,7 +655,7 @@ const footerGroups = [
             summary?.focus()
           }
         })
-      }
+      })
 
       // 通知链接带 #comment-2 / #c2，但讨论区默认收起：先展开，再等 React 渲染后滚过去。
       const discussion = document.getElementById('discussion')

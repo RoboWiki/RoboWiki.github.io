@@ -108,7 +108,7 @@ const searchText = (item: Supplier) =>
     </nav>
 
     <header>
-      <p class="text-[11px] font-semibold tracking-[0.14em] text-brand uppercase">采购库</p>
+      <p class="text-xs font-semibold tracking-[0.14em] text-brand uppercase">采购库</p>
       <h1 class="mt-2 max-w-3xl text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
         按加工品类找店，先看有没有坑。
       </h1>
@@ -119,10 +119,10 @@ const searchText = (item: Supplier) =>
       </p>
 
       <dl class="mt-6 grid max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-4">
-        <div class="bg-surface px-4 py-3"><dt class="text-[11px] text-ink-3">收录店铺</dt><dd class="mono mt-1 text-xl font-bold text-ink">{total}</dd></div>
-        <div class="bg-surface px-4 py-3"><dt class="text-[11px] text-ink-3">红榜</dt><dd class="mono mt-1 text-xl font-bold text-success">{redCount}</dd></div>
-        <div class="bg-surface px-4 py-3"><dt class="text-[11px] text-ink-3">有坑</dt><dd class="mono mt-1 text-xl font-bold text-danger">{pitfallCount}</dd></div>
-        <div class="bg-surface px-4 py-3"><dt class="text-[11px] text-ink-3">可开票</dt><dd class="mono mt-1 text-xl font-bold text-ink">{invoiceCount}</dd></div>
+        <div class="bg-surface px-4 py-3"><dt class="text-xs text-ink-3">收录店铺</dt><dd class="mono mt-1 text-xl font-bold text-ink">{total}</dd></div>
+        <div class="bg-surface px-4 py-3"><dt class="text-xs text-ink-3">红榜</dt><dd class="mono mt-1 text-xl font-bold text-success">{redCount}</dd></div>
+        <div class="bg-surface px-4 py-3"><dt class="text-xs text-ink-3">有坑</dt><dd class="mono mt-1 text-xl font-bold text-danger">{pitfallCount}</dd></div>
+        <div class="bg-surface px-4 py-3"><dt class="text-xs text-ink-3">可开票</dt><dd class="mono mt-1 text-xl font-bold text-ink">{invoiceCount}</dd></div>
       </dl>
     </header>
 
@@ -135,56 +135,56 @@ const searchText = (item: Supplier) =>
           class="h-10 w-full rounded-md border border-line bg-surface px-3 text-sm text-ink placeholder:text-ink-3 focus-visible:border-brand focus-visible:outline-none sm:flex-1"
           autoComplete="off"
         />
-        <p id="sup-count" class="mono text-[11px] text-ink-3 sm:ml-auto" aria-live="polite">显示 {total} / {total} 家</p>
+        <p id="sup-count" class="mono text-xs text-ink-3 sm:ml-auto" aria-live="polite">显示 {total} / {total} 家</p>
       </div>
 
       <div class="mt-4 space-y-3">
         <div class="flex items-start gap-2">
-          <span id="sup-type-label" class="w-14 shrink-0 pt-1.5 text-[11px] font-semibold text-ink-3">买什么</span>
+          <span id="sup-type-label" class="w-14 shrink-0 pt-1.5 text-xs font-semibold text-ink-3">买什么</span>
           <div class="chip-row min-w-0 flex-1" role="group" aria-labelledby="sup-type-label">
             <button type="button" class="chip is-active" data-type-chip="" aria-pressed="true">
-              全部<span class="mono text-[11px] opacity-60">{total}</span>
+              全部<span class="mono text-xs opacity-60">{total}</span>
             </button>
             {types.map(([type, count]) => (
               <button type="button" class="chip" data-type-chip={type} aria-pressed="false">
-                {type}<span class="mono text-[11px] opacity-60">{count}</span>
+                {type}<span class="mono text-xs opacity-60">{count}</span>
               </button>
             ))}
           </div>
         </div>
 
         <div class="flex items-start gap-2">
-          <span id="sup-purpose-label" class="w-14 shrink-0 pt-1.5 text-[11px] font-semibold text-ink-3">怎么买</span>
+          <span id="sup-purpose-label" class="w-14 shrink-0 pt-1.5 text-xs font-semibold text-ink-3">怎么买</span>
           <div class="chip-row min-w-0 flex-1" role="group" aria-labelledby="sup-purpose-label">
             <button type="button" class="chip is-active" data-purpose="" aria-pressed="true">不限</button>
             <button type="button" class="chip" data-purpose="listing:红榜" aria-pressed="false">
-              红榜优先<span class="mono text-[11px] opacity-60">{redCount}</span>
+              红榜优先<span class="mono text-xs opacity-60">{redCount}</span>
             </button>
             <button type="button" class="chip" data-purpose="pitfall:no" aria-pressed="false">
-              未见坑<span class="mono text-[11px] opacity-60">{total - pitfallCount}</span>
+              未见坑<span class="mono text-xs opacity-60">{total - pitfallCount}</span>
             </button>
             <button type="button" class="chip" data-purpose="pitfall:yes" aria-pressed="false">
-              避开有坑<span class="mono text-[11px] opacity-60">{pitfallCount}</span>
+              避开有坑<span class="mono text-xs opacity-60">{pitfallCount}</span>
             </button>
             <button type="button" class="chip" data-purpose="invoice:yes" aria-pressed="false">
-              可开票<span class="mono text-[11px] opacity-60">{invoiceCount}</span>
+              可开票<span class="mono text-xs opacity-60">{invoiceCount}</span>
             </button>
             <button type="button" class="chip" data-purpose="punctual:fast" aria-pressed="false">
-              交期快<span class="mono text-[11px] opacity-60">{fastCount}</span>
+              交期快<span class="mono text-xs opacity-60">{fastCount}</span>
             </button>
             <button type="button" class="chip" data-purpose="price:low" aria-pressed="false">
-              价格低<span class="mono text-[11px] opacity-60">{lowPriceCount}</span>
+              价格低<span class="mono text-xs opacity-60">{lowPriceCount}</span>
             </button>
           </div>
         </div>
 
         <div class="flex items-start gap-2">
-          <span id="sup-service-label" class="w-14 shrink-0 pt-1.5 text-[11px] font-semibold text-ink-3">工艺能力</span>
+          <span id="sup-service-label" class="w-14 shrink-0 pt-1.5 text-xs font-semibold text-ink-3">工艺能力</span>
           <div class="chip-row min-w-0 flex-1" role="group" aria-labelledby="sup-service-label">
             <button type="button" class="chip is-active" data-service="" aria-pressed="true">全部</button>
             {services.slice(0, 12).map(({ service, count }) => (
               <button type="button" class="chip" data-service={service} aria-pressed="false">
-                {service}<span class="mono text-[11px] opacity-60">{count}</span>
+                {service}<span class="mono text-xs opacity-60">{count}</span>
               </button>
             ))}
           </div>
@@ -192,7 +192,7 @@ const searchText = (item: Supplier) =>
       </div>
     </form>
 
-    <p class="mt-4 rounded-md border border-amber-200 bg-amber-50 p-3 text-[12px] leading-6 text-amber-900">
+    <p class="mt-4 rounded-md border border-amber-200 bg-amber-50 p-3 text-xs leading-6 text-amber-900">
       「质量、交期、价格、发票」来自社区原话，是某次交易的记录，不是量化评分；同一家店不同批次可能完全不同。
       红黑榜不展示填写人、掌柜 ID、店铺链接或联系方式。
     </p>
@@ -236,22 +236,22 @@ const searchText = (item: Supplier) =>
                   {initials}
                 </div>
                 <div class="min-w-0 flex-1">
-                  <h3 class="truncate text-[15px] font-semibold leading-6 text-ink" title={name}>{name}</h3>
-                  <p class="truncate text-[11px] leading-5 text-ink-3">
+                  <h3 class="truncate text-base font-semibold leading-6 text-ink" title={name}>{name}</h3>
+                  <p class="truncate text-xs leading-5 text-ink-3">
                     {item.shop_type || '其他'}{item.channel ? ` · ${item.channel}` : ''}
                   </p>
                   <div class="mt-1.5 flex flex-wrap gap-1">
-                    <span class={`inline-flex rounded-full border px-2 py-px text-[11px] font-semibold leading-5 ${
+                    <span class={`inline-flex rounded-full border px-2 py-px text-xs font-semibold leading-5 ${
                       hasPitfall(item)
                         ? 'border-danger/30 bg-danger-soft text-danger'
                         : 'border-line bg-surface-2 text-ink-3'
                     }`}>
                       {hasPitfall(item) ? '有坑' : '未见坑'}
                     </span>
-                    <span class={`inline-flex rounded-full border px-2 py-px text-[11px] font-semibold leading-5 ${listingTone(item.listing)}`}>
+                    <span class={`inline-flex rounded-full border px-2 py-px text-xs font-semibold leading-5 ${listingTone(item.listing)}`}>
                       {item.listing || '未入榜'}
                     </span>
-                    {item.grade && <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-[11px] leading-5 text-ink-2">{item.grade}</span>}
+                    {item.grade && <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-xs leading-5 text-ink-2">{item.grade}</span>}
                   </div>
                 </div>
               </div>
@@ -260,15 +260,15 @@ const searchText = (item: Supplier) =>
                 {full && (
                   <div class="rounded-md border border-line bg-surface-2/60 p-2.5">
                     <div class="flex items-baseline justify-between gap-2">
-                      <span class={`text-[10px] font-semibold ${item.listing === '黑榜' ? 'text-danger' : 'text-ink-3'}`}>
+                      <span class={`text-xs font-semibold ${item.listing === '黑榜' ? 'text-danger' : 'text-ink-3'}`}>
                         {item.listing === '黑榜' ? '踩雷记录' : '社区评价'}
                       </span>
-                      <span class="mono text-[10px] text-ink-3">{feedbackChars(item)} 字</span>
+                      <span class="mono text-xs text-ink-3">{feedbackChars(item)} 字</span>
                     </div>
                     <p
                       data-feedback
                       id={`fb-${item.id}`}
-                      class={`m-0 mt-1 whitespace-pre-line line-clamp-4 text-[12px] leading-5 ${item.listing === '黑榜' ? 'text-danger' : 'text-ink-2'}`}
+                      class={`m-0 mt-1 whitespace-pre-line line-clamp-4 text-xs leading-5 ${item.listing === '黑榜' ? 'text-danger' : 'text-ink-2'}`}
                     >
                       {raw}
                     </p>
@@ -278,7 +278,7 @@ const searchText = (item: Supplier) =>
                         data-feedback-toggle
                         aria-expanded="false"
                         aria-controls={`fb-${item.id}`}
-                        class="mt-1.5 inline-flex h-7 items-center gap-1 rounded-full border border-line bg-surface px-2.5 text-[11px] font-medium text-brand hover:border-brand/50"
+                        class="mt-1.5 inline-flex h-7 items-center gap-1 rounded-full border border-line bg-surface px-2.5 text-xs font-medium text-brand hover:border-brand/50"
                       >
                         <span data-feedback-label>展开完整评价</span>
                         <span aria-hidden="true">↓</span>
@@ -289,23 +289,23 @@ const searchText = (item: Supplier) =>
 
                 <div class="flex flex-wrap gap-1">
                   {(item.services || []).filter(s => s !== '风险记录').slice(0, 2).map(service => (
-                    <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-[11px] text-ink-2">{service}</span>
+                    <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-xs text-ink-2">{service}</span>
                   ))}
                   {(item.services || []).filter(s => s !== '风险记录').length > 2 && (
-                    <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-[11px] text-ink-3">
+                    <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-xs text-ink-3">
                       +{(item.services || []).filter(s => s !== '风险记录').length - 2}
                     </span>
                   )}
                 </div>
 
-                <dl class="grid grid-cols-2 gap-x-3 gap-y-1 rounded-md border border-line bg-surface-2 px-2.5 py-2 text-[11px] leading-4">
-                  <div><dt class="text-[10px] text-ink-3">质量</dt><dd class="line-clamp-1 text-ink-2" title={rawOrSignal(item.quality_raw, signals, 'quality')}>{rawOrSignal(item.quality_raw, signals, 'quality')}</dd></div>
-                  <div><dt class="text-[10px] text-ink-3">交期</dt><dd class="line-clamp-1 text-ink-2" title={rawOrSignal(item.punctual_raw, signals, 'punctual')}>{rawOrSignal(item.punctual_raw, signals, 'punctual')}</dd></div>
-                  <div><dt class="text-[10px] text-ink-3">价格</dt><dd class="line-clamp-1 text-ink-2" title={rawOrSignal(item.price_raw, signals, 'price')}>{rawOrSignal(item.price_raw, signals, 'price')}</dd></div>
-                  <div><dt class="text-[10px] text-ink-3">发票</dt><dd class="line-clamp-1 text-ink-2" title={rawOrSignal(item.invoice_raw, signals, 'invoice')}>{rawOrSignal(item.invoice_raw, signals, 'invoice')}</dd></div>
+                <dl class="grid grid-cols-2 gap-x-3 gap-y-1 rounded-md border border-line bg-surface-2 px-2.5 py-2 text-xs leading-4">
+                  <div><dt class="text-xs text-ink-3">质量</dt><dd class="line-clamp-1 text-ink-2" title={rawOrSignal(item.quality_raw, signals, 'quality')}>{rawOrSignal(item.quality_raw, signals, 'quality')}</dd></div>
+                  <div><dt class="text-xs text-ink-3">交期</dt><dd class="line-clamp-1 text-ink-2" title={rawOrSignal(item.punctual_raw, signals, 'punctual')}>{rawOrSignal(item.punctual_raw, signals, 'punctual')}</dd></div>
+                  <div><dt class="text-xs text-ink-3">价格</dt><dd class="line-clamp-1 text-ink-2" title={rawOrSignal(item.price_raw, signals, 'price')}>{rawOrSignal(item.price_raw, signals, 'price')}</dd></div>
+                  <div><dt class="text-xs text-ink-3">发票</dt><dd class="line-clamp-1 text-ink-2" title={rawOrSignal(item.invoice_raw, signals, 'invoice')}>{rawOrSignal(item.invoice_raw, signals, 'invoice')}</dd></div>
                 </dl>
 
-                <p class="mt-auto text-[10px] text-ink-3">
+                <p class="mt-auto text-xs text-ink-3">
                   {item.reported_at ? `反馈 ${item.reported_at}` : '社区记录'}
                 </p>
               </div>

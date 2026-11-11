@@ -181,7 +181,7 @@ const docs = [
       <dl class="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-line bg-line sm:grid-cols-4">
         {headline.map(item => (
           <div class="bg-surface-2 px-3.5 py-3">
-            <dt class="text-[11px] font-medium tracking-wide text-ink-3">{item.label}</dt>
+            <dt class="text-xs font-medium tracking-wide text-ink-3">{item.label}</dt>
             <dd class="mono tabular mt-1 text-sm font-semibold leading-5 text-ink">{item.value}</dd>
           </div>
         ))}
@@ -192,7 +192,7 @@ const docs = [
   <div class="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
     <div class="space-y-5">
       {robot.openness_note && (
-        <section class="rounded-md border border-amber-200 bg-amber-50 p-4 text-[13px] leading-6 text-amber-900" aria-label="开源边界">
+        <section class="rounded-md border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-900" aria-label="开源边界">
           <span class="font-semibold">开源边界：</span>{robot.openness_note}
         </section>
       )}
@@ -229,8 +229,8 @@ const docs = [
           ].map(item => (
             <li class="flex items-center gap-2.5 rounded-md border border-line bg-surface-2 px-3 py-2">
               <span class={item.ok ? 'h-2 w-2 rounded-full bg-success' : 'h-2 w-2 rounded-full bg-line-strong'} aria-hidden="true"></span>
-              <span class="text-[13px] text-ink-2">{item.label}</span>
-              <span class={`ml-auto text-[12px] ${item.ok ? 'text-ink-3' : 'text-warning'}`}>{item.note}</span>
+              <span class="text-sm text-ink-2">{item.label}</span>
+              <span class={`ml-auto text-xs ${item.ok ? 'text-ink-3' : 'text-warning'}`}>{item.note}</span>
             </li>
           ))}
         </ul>
@@ -238,16 +238,16 @@ const docs = [
         {(hasBom || steps.length > 0) && (
           <div class="mt-4 flex flex-wrap gap-2">
             {bom.length > 0 ? (
-              <a href="#bom" class="inline-flex h-8 items-center rounded-full border border-line px-3 text-[12px] text-ink-2 hover:border-line-strong">
+              <a href="#bom" class="inline-flex h-8 items-center rounded-full border border-line px-3 text-xs text-ink-2 hover:border-line-strong">
                 BOM {bom.length} 项
               </a>
             ) : hasBom ? (
-              <a href={artifactLink('bom')} target="_blank" rel="noopener" class="inline-flex h-8 items-center rounded-full border border-line px-3 text-[12px] text-ink-2 hover:border-line-strong">
+              <a href={artifactLink('bom')} target="_blank" rel="noopener" class="inline-flex h-8 items-center rounded-full border border-line px-3 text-xs text-ink-2 hover:border-line-strong">
                 {artifactLabel('bom', 'BOM 清单')} <span class="ml-1 text-ink-3" aria-hidden="true">↗</span>
               </a>
             ) : null}
             {steps.length > 0 && (
-              <a href="#steps" class="inline-flex h-8 items-center rounded-full border border-line px-3 text-[12px] text-ink-2 hover:border-line-strong">
+              <a href="#steps" class="inline-flex h-8 items-center rounded-full border border-line px-3 text-xs text-ink-2 hover:border-line-strong">
                 步骤 {steps.length} 步
               </a>
             )}
@@ -255,7 +255,7 @@ const docs = [
         )}
 
         {!hasBom && (
-          <p class="mt-3 text-[12px] leading-6 text-ink-3">
+          <p class="mt-3 text-xs leading-6 text-ink-3">
             这份清单还没人整理。如果你装过这台机器，欢迎
             <a href={withBase('/submit.html')} class="text-brand hover:underline">补一条 BOM</a>——
             型号、数量、单价即可，比再写一篇博客有用得多。
@@ -274,9 +274,9 @@ const docs = [
 
           {bom.length > 0 ? (
             <div class="mt-3 overflow-x-auto">
-              <table class="w-full min-w-[520px] border-collapse text-[13px]">
+              <table class="w-full min-w-[520px] border-collapse text-sm">
                 <thead>
-                  <tr class="border-b border-line text-left text-[11px] text-ink-3">
+                  <tr class="border-b border-line text-left text-xs text-ink-3">
                     <th class="py-2 pr-3 font-medium">物料</th>
                     <th class="w-16 py-2 pr-3 text-right font-medium">数量</th>
                     <th class="py-2 font-medium">备注</th>
@@ -287,14 +287,14 @@ const docs = [
                     <tr class="border-b border-line last:border-0">
                       <td class="py-2 pr-3 text-ink">{item.name}</td>
                       <td class="mono tabular py-2 pr-3 text-right text-ink-2">{item.qty}</td>
-                      <td class="py-2 text-[12px] text-ink-3">{item.note ?? '—'}</td>
+                      <td class="py-2 text-xs text-ink-3">{item.note ?? '—'}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           ) : (
-            <p class="mt-3 text-[13px] text-ink-3">
+            <p class="mt-3 text-sm text-ink-3">
               {hasBom ? '本站还没拆成结构化表格；先点下方 BOM 链接看原始清单。' : '清单还在整理，先看下面这些交付物。'}
             </p>
           )}
@@ -313,7 +313,7 @@ const docs = [
                 href={artifactLink(item.key)}
                 target="_blank"
                 rel="noopener"
-                class="inline-flex h-8 items-center rounded-full border border-line px-3 text-[12px] text-ink-2 hover:border-line-strong hover:text-ink"
+                class="inline-flex h-8 items-center rounded-full border border-line px-3 text-xs text-ink-2 hover:border-line-strong hover:text-ink"
               >
                 {artifactLabel(item.key, item.label)} <span class="ml-1 text-ink-3" aria-hidden="true">↗</span>
               </a>
@@ -332,17 +332,17 @@ const docs = [
             {steps.map((step, index) => (
               <li class="rounded-md border border-line bg-surface-2 p-3">
                 <div class="flex flex-wrap items-baseline gap-2">
-                  <span class="mono text-[11px] text-ink-3">{String(step.order ?? index + 1).padStart(2, '0')}</span>
-                  <span class="text-[13px] font-semibold text-ink">{step.title}</span>
+                  <span class="mono text-xs text-ink-3">{String(step.order ?? index + 1).padStart(2, '0')}</span>
+                  <span class="text-sm font-semibold text-ink">{step.title}</span>
                 </div>
-                {step.detail && <p class="mt-1.5 text-[12px] leading-6 text-ink-2">{step.detail}</p>}
+                {step.detail && <p class="mt-1.5 text-xs leading-6 text-ink-2">{step.detail}</p>}
                 {step.criteria && (
-                  <p class="mt-1.5 rounded-sm border border-success/30 bg-success-soft px-2 py-1 text-[12px] leading-5 text-ink-2">
+                  <p class="mt-1.5 rounded-sm border border-success/30 bg-success-soft px-2 py-1 text-xs leading-5 text-ink-2">
                     <span class="font-semibold text-success">判据</span> {step.criteria}
                   </p>
                 )}
                 {step.pitfall && (
-                  <p class="mt-1.5 text-[12px] leading-5 text-ink-3">坑：{step.pitfall}</p>
+                  <p class="mt-1.5 text-xs leading-5 text-ink-3">坑：{step.pitfall}</p>
                 )}
               </li>
             ))}
@@ -379,7 +379,7 @@ const docs = [
           </p>
           <div class="mt-3 flex flex-wrap gap-1.5">
             {ECO_ROLE_ORDER.filter(role => eco?.roles?.[role]).map(role => (
-              <span class="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-[11px] text-ink-3">
+              <span class="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-xs text-ink-3">
                 {role} <span class="mono tabular text-ink-2">{eco?.roles?.[role]}</span>
               </span>
             ))}
@@ -387,10 +387,10 @@ const docs = [
           <div class="mt-4 space-y-4">
             {ecoGroups.map(group => (
               <div>
-                <h3 class="text-[13px] font-semibold text-ink">{group.role} <span class="mono text-[11px] font-normal text-ink-3">{group.items.length}</span></h3>
+                <h3 class="text-sm font-semibold text-ink">{group.role} <span class="mono text-xs font-normal text-ink-3">{group.items.length}</span></h3>
                 <ul class="mt-1.5 space-y-1.5">
                   {group.items.map(project => (
-                    <li class="flex items-start gap-2 text-[13px] leading-6">
+                    <li class="flex items-start gap-2 text-sm leading-6">
                       <span class="mt-2 h-1 w-1 shrink-0 rounded-full bg-line-strong" aria-hidden="true"></span>
                       <span class="min-w-0">
                         <a href={project.url} target="_blank" rel="noopener" class="break-all font-medium text-brand hover:underline">
@@ -482,7 +482,7 @@ const docs = [
         </p>
         <a
           href={withBase('/submit.html')}
-          class="mt-3 inline-flex h-9 items-center rounded-md bg-brand px-3.5 text-[13px] font-semibold text-brand-fg transition-colors hover:bg-brand-hover"
+          class="mt-3 inline-flex h-9 items-center rounded-md bg-brand px-3.5 text-sm font-semibold text-brand-fg transition-colors hover:bg-brand-hover"
         >
           提交纠错
         </a>

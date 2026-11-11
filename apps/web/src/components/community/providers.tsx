@@ -38,17 +38,17 @@ type ThemeVars = {
 const FALLBACK: ThemeVars = {
   primary: '#2563eb',
   primaryHover: '#1d4ed8',
-  primarySoft: '#eff5ff',
+  primarySoft: '#eef4ff',
   primaryFg: '#ffffff',
-  bg: '#f5f7fa',
-  surface: '#ffffff',
-  surface2: '#f8fafc',
-  surface3: '#f1f4f8',
-  border: '#e3e8ef',
-  borderStrong: '#cdd5df',
-  ink: '#0b1220',
-  ink2: '#475467',
-  ink3: '#667085',
+  bg: '#f7f5f0',
+  surface: '#fffdf8',
+  surface2: '#f3efe6',
+  surface3: '#ece6da',
+  border: '#e2dbcc',
+  borderStrong: '#cbc1ae',
+  ink: '#1f2328',
+  ink2: '#4a4a48',
+  ink3: '#6b6a66',
   success: '#15803d',
   warning: '#b45309',
   danger: '#b42318',
@@ -95,12 +95,16 @@ function useDesignTheme(): { dark: boolean; vars: ThemeVars } {
   const [dark, setDark] = useState(
     () => typeof document !== 'undefined' && document.documentElement.classList.contains('dark'),
   )
+  const [revision, setRevision] = useState(0)
 
   useEffect(() => {
     const root = document.documentElement
-    const sync = () => setDark(root.classList.contains('dark'))
+    const sync = () => {
+      setDark(root.classList.contains('dark'))
+      setRevision(value => value + 1)
+    }
     const observer = new MutationObserver(sync)
-    observer.observe(root, { attributes: true, attributeFilter: ['class'] })
+    observer.observe(root, { attributes: true, attributeFilter: ['class', 'data-theme'] })
 
     // 没有手动选择过主题时，系统主题变化也要跟上
     const mq = window.matchMedia('(prefers-color-scheme: dark)')
@@ -114,7 +118,7 @@ function useDesignTheme(): { dark: boolean; vars: ThemeVars } {
     }
   }, [])
 
-  const vars = useMemo(() => readThemeVars(), [dark])
+  const vars = useMemo(() => readThemeVars(), [dark, revision])
   return { dark, vars }
 }
 
@@ -219,11 +223,11 @@ class IslandBoundary extends Component<{ children: ReactNode }, { failed: boolea
     return (
       <div className="card mx-auto max-w-lg p-6 text-center">
         <p className="m-0 text-sm font-semibold text-ink">内容没能加载出来</p>
-        <p className="mb-4 mt-1.5 text-[12.5px] leading-6 text-ink-2">
+        <p className="mb-4 mt-1.5 text-sm leading-6 text-ink-2">
           页面脚本没有正常运行，可能是网络中断或缓存了旧版本。
         </p>
         <button type="button" onClick={() => window.location.reload()}
-          className="inline-flex h-9 items-center rounded-md bg-brand px-3.5 text-[13px] font-semibold text-brand-fg transition-colors hover:bg-brand-hover">
+          className="inline-flex h-9 items-center rounded-md bg-brand px-3.5 text-sm font-semibold text-brand-fg transition-colors hover:bg-brand-hover">
           重新加载
         </button>
       </div>
@@ -379,7 +383,7 @@ export function AuthForm({ onSuccess, compact = false }: {
           <div className="text-[22px] font-extrabold tracking-tight text-ink">
             Robo<span className="text-brand">Wiki</span>
           </div>
-          <div className="mt-1 text-[12.5px] text-ink-3">选型是底座，真实反馈才是值钱的部分</div>
+          <div className="mt-1 text-sm text-ink-3">选型是底座，真实反馈才是值钱的部分</div>
         </div>
       )}
 
@@ -392,7 +396,7 @@ export function AuthForm({ onSuccess, compact = false }: {
       )}
 
       {githubEnabled && (
-        <div className="mb-4 flex items-center gap-3 text-[11px] text-ink-3" aria-hidden="true">
+        <div className="mb-4 flex items-center gap-3 text-xs text-ink-3" aria-hidden="true">
           <span className="h-px flex-1 bg-line" />
           或使用邮箱
           <span className="h-px flex-1 bg-line" />
@@ -450,7 +454,7 @@ export function AuthForm({ onSuccess, compact = false }: {
         <div aria-live="polite" className="mb-3">
           {error && (
             <div role="alert"
-              className="rounded-md border border-danger/35 bg-danger-soft px-3 py-2 text-[12.5px] leading-5 text-danger">
+              className="rounded-md border border-danger/35 bg-danger-soft px-3 py-2 text-sm leading-5 text-danger">
               {error}
             </div>
           )}
@@ -462,7 +466,7 @@ export function AuthForm({ onSuccess, compact = false }: {
         </button>
         {mode === 'login' && (
           <button type="button" onClick={() => setForgot(true)}
-            className="mt-2 w-full text-center text-[12.5px] text-ink-3 underline-offset-2 hover:text-brand hover:underline">
+            className="mt-2 w-full text-center text-sm text-ink-3 underline-offset-2 hover:text-brand hover:underline">
             忘记密码？
           </button>
         )}
@@ -517,7 +521,7 @@ function ForgotPasswordPanel({ onBack }: { onBack: () => void }) {
     <div>
       <div className="mb-4">
         <h2 className="m-0 text-[18px] font-extrabold text-ink">找回密码</h2>
-        <p className="m-0 mt-1 text-[12.5px] leading-5 text-ink-3">
+        <p className="m-0 mt-1 text-sm leading-5 text-ink-3">
           {sent ? '把邮件里的令牌和新密码填在下面。' : '输入注册邮箱，我们会发一封含重置令牌的邮件。'}
         </p>
       </div>
@@ -557,7 +561,7 @@ function ForgotPasswordPanel({ onBack }: { onBack: () => void }) {
         <div aria-live="polite" className="mb-3">
           {error && (
             <div role="alert"
-              className="rounded-md border border-danger/35 bg-danger-soft px-3 py-2 text-[12.5px] leading-5 text-danger">
+              className="rounded-md border border-danger/35 bg-danger-soft px-3 py-2 text-sm leading-5 text-danger">
               {error}
             </div>
           )}
@@ -566,7 +570,7 @@ function ForgotPasswordPanel({ onBack }: { onBack: () => void }) {
           className="inline-flex h-10 w-full items-center justify-center rounded-md bg-brand px-4 text-sm font-semibold text-brand-fg transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-60">
           {busy ? '提交中…' : sent ? '重置密码' : '发送重置邮件'}
         </button>
-        <div className="mt-2 flex items-center justify-between text-[12.5px] text-ink-3">
+        <div className="mt-2 flex items-center justify-between text-sm text-ink-3">
           {sent ? (
             <button type="button" onClick={() => setSent(false)} className="hover:text-brand">
               换一个邮箱
@@ -594,7 +598,7 @@ function AuthModal({ open, onClose }: { open: boolean; onClose: () => void }) {
 function NavLink({ href, label, current }: { href: string; label: string; current?: boolean }) {
   return (
     <a href={siteHref(href)} aria-current={current ? 'page' : undefined}
-      className={`inline-flex min-h-8 items-center rounded-md px-2.5 text-[13px] transition-colors ${
+      className={`inline-flex min-h-8 items-center rounded-md px-2.5 text-sm transition-colors ${
         current
           ? 'bg-brand-soft font-semibold text-brand'
           : 'text-ink-2 hover:bg-surface-3 hover:text-ink'
@@ -614,8 +618,8 @@ export function CommunityHeader({ current, onCompose }: {
   return (
     <div className="mb-5 flex flex-wrap items-center gap-2 border-b border-line pb-3">
       <a href={siteHref('/')} className="mr-1 flex items-baseline gap-1.5">
-        <span className="text-[15px] font-extrabold tracking-tight text-ink">社区</span>
-        <span className="mono rounded-full border border-line bg-surface-2 px-1.5 py-[1px] text-[10px] font-semibold text-ink-3">
+        <span className="text-base font-extrabold tracking-tight text-ink">社区</span>
+        <span className="mono rounded-full border border-line bg-surface-2 px-1.5 py-[1px] text-xs font-semibold text-ink-3">
           RoboWiki
         </span>
       </a>
@@ -630,20 +634,20 @@ export function CommunityHeader({ current, onCompose }: {
       <div className="ml-auto flex items-center gap-2">
         {onCompose && (
           <button onClick={() => (user ? onCompose() : openAuth())}
-            className="inline-flex min-h-9 items-center rounded-full bg-brand px-3.5 text-[13px] font-semibold text-brand-fg transition-colors hover:bg-brand-hover">
+            className="inline-flex min-h-9 items-center rounded-full bg-brand px-3.5 text-sm font-semibold text-brand-fg transition-colors hover:bg-brand-hover">
             发帖
           </button>
         )}
 
         {!ready ? (
-          <span className="text-[12px] text-ink-3" aria-hidden="true">…</span>
+          <span className="text-xs text-ink-3" aria-hidden="true">…</span>
         ) : user ? (
           <div className="relative">
             <button onClick={() => setMenuOpen(v => !v)}
               className="flex items-center gap-1.5 rounded-full border border-line bg-surface py-[3px] pl-[3px] pr-2.5 transition-colors hover:border-line-strong"
               aria-haspopup="menu" aria-expanded={menuOpen}>
               <Avatar user={user} size={24} />
-              <span className="max-w-[110px] truncate text-[12.5px] text-ink">{user.display_name}</span>
+              <span className="max-w-[110px] truncate text-sm text-ink">{user.display_name}</span>
             </button>
             {menuOpen && (
               <>
@@ -652,12 +656,12 @@ export function CommunityHeader({ current, onCompose }: {
                   className="absolute right-0 z-20 mt-1.5 w-40 overflow-hidden rounded-lg border border-line bg-surface py-1 shadow-lg">
                   <a role="menuitem" href={siteHref(`/u.html?handle=${encodeURIComponent(user.handle)}`)}
                     onClick={() => setMenuOpen(false)}
-                    className="block px-3 py-2 text-[12.5px] text-ink-2 hover:bg-surface-3 hover:text-ink">
+                    className="block px-3 py-2 text-sm text-ink-2 hover:bg-surface-3 hover:text-ink">
                     我的主页
                   </a>
                   <button role="menuitem" onClick={() => { setMenuOpen(false); logout() }}
-                    className="flex w-full items-center gap-1.5 px-3 py-2 text-left text-[12.5px] text-ink-3 hover:bg-surface-3 hover:text-ink">
-                    <LogoutOutlined className="text-[11px]" /> 退出登录
+                    className="flex w-full items-center gap-1.5 px-3 py-2 text-left text-sm text-ink-3 hover:bg-surface-3 hover:text-ink">
+                    <LogoutOutlined className="text-xs" /> 退出登录
                   </button>
                 </div>
               </>
@@ -666,11 +670,11 @@ export function CommunityHeader({ current, onCompose }: {
         ) : (
           <>
             <button onClick={openAuth}
-              className="inline-flex min-h-9 items-center rounded-full border border-line bg-surface px-3.5 text-[13px] text-ink-2 transition-colors hover:border-line-strong hover:text-ink">
+              className="inline-flex min-h-9 items-center rounded-full border border-line bg-surface px-3.5 text-sm text-ink-2 transition-colors hover:border-line-strong hover:text-ink">
               登录
             </button>
             <a href={siteHref('/login.html')}
-              className="hidden text-[12px] text-ink-3 hover:text-ink sm:inline">登录遇到问题？</a>
+              className="hidden text-xs text-ink-3 hover:text-ink sm:inline">登录遇到问题？</a>
           </>
         )}
       </div>

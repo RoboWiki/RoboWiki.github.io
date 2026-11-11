@@ -163,10 +163,10 @@ export default function RatingSummary({ partId, category }: { partId: string; ca
         <div className="space-y-2.5 border-t border-line pt-3">
           {usageCounts.length > 0 && (
             <div>
-              <h3 className="text-[11px] font-semibold tracking-wide text-ink-3">使用时长</h3>
+              <h3 className="text-xs font-semibold tracking-wide text-ink-3">使用时长</h3>
               <div className="mt-1.5 flex flex-wrap gap-1.5">
                 {usageCounts.map(([key, n]) => (
-                  <span key={key} className="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-[11px] text-ink-2">
+                  <span key={key} className="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-xs text-ink-2">
                     {USAGE_LABELS[key] ?? key}
                     <span className="mono tabular ml-1 text-ink-3">{n}</span>
                   </span>
@@ -176,10 +176,10 @@ export default function RatingSummary({ partId, category }: { partId: string; ca
           )}
           {tagCounts.length > 0 && (
             <div>
-              <h3 className="text-[11px] font-semibold tracking-wide text-ink-3">评价理由</h3>
+              <h3 className="text-xs font-semibold tracking-wide text-ink-3">评价理由</h3>
               <div className="mt-1.5 flex flex-wrap gap-1.5">
                 {tagCounts.map(([key, n]) => (
-                  <span key={key} className="rounded-full border border-line bg-surface px-2 py-0.5 text-[11px] text-ink-2">
+                  <span key={key} className="rounded-full border border-line bg-surface px-2 py-0.5 text-xs text-ink-2">
                     {TAG_LABELS[key] ?? key}
                     <span className="mono tabular ml-1 text-ink-3">{n}</span>
                   </span>

@@ -45,12 +45,12 @@ const toc = [
     </nav>
 
     <header class="max-w-3xl">
-      <p class="text-[11px] font-semibold tracking-[0.14em] text-brand uppercase">参数口径</p>
+      <p class="text-xs font-semibold tracking-[0.14em] text-brand uppercase">参数口径</p>
       <h1 class="mt-2 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">同一个数，在不同厂商嘴里不是同一件事。</h1>
       <p class="mt-3 text-sm leading-7 text-ink-2">
         「峰值扭矩 40 N·m」可能指瞬时 1 秒、也可能指持续堵转；「质量 0.362 kg」可能含线缆、也可能只是定转子。
         本页把字段定义、缺口含义与复核阈值写清楚；机器可读版本见
-        <a href={withBase('/api/v1/semantics')} class="mono text-[13px] font-medium text-brand underline decoration-brand/30 underline-offset-2 hover:decoration-brand">/api/v1/semantics</a>。
+        <a href={withBase('/api/v1/semantics')} class="mono text-sm font-medium text-brand underline decoration-brand/30 underline-offset-2 hover:decoration-brand">/api/v1/semantics</a>。
       </p>
 
       <div class="mt-5 rounded-r-lg border-l-4 border-brand bg-surface-2 p-4">
@@ -66,9 +66,9 @@ const toc = [
       <div class="min-w-0 space-y-10">
         <section aria-labelledby="steps">
           <div class="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-line pb-2">
-            <span class="mono text-[11px] font-semibold text-ink-3">01</span>
+            <span class="mono text-xs font-semibold text-ink-3">01</span>
             <h2 id="steps" class="text-lg font-bold tracking-tight text-ink">读一个数字的四步</h2>
-            <span class="ml-auto text-[11px] text-ink-3">顺序不可跳</span>
+            <span class="ml-auto text-xs text-ink-3">顺序不可跳</span>
           </div>
 
           <ol class="grid gap-3 sm:grid-cols-2" role="list">
@@ -86,9 +86,9 @@ const toc = [
 
         <section aria-labelledby="red-lines">
           <div class="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-line pb-2">
-            <span class="mono text-[11px] font-semibold text-ink-3">02</span>
+            <span class="mono text-xs font-semibold text-ink-3">02</span>
             <h2 id="red-lines" class="text-lg font-bold tracking-tight text-ink">六条物理红线</h2>
-            <span class="ml-auto text-[11px] text-ink-3">超过阈值先要条件</span>
+            <span class="ml-auto text-xs text-ink-3">超过阈值先要条件</span>
           </div>
 
           <p class="mb-3 text-xs leading-6 text-ink-3">超过「需复核」先去要条件；超过「不可信」基本可以认定口径有问题。</p>
@@ -98,14 +98,14 @@ const toc = [
               <article class="card flex flex-col p-4">
                 <div class="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-1">
                   <h3 class="flex flex-wrap items-baseline gap-2 text-sm font-bold text-ink">
-                    <span class="mono rounded border border-line bg-surface-3 px-1.5 py-0.5 text-[10px] font-semibold text-ink-3">{rl.id}</span>
+                    <span class="mono rounded border border-line bg-surface-3 px-1.5 py-0.5 text-xs font-semibold text-ink-3">{rl.id}</span>
                     {rl.name}
                   </h3>
-                  {rl.formula && <code class="mono text-[10px] text-ink-3">{rl.formula}</code>}
+                  {rl.formula && <code class="mono text-xs text-ink-3">{rl.formula}</code>}
                 </div>
 
                 {rl.review_above != null && (
-                  <p class="mono mt-2 text-[11px] font-medium leading-5 text-warning">
+                  <p class="mono mt-2 text-xs font-medium leading-5 text-warning">
                     {rl.review_above} {rl.unit ?? ''} 需复核{rl.absurd_above != null ? ` · ${rl.absurd_above} ${rl.unit ?? ''} 不可信` : ''}
                   </p>
                 )}
@@ -126,7 +126,7 @@ const toc = [
 
         <section aria-labelledby="conversions">
           <div class="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-line pb-2">
-            <span class="mono text-[11px] font-semibold text-ink-3">03</span>
+            <span class="mono text-xs font-semibold text-ink-3">03</span>
             <h2 id="conversions" class="text-lg font-bold tracking-tight text-ink">单位换算</h2>
           </div>
 
@@ -134,10 +134,10 @@ const toc = [
             <table class="w-full min-w-[40rem] border-collapse text-left">
               <thead>
                 <tr class="border-b border-line bg-surface-2">
-                  <th scope="col" class="w-24 px-3 py-2 text-[11px] font-semibold tracking-wide text-ink-3 uppercase">从</th>
-                  <th scope="col" class="w-24 px-3 py-2 text-[11px] font-semibold tracking-wide text-ink-3 uppercase">到</th>
-                  <th scope="col" class="w-[14rem] px-3 py-2 text-[11px] font-semibold tracking-wide text-ink-3 uppercase">公式</th>
-                  <th scope="col" class="px-3 py-2 text-[11px] font-semibold tracking-wide text-ink-3 uppercase">注意</th>
+                  <th scope="col" class="w-24 px-3 py-2 text-xs font-semibold tracking-wide text-ink-3 uppercase">从</th>
+                  <th scope="col" class="w-24 px-3 py-2 text-xs font-semibold tracking-wide text-ink-3 uppercase">到</th>
+                  <th scope="col" class="w-[14rem] px-3 py-2 text-xs font-semibold tracking-wide text-ink-3 uppercase">公式</th>
+                  <th scope="col" class="px-3 py-2 text-xs font-semibold tracking-wide text-ink-3 uppercase">注意</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-line">
@@ -146,7 +146,7 @@ const toc = [
                     <td class="px-3 py-3 text-xs text-ink">{c.from}</td>
                     <td class="px-3 py-3 text-xs text-ink">{c.to}</td>
                     <td class="px-3 py-3">
-                      <code class="mono rounded border border-line bg-surface-2 px-1.5 py-0.5 text-[11px] text-ink-2">{c.formula}</code>
+                      <code class="mono rounded border border-line bg-surface-2 px-1.5 py-0.5 text-xs text-ink-2">{c.formula}</code>
                     </td>
                     <td class="px-3 py-3 text-xs leading-6 text-ink-3">{c.warning ?? '—'}</td>
                   </tr>
@@ -158,9 +158,9 @@ const toc = [
 
         <section aria-labelledby="comparability">
           <div class="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-line pb-2">
-            <span class="mono text-[11px] font-semibold text-ink-3">04</span>
+            <span class="mono text-xs font-semibold text-ink-3">04</span>
             <h2 id="comparability" class="text-lg font-bold tracking-tight text-ink">可比性等级</h2>
-            <span class="ml-auto text-[11px] text-ink-3">A → D</span>
+            <span class="ml-auto text-xs text-ink-3">A → D</span>
           </div>
 
           <div class="grid gap-3 sm:grid-cols-2">
@@ -178,7 +178,7 @@ const toc = [
 
         <section aria-labelledby="protocols">
           <div class="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-line pb-2">
-            <span class="mono text-[11px] font-semibold text-ink-3">05</span>
+            <span class="mono text-xs font-semibold text-ink-3">05</span>
             <h2 id="protocols" class="text-lg font-bold tracking-tight text-ink">协议语义：同一个「电流」是四个不同的量</h2>
           </div>
 
@@ -188,12 +188,12 @@ const toc = [
             <table class="w-full min-w-[46rem] border-collapse text-left">
               <thead>
                 <tr class="border-b border-line bg-surface-2">
-                  <th scope="col" class="px-3 py-2 text-[11px] font-semibold tracking-wide text-ink-3 uppercase">驱动</th>
-                  <th scope="col" class="px-3 py-2 text-[11px] font-semibold tracking-wide text-ink-3 uppercase">总线</th>
-                  <th scope="col" class="px-3 py-2 text-[11px] font-semibold tracking-wide text-ink-3 uppercase">控制频率</th>
-                  <th scope="col" class="px-3 py-2 text-[11px] font-semibold tracking-wide text-ink-3 uppercase">电流编码</th>
-                  <th scope="col" class="px-3 py-2 text-[11px] font-semibold tracking-wide text-ink-3 uppercase">满量程</th>
-                  <th scope="col" class="px-3 py-2 text-[11px] font-semibold tracking-wide text-ink-3 uppercase">控制模式</th>
+                  <th scope="col" class="px-3 py-2 text-xs font-semibold tracking-wide text-ink-3 uppercase">驱动</th>
+                  <th scope="col" class="px-3 py-2 text-xs font-semibold tracking-wide text-ink-3 uppercase">总线</th>
+                  <th scope="col" class="px-3 py-2 text-xs font-semibold tracking-wide text-ink-3 uppercase">控制频率</th>
+                  <th scope="col" class="px-3 py-2 text-xs font-semibold tracking-wide text-ink-3 uppercase">电流编码</th>
+                  <th scope="col" class="px-3 py-2 text-xs font-semibold tracking-wide text-ink-3 uppercase">满量程</th>
+                  <th scope="col" class="px-3 py-2 text-xs font-semibold tracking-wide text-ink-3 uppercase">控制模式</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-line">
@@ -201,7 +201,7 @@ const toc = [
                   <tr class="align-top transition-colors hover:bg-surface-2">
                     <td class="px-3 py-3">
                       <span class="block text-xs font-semibold text-ink">{p.driver}</span>
-                      <span class="block text-[11px] text-ink-3">{p.vendor}</span>
+                      <span class="block text-xs text-ink-3">{p.vendor}</span>
                     </td>
                     <td class="px-3 py-3 text-xs leading-6 text-ink-2">{p.bus}</td>
                     <td class="mono px-3 py-3 text-xs text-ink-2">{p.ctrl_freq_hz} Hz</td>
@@ -218,11 +218,11 @@ const toc = [
             {protocols.map(p => (
               <details class="group card px-3 py-2">
                 <summary class="flex cursor-pointer list-none items-center gap-2 text-xs font-semibold text-ink-2 transition-colors hover:text-ink">
-                  <span class="mono text-[10px] text-ink-3 transition-transform group-open:rotate-90 group-open:text-brand" aria-hidden="true">▸</span>
+                  <span class="mono text-xs text-ink-3 transition-transform group-open:rotate-90 group-open:text-brand" aria-hidden="true">▸</span>
                   {p.driver}：注意与证据
                 </summary>
                 <p class="mt-2 text-xs leading-6 text-ink-2">{p.notes}</p>
-                <p class="mono mt-1 text-[11px] leading-5 text-ink-3">{p.evidence}</p>
+                <p class="mono mt-1 text-xs leading-5 text-ink-3">{p.evidence}</p>
               </details>
             ))}
           </div>
@@ -231,7 +231,7 @@ const toc = [
           <ul class="grid gap-2 sm:grid-cols-2" role="list">
             {protocolData.checklist.map(item => (
               <li class="flex gap-2 rounded-lg border border-line bg-surface-2 px-3 py-2 text-xs leading-6 text-ink-2">
-                <span class="mt-1.5 text-[10px] text-brand" aria-hidden="true">✓</span>
+                <span class="mt-1.5 text-xs text-brand" aria-hidden="true">✓</span>
                 <span>{item}</span>
               </li>
             ))}
@@ -240,19 +240,19 @@ const toc = [
 
         <section aria-labelledby="fields">
           <div class="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-line pb-2">
-            <span class="mono text-[11px] font-semibold text-ink-3">06</span>
+            <span class="mono text-xs font-semibold text-ink-3">06</span>
             <h2 id="fields" class="text-lg font-bold tracking-tight text-ink">字段口径</h2>
-            <span class="ml-auto text-[11px] text-ink-3">{fields.length} 个字段</span>
+            <span class="ml-auto text-xs text-ink-3">{fields.length} 个字段</span>
           </div>
 
           <div class="overflow-x-auto rounded-lg border border-line bg-surface">
             <table class="w-full min-w-[44rem] border-collapse text-left">
               <thead>
                 <tr class="border-b border-line bg-surface-2">
-                  <th scope="col" class="w-[11rem] px-3 py-2 text-[11px] font-semibold tracking-wide text-ink-3 uppercase">字段</th>
-                  <th scope="col" class="w-[9rem] px-3 py-2 text-[11px] font-semibold tracking-wide text-ink-3 uppercase">单位 / 取值</th>
-                  <th scope="col" class="px-3 py-2 text-[11px] font-semibold tracking-wide text-ink-3 uppercase">含义</th>
-                  <th scope="col" class="w-[13rem] px-3 py-2 text-[11px] font-semibold tracking-wide text-ink-3 uppercase">缺失时</th>
+                  <th scope="col" class="w-[11rem] px-3 py-2 text-xs font-semibold tracking-wide text-ink-3 uppercase">字段</th>
+                  <th scope="col" class="w-[9rem] px-3 py-2 text-xs font-semibold tracking-wide text-ink-3 uppercase">单位 / 取值</th>
+                  <th scope="col" class="px-3 py-2 text-xs font-semibold tracking-wide text-ink-3 uppercase">含义</th>
+                  <th scope="col" class="w-[13rem] px-3 py-2 text-xs font-semibold tracking-wide text-ink-3 uppercase">缺失时</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-line">
@@ -260,12 +260,12 @@ const toc = [
                   <tr class="align-top transition-colors hover:bg-surface-2">
                     <td class="px-3 py-3">
                       <span class="block text-xs font-semibold text-ink">{f.label}</span>
-                      <code class="mono block text-[10px] text-ink-3">{key}</code>
+                      <code class="mono block text-xs text-ink-3">{key}</code>
                     </td>
                     <td class="px-3 py-3 text-xs leading-6 text-ink-2">{unitOf(f)}</td>
                     <td class="px-3 py-3 text-xs leading-6 text-ink-2">
                       {f.meaning}
-                      {f.known_bias && <span class="mt-1 block text-[11px] text-warning">已知偏差：{f.known_bias}</span>}
+                      {f.known_bias && <span class="mt-1 block text-xs text-warning">已知偏差：{f.known_bias}</span>}
                     </td>
                     <td class="px-3 py-3 text-xs leading-6 text-ink-3">{f.missing_means}</td>
                   </tr>
@@ -277,7 +277,7 @@ const toc = [
 
         <section aria-labelledby="trinary">
           <div class="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-line pb-2">
-            <span class="mono text-[11px] font-semibold text-ink-3">07</span>
+            <span class="mono text-xs font-semibold text-ink-3">07</span>
             <h2 id="trinary" class="text-lg font-bold tracking-tight text-ink">判定只有三种结论</h2>
           </div>
 
@@ -304,18 +304,18 @@ const toc = [
 
       <aside aria-labelledby="toc-title" class="min-w-0">
         <nav class="lg:sticky lg:top-24" aria-labelledby="toc-title">
-          <p id="toc-title" class="text-[11px] font-semibold tracking-[0.14em] text-ink-3 uppercase">本页目录</p>
+          <p id="toc-title" class="text-xs font-semibold tracking-[0.14em] text-ink-3 uppercase">本页目录</p>
           <ol class="mt-2 flex flex-wrap gap-x-4 gap-y-1.5 lg:flex-col lg:gap-1 lg:border-l lg:border-line lg:pl-3">
             {toc.map((item, i) => (
               <li class="min-w-0">
-                <a href={`#${item.id}`} class="group flex items-baseline gap-2 rounded-sm py-0.5 text-[13px] text-ink-2 transition-colors hover:text-brand">
-                  <span class="mono text-[10px] text-ink-3 group-hover:text-brand">{String(i + 1).padStart(2, '0')}</span>
+                <a href={`#${item.id}`} class="group flex items-baseline gap-2 rounded-sm py-0.5 text-sm text-ink-2 transition-colors hover:text-brand">
+                  <span class="mono text-xs text-ink-3 group-hover:text-brand">{String(i + 1).padStart(2, '0')}</span>
                   <span class="truncate">{item.label}</span>
                 </a>
               </li>
             ))}
           </ol>
-          <p class="mt-4 hidden border-t border-line pt-3 text-[11px] leading-5 text-ink-3 lg:block">
+          <p class="mt-4 hidden border-t border-line pt-3 text-xs leading-5 text-ink-3 lg:block">
             <span class="mono text-ink-2">semantics.json</span>
             <span class="mono block">v{semantics.version}</span>
           </p>

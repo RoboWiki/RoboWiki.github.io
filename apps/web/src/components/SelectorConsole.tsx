@@ -55,14 +55,14 @@ const manualOf = (m: SelectorModel) => ({
 
 function StatusBadge({ status }: { status: Compat }) {
   return (
-    <span className={`inline-flex shrink-0 items-center rounded-full border px-1.5 py-0.5 text-[10px] font-medium ${statusClass[status]}`}>
+    <span className={`inline-flex shrink-0 items-center rounded-full border px-1.5 py-0.5 text-xs font-medium ${statusClass[status]}`}>
       {STATUS_LABEL[status]}
     </span>
   )
 }
 
 function PartThumb({ part, size = 'h-9 w-9' }: { part: CatalogPart | null; size?: string }) {
-  if (!part?.image) return <span className={`grid ${size} shrink-0 place-items-center rounded border border-line bg-surface-2 text-[9px] text-ink-3`}>无图</span>
+  if (!part?.image) return <span className={`grid ${size} shrink-0 place-items-center rounded border border-line bg-surface-2 text-xs text-ink-3`}>无图</span>
   return (
     <img
       src={imageUrl(part)}
@@ -82,14 +82,14 @@ function EvalChips({ evals }: { evals: EvalItem[] }) {
           <span
             key={i}
             title={e.note}
-            className={`inline-flex items-center rounded border px-1.5 py-0.5 text-[10px] leading-4 ${verdictClass[e.verdict]}`}
+            className={`inline-flex items-center rounded border px-1.5 py-0.5 text-xs leading-4 ${verdictClass[e.verdict]}`}
           >
             {e.label} {e.value}
           </span>
         ))}
       </div>
       {notes.length > 0 && (
-        <p className="mt-0.5 text-[10px] leading-4 text-warning">
+        <p className="mt-0.5 text-xs leading-4 text-warning">
           {notes.map(e => `${e.label}：${e.note}`).join('；')}
         </p>
       )}
@@ -103,19 +103,19 @@ function OptionRow({ opt, selected, onSelect }: { opt: RoleOption; selected: boo
       <PartThumb part={opt.part} size="h-10 w-10" />
       <div className="min-w-0 flex-1 basis-52">
         <div className="flex flex-wrap items-baseline gap-x-2">
-          <a href={partHref(opt.part)} className="truncate text-[12px] font-medium text-ink hover:text-brand">{opt.part.model}</a>
-          <span className="truncate text-[10px] text-ink-3">{opt.part.vendor}</span>
+          <a href={partHref(opt.part)} className="truncate text-xs font-medium text-ink hover:text-brand">{opt.part.model}</a>
+          <span className="truncate text-xs text-ink-3">{opt.part.vendor}</span>
         </div>
         <div className="mt-1"><EvalChips evals={opt.evals} /></div>
-        {opt.risk && <p className="mt-1 text-[10px] leading-4 text-danger">{opt.risk}</p>}
+        {opt.risk && <p className="mt-1 text-xs leading-4 text-danger">{opt.risk}</p>}
       </div>
       <div className="flex shrink-0 flex-col items-end gap-1">
-        <span className="mono tabular text-[12px] font-semibold text-ink">{formatPrice(opt.price)}</span>
+        <span className="mono tabular text-xs font-semibold text-ink">{formatPrice(opt.price)}</span>
         <button
           type="button"
           onClick={onSelect}
           aria-pressed={selected}
-          className={`chip h-7 px-2.5 text-[11px] ${selected ? 'border-brand/50 text-brand' : ''}`}
+          className={`chip h-7 px-2.5 text-xs ${selected ? 'border-brand/50 text-brand' : ''}`}
         >
           {selected ? '已选' : '选择'}
         </button>
@@ -141,14 +141,14 @@ function RoleCard({ role, choice, selectedPart, expanded, onToggle, onSelect, on
   return (
     <section className="rounded-lg border border-line bg-surface">
       <div className="flex flex-wrap items-center gap-2 border-b border-line px-3 py-2">
-        <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[10px] text-ink-3">{role.group}</span>
-        <h3 className="min-w-0 flex-1 truncate text-[13px] font-semibold text-ink">{role.label}</h3>
+        <span className="rounded bg-surface-2 px-1.5 py-0.5 text-xs text-ink-3">{role.group}</span>
+        <h3 className="min-w-0 flex-1 truncate text-sm font-semibold text-ink">{role.label}</h3>
         {selectedPart ? (
-          <button type="button" onClick={onRestore} className="text-[11px] text-ink-3 hover:text-brand">恢复虚拟件</button>
+          <button type="button" onClick={onRestore} className="text-xs text-ink-3 hover:text-brand">恢复虚拟件</button>
         ) : (
-          <span className="rounded-full border border-line bg-surface-2 px-1.5 py-0.5 text-[10px] text-ink-3">虚拟件</span>
+          <span className="rounded-full border border-line bg-surface-2 px-1.5 py-0.5 text-xs text-ink-3">虚拟件</span>
         )}
-        <label className="inline-flex items-center gap-1 text-[11px] text-ink-3">
+        <label className="inline-flex items-center gap-1 text-xs text-ink-3">
           数量
           <input
             type="number"
@@ -157,15 +157,15 @@ function RoleCard({ role, choice, selectedPart, expanded, onToggle, onSelect, on
             value={qty}
             onChange={e => onQty(Number(e.target.value))}
             aria-label={`${role.label}数量`}
-            className="mono tabular h-7 w-14 rounded border border-line bg-surface px-1.5 text-[11px] text-ink"
+            className="mono tabular h-7 w-14 rounded border border-line bg-surface px-1.5 text-xs text-ink"
           />
         </label>
       </div>
 
       <div className="space-y-2 px-3 py-2.5">
         <div className="rounded-md border border-dashed border-line bg-surface-2 px-2.5 py-2">
-          <p className="text-[11px] font-medium text-ink-2">{role.virtual.summary}</p>
-          <dl className="mt-1 flex flex-wrap gap-x-4 gap-y-0.5 text-[10px] text-ink-3">
+          <p className="text-xs font-medium text-ink-2">{role.virtual.summary}</p>
+          <dl className="mt-1 flex flex-wrap gap-x-4 gap-y-0.5 text-xs text-ink-3">
             {role.virtual.fields.map((f, i) => (
               <div key={i} className="inline-flex gap-1"><dt>{f.label}</dt><dd className="text-ink-2">{f.value}</dd></div>
             ))}
@@ -176,13 +176,13 @@ function RoleCard({ role, choice, selectedPart, expanded, onToggle, onSelect, on
           <div className="flex flex-wrap items-center gap-2 rounded-md border border-brand/40 bg-brand-soft px-2.5 py-2">
             <PartThumb part={selectedPart} />
             <div className="min-w-0 flex-1">
-              <a href={partHref(selectedPart)} className="block truncate text-[12px] font-medium text-ink hover:text-brand">{selectedPart.model}</a>
-              <p className="truncate text-[10px] text-ink-3">
+              <a href={partHref(selectedPart)} className="block truncate text-xs font-medium text-ink hover:text-brand">{selectedPart.model}</a>
+              <p className="truncate text-xs text-ink-3">
                 {selectedPart.vendor}
                 {!selectedOpt && ' · 不在当前参考列表（来自导入/分享），参数以详情页为准'}
               </p>
             </div>
-            <div className="text-right text-[11px]">
+            <div className="text-right text-xs">
               <p className="mono tabular text-ink-2">{formatPrice(selectedPrice)} × {qty}</p>
               <p className="mono tabular font-semibold text-ink">{subtotal !== null ? formatPrice(subtotal) : '询价'}</p>
             </div>
@@ -190,7 +190,7 @@ function RoleCard({ role, choice, selectedPart, expanded, onToggle, onSelect, on
         )}
 
         {role.advice.length > 0 && (
-          <ul className="list-disc space-y-0.5 pl-4 text-[11px] leading-5 text-ink-3">
+          <ul className="list-disc space-y-0.5 pl-4 text-xs leading-5 text-ink-3">
             {role.advice.map((a, i) => <li key={i}>{a}</li>)}
           </ul>
         )}
@@ -201,10 +201,10 @@ function RoleCard({ role, choice, selectedPart, expanded, onToggle, onSelect, on
               type="button"
               onClick={onToggle}
               aria-expanded={expanded}
-              className="flex w-full flex-wrap items-center gap-x-2 rounded-md border border-line bg-surface px-2.5 py-1.5 text-left text-[11px] text-ink-2 hover:border-brand/40"
+              className="flex w-full flex-wrap items-center gap-x-2 rounded-md border border-line bg-surface px-2.5 py-1.5 text-left text-xs text-ink-2 hover:border-brand/40"
             >
               <span className="font-medium text-brand">{expanded ? '收起参考选项' : `参考选项（${role.options.length}）`}</span>
-              <span className="min-w-0 flex-1 truncate text-[10px] text-ink-3">{role.sortNote}</span>
+              <span className="min-w-0 flex-1 truncate text-xs text-ink-3">{role.sortNote}</span>
               <span aria-hidden="true" className="text-ink-3">{expanded ? '▴' : '▾'}</span>
             </button>
             {expanded && (
@@ -221,7 +221,7 @@ function RoleCard({ role, choice, selectedPart, expanded, onToggle, onSelect, on
             )}
           </div>
         ) : (
-          <p className="text-[11px] text-ink-3">站内暂无条目，按上方虚拟件需求外购。{role.sortNote}</p>
+          <p className="text-xs text-ink-3">站内暂无条目，按上方虚拟件需求外购。{role.sortNote}</p>
         )}
       </div>
     </section>
@@ -416,13 +416,13 @@ export default function SelectorConsole({ parts, models }: Props) {
       <aside className="space-y-3 lg:sticky lg:top-20">
         <section className="rounded-lg border border-line bg-surface">
           <div className="flex items-center justify-between gap-2 border-b border-line px-3 py-2">
-            <h2 className="text-[13px] font-semibold text-ink">1. 机型</h2>
-            <span className="text-[11px] text-ink-3">{models.length} 个可信型号</span>
+            <h2 className="text-sm font-semibold text-ink">1. 机型</h2>
+            <span className="text-xs text-ink-3">{models.length} 个可信型号</span>
           </div>
           <div className="space-y-3 p-3">
             <div className="chip-row" role="group" aria-label="机器人类型">
               {(Object.keys(TYPE_LABEL) as RobotType[]).map(t => (
-                <button key={t} type="button" className="chip h-8 px-3 text-[12px]" aria-pressed={type === t} onClick={() => selectType(t)}>
+                <button key={t} type="button" className="chip h-8 px-3 text-xs" aria-pressed={type === t} onClick={() => selectType(t)}>
                   {TYPE_LABEL[t]}
                   <span className="mono tabular opacity-60">{models.filter(m => m.type === t).length}</span>
                 </button>
@@ -432,19 +432,19 @@ export default function SelectorConsole({ parts, models }: Props) {
               {SIZE_ORDER.map(s => {
                 const count = models.filter(m => m.type === type && m.size === s).length
                 return (
-                  <button key={s} type="button" className="chip h-7 px-2.5 text-[11px]" aria-pressed={size === s} onClick={() => selectSize(s)}>
+                  <button key={s} type="button" className="chip h-7 px-2.5 text-xs" aria-pressed={size === s} onClick={() => selectSize(s)}>
                     {SIZE_LABEL[s]}
                     <span className="mono tabular opacity-60">{count}</span>
                   </button>
                 )
               })}
             </div>
-            <label className="block text-[11px] text-ink-3">
+            <label className="block text-xs text-ink-3">
               参考机型
               <select
                 value={modelId ?? ''}
                 onChange={e => selectModel(e.target.value || null)}
-                className="mt-1 h-9 w-full rounded-md border border-line bg-surface px-2 text-[12px] text-ink"
+                className="mt-1 h-9 w-full rounded-md border border-line bg-surface px-2 text-xs text-ink"
               >
                 <option value="">自定义（按下方质量/DOF/扭矩）</option>
                 {modelOptions.map(m => (
@@ -453,12 +453,12 @@ export default function SelectorConsole({ parts, models }: Props) {
               </select>
             </label>
             {modelOptions.length === 0 && (
-              <p className="rounded-md bg-warning-soft px-2.5 py-2 text-[11px] leading-5 text-warning">
+              <p className="rounded-md bg-warning-soft px-2.5 py-2 text-xs leading-5 text-warning">
                 这个构型/档位没有公开可信 URDF。可换档位，或直接用下方自定义参数占位。
               </p>
             )}
             {selected ? (
-              <dl className="grid grid-cols-2 gap-x-3 gap-y-1.5 rounded-md border border-line bg-surface-2 p-2.5 text-[11px]">
+              <dl className="grid grid-cols-2 gap-x-3 gap-y-1.5 rounded-md border border-line bg-surface-2 p-2.5 text-xs">
                 <div><dt className="text-ink-3">质量</dt><dd className="mono tabular text-ink">{selected.mass_kg} kg</dd></div>
                 <div><dt className="text-ink-3">DOF</dt><dd className="mono tabular text-ink">{selected.dof}</dd></div>
                 <div><dt className="text-ink-3">关节 effort</dt><dd className="mono tabular text-ink">{selected.effort_min_Nm}–{selected.effort_max_Nm} N·m</dd></div>
@@ -473,7 +473,7 @@ export default function SelectorConsole({ parts, models }: Props) {
                   ['effort_min_Nm', '最小 effort', 1],
                   ['effort_max_Nm', '最大 effort', 1],
                 ] as const).map(([k, label, step]) => (
-                  <label key={k} className="text-[11px] text-ink-3">
+                  <label key={k} className="text-xs text-ink-3">
                     {label}
                     <input
                       type="number"
@@ -481,7 +481,7 @@ export default function SelectorConsole({ parts, models }: Props) {
                       step={step}
                       value={manual[k]}
                       onChange={e => setManual(prev => ({ ...prev, [k]: Math.max(0, Number(e.target.value) || 0) }))}
-                      className="mt-1 h-8 w-full rounded-md border border-line bg-surface px-2 text-[12px] text-ink"
+                      className="mt-1 h-8 w-full rounded-md border border-line bg-surface px-2 text-xs text-ink"
                     />
                   </label>
                 ))}
@@ -492,31 +492,31 @@ export default function SelectorConsole({ parts, models }: Props) {
 
         <section className="rounded-lg border border-line bg-surface">
           <div className="flex items-center justify-between gap-2 border-b border-line px-3 py-2">
-            <h2 className="text-[13px] font-semibold text-ink">2. 功能需求</h2>
-            <button type="button" onClick={() => setNeeds(DEFAULT_NEEDS)} className="text-[11px] text-ink-3 hover:text-ink">重置</button>
+            <h2 className="text-sm font-semibold text-ink">2. 功能需求</h2>
+            <button type="button" onClick={() => setNeeds(DEFAULT_NEEDS)} className="text-xs text-ink-3 hover:text-ink">重置</button>
           </div>
           <div className="space-y-3 p-3">
             <div>
-              <p className="mb-1.5 text-[11px] text-ink-3">预设</p>
+              <p className="mb-1.5 text-xs text-ink-3">预设</p>
               <div className="flex flex-wrap gap-1.5">
                 {PRESETS.map(p => (
-                  <button key={p.id} type="button" title={p.hint} onClick={() => patchNeeds(p.needs)} className="chip h-7 px-2.5 text-[11px]">
+                  <button key={p.id} type="button" title={p.hint} onClick={() => patchNeeds(p.needs)} className="chip h-7 px-2.5 text-xs">
                     {p.label}
                   </button>
                 ))}
               </div>
             </div>
             <div>
-              <p className="mb-1.5 text-[11px] text-ink-3">控制方式（可多选）</p>
+              <p className="mb-1.5 text-xs text-ink-3">控制方式（可多选）</p>
               <div className="flex flex-wrap gap-1.5">
                 {CONTROL_ORDER.map(c => (
-                  <button key={c} type="button" className="chip h-7 px-2.5 text-[11px]" aria-pressed={needs.controls.includes(c)} onClick={() => toggleControl(c)}>
+                  <button key={c} type="button" className="chip h-7 px-2.5 text-xs" aria-pressed={needs.controls.includes(c)} onClick={() => toggleControl(c)}>
                     {c === 'classical' ? '传统控制' : c === 'rl' ? '强化学习' : c === 'teleop' ? '遥操作' : '自主导航'}
                   </button>
                 ))}
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-x-3 gap-y-1.5 text-[12px] text-ink-2">
+            <div className="grid grid-cols-2 gap-x-3 gap-y-1.5 text-xs text-ink-2">
               {([
                 ['depth', '深度相机'],
                 ['lidar', '激光雷达'],
@@ -538,23 +538,23 @@ export default function SelectorConsole({ parts, models }: Props) {
               ))}
             </div>
             <div className="grid grid-cols-2 gap-2">
-              <label className="text-[11px] text-ink-3">
+              <label className="text-xs text-ink-3">
                 供电
-                <select value={needs.power} onChange={e => patchNeeds({ power: e.target.value as Needs['power'] })} className="mt-1 h-8 w-full rounded-md border border-line bg-surface px-2 text-[12px] text-ink">
+                <select value={needs.power} onChange={e => patchNeeds({ power: e.target.value as Needs['power'] })} className="mt-1 h-8 w-full rounded-md border border-line bg-surface px-2 text-xs text-ink">
                   <option value="battery">电池</option>
                   <option value="tethered">外接电源</option>
                 </select>
               </label>
-              <label className="text-[11px] text-ink-3">
+              <label className="text-xs text-ink-3">
                 备件
-                <select value={needs.sparePct} onChange={e => patchNeeds({ sparePct: Number(e.target.value) })} className="mt-1 h-8 w-full rounded-md border border-line bg-surface px-2 text-[12px] text-ink">
+                <select value={needs.sparePct} onChange={e => patchNeeds({ sparePct: Number(e.target.value) })} className="mt-1 h-8 w-full rounded-md border border-line bg-surface px-2 text-xs text-ink">
                   <option value={0}>0%</option>
                   <option value={10}>10%</option>
                   <option value={20}>20%</option>
                 </select>
               </label>
             </div>
-            <label className="block text-[11px] text-ink-3">
+            <label className="block text-xs text-ink-3">
               预算上限（CNY，可空）
               <input
                 type="number"
@@ -562,7 +562,7 @@ export default function SelectorConsole({ parts, models }: Props) {
                 step={100}
                 value={needs.budget ?? ''}
                 onChange={e => patchNeeds({ budget: e.target.value === '' ? null : Math.max(0, Number(e.target.value)) })}
-                className="mt-1 h-8 w-full rounded-md border border-line bg-surface px-2 text-[12px] text-ink"
+                className="mt-1 h-8 w-full rounded-md border border-line bg-surface px-2 text-xs text-ink"
                 placeholder="例如 8000"
               />
             </label>
@@ -577,44 +577,44 @@ export default function SelectorConsole({ parts, models }: Props) {
               <h2 className="text-base font-bold text-ink">
                 {selected ? `${selected.model} 方案` : `${TYPE_LABEL[type]} · 自定义方案`}
               </h2>
-              <p className="mt-0.5 text-[12px] text-ink-3">
+              <p className="mt-0.5 text-xs text-ink-3">
                 {result.effective.mass_kg} kg · {result.effective.dof} DOF · effort {result.effective.effort_min_Nm}–{result.effective.effort_max_Nm} N·m
                 {selected ? ` · ${selected.motor_tier}` : ''}
               </p>
             </div>
             <div className="text-right">
-              <p className="text-[11px] text-ink-3">已知小计</p>
+              <p className="text-xs text-ink-3">已知小计</p>
               <p className="mono tabular text-xl font-bold text-ink">{formatPrice(result.totals.known_cny)}</p>
-              <p className="text-[10px] text-ink-3">{result.totals.virtual_lines ? `另有 ${result.totals.virtual_lines} 项虚拟/询价` : '全部已选且有价'}</p>
+              <p className="text-xs text-ink-3">{result.totals.virtual_lines ? `另有 ${result.totals.virtual_lines} 项虚拟/询价` : '全部已选且有价'}</p>
             </div>
           </div>
           <div className="mt-3 flex flex-wrap gap-1.5">
-            <button type="button" className="chip h-8 px-3 text-[12px]" onClick={exportJson}>导出 BOM JSON</button>
-            <button type="button" className="chip h-8 px-3 text-[12px]" onClick={exportCsv}>导出 CSV</button>
-            <button type="button" className="chip h-8 px-3 text-[12px]" onClick={copyShare}>复制分享链接</button>
-            <button type="button" className="chip h-8 px-3 text-[12px]" onClick={() => fileRef.current?.click()}>导入 BOM</button>
+            <button type="button" className="chip h-8 px-3 text-xs" onClick={exportJson}>导出 BOM JSON</button>
+            <button type="button" className="chip h-8 px-3 text-xs" onClick={exportCsv}>导出 CSV</button>
+            <button type="button" className="chip h-8 px-3 text-xs" onClick={copyShare}>复制分享链接</button>
+            <button type="button" className="chip h-8 px-3 text-xs" onClick={() => fileRef.current?.click()}>导入 BOM</button>
             <input ref={fileRef} type="file" accept="application/json,.json" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) void importJson(f); e.target.value = '' }} />
           </div>
-          {notice && <p className="mt-2 break-all rounded bg-surface-2 px-2 py-1.5 text-[11px] text-ink-2">{notice}</p>}
+          {notice && <p className="mt-2 break-all rounded bg-surface-2 px-2 py-1.5 text-xs text-ink-2">{notice}</p>}
         </section>
 
         {result.warnings.length > 0 && (
           <section className="rounded-lg border border-warning/30 bg-warning-soft p-3">
-            <h2 className="text-[12px] font-semibold text-warning">需要复核</h2>
-            <ul className="mt-1.5 list-disc space-y-1 pl-4 text-[11px] leading-5 text-warning">
+            <h2 className="text-xs font-semibold text-warning">需要复核</h2>
+            <ul className="mt-1.5 list-disc space-y-1 pl-4 text-xs leading-5 text-warning">
               {result.warnings.map((w, i) => <li key={i}>{w}</li>)}
             </ul>
           </section>
         )}
 
         <div className="flex flex-wrap items-center justify-between gap-2 px-0.5">
-          <h2 className="text-[13px] font-semibold text-ink">
+          <h2 className="text-sm font-semibold text-ink">
             BOM · 虚拟件打底，参考选项自选
-            <span className="ml-2 text-[11px] font-normal text-ink-3">已选 {chosenCount}/{result.roles.length} 项</span>
+            <span className="ml-2 text-xs font-normal text-ink-3">已选 {chosenCount}/{result.roles.length} 项</span>
           </h2>
           <button
             type="button"
-            className="text-[11px] text-ink-3 hover:text-brand"
+            className="text-xs text-ink-3 hover:text-brand"
             onClick={() => setExpanded(allExpanded ? {} : Object.fromEntries(result.roles.map(r => [r.key, true])))}
           >
             {allExpanded ? '全部收起' : '全部展开'}
@@ -637,19 +637,19 @@ export default function SelectorConsole({ parts, models }: Props) {
 
         <section className="rounded-lg border border-line bg-surface">
           <div className="flex items-center justify-between gap-2 border-b border-line px-3 py-2">
-            <h2 className="text-[13px] font-semibold text-ink">线束与接口</h2>
-            <span className="text-[11px] text-ink-3">按额定电流 ×70% 选线规</span>
+            <h2 className="text-sm font-semibold text-ink">线束与接口</h2>
+            <span className="text-xs text-ink-3">按额定电流 ×70% 选线规</span>
           </div>
           {result.harness.length === 0 ? (
-            <p className="px-3 py-3 text-[11px] leading-5 text-ink-3">
+            <p className="px-3 py-3 text-xs leading-5 text-ink-3">
               先在「执行器」角色选一个真实型号，再按它的额定/峰值电流生成线束计算；虚拟件阶段不猜电流。
             </p>
           ) : (
             <>
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[720px] border-collapse text-left text-[12px]">
+                <table className="w-full min-w-[720px] border-collapse text-left text-xs">
                   <thead>
-                    <tr className="border-b border-line text-[11px] text-ink-3">
+                    <tr className="border-b border-line text-xs text-ink-3">
                       <th className="p-2 font-medium">对象</th>
                       <th className="p-2 font-medium">数量</th>
                       <th className="p-2 font-medium">额定电流</th>
@@ -674,7 +674,7 @@ export default function SelectorConsole({ parts, models }: Props) {
                   </tbody>
                 </table>
               </div>
-              <div className="space-y-1 border-t border-line px-3 py-2 text-[11px] leading-5 text-ink-3">
+              <div className="space-y-1 border-t border-line px-3 py-2 text-xs leading-5 text-ink-3">
                 {result.harness.map((row, i) => <p key={i}><span className="text-ink-2">{row.motor}：</span>{row.note}</p>)}
                 <p>电机端统一 XT30PW(2+2)：2 电源 + 2 信号（CANH/CANL），功率针 20A MAX、信号针 1A；线束最大推荐 14AWG。多电机共母线时，母线线规按下游电流总和重新计算。</p>
               </div>
@@ -684,24 +684,24 @@ export default function SelectorConsole({ parts, models }: Props) {
 
         <section className="rounded-lg border border-line bg-surface">
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-3 py-2">
-            <h2 className="text-[13px] font-semibold text-ink">基础 MJCF</h2>
+            <h2 className="text-sm font-semibold text-ink">基础 MJCF</h2>
             <div className="flex gap-1.5">
-              <button type="button" className="chip h-7 px-2.5 text-[11px]" onClick={() => { void navigator.clipboard.writeText(result.mjcf); setNotice('MJCF 已复制') }}>复制</button>
-              <button type="button" className="chip h-7 px-2.5 text-[11px]" onClick={() => download(`robowiki-${type}-${result.reference?.model ?? 'custom'}.xml`, result.mjcf, 'application/xml')}>下载 XML</button>
-              <button type="button" className="chip h-7 px-2.5 text-[11px]" onClick={() => setCodeOpen(v => !v)} aria-expanded={codeOpen}>{codeOpen ? '收起' : '预览'}</button>
+              <button type="button" className="chip h-7 px-2.5 text-xs" onClick={() => { void navigator.clipboard.writeText(result.mjcf); setNotice('MJCF 已复制') }}>复制</button>
+              <button type="button" className="chip h-7 px-2.5 text-xs" onClick={() => download(`robowiki-${type}-${result.reference?.model ?? 'custom'}.xml`, result.mjcf, 'application/xml')}>下载 XML</button>
+              <button type="button" className="chip h-7 px-2.5 text-xs" onClick={() => setCodeOpen(v => !v)} aria-expanded={codeOpen}>{codeOpen ? '收起' : '预览'}</button>
             </div>
           </div>
-          <p className="px-3 pt-2 text-[11px] leading-5 text-ink-3">
+          <p className="px-3 pt-2 text-xs leading-5 text-ink-3">
             按参考机型的质量、DOF 生成；选了真实执行器时用它的峰值扭矩，否则用参考 effort 上限。几何是胶囊/盒体占位，不是 CAD。可直接用 MuJoCo 打开改尺寸、惯量和碰撞。
           </p>
           {codeOpen && (
-            <pre className="m-3 max-h-80 overflow-auto rounded-md border border-line bg-surface-2 p-3 text-[10px] leading-4 text-ink-2">
+            <pre className="m-3 max-h-80 overflow-auto rounded-md border border-line bg-surface-2 p-3 text-xs leading-4 text-ink-2">
               {result.mjcf}
             </pre>
           )}
         </section>
 
-        <section className="rounded-lg border border-line bg-surface p-3 text-[11px] leading-5 text-ink-3">
+        <section className="rounded-lg border border-line bg-surface p-3 text-xs leading-5 text-ink-3">
           <p><span className="text-ink-2">选型口径：</span>每个角色先给虚拟件（按参考机型推导的需求占位），不默认推荐具体型号；参考选项附评价供对比，排序规则写在每个角色里。电池电压档、下位机/桥接总线、分线板输入范围随所选执行器联动。站内没有的（12S 整包、USB-485/UART 转换器、大电流急停等）明确标缺口，不拿估算值冒充。</p>
           <p className="mt-1"><span className="text-ink-2">范围：</span>执行器、电源、主控、感知与关键线束小件；结构件、紧固件、3D 打印件不在选型台内。</p>
           <p className="mt-1"><span className="text-ink-2">参考：</span>{models.length} 个可信型号来自 enkeebot 的 URDF 解析与交叉验证；线束规则来自 ENCOS《电机线束推荐说明》（2026-06-22）。</p>

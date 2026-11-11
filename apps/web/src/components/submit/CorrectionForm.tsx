@@ -33,8 +33,8 @@ function typedValue(field: string, raw: string): string | number {
 }
 
 const inputClass =
-  'h-10 w-full rounded-md border border-line bg-surface px-2.5 text-[13px] text-ink placeholder:text-ink-3 focus:border-brand focus:outline-none'
-const labelClass = 'mb-1 block text-[12px] font-medium text-ink-2'
+  'h-10 w-full rounded-md border border-line bg-surface px-2.5 text-sm text-ink placeholder:text-ink-3 focus:border-brand focus:outline-none'
+const labelClass = 'mb-1 block text-xs font-medium text-ink-2'
 
 export default function CorrectionForm() {
   const [parts, setParts] = useState<Part[] | null>(null)
@@ -103,10 +103,10 @@ export default function CorrectionForm() {
   if (signedIn === false) {
     return (
       <div className="rounded-lg border border-line bg-surface-2 p-4">
-        <p className="m-0 text-[13px] leading-6 text-ink-2">登录后才能提交参数纠错，提案会进入站务审核队列。</p>
+        <p className="m-0 text-sm leading-6 text-ink-2">登录后才能提交参数纠错，提案会进入站务审核队列。</p>
         <a
           href={`${import.meta.env.BASE_URL}account.html`}
-          className="mt-3 inline-flex h-11 items-center rounded-md bg-brand px-4 text-[13px] font-semibold text-brand-fg hover:bg-brand-hover"
+          className="mt-3 inline-flex h-11 items-center rounded-md bg-brand px-4 text-sm font-semibold text-brand-fg hover:bg-brand-hover"
         >
           去登录
         </a>
@@ -117,14 +117,14 @@ export default function CorrectionForm() {
   if (done !== null) {
     return (
       <div className="rounded-lg border border-success/35 bg-success-soft p-4" role="status" aria-live="polite">
-        <p className="m-0 text-[13px] font-semibold text-success">提案 #{done} 已进入审核队列</p>
-        <p className="m-0 mt-1.5 text-[12.5px] leading-6 text-ink-2">
+        <p className="m-0 text-sm font-semibold text-success">提案 #{done} 已进入审核队列</p>
+        <p className="m-0 mt-1.5 text-sm leading-6 text-ink-2">
           审核通过不等于页面已更新；数据在下一个 <span className="mono">data-v*</span> 发布后生效，结果会以站内通知告知。
         </p>
         <button
           type="button"
           onClick={() => setDone(null)}
-          className="mt-3 inline-flex h-11 items-center rounded-md border border-line bg-surface px-4 text-[13px] font-medium text-ink hover:border-line-strong"
+          className="mt-3 inline-flex h-11 items-center rounded-md border border-line bg-surface px-4 text-sm font-medium text-ink hover:border-line-strong"
         >
           再提一条
         </button>
@@ -213,18 +213,18 @@ export default function CorrectionForm() {
         </div>
       </div>
 
-      {error && <p className="m-0 mt-3 text-[12.5px] leading-5 text-danger" role="alert">{error}</p>}
+      {error && <p className="m-0 mt-3 text-sm leading-5 text-danger" role="alert">{error}</p>}
 
       <div className="mt-4 flex flex-wrap items-center gap-3">
         <button
           type="button"
           onClick={submit}
           disabled={busy || signedIn === null}
-          className="inline-flex h-11 items-center rounded-md bg-brand px-4 text-[13px] font-semibold text-brand-fg hover:bg-brand-hover disabled:opacity-50"
+          className="inline-flex h-11 items-center rounded-md bg-brand px-4 text-sm font-semibold text-brand-fg hover:bg-brand-hover disabled:opacity-50"
         >
           {busy ? '提交中…' : '提交纠错'}
         </button>
-        <span className="text-[11.5px] leading-5 text-ink-3">
+        <span className="text-xs leading-5 text-ink-3">
           一次改一个字段；通过后由数据流水线发布，页面不会立刻变化。
         </span>
       </div>

@@ -246,32 +246,32 @@ const keyStats = STAT_PRIORITY
           </div>
           <div class="min-w-0">
             <div class="flex flex-wrap items-center gap-1.5">
-              <span class="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-[11px] text-ink-2">{categoryLabel(part.category)}</span>
+              <span class="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-xs text-ink-2">{categoryLabel(part.category)}</span>
               {layer && (
                 <a
                   href={withBase(`/layers/${layer.id}.html`)}
-                  class="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-[11px] text-ink-3 transition-colors hover:border-line-strong hover:text-brand"
+                  class="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-xs text-ink-3 transition-colors hover:border-line-strong hover:text-brand"
                 >
                   {layer.index} {layer.name}
                 </a>
               )}
-              {part.subtypeLabel && <span class="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-[11px] text-ink-2">{part.subtypeLabel}</span>}
+              {part.subtypeLabel && <span class="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-xs text-ink-2">{part.subtypeLabel}</span>}
             </div>
             <h1 class="mt-3 text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">{part.model}</h1>
             <p class="mt-1 text-sm text-ink-3">{part.vendor}</p>
 
-            <dl class="mt-5 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-line bg-line sm:grid-cols-4">
+            <dl class="mt-5 grid grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] gap-px overflow-hidden rounded-md border border-line bg-line">
               {keyStats.map(s => (
-                <div class="bg-surface px-3 py-2.5">
-                  <dt class="text-[11px] text-ink-3">{s.label}</dt>
+                <div class="bg-surface px-3 py-3">
+                  <dt class="text-xs text-ink-3">{s.label}</dt>
                   <dd class="mono tabular mt-0.5 text-sm font-semibold text-ink">
                     {s.value}
-                    {s.unit && <span class="ml-0.5 text-[11px] font-normal text-ink-3">{s.unit}</span>}
+                    {s.unit && <span class="ml-0.5 text-xs font-normal text-ink-3">{s.unit}</span>}
                   </dd>
                 </div>
               ))}
-              <div class="bg-surface px-3 py-2.5">
-                <dt class="text-[11px] text-ink-3">
+              <div class="bg-surface px-3 py-3">
+                <dt class="text-xs text-ink-3">
                   {bestOffer !== null ? '优惠价' : '参考价'}
                 </dt>
                 <dd class="mt-0.5 flex flex-wrap items-baseline gap-x-1.5">
@@ -279,14 +279,14 @@ const keyStats = STAT_PRIORITY
                     {formatPrice(bestOffer ?? regularReference)}
                   </span>
                   {showCompare && (
-                    <span class="mono tabular text-[10px] text-ink-3 ">参考 {formatPrice(regularReference)}</span>
+                    <span class="mono tabular text-xs text-ink-3 ">参考 {formatPrice(regularReference)}</span>
                   )}
                 </dd>
               </div>
             </dl>
 
             {part.notes && (
-              <p class="mt-4 border-l-2 border-brand/40 pl-3 text-[13px] leading-6 text-ink-2">{part.notes}</p>
+              <p class="mt-4 border-l-2 border-brand/40 pl-3 text-sm leading-6 text-ink-2">{part.notes}</p>
             )}
           </div>
         </div>
@@ -296,24 +296,24 @@ const keyStats = STAT_PRIORITY
         <section class="card p-5" aria-labelledby="offers">
           <div class="flex flex-wrap items-baseline justify-between gap-2">
             <h2 id="offers" class="text-sm font-semibold text-ink">渠道优惠 / 优惠价</h2>
-            <span class="mono tabular text-[11px] text-ink-3">{offers.length} 条</span>
+            <span class="mono tabular text-xs text-ink-3">{offers.length} 条</span>
           </div>
           <ul class="mt-3 space-y-3">
             {offers.map(offer => (
               <li class="rounded-md border border-line bg-surface-2 p-3.5">
                 <div class="flex flex-wrap items-baseline justify-between gap-2">
-                  <p class="text-[13px] font-semibold text-ink">{offer.title || '渠道活动'}</p>
+                  <p class="text-sm font-semibold text-ink">{offer.title || '渠道活动'}</p>
                   {offer.price != null && (
                     <span class="flex flex-wrap items-baseline gap-x-1.5">
                       <span class="mono tabular text-sm font-semibold text-brand">¥{Number(offer.price).toLocaleString('zh-CN')}</span>
                       {regularReference !== null && Number(offer.price) < regularReference && (
-                        <span class="mono tabular text-[10px] text-ink-3 ">参考 {formatPrice(regularReference)}</span>
+                        <span class="mono tabular text-xs text-ink-3 ">参考 {formatPrice(regularReference)}</span>
                       )}
                     </span>
                   )}
                 </div>
-                {offer.condition && <p class="mt-1.5 whitespace-pre-line text-[12.5px] leading-6 text-ink-2">{offer.condition}</p>}
-                <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-ink-3">
+                {offer.condition && <p class="mt-1.5 whitespace-pre-line text-sm leading-6 text-ink-2">{offer.condition}</p>}
+                <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-ink-3">
                   {offer.expires && <span>有效期至 {offer.expires}</span>}
                   {offer.source && <span>来源：{offer.source}</span>}
                   {offer.kind && <span>类型：{offer.kind}</span>}
@@ -321,11 +321,11 @@ const keyStats = STAT_PRIORITY
                     <a href={offerLink(offer.url)} target="_blank" rel="noopener" class="font-medium text-brand hover:underline">查看活动 →</a>
                   )}
                 </div>
-                {offer.url && !offerLink(offer.url) && <p class="mt-1 text-[11px] text-ink-3">渠道：{offer.url}</p>}
+                {offer.url && !offerLink(offer.url) && <p class="mt-1 text-xs text-ink-3">渠道：{offer.url}</p>}
               </li>
             ))}
           </ul>
-          <p class="mt-3 text-[11px] leading-5 text-ink-3">
+          <p class="mt-3 text-xs leading-5 text-ink-3">
             优惠价通常有资格限制（如学生、参赛队、首购等），不是所有用户都能享受；价格、资格与截止时间以下单页面为准。本站不卖货、不收佣金。
           </p>
         </section>
@@ -335,9 +335,9 @@ const keyStats = STAT_PRIORITY
         <section class="card p-5" aria-labelledby="builds">
           <div class="flex flex-wrap items-baseline justify-between gap-2">
             <h2 id="builds" class="text-sm font-semibold text-ink">包含此部件的全开源方案</h2>
-            <span class="mono tabular text-[11px] text-ink-3">{part.builds.length} 套</span>
+            <span class="mono tabular text-xs text-ink-3">{part.builds.length} 套</span>
           </div>
-          <p class="mt-1.5 text-[12px] leading-6 text-ink-3">
+          <p class="mt-1.5 text-xs leading-6 text-ink-3">
             这些整机公开了 BOM，并把该部件精确对到了站内条目；点进去看整机参数、开源仓库与 BOM 来源。
           </p>
           <ul class="mt-3 grid gap-2 sm:grid-cols-2">
@@ -348,8 +348,8 @@ const keyStats = STAT_PRIORITY
                   class="group flex items-center justify-between gap-3 rounded-md border border-line bg-surface-2 px-3.5 py-2.5 transition-colors hover:border-line-strong hover:bg-surface-3"
                 >
                   <span class="min-w-0">
-                    <span class="block truncate text-[13px] font-semibold text-ink group-hover:text-brand">{b.name}</span>
-                    <span class="mt-0.5 block truncate text-[11px] text-ink-3">全开源 · 已发布 BOM</span>
+                    <span class="block truncate text-sm font-semibold text-ink group-hover:text-brand">{b.name}</span>
+                    <span class="mt-0.5 block truncate text-xs text-ink-3">全开源 · 已发布 BOM</span>
                   </span>
                   <span class="shrink-0 text-xs font-medium text-brand" aria-hidden="true">查看方案 →</span>
                 </a>
@@ -363,34 +363,34 @@ const keyStats = STAT_PRIORITY
         <section class="card p-5" aria-labelledby="sim">
           <div class="flex flex-wrap items-baseline justify-between gap-2">
             <h2 id="sim" class="text-sm font-semibold text-ink">仿真参数（MJCF / URDF）</h2>
-            <span class="text-[11px] text-ink-3">数值来自公开参数；TODO 需按整机替换</span>
+            <span class="text-xs text-ink-3">数值来自公开参数；TODO 需按整机替换</span>
           </div>
-          <p class="mt-1.5 text-[12px] leading-6 text-ink-3">
+          <p class="mt-1.5 text-xs leading-6 text-ink-3">
             复制后替换关节名、父子连杆、轴向与限位。峰值扭矩按 datasheet 峰值填写，速度按空载转速换算为 rad/s。
           </p>
           <div class="mt-3 grid gap-3 lg:grid-cols-2">
             <div class="min-w-0 rounded-md border border-line bg-surface-2">
               <div class="flex items-center justify-between border-b border-line px-3 py-2">
-                <span class="text-[12px] font-semibold text-ink">MJCF</span>
-                <button type="button" data-copy-target="sim-mjcf" class="inline-flex h-7 items-center rounded-md border border-line bg-surface px-2.5 text-[11px] font-medium text-brand hover:border-brand/50">复制 MJCF</button>
+                <span class="text-xs font-semibold text-ink">MJCF</span>
+                <button type="button" data-copy-target="sim-mjcf" class="inline-flex h-7 items-center rounded-md border border-line bg-surface px-2.5 text-xs font-medium text-brand hover:border-brand/50">复制 MJCF</button>
               </div>
-              <pre id="sim-mjcf" class="max-h-64 overflow-auto px-3 py-2 text-[11px] leading-5 text-ink-2">{sim.mjcf}</pre>
+              <pre id="sim-mjcf" class="max-h-64 overflow-auto px-3 py-2 text-xs leading-5 text-ink-2">{sim.mjcf}</pre>
             </div>
             <div class="min-w-0 rounded-md border border-line bg-surface-2">
               <div class="flex items-center justify-between border-b border-line px-3 py-2">
-                <span class="text-[12px] font-semibold text-ink">URDF</span>
-                <button type="button" data-copy-target="sim-urdf" class="inline-flex h-7 items-center rounded-md border border-line bg-surface px-2.5 text-[11px] font-medium text-brand hover:border-brand/50">复制 URDF</button>
+                <span class="text-xs font-semibold text-ink">URDF</span>
+                <button type="button" data-copy-target="sim-urdf" class="inline-flex h-7 items-center rounded-md border border-line bg-surface px-2.5 text-xs font-medium text-brand hover:border-brand/50">复制 URDF</button>
               </div>
-              <pre id="sim-urdf" class="max-h-64 overflow-auto px-3 py-2 text-[11px] leading-5 text-ink-2">{sim.urdf}</pre>
+              <pre id="sim-urdf" class="max-h-64 overflow-auto px-3 py-2 text-xs leading-5 text-ink-2">{sim.urdf}</pre>
             </div>
           </div>
           <details class="mt-3 rounded-md border border-line bg-surface-2">
-            <summary class="cursor-pointer list-none px-3 py-2 text-[12px] font-medium text-ink-2">参数 JSON</summary>
+            <summary class="cursor-pointer list-none px-3 py-2 text-xs font-medium text-ink-2">参数 JSON</summary>
             <div class="border-t border-line">
               <div class="flex justify-end px-3 pt-2">
-                <button type="button" data-copy-target="sim-json" class="inline-flex h-7 items-center rounded-md border border-line bg-surface px-2.5 text-[11px] font-medium text-brand hover:border-brand/50">复制 JSON</button>
+                <button type="button" data-copy-target="sim-json" class="inline-flex h-7 items-center rounded-md border border-line bg-surface px-2.5 text-xs font-medium text-brand hover:border-brand/50">复制 JSON</button>
               </div>
-              <pre id="sim-json" class="max-h-48 overflow-auto px-3 pb-3 text-[11px] leading-5 text-ink-2">{sim.json}</pre>
+              <pre id="sim-json" class="max-h-48 overflow-auto px-3 pb-3 text-xs leading-5 text-ink-2">{sim.json}</pre>
             </div>
           </details>
         </section>
@@ -405,11 +405,11 @@ const keyStats = STAT_PRIORITY
         </div>
         <dl class="grid gap-x-8 px-5 py-4 sm:grid-cols-2">
           {specEntries.map(row => (
-            <div class="flex items-start justify-between gap-4 border-b border-line py-2 text-sm last:border-0">
+            <div class="flex items-start justify-between gap-4 border-b border-line py-2.5 text-sm last:border-0">
               <dt class="shrink-0" title={row.meaning || undefined}>
                 <span class="text-ink-2">{row.label}</span>
                 {row.label !== row.key && !row.key.includes('.') && (
-                  <span class="mono ml-1.5 text-[11px] text-ink-3">{row.key}</span>
+                  <span class="mono ml-1.5 text-xs text-ink-3">{row.key}</span>
                 )}
               </dt>
               <dd class="mono tabular min-w-0 break-words text-right font-medium text-ink">
@@ -428,7 +428,7 @@ const keyStats = STAT_PRIORITY
                     ))}
                   </span>
                 ) : (
-                  <>{row.value}{row.unit && <span class="ml-1 text-[11px] font-normal text-ink-3">{row.unit}</span>}</>
+                  <>{row.value}{row.unit && <span class="ml-1 text-xs font-normal text-ink-3">{row.unit}</span>}</>
                 )}
               </dd>
             </div>
@@ -443,7 +443,7 @@ const keyStats = STAT_PRIORITY
         <section class="card p-5" aria-labelledby="links">
           <div class="flex flex-wrap items-baseline justify-between gap-2">
             <h2 id="links" class="text-sm font-semibold text-ink">资料与仓库</h2>
-            <span class="mono text-[11px] text-ink-3">
+            <span class="mono text-xs text-ink-3">
               {repoLicense ? `许可：${repoLicense}` : '厂商资料 / 开源项目'}
             </span>
           </div>
@@ -454,9 +454,9 @@ const keyStats = STAT_PRIORITY
                   href={link.url}
                   target="_blank"
                   rel="noopener"
-                  class="flex min-h-9 items-center gap-2 rounded-md border border-line bg-surface-2 px-3 py-1.5 text-[13px] transition-colors hover:border-line-strong hover:text-brand"
+                  class="flex min-h-9 items-center gap-2 rounded-md border border-line bg-surface-2 px-3 py-1.5 text-sm transition-colors hover:border-line-strong hover:text-brand"
                 >
-                  <span class="shrink-0 rounded border border-line bg-surface px-1.5 py-0.5 text-[10px] text-ink-3">{link.kind}</span>
+                  <span class="shrink-0 rounded border border-line bg-surface px-1.5 py-0.5 text-xs text-ink-3">{link.kind}</span>
                   <span class="min-w-0 truncate text-ink-2">{link.url.replace(/^https?:\/\/(www\.)?/, '')}</span>
                 </a>
               </li>
@@ -476,38 +476,38 @@ const keyStats = STAT_PRIORITY
 
       <section class="card p-5">
         <h2 class="text-sm font-semibold text-ink">数据口径</h2>
-        <ul class="mt-3 space-y-2 text-[13px] leading-6 text-ink-3">
+        <ul class="mt-3 space-y-2 text-sm leading-6 text-ink-3">
           <li>缺失显示 <span class="mono">null</span>，表示厂商未公布，不是 0。</li>
           <li>参数均按厂商手册或官方数据表订正过，并保留来源与核对日期。</li>
           <li>评分少于 3 条时只显示样本，不给确定结论。</li>
         </ul>
-        <a href={withBase('/method.html')} class="mt-3 inline-flex text-[13px] font-medium text-brand hover:underline">
+        <a href={withBase('/method.html')} class="mt-3 inline-flex text-sm font-medium text-brand hover:underline">
           阅读方法与来源 →
         </a>
       </section>
 
       <section class="card p-5">
         <h2 class="text-sm font-semibold text-ink">和别的比一比</h2>
-        <p class="mt-2 text-[13px] leading-6 text-ink-3">
+        <p class="mt-2 text-sm leading-6 text-ink-3">
           把这个条目和另外 1–3 个部件并排看，差异项会自动标出来。已加入的部件会保留，最多 4 个。
         </p>
         <button
           type="button"
           data-compare-add={part.id}
           data-compare-href={withBase('/compare.html')}
-          class="mt-3 inline-flex h-11 items-center rounded-md border border-line px-3 text-[13px] font-medium text-ink transition-colors hover:border-line-strong hover:bg-surface-2 sm:h-9"
+          class="mt-3 inline-flex h-11 items-center rounded-md border border-line px-3 text-sm font-medium text-ink transition-colors hover:border-line-strong hover:bg-surface-2 sm:h-9"
         >
           加入对比
         </button>
-        <p data-compare-status role="status" aria-live="polite" class="mt-2 text-[12px] text-warning" hidden></p>
+        <p data-compare-status role="status" aria-live="polite" class="mt-2 text-xs text-warning" hidden></p>
       </section>
 
       <section class="card p-5">
         <h2 class="text-sm font-semibold text-ink">发现错误？</h2>
-        <p class="mt-2 text-[13px] leading-6 text-ink-3">参数写错、价格过期、链接失效都可以直接提纠正，进入下一个 data-v* 版本。</p>
+        <p class="mt-2 text-sm leading-6 text-ink-3">参数写错、价格过期、链接失效都可以直接提纠正，进入下一个 data-v* 版本。</p>
         <a
           href={withBase('/submit.html')}
-          class="mt-3 inline-flex h-9 items-center rounded-md border border-line px-3 text-[13px] font-medium text-ink transition-colors hover:border-line-strong hover:bg-surface-2"
+          class="mt-3 inline-flex h-9 items-center rounded-md border border-line px-3 text-sm font-medium text-ink transition-colors hover:border-line-strong hover:bg-surface-2"
         >
           提交纠正
         </a>

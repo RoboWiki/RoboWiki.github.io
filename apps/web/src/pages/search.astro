@@ -45,11 +45,11 @@ const hot = [
         type="search"
         autocomplete="off"
         placeholder="型号、厂商、品类、材料、渠道…"
-        class="h-12 w-full rounded-md border border-line bg-surface pl-11 pr-24 text-[15px] text-ink placeholder:text-ink-3 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
+        class="h-12 w-full rounded-md border border-line bg-surface pl-11 pr-24 text-base text-ink placeholder:text-ink-3 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
       />
       <button
         type="submit"
-        class="absolute right-1.5 top-1.5 inline-flex h-9 items-center rounded-sm bg-brand px-4 text-[13px] font-semibold text-brand-fg hover:bg-brand-hover"
+        class="absolute right-1.5 top-1.5 inline-flex h-9 items-center rounded-sm bg-brand px-4 text-sm font-semibold text-brand-fg hover:bg-brand-hover"
       >
         搜索
       </button>
@@ -57,28 +57,29 @@ const hot = [
   </form>
 
   <div class="mt-3 flex flex-wrap items-center gap-1.5" id="hot-row">
-    <span class="text-[11px] text-ink-3">试试</span>
+    <span class="text-xs text-ink-3">试试</span>
     {hot.map(item => (
       <a
         href={`${withBase('/search.html')}?q=${encodeURIComponent(item.q)}`}
         data-q={item.q}
-        class="inline-flex h-7 items-center rounded-full border border-line bg-surface px-2.5 text-[12px] text-ink-2 transition-colors hover:border-line-strong hover:text-ink"
+        class="inline-flex h-7 items-center rounded-full border border-line bg-surface px-2.5 text-xs text-ink-2 transition-colors hover:border-line-strong hover:text-ink"
       >
         {item.label}
       </a>
     ))}
   </div>
 
-  <p id="search-status" class="mt-6 text-[13px] text-ink-3" role="status" aria-live="polite"></p>
+  <p id="search-status" class="mt-6 text-sm text-ink-3" role="status" aria-live="polite"></p>
+  <div id="search-empty-pet" class="mt-6" data-empty hidden></div>
 
   <div id="results" class="mt-4 space-y-6"></div>
 
   <template id="result-template">
     <a class="group flex items-start gap-3 rounded-md px-3 py-2.5 transition-colors hover:bg-surface-2">
-      <span class="mt-0.5 shrink-0 rounded-sm border border-line bg-surface-2 px-1.5 py-0.5 text-[10px] text-ink-3" data-kind></span>
+      <span class="mt-0.5 shrink-0 rounded-sm border border-line bg-surface-2 px-1.5 py-0.5 text-xs text-ink-3" data-kind></span>
       <span class="min-w-0 flex-1">
         <span class="block truncate text-sm font-medium text-ink group-hover:text-brand" data-title></span>
-        <span class="mt-0.5 block truncate text-[11px] text-ink-3" data-sub></span>
+        <span class="mt-0.5 block truncate text-xs text-ink-3" data-sub></span>
       </span>
       <span class="mt-1 shrink-0 text-ink-3 opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true">→</span>
     </a>
@@ -103,6 +104,7 @@ const hot = [
     const form = document.getElementById('search-form') as HTMLFormElement | null
     const input = document.getElementById('q') as HTMLInputElement | null
     const status = document.getElementById('search-status')
+    const emptyPet = document.getElementById('search-empty-pet')
     const results = document.getElementById('results')
     const template = document.getElementById('result-template') as HTMLTemplateElement | null
 
@@ -169,6 +171,7 @@ const hot = [
     const render = (entries: Entry[], query: string) => {
       if (!results || !status || !template) return
       results.innerHTML = ''
+      if (emptyPet) emptyPet.hidden = true
       const needle = query.trim().toLowerCase()
 
       if (!needle) {
@@ -195,6 +198,7 @@ const hot = [
 
       if (!matched.length) {
         status.textContent = `没有匹配「${query.trim()}」的条目。换个型号或厂商试试，也可以去部件库按品类筛。`
+        if (emptyPet) emptyPet.hidden = false
         return
       }
 
@@ -209,7 +213,7 @@ const hot = [
 
         const section = document.createElement('section')
         const heading = document.createElement('h2')
-        heading.className = 'text-[11px] font-semibold tracking-wide text-ink-3 uppercase'
+        heading.className = 'text-xs font-semibold tracking-wide text-ink-3 uppercase'
         heading.textContent = `${KIND_LABEL[kind] ?? kind} · ${group.length}`
         section.appendChild(heading)
 
@@ -228,7 +232,7 @@ const hot = [
 
         if (group.length > shown.length) {
           const more = document.createElement('p')
-          more.className = 'mt-1.5 px-3 text-[11px] text-ink-3'
+          more.className = 'mt-1.5 px-3 text-xs text-ink-3'
           more.textContent = `还有 ${group.length - shown.length} 条同类结果，用更具体的关键词缩小范围。`
           section.appendChild(more)
         }

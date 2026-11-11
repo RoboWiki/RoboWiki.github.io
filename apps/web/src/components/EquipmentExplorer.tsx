@@ -152,7 +152,7 @@ export default function EquipmentExplorer({ parts, subtypes }: Props) {
         </div>
         <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2">
           <div className="flex items-center gap-2">
-            <label htmlFor={`${searchId}-sort`} className="text-[11px] text-ink-3">排序</label>
+            <label htmlFor={`${searchId}-sort`} className="text-xs text-ink-3">排序</label>
             <select
               id={`${searchId}-sort`}
               value={sort}
@@ -194,7 +194,7 @@ export default function EquipmentExplorer({ parts, subtypes }: Props) {
       <div className="chip-row -mx-1 px-1" role="group" aria-label="按厂商筛选">
         <button
           type="button"
-          className="chip h-7 px-2.5 text-[12px]"
+          className="chip h-7 px-2.5 text-xs"
           aria-pressed={!vendor}
           onClick={() => { setVendor(''); setLimit(PAGE) }}
         >
@@ -204,7 +204,7 @@ export default function EquipmentExplorer({ parts, subtypes }: Props) {
           <button
             key={name}
             type="button"
-            className="chip h-7 px-2.5 text-[12px]"
+            className="chip h-7 px-2.5 text-xs"
             aria-pressed={vendor === name}
             onClick={() => { setVendor(vendor === name ? '' : name); setLimit(PAGE) }}
           >
@@ -215,7 +215,7 @@ export default function EquipmentExplorer({ parts, subtypes }: Props) {
       </div>
 
       {shown.length === 0 ? (
-        <div className="card p-10 text-center">
+        <div className="card p-10 text-center" data-empty="">
           <p className="text-sm font-semibold text-ink">没有匹配的设备</p>
           <p className="mx-auto mt-1.5 max-w-sm text-sm leading-6 text-ink-3">
             换个关键词，或切回全部类型。
@@ -242,7 +242,7 @@ export default function EquipmentExplorer({ parts, subtypes }: Props) {
                       : <span className="px-4 text-center text-xs text-ink-3">暂无产品图</span>}
                   </div>
                   <div className="flex flex-1 flex-col gap-2 p-4">
-                    <div className="flex items-center gap-1.5 text-[11px] text-ink-3">
+                    <div className="flex items-center gap-1.5 text-xs text-ink-3">
                       <span>{p.subtypeLabel || '设备'}</span>
                       <span aria-hidden="true">·</span>
                       <span className="truncate">{p.vendor}</span>
@@ -251,8 +251,8 @@ export default function EquipmentExplorer({ parts, subtypes }: Props) {
                     <dl className="grid grid-cols-2 gap-x-3 gap-y-1.5">
                       {partFacts(p).map(f => (
                         <div key={f.label} className="min-w-0">
-                          <dt className="text-[10px] leading-4 text-ink-3">{f.label}</dt>
-                          <dd className="mono tabular truncate text-[12px] leading-5 text-ink-2">{f.value}</dd>
+                          <dt className="text-xs leading-4 text-ink-3">{f.label}</dt>
+                          <dd className="mono tabular truncate text-xs leading-5 text-ink-2">{f.value}</dd>
                         </div>
                       ))}
                     </dl>

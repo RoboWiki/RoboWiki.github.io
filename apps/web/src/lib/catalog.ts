@@ -79,6 +79,8 @@ const categoryCounts = parts.reduce((acc, p) => {
 }, new Map<string, number>())
 
 export const topCategories = (catalog.categories || [])
+  // 设备库独立成页，部件库的分类入口不再包含 equipment
+  .filter(c => c.id !== 'equipment')
   .map(c => ({ ...c, count: categoryCounts.get(c.id) ?? 0 }))
   .sort((a, b) => b.count - a.count)
   .slice(0, 8)

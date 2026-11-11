@@ -1,5 +1,6 @@
 ---
 import Base from '@/layouts/Base.astro'
+import JingjingPet from '@/components/pets/JingjingPet.astro'
 import { catalog, dataVersion, featuredParts, imageUrl, topCategories } from '@/lib/catalog'
 import { bestOfferPrice, formatPrice, partHref, withBase } from '@/lib/utils'
 import { partFacts } from '@/lib/partFacts'
@@ -21,9 +22,10 @@ const layerBar: Record<string, string> = {
 }
 
 const equipmentCount = catalog.parts.filter((p: any) => p.category === 'equipment').length
+const partCount = catalog.count - equipmentCount
 
 const stats = [
-  { label: '部件库', value: catalog.count, href: '/catalog.html' },
+  { label: '部件库', value: partCount, href: '/catalog.html' },
   { label: '设备库', value: equipmentCount, href: '/equipment.html' },
   { label: '整机', value: robotsData.count, href: '/robots.html' },
   { label: '材料与工艺', value: materialsData.count, href: '/materials.html' },
@@ -33,10 +35,10 @@ const stats = [
 ]
 
 const steps = [
-  { k: '先认层', v: '看清自己卡在机械、硬件、嵌入式、算法哪一层', href: '/layers.html' },
-  { k: '再查参', v: '按品类筛参数，确认口径与来源', href: '/catalog.html' },
-  { k: '找参照', v: '确认四层与集成怎么组合', href: '/robots.html' },
-  { k: '留记录', v: '把实测与失败模式写回知识库', href: '/submit.html' },
+  { k: '查参数', v: '进部件库核对参数、来源与实测评价', href: '/catalog.html' },
+  { k: '看方案', v: '对着整机与 BOM 确认怎么组合、能不能复现', href: '/builds.html' },
+  { k: '试配', v: '用选型台按构型试配 BOM（试验版）', href: '/selector.html' },
+  { k: '买与记录', v: '找加工与元件渠道，把实测写回社区', href: '/suppliers.html' },
 ]
 
 const faqs = [
@@ -73,37 +75,37 @@ const faqs = [
           <span class="h-1.5 w-1.5 rounded-full bg-success" aria-hidden="true"></span>
           <span class="mono">{dataVersion}</span>
           <span class="text-ink-3">·</span>
-          <span class="mono tabular">{catalog.count}</span> 个部件
+          <span class="mono tabular">{partCount}</span> 个部件
         </div>
 
         <h1 class="mt-5 text-[32px] leading-[1.15] font-extrabold tracking-tight text-ink sm:text-[46px]">
-          把机器人制作，<br class="hidden sm:block" />做成可复现的工程。
+          先把部件选对，<br class="hidden sm:block" />再把机器人做出来。
         </h1>
 
-        <p class="mt-5 max-w-2xl text-[15px] leading-7 text-ink-2 sm:text-base">
-          {POSITIONING.short}。以「机械—硬件—嵌入式—算法」四层能力为骨架，以系统集成能力为大脑，社区共建部件选型与评价、加工与采购经验、教程、案例与开源索引，贯通需求定义、方案设计、工程实现、测试验证与迭代优化。
+        <p class="mt-5 max-w-2xl text-base leading-7 text-ink-2 sm:text-base">
+          以参数可追溯的部件库为核心，先把「这个件到底怎么样、多少钱、谁用过」做扎实；选型台是试验工具，用来按构型试配 BOM；社区共建每个部件的实测与评价，再逐步打通机械—硬件—嵌入式—算法与系统集成的全链路。
         </p>
         <p class="mt-2 text-xs font-medium text-brand">{POSITIONING.tagline}</p>
 
         <div class="mt-7 flex flex-wrap items-center gap-3">
           <a
-            href={withBase('/learn/index.html')}
+            href={withBase('/catalog.html')}
             class="inline-flex h-11 items-center rounded-md bg-brand px-5 text-sm font-semibold text-brand-fg transition-colors hover:bg-brand-hover"
           >
-            从教程库开始
+            进入部件库
             <span aria-hidden="true">→</span>
           </a>
           <a
-            href={withBase('/catalog.html')}
+            href={withBase('/selector.html')}
             class="inline-flex h-11 items-center rounded-md border border-line bg-surface px-5 text-sm font-medium text-ink transition-colors hover:border-line-strong hover:bg-surface-2"
           >
-            直接查零件
+            选型台（试验版）
           </a>
           <a
-            href={withBase('/submit.html')}
+            href={withBase('/learn/index.html')}
             class="inline-flex h-11 items-center px-2 text-sm font-medium text-ink-2 transition-colors hover:text-brand"
           >
-            参与投稿
+            从教程库入门
           </a>
         </div>
 
@@ -135,8 +137,8 @@ const faqs = [
       <div class="relative">
         <div class="rounded-lg border border-line bg-surface-2 p-4 sm:p-5">
           <div class="flex items-center justify-between gap-2">
-            <span class="text-xs font-semibold tracking-wide text-ink-3 uppercase">能力骨架</span>
-            <span class="mono text-[11px] text-ink-3">4 层 + 1 大脑</span>
+            <span class="text-xs font-semibold tracking-wide text-ink-3 uppercase">全链路骨架</span>
+            <span class="mono text-xs text-ink-3">4 层 + 1 大脑</span>
           </div>
           <ol class="mt-4 space-y-2">
             {SKELETON_LAYERS.map(layer => (
@@ -145,11 +147,11 @@ const faqs = [
                   href={withBase(`/method.html#layers`)}
                   class="group flex items-center gap-3 rounded-md border border-line bg-surface px-3 py-2.5 transition-colors hover:border-line-strong"
                 >
-                  <span class="mono text-[11px] text-ink-3">{layer.index}</span>
+                  <span class="mono text-xs text-ink-3">{layer.index}</span>
                   <span class={`h-6 w-px ${layerBar[layer.id]}`} aria-hidden="true"></span>
                   <span class="min-w-0 flex-1">
                     <span class="block text-sm font-semibold text-ink">{layer.name}</span>
-                    <span class="block text-[11px] leading-5 text-ink-3">{layer.tagline}</span>
+                    <span class="block text-xs leading-5 text-ink-3">{layer.tagline}</span>
                   </span>
                   <span class="shrink-0 text-ink-3 transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
                 </a>
@@ -169,7 +171,7 @@ const faqs = [
                 <span class="text-sm font-semibold text-ink">{BRAIN_LAYER.name} · 大脑</span>
                 <span class="ml-auto shrink-0 text-ink-3 transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
               </div>
-              <p class="mt-1 text-[11px] leading-5 text-ink-2">横贯四层：需求 / 接口 / 预算 / 联调</p>
+              <p class="mt-1 text-xs leading-5 text-ink-2">横贯四层：需求 / 接口 / 预算 / 联调</p>
             </a>
           )}
         </div>
@@ -181,12 +183,12 @@ const faqs = [
     <dl class="grid grid-cols-2 gap-px bg-line sm:grid-cols-4 lg:grid-cols-7">
       {stats.map(s => (
         <a href={withBase(s.href)} class="group bg-surface px-4 py-3.5 transition-colors hover:bg-surface-2">
-          <dt class="text-[11px] text-ink-3">{s.label}</dt>
+          <dt class="text-xs text-ink-3">{s.label}</dt>
           <dd class="mono tabular mt-0.5 text-xl font-bold text-ink group-hover:text-brand">{s.value}</dd>
         </a>
       ))}
     </dl>
-    <p class="border-t border-line px-4 py-2.5 text-[11px] text-ink-3">
+    <p class="border-t border-line px-4 py-2.5 text-xs text-ink-3">
       所有条目均已按厂商资料订正；参数缺失一律写 <span class="mono">null</span>，不猜、不用同类填补。
     </p>
   </section>
@@ -195,25 +197,26 @@ const faqs = [
     <div class="flex flex-wrap items-end justify-between gap-3">
       <div>
         <h2 class="text-xl font-bold tracking-tight text-ink">从哪进去</h2>
-        <p class="mt-1 text-sm text-ink-3">六个一级入口，各管一件事。</p>
+        <p class="mt-1 text-sm text-ink-3">七个入口，按使用阶段排。</p>
       </div>
     </div>
     <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
       {[
-        { href: '/learn/index.html', title: '教程库', desc: '经典 PDF 与导读，按方向筛选', count: '6 份资料', eg: '例：传动机构简述' },
+        { href: '/learn/index.html', title: '教程库', desc: '经典 PDF 与导读，按方向筛选', count: `${resourcesCount} 份资料`, eg: '例：传动机构简述' },
+        { href: '/selector.html', title: '选型台', desc: '按构型与功能试配 BOM 与 MJCF（试验版）', count: '试验版', eg: '例：四足 12 DOF' },
+        { href: '/catalog.html', title: '部件库', desc: '参数带来源，缺失写 null', count: `${partCount} 个部件`, eg: '例：DM4310 参数' },
         { href: '/builds.html', title: '方案库', desc: '可复现方案，含 BOM 与步骤', count: `${robotsData.count} 套`, eg: '例：四足 5k 方案' },
-        { href: '/catalog.html', title: '部件库', desc: '参数带来源，缺失写 null', count: `${catalog.count} 个部件`, eg: '例：DM4310 参数' },
-        { href: '/equipment.html', title: '设备库', desc: '做机器人的工具与仪器', count: `${equipmentCount} 台设备`, eg: '例：拓竹 A1、优利德 UT89X' },
         { href: '/suppliers.html', title: '采购库', desc: '按加工品类找店，先看有没有坑', count: `${suppliersData.count} 家`, eg: '例：嘉立创打样' },
+        { href: '/equipment.html', title: '设备库', desc: '做机器人的工具与仪器', count: `${equipmentCount} 台设备`, eg: '例：拓竹 A1、优利德 UT89X' },
         { href: '/community.html', title: '社区', desc: '写实测，不写「好用」', count: '开放讨论', eg: '例：选型求助' },
       ].map(item => (
         <a href={withBase(item.href)} class="card card-hover group flex flex-col p-5">
           <div class="flex items-start justify-between">
-            <span class="text-[15px] font-semibold text-ink group-hover:text-brand">{item.title}</span>
+            <span class="text-base font-semibold text-ink group-hover:text-brand">{item.title}</span>
             <span class="text-ink-3 transition-transform group-hover:translate-x-0.5" aria-hidden="true">↗</span>
           </div>
           <p class="mt-2 text-xs leading-5 text-ink-3">{item.desc}</p>
-          <div class="mt-auto flex items-baseline justify-between gap-2 border-t border-line pt-3 text-[11px]">
+          <div class="mt-auto flex items-baseline justify-between gap-2 border-t border-line pt-3 text-xs">
             <span class="mono tabular text-ink-2">{item.count}</span>
             <span class="truncate text-ink-3">{item.eg}</span>
           </div>
@@ -225,14 +228,14 @@ const faqs = [
   <section class="mt-12 grid gap-4 lg:grid-cols-[minmax(0,1fr)_380px]">
     <div class="card p-6">
       <h2 class="text-lg font-bold tracking-tight text-ink">怎么用本站</h2>
-      <p class="mt-1.5 text-sm leading-6 text-ink-3">先看教程库打基础，再按四步走到能自己选型和复现。</p>
+      <p class="mt-1.5 text-sm leading-6 text-ink-3">先在部件库核对参数与来源，再看方案、用选型台试配，最后找渠道并把实测写回社区。</p>
       <ol class="mt-5 grid gap-2 sm:grid-cols-2">
         {steps.map((s, i) => (
           <li>
             <a href={withBase(s.href)} class="group flex h-full flex-col rounded-md border border-line bg-surface-2 p-4 transition-colors hover:border-line-strong hover:bg-surface">
-              <span class="mono text-[11px] text-ink-3">0{i + 1}</span>
+              <span class="mono text-xs text-ink-3">0{i + 1}</span>
               <span class="mt-1.5 text-sm font-semibold text-ink group-hover:text-brand">{s.k}</span>
-              <span class="mt-1 text-[11px] leading-5 text-ink-3">{s.v}</span>
+              <span class="mt-1 text-xs leading-5 text-ink-3">{s.v}</span>
             </a>
           </li>
         ))}
@@ -251,7 +254,7 @@ const faqs = [
             class="inline-flex h-8 items-center gap-1.5 rounded-full border border-line bg-surface px-3 text-xs text-ink-2 transition-colors hover:border-line-strong hover:text-ink"
           >
             {c.name}
-            <span class="mono tabular text-[11px] text-ink-3">{c.count || 0}</span>
+            <span class="mono tabular text-xs text-ink-3">{c.count || 0}</span>
           </a>
         ))}
       </div>
@@ -283,14 +286,14 @@ const faqs = [
           </div>
           <div class="flex flex-1 flex-col gap-2 p-4">
             <div class="flex flex-wrap items-center gap-1.5">
-              <span class="text-[11px] font-medium text-ink-3">{p.vendor}</span>
+              <span class="text-xs font-medium text-ink-3">{p.vendor}</span>
             </div>
             <div class="text-sm font-semibold text-ink">{p.model}</div>
             <dl class="grid grid-cols-2 gap-x-3 gap-y-1.5">
               {partFacts(p).map(f => (
                 <div class="min-w-0">
-                  <dt class="text-[10px] leading-4 text-ink-3">{f.label}</dt>
-                  <dd class="mono tabular truncate text-[12px] leading-5 text-ink-2">{f.value}</dd>
+                  <dt class="text-xs leading-4 text-ink-3">{f.label}</dt>
+                  <dd class="mono tabular truncate text-xs leading-5 text-ink-2">{f.value}</dd>
                 </div>
               ))}
             </dl>
@@ -303,10 +306,10 @@ const faqs = [
                     <>
                       <span class={`mono tabular ${offer !== null ? 'font-semibold text-brand' : 'text-ink-2'}`}>
                         {formatPrice(offer ?? regular)}
-                        {offer !== null && <span class="ml-1 text-[10px] font-normal">优惠价</span>}
+                        {offer !== null && <span class="ml-1 text-xs font-normal">优惠价</span>}
                       </span>
                       {offer !== null && regular !== null && offer < regular && (
-                        <span class="mono tabular text-[10px] text-ink-3 ">参考 {formatPrice(regular)}</span>
+                        <span class="mono tabular text-xs text-ink-3 ">参考 {formatPrice(regular)}</span>
                       )}
                     </>
                   )
@@ -321,17 +324,21 @@ const faqs = [
 
   <section class="mt-12 grid gap-3 sm:grid-cols-3">
     <a href={withBase('/community.html')} class="card card-hover p-5">
-      <div class="text-sm font-semibold text-ink">提问与讨论</div>
-      <p class="mt-1.5 text-[13px] leading-6 text-ink-3">选型、调试、踩坑都可以问；答案会留在对应的零件页下。</p>
+      <div class="text-sm font-semibold text-ink">实测与评价</div>
+      <p class="mt-1.5 text-sm leading-6 text-ink-3">每个部件页下都有用过的人写的实测与评价；选型前先看具体差在哪，而不是只看均分。</p>
     </a>
     <a href={withBase('/submit.html')} class="card card-hover p-5">
       <div class="text-sm font-semibold text-ink">纠正与补全</div>
-      <p class="mt-1.5 text-[13px] leading-6 text-ink-3">参数写错、价格过期、链接失效，都可以直接提交纠正。</p>
+      <p class="mt-1.5 text-sm leading-6 text-ink-3">参数写错、价格过期、链接失效，都可以直接提交纠正。</p>
     </a>
     <a href={withBase('/contributors.html')} class="card card-hover p-5">
       <div class="text-sm font-semibold text-ink">贡献者</div>
-      <p class="mt-1.5 text-[13px] leading-6 text-ink-3">谁整理了这些数据、谁提供了实测记录，逐条可查。</p>
+      <p class="mt-1.5 text-sm leading-6 text-ink-3">谁整理了这些数据、谁提供了实测记录，逐条可查。</p>
     </a>
+  </section>
+
+  <section class="mt-12">
+    <JingjingPet auto={true} class="mx-auto max-w-md" />
   </section>
 
   <section class="mt-12">
@@ -343,7 +350,7 @@ const faqs = [
             {item.q}
             <span class="text-ink-3 transition-transform group-open:rotate-45" aria-hidden="true">＋</span>
           </summary>
-          <p class="px-5 pb-4 text-[13px] leading-6 text-ink-3">{item.a}</p>
+          <p class="px-5 pb-4 text-sm leading-6 text-ink-3">{item.a}</p>
         </details>
       ))}
     </div>

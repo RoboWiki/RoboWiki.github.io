@@ -47,13 +47,13 @@ const description = `${categoryLabel(category)} · ${group.label}，共 ${groupP
                 : <span class="px-4 text-center text-xs text-ink-3">暂无产品图</span>}
             </div>
             <div class="flex flex-1 flex-col gap-2 p-4">
-              <div class="truncate text-[11px] text-ink-3">{p.vendor}</div>
+              <div class="truncate text-xs text-ink-3">{p.vendor}</div>
               <div class="line-clamp-2 min-h-10 text-sm font-semibold leading-5 text-ink">{p.model}</div>
               <dl class="grid grid-cols-2 gap-x-3 gap-y-1.5">
                 {partFacts(p).map(f => (
                   <div class="min-w-0">
-                    <dt class="text-[10px] leading-4 text-ink-3">{f.label}</dt>
-                    <dd class="mono tabular truncate text-[12px] leading-5 text-ink-2">{f.value}</dd>
+                    <dt class="text-xs leading-4 text-ink-3">{f.label}</dt>
+                    <dd class="mono tabular truncate text-xs leading-5 text-ink-2">{f.value}</dd>
                   </div>
                 ))}
               </dl>
@@ -66,10 +66,10 @@ const description = `${categoryLabel(category)} · ${group.label}，共 ${groupP
                       <>
                         <span class={`mono tabular truncate font-medium ${offer !== null ? 'text-brand' : 'text-ink-2'}`}>
                           {formatPrice(offer ?? regular)}
-                          {offer !== null && <span class="ml-1 text-[10px] font-normal">优惠价</span>}
+                          {offer !== null && <span class="ml-1 text-xs font-normal">优惠价</span>}
                         </span>
                         {offer !== null && regular !== null && offer < regular && (
-                          <span class="mono tabular text-[10px] text-ink-3 ">参考 {formatPrice(regular)}</span>
+                          <span class="mono tabular text-xs text-ink-3 ">参考 {formatPrice(regular)}</span>
                         )}
                       </>
                     )

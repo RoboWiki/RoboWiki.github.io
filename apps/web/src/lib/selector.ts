@@ -508,43 +508,53 @@ function highRole(parts: CatalogPart[], needs: Needs): RolePlan {
   const heavy = needs.controls.includes('autonomy') && (needs.depth || needs.lidar)
   const rl = needs.controls.includes('rl')
   const tier: 'high' | 'mid' | 'entry' = heavy ? 'high' : rl ? 'mid' : 'entry'
-  const tierLabel = tier === 'high' ? '高算力（100 TOPS 级参考）' : tier === 'mid' ? '进阶（40 TOPS 级参考）' : '入门（轻量视觉/逻辑）'
+  const tierLabel = tier === 'high' ? '高算力（80 TOPS 级以上参考）' : tier === 'mid' ? '进阶（20–40 TOPS 参考）' : '入门（<20 TOPS，轻量视觉/逻辑）'
+  const tierMin = tier === 'high' ? 80 : tier === 'mid' ? 20 : 0
+  const npuOf = (p: CatalogPart) => n(specs(p).npu_tops)
   const tierOf = (p: CatalogPart): 'high' | 'mid' | 'entry' => {
-    const npu = n(specs(p).npu_tops) ?? 0
-    return npu >= 100 ? 'high' : npu >= 20 ? 'mid' : 'entry'
+    const npu = npuOf(p) ?? 0
+    return npu >= 80 ? 'high' : npu >= 20 ? 'mid' : 'entry'
   }
   const dist = (t: 'high' | 'mid' | 'entry') => Math.abs(['entry', 'mid', 'high'].indexOf(t) - ['entry', 'mid', 'high'].indexOf(tier))
-  const pool = parts.filter(p => p.category === 'controller_high')
+  // 载板本身不算力，算力由所插模组决定，不能当整机候选；计算模组（如 Orin NX/Nano）有 npu，保留
+  const isCarrier = (p: CatalogPart) => String(p.subtype ?? '') === 'module' && npuOf(p) === null
+  const pool = parts.filter(p => p.category === 'controller_high' && !isCarrier(p))
+  const carriers = parts.filter(p => p.category === 'controller_high' && isCarrier(p))
   const ranked = [...pool].sort((a, b) => {
     const da = dist(tierOf(a))
     const db = dist(tierOf(b))
     if (da !== db) return da - db
+    const na = npuOf(a)
+    const nb = npuOf(b)
+    if (na !== nb) return (nb ?? -1) - (na ?? -1)
     return byPriceKnownThenAsc(a, b)
   })
-  // 每种形态（SBC/核心板/迷你主机）先取一个代表，再按排名补足，避免询价迷你主机被挤出短名单
-  const seenSub = new Set<string>()
-  const reps: CatalogPart[] = []
-  for (const p of ranked) {
-    const st = String(p.subtype ?? '')
-    if (!seenSub.has(st)) { seenSub.add(st); reps.push(p) }
-  }
-  const shortlist = [...reps, ...ranked.filter(p => !reps.includes(p))].slice(0, 4)
-  const options = shortlist.map(p => {
-    const npu = n(specs(p).npu_tops)
+  const options = ranked.slice(0, 4).map(p => {
+    const npu = npuOf(p)
     const ram = n(specs(p).ram_gb)
-    const evals: EvalItem[] = [
-      {
-        label: '算力',
-        value: npu !== null ? `${fmt(npu, 0)} TOPS` : '无 NPU（CPU）',
-        verdict: npu === null ? 'warn' : dist(tierOf(p)) === 0 ? 'ok' : 'info',
-        note: npu === null ? '适合逻辑/轻量视觉，重感知需外加加速' : undefined,
-      },
-    ]
+    const evals: EvalItem[] = []
+    if (npu === null) {
+      evals.push({ label: '算力', value: '无 NPU（CPU）', verdict: 'warn', note: '适合逻辑/轻量视觉，重感知需外加加速' })
+    } else if (npu < 10) {
+      evals.push({ label: '算力', value: `${fmt(npu, 0)} TOPS`, verdict: 'info', note: '算力偏低：适合巡线/轻量识别；激光/深度感知建议 40 TOPS 以上' })
+    } else if (tierMin > 0 && npu < tierMin) {
+      evals.push({ label: '算力', value: `${fmt(npu, 0)} TOPS`, verdict: 'warn', note: `低于「${tierLabel}」参考档，重感知可能不够` })
+    } else {
+      evals.push({ label: '算力', value: `${fmt(npu, 0)} TOPS`, verdict: 'ok' })
+    }
     if (ram !== null) evals.push({ label: '内存', value: `${fmt(ram, 0)} GB`, verdict: 'info' })
     const can = n(specs(p).can)
     if (can !== null) evals.push({ label: 'CAN', value: `${can} 路`, verdict: can > 0 ? 'info' : 'warn', note: can > 0 ? (/RK3588/.test(String(specs(p).iface ?? '')) ? '集成下位机/分线，可少配独立下位机' : undefined) : '无原生 CAN，需 USB-CAN(FD) 桥接' })
     return option(p, evals)
   })
+  const advice = [
+    '训练在 PC/服务器，机上只跑推理；TOPS 为厂商标称，实际吞吐看模型与量化。',
+    '算力档只是参考分档，不是门槛；无 NPU 的板子也能跑传统控制与轻量视觉。',
+    '集成盒子（如 RoboBox-7C）自带下位机与电机分线，可少配独立下位机/分线板；供电按「供电分线 / 降压」核对。',
+  ]
+  if (carriers.length > 0) {
+    advice.push(`载板本身不含算力（如 ${carriers.map(p => p.model).join('、')}）：选 NVIDIA Orin 计算模组时需另配载板，算力按所插模组核对。`)
+  }
   return {
     key: 'high',
     label: '上位机 / 感知计算',
@@ -555,12 +565,8 @@ function highRole(parts: CatalogPart[], needs: Needs): RolePlan {
     },
     qty: 1,
     options,
-    advice: [
-      '训练在 PC/服务器，机上只跑推理；TOPS 为厂商标称，实际吞吐看模型与量化。',
-      '算力档只是参考分档，不是门槛；无 NPU 的板子也能跑传统控制与轻量视觉。',
-      '集成盒子（如 RoboBox-7C）自带下位机与电机分线，可少配独立下位机/分线板；供电按「供电分线 / 降压」核对。',
-    ],
-    sortNote: `按与「${tierLabel}」档的距离排序，同档内价格升序；SBC/核心板/迷你主机各取代表，无 NPU 板子一并展示。`,
+    advice,
+    sortNote: `同档按算力降序（无 NPU 在后）、同算力价格升序；裸载板不进候选。`,
   }
 }
 

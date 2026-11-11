@@ -18,7 +18,7 @@ import LoginBridge from '@/components/community/login-bridge'
     <header class="mb-4">
       <p class="text-xs font-semibold uppercase tracking-[0.14em] text-brand">账号</p>
       <h1 class="mb-1 mt-1 text-2xl font-extrabold tracking-tight text-ink">登录 / 注册</h1>
-      <p class="text-[13px] leading-6 text-ink-2">
+      <p class="text-sm leading-6 text-ink-2">
         账号与 App、GitHub 登录共用一套会话；凭证只用一次，60 秒内有效。
       </p>
     </header>
@@ -27,7 +27,7 @@ import LoginBridge from '@/components/community/login-bridge'
     <LoginBridge client:only="react" />
 
     <noscript>
-      <p class="mt-4 rounded-md border border-warning/35 bg-warning-soft p-3 text-[13px] leading-6 text-warning">
+      <p class="mt-4 rounded-md border border-warning/35 bg-warning-soft p-3 text-sm leading-6 text-warning">
         登录需要启用 JavaScript。也可以直接在 App 里登录后回到社区。
       </p>
     </noscript>

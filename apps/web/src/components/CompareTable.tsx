@@ -183,7 +183,7 @@ export default function CompareTable({ labels = {} }: { labels?: Labels }) {
         <div className="flex flex-wrap items-end gap-3">
           {ids.map((id, index) => (
             <div key={index} className="min-w-[220px] flex-1">
-              <label className="mb-1 block text-[11px] text-ink-3" htmlFor={`cmp-${index}`}>
+              <label className="mb-1 block text-xs text-ink-3" htmlFor={`cmp-${index}`}>
                 第 {index + 1} 个
               </label>
               <div className="flex items-center gap-1">
@@ -191,7 +191,7 @@ export default function CompareTable({ labels = {} }: { labels?: Labels }) {
                   id={`cmp-${index}`}
                   value={id}
                   onChange={e => setSlot(index, e.target.value)}
-                  className="h-9 w-full rounded-md border border-line bg-surface px-2 text-[13px] text-ink focus:border-brand focus:outline-none"
+                  className="h-9 w-full rounded-md border border-line bg-surface px-2 text-sm text-ink focus:border-brand focus:outline-none"
                 >
                   <option value="">选择部件…</option>
                   {options.map(p => (
@@ -217,7 +217,7 @@ export default function CompareTable({ labels = {} }: { labels?: Labels }) {
             <button
               type="button"
               onClick={addSlot}
-              className="inline-flex h-9 items-center rounded-md border border-line px-3 text-[13px] text-ink-2 hover:border-line-strong"
+              className="inline-flex h-9 items-center rounded-md border border-line px-3 text-sm text-ink-2 hover:border-line-strong"
             >
               + 加一个
             </button>
@@ -225,7 +225,7 @@ export default function CompareTable({ labels = {} }: { labels?: Labels }) {
         </div>
 
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-line pt-3">
-          <label className="inline-flex items-center gap-2 text-[12px] text-ink-2">
+          <label className="inline-flex items-center gap-2 text-xs text-ink-2">
             <input
               type="checkbox"
               checked={diffOnly}
@@ -234,7 +234,7 @@ export default function CompareTable({ labels = {} }: { labels?: Labels }) {
             />
             只看差异项
           </label>
-          <span className="mono text-[11px] text-ink-3">
+          <span className="mono text-xs text-ink-3">
             {picked.length} / {MAX} 已选
           </span>
         </div>
@@ -243,45 +243,45 @@ export default function CompareTable({ labels = {} }: { labels?: Labels }) {
       {picked.length < 2 ? (
         <div className="card border-dashed px-6 py-14 text-center">
           <p className="text-sm font-semibold text-ink">选两个以上的部件开始对比</p>
-          <p className="mt-1.5 text-[13px] text-ink-3">参数字段不同、口径不一致的地方会被标出来。</p>
+          <p className="mt-1.5 text-sm text-ink-3">参数字段不同、口径不一致的地方会被标出来。</p>
         </div>
       ) : (
         <>
-          <p className="sm:hidden text-[12px] leading-5 text-ink-3">左右滑动查看全部列；首列固定。</p>
+          <p className="sm:hidden text-xs leading-5 text-ink-3">左右滑动查看全部列；首列固定。</p>
           <div
             className="overflow-x-auto rounded-lg border border-line bg-surface"
             style={{ WebkitOverflowScrolling: 'touch' }}
           >
-            <table className="w-full min-w-[560px] border-collapse text-[13px]">
+            <table className="w-full min-w-[560px] border-collapse text-sm">
             <thead>
               <tr className="border-b border-line bg-surface-2">
-                <th className="sticky left-0 z-10 bg-surface-2 px-3 py-2.5 text-left text-[11px] font-semibold text-ink-3">
+                <th className="sticky left-0 z-10 bg-surface-2 px-3 py-3 text-left text-xs font-semibold text-ink-3">
                   字段
                 </th>
                 {picked.map(p => (
-                  <th key={p.id} className="px-3 py-2.5 text-left align-top">
-                    <a href={`${import.meta.env.BASE_URL}parts/${p.category}/${p.slug}.html`} className="block text-[13px] font-semibold text-ink hover:text-brand">
+                  <th key={p.id} className="px-3 py-3 text-left align-top">
+                    <a href={`${import.meta.env.BASE_URL}parts/${p.category}/${p.slug}.html`} className="block text-sm font-semibold text-ink hover:text-brand">
                       {p.model}
                     </a>
-                    <span className="mt-0.5 block text-[11px] font-normal text-ink-3">{p.vendor}</span>
+                    <span className="mt-0.5 block text-xs font-normal text-ink-3">{p.vendor}</span>
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
               <tr className="border-b border-line">
-                <th scope="row" className="sticky left-0 z-10 bg-surface px-3 py-2 text-left font-medium text-ink-2">价格</th>
+                <th scope="row" className="sticky left-0 z-10 bg-surface px-3 py-2.5 text-left font-medium text-ink-2">价格</th>
                 {picked.map(p => {
                   const offer = bestOfferPrice(p.offers)
                   const regular = typeof p.price === 'number' ? p.price : null
                   return (
-                    <td key={p.id} className="mono tabular px-3 py-2 text-ink">
+                    <td key={p.id} className="mono tabular px-3 py-2.5 text-ink">
                       <span className={offer !== null ? 'font-semibold text-brand' : ''}>
                         {formatPrice(offer ?? regular)}
-                        {offer !== null && <span className="ml-1 text-[10px] font-normal">优惠价</span>}
+                        {offer !== null && <span className="ml-1 text-xs font-normal">优惠价</span>}
                       </span>
                       {offer !== null && regular !== null && offer < regular && (
-                        <span className="ml-1.5 text-[10px] text-ink-3 ">{formatPrice(regular)}</span>
+                        <span className="ml-1.5 text-xs text-ink-3 ">{formatPrice(regular)}</span>
                       )}
                     </td>
                   )
@@ -296,15 +296,15 @@ export default function CompareTable({ labels = {} }: { labels?: Labels }) {
                 const unit = known?.unit ?? fallback?.unit ?? ''
                 return (
                   <tr key={row.key} className={row.differs ? 'border-b border-line bg-warning-soft/70' : 'border-b border-line'}>
-                    <th scope="row" className="sticky left-0 z-10 bg-surface px-3 py-2 text-left font-medium text-ink-2">
+                    <th scope="row" className="sticky left-0 z-10 bg-surface px-3 py-2.5 text-left font-medium text-ink-2">
                       <span>{label}</span>
                       {label !== row.key && (
-                        <span className="mono ml-1.5 text-[10px] text-ink-3">{row.key}</span>
+                        <span className="mono ml-1.5 text-xs text-ink-3">{row.key}</span>
                       )}
-                      {unit && <span className="ml-1 text-[10px] text-ink-3">({unit})</span>}
+                      {unit && <span className="ml-1 text-xs text-ink-3">({unit})</span>}
                     </th>
                     {row.values.map((v, i) => (
-                      <td key={i} className="mono tabular px-3 py-2 text-ink">{cellContent(row.key, v)}</td>
+                      <td key={i} className="mono tabular px-3 py-2.5 text-ink">{cellContent(row.key, v)}</td>
                     ))}
                   </tr>
                 )
@@ -315,7 +315,7 @@ export default function CompareTable({ labels = {} }: { labels?: Labels }) {
         </>
       )}
 
-      <p className="text-[11px] leading-5 text-ink-3">
+      <p className="text-xs leading-5 text-ink-3">
         高亮行表示这一列的值不一致。口径不同的数字（例如峰值与额定混比）不能直接比较，先看
         <a href={`${import.meta.env.BASE_URL}semantics.html`} className="mx-1 text-brand hover:underline">参数口径</a>
         再下结论。

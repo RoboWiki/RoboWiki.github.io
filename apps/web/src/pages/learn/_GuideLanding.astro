@@ -70,7 +70,7 @@ const reprint = learnData.reprint
     </nav>
 
     <header>
-      <p class="text-[11px] font-semibold tracking-[0.14em] text-brand uppercase">教程库 / Library</p>
+      <p class="text-xs font-semibold tracking-[0.14em] text-brand uppercase">教程库 / Library</p>
       <h1 class="mt-2 max-w-3xl text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
         先看经典教程，再回到选型与复现。
       </h1>
@@ -78,13 +78,13 @@ const reprint = learnData.reprint
         按部件库的方式组织资料：按方向、来源、类型筛选，卡片先看封面和关键信息，详情页可直接读 PDF。
         教程以 PDF 为主，本站导读负责把结论落到部件与方案上。
       </p>
-      <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-ink-3">
+      <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-ink-3">
         <span><span class="mono tabular font-semibold text-ink">{resources.length}</span> 份资料</span>
         <span><span class="mono tabular font-semibold text-ink">{pdfCount}</span> 份 PDF</span>
         <span><span class="mono tabular font-semibold text-ink">{linkCount}</span> 个外链</span>
         <span>更新 {learnData.updated_at}</span>
       </div>
-      <a href={withBase('/paths/electrical-14d.html')} class="mt-2 inline-flex items-center gap-1 text-[12px] font-medium text-brand hover:underline">
+      <a href={withBase('/paths/electrical-14d.html')} class="mt-2 inline-flex items-center gap-1 text-xs font-medium text-brand hover:underline">
         想按天推进？14 天电控路径<span aria-hidden="true">→</span>
       </a>
     </header>
@@ -99,40 +99,40 @@ const reprint = learnData.reprint
           <input id="learn-search" type="search" placeholder="搜索标题、来源、关键词…" autocomplete="off"
             class="h-10 w-full rounded-md border border-line bg-surface pl-9 pr-3 text-sm text-ink placeholder:text-ink-3 focus-visible:border-brand focus-visible:outline-none" />
         </div>
-        <p id="learn-count" class="mono text-[11px] text-ink-3 sm:ml-auto" aria-live="polite">{resources.length} 份资料</p>
+        <p id="learn-count" class="mono text-xs text-ink-3 sm:ml-auto" aria-live="polite">{resources.length} 份资料</p>
       </div>
 
       <div class="mt-3 space-y-2">
         <div class="flex items-start gap-2">
-          <span class="w-12 shrink-0 pt-1.5 text-[11px] font-semibold text-ink-3">方向</span>
+          <span class="w-12 shrink-0 pt-1.5 text-xs font-semibold text-ink-3">方向</span>
           <div class="chip-row min-w-0 flex-1" role="group" aria-label="按方向筛选">
-            <button type="button" class="chip is-active" data-topic-filter="all" aria-pressed="true">全部<span class="mono text-[11px] opacity-60">{resources.length}</span></button>
+            <button type="button" class="chip is-active" data-topic-filter="all" aria-pressed="true">全部<span class="mono text-xs opacity-60">{resources.length}</span></button>
             {topics.map(([topic, count]) => (
               <button type="button" class="chip" data-topic-filter={topic} aria-pressed="false">
-                {topic}<span class="mono text-[11px] opacity-60">{count}</span>
+                {topic}<span class="mono text-xs opacity-60">{count}</span>
               </button>
             ))}
           </div>
         </div>
         <div class="flex items-start gap-2">
-          <span class="w-12 shrink-0 pt-1.5 text-[11px] font-semibold text-ink-3">来源</span>
+          <span class="w-12 shrink-0 pt-1.5 text-xs font-semibold text-ink-3">来源</span>
           <div class="chip-row min-w-0 flex-1" role="group" aria-label="按来源筛选">
-            <button type="button" class="chip is-active" data-source-filter="all" aria-pressed="true">全部<span class="mono text-[11px] opacity-60">{resources.length}</span></button>
+            <button type="button" class="chip is-active" data-source-filter="all" aria-pressed="true">全部<span class="mono text-xs opacity-60">{resources.length}</span></button>
             {sources.map(([source, count]) => (
               <button type="button" class="chip" data-source-filter={source} aria-pressed="false">
-                {source}<span class="mono text-[11px] opacity-60">{count}</span>
+                {source}<span class="mono text-xs opacity-60">{count}</span>
               </button>
             ))}
           </div>
         </div>
         <div class="flex flex-wrap items-center gap-2">
-          <span class="w-12 shrink-0 text-[11px] font-semibold text-ink-3">类型</span>
-          <button type="button" class="chip h-7 px-2.5 text-[12px]" data-type-filter="all" aria-pressed="true">全部</button>
-          <button type="button" class="chip h-7 px-2.5 text-[12px]" data-type-filter="pdf" aria-pressed="false">PDF <span class="mono opacity-60">{pdfCount}</span></button>
-          <button type="button" class="chip h-7 px-2.5 text-[12px]" data-type-filter="link" aria-pressed="false">外链 <span class="mono opacity-60">{linkCount}</span></button>
-          <label class="ml-auto inline-flex items-center gap-2 text-[11px] text-ink-3">
+          <span class="w-12 shrink-0 text-xs font-semibold text-ink-3">类型</span>
+          <button type="button" class="chip h-7 px-2.5 text-xs" data-type-filter="all" aria-pressed="true">全部</button>
+          <button type="button" class="chip h-7 px-2.5 text-xs" data-type-filter="pdf" aria-pressed="false">PDF <span class="mono opacity-60">{pdfCount}</span></button>
+          <button type="button" class="chip h-7 px-2.5 text-xs" data-type-filter="link" aria-pressed="false">外链 <span class="mono opacity-60">{linkCount}</span></button>
+          <label class="ml-auto inline-flex items-center gap-2 text-xs text-ink-3">
             排序
-            <select id="learn-sort" class="h-8 rounded-md border border-line bg-surface px-2 text-[12px] text-ink">
+            <select id="learn-sort" class="h-8 rounded-md border border-line bg-surface px-2 text-xs text-ink">
               <option value="recommended">推荐顺序</option>
               <option value="new">最新</option>
               <option value="pages">页数从多到少</option>
@@ -164,10 +164,10 @@ const reprint = learnData.reprint
                   <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
                     <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z" /><path d="M4 5.5v15" />
                   </svg>
-                  <span class="text-[11px] font-semibold">{typeLabel(r)}</span>
+                  <span class="text-xs font-semibold">{typeLabel(r)}</span>
                 </div>
               )}
-              <span class={`absolute left-2 top-2 rounded-full border px-2 py-0.5 text-[11px] font-semibold ${
+              <span class={`absolute left-2 top-2 rounded-full border px-2 py-0.5 text-xs font-semibold ${
                 r.type === 'pdf'
                   ? 'border-line bg-surface/90 text-ink-2 backdrop-blur'
                   : 'border-brand/30 bg-brand-soft text-brand'
@@ -177,17 +177,17 @@ const reprint = learnData.reprint
             </div>
             <div class="flex flex-1 flex-col gap-2 p-4">
               <h2 class="line-clamp-2 min-h-10 text-sm font-semibold leading-5 text-ink transition-colors group-hover:text-brand">{r.title}</h2>
-              <p class="truncate text-[11px] text-ink-3">{metaText(r)}</p>
-              <p class="line-clamp-2 text-[12px] leading-5 text-ink-2">{r.summary}</p>
+              <p class="truncate text-xs text-ink-3">{metaText(r)}</p>
+              <p class="line-clamp-2 text-xs leading-5 text-ink-2">{r.summary}</p>
               {r.type === 'link' && r.license && (
-                <p class="text-[10px] leading-4 text-ink-3">{r.license}</p>
+                <p class="text-xs leading-4 text-ink-3">{r.license}</p>
               )}
               <div class="mt-auto flex flex-wrap items-center gap-1.5 border-t border-line pt-2">
                 {(r.topics || []).slice(0, 2).map(topic => (
-                  <span class="rounded border border-line bg-surface-2 px-1.5 py-0.5 text-[10px] text-ink-2">{topic}</span>
+                  <span class="rounded border border-line bg-surface-2 px-1.5 py-0.5 text-xs text-ink-2">{topic}</span>
                 ))}
-                <span class="rounded border border-line bg-surface-2 px-1.5 py-0.5 text-[10px] text-ink-3">{r.level}</span>
-                <span class="ml-auto text-[11px] font-medium text-brand" aria-hidden="true">阅读 →</span>
+                <span class="rounded border border-line bg-surface-2 px-1.5 py-0.5 text-xs text-ink-3">{r.level}</span>
+                <span class="ml-auto text-xs font-medium text-brand" aria-hidden="true">阅读 →</span>
               </div>
             </div>
           </a>

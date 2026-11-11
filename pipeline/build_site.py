@@ -869,15 +869,16 @@ def write_llms_txt(out: pathlib.Path, pub: pathlib.Path, rows: list[dict],
         mat_data = {}
     mats = mat_data.get("materials") or []
     procs = mat_data.get("processes") or []
+    n_parts = sum(1 for r in rows if r.get("category") != "equipment")
+    n_equip = len(rows) - n_parts
 
     lines: list[str] = [
         "# RoboWiki",
         "",
-        "> 面向机器人制作全流程的可追溯工程知识库：以「机械—硬件—嵌入式—算法」"
-        "四层能力为骨架，以系统集成能力为大脑，社区共建的部件选型与评价、"
-        "加工与采购经验、教程、案例与开源索引。",
+        "> 面向机器人部件的可追溯工程知识库：以参数可追溯的部件库为核心，选型台作为试验工具，"
+        "社区共建每个部件的实测与评价；再逐步打通机械—硬件—嵌入式—算法与系统集成的全链路。",
         "",
-        f"> 当前收录 {len(rows)} 个部件的可核对参数、"
+        f"> 当前收录 {n_parts} 个部件、{n_equip} 台设备、"
         f"{len(robots)} 台整机、软件库与采购渠道。每个数字都带来源与口径，"
         "缺的字段写「—」，不猜、不用同类填补。站点不卖零件、不收佣金。",
         "",

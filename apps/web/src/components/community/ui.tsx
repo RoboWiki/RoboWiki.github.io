@@ -33,7 +33,7 @@ export function EmptyState({ title, hint, action }: {
         <CommentOutlined />
       </span>
       <p className="mt-1 text-sm font-semibold text-ink">{title}</p>
-      {hint && <p className="max-w-sm text-[12.5px] leading-5 text-ink-3">{hint}</p>}
+      {hint && <p className="max-w-sm text-sm leading-5 text-ink-3">{hint}</p>}
       {action && <div className="mt-2">{action}</div>}
     </div>
   )
@@ -66,7 +66,7 @@ export function PostSkeleton() {
 const MD_COMPONENTS: Components = {
   h1: ({ children }) => <h2 className="mt-5 mb-2 text-[20px] font-bold text-ink">{children}</h2>,
   h2: ({ children }) => <h3 className="mt-4 mb-2 text-[17px] font-bold text-ink">{children}</h3>,
-  h3: ({ children }) => <h4 className="mt-3 mb-1.5 text-[15px] font-semibold text-ink">{children}</h4>,
+  h3: ({ children }) => <h4 className="mt-3 mb-1.5 text-base font-semibold text-ink">{children}</h4>,
   p: ({ children }) => <p className="my-2 leading-7 text-ink-2">{children}</p>,
   a: ({ href, children }) => (
     <a href={href} target="_blank" rel="noreferrer noopener"
@@ -82,13 +82,13 @@ const MD_COMPONENTS: Components = {
   ),
   code: ({ className, children }) => (
     className
-      ? <code className={`${className} mono block overflow-x-auto rounded-lg border border-line bg-surface-2 p-3 text-[12.5px] text-ink-2`}>{children}</code>
-      : <code className="mono rounded border border-line bg-surface-2 px-1 py-[1px] text-[12.5px] text-ink-2">{children}</code>
+      ? <code className={`${className} mono block overflow-x-auto rounded-lg border border-line bg-surface-2 p-3 text-sm text-ink-2`}>{children}</code>
+      : <code className="mono rounded border border-line bg-surface-2 px-1 py-[1px] text-sm text-ink-2">{children}</code>
   ),
   pre: ({ children }) => <pre className="my-3 overflow-x-auto">{children}</pre>,
   table: ({ children }) => (
     <div className="my-3 overflow-x-auto">
-      <table className="w-full border-collapse text-[13px]">{children}</table>
+      <table className="w-full border-collapse text-sm">{children}</table>
     </div>
   ),
   th: ({ children }) => (
@@ -108,7 +108,7 @@ export function MarkdownBody({ children, className = '' }: {
 }) {
   const source = typeof children === 'string' ? children : ''
   return (
-    <div className={`min-w-0 text-[14px] leading-7 ${className}`}>
+    <div className={`min-w-0 text-sm leading-7 ${className}`}>
       <Markdown components={MD_COMPONENTS}>{source}</Markdown>
     </div>
   )
@@ -147,13 +147,13 @@ export function Avatar({ user, size = 24, className = '' }: {
 }
 
 export function UserBadge({ user, size = 24 }: { user?: User | null; size?: number }) {
-  if (!user) return <span className="text-[12.5px] text-ink-3">已注销</span>
+  if (!user) return <span className="text-sm text-ink-3">已注销</span>
   return (
     <Tooltip title={`${user.display_name} · 声望 ${user.reputation}${user.badges?.length ? ' · ' + user.badges.join('/') : ''}`}>
       <span className="inline-flex min-w-0 items-center gap-1.5">
         <Avatar user={user} size={size} />
         <span className="truncate font-medium text-ink">{user.display_name}</span>
-        <span className="mono tabular shrink-0 text-[11.5px] text-ink-3">{user.reputation}</span>
+        <span className="mono tabular shrink-0 text-xs text-ink-3">{user.reputation}</span>
       </span>
     </Tooltip>
   )
@@ -164,7 +164,7 @@ export function VoteButtons({ score, myVote, onVote, disabled, compact = false }
   score: number; myVote: number; onVote: (v: number) => void; disabled?: boolean; compact?: boolean
 }) {
   const button = `inline-flex items-center justify-center gap-1.5 rounded-full font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
-    compact ? 'h-6 min-w-6 px-1.5 text-[11px]' : 'h-8 px-2.5 text-[12.5px]'
+    compact ? 'h-6 min-w-6 px-1.5 text-xs' : 'h-8 px-2.5 text-sm'
   }`
   const tone = (dir: 1 | -1) => {
     if (myVote !== dir) {
@@ -196,7 +196,7 @@ export function VoteButtons({ score, myVote, onVote, disabled, compact = false }
       <span aria-live="polite" aria-label={`净赞同 ${score}`}
         title="净赞同数 = 赞同 − 反对"
         className={`mono tabular text-center font-semibold ${myVote !== 0 ? 'text-ink' : 'text-ink-2'} ${
-          compact ? 'min-w-6 px-1 text-[12px]' : 'min-w-7 px-1.5 text-[13px]'
+          compact ? 'min-w-6 px-1 text-xs' : 'min-w-7 px-1.5 text-sm'
         }`}>
         {score}
       </span>
@@ -222,7 +222,7 @@ const KIND_TONE: Record<string, string> = {
 
 function Pill({ children, tone = 'bg-surface-2 text-ink-2' }: { children: ReactNode; tone?: string }) {
   return (
-    <span className={`inline-flex items-center gap-1 rounded-full border border-line px-2 py-0.5 text-[11.5px] font-medium ${tone}`}>
+    <span className={`inline-flex items-center gap-1 rounded-full border border-line px-2 py-0.5 text-xs font-medium ${tone}`}>
       {children}
     </span>
   )
@@ -255,12 +255,12 @@ export function PostCard({ post }: { post: Post }) {
         {post.part_title && <Pill>{post.part_title}</Pill>}
         {post.rating != null && (
           <span className="inline-flex items-center gap-1">
-            <Rate disabled value={post.rating} className="text-[11px]" style={{ fontSize: 11 }} />
+            <Rate disabled value={post.rating} className="text-xs" style={{ fontSize: 11 }} />
           </span>
         )}
       </div>
 
-      <h3 className="mt-1.5 text-[15.5px] font-semibold leading-snug tracking-tight">
+      <h3 className="mt-1.5 text-base font-semibold leading-snug tracking-tight">
         <a href={href}
           className="text-ink transition-colors after:absolute after:inset-0 after:content-[''] hover:text-brand">
           {post.title}
@@ -268,10 +268,10 @@ export function PostCard({ post }: { post: Post }) {
       </h3>
 
       {excerpt && (
-        <p className="mt-1 line-clamp-2 text-[13px] leading-6 text-ink-2">{excerpt}…</p>
+        <p className="mt-1 line-clamp-2 text-sm leading-6 text-ink-2">{excerpt}…</p>
       )}
 
-      <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-2 text-[12px] text-ink-3">
+      <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-ink-3">
         <UserBadge user={post.author} size={20} />
         <span className="mono tabular">{ago(post.created_at)}</span>
         <span className="inline-flex items-center gap-1">
@@ -287,7 +287,7 @@ export function PostCard({ post }: { post: Post }) {
         {post.tags.length > 0 && (
           <span className="flex flex-wrap items-center gap-1.5">
             {post.tags.map(t => (
-              <span key={t} className="mono text-[11.5px] text-ink-3">#{t}</span>
+              <span key={t} className="mono text-xs text-ink-3">#{t}</span>
             ))}
           </span>
         )}
@@ -306,8 +306,8 @@ function FormGroup({ title, hint, children }: {
   return (
     <section className="border-t border-line pt-3 first:border-t-0 first:pt-0">
       <div className="mb-2 flex flex-wrap items-baseline gap-x-2">
-        <h4 className="m-0 text-[12.5px] font-semibold text-ink">{title}</h4>
-        {hint && <span className="text-[11.5px] text-ink-3">{hint}</span>}
+        <h4 className="m-0 text-sm font-semibold text-ink">{title}</h4>
+        {hint && <span className="text-xs text-ink-3">{hint}</span>}
       </div>
       {children}
     </section>
@@ -432,7 +432,7 @@ export function Composer({ open, onClose }: { open: boolean; onClose: () => void
           </FormGroup>
         )}
 
-        <p className="m-0 text-[11.5px] leading-5 text-ink-3">
+        <p className="m-0 text-xs leading-5 text-ink-3">
           发布后仍可编辑；被举报并核实的内容会被隐藏，作者可申诉。
         </p>
       </Form>
@@ -474,17 +474,17 @@ function CommentNode({ c, postId, depth = 0, acceptedId, canAccept, onAccept, ac
   })
 
   const nested = depth > 0
-  const action = 'inline-flex min-h-11 items-center rounded px-1 text-[12px] transition-colors sm:min-h-8'
+  const action = 'inline-flex min-h-11 items-center rounded px-1 text-xs transition-colors sm:min-h-8'
 
   return (
     <div className={nested ? 'mt-3 border-l border-line pl-3 sm:pl-4' : 'mt-3'}>
       <div className={accepted ? 'rounded-lg border border-success/35 bg-success-soft/55 p-2.5 sm:p-3' : ''}>
         <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[12px] text-ink-3">
+          <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-ink-3">
             <UserBadge user={c.author} size={20} />
             <span className="mono tabular">{ago(c.created_at)}</span>
             {accepted && (
-              <span className="inline-flex items-center gap-1 rounded-full border border-success/35 bg-success-soft px-2 py-0.5 text-[11.5px] font-semibold text-success">
+              <span className="inline-flex items-center gap-1 rounded-full border border-success/35 bg-success-soft px-2 py-0.5 text-xs font-semibold text-success">
                 <CheckCircleFilled aria-hidden="true" />
                 已采纳
               </span>
@@ -508,7 +508,7 @@ function CommentNode({ c, postId, depth = 0, acceptedId, canAccept, onAccept, ac
             )}
           </div>
 
-          <div className="mt-1 whitespace-pre-wrap text-[13.5px] leading-6 text-ink-2">{c.body}</div>
+          <div className="mt-1 whitespace-pre-wrap text-sm leading-6 text-ink-2">{c.body}</div>
 
           {replying && (
             <div className="mt-2 flex flex-col gap-2 sm:flex-row">
@@ -598,7 +598,7 @@ export function CommentList({ postId, acceptedId = null, canAccept = false }: {
           <Button type="primary" loading={add.isPending} className="sm:self-end"
             onClick={() => text.trim().length >= 2 && add.mutate()}>评论</Button>
         </div>
-        <p className="m-0 mt-1.5 text-[11.5px] text-ink-3">
+        <p className="m-0 mt-1.5 text-xs text-ink-3">
           评论至少 2 个字；写清工况比下结论有用。
         </p>
       </div>

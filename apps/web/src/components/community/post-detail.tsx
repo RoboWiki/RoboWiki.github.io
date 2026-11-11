@@ -160,7 +160,7 @@ function Detail({ postId }: { postId: number }) {
           hint={post.error ? (post.error as Error).message : '链接可能不完整，或内容已被站务处理。'}
           action={
             <a href={siteHref('/community.html')}
-              className="inline-flex h-9 items-center rounded-md bg-brand px-3.5 text-[13px] font-semibold text-brand-fg transition-colors hover:bg-brand-hover">
+              className="inline-flex h-9 items-center rounded-md bg-brand px-3.5 text-sm font-semibold text-brand-fg transition-colors hover:bg-brand-hover">
               回社区
             </a>
           }
@@ -170,38 +170,38 @@ function Detail({ postId }: { postId: number }) {
           <div className="min-w-0">
             <article className="card p-4 sm:p-6">
               <div className="flex flex-wrap items-center gap-1.5">
-                <span className={`inline-flex items-center rounded-full border border-line px-2 py-0.5 text-[11.5px] font-medium ${KIND_TONE[p.kind] || 'bg-surface-2 text-ink-2'}`}>
+                <span className={`inline-flex items-center rounded-full border border-line px-2 py-0.5 text-xs font-medium ${KIND_TONE[p.kind] || 'bg-surface-2 text-ink-2'}`}>
                   {KIND_LABEL[p.kind]}
                 </span>
                 {p.accepted_comment_id != null && (
-                  <span className="inline-flex items-center rounded-full border border-success/35 bg-success-soft px-2 py-0.5 text-[11.5px] font-semibold text-success">
+                  <span className="inline-flex items-center rounded-full border border-success/35 bg-success-soft px-2 py-0.5 text-xs font-semibold text-success">
                     已解决
                   </span>
                 )}
                 {p.own_hardware && (
-                  <span className="inline-flex items-center rounded-full border border-line bg-success-soft px-2 py-0.5 text-[11.5px] font-medium text-success">
+                  <span className="inline-flex items-center rounded-full border border-line bg-success-soft px-2 py-0.5 text-xs font-medium text-success">
                     实测
                   </span>
                 )}
                 {p.part_title && (
-                  <span className="inline-flex items-center rounded-full border border-line bg-surface-2 px-2 py-0.5 text-[11.5px] font-medium text-ink-2">
+                  <span className="inline-flex items-center rounded-full border border-line bg-surface-2 px-2 py-0.5 text-xs font-medium text-ink-2">
                     {p.part_title}
                   </span>
                 )}
                 {p.tags.map(t => (
-                  <span key={t} className="mono text-[11.5px] text-ink-3">#{t}</span>
+                  <span key={t} className="mono text-xs text-ink-3">#{t}</span>
                 ))}
               </div>
 
               {editing ? (
                 <div className="mt-3 space-y-3">
                   <div>
-                    <label htmlFor="edit-title" className="mb-1 block text-[12px] font-medium text-ink-2">标题</label>
+                    <label htmlFor="edit-title" className="mb-1 block text-xs font-medium text-ink-2">标题</label>
                     <Input id="edit-title" value={editTitle} maxLength={120} showCount
                       onChange={e => setEditTitle(e.target.value)} />
                   </div>
                   <div>
-                    <label htmlFor="edit-body" className="mb-1 block text-[12px] font-medium text-ink-2">
+                    <label htmlFor="edit-body" className="mb-1 block text-xs font-medium text-ink-2">
                       正文（支持 Markdown）
                     </label>
                     <Input.TextArea id="edit-body" rows={10} value={editBody} maxLength={20000}
@@ -209,14 +209,14 @@ function Detail({ postId }: { postId: number }) {
                   </div>
                   <div className="grid gap-3 sm:grid-cols-2">
                     <div>
-                      <label htmlFor="edit-tags" className="mb-1 block text-[12px] font-medium text-ink-2">标签</label>
+                      <label htmlFor="edit-tags" className="mb-1 block text-xs font-medium text-ink-2">标签</label>
                       <Select id="edit-tags" mode="tags" value={editTags} onChange={setEditTags}
                         tokenSeparators={[',', '，']} style={{ width: '100%' }}
                         placeholder="回车添加标签" />
                     </div>
                     {p.kind === 'review' && (
                       <div>
-                        <span className="mb-1 block text-[12px] font-medium text-ink-2">评分</span>
+                        <span className="mb-1 block text-xs font-medium text-ink-2">评分</span>
                         <Rate value={editRating} onChange={setEditRating} />
                       </div>
                     )}
@@ -225,7 +225,7 @@ function Detail({ postId }: { postId: number }) {
                   <div aria-live="polite">
                     {editError && (
                       <p role="alert"
-                        className="m-0 rounded-md border border-danger/35 bg-danger-soft px-3 py-2 text-[12.5px] leading-5 text-danger">
+                        className="m-0 rounded-md border border-danger/35 bg-danger-soft px-3 py-2 text-sm leading-5 text-danger">
                         {editError}
                       </p>
                     )}
@@ -233,14 +233,14 @@ function Detail({ postId }: { postId: number }) {
 
                   <div className="flex flex-wrap items-center gap-2 border-t border-line pt-3">
                     <button type="button" onClick={saveEdit} disabled={saving}
-                      className="inline-flex min-h-11 items-center rounded-md bg-brand px-4 text-[13px] font-semibold text-brand-fg transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-60 sm:min-h-9">
+                      className="inline-flex min-h-11 items-center rounded-md bg-brand px-4 text-sm font-semibold text-brand-fg transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-60 sm:min-h-9">
                       {saving ? '保存中…' : '保存修改'}
                     </button>
                     <button type="button" onClick={() => setEditing(false)} disabled={saving}
-                      className="inline-flex min-h-11 items-center rounded-md border border-line bg-surface px-4 text-[13px] text-ink-2 transition-colors hover:border-line-strong hover:text-ink disabled:opacity-60 sm:min-h-9">
+                      className="inline-flex min-h-11 items-center rounded-md border border-line bg-surface px-4 text-sm text-ink-2 transition-colors hover:border-line-strong hover:text-ink disabled:opacity-60 sm:min-h-9">
                       取消
                     </button>
-                    <span className="text-[11.5px] text-ink-3">修改后会记录编辑时间，讨论不受影响。</span>
+                    <span className="text-xs text-ink-3">修改后会记录编辑时间，讨论不受影响。</span>
                   </div>
                 </div>
               ) : (
@@ -249,7 +249,7 @@ function Detail({ postId }: { postId: number }) {
                     {p.title}
                   </h1>
 
-                  <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-line pb-3 text-[12.5px] text-ink-3">
+                  <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-line pb-3 text-sm text-ink-3">
                     {p.author ? (
                       <a href={siteHref(`/u.html?handle=${encodeURIComponent(p.author.handle)}`)}
                         className="hover:text-brand">
@@ -271,18 +271,18 @@ function Detail({ postId }: { postId: number }) {
                       {canManage ? (
                         <>
                           <button type="button" onClick={beginEdit}
-                            className="inline-flex min-h-11 items-center rounded px-2 text-[12px] text-ink-2 transition-colors hover:bg-surface-3 hover:text-ink sm:min-h-8">
+                            className="inline-flex min-h-11 items-center rounded px-2 text-xs text-ink-2 transition-colors hover:bg-surface-3 hover:text-ink sm:min-h-8">
                             编辑
                           </button>
                           <button type="button" onClick={removePost}
-                            className="inline-flex min-h-11 items-center rounded px-2 text-[12px] text-ink-3 transition-colors hover:bg-danger-soft hover:text-danger sm:min-h-8">
+                            className="inline-flex min-h-11 items-center rounded px-2 text-xs text-ink-3 transition-colors hover:bg-danger-soft hover:text-danger sm:min-h-8">
                             删除
                           </button>
                         </>
                       ) : (
                         <button type="button"
                           onClick={() => (user ? setReportOpen(true) : openAuth())}
-                          className="inline-flex min-h-11 items-center rounded px-2 text-[12px] text-ink-3 transition-colors hover:text-danger sm:min-h-8">
+                          className="inline-flex min-h-11 items-center rounded px-2 text-xs text-ink-3 transition-colors hover:text-danger sm:min-h-8">
                           举报
                         </button>
                       )}
@@ -301,15 +301,15 @@ function Detail({ postId }: { postId: number }) {
 
             <section id="comments" className="card mt-4 p-4 sm:p-6">
               <header className="mb-3 flex flex-wrap items-baseline justify-between gap-2 border-b border-line pb-2.5">
-                <h2 className="m-0 flex items-center gap-1.5 text-[15px] font-semibold text-ink">
+                <h2 className="m-0 flex items-center gap-1.5 text-base font-semibold text-ink">
                   <MessageOutlined aria-hidden="true" className="text-ink-3" />
                   评论
-                  <span className="mono tabular text-[13px] font-normal text-ink-3">({p.comment_count})</span>
+                  <span className="mono tabular text-sm font-normal text-ink-3">({p.comment_count})</span>
                   {p.accepted_comment_id != null && (
-                    <span className="text-[11.5px] font-normal text-success">· 已采纳一条回复</span>
+                    <span className="text-xs font-normal text-success">· 已采纳一条回复</span>
                   )}
                 </h2>
-                <span className="text-[11.5px] text-ink-3">
+                <span className="text-xs text-ink-3">
                   {canManage ? '你是作者，可以采纳一条回复作为结论' : '按时间排序，采纳的回复会置顶'}
                 </span>
               </header>
@@ -318,9 +318,9 @@ function Detail({ postId }: { postId: number }) {
                     canAccept={canManage} />
                 : (
                   <div className="flex flex-col items-start gap-2 rounded-lg border border-line bg-surface-2 p-4">
-                    <p className="m-0 text-[13px] text-ink-2">登录后才能评论、投票。</p>
+                    <p className="m-0 text-sm text-ink-2">登录后才能评论、投票。</p>
                     <button type="button" onClick={openAuth}
-                      className="inline-flex h-9 items-center rounded-md bg-brand px-3.5 text-[13px] font-semibold text-brand-fg transition-colors hover:bg-brand-hover">
+                      className="inline-flex h-9 items-center rounded-md bg-brand px-3.5 text-sm font-semibold text-brand-fg transition-colors hover:bg-brand-hover">
                       登录后参与讨论
                     </button>
                   </div>
@@ -330,19 +330,19 @@ function Detail({ postId }: { postId: number }) {
 
           <aside className="min-w-0 space-y-3 lg:sticky lg:top-20 lg:self-start">
             <section className="card p-4">
-              <h2 className="m-0 text-[13px] font-semibold text-ink">关于这条内容</h2>
-              <p className="mb-3 mt-2 text-[12.5px] leading-6 text-ink-2">
+              <h2 className="m-0 text-sm font-semibold text-ink">关于这条内容</h2>
+              <p className="mb-3 mt-2 text-sm leading-6 text-ink-2">
                 投票与评论都记在账号上；写实测数据比写“好用”有用。举报不会自动下架，站务核实后处理。
               </p>
               <a href={siteHref('/community.html')}
-                className="inline-flex items-center text-[12.5px] text-ink-3 transition-colors hover:text-brand">
+                className="inline-flex items-center text-sm text-ink-3 transition-colors hover:text-brand">
                 ← 回社区
               </a>
             </section>
 
             <section className="card p-4">
-              <h2 className="m-0 text-[13px] font-semibold text-ink">这条内容的口径</h2>
-              <dl className="m-0 mt-2 space-y-1.5 text-[12px]">
+              <h2 className="m-0 text-sm font-semibold text-ink">这条内容的口径</h2>
+              <dl className="m-0 mt-2 space-y-1.5 text-xs">
                 {[
                   { k: '类型', v: KIND_LABEL[p.kind] },
                   { k: '回复', v: String(p.comment_count) },
@@ -372,7 +372,7 @@ function Detail({ postId }: { postId: number }) {
             ]} />
           <Input.TextArea rows={3} value={detail} onChange={e => setDetail(e.target.value)}
             placeholder="补充说明（选填）" maxLength={500} />
-          <p className="m-0 text-[12px] leading-5 text-ink-3">
+          <p className="m-0 text-xs leading-5 text-ink-3">
             举报不会自动下架；站务核实后决定隐藏或驳回。
           </p>
         </div>

@@ -78,7 +78,7 @@ export default function UsersPanel() {
           allowClear
           style={{ maxWidth: 280 }}
         />
-        <span className="text-[12px] text-ink-3">
+        <span className="text-xs text-ink-3">
           共 {list.data?.total ?? '…'} 个账号；封禁后该账号所有会话立即失效
         </span>
       </div>
@@ -96,7 +96,7 @@ export default function UsersPanel() {
             render: (_, r) => (
               <div className="leading-5">
                 <a href={`/u/${r.handle}.html`} className="font-medium text-brand">{r.handle}</a>
-                <div className="text-[11px] text-ink-3">{r.display_name}</div>
+                <div className="text-xs text-ink-3">{r.display_name}</div>
               </div>
             ),
           },
@@ -107,15 +107,15 @@ export default function UsersPanel() {
           },
           {
             title: '内容', width: 110,
-            render: (_, r) => <span className="text-[12px] text-ink-2">{r.posts} 帖 / {r.comments} 评</span>,
+            render: (_, r) => <span className="text-xs text-ink-2">{r.posts} 帖 / {r.comments} 评</span>,
           },
           {
             title: '状态', dataIndex: 'banned', width: 150,
             render: (v: boolean, r) => v
-              ? <span><Tag color="red">已封禁</Tag><span className="text-[11px] text-ink-3">{r.ban_reason || '未填原因'}</span></span>
+              ? <span><Tag color="red">已封禁</Tag><span className="text-xs text-ink-3">{r.ban_reason || '未填原因'}</span></span>
               : <Tag>正常</Tag>,
           },
-          { title: '注册', dataIndex: 'created_at', width: 140, render: v => <span className="mono text-[11px] text-ink-3">{when(v)}</span> },
+          { title: '注册', dataIndex: 'created_at', width: 140, render: v => <span className="mono text-xs text-ink-3">{when(v)}</span> },
           {
             title: '操作', width: 220,
             render: (_, r) => {
@@ -149,7 +149,7 @@ export default function UsersPanel() {
           patch.mutate({ id: banTarget.id, body: { banned: true, reason: reason.trim() } })
         }}
       >
-        <p className="mb-2 text-[13px] leading-6 text-ink-2">
+        <p className="mb-2 text-sm leading-6 text-ink-2">
           封禁后该账号的所有登录会话立即失效，且无法重新登录。解封后可正常登录。
         </p>
         <Input.TextArea

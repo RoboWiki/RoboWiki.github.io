@@ -65,7 +65,7 @@ const description = `${categoryLabel(category)} 共 ${categoryParts.length} 个�
                 <span class="block truncate text-sm font-semibold text-ink">{p.model}</span>
                 <span class="block truncate text-xs text-ink-3">{p.vendor}</span>
               </span>
-              {p.subtypeLabel && <span class="rounded-full border border-line px-2 py-0.5 text-[11px] text-ink-2">{p.subtypeLabel}</span>}
+              {p.subtypeLabel && <span class="rounded-full border border-line px-2 py-0.5 text-xs text-ink-2">{p.subtypeLabel}</span>}
               <span class="flex w-28 flex-col items-end text-right">
                 {(() => {
                   const offer = bestOfferPrice(p.offers)
@@ -74,10 +74,10 @@ const description = `${categoryLabel(category)} 共 ${categoryParts.length} 个�
                     <>
                       <span class={`mono tabular text-xs ${offer !== null ? 'font-semibold text-brand' : 'text-ink-2'}`}>
                         {formatPrice(offer ?? regular)}
-                        {offer !== null && <span class="ml-1 text-[10px] font-normal">优惠价</span>}
+                        {offer !== null && <span class="ml-1 text-xs font-normal">优惠价</span>}
                       </span>
                       {offer !== null && regular !== null && offer < regular && (
-                        <span class="mono tabular text-[10px] text-ink-3 ">参考 {formatPrice(regular)}</span>
+                        <span class="mono tabular text-xs text-ink-3 ">参考 {formatPrice(regular)}</span>
                       )}
                     </>
                   )

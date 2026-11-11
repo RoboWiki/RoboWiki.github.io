@@ -103,7 +103,7 @@ function Feed({ initialSort }: { initialSort: Sort }) {
                 <button key={s.value} type="button"
                   aria-pressed={sort === s.value}
                   onClick={() => { setSort(s.value); setPage(1) }}
-                  className={`inline-flex h-7 items-center gap-1 rounded-full px-2.5 text-[12.5px] transition-colors ${
+                  className={`inline-flex h-7 items-center gap-1 rounded-full px-2.5 text-sm transition-colors ${
                     sort === s.value
                       ? 'bg-surface font-semibold text-ink shadow-xs'
                       : 'text-ink-3 hover:text-ink'
@@ -114,7 +114,7 @@ function Feed({ initialSort }: { initialSort: Sort }) {
             </div>
           </div>
 
-          <div className="mb-2 flex items-baseline justify-between gap-2 text-[11.5px] text-ink-3">
+          <div className="mb-2 flex items-baseline justify-between gap-2 text-xs text-ink-3">
             <span>
               {posts.isPending && !stalled ? '加载中…' : failed ? '—' : <>
                 共 <span className="mono tabular text-ink-2">{total}</span> 帖
@@ -125,7 +125,7 @@ function Feed({ initialSort }: { initialSort: Sort }) {
 
           {posts.isPending && !stalled ? (
             <div aria-busy="true">
-              <p className="mb-2 text-[12px] text-ink-3">正在加载帖子…</p>
+              <p className="mb-2 text-xs text-ink-3">正在加载帖子…</p>
               <PostSkeleton />
               <PostSkeleton />
               <PostSkeleton />
@@ -138,7 +138,7 @@ function Feed({ initialSort }: { initialSort: Sort }) {
                 : '请求超过 8 秒没有返回，可能是后端或反向代理不可达。'}
               action={
                 <button type="button" onClick={() => { setStalled(false); posts.refetch() }}
-                  className="inline-flex h-9 items-center rounded-md border border-line bg-surface px-3.5 text-[13px] text-ink-2 transition-colors hover:border-line-strong hover:text-ink">
+                  className="inline-flex h-9 items-center rounded-md border border-line bg-surface px-3.5 text-sm text-ink-2 transition-colors hover:border-line-strong hover:text-ink">
                   重试
                 </button>
               }
@@ -153,7 +153,7 @@ function Feed({ initialSort }: { initialSort: Sort }) {
                   : '这个类型下还没有内容，换一个筛选看看。'}
               action={!user ? (
                 <button type="button" onClick={openAuth}
-                  className="inline-flex h-9 items-center rounded-md bg-brand px-3.5 text-[13px] font-semibold text-brand-fg transition-colors hover:bg-brand-hover">
+                  className="inline-flex h-9 items-center rounded-md bg-brand px-3.5 text-sm font-semibold text-brand-fg transition-colors hover:bg-brand-hover">
                   登录后发第一帖
                 </button>
               ) : undefined}
@@ -171,10 +171,10 @@ function Feed({ initialSort }: { initialSort: Sort }) {
         <aside className="min-w-0 space-y-3 lg:sticky lg:top-20 lg:self-start">
           <section className="card p-4">
             <header className="mb-3 flex items-center justify-between gap-2">
-              <h2 className="m-0 flex items-center gap-1.5 text-[13px] font-semibold text-ink">
+              <h2 className="m-0 flex items-center gap-1.5 text-sm font-semibold text-ink">
                 <TrophyOutlined className="text-warning" aria-hidden="true" /> 贡献榜
               </h2>
-              <a href={siteHref('/top.html')} className="text-[11.5px] text-ink-3 transition-colors hover:text-brand">
+              <a href={siteHref('/top.html')} className="text-xs text-ink-3 transition-colors hover:text-brand">
                 全部 →
               </a>
             </header>
@@ -189,19 +189,19 @@ function Feed({ initialSort }: { initialSort: Sort }) {
                 ))}
               </div>
             ) : !board.data?.length ? (
-              <p className="m-0 text-[12px] text-ink-3">还没有排名数据。</p>
+              <p className="m-0 text-xs text-ink-3">还没有排名数据。</p>
             ) : (
               <ol className="m-0 list-none space-y-2 p-0">
                 {board.data.map((u, i) => (
                   <li key={u.id} className="flex items-center justify-between gap-2">
                     <span className="flex min-w-0 items-center gap-2">
-                      <span className="mono tabular w-4 shrink-0 text-[11.5px] text-ink-3">{i + 1}</span>
+                      <span className="mono tabular w-4 shrink-0 text-xs text-ink-3">{i + 1}</span>
                       <a href={siteHref(`/u.html?handle=${encodeURIComponent(u.handle)}`)}
                         className="min-w-0 hover:text-brand">
                         <UserBadge user={u} size={20} />
                       </a>
                     </span>
-                    <span className="mono tabular shrink-0 text-[12px] font-semibold text-ink-2">
+                    <span className="mono tabular shrink-0 text-xs font-semibold text-ink-2">
                       {u.reputation}
                     </span>
                   </li>
@@ -211,14 +211,14 @@ function Feed({ initialSort }: { initialSort: Sort }) {
           </section>
 
           <section className="card p-4">
-            <h2 className="m-0 text-[13px] font-semibold text-ink">社区怎么用</h2>
-            <p className="mb-0 mt-2 text-[12.5px] leading-6 text-ink-2">
+            <h2 className="m-0 text-sm font-semibold text-ink">社区怎么用</h2>
+            <p className="mb-0 mt-2 text-sm leading-6 text-ink-2">
               写<strong className="font-semibold text-ink">实测</strong>比写“好用”有用：哪个关节、多大负载、跑多久、出了什么问题。
               评价挂在零件上，会自动出现在该零件的详情里。
             </p>
             {!user && (
               <button type="button" onClick={openAuth}
-                className="mt-3 inline-flex h-9 w-full items-center justify-center rounded-md bg-brand text-[13px] font-semibold text-brand-fg transition-colors hover:bg-brand-hover">
+                className="mt-3 inline-flex h-9 w-full items-center justify-center rounded-md bg-brand text-sm font-semibold text-brand-fg transition-colors hover:bg-brand-hover">
                 加入社区
               </button>
             )}

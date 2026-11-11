@@ -102,12 +102,12 @@ const searchText = (robot: Robot) =>
       </p>
 
       <dl class="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-line bg-line sm:grid-cols-4">
-        <div class="bg-surface-2 px-4 py-3"><dt class="text-[11px] font-medium tracking-wide text-ink-3">收录方案</dt><dd class="mt-1 flex items-baseline gap-1"><span class="mono tabular text-xl font-semibold leading-none text-ink">{robots.length}</span><span class="text-[11px] text-ink-3">套</span></dd></div>
-        <div class="bg-surface-2 px-4 py-3"><dt class="text-[11px] font-medium tracking-wide text-ink-3">全开源</dt><dd class="mt-1 flex items-baseline gap-1"><span class="mono tabular text-xl font-semibold leading-none text-success">{FULL_COUNT}</span><span class="text-[11px] text-ink-3">套</span></dd></div>
-        <div class="bg-surface-2 px-4 py-3"><dt class="text-[11px] font-medium tracking-wide text-ink-3">有 BOM 表</dt><dd class="mt-1 flex items-baseline gap-1"><span class="mono tabular text-xl font-semibold leading-none text-ink">{BOM_COUNT}</span><span class="text-[11px] text-ink-3">套</span></dd></div>
-        <div class="bg-surface-2 px-4 py-3"><dt class="text-[11px] font-medium tracking-wide text-ink-3">半开源</dt><dd class="mt-1 flex items-baseline gap-1"><span class="mono tabular text-xl font-semibold leading-none text-ink">{PARTIAL_COUNT}</span><span class="text-[11px] text-ink-3">套</span></dd></div>
+        <div class="bg-surface-2 px-4 py-3"><dt class="text-xs font-medium tracking-wide text-ink-3">收录方案</dt><dd class="mt-1 flex items-baseline gap-1"><span class="mono tabular text-xl font-semibold leading-none text-ink">{robots.length}</span><span class="text-xs text-ink-3">套</span></dd></div>
+        <div class="bg-surface-2 px-4 py-3"><dt class="text-xs font-medium tracking-wide text-ink-3">全开源</dt><dd class="mt-1 flex items-baseline gap-1"><span class="mono tabular text-xl font-semibold leading-none text-success">{FULL_COUNT}</span><span class="text-xs text-ink-3">套</span></dd></div>
+        <div class="bg-surface-2 px-4 py-3"><dt class="text-xs font-medium tracking-wide text-ink-3">有 BOM 表</dt><dd class="mt-1 flex items-baseline gap-1"><span class="mono tabular text-xl font-semibold leading-none text-ink">{BOM_COUNT}</span><span class="text-xs text-ink-3">套</span></dd></div>
+        <div class="bg-surface-2 px-4 py-3"><dt class="text-xs font-medium tracking-wide text-ink-3">半开源</dt><dd class="mt-1 flex items-baseline gap-1"><span class="mono tabular text-xl font-semibold leading-none text-ink">{PARTIAL_COUNT}</span><span class="text-xs text-ink-3">套</span></dd></div>
       </dl>
-      <p class="mt-2.5 text-[11px] text-ink-3">
+      <p class="mt-2.5 text-xs text-ink-3">
         覆盖 {vendorCount} 家厂商，{CAD_COUNT} 套公开机械 CAD，{pricedCount} 台有厂商公开标价；生态是参考库索引，不等于官方支持。
       </p>
     </div>
@@ -116,29 +116,29 @@ const searchText = (robot: Robot) =>
   <div class="sticky top-16 z-30 -mx-4 mt-6 border-b border-line bg-bg/90 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
     <div class="space-y-2">
       <div class="flex items-center gap-2">
-        <span class="shrink-0 text-[11px] font-semibold text-ink-3">开源程度</span>
+        <span class="shrink-0 text-xs font-semibold text-ink-3">开源程度</span>
         <div class="chip-row min-w-0 flex-1" role="group" aria-label="按开源程度筛选">
           <button type="button" class="chip is-active" data-openness-filter="all" aria-pressed="true">
-            全部<span class="mono tabular text-[11px] opacity-60">{robots.length}</span>
+            全部<span class="mono tabular text-xs opacity-60">{robots.length}</span>
           </button>
           <button type="button" class="chip" data-openness-filter="full" aria-pressed="false">
-            全开源<span class="mono tabular text-[11px] opacity-60">{FULL_COUNT}</span>
+            全开源<span class="mono tabular text-xs opacity-60">{FULL_COUNT}</span>
           </button>
           <button type="button" class="chip" data-openness-filter="partial" aria-pressed="false">
-            半开源<span class="mono tabular text-[11px] opacity-60">{PARTIAL_COUNT}</span>
+            半开源<span class="mono tabular text-xs opacity-60">{PARTIAL_COUNT}</span>
           </button>
         </div>
       </div>
       <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div class="flex min-w-0 items-center gap-2">
-          <span class="shrink-0 text-[11px] font-semibold text-ink-3">形态</span>
+          <span class="shrink-0 text-xs font-semibold text-ink-3">形态</span>
           <div class="chip-row min-w-0 flex-1" role="group" aria-label="按整机形态筛选">
             <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">
-              全部<span class="mono tabular text-[11px] opacity-60">{robots.length}</span>
+              全部<span class="mono tabular text-xs opacity-60">{robots.length}</span>
             </button>
             {groups.map(group => (
               <button type="button" class="chip" data-filter={group.label} aria-pressed="false">
-                {group.label}<span class="mono tabular text-[11px] opacity-60">{group.count}</span>
+                {group.label}<span class="mono tabular text-xs opacity-60">{group.count}</span>
               </button>
             ))}
           </div>
@@ -150,9 +150,9 @@ const searchText = (robot: Robot) =>
           </svg>
           <input id="robot-search" type="search" placeholder="搜索型号 / 厂商" aria-label="搜索整机型号或厂商" class="w-full bg-transparent text-sm text-ink placeholder:text-ink-3 focus:outline-none" />
         </label>
-        <label class="flex h-9 items-center gap-2 text-[11px] text-ink-3">
+        <label class="flex h-9 items-center gap-2 text-xs text-ink-3">
           排序
-          <select id="robot-sort" class="h-8 rounded-md border border-line bg-surface px-2 text-[12px] text-ink">
+          <select id="robot-sort" class="h-8 rounded-md border border-line bg-surface px-2 text-xs text-ink">
             <option value="eco">开源生态丰富度</option>
             <option value="projects">生态项目数</option>
             <option value="dof">自由度</option>
@@ -189,19 +189,19 @@ const searchText = (robot: Robot) =>
             {imageSrc(robot) ? (
               <img src={imageSrc(robot)} alt={`${robot.vendor} ${robot.model}`} loading="lazy" class="h-full w-full object-contain p-4 transition-transform duration-300 group-hover:scale-[1.03]" />
             ) : (
-              <span class="flex flex-col items-center gap-1 text-[11px] text-ink-3">
+              <span class="flex flex-col items-center gap-1 text-xs text-ink-3">
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4" y="7" width="16" height="12" rx="2" /><path d="M12 3v4M9 12h.01M15 12h.01" stroke-linecap="round" /></svg>
                 暂无产品图
               </span>
             )}
-            <span class={`absolute left-3 top-3 rounded-full border px-2 py-0.5 text-[11px] font-semibold ${
+            <span class={`absolute left-3 top-3 rounded-full border px-2 py-0.5 text-xs font-semibold ${
               isFull(robot)
                 ? 'border-success/30 bg-success-soft text-success'
                 : 'border-line bg-surface/90 text-ink-2 backdrop-blur'
             }`}>
               {isFull(robot) ? '全开源' : '半开源'}
             </span>
-            <span class="absolute right-3 top-3 rounded-full border border-brand/20 bg-brand-soft px-2 py-0.5 text-[11px] font-semibold text-brand">
+            <span class="absolute right-3 top-3 rounded-full border border-brand/20 bg-brand-soft px-2 py-0.5 text-xs font-semibold text-brand">
               生态 {ecoCount(robot)}
             </span>
           </div>
@@ -213,35 +213,35 @@ const searchText = (robot: Robot) =>
               </div>
             </div>
 
-            <div class="flex flex-wrap items-center gap-1 text-[11px] leading-5 text-ink-3">
+            <div class="flex flex-wrap items-center gap-1 text-xs leading-5 text-ink-3">
               <span>{robot.subtype_label || '其他'}</span>
               {isFull(robot) ? (
                 packageBadges(robot).length ? (
                   <>
                     {packageBadges(robot).slice(0, 4).map(badge => (
-                      <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-[11px] text-ink-2">{badge}</span>
+                      <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-xs text-ink-2">{badge}</span>
                     ))}
                     {packageBadges(robot).length > 4 && (
-                      <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-[11px] text-ink-3">
+                      <span class="inline-flex rounded-full border border-line bg-surface-2 px-2 py-px text-xs text-ink-3">
                         +{packageBadges(robot).length - 4}
                       </span>
                     )}
                   </>
                 ) : (
-                  <span class="rounded-full border border-dashed border-line px-2 py-px text-[11px] text-ink-3">资料待补</span>
+                  <span class="rounded-full border border-dashed border-line px-2 py-px text-xs text-ink-3">资料待补</span>
                 )
               ) : (
-                <span class="rounded-full border border-line bg-surface-2 px-2 py-px text-[11px] text-ink-3">SDK / URDF / 训练开放</span>
+                <span class="rounded-full border border-line bg-surface-2 px-2 py-px text-xs text-ink-3">SDK / URDF / 训练开放</span>
               )}
             </div>
 
             <dl class="mt-auto grid grid-cols-3 gap-x-2 gap-y-2 border-t border-line pt-3">
-              <div class="min-w-0"><dt class="text-[11px] text-ink-3">自由度</dt><dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">{factText(robot, 'dof')}</dd></div>
-              <div class="min-w-0"><dt class="text-[11px] text-ink-3">质量</dt><dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">{factText(robot, 'mass_kg', ' kg')}</dd></div>
-              <div class="min-w-0"><dt class="text-[11px] text-ink-3">最大速度</dt><dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">{factText(robot, 'speed_max_mps', ' m/s')}</dd></div>
-              <div class="min-w-0"><dt class="text-[11px] text-ink-3">负载</dt><dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">{factText(robot, 'payload_kg', ' kg')}</dd></div>
-              <div class="min-w-0"><dt class="text-[11px] text-ink-3">续航</dt><dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">{factText(robot, 'endurance_h', ' h')}</dd></div>
-              <div class="min-w-0"><dt class="text-[11px] text-ink-3">参考价</dt><dd class="mono tabular mt-0.5 truncate text-[13px] font-semibold text-ink">{formatPrice(robot.price_cny)}</dd></div>
+              <div class="min-w-0"><dt class="text-xs text-ink-3">自由度</dt><dd class="mono tabular mt-0.5 truncate text-sm font-semibold text-ink">{factText(robot, 'dof')}</dd></div>
+              <div class="min-w-0"><dt class="text-xs text-ink-3">质量</dt><dd class="mono tabular mt-0.5 truncate text-sm font-semibold text-ink">{factText(robot, 'mass_kg', ' kg')}</dd></div>
+              <div class="min-w-0"><dt class="text-xs text-ink-3">最大速度</dt><dd class="mono tabular mt-0.5 truncate text-sm font-semibold text-ink">{factText(robot, 'speed_max_mps', ' m/s')}</dd></div>
+              <div class="min-w-0"><dt class="text-xs text-ink-3">负载</dt><dd class="mono tabular mt-0.5 truncate text-sm font-semibold text-ink">{factText(robot, 'payload_kg', ' kg')}</dd></div>
+              <div class="min-w-0"><dt class="text-xs text-ink-3">续航</dt><dd class="mono tabular mt-0.5 truncate text-sm font-semibold text-ink">{factText(robot, 'endurance_h', ' h')}</dd></div>
+              <div class="min-w-0"><dt class="text-xs text-ink-3">参考价</dt><dd class="mono tabular mt-0.5 truncate text-sm font-semibold text-ink">{formatPrice(robot.price_cny)}</dd></div>
             </dl>
           </div>
         </a>

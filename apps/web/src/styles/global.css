@@ -59,7 +59,24 @@ body {
   background: var(--rw-bg);
   color: var(--rw-ink);
   font-family: var(--rw-font-sans);
+  font-size: var(--rw-text-base);
+  line-height: var(--rw-leading-base);
   font-feature-settings: "cv11", "ss01";
+}
+
+/* 高对比主题：焦点环加粗，避免在纯黑/纯白背景上丢失。 */
+[data-theme="contrast"] :focus-visible {
+  outline-width: 3px;
+}
+
+/* 主题菜单：当前项高亮 + 勾选。 */
+.theme-menu [data-theme-option][aria-pressed="true"] {
+  background: var(--rw-primary-soft);
+  color: var(--rw-primary);
+  font-weight: 600;
+}
+.theme-menu [data-theme-option][aria-pressed="true"] [data-theme-check] {
+  display: inline;
 }
 
 ::selection {

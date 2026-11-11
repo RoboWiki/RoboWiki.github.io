@@ -84,7 +84,7 @@ export default function ReproductionPanel({ buildId }: { buildId: string }) {
         <dl className="mt-3 grid grid-cols-3 gap-px overflow-hidden rounded-md border border-line bg-line">
           {OUTCOMES.map(item => (
             <div key={item.value} className="bg-surface px-3 py-2.5">
-              <dt className="text-[11px] text-ink-3">{item.label}</dt>
+              <dt className="text-xs text-ink-3">{item.label}</dt>
               <dd className="mono tabular mt-0.5 text-lg font-bold text-ink">{data?.[item.value] ?? 0}</dd>
             </div>
           ))}
@@ -93,12 +93,12 @@ export default function ReproductionPanel({ buildId }: { buildId: string }) {
 
       {!signedIn ? (
         <div className="mt-3 rounded-md border border-line bg-surface-2 p-3">
-          <p className="text-[12px] leading-6 text-ink-3">
+          <p className="text-xs leading-6 text-ink-3">
             装过这台机器？登录后一句话记录结果（成功 / 部分成功 / 没成），比点赞有用。
           </p>
           <a
             href="/account.html"
-            className="mt-2 inline-flex h-8 items-center rounded-md border border-line bg-surface px-3 text-[12px] font-medium text-ink hover:border-line-strong"
+            className="mt-2 inline-flex h-8 items-center rounded-md border border-line bg-surface px-3 text-xs font-medium text-ink hover:border-line-strong"
           >
             去登录
           </a>
@@ -112,17 +112,17 @@ export default function ReproductionPanel({ buildId }: { buildId: string }) {
                 type="button"
                 onClick={() => setOutcome(item.value)}
                 aria-pressed={outcome === item.value}
-                className={`inline-flex h-8 items-center gap-1 rounded-full border px-3 text-[12px] transition-colors ${
+                className={`inline-flex h-8 items-center gap-1 rounded-full border px-3 text-xs transition-colors ${
                   outcome === item.value ? item.tone : 'border-line bg-surface text-ink-2 hover:border-line-strong'
                 }`}
               >
                 {item.label}
-                <span className="text-[10px] opacity-70">{item.hint}</span>
+                <span className="text-xs opacity-70">{item.hint}</span>
               </button>
             ))}
           </div>
 
-          <label htmlFor="repro-changes" className="mt-2.5 block text-[11px] text-ink-3">
+          <label htmlFor="repro-changes" className="mt-2.5 block text-xs text-ink-3">
             相对原方案改了什么（可选）
           </label>
           <input
@@ -131,17 +131,17 @@ export default function ReproductionPanel({ buildId }: { buildId: string }) {
             onChange={event => setChanges(event.target.value)}
             maxLength={200}
             placeholder="例：换了减速比 1:9，舵机换成 20kg 款"
-            className="mt-1 h-8 w-full rounded-sm border border-line bg-surface px-2 text-[12px] text-ink placeholder:text-ink-3 focus:border-brand focus:outline-none"
+            className="mt-1 h-8 w-full rounded-sm border border-line bg-surface px-2 text-xs text-ink placeholder:text-ink-3 focus:border-brand focus:outline-none"
           />
 
-          <label htmlFor="repro-note" className="mt-2 block text-[11px] text-ink-3">说明（可选）</label>
+          <label htmlFor="repro-note" className="mt-2 block text-xs text-ink-3">说明（可选）</label>
           <input
             id="repro-note"
             value={note}
             onChange={event => setNote(event.target.value)}
             maxLength={500}
             placeholder="卡在哪一步、缺什么件"
-            className="mt-1 h-8 w-full rounded-sm border border-line bg-surface px-2 text-[12px] text-ink placeholder:text-ink-3 focus:border-brand focus:outline-none"
+            className="mt-1 h-8 w-full rounded-sm border border-line bg-surface px-2 text-xs text-ink placeholder:text-ink-3 focus:border-brand focus:outline-none"
           />
 
           <div className="mt-2.5 flex items-center gap-2">
@@ -149,18 +149,18 @@ export default function ReproductionPanel({ buildId }: { buildId: string }) {
               type="button"
               onClick={submit}
               disabled={!outcome || busy}
-              className="inline-flex h-8 items-center rounded-md bg-brand px-3 text-[12px] font-semibold text-brand-fg hover:bg-brand-hover disabled:opacity-50"
+              className="inline-flex h-8 items-center rounded-md bg-brand px-3 text-xs font-semibold text-brand-fg hover:bg-brand-hover disabled:opacity-50"
             >
               {busy ? '提交中…' : data?.mine ? '更新结论' : '记录结果'}
             </button>
-            {!outcome && <span className="text-[11px] text-ink-3">先选一个结论</span>}
+            {!outcome && <span className="text-xs text-ink-3">先选一个结论</span>}
           </div>
 
           {message && (
             <p
               role="status"
               aria-live="polite"
-              className={`mt-2 text-[11px] ${message.kind === 'ok' ? 'text-success' : 'text-danger'}`}
+              className={`mt-2 text-xs ${message.kind === 'ok' ? 'text-success' : 'text-danger'}`}
             >
               {message.text}
             </p>

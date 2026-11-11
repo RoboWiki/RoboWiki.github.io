@@ -7,21 +7,21 @@ export type ThemeMode = 'light' | 'dark'
 /** 与 token 包深色语义色保持一致，仅用于原生导航栏 / tabBar。 */
 const NATIVE = {
   light: {
-    background: '#f5f7fa',
-    navBackground: '#ffffff',
+    background: '#f7f5f0',
+    navBackground: '#fffdf8',
     front: '#000000',
-    tabBackground: '#ffffff',
-    tabText: '#667085',
+    tabBackground: '#fffdf8',
+    tabText: '#6b6a66',
     tabSelected: '#2563eb',
     border: 'white' as const,
   },
   dark: {
-    background: '#0a0f18',
-    navBackground: '#121826',
+    background: '#0f1217',
+    navBackground: '#161a21',
     front: '#ffffff',
-    tabBackground: '#121826',
-    tabText: '#7d8a9f',
-    tabSelected: '#4f8cff',
+    tabBackground: '#161a21',
+    tabText: '#8a93a3',
+    tabSelected: '#6ea8ff',
     border: 'black' as const,
   },
 }

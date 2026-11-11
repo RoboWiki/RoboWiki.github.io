@@ -38,7 +38,7 @@ const stats = [
           参数按厂商官方页面逐项核对，缺的写 null，不拿电商页凑数。
           按 <span class="font-medium text-ink">加工设备 / 焊接与返修 / 电源 / 测量仪器 / 调试与工具</span> 五族十六类筛，也能直接按厂商找。
         </p>
-        <div class="mt-3 flex flex-wrap items-center gap-3 text-[13px]">
+        <div class="mt-3 flex flex-wrap items-center gap-3 text-sm">
           <a href={withBase('/catalog.html')} class="font-medium text-brand hover:underline">去找机器人零件 →</a>
           <a href={withBase('/suppliers.html')} class="text-ink-2 hover:text-brand">加工与采购去采购库</a>
         </div>
@@ -46,7 +46,7 @@ const stats = [
       <dl class="grid shrink-0 grid-cols-4 gap-px overflow-hidden rounded-md border border-line bg-line">
         {stats.map(s => (
           <div class="bg-surface px-3 py-2.5">
-            <dt class="text-[11px] text-ink-3">{s.label}</dt>
+            <dt class="text-xs text-ink-3">{s.label}</dt>
             <dd class="mono tabular mt-0.5 text-lg font-bold text-ink">{s.value}</dd>
           </div>
         ))}

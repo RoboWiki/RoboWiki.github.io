@@ -77,10 +77,10 @@ function GapCard({ label, hint, n, scope, active, onClick }: {
       className={`rounded-lg border px-3 py-2.5 text-left transition ${
         active ? 'border-warning bg-warning-soft' : 'border-line bg-surface-2 hover:border-line-strong'
       }`}>
-      <div className="text-[10.5px] uppercase tracking-wider text-ink-3">{label}</div>
+      <div className="text-xs uppercase tracking-wider text-ink-3">{label}</div>
       <div className={`mono tabular mt-0.5 text-[18px] font-semibold ${n ? 'text-warning' : 'text-brand'}`}>{n}</div>
-      <div className="mt-0.5 text-[10px] leading-tight text-ink-3">{hint}</div>
-      {scope && <div className="mt-1 text-[9.5px] leading-tight text-ink-3">{scope}</div>}
+      <div className="mt-0.5 text-xs leading-tight text-ink-3">{hint}</div>
+      {scope && <div className="mt-1 text-xs leading-tight text-ink-3">{scope}</div>}
     </button>
   )
 }
@@ -131,7 +131,7 @@ function EditModal({ partId, onClose }: { partId: string; onClose: () => void })
         <div>
           <div className="mb-3 flex flex-wrap items-baseline gap-2">
             <h3 className="m-0 text-[17px] font-bold">{p.model}</h3>
-            <span className="text-[12px] text-ink-3">{p.vendor} · {p.id}</span>
+            <span className="text-xs text-ink-3">{p.vendor} · {p.id}</span>
             <Tag color={p.source_tier === 'A' ? 'blue' : p.source_tier === 'B' ? 'default' : 'orange'}>
               {p.source_tier}{p.verified ? ' ✓' : ''}
             </Tag>
@@ -139,7 +139,7 @@ function EditModal({ partId, onClose }: { partId: string; onClose: () => void })
 
           {EDIT_GROUPS.map(g => (
             <div key={g.title} className="mb-4">
-              <div className="mb-1.5 text-[11px] uppercase tracking-wider text-ink-3">{g.title}</div>
+              <div className="mb-1.5 text-xs uppercase tracking-wider text-ink-3">{g.title}</div>
               <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
                 {g.fields.map(([path, label, unit]) => {
                   const changed = path in draft
@@ -148,13 +148,13 @@ function EditModal({ partId, onClose }: { partId: string; onClose: () => void })
                       className={`flex items-center gap-2 rounded-lg border px-2 py-1 ${
                         changed ? 'border-warning bg-warning-soft' : 'border-line bg-surface-2'
                       }`}>
-                      <span className="w-[112px] shrink-0 text-[11.5px] text-ink-3 sm:w-[152px]">
+                      <span className="w-[112px] shrink-0 text-xs text-ink-3 sm:w-[152px]">
                         {label}{unit ? <span className="text-ink-3"> ({unit})</span> : null}
                       </span>
                       <input
                         value={val(path)}
                         onChange={e => set(path, e.target.value)}
-                        className="w-full bg-transparent text-[12.5px] text-ink outline-none"
+                        className="w-full bg-transparent text-sm text-ink outline-none"
                         placeholder="—"
                       />
                     </label>
@@ -165,15 +165,15 @@ function EditModal({ partId, onClose }: { partId: string; onClose: () => void })
           ))}
 
           <div className="mb-2 rounded-lg border border-warning bg-warning-soft p-3">
-            <div className="mb-1.5 text-[11px] uppercase tracking-wider text-warning">
+            <div className="mb-1.5 text-xs uppercase tracking-wider text-warning">
               改动依据（必填，会写进修改记录）
             </div>
             <textarea value={note} onChange={e => setNote(e.target.value)} rows={2}
               placeholder="例：据 CubeMars AK80-9 V3 官方 datasheet 第 2 页扭矩曲线，额定 8 N·m @ 25℃"
-              className="w-full resize-none rounded-md border border-line bg-surface p-2 text-[12.5px] text-ink outline-none focus:border-warning" />
+              className="w-full resize-none rounded-md border border-line bg-surface p-2 text-sm text-ink outline-none focus:border-warning" />
             <input value={srcUrl} onChange={e => setSrcUrl(e.target.value)}
               placeholder="来源链接（建议填官方页面或 PDF 地址）"
-              className="mt-1.5 w-full rounded-md border border-line bg-surface px-2 py-1.5 text-[12.5px] text-ink outline-none focus:border-warning" />
+              className="mt-1.5 w-full rounded-md border border-line bg-surface px-2 py-1.5 text-sm text-ink outline-none focus:border-warning" />
             <div className="mt-2 flex flex-wrap items-center gap-2">
               <button
                 onClick={() => {
@@ -181,29 +181,29 @@ function EditModal({ partId, onClose }: { partId: string; onClose: () => void })
                   save.mutate()
                 }}
                 disabled={!Object.keys(draft).length || save.isPending}
-                className="min-h-8 rounded-md bg-brand px-3 py-1.5 text-[12.5px] font-semibold text-brand-fg disabled:opacity-40 max-sm:min-h-10">
+                className="min-h-8 rounded-md bg-brand px-3 py-1.5 text-sm font-semibold text-brand-fg disabled:opacity-40 max-sm:min-h-10">
                 提交审核 {Object.keys(draft).length ? `(${Object.keys(draft).length} 个字段)` : ''}
               </button>
               <button onClick={() => setDraft({})}
-                className="min-h-8 rounded-md border border-line px-3 py-1.5 text-[12.5px] text-ink-2 max-sm:min-h-10">
+                className="min-h-8 rounded-md border border-line px-3 py-1.5 text-sm text-ink-2 max-sm:min-h-10">
                 撤销改动
               </button>
-              <span className="text-[11px] text-ink-3">提交后进审核队列，release 后才更新目录</span>
+              <span className="text-xs text-ink-3">提交后进审核队列，release 后才更新目录</span>
             </div>
           </div>
 
           {p.proposals?.length ? (
             <div className="mb-4">
-              <div className="mb-1.5 text-[11px] uppercase tracking-wider text-ink-3">
+              <div className="mb-1.5 text-xs uppercase tracking-wider text-ink-3">
                 待处理提案（{p.proposals.length}）
               </div>
               <div className="max-h-[150px] overflow-y-auto">
                 {p.proposals.map(s => (
-                  <div key={s.submission_id} className="border-b border-line py-1.5 text-[11.5px]">
+                  <div key={s.submission_id} className="border-b border-line py-1.5 text-xs">
                     <span className="text-ink-3">{s.created_at.slice(0, 16).replace('T', ' ')}</span>
                     <span className="mx-1.5 text-ink-3">·</span>
                     <Tag color={s.status === 'pending' ? 'gold' : 'blue'}>#{s.submission_id} {s.status}</Tag>
-                    <code className="ml-1.5 text-[11px] text-brand">{s.fields.join(', ')}</code>
+                    <code className="ml-1.5 text-xs text-brand">{s.fields.join(', ')}</code>
                     <div className="text-ink-3">{s.note}</div>
                   </div>
                 ))}
@@ -212,18 +212,18 @@ function EditModal({ partId, onClose }: { partId: string; onClose: () => void })
           ) : null}
 
           <div>
-            <div className="mb-1.5 text-[11px] uppercase tracking-wider text-ink-3">
+            <div className="mb-1.5 text-xs uppercase tracking-wider text-ink-3">
               已发布修改（{p.history.length}）
             </div>
-            {!p.history.length ? <div className="text-[12px] text-ink-3">还没有已发布的改动记录</div> : (
+            {!p.history.length ? <div className="text-xs text-ink-3">还没有已发布的改动记录</div> : (
               <div className="max-h-[190px] overflow-y-auto">
                 {p.history.map(h => (
-                  <div key={h.id} className="border-b border-line py-1.5 text-[11.5px]">
+                  <div key={h.id} className="border-b border-line py-1.5 text-xs">
                     <span className="text-ink-3">{h.created_at.slice(0, 16).replace('T', ' ')}</span>
                     <span className="mx-1.5 text-ink-3">·</span>
                     <span className="text-ink-2">{h.editor || '?'}</span>
                     <span className="mx-1.5 text-ink-3">·</span>
-                    <code className="text-[11px] text-brand">{h.field}</code>
+                    <code className="text-xs text-brand">{h.field}</code>
                     <span className="mx-1 text-ink-3">{String(h.old_value ?? '—')} → </span>
                     <span className="text-brand">{String(h.new_value ?? '—')}</span>
                     <div className="text-ink-3">{h.note}</div>
@@ -264,9 +264,9 @@ export default function GapsPanel({ active }: { active: boolean }) {
         <div>
           <div className="flex items-center gap-1.5">
             <span className="font-semibold">{r.model}</span>
-            {!r.image_url && <span className="rounded bg-surface-3 px-1 text-[9.5px] text-ink-3">示意图</span>}
+            {!r.image_url && <span className="rounded bg-surface-3 px-1 text-xs text-ink-3">示意图</span>}
           </div>
-          <div className="text-[11px] text-ink-3">{r.vendor}</div>
+          <div className="text-xs text-ink-3">{r.vendor}</div>
         </div>
       ),
     },
@@ -276,14 +276,14 @@ export default function GapsPanel({ active }: { active: boolean }) {
         <div className="flex items-center gap-1">
           <Tag color={r.source_tier === 'A' ? 'blue' : r.source_tier === 'B' ? 'default' : 'orange'}
             style={{ marginInlineEnd: 0 }}>{r.source_tier}{r.verified ? ' ✓' : ''}</Tag>
-          {!r.url && <span className="text-[10px] text-danger">无链接</span>}
+          {!r.url && <span className="text-xs text-danger">无链接</span>}
         </div>
       ),
     },
     {
       title: '核对', width: 110,
       render: (_v: unknown, r: Part) => (
-        <span className="mono tabular text-[11px] text-ink-3">{r.last_checked || '—'}</span>
+        <span className="mono tabular text-xs text-ink-3">{r.last_checked || '—'}</span>
       ),
     },
     {
@@ -305,14 +305,14 @@ export default function GapsPanel({ active }: { active: boolean }) {
     {
       title: '价', width: 80, align: 'right' as const,
       render: (_v: unknown, r: Part) => (r.price_cny
-        ? <span className="mono tabular text-[12px] text-ink-2">¥{r.price_cny}</span>
+        ? <span className="mono tabular text-xs text-ink-2">¥{r.price_cny}</span>
         : <span className="text-ink-3">—</span>),
     },
     {
       title: '', width: 70,
       render: (_v: unknown, r: Part) => (
         <button onClick={() => setEditId(r.id)}
-          className="min-h-7 rounded-md border border-line px-2 py-0.5 text-[11.5px] text-ink-2 hover:border-line-strong hover:text-brand max-sm:min-h-10 max-sm:px-3">
+          className="min-h-7 rounded-md border border-line px-2 py-0.5 text-xs text-ink-2 hover:border-line-strong hover:text-brand max-sm:min-h-10 max-sm:px-3">
           编辑
         </button>
       ),
@@ -323,7 +323,7 @@ export default function GapsPanel({ active }: { active: boolean }) {
   return (
     <div className="w-full min-w-0">
       <h2 className="m-0 text-[18px] font-bold tracking-tight text-ink">数据缺口</h2>
-      <p className="mb-4 mt-1 text-[12.5px] text-ink-3">
+      <p className="mb-4 mt-1 text-sm text-ink-3">
         每个字段都能改，但<strong className="text-warning">每次改动都要写清依据</strong>
         ——依据和来源会存进修改记录，成为这条数据的可追溯部分。
       </p>
@@ -348,14 +348,14 @@ export default function GapsPanel({ active }: { active: boolean }) {
       <div className="mb-3 flex flex-wrap items-center gap-2">
         <input value={q} onChange={e => { setQ(e.target.value); setPage(1) }}
           placeholder="搜型号 / 厂商"
-          className="w-full rounded-lg border border-line bg-surface-2 px-3 py-2 text-[13px] text-ink placeholder:text-ink-3 outline-none focus:border-line-strong sm:w-[240px]" />
+          className="w-full rounded-lg border border-line bg-surface-2 px-3 py-2 text-sm text-ink placeholder:text-ink-3 outline-none focus:border-line-strong sm:w-[240px]" />
         {gap && (
           <button onClick={() => setGap(undefined)}
-            className="min-h-8 rounded-lg border border-warning bg-warning-soft px-2.5 py-1.5 text-[12px] text-warning max-sm:min-h-10">
+            className="min-h-8 rounded-lg border border-warning bg-warning-soft px-2.5 py-1.5 text-xs text-warning max-sm:min-h-10">
             筛选中：{GAPS.find(g => g.k === gap)?.label} ✕
           </button>
         )}
-        <span className="text-[12px] text-ink-3 sm:ml-auto">
+        <span className="text-xs text-ink-3 sm:ml-auto">
           共 {list.data?.total ?? 0} 项 · 已留痕 {stats.data?.edits ?? 0} 条
         </span>
       </div>

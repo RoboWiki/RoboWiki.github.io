@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css'
 import SeoJsonLd from '@/components/SeoJsonLd.astro'
+import JingjingPet from '@/components/pets/JingjingPet.astro'
 
 // GitHub Pages 支持根路径，也支持项目页（/repo/）。链接统一走 BASE_URL，避免写死。
 const base = import.meta.env.BASE_URL
@@ -26,12 +27,22 @@ const links = [
     <script is:inline>
       (() => {
         try {
-          const saved = localStorage.getItem('rw-theme')
-          const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches
-          document.documentElement.classList.toggle('dark', dark)
+          const root = document.documentElement
+          const modes = ['system', 'warm', 'dark', 'contrast']
+          let mode = localStorage.getItem('rw-theme') || 'system'
+          if (mode === 'light') mode = 'warm'
+          if (!modes.includes(mode)) mode = 'system'
+          const theme = mode === 'system'
+            ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'warm')
+            : mode
+          root.dataset.theme = theme
+          root.dataset.themeMode = mode
+          root.classList.toggle('dark', theme === 'dark' || theme === 'contrast')
+          root.style.colorScheme = theme === 'dark' || theme === 'contrast' ? 'dark' : 'light'
         } catch {}
       })()
     </script>
+    <script is:inline src={`${base}vendor/ds-pet/mount.js`} data-base={base} defer></script>
   </head>
   <body class="min-h-screen bg-bg text-ink antialiased">
     <header class="sticky top-0 z-40 border-b border-line bg-surface/85 backdrop-blur-md">
@@ -44,19 +55,21 @@ const links = [
             height="28"
             class="h-7 w-10 object-contain dark:invert"
           />
-          <span class="text-[15px]">RoboWiki</span>
+          <span class="text-base">RoboWiki</span>
         </a>
         <nav class="ml-2 hidden items-center gap-0.5 lg:flex" aria-label="主导航">
-          <a href={homeHref} class="rounded-md px-3 py-1.5 text-[13px] text-ink-2 hover:bg-surface-3 hover:text-ink">首页</a>
-          <a href={catalogHref} class="rounded-md px-3 py-1.5 text-[13px] text-ink-2 hover:bg-surface-3 hover:text-ink">部件库</a>
-          <a href={`${base}learn/index.html`} class="rounded-md px-3 py-1.5 text-[13px] text-ink-2 hover:bg-surface-3 hover:text-ink">教程库</a>
-          <a href={`${base}builds.html`} class="rounded-md px-3 py-1.5 text-[13px] text-ink-2 hover:bg-surface-3 hover:text-ink">方案库</a>
-          <a href={`${base}materials.html`} class="rounded-md px-3 py-1.5 text-[13px] text-ink-2 hover:bg-surface-3 hover:text-ink">材质库</a>
-          <a href={`${base}suppliers.html`} class="rounded-md px-3 py-1.5 text-[13px] text-ink-2 hover:bg-surface-3 hover:text-ink">采购库</a>
+          <a href={homeHref} class="rounded-md px-3 py-1.5 text-sm text-ink-2 hover:bg-surface-3 hover:text-ink">首页</a>
+          <a href={`${base}learn/index.html`} class="rounded-md px-3 py-1.5 text-sm text-ink-2 hover:bg-surface-3 hover:text-ink">教程库</a>
+          <a href={`${base}selector.html`} class="rounded-md px-3 py-1.5 text-sm text-ink-2 hover:bg-surface-3 hover:text-ink">选型台</a>
+          <a href={catalogHref} class="rounded-md px-3 py-1.5 text-sm text-ink-2 hover:bg-surface-3 hover:text-ink">部件库</a>
+          <a href={`${base}builds.html`} class="rounded-md px-3 py-1.5 text-sm text-ink-2 hover:bg-surface-3 hover:text-ink">方案库</a>
+          <a href={`${base}suppliers.html`} class="rounded-md px-3 py-1.5 text-sm text-ink-2 hover:bg-surface-3 hover:text-ink">采购库</a>
+          <a href={`${base}equipment.html`} class="rounded-md px-3 py-1.5 text-sm text-ink-2 hover:bg-surface-3 hover:text-ink">设备库</a>
+          <a href={`${base}community.html`} class="rounded-md px-3 py-1.5 text-sm text-ink-2 hover:bg-surface-3 hover:text-ink">社区</a>
         </nav>
         <div class="ml-auto flex items-center gap-2">
-          <a href="https://github.com/RoboWiki/RoboWiki" class="hidden rounded-md px-3 py-1.5 text-[13px] text-ink-2 hover:bg-surface-3 sm:flex" target="_blank" rel="noopener">GitHub 仓库</a>
-          <a href={`${base}account.html`} class="rounded-md bg-brand px-3.5 py-1.5 text-[13px] font-semibold text-brand-fg hover:bg-brand-hover">账号</a>
+          <a href="https://github.com/RoboWiki/RoboWiki" class="hidden rounded-md px-3 py-1.5 text-sm text-ink-2 hover:bg-surface-3 sm:flex" target="_blank" rel="noopener">GitHub 仓库</a>
+          <a href={`${base}account.html`} class="rounded-md bg-brand px-3.5 py-1.5 text-sm font-semibold text-brand-fg hover:bg-brand-hover">账号</a>
         </div>
       </div>
     </header>
@@ -96,9 +109,17 @@ const links = [
         {links.map(link => (
           <a href={link.href} class="card card-hover p-5">
             <div class="text-sm font-semibold text-ink">{link.title} →</div>
-            <p class="mt-1.5 text-[13px] leading-6 text-ink-3">{link.desc}</p>
+            <p class="mt-1.5 text-sm leading-6 text-ink-3">{link.desc}</p>
           </a>
         ))}
+      </section>
+
+      <section class="mx-auto mt-8 max-w-md">
+        <JingjingPet
+          auto={true}
+          title="看板娘也没找到这个页面"
+          note="社区素材 ds-pet（MIT），非 DeepSeek 官方；她只在这类空页面出现。"
+        />
       </section>
 
       <SeoJsonLd type="WebPage" title={title} description={description} url={Astro.url} />

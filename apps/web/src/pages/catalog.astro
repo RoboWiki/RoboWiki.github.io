@@ -61,7 +61,7 @@ const stats = [
   { label: '品类', value: partCategories.length },
 ]
 ---
-<Base title="部件库 · RoboWiki" description={`${catalog.count} 个机器人硬件部件，按品类、厂商与参数筛选。`}>
+<Base title="部件库 · RoboWiki" description={`${parts.length} 个机器人硬件部件，按品类、厂商与参数筛选。`}>
   <header class="mb-6">
     <nav class="text-xs text-ink-3" aria-label="面包屑">
       <a href="/" class="hover:text-ink">首页</a>
@@ -75,7 +75,7 @@ const stats = [
         <p class="mt-2 max-w-2xl text-sm leading-6 text-ink-3">
           所有条目均已按厂商资料订正；价格缺就写询价，参数缺就写 null。
         </p>
-        <div class="mt-3 flex flex-wrap items-center gap-3 text-[13px]">
+        <div class="mt-3 flex flex-wrap items-center gap-3 text-sm">
           <a href={withBase('/compare.html')} class="font-medium text-brand hover:underline">并排对比 2–4 个部件 →</a>
           {thinCategories.length > 0 && (
             <span class="text-ink-3">
@@ -87,10 +87,10 @@ const stats = [
           <a href={withBase('/equipment.html')} class="text-ink-2 hover:text-brand">焊台、电源与仪器去设备库</a>
         </div>
       </div>
-      <dl class="grid shrink-0 grid-cols-4 gap-px overflow-hidden rounded-md border border-line bg-line sm:grid-cols-4">
+      <dl class="grid shrink-0 grid-cols-3 gap-px overflow-hidden rounded-md border border-line bg-line">
         {stats.map(s => (
-          <div class="bg-surface px-3 py-2.5">
-            <dt class="text-[11px] text-ink-3">{s.label}</dt>
+          <div class="bg-surface px-3 py-3">
+            <dt class="text-xs text-ink-3">{s.label}</dt>
             <dd class="mono tabular mt-0.5 text-lg font-bold text-ink">{s.value}</dd>
           </div>
         ))}

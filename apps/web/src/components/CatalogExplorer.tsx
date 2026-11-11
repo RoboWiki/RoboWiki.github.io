@@ -569,7 +569,7 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
         <div className="chip-row -mx-1 px-1" role="group" aria-label="按子类筛选">
           <button
             type="button"
-            className="chip h-7 px-2.5 text-[12px]"
+            className="chip h-7 px-2.5 text-xs"
             aria-pressed={!subtype}
             onClick={() => { setSubtype(''); setLimit(PAGE) }}
           >
@@ -579,7 +579,7 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
             <button
               key={item.k}
               type="button"
-              className="chip h-7 px-2.5 text-[12px]"
+              className="chip h-7 px-2.5 text-xs"
               aria-pressed={subtype === item.k}
               onClick={() => {
                 setSubtype(subtype === item.k ? '' : item.k)
@@ -597,7 +597,7 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
           <div className="flex flex-wrap items-center gap-1.5">
             <button
               type="button"
-              className={`chip h-7 px-2.5 text-[12px] ${offerOnly ? 'border-brand bg-brand-soft text-brand' : ''}`}
+              className={`chip h-7 px-2.5 text-xs ${offerOnly ? 'border-brand bg-brand-soft text-brand' : ''}`}
               aria-pressed={offerOnly}
               onClick={() => {
                 setOfferOnly(v => !v)
@@ -616,7 +616,7 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
             </button>
             <button
               type="button"
-              className={`chip h-7 px-2.5 text-[12px] ${buildOnly ? 'border-brand bg-brand-soft text-brand' : ''}`}
+              className={`chip h-7 px-2.5 text-xs ${buildOnly ? 'border-brand bg-brand-soft text-brand' : ''}`}
               aria-pressed={buildOnly}
               onClick={() => {
                 setBuildOnly(v => !v)
@@ -635,7 +635,7 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
             </button>
             <button
               type="button"
-              className="chip h-7 px-2.5 text-[12px]"
+              className="chip h-7 px-2.5 text-xs"
               aria-pressed={openOnly}
               onClick={() => { setOpenOnly(v => !v); setLimit(PAGE) }}
               title="只显示带开源仓库的条目"
@@ -646,35 +646,35 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <label className="inline-flex items-center gap-2 text-[11px] text-ink-3">
+            <label className="inline-flex items-center gap-2 text-xs text-ink-3">
               品牌
               <select
                 value={vendor}
                 onChange={event => { setVendor(event.target.value); setLimit(PAGE) }}
-                className="h-8 rounded-md border border-line bg-surface px-2 text-[12px] text-ink"
+                className="h-8 rounded-md border border-line bg-surface px-2 text-xs text-ink"
               >
                 <option value="">全部品牌（{vendorBase.length}）</option>
                 {vendors.map(([name, count]) => <option value={name}>{name}（{count}）</option>)}
               </select>
             </label>
-            <label className="inline-flex items-center gap-2 text-[11px] text-ink-3">
+            <label className="inline-flex items-center gap-2 text-xs text-ink-3">
               排序
               <select
                 value={sortField}
                 onChange={event => selectSortField(event.target.value)}
-                className="h-8 rounded-md border border-line bg-surface px-2 text-[12px] text-ink"
+                className="h-8 rounded-md border border-line bg-surface px-2 text-xs text-ink"
               >
                 <option value="">综合排序</option>
                 {sortFields.map(item => <option value={item.value}>{item.label}</option>)}
               </select>
             </label>
-            <label className="inline-flex items-center gap-2 text-[11px] text-ink-3">
+            <label className="inline-flex items-center gap-2 text-xs text-ink-3">
               方向
               <select
                 value={sortDir}
                 onChange={event => setSort(sortField ? `${sortField}:${event.target.value}` : '')}
                 disabled={!sortField}
-                className="h-8 rounded-md border border-line bg-surface px-2 text-[12px] text-ink disabled:opacity-50"
+                className="h-8 rounded-md border border-line bg-surface px-2 text-xs text-ink disabled:opacity-50"
               >
                 <option value="asc">升序</option>
                 <option value="desc">降序</option>
@@ -687,15 +687,15 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
       {!isMaterials && axes.length > 0 && (
         <section className="overflow-hidden rounded-lg border border-line bg-surface" aria-labelledby="range-heading">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1 border-b border-line px-3 py-2">
-            <h2 id="range-heading" className="text-[12px] font-semibold text-ink">参数范围</h2>
-            <span className="mono tabular text-[11px] text-ink-3">
+            <h2 id="range-heading" className="text-xs font-semibold text-ink">参数范围</h2>
+            <span className="mono tabular text-xs text-ink-3">
               {activeAxes.length ? `${activeAxes.length} 项生效` : '拖动或输入数值'}
             </span>
             {activeAxes.length > 0 && (
               <button
                 type="button"
                 onClick={() => setRanges({})}
-                className="text-[12px] text-brand hover:underline"
+                className="text-xs text-brand hover:underline"
               >
                 清除参数
               </button>
@@ -705,7 +705,7 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
               onClick={() => setRangesOpen(v => !v)}
               aria-expanded={rangesOpen}
               aria-controls="range-body"
-              className="ml-auto text-[12px] text-ink-3 hover:text-ink"
+              className="ml-auto text-xs text-ink-3 hover:text-ink"
             >
               {rangesOpen ? '收起' : `展开（${axes.length}）`}
             </button>
@@ -719,7 +719,7 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
                     key={axis.k}
                     type="button"
                     onClick={() => clearAxis(axis.k)}
-                    className="chip h-7 px-2.5 text-[12px]"
+                    className="chip h-7 px-2.5 text-xs"
                     title={`清除${axis.label}范围`}
                   >
                     {axis.label}
@@ -752,7 +752,7 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
       )}
 
       {(isMaterials ? searchedMaterials.length === 0 : shown.length === 0) ? (
-        <div className="card border-dashed px-6 py-16 text-center">
+        <div className="card border-dashed px-6 py-16 text-center" data-empty="">
           <div aria-hidden="true" className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-surface-3 text-ink-3">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
@@ -802,7 +802,7 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
                 className="group flex h-full rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 focus-visible:ring-offset-2"
               >
                 <Card className="flex h-full w-full flex-col p-4 transition duration-200 group-hover:-translate-y-0.5 group-hover:border-line-strong group-hover:shadow-md">
-                  <div className="flex items-center justify-between gap-2 text-[11px] text-ink-3">
+                  <div className="flex items-center justify-between gap-2 text-xs text-ink-3">
                     <span className="rounded-full bg-brand-soft px-2 py-0.5 font-semibold text-brand">{m.family_label}</span>
                     <span>{m.group_label}</span>
                   </div>
@@ -811,8 +811,8 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
                   <dl className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1.5 border-t border-line pt-3">
                     {materialFacts(m).map(f => (
                       <div key={f.label} className="min-w-0">
-                        <dt className="text-[10px] leading-4 text-ink-3">{f.label}</dt>
-                        <dd className="mono tabular truncate text-[12px] leading-5 text-ink-2">{f.value}</dd>
+                        <dt className="text-xs leading-4 text-ink-3">{f.label}</dt>
+                        <dd className="mono tabular truncate text-xs leading-5 text-ink-2">{f.value}</dd>
                       </div>
                     ))}
                   </dl>
@@ -838,13 +838,13 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
                 aria-pressed={picked.includes(p.id)}
                 aria-label={`${picked.includes(p.id) ? '移出对比' : '加入对比'}：${p.vendor} ${p.model}`}
                 title={picked.includes(p.id) ? '移出对比' : '加入对比（最多 4 个）'}
-                className={`absolute right-2 top-2 z-10 inline-flex h-7 items-center gap-1 rounded-full border px-2 text-[11px] font-medium transition-colors ${
+                className={`absolute right-2 top-2 z-10 inline-flex h-7 items-center gap-1 rounded-full border px-2 text-xs font-medium transition-colors ${
                   picked.includes(p.id)
                     ? 'border-brand bg-brand text-brand-fg'
                     : 'border-line bg-surface/90 text-ink-2 backdrop-blur hover:border-line-strong hover:text-ink'
                 }`}
               >
-                <span aria-hidden="true" className="text-[12px] leading-none">{picked.includes(p.id) ? '✓' : '+'}</span>
+                <span aria-hidden="true" className="text-xs leading-none">{picked.includes(p.id) ? '✓' : '+'}</span>
                 {picked.includes(p.id) ? '已加入' : '加入对比'}
               </button>
               <a
@@ -857,10 +857,10 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
                       ? <img src={imageUrl(p)} alt={`${p.vendor} ${p.model}`} loading="lazy" className="h-full w-full object-contain p-4 transition-transform duration-300 group-hover:scale-[1.03]" />
                       : <span className="px-4 text-center text-xs text-ink-3">暂无产品图</span>}
                     <div className="absolute left-2 top-2 flex flex-wrap gap-1">
-                      {hasOffer(p) && <span className="rounded-full border border-line bg-brand-soft px-2 py-0.5 text-[11px] font-medium text-brand">有优惠</span>}
+                      {hasOffer(p) && <span className="rounded-full border border-line bg-brand-soft px-2 py-0.5 text-xs font-medium text-brand">有优惠</span>}
                       {(p.builds?.length ?? 0) > 0 && (
                         <span
-                          className="rounded-full border border-success/30 bg-success-soft px-2 py-0.5 text-[11px] font-medium text-success"
+                          className="rounded-full border border-success/30 bg-success-soft px-2 py-0.5 text-xs font-medium text-success"
                           title={p.builds!.map(b => b.name).join('、')}
                         >
                           有方案
@@ -869,7 +869,7 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
                     </div>
                   </div>
                   <div className="flex flex-1 flex-col gap-2 p-4">
-                    <div className="flex items-center gap-1.5 text-[11px] text-ink-3">
+                    <div className="flex items-center gap-1.5 text-xs text-ink-3">
                       <span>{categoryLabel(p.category)}</span>
                       <span aria-hidden="true">·</span>
                       <span className="truncate">{p.vendor}</span>
@@ -878,8 +878,8 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
                     <dl className="grid grid-cols-2 gap-x-3 gap-y-1.5">
                       {partFacts(p).map(f => (
                         <div key={f.label} className="min-w-0">
-                          <dt className="text-[10px] leading-4 text-ink-3">{f.label}</dt>
-                          <dd className="mono tabular truncate text-[12px] leading-5 text-ink-2">{f.value}</dd>
+                          <dt className="text-xs leading-4 text-ink-3">{f.label}</dt>
+                          <dd className="mono tabular truncate text-xs leading-5 text-ink-2">{f.value}</dd>
                         </div>
                       ))}
                     </dl>
@@ -896,9 +896,9 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
                                 <span className={`mono tabular truncate font-semibold ${offerPrice !== null ? 'text-brand' : 'text-ink-2'}`}>
                                   {formatPrice(offerPrice ?? regular)}
                                 </span>
-                                {offerPrice !== null && <span className="shrink-0 text-[10px] font-medium text-brand" title="需满足活动资格，详见详情">{offerKindLabel(offer)}</span>}
+                                {offerPrice !== null && <span className="shrink-0 text-xs font-medium text-brand" title="需满足活动资格，详见详情">{offerKindLabel(offer)}</span>}
                               </span>
-                              {showCompare && <span className="mono tabular text-[10px] text-ink-3 ">参考 {formatPrice(regular)}</span>}
+                              {showCompare && <span className="mono tabular text-xs text-ink-3 ">参考 {formatPrice(regular)}</span>}
                             </>
                           )
                         })()}
@@ -916,25 +916,25 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
       {!isMaterials && picked.length > 0 && (
         <div className="fixed inset-x-2 bottom-2 z-40 mx-auto w-[calc(100%-1rem)] max-w-5xl overflow-hidden rounded-xl border border-line bg-surface/98 shadow-2xl backdrop-blur">
           <div className="flex flex-wrap items-center gap-2 border-b border-line px-3 py-2">
-            <span className="mono tabular text-[12px] text-ink-2">对比 {picked.length}/4</span>
+            <span className="mono tabular text-xs text-ink-2">对比 {picked.length}/4</span>
             <button
               type="button"
               onClick={() => setCompareOpen(v => !v)}
-              className="inline-flex h-7 items-center rounded-md border border-line bg-surface-2 px-2.5 text-[12px] font-medium text-ink-2 hover:border-line-strong hover:text-ink"
+              className="inline-flex h-7 items-center rounded-md border border-line bg-surface-2 px-2.5 text-xs font-medium text-ink-2 hover:border-line-strong hover:text-ink"
               aria-expanded={compareOpen}
             >
               {compareOpen ? '收起对比' : '展开对比'}
             </button>
             <a
               href={`${import.meta.env.BASE_URL}compare.html?ids=${picked.join(',')}`}
-              className="inline-flex h-7 items-center rounded-md bg-brand px-2.5 text-[12px] font-semibold text-brand-fg hover:bg-brand-hover"
+              className="inline-flex h-7 items-center rounded-md bg-brand px-2.5 text-xs font-semibold text-brand-fg hover:bg-brand-hover"
             >
               完整对比 →
             </a>
             <button
               type="button"
               onClick={() => { setPicked([]); setCompareOpen(false) }}
-              className="ml-auto text-[12px] text-ink-3 hover:text-ink"
+              className="ml-auto text-xs text-ink-3 hover:text-ink"
             >
               清空
             </button>
@@ -959,7 +959,7 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
                             <a href={partHref(p)} className="block truncate font-semibold text-ink hover:text-brand">
                               {p.model}
                             </a>
-                            <span className="mt-0.5 block truncate text-[11px] text-ink-3">{p.vendor}</span>
+                            <span className="mt-0.5 block truncate text-xs text-ink-3">{p.vendor}</span>
                           </div>
                           <button
                             type="button"
@@ -988,10 +988,10 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
                             {formatPrice(offerPrice ?? regular)}
                           </span>
                           {offerPrice !== null && (
-                            <span className="ml-1 text-[10px] font-medium text-brand">{offerKindLabel(offer)}</span>
+                            <span className="ml-1 text-xs font-medium text-brand">{offerKindLabel(offer)}</span>
                           )}
                           {offerPrice !== null && regular !== null && offerPrice < regular && (
-                            <span className="mt-0.5 block mono tabular text-[10px] text-ink-3">参考 {formatPrice(regular)}</span>
+                            <span className="mt-0.5 block mono tabular text-xs text-ink-3">参考 {formatPrice(regular)}</span>
                           )}
                         </td>
                       )

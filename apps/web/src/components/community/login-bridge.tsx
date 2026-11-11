@@ -74,7 +74,7 @@ function Bridge() {
           <div className="h-9 w-full rounded-md bg-surface-3" />
           <div className="h-9 w-full rounded-md bg-surface-3" />
         </div>
-        <p className="mb-0 mt-3 text-[12px] text-ink-3">正在校验登录凭证…</p>
+        <p className="mb-0 mt-3 text-xs text-ink-3">正在校验登录凭证…</p>
       </div>
     )
   }
