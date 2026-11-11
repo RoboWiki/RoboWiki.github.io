@@ -207,6 +207,80 @@ a.card-hover:hover {
   font-weight: 600;
 }
 
+/* 双滑块范围筛选：两条 range 叠在同一轨道，仅滑块接收指针事件。 */
+.rw-rangewrap {
+  position: relative;
+  height: 20px;
+  margin-top: 6px;
+}
+.rw-rangetrack,
+.rw-rangefill {
+  position: absolute;
+  top: 50%;
+  height: 4px;
+  border-radius: 999px;
+  transform: translateY(-50%);
+}
+.rw-rangetrack {
+  left: 0;
+  right: 0;
+  background: var(--rw-surface-3);
+}
+.rw-rangefill {
+  background: var(--rw-primary);
+}
+.rw-range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  background: none;
+  appearance: none;
+  -webkit-appearance: none;
+  pointer-events: none;
+}
+.rw-range:focus {
+  outline: none;
+}
+.rw-range::-webkit-slider-runnable-track {
+  height: 20px;
+  background: none;
+}
+.rw-range::-moz-range-track {
+  height: 20px;
+  background: none;
+}
+.rw-range::-webkit-slider-thumb {
+  pointer-events: auto;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: 2px solid var(--rw-primary);
+  background: var(--rw-surface);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 18%);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.rw-range::-moz-range-thumb {
+  pointer-events: auto;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: 2px solid var(--rw-primary);
+  background: var(--rw-surface);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 18%);
+  cursor: pointer;
+}
+.rw-range:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px var(--rw-primary-soft);
+}
+.rw-range:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 4px var(--rw-primary-soft);
+}
+
 /* Native <details> mobile menu: no summary marker, panel anchored to the trigger. */
 .mobile-nav > summary {
   list-style: none;

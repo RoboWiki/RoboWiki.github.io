@@ -44,6 +44,8 @@ const FACTS: Record<string, PartFact[]> = {
     { label: '额定转速', unit: ' rpm', keys: ['speed_rated_rpm'] },
     { label: '减速比', unit: ':1', keys: ['gear'] },
     { label: '质量', unit: ' kg', keys: ['mass_kg'] },
+    { label: '外径', unit: ' mm', keys: ['od_mm'] },
+    { label: '长度', unit: ' mm', keys: ['l_mm'] },
     { label: '扭矩密度', unit: ' N·m/kg', keys: [], derived: torqueDensity },
     { label: '电压范围', keys: ['voltage_range_V', 'voltage_V'], unit: ' V' },
   ],

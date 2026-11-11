@@ -2,6 +2,7 @@ import { useEffect, useId, useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import RangeFilter, { formatSpecNumber, type RangeValue } from '@/components/parts/RangeFilter'
 import { categoryLabel, imageUrl, type CatalogPart } from '@/lib/catalog'
 import { partFacts } from '@/lib/partFacts'
 import { effectivePrice, formatPrice, partHref, withBase } from '@/lib/utils'
@@ -11,6 +12,7 @@ type CategoryMeta = {
   name: string
   keys?: Array<{ k: string; label?: string; unit?: string }>
   sorts?: Array<{ k: string; label: string }>
+  subtypes?: Record<string, string>
 }
 export type MaterialItem = {
   id: string
@@ -31,6 +33,35 @@ const INTERACTIVE_HOME = '/community.html'
 const DEFAULT_SORT = 'effective_price:asc'
 const DEFAULT_CATEGORY = 'actuator'
 const MATERIAL_CATEGORY = 'materials'
+/** 详情页需要、但不适合作为选型范围的字段。 */
+const FILTER_SKIP = new Set(['armature_kgm2'])
+
+/** 只认真正的数字或纯数字字符串；带单位的区间字符串（15-60V）不参与范围筛选。 */
+function specNumber(v: unknown): number | null {
+  if (typeof v === 'number') return Number.isFinite(v) ? v : null
+  if (typeof v === 'string' && /^\s*-?\d+(?:\.\d+)?\s*$/.test(v)) {
+    const n = Number(v)
+    return Number.isFinite(n) ? n : null
+  }
+  return null
+}
+
+function niceStep(span: number): number {
+  if (span <= 1) return 0.01
+  if (span <= 10) return 0.1
+  if (span <= 100) return 1
+  if (span <= 1000) return 5
+  return 10
+}
+
+type FilterAxis = {
+  k: string
+  label: string
+  unit: string
+  min: number
+  max: number
+  step: number
+}
 
 function materialFacts(m: MaterialItem) {
   const specs = m.specs || {}
@@ -90,6 +121,9 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
   const [offerOnly, setOfferOnly] = useState(false)
   const [buildOnly, setBuildOnly] = useState(false)
   const [vendor, setVendor] = useState('')
+  const [subtype, setSubtype] = useState('')
+  const [ranges, setRanges] = useState<Record<string, RangeValue>>({})
+  const [rangesOpen, setRangesOpen] = useState(true)
   const [sort, setSort] = useState(DEFAULT_SORT)
   // 对比托盘：最多 4 个，落 localStorage，跨页面（部件库 → 对比页）复用
   const [picked, setPicked] = useState<string[]>([])
@@ -128,7 +162,25 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
     if (fromQuery) setQ(fromQuery)
     if (params.get('offer') === '1') setOfferOnly(true)
     if (params.get('build') === '1') setBuildOnly(true)
+    const fromRanges = params.get('r') || ''
+    if (fromRanges) {
+      const parsed: Record<string, RangeValue> = {}
+      for (const chunk of fromRanges.split(',')) {
+        const [key, span] = chunk.split(':')
+        const [rawLo, rawHi] = (span || '').split('~')
+        const lo = Number(rawLo)
+        const hi = Number(rawHi)
+        if (key && Number.isFinite(lo) && Number.isFinite(hi) && lo <= hi) parsed[key] = [lo, hi]
+      }
+      if (Object.keys(parsed).length) setRanges(parsed)
+    }
   }, [categories])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    // 手机上参数面板默认收起，避免结果被推得太远。
+    setRangesOpen(window.matchMedia('(min-width: 640px)').matches)
+  }, [])
 
   const searched = useMemo(() => {
     const needle = q.trim().toLowerCase()
@@ -162,17 +214,86 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
   }
 
   const catMeta = categories.find(c => c.id === cat)
-  const sortOptions = useMemo(() => {
-    const keySorts = (catMeta?.sorts || []).filter(item => !['price', 'rating'].includes(item.k))
-    return [
-      { value: DEFAULT_SORT, label: '优惠价 / 价格从低到高（默认）' },
-      { value: '', label: '综合排序' },
-      ...keySorts.map(item => ({ value: `${item.k}:desc`, label: `${item.label} 从高到低` })),
-      { value: 'price:asc', label: '普通参考价从低到高' },
-      { value: 'price:desc', label: '普通参考价从高到低' },
-      { value: 'rating:desc', label: '评分从高到低' },
-    ]
-  }, [catMeta])
+
+  /** 参数范围轴来自品类声明的 keys，只保留有数值、且确实有跨度的字段。 */
+  const axes = useMemo<FilterAxis[]>(() => {
+    if (!catMeta?.keys?.length) return []
+    const base = parts.filter(p => p.category === cat)
+    if (base.length < 2) return []
+    // 只有覆盖到一定比例的条目才作为筛选轴，避免两三条有值的字段把大多数人筛掉。
+    const minCoverage = Math.max(2, Math.ceil(base.length * 0.2))
+    const out: FilterAxis[] = []
+    for (const key of catMeta.keys) {
+      if (FILTER_SKIP.has(key.k)) continue
+      let min = Infinity
+      let max = -Infinity
+      let n = 0
+      for (const p of base) {
+        const v = specNumber((p.specs as Record<string, unknown> | undefined)?.[key.k])
+        if (v === null) continue
+        min = Math.min(min, v)
+        max = Math.max(max, v)
+        n++
+      }
+      if (n < minCoverage || !(max > min)) continue
+      out.push({
+        k: key.k,
+        label: key.label || key.k,
+        unit: key.unit || '',
+        min,
+        max,
+        step: niceStep(max - min),
+      })
+    }
+    return out
+  }, [parts, cat, catMeta])
+
+  const axisByKey = useMemo(() => new Map(axes.map(a => [a.k, a])), [axes])
+
+  const subtypeOptions = useMemo(() => {
+    if (!catMeta?.subtypes) return []
+    const counts = new Map<string, number>()
+    for (const p of searched) {
+      if (p.category !== cat || !p.subtype) continue
+      counts.set(p.subtype, (counts.get(p.subtype) || 0) + 1)
+    }
+    return Object.entries(catMeta.subtypes)
+      .filter(([k]) => (counts.get(k) || 0) > 0)
+      .map(([k, label]) => ({ k, label, count: counts.get(k) || 0 }))
+  }, [searched, cat, catMeta])
+
+  const sortFields = useMemo(() => [
+    { value: 'effective_price', label: '优惠价 / 价格' },
+    { value: 'price', label: '普通参考价' },
+    { value: 'rating', label: '评分' },
+    ...axes.map(a => ({ value: a.k, label: a.label })),
+  ], [axes])
+
+  const activeAxes = useMemo(
+    () => axes.filter(a => {
+      const value = ranges[a.k]
+      return value && (value[0] > a.min || value[1] < a.max)
+    }),
+    [axes, ranges],
+  )
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    try {
+      const url = new URL(window.location.href)
+      if (activeAxes.length) {
+        url.searchParams.set(
+          'r',
+          activeAxes
+            .map(a => `${a.k}:${ranges[a.k]![0]}~${ranges[a.k]![1]}`)
+            .join(','),
+        )
+      } else {
+        url.searchParams.delete('r')
+      }
+      window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`)
+    } catch { /* history unavailable: filters still work */ }
+  }, [activeAxes, ranges])
 
   const vendorBase = useMemo(
     () => (cat ? searched.filter(p => p.category === cat) : searched),
@@ -200,10 +321,19 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
   const filtered = useMemo(() => {
     let list = searched
     if (cat) list = list.filter(p => p.category === cat)
+    if (subtype) list = list.filter(p => p.subtype === subtype)
     if (vendor) list = list.filter(p => p.vendor === vendor)
     if (openOnly) list = list.filter(hasRepo)
     if (offerOnly) list = list.filter(hasOffer)
     if (buildOnly) list = list.filter(p => (p.builds?.length ?? 0) > 0)
+    for (const [key, [lo, hi]] of Object.entries(ranges)) {
+      const axis = axisByKey.get(key)
+      if (!axis || (lo <= axis.min && hi >= axis.max)) continue
+      list = list.filter(p => {
+        const v = specNumber((p.specs as Record<string, unknown> | undefined)?.[key])
+        return v !== null && v >= lo && v <= hi
+      })
+    }
     if (sort) {
       const [key, dir] = sort.split(':')
       const sign = dir === 'asc' ? 1 : -1
@@ -229,7 +359,7 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
       })
     }
     return list
-  }, [searched, cat, vendor, openOnly, offerOnly, buildOnly, sort])
+  }, [searched, cat, subtype, vendor, openOnly, offerOnly, buildOnly, ranges, axisByKey, sort])
 
   const openCount = useMemo(() => {
     const base = cat ? searched.filter(p => p.category === cat) : searched
@@ -255,12 +385,18 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
   const needle = q.trim()
   const hasFilter = Boolean(
     (cat && cat !== DEFAULT_CATEGORY) || needle || openOnly || offerOnly || buildOnly || vendor
-    || (sort && sort !== DEFAULT_SORT),
+    || subtype || activeAxes.length || (sort && sort !== DEFAULT_SORT),
   )
 
   const selectCategory = (next: string) => {
     setCat(next)
     setVendor('')
+    setSubtype('')
+    setRanges({})
+    setSort(prev => {
+      const key = prev.split(':')[0]
+      return key && !['effective_price', 'price', 'rating'].includes(key) ? DEFAULT_SORT : prev
+    })
     setLimit(PAGE)
     if (typeof window === 'undefined') return
     // Keep the filter shareable without pulling in a router.
@@ -302,8 +438,42 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
     setOfferOnly(false)
     setBuildOnly(false)
     setVendor('')
+    setSubtype('')
+    setRanges({})
     setSort(DEFAULT_SORT)
     selectCategory(DEFAULT_CATEGORY)
+  }
+
+  const setAxisRange = (key: string, next: RangeValue, axis: FilterAxis) => {
+    setLimit(PAGE)
+    setRanges(prev => {
+      if (next[0] <= axis.min && next[1] >= axis.max) {
+        const copy = { ...prev }
+        delete copy[key]
+        return copy
+      }
+      return { ...prev, [key]: next }
+    })
+  }
+
+  const clearAxis = (key: string) => {
+    setLimit(PAGE)
+    setRanges(prev => {
+      const copy = { ...prev }
+      delete copy[key]
+      return copy
+    })
+  }
+
+  const [sortField, sortDirRaw] = sort ? sort.split(':') : ['', 'desc']
+  const sortDir = sortDirRaw
+    || (sortField === 'effective_price' || sortField === 'price' ? 'asc' : 'desc')
+
+  const selectSortField = (next: string) => {
+    if (!next) { setSort(''); setLimit(PAGE); return }
+    const dir = next === 'effective_price' || next === 'price' ? 'asc' : 'desc'
+    setSort(`${next}:${dir}`)
+    setLimit(PAGE)
   }
 
   return (
@@ -395,30 +565,35 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
         ))}
       </div>
 
-      {!isMaterials && (
-        <>
-          <div className="chip-row -mx-1 px-1" role="group" aria-label="按品牌筛选">
+      {!isMaterials && subtypeOptions.length > 1 && (
+        <div className="chip-row -mx-1 px-1" role="group" aria-label="按子类筛选">
+          <button
+            type="button"
+            className="chip h-7 px-2.5 text-[12px]"
+            aria-pressed={!subtype}
+            onClick={() => { setSubtype(''); setLimit(PAGE) }}
+          >
+            全部子类
+          </button>
+          {subtypeOptions.map(item => (
             <button
+              key={item.k}
               type="button"
               className="chip h-7 px-2.5 text-[12px]"
-              aria-pressed={!vendor}
-              onClick={() => { setVendor(''); setLimit(PAGE) }}
+              aria-pressed={subtype === item.k}
+              onClick={() => {
+                setSubtype(subtype === item.k ? '' : item.k)
+                setLimit(PAGE)
+              }}
             >
-              全部品牌<span className="mono tabular opacity-60">{vendorBase.length}</span>
+              {item.label}<span className="mono tabular opacity-60">{item.count}</span>
             </button>
-            {vendors.slice(0, 10).map(([name, count]) => (
-              <button
-                key={name}
-                type="button"
-                className="chip h-7 px-2.5 text-[12px]"
-                aria-pressed={vendor === name}
-                onClick={() => { setVendor(vendor === name ? '' : name); setLimit(PAGE) }}
-              >
-                {name}<span className="mono tabular opacity-60">{count}</span>
-              </button>
-            ))}
-          </div>
+          ))}
+        </div>
+      )}
 
+      {!isMaterials && (
+        <>
           <div className="flex flex-wrap items-center gap-1.5">
             <button
               type="button"
@@ -485,15 +660,95 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
             <label className="inline-flex items-center gap-2 text-[11px] text-ink-3">
               排序
               <select
-                value={sort}
-                onChange={event => { setSort(event.target.value); setLimit(PAGE) }}
+                value={sortField}
+                onChange={event => selectSortField(event.target.value)}
                 className="h-8 rounded-md border border-line bg-surface px-2 text-[12px] text-ink"
               >
-                {sortOptions.map(item => <option value={item.value}>{item.label}</option>)}
+                <option value="">综合排序</option>
+                {sortFields.map(item => <option value={item.value}>{item.label}</option>)}
+              </select>
+            </label>
+            <label className="inline-flex items-center gap-2 text-[11px] text-ink-3">
+              方向
+              <select
+                value={sortDir}
+                onChange={event => setSort(sortField ? `${sortField}:${event.target.value}` : '')}
+                disabled={!sortField}
+                className="h-8 rounded-md border border-line bg-surface px-2 text-[12px] text-ink disabled:opacity-50"
+              >
+                <option value="asc">升序</option>
+                <option value="desc">降序</option>
               </select>
             </label>
           </div>
         </>
+      )}
+
+      {!isMaterials && axes.length > 0 && (
+        <section className="overflow-hidden rounded-lg border border-line bg-surface" aria-labelledby="range-heading">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 border-b border-line px-3 py-2">
+            <h2 id="range-heading" className="text-[12px] font-semibold text-ink">参数范围</h2>
+            <span className="mono tabular text-[11px] text-ink-3">
+              {activeAxes.length ? `${activeAxes.length} 项生效` : '拖动或输入数值'}
+            </span>
+            {activeAxes.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setRanges({})}
+                className="text-[12px] text-brand hover:underline"
+              >
+                清除参数
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => setRangesOpen(v => !v)}
+              aria-expanded={rangesOpen}
+              aria-controls="range-body"
+              className="ml-auto text-[12px] text-ink-3 hover:text-ink"
+            >
+              {rangesOpen ? '收起' : `展开（${axes.length}）`}
+            </button>
+          </div>
+          {activeAxes.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 border-b border-line px-3 py-2">
+              {activeAxes.map(axis => {
+                const value = ranges[axis.k]!
+                return (
+                  <button
+                    key={axis.k}
+                    type="button"
+                    onClick={() => clearAxis(axis.k)}
+                    className="chip h-7 px-2.5 text-[12px]"
+                    title={`清除${axis.label}范围`}
+                  >
+                    {axis.label}
+                    <span className="mono tabular">
+                      {formatSpecNumber(value[0])}–{formatSpecNumber(value[1])}{axis.unit}
+                    </span>
+                    <span aria-hidden="true">×</span>
+                  </button>
+                )
+              })}
+            </div>
+          )}
+          {rangesOpen && (
+            <div id="range-body" className="grid gap-x-5 gap-y-4 px-3 py-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {axes.map(axis => (
+                <RangeFilter
+                  key={axis.k}
+                  label={axis.label}
+                  unit={axis.unit}
+                  min={axis.min}
+                  max={axis.max}
+                  step={axis.step}
+                  value={ranges[axis.k] ?? [axis.min, axis.max]}
+                  onChange={next => setAxisRange(axis.k, next, axis)}
+                />
+              ))}
+            </div>
+          )}
+        </section>
       )}
 
       {(isMaterials ? searchedMaterials.length === 0 : shown.length === 0) ? (
@@ -513,7 +768,7 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
               ? '数据集还在生成中，稍后刷新即可。'
               : isMaterials
                 ? '换个材料名、别名或用途试试；完整参数与加工工艺在材质库。'
-                : '换个关键词，或清空品类筛选。也可以把需求发到互动版，让用过的同行补充。'}
+                : '换个关键词、放宽参数范围，或清空品类筛选。也可以把需求发到互动版，让用过的同行补充。'}
           </p>
           <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
             {hasFilter && (
