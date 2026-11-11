@@ -80,6 +80,13 @@ class Settings(BaseSettings):
     github_client_id: str | None = None
     github_client_secret: str | None = None
     github_oauth_scope: str = "read:user user:email"
+    #: QQ 互联网页应用。App Key 只放后端；未配置时 /auth/qq/* 一律 503。
+    qq_app_id: str | None = None
+    qq_app_key: str | None = None
+    qq_oauth_scope: str = "get_user_info"
+    #: QQ 开放接口根地址；测试可指向假服务
+    qq_api_base: str = "https://graph.qq.com"
+    qq_timeout_s: float = 6.0
     #: 微信小程序（公众平台 → 开发管理 → 开发设置）。AppSecret 只放后端，
     #: 绝不进前端包/小程序包。未配置时 /auth/wechat/mini 返回 503。
     wechat_mp_appid: str | None = None
@@ -153,6 +160,11 @@ class Settings(BaseSettings):
     def wechat_mini_enabled(self) -> bool:
         return bool((self.wechat_mp_appid or "").strip()
                     and (self.wechat_mp_secret or "").strip())
+
+    @property
+    def qq_oauth_enabled(self) -> bool:
+        return bool((self.qq_app_id or "").strip()
+                    and (self.qq_app_key or "").strip())
 
 
 settings = Settings()

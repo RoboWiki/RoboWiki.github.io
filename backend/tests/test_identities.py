@@ -113,6 +113,12 @@ def github_configured(monkeypatch):
 
 
 @pytest.fixture
+def qq_configured(monkeypatch):
+    monkeypatch.setattr(settings, "qq_app_id", "test-qq-app-id")
+    monkeypatch.setattr(settings, "qq_app_key", "test-qq-app-key")
+
+
+@pytest.fixture
 def wechat_configured(monkeypatch):
     monkeypatch.setattr(settings, "wechat_mp_appid", "wx-test-appid")
     monkeypatch.setattr(settings, "wechat_mp_secret", "wx-test-secret")
@@ -175,27 +181,36 @@ def test_providers_reports_only_configured_channels(client, monkeypatch):
     monkeypatch.setattr(settings, "github_client_secret", None)
     monkeypatch.setattr(settings, "wechat_mp_appid", None)
     monkeypatch.setattr(settings, "wechat_mp_secret", None)
+    monkeypatch.setattr(settings, "qq_app_id", None)
+    monkeypatch.setattr(settings, "qq_app_key", None)
 
     r = client.get("/api/v1/auth/providers")
     assert r.status_code == 200, r.text
-    assert r.json() == {"email": True, "github": False, "wechat_mini": False}
+    assert r.json() == {"email": True, "github": False, "qq": False}
     # 公开接口：不需要令牌
     assert "access_token" not in r.text
 
 
 def test_providers_reflects_enabled_config(client, github_configured,
-                                           wechat_configured):
+                                           qq_configured):
     r = client.get("/api/v1/auth/providers")
     assert r.status_code == 200, r.text
-    assert r.json() == {"email": True, "github": True, "wechat_mini": True}
+    assert r.json() == {"email": True, "github": True, "qq": True}
 
 
 def test_providers_channels_are_independent(client, github_configured, monkeypatch):
-    """只配 GitHub 时不能把微信也报成可用（前端/小程序按此分支）。"""
-    monkeypatch.setattr(settings, "wechat_mp_appid", None)
-    monkeypatch.setattr(settings, "wechat_mp_secret", None)
+    """只配 GitHub 时不能把 QQ 也报成可用（前端按此分支）。"""
+    monkeypatch.setattr(settings, "qq_app_id", None)
+    monkeypatch.setattr(settings, "qq_app_key", None)
     r = client.get("/api/v1/auth/providers")
-    assert r.json() == {"email": True, "github": True, "wechat_mini": False}
+    assert r.json() == {"email": True, "github": True, "qq": False}
+
+
+def test_qq_unconfigured_returns_503(client, monkeypatch):
+    monkeypatch.setattr(settings, "qq_app_id", None)
+    monkeypatch.setattr(settings, "qq_app_key", None)
+    r = client.get("/api/v1/auth/qq/login", follow_redirects=False)
+    assert r.status_code == 503, r.text
 
 
 def test_github_unconfigured_returns_503(client, monkeypatch):

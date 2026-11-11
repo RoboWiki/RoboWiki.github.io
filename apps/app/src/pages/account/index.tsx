@@ -40,6 +40,7 @@ const CLIENT_LABEL: Record<string, string> = {
   mini: '微信小程序',
   weapp: '微信小程序',
   wechat_mini: '微信小程序',
+  qq: 'QQ',
 }
 
 const SUBMISSION_STATUS: Record<string, { label: string; tone: string }> = {
@@ -744,13 +745,13 @@ export default function AccountPage() {
           </Text>
           {user.email && !user.email_verified ? (
             <Text className="rw-caption">
-              未验证邮箱且未绑定微信/GitHub 时只能浏览；验证邮箱或绑定后即可参与。
+              未验证邮箱且未绑定微信/GitHub/QQ 时只能浏览；验证邮箱或绑定后即可参与。
             </Text>
           ) : null}
           <Text className="rw-caption">
             可信度 Lv.{user.trust_level ?? 0}/3
             {user.trust_sources?.length
-              ? ` · ${user.trust_sources.map((s) => ({ email: '邮箱已验证', wechat_mini: '微信', github: 'GitHub', staff: '站务' } as Record<string, string>)[s] || s).join(' + ')}`
+              ? ` · ${user.trust_sources.map((s) => ({ email: '邮箱已验证', wechat_mini: '微信', github: 'GitHub', qq: 'QQ', staff: '站务' } as Record<string, string>)[s] || s).join(' + ')}`
               : '（任一种来源即可参与）'}
           </Text>
         </View>

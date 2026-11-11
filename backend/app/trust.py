@@ -9,12 +9,13 @@ from sqlmodel import Session, select
 
 from .models import Identity, User
 
-PROVIDERS = ("wechat_mini", "github")
+PROVIDERS = ("wechat_mini", "github", "qq")
 
 SOURCE_LABELS = {
     "email": "邮箱已验证",
     "wechat_mini": "微信",
     "github": "GitHub",
+    "qq": "QQ",
     "staff": "站务",
 }
 

@@ -8,7 +8,7 @@
 
 | 能力 | 借鉴来源 | 实现 |
 |---|---|---|
-| 微信扫码登录（个人小程序当登录确认器） | 个人主体方案（ticket 链路），NodeBB/Discourse 的「扫码确认」思路 | `LoginTicket` 表 + `/auth/wechat/qr{,/confirm,/status}`；网页扫码卡；小程序 `pages/login/confirm` |
+| ~~微信扫码登录~~（2026-11-11 移除，改为 QQ 网页登录） | 个人主体方案（ticket 链路），NodeBB/Discourse 的「扫码确认」思路 | 原 `LoginTicket` + `/auth/wechat/qr*` 与小程序确认页已停用；网页改用 `/auth/qq/*` |
 | 后台用户管理（列表/角色/封禁） | Discourse Admin::Users、Flarum 用户管理、NodeBB ACP | `GET /admin/users`、`PATCH /admin/users/{id}`；封禁即下线（session_epoch+1 + 吊销 refresh）；护栏：不能动自己、不能降级最后一名站务 |
 
 ## 待补（按价值排序）

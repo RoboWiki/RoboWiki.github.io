@@ -164,7 +164,8 @@ curl -sSI https://robowiki.org.cn/ | grep -iE \
 | `SMTP_SSL` | 465 隐式 SSL 时设 `true`（阿里云 DirectMail 推荐） | `false` |
 | `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | GitHub OAuth App；两项都填才启用 | 可选；留空按钮禁用 |
 | `OAUTH_REDIRECT_BASE` | 反代后回调的对外根 | `https://robowiki.org.cn` |
-| `WECHAT_MP_APPID` / `WECHAT_MP_SECRET` | 小程序 code2session；Secret 只在服务端 | 按需 |
+| `QQ_APP_ID` / `QQ_APP_KEY` | QQ 互联网页应用；两项都填才启用 | 按需 |
+| `WECHAT_MP_APPID` / `WECHAT_MP_SECRET` | 小程序 code2session（仅 App 内登录）；Secret 只在服务端 | 按需 |
 | `EXPOSE_DOCS` | Swagger UI | `false` |
 | `CORS_ORIGINS` | JSON 数组 | `["https://robowiki.org.cn","https://robowiki.github.io"]` |
 | `BOT_TOKEN` | QQ 机器人只读问答 | 随机长串；留空则关闭 |
@@ -234,33 +235,28 @@ docker compose logs --tail=20 api | grep '\[email:dev\]'
 2. `deploy/.env` 填 `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET`（建议同时设
    `OAUTH_REDIRECT_BASE=https://robowiki.org.cn`），重建 api。
 3. `curl -fsS https://robowiki.org.cn/api/v1/auth/providers` 应返回
-   `{"email":true,"github":true,"wechat_mini":false}`；未配置时是 `github:false`，
-   `/login` 的 GitHub 按钮禁用并说明，不会发起请求。
+   `{"email":true,"github":true,"qq":false}`；未配置时是 `github:false`，
+   `/login` 的 GitHub 按钮不渲染，不会发起请求。
 4. 登录成功后回跳 `/login#token=<jwt>`，前端落盘并立即清掉 URL fragment。
 
-> **compose 映射**：`deploy/compose.yml` 的 `x-api-env` 目前只映射了邮件/机器人变量。
-> 上面 `GITHUB_*`、`WECHAT_MP_*`、`OAUTH_REDIRECT_BASE` 需要同步加进 `x-api-env`
-> （如 `ROBOWIKI_GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID:-}`），否则容器里读不到，
-> `providers` 会一直显示未配置。本次只改文档与 API，未动 compose。
+**QQ 登录（后端已实现，前端入口暂未展示）**
 
-**微信小程序与网页扫码登录**
+1. QQ 互联（connect.qq.com）→ 应用管理 → 创建网站应用；网站地址
+   `https://robowiki.org.cn`，回调域 `robowiki.org.cn`。
+2. `deploy/.env` 填 `QQ_APP_ID` / `QQ_APP_KEY`（同时保留
+   `OAUTH_REDIRECT_BASE=https://robowiki.org.cn`），重建 api。
+   实际回调地址是 `https://robowiki.org.cn/api/v1/auth/qq/callback`。
+3. `providers` 返回 `qq:true` 后，`/login` 出现「使用 QQ 登录」；
+   账号中心「登录方式」可发起 QQ 绑定。
+4. QQ 不返回邮箱，QQ 首登会建独立账号；需要与邮箱账号合并时，
+   先在任一账号登录，再到「登录方式」绑定另一种渠道。
 
-`WECHAT_MP_APPID` / `WECHAT_MP_SECRET` 两项都填后，`providers` 返回
-`wechat_mini:true`；小程序用 `wx.login()` 的 code 调
-`POST /api/v1/auth/wechat/mini` 换本站令牌。AppSecret 只在服务端使用，
-未配置时该接口返回 503。
+**微信小程序登录（仅 App 内）**
 
-网页扫码登录（个人小程序当「登录确认器」）：
-
-| 接口 | 作用 |
-|---|---|
-| `POST /api/v1/auth/wechat/qr` | 签发 32 位 hex 的一次性 ticket（5 分钟，Postgres `login_tickets` 表，不引入 Redis），调 `getwxacodeunlimit` 生成指向 `pages/login/confirm/index` 的小程序码（`scene` 只放 ticket） |
-| `POST /api/v1/auth/wechat/qr/confirm` | 小程序确认页提交 `{ticket, code}`：code2session 换 openid → 建号/查号 → 原子占用票据 → 暂存会话 60 秒 |
-| `GET /api/v1/auth/wechat/qr/status?ticket=` | 网页轮询；`confirmed` 时返回会话并**立即删除票据**（一次性防重放） |
-
-`access_token` 走 `/cgi-bin/stable_token` 并在进程内缓存到过期前 10 分钟。
-小程序端确认页是 `pages/login/confirm/index`，**真机扫码前该页面至少要发布为体验版**
-（`check_path:false` 只解决出码，不解决页面不存在）。
+`WECHAT_MP_APPID` / `WECHAT_MP_SECRET` 两项都填后，小程序用
+`wx.login()` 的 code 调 `POST /api/v1/auth/wechat/mini` 换本站令牌。
+AppSecret 只在服务端使用，未配置时该接口返回 503。
+网页端已移除微信扫码登录，`providers` 不再暴露 `wechat_mini`。
 
 ---
 
@@ -425,7 +421,7 @@ curl -fsS http://127.0.0.1:8080/api/v1/ready
 - [ ] 80/443 只由 1Panel OpenResty 监听，没有第二个入口（Caddy 已移除）
 - [ ] `EXPOSE_DOCS=false`；`EMAIL_MODE=smtp`（生产）
 - [ ] `SMTP_HOST` / `SMTP_PORT` / `SMTP_FROM` 已填，且用 4.1 的自测命令真实收到过一封
-- [ ] GitHub/微信 Secret 只在 `.env`，没有进前端包或小程序包；`providers` 与预期一致
+- [ ] QQ / GitHub / 小程序 Secret 只在 `.env`，没有进前端包或小程序包；`providers` 与预期一致
 - [ ] `CORS_ORIGINS` 是明确域名，不含 `*`
 - [ ] HSTS / CSP / nosniff / frame-ancestors 已在公网响应头中（`curl -sI`）
 - [ ] 备份文件权限 600 且异地留存

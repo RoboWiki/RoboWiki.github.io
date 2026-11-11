@@ -295,14 +295,6 @@ export async function bindWechat(): Promise<User> {
   return pair.user
 }
 
-/** 网页发起的扫码登录：把 scene 里的 ticket 与本次 wx.login 的 code 一起交给后端确认。 */
-export async function confirmQrLogin(ticket: string, code: string): Promise<void> {
-  await api.request<{ ok: boolean }>('/auth/wechat/qr/confirm', {
-    method: 'POST',
-    body: { ticket, code },
-  })
-}
-
 function saveSession(pair: TokenPair): void {
   tokenStore.setTokens(pair.access_token, pair.refresh_token ?? null)
   cacheUser(pair.user)

@@ -203,7 +203,7 @@ class HandoffCode(SQLModel, table=True):
 
 
 class LoginTicket(SQLModel, table=True):
-    """微信扫码登录的一次性票据。
+    """微信扫码登录的一次性票据（2026-11-11 起该登录方式停用，表保留兼容存量部署）。
 
     网页生成 ticket，把它塞进小程序码的 scene；小程序确认时带 wx.login 的
     code；网页轮询状态，confirmed 时取走会话。**不用 Redis**：这套栈里只有

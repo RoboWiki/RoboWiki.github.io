@@ -6,20 +6,19 @@
 """
 from __future__ import annotations
 
-import base64
 import hashlib
+import json
 import logging
 import re
 import secrets
-import time
 import warnings
 from datetime import datetime, timedelta, timezone
-from urllib.parse import urlparse
+from urllib.parse import parse_qsl, urlencode, urlparse
 
 import httpx
 from fastapi import APIRouter, HTTPException, Request, status
 from fastapi.responses import JSONResponse, RedirectResponse
-from sqlalchemy import delete, update
+from sqlalchemy import update
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, select
 
@@ -30,13 +29,12 @@ from ...core.security import (create_token, dummy_password_hash, hash_password,
 from ...crud import posts_out, user_out
 from ...email_templates import render_email
 from ...mailer import MailError, enqueue_email, send_email
-from ...models import (Comment, EmailToken, HandoffCode, Identity, LoginTicket, Part,
+from ...models import (Comment, EmailToken, HandoffCode, Identity, Part,
                        Post, Rating, RefreshToken, Submission, User, UserBan)
 from ...schemas import (AccountExportOut, AccountOut, AccountUpdateIn,
                         CommentExportOut, EmailChangeConfirmIn, EmailChangeIn,
                         ForgotIn, HandleIn, HandoffIn, IdentityOut, LoginIn, LogoutIn,
                         PasswordChangeIn, PasswordSetIn, ProvidersOut,
-                        QrConfirmIn, QrCreateOut, QrStatusOut,
                         RatingExportOut, RefreshIn, RegisterIn, ResetPasswordIn,
                         SessionOut, SubmissionExportOut, TokenOut,
                         VerifyEmailIn, WechatMiniIn)
@@ -100,7 +98,7 @@ def providers():
         email=True,
         # authlib 未安装时 _github_client() 也会 503，这里必须同口径
         github=bool(OAuth is not None and settings.github_oauth_enabled),
-        wechat_mini=settings.wechat_mini_enabled,
+        qq=settings.qq_oauth_enabled,
     )
 
 
@@ -942,6 +940,218 @@ async def github_callback(request: Request, db: Db):
                             status_code=status.HTTP_302_FOUND)
 
 
+# ── QQ（QQ 互联 OAuth 2.0）──────────────────────────────────────────────────
+# QQ 没有 OIDC/PKCE：授权码、state、openid 与用户资料全部是自有接口，
+# 这里手写协议，只把 (provider, subject) 交给上面的身份抽象。
+PROVIDER_QQ = "qq"
+_QQ_AUTHORIZE = "https://graph.qq.com/oauth2.0/authorize"
+_QQ_TOKEN = "https://graph.qq.com/oauth2.0/token"
+_QQ_ME = "https://graph.qq.com/oauth2.0/me"
+_QQ_USERINFO = "https://graph.qq.com/user/get_user_info"
+
+
+def _qq_require_config() -> tuple[str, str]:
+    if not settings.qq_oauth_enabled:
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE,
+                            "QQ 登录未配置")
+    return ((settings.qq_app_id or "").strip(),
+            (settings.qq_app_key or "").strip())
+
+
+def _qq_redirect_uri(request: Request) -> str:
+    base = (settings.oauth_redirect_base or "").strip()
+    if base:
+        return f"{base.rstrip('/')}{settings.api_v1}/auth/qq/callback"
+    return str(request.url_for("qq_callback"))
+
+
+def _qq_authorize_url(request: Request, state: str) -> str:
+    app_id, _ = _qq_require_config()
+    query = urlencode({
+        "response_type": "code",
+        "client_id": app_id,
+        "redirect_uri": _qq_redirect_uri(request),
+        "state": state,
+        "scope": settings.qq_oauth_scope,
+    })
+    return f"{_QQ_AUTHORIZE}?{query}"
+
+
+async def _qq_token(code: str, redirect_uri: str) -> dict:
+    """code → access_token。QQ 默认返回 querystring，fmt=json 时返回 JSON。"""
+    app_id, app_key = _qq_require_config()
+    params = {
+        "grant_type": "authorization_code",
+        "client_id": app_id,
+        "client_secret": app_key,
+        "code": code,
+        "redirect_uri": redirect_uri,
+        "fmt": "json",
+    }
+    async with httpx.AsyncClient(timeout=settings.qq_timeout_s) as client:
+        resp = await client.get(_QQ_TOKEN, params=params)
+        resp.raise_for_status()
+        text = resp.text.strip()
+    if text.startswith("{"):
+        return resp.json() or {}
+    # 兼容未支持 fmt=json 的旧网关：access_token=...&expires_in=...
+    return dict(parse_qsl(text))
+
+
+async def _qq_openid(access_token: str) -> dict:
+    """access_token → openid。QQ 这里历史上返回 JSONP，两种格式都接。"""
+    async with httpx.AsyncClient(timeout=settings.qq_timeout_s) as client:
+        resp = await client.get(_QQ_ME, params={"access_token": access_token,
+                                                "fmt": "json"})
+        resp.raise_for_status()
+        text = resp.text.strip()
+    if text.startswith("callback"):
+        text = text[text.find("(") + 1:text.rfind(")")].strip()
+    try:
+        return json.loads(text) or {}
+    except ValueError as exc:
+        raise ValueError("QQ openid 响应不是 JSON") from exc
+
+
+async def _qq_profile(access_token: str, openid: str) -> dict:
+    app_id, _ = _qq_require_config()
+    params = {
+        "access_token": access_token,
+        "oauth_consumer_key": app_id,
+        "openid": openid,
+    }
+    async with httpx.AsyncClient(timeout=settings.qq_timeout_s) as client:
+        resp = await client.get(_QQ_USERINFO, params=params)
+        resp.raise_for_status()
+        return resp.json() or {}
+
+
+def _qq_authorize_response(request: Request) -> RedirectResponse:
+    _qq_require_config()
+    rate_limit(request, "oauth-login", 30)
+    state = secrets.token_urlsafe(24)
+    request.session["qq_oauth_state"] = state
+    return RedirectResponse(_qq_authorize_url(request, state),
+                            status_code=status.HTTP_302_FOUND)
+
+
+@router.get("/qq/login", name="qq_login")
+async def qq_login(request: Request, return_to: str | None = None):
+    """跳到 QQ 授权页；state 存在签名 session 里，回调时校验。"""
+    origin = _normalize_return_to(return_to)
+    if origin:
+        request.session["oauth_return_to"] = origin
+    else:
+        request.session.pop("oauth_return_to", None)
+    return _qq_authorize_response(request)
+
+
+@router.post("/qq/bind")
+async def qq_bind_start(request: Request, user: CurrentUser,
+                        return_to: str | None = None):
+    """账号页发起 QQ 绑定：回调时绑到当前账号，不切换登录状态。"""
+    rate_limit(request, "oauth-bind", 20, user.id)
+    origin = _normalize_return_to(return_to) or settings.site_url.rstrip("/")
+    request.session["oauth_bind_user"] = user.id
+    request.session["oauth_bind_return"] = origin
+    return {"url": _qq_authorize_response(request).headers.get("location")}
+
+
+@router.get("/qq/callback")
+async def qq_callback(request: Request, db: Db):
+    """QQ 回调：校验 state → code 换 token → openid → 用户资料 → 本站会话。"""
+    bind_user_id = request.session.pop("oauth_bind_user", None)
+    bind_return = request.session.pop("oauth_bind_return", None)
+    state = (request.query_params.get("state") or "").strip()
+    expected = request.session.pop("qq_oauth_state", None)
+    if not expected or not state or not secrets.compare_digest(state, expected):
+        raise HTTPException(status.HTTP_400_BAD_REQUEST,
+                            "QQ 授权状态已失效，请重新登录")
+    code = (request.query_params.get("code") or "").strip()
+    if not code:
+        log.warning("qq oauth cancelled: %s", request.query_params.get("error"))
+        raise HTTPException(status.HTTP_400_BAD_REQUEST,
+                            "QQ 授权未完成，请重新登录")
+    rate_limit(request, "oauth-callback", 60)
+
+    try:
+        token = await _qq_token(code, _qq_redirect_uri(request))
+        access_token = (token.get("access_token") or "").strip()
+        if not access_token:
+            log.warning("qq token rejected: %s", token.get("error"))
+            raise HTTPException(status.HTTP_400_BAD_REQUEST,
+                                "QQ 登录失败，请重新授权")
+        me = await _qq_openid(access_token)
+        openid = (me.get("openid") or "").strip()
+        cid = str(me.get("client_id") or "").strip()
+        if not openid or (cid and cid != (settings.qq_app_id or "").strip()):
+            raise HTTPException(status.HTTP_502_BAD_GATEWAY,
+                                "QQ 返回的资料不完整")
+        profile = await _qq_profile(access_token, openid)
+    except httpx.HTTPError as exc:
+        log.warning("qq profile fetch failed: %s", type(exc).__name__)
+        raise HTTPException(status.HTTP_502_BAD_GATEWAY,
+                            "QQ 暂时不可用，请稍后再试") from exc
+    except ValueError as exc:
+        log.warning("qq response parse failed: %s", type(exc).__name__)
+        raise HTTPException(status.HTTP_502_BAD_GATEWAY,
+                            "QQ 返回的资料无法解析") from exc
+
+    if str(profile.get("ret", "0")) != "0":
+        log.warning("qq userinfo rejected: ret=%s msg=%s",
+                    profile.get("ret"), profile.get("msg"))
+        raise HTTPException(status.HTTP_502_BAD_GATEWAY,
+                            "QQ 用户资料获取失败，请稍后再试")
+
+    nickname = (profile.get("nickname") or "").strip()
+    avatar = (profile.get("figureurl_qq_2")
+              or profile.get("figureurl_qq_1")
+              or profile.get("figureurl") or "")
+    if avatar.startswith("http://"):
+        avatar = "https://" + avatar[len("http://"):]
+    raw = {k: profile.get(k) for k in
+           ("nickname", "figureurl_qq_1", "figureurl_qq_2", "gender",
+            "province", "city", "year")}
+    if avatar:
+        raw["avatar"] = avatar
+
+    if bind_user_id is not None:
+        bind_user = db.get(User, int(bind_user_id))
+        if bind_user is None:
+            raise HTTPException(401, "绑定会话已失效，请重新登录后再试")
+        origin = bind_return or settings.site_url.rstrip("/")
+        try:
+            _bind_provider_identity(db, bind_user, PROVIDER_QQ, openid,
+                                    raw=raw)
+        except HTTPException as exc:
+            if exc.status_code == status.HTTP_409_CONFLICT:
+                return RedirectResponse(
+                    f"{origin}/account.html?qq=conflict",
+                    status_code=status.HTTP_302_FOUND)
+            raise
+        return RedirectResponse(f"{origin}/account.html?qq=bound",
+                                status_code=status.HTTP_302_FOUND)
+
+    user = _user_for_identity(
+        db, provider=PROVIDER_QQ, subject=openid,
+        email=None, email_verified=False,
+        display_name=nickname or None,
+        # handle 里不放 openid 原文：它是能跨会话认出人的标识
+        handle_hint=_slug(f"qq-{hashlib.sha256(openid.encode()).hexdigest()[:10]}"),
+        raw=raw,
+    )
+    return_to = request.session.pop("oauth_return_to", None)
+    out = _issue_session(db, user, request, scopes=(PROVIDER_QQ,), client="qq")
+    if _wants_json(request):
+        return JSONResponse(out.model_dump(mode="json"))
+    if return_to:
+        code_once = _create_handoff(db, user, return_to)
+        return RedirectResponse(f"{return_to.rstrip('/')}/login.html#code={code_once}",
+                                status_code=status.HTTP_302_FOUND)
+    return RedirectResponse(_login_redirect(out.access_token),
+                            status_code=status.HTTP_302_FOUND)
+
+
 # ── 微信小程序（jscode2session）──────────────────────────────────────────────
 async def _wechat_code2session(code: str) -> dict:
     """code → openid。AppSecret 只在这里出现，绝不回传给客户端。"""
@@ -1004,167 +1214,6 @@ async def wechat_mini(payload: WechatMiniIn, request: Request, db: Db,
     )
     return _issue_session(db, user, request,
                           scopes=(PROVIDER_WECHAT_MINI,), client="mini")
-
-
-# ── 微信扫码登录（网页意图 + 个人小程序确认器）────────────────────────────────
-# 流程：网页 POST /auth/wechat/qr 拿小程序码 → 用户扫码进小程序确认页 →
-# 小程序 POST /auth/wechat/qr/confirm（ticket + wx.login code）→ 网页轮询
-# GET /auth/wechat/qr/status，confirmed 时取走会话。ticket 一次性、5 分钟过期。
-_QR_TICKET_TTL = 300          # 二维码有效期（秒）
-_wx_token_cache: dict[str, tuple[str, float]] = {}
-
-
-def _qr_ticket_ttl() -> int:
-    return _QR_TICKET_TTL
-
-
-async def _wechat_access_token() -> str:
-    """stable_token：不会像旧接口那样一取就顶掉别的 token，缓存到过期前 10 分钟。"""
-    now = time.time()
-    cached = _wx_token_cache.get("default")
-    if cached and cached[1] > now:
-        return cached[0]
-    payload = {
-        "grant_type": "client_credential",
-        "appid": (settings.wechat_mp_appid or "").strip(),
-        "secret": (settings.wechat_mp_secret or "").strip(),
-        "force_refresh": False,
-    }
-    url = f"{settings.wechat_api_base.rstrip('/')}/cgi-bin/stable_token"
-    async with httpx.AsyncClient(timeout=settings.wechat_timeout_s) as client:
-        resp = await client.post(url, json=payload)
-        resp.raise_for_status()
-        data = resp.json() or {}
-    token = (data.get("access_token") or "").strip()
-    if not token:
-        log.warning("wechat stable_token failed: errcode=%s", data.get("errcode"))
-        raise HTTPException(status.HTTP_502_BAD_GATEWAY,
-                            "获取微信 access_token 失败，请稍后再试")
-    ttl = max(600, min(int(data.get("expires_in") or 7200), 7200) - 600)
-    _wx_token_cache["default"] = (token, now + ttl)
-    return token
-
-
-async def _wechat_qr_image(ticket: str) -> bytes:
-    """调 getwxacodeunlimit 拿小程序码；失败时微信返回 JSON 而不是图片。"""
-    token = await _wechat_access_token()
-    url = f"{settings.wechat_api_base.rstrip('/')}/wxa/getwxacodeunlimit"
-    async with httpx.AsyncClient(timeout=settings.wechat_timeout_s) as client:
-        resp = await client.post(url, params={"access_token": token}, json={
-            "scene": ticket,
-            "page": "pages/login/confirm/index",
-            # 体验版 / 未发布页面也能出码；真机扫码要求该页面至少是体验版
-            "check_path": False,
-            "width": 280,
-        })
-        resp.raise_for_status()
-        if "image" not in (resp.headers.get("content-type") or ""):
-            data = resp.json() or {}
-            raise HTTPException(
-                status.HTTP_502_BAD_GATEWAY,
-                f"生成小程序码失败（errcode={data.get('errcode')}）")
-        return resp.content
-
-
-def _prune_tickets(db: Session) -> None:
-    """过期票据顺手清掉：这张表只存 5 分钟的状态，别让它长草。"""
-    db.execute(delete(LoginTicket).where(LoginTicket.expires_at <= _utcnow()))
-    db.commit()
-
-
-@router.post("/wechat/qr", response_model=QrCreateOut)
-async def wechat_qr_create(request: Request, db: Db):
-    """网页发起扫码登录：签发 ticket 并生成指向小程序确认页的小程序码。"""
-    if not settings.wechat_mini_enabled:
-        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE,
-                            "微信扫码登录未配置")
-    rate_limit(request, "wechat-qr", 30)
-    _prune_tickets(db)
-    # 32 位 hex 正好是 scene 上限（32 个可见字符）；scene 里只放 ticket。
-    ticket = secrets.token_hex(16)
-    db.add(LoginTicket(ticket=ticket,
-                       expires_at=_utcnow() + timedelta(seconds=_qr_ticket_ttl())))
-    db.commit()
-
-    try:
-        qrcode = base64.b64encode(await _wechat_qr_image(ticket)).decode()
-    except (httpx.HTTPError, ValueError) as exc:
-        log.warning("wechat qrcode failed: %s", type(exc).__name__)
-        raise HTTPException(status.HTTP_502_BAD_GATEWAY,
-                            "生成小程序码失败，请稍后再试") from exc
-    return QrCreateOut(ticket=ticket, qrcode=qrcode, expires_in=_qr_ticket_ttl())
-
-
-@router.post("/wechat/qr/confirm", response_model=dict)
-async def wechat_qr_confirm(payload: QrConfirmIn, request: Request, db: Db):
-    """小程序确认页调用：把这次 ticket 与扫码人的微信身份绑定，签发会话。"""
-    if not settings.wechat_mini_enabled:
-        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE,
-                            "微信扫码登录未配置")
-    rate_limit(request, "wechat-qr-confirm", 60)
-    now = _utcnow()
-    ticket = db.get(LoginTicket, payload.ticket.strip())
-    if ticket is None or ticket.expires_at <= now:
-        raise HTTPException(status.HTTP_410_GONE,
-                            "二维码已过期，请在网页刷新后重试")
-    if ticket.status != "pending":
-        raise HTTPException(status.HTTP_409_CONFLICT,
-                            "这次登录已确认过，请在网页重新生成二维码")
-
-    try:
-        data = await _wechat_code2session(payload.code)
-    except (httpx.HTTPError, ValueError) as exc:
-        log.warning("wechat qr confirm code2session failed: %s", type(exc).__name__)
-        raise HTTPException(status.HTTP_502_BAD_GATEWAY,
-                            "微信登录服务暂不可用，请稍后再试") from exc
-    openid = (data.get("openid") or "").strip()
-    if not openid:
-        log.warning("wechat qr confirm rejected: errcode=%s", data.get("errcode"))
-        raise HTTPException(status.HTTP_400_BAD_REQUEST,
-                            "微信登录失败，请重新扫码")
-
-    unionid = (data.get("unionid") or "").strip()
-    user = _user_for_identity(
-        db, provider=PROVIDER_WECHAT_MINI, subject=openid,
-        email=None, email_verified=False, display_name=None,
-        handle_hint=_slug(f"wx-{hashlib.sha256(openid.encode()).hexdigest()[:10]}"),
-        raw={"unionid": unionid} if unionid else {},
-    )
-    out = _issue_session(db, user, request,
-                         scopes=(PROVIDER_WECHAT_MINI,), client="web-qr")
-
-    # 原子占用：并发两次确认只能成功一次（status 条件更新）
-    result = db.execute(update(LoginTicket).where(
-        LoginTicket.ticket == ticket.ticket,
-        LoginTicket.status == "pending",
-        LoginTicket.expires_at > now,
-    ).values(status="confirmed",
-             session=out.model_dump(mode="json"),
-             confirmed_at=now))
-    db.commit()
-    if not result.rowcount:
-        raise HTTPException(status.HTTP_409_CONFLICT,
-                            "这次登录已确认过，请在网页重新生成二维码")
-    return {"ok": True}
-
-
-@router.get("/wechat/qr/status", response_model=QrStatusOut)
-def wechat_qr_status(ticket: str, request: Request, db: Db):
-    """网页轮询：confirmed 时返回会话并**立刻删除票据**（一次性，防重放）。"""
-    rate_limit(request, "wechat-qr-status", 120)
-    row = db.get(LoginTicket, ticket.strip())
-    if row is None:
-        return QrStatusOut(status="expired")
-    if row.expires_at <= _utcnow():
-        db.delete(row)
-        db.commit()
-        return QrStatusOut(status="expired")
-    if row.status != "confirmed" or not row.session:
-        return QrStatusOut(status="pending")
-    payload = QrStatusOut(status="confirmed", token=TokenOut(**row.session))
-    db.delete(row)
-    db.commit()
-    return payload
 
 
 # ── 身份管理 ────────────────────────────────────────────────────────────────

@@ -44,7 +44,6 @@ const pages = [
   { path: 'pages/compare/index', config: { navigationBarTitleText: '部件对比', enablePullDownRefresh: false } },
   { path: 'pages/learn/index', config: { navigationBarTitleText: '学习', enablePullDownRefresh: false } },
   { path: 'pages/login/index', config: { navigationBarTitleText: '登录' } },
-  { path: 'pages/login/confirm/index', config: { navigationBarTitleText: '确认登录' } },
   { path: 'pages/submit/index', config: { navigationBarTitleText: '投稿纠错' } },
   { path: 'pages/compose/index', config: { navigationBarTitleText: '发帖' } },
 ]

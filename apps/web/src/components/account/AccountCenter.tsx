@@ -38,7 +38,6 @@ const CLIENT_LABEL: Record<string, string> = {
 
 const PROVIDERS: { id: string; label: string; hint: string }[] = [
   { id: 'github', label: 'GitHub', hint: '用 GitHub 授权登录，适合在电脑上参与共建。' },
-  { id: 'wechat_mini', label: '微信小程序', hint: '在小程序内登录后自动绑定，网页端暂不支持发起绑定。' },
 ]
 
 const STATUS_META: Record<string, { label: string; tone: string }> = {
@@ -1002,9 +1001,10 @@ function IdentityPanel({ account, onGoSecurity }: {
   const { modal } = AntApp.useApp()
   const [status, setStatus] = useState<Status>(() => {
     if (typeof window === 'undefined') return null
-    const flag = new URLSearchParams(window.location.search).get('github')
-    if (flag === 'bound') return { kind: 'ok', text: '已绑定 GitHub' }
-    if (flag === 'conflict') {
+    const params = new URLSearchParams(window.location.search)
+    const gh = params.get('github')
+    if (gh === 'bound') return { kind: 'ok', text: '已绑定 GitHub' }
+    if (gh === 'conflict') {
       return { kind: 'error', text: '该 GitHub 已绑定其他账号，本次没有做任何变更' }
     }
     return null
@@ -1018,14 +1018,14 @@ function IdentityPanel({ account, onGoSecurity }: {
   const bound = (provider: string): Identity | undefined =>
     identities.data?.find(i => i.provider === provider)
 
-  const connectGithub = async () => {
+  const connect = async (provider: 'github') => {
     if (busy) return
-    setBusy('github')
+    setBusy(provider)
     setStatus(null)
     try {
       const origin = window.location.origin
       const res = await fetch(
-        `${API_BASE}/auth/github/bind?return_to=${encodeURIComponent(origin)}`,
+        `${API_BASE}/auth/${provider}/bind?return_to=${encodeURIComponent(origin)}`,
         {
           method: 'POST',
           credentials: 'include',
@@ -1037,7 +1037,7 @@ function IdentityPanel({ account, onGoSecurity }: {
         throw new Error(text || `HTTP ${res.status}`)
       }
       const data = await res.json() as { url?: string }
-      if (!data.url) throw new Error('没有拿到 GitHub 授权地址')
+      if (!data.url) throw new Error('没有拿到授权地址')
       window.location.href = data.url
     } catch (e) {
       setStatus({ kind: 'error', text: errText(e) })
@@ -1092,7 +1092,9 @@ function IdentityPanel({ account, onGoSecurity }: {
           </div>
         ) : (
           <ul className="m-0 list-none divide-y divide-line p-0">
-            {PROVIDERS.map(provider => {
+            {[...PROVIDERS, ...(bound('wechat_mini')
+              ? [{ id: 'wechat_mini', label: '微信小程序', hint: '小程序登录已停用；已绑定的账号可在这里解绑。' }]
+              : [])].map(provider => {
               const identity = bound(provider.id)
               return (
                 <li key={provider.id} className="flex flex-wrap items-start justify-between gap-3 py-3 first:pt-0 last:pb-0">
@@ -1118,12 +1120,13 @@ function IdentityPanel({ account, onGoSecurity }: {
                       {busy === provider.id ? '解绑中…' : '解绑'}
                     </button>
                   ) : provider.id === 'github' ? (
-                    <button type="button" className={BTN_PRIMARY} onClick={connectGithub}>
+                    <button type="button" className={BTN_PRIMARY}
+                      onClick={() => connect(provider.id as 'github')}>
                       <GithubOutlined aria-hidden="true" />
-                      绑定 GitHub
+                      绑定 {provider.label}
                     </button>
                   ) : (
-                    <span className="text-[12px] text-ink-3">请在小程序内完成</span>
+                    <span className="text-[12px] text-ink-3">小程序登录已停用</span>
                   )}
                 </li>
               )

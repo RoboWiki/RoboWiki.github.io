@@ -30,7 +30,7 @@ App 只做渲染、登录、分享、离线与本地缓存。**不复制后端�
 
 ### 2.1 先问渠道
 
-`GET /auth/providers` → `{"email": true, "github": true, "wechat_mini": false}`。
+`GET /auth/providers` → `{"email": true, "github": true, "qq": true}`。
 App 只渲染返回为 `true` 的按钮；为 `false` 时不要发请求，否则只会拿到 503。
 
 ### 2.2 邮箱
