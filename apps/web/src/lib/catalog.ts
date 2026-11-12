@@ -68,8 +68,9 @@ export const categoryLabel = (id: string) =>
   catalog.categories?.find(c => c.id === id)?.name || id
 
 export const featuredParts = (() => {
-  const ids = new Set((catalog.featured as any)?.ids || [])
-  const picked = parts.filter(p => ids.has(p.id))
+  const ids = ((catalog.featured as any)?.ids || []) as string[]
+  const byId = new Map(parts.map(p => [p.id, p]))
+  const picked = ids.map(id => byId.get(id)).filter((p): p is CatalogPart => Boolean(p))
   return (picked.length ? picked : parts.filter(p => p.featured)).slice(0, 8)
 })()
 
