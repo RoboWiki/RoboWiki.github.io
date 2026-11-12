@@ -22,6 +22,7 @@
 | 引用回复 | NodeBB quote、Discourse reply-to | 评论带被引用正文快照，回复树仍只两级；被引用方撤回/隐藏时快照同步清空 |
 | 标签聚合与导航 | Discourse tags、Flarum tags | `GET /tags` 按帖子数聚合；社区侧栏热门标签与卡片标签可直接筛选 |
 | 评价条数与写评价入口 | Discourse topic summary、Forem 文章页 | 零件页显示「N 条评价」；评分后引导补一句使用体验，直达预填评价表单 |
+| 站务运营总览 | Discourse admin dashboard、NodeBB ACP | `GET /admin/overview`：用户/内容/互动/治理/数据质量、14 天趋势、贡献者与热门内容、待办入口 |
 
 ## 待补（按价值排序）
 

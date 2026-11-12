@@ -236,3 +236,25 @@ def test_patch_validates_target_and_source_url(client):
     assert client.patch("/api/admin/parts/达妙-dm-dm-j4340-2ec-v1-1", headers=h, json={
         "changes": {"price_cny": 1.0}, "note": "来源不合法",
         "source_url": "javascript:alert(1)"}).status_code == 422
+
+
+def test_overview_requires_staff_and_has_stable_shape(client):
+    """运营总览：权限与形状。数字随测试库变化，不写死，只钉口径。"""
+    assert client.get("/api/admin/overview").status_code == 401
+    assert client.get("/api/admin/overview", headers=plain(client)).status_code == 403
+
+    d = client.get("/api/admin/overview", headers=staff(client)).json()
+    assert d["users"]["total"] >= 2
+    assert d["content"]["posts"] >= 1
+    assert len(d["trend"]) == 14
+    assert {t["date"] for t in d["trend"]}  # 每天都有 date，空库也成立
+    assert 0 <= d["engagement"]["solve_rate"] <= 100
+    assert 0 <= d["engagement"]["review_coverage"] <= 100
+    assert 0 <= d["engagement"]["rating_coverage"] <= 100
+    assert d["engagement"]["parts"] >= 1
+    assert d["data_quality"]["no_image"] >= 0
+    if d["content"]["posts_7d"] > 0:
+        assert d["users"]["active_7d"] >= 1, "近 7 天有帖子时活跃用户不应为 0"
+    keys = {a["key"] for a in d["actions"]}
+    assert {"reports", "submissions", "unanswered", "zero_reviews", "gaps"} <= keys
+    assert all(a["count"] >= 0 for a in d["actions"])

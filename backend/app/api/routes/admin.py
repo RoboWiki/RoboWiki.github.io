@@ -8,7 +8,7 @@ note 与 source_url 必填 —— 没有依据的改动和编造数据没有区�
 """
 from __future__ import annotations
 
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from typing import Annotated, Any
 
 from fastapi import APIRouter, HTTPException, Query
@@ -20,7 +20,8 @@ from ...catalog_fields import SPEC_KEYS, TOP_FIELDS, split_field
 from ...crud import posts_out
 from ...email_templates import render_email
 from ...mailer import MailError, send_email
-from ...models import Comment, Part, PartEdit, Post, RefreshToken, Submission, User, UserBan
+from ...models import (Comment, Part, PartEdit, Post, Rating, RefreshToken,
+                       Report, Submission, User, UserBan)
 from ..deps import CurrentUser, Db
 from .catalog import _attach_reviews, part_out
 
@@ -428,6 +429,212 @@ def admin_verify(part_id: str, user: CurrentUser, db: Db,
     s = _propose(db, p, changes, diff, user, note, p.url)
     return {"ok": True, "changed": len(diff), "submission_id": s.id,
             "status": s.status, "diff": diff}
+
+
+@router.get("/overview")
+def admin_overview(user: CurrentUser, db: Db):
+    """社区运营总览：用户、内容、互动、治理与数据质量。
+
+    这里是「站务今天该看什么」，不是流量统计：
+      · 所有数字都来自本站库，不含 API 访问日志；
+      · 时间窗口按 UTC 自然日计算；
+      · 待办项给出明确入口，避免看板只是一堆数字。
+    """
+    _staff(user)
+    now = datetime.now(timezone.utc)
+    day = now.date()
+    cut7 = now - timedelta(days=7)
+    cut14 = now - timedelta(days=14)
+    cut30 = now - timedelta(days=30)
+
+    def count(model, *where) -> int:
+        stmt = select(func.count()).select_from(model)
+        for cond in where:
+            stmt = stmt.where(cond)
+        return int(db.exec(stmt).one())
+
+    def ids(col, created_col, cutoff) -> set[int]:
+        rows = db.exec(select(col).where(created_col >= cutoff)).all()
+        return {int(x) for x in rows if x is not None}
+
+    staff_count = count(User, User.is_staff == True)  # noqa: E712
+    banned = count(UserBan, UserBan.lifted_at.is_(None))
+    users_total = count(User)
+    posts_total = count(Post)
+    comments_total = count(Comment)
+    ratings_total = count(Rating)
+    parts_total = count(Part)
+
+    by_kind = dict(db.exec(select(Post.kind, func.count(Post.id))
+                            .group_by(Post.kind)).all())
+    discussion_total = int(by_kind.get("discussion", 0))
+    solved_discussions = count(
+        Post, Post.kind == "discussion", Post.accepted_comment_id.is_not(None),
+        Post.hidden == False)  # noqa: E712
+    unanswered = count(
+        Post, Post.kind == "discussion", Post.hidden == False,  # noqa: E712
+        Post.accepted_comment_id.is_(None), Post.created_at < cut7)
+
+    rated_parts = int(db.exec(select(func.count(func.distinct(Rating.part_id)))).one())
+    reviewed_parts = int(db.exec(select(
+        func.count(func.distinct(Post.part_id))).where(
+        Post.kind == "review", Post.hidden == False)).one())  # noqa: E712
+
+    reviews_total = count(Post, Post.kind == "review", Post.hidden == False)  # noqa: E712
+    open_reports = count(Report, Report.status == "open")
+    pending_submissions = count(Submission, Submission.status == "pending")
+
+    # 14 天趋势：数据量小，直接按天在 Python 里分桶，避免数据库方言差异。
+    trend_days = [day - timedelta(days=i) for i in range(13, -1, -1)]
+    trend = {d: {"date": d.strftime("%m-%d"), "posts": 0,
+                 "comments": 0, "ratings": 0} for d in trend_days}
+
+    def bucket(col, key: str) -> None:
+        for created in db.exec(select(col).where(col >= cut14)).all():
+            if created is None:
+                continue
+            d = created.date() if isinstance(created, datetime) else created
+            if d in trend:
+                trend[d][key] += 1
+
+    bucket(Post.created_at, "posts")
+    bucket(Comment.created_at, "comments")
+    bucket(Rating.created_at, "ratings")
+
+    # 近 30 天贡献者：发帖 ×3、评论 ×2、评分 ×1，作为站务看活跃度的粗口径。
+    post_counts = dict(db.exec(select(Post.author_id, func.count(Post.id))
+                               .where(Post.created_at >= cut30,
+                                      Post.hidden == False)  # noqa: E712
+                               .group_by(Post.author_id)).all())
+    comment_counts = dict(db.exec(select(Comment.author_id, func.count(Comment.id))
+                                  .where(Comment.created_at >= cut30,
+                                         Comment.hidden == False)  # noqa: E712
+                                  .group_by(Comment.author_id)).all())
+    rating_counts = dict(db.exec(select(Rating.user_id, func.count(Rating.id))
+                                 .where(Rating.created_at >= cut30)
+                                 .group_by(Rating.user_id)).all())
+    contributor_ids = set(post_counts) | set(comment_counts) | set(rating_counts)
+    contributors = db.exec(select(User).where(User.id.in_(contributor_ids))).all() \
+        if contributor_ids else []
+    top_contributors = sorted(({
+        "handle": u.handle, "display_name": u.display_name,
+        "posts": int(post_counts.get(u.id, 0)),
+        "comments": int(comment_counts.get(u.id, 0)),
+        "ratings": int(rating_counts.get(u.id, 0)),
+        "score": int(post_counts.get(u.id, 0) * 3
+                     + comment_counts.get(u.id, 0) * 2
+                     + rating_counts.get(u.id, 0)),
+    } for u in contributors), key=lambda r: (-r["score"], -r["posts"],
+                                             r["handle"]))[:6]
+
+    top_posts = [{
+        "id": p.id, "title": p.title, "kind": p.kind,
+        "score": p.score, "comment_count": p.comment_count,
+        "view_count": p.view_count,
+    } for p in db.exec(select(Post).where(Post.hidden == False)  # noqa: E712
+                       .order_by(Post.view_count.desc(), Post.score.desc())
+                       .limit(5)).all()]
+
+    review_counts = {pid: int(n) for pid, n in db.exec(
+        select(Post.part_id, func.count(Post.id)).where(
+            Post.kind == "review", Post.hidden == False,  # noqa: E712
+            Post.part_id.is_not(None)).group_by(Post.part_id)).all()}
+    rating_rows = db.exec(
+        select(Rating.part_id, func.count(Rating.id), func.avg(Rating.score))
+        .group_by(Rating.part_id)).all()
+    rated_map = {pid: (int(n), round(float(avg), 2))
+                 for pid, n, avg in rating_rows if pid is not None}
+    part_ids = {pid for pid, (n, _) in rated_map.items() if n >= 1}
+    parts = {p.id: p for p in db.exec(
+        select(Part).where(Part.id.in_(part_ids))).all()} if part_ids else {}
+    top_parts = sorted(({
+        "id": pid, "model": parts[pid].model, "vendor": parts[pid].vendor,
+        "rating_count": n, "rating_avg": avg,
+        "review_count": int(review_counts.get(pid, 0)),
+    } for pid, (n, avg) in rated_map.items() if pid in parts),
+        key=lambda r: (-r["rating_count"], -r["rating_avg"], r["model"]))[:5]
+
+    zero_review = sorted(({
+        "id": pid, "model": parts[pid].model, "vendor": parts[pid].vendor,
+        "rating_count": n, "rating_avg": avg,
+    } for pid, (n, avg) in rated_map.items()
+        if pid in parts and n >= 3 and review_counts.get(pid, 0) == 0),
+        key=lambda r: (-r["rating_count"], r["model"]))
+
+    gap_stats = admin_stats(user, db)
+    actions = [
+        {"key": "reports", "label": "待处理举报", "count": open_reports,
+         "tab": "reports", "hint": "先处置举报，再处理一般内容"},
+        {"key": "submissions", "label": "待审投稿", "count": pending_submissions,
+         "tab": "submissions", "hint": "审核提案并写清依据"},
+        {"key": "unanswered", "label": "7 天未解决讨论", "count": unanswered,
+         "href": "/community.html", "hint": "优先回答无人接的问题"},
+        {"key": "zero_reviews", "label": "热门零件缺长评", "count": len(zero_review),
+         "href": "/community.html", "hint": "评分 ≥3 但还没有评价帖"},
+        {"key": "gaps", "label": "缺图或缺价", "count": int(gap_stats["no_image"] + gap_stats["no_price"]),
+         "tab": "gaps", "hint": "补图、补价、补来源"},
+    ]
+
+    return {
+        "generated_at": now.isoformat(),
+        "users": {
+            "total": users_total,
+            "new_7d": count(User, User.created_at >= cut7),
+            "new_30d": count(User, User.created_at >= cut30),
+            "active_7d": len(ids(Post.author_id, Post.created_at, cut7) | ids(Comment.author_id, Comment.created_at, cut7)
+                             | ids(Rating.user_id, Rating.created_at, cut7)),
+            "active_30d": len(ids(Post.author_id, Post.created_at, cut30) | ids(Comment.author_id, Comment.created_at, cut30)
+                              | ids(Rating.user_id, Rating.created_at, cut30)),
+            "staff": staff_count,
+            "banned": banned,
+        },
+        "content": {
+            "posts": posts_total,
+            "posts_7d": count(Post, Post.created_at >= cut7),
+            "posts_30d": count(Post, Post.created_at >= cut30),
+            "discussions": discussion_total,
+            "reviews": reviews_total,
+            "builds": int(by_kind.get("build", 0)),
+            "comments": comments_total,
+            "comments_7d": count(Comment, Comment.created_at >= cut7),
+            "ratings": ratings_total,
+            "ratings_7d": count(Rating, Rating.created_at >= cut7),
+        },
+        "engagement": {
+            "comments_per_post": round(comments_total / posts_total, 2) if posts_total else 0,
+            "solved_discussions": solved_discussions,
+            "solve_rate": round(solved_discussions / discussion_total * 100, 1)
+            if discussion_total else 0,
+            "parts": parts_total,
+            "parts_with_ratings": rated_parts,
+            "parts_with_reviews": reviewed_parts,
+            "rating_coverage": round(rated_parts / parts_total * 100, 1) if parts_total else 0,
+            "review_coverage": round(reviewed_parts / parts_total * 100, 1) if parts_total else 0,
+        },
+        "moderation": {
+            "open_reports": open_reports,
+            "reports_7d": count(Report, Report.created_at >= cut7),
+            "hidden_posts": count(Post, Post.hidden == True),  # noqa: E712
+            "hidden_comments": count(Comment, Comment.hidden == True),  # noqa: E712
+            "locked_posts": count(Post, Post.locked == True),  # noqa: E712
+            "pinned_posts": count(Post, Post.pinned == True),  # noqa: E712
+            "pending_submissions": pending_submissions,
+        },
+        "data_quality": {
+            "no_image": gap_stats["no_image"],
+            "no_price": gap_stats["no_price"],
+            "no_url": gap_stats["no_url"],
+            "unverified": gap_stats["unverified"],
+            "tier_b": gap_stats["tier_B"],
+            "tier_c": gap_stats["tier_C"],
+        },
+        "trend": [trend[d] for d in trend_days],
+        "top_contributors": top_contributors,
+        "top_posts": top_posts,
+        "top_parts": top_parts,
+        "zero_review_parts": zero_review[:5],
+        "actions": actions,
+    }
 
 
 @router.get("/history")

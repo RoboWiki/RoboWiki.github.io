@@ -340,6 +340,98 @@ export interface TagList {
   total: number
 }
 
+export interface AdminOverview {
+  generated_at: string
+  users: {
+    total: number
+    new_7d: number
+    new_30d: number
+    active_7d: number
+    active_30d: number
+    staff: number
+    banned: number
+  }
+  content: {
+    posts: number
+    posts_7d: number
+    posts_30d: number
+    discussions: number
+    reviews: number
+    builds: number
+    comments: number
+    comments_7d: number
+    ratings: number
+    ratings_7d: number
+  }
+  engagement: {
+    comments_per_post: number
+    solved_discussions: number
+    solve_rate: number
+    parts: number
+    parts_with_ratings: number
+    parts_with_reviews: number
+    rating_coverage: number
+    review_coverage: number
+  }
+  moderation: {
+    open_reports: number
+    reports_7d: number
+    hidden_posts: number
+    hidden_comments: number
+    locked_posts: number
+    pinned_posts: number
+    pending_submissions: number
+  }
+  data_quality: {
+    no_image: number
+    no_price: number
+    no_url: number
+    unverified: number
+    tier_b: number
+    tier_c: number
+  }
+  trend: { date: string; posts: number; comments: number; ratings: number }[]
+  top_contributors: {
+    handle: string
+    display_name: string
+    posts: number
+    comments: number
+    ratings: number
+    score: number
+  }[]
+  top_posts: {
+    id: number
+    title: string
+    kind: string
+    score: number
+    comment_count: number
+    view_count: number
+  }[]
+  top_parts: {
+    id: string
+    model: string
+    vendor: string
+    rating_count: number
+    rating_avg: number
+    review_count: number
+  }[]
+  zero_review_parts: {
+    id: string
+    model: string
+    vendor: string
+    rating_count: number
+    rating_avg: number
+  }[]
+  actions: {
+    key: string
+    label: string
+    count: number
+    tab?: string
+    href?: string
+    hint: string
+  }[]
+}
+
 export interface TokenPair {
   access_token: string
   refresh_token: string
@@ -365,6 +457,9 @@ export const api = {
     request<void>(`/posts/${id}`, { method: 'DELETE' }),
   moderatePost: (id: number, body: { pinned?: boolean; locked?: boolean }) =>
     adminReq<Post>(`/posts/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
+
+  /** 站务运营总览：用户、内容、互动、治理与数据质量。 */
+  adminOverview: () => adminReq<AdminOverview>('/overview'),
 
   comments: (postId: number) => request<Comment[]>(`/posts/${postId}/comments`),
   createComment: (postId: number, body: CommentCreateInput) =>
