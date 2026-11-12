@@ -70,11 +70,15 @@ const faqs = [
     </div>
     <div class="relative grid gap-10 px-6 py-12 sm:px-10 sm:py-16 lg:grid-cols-[1.25fr_0.75fr] lg:items-center">
       <div>
-        <div class="inline-flex items-center gap-2 rounded-full border border-line bg-surface-2 px-3 py-1 text-xs text-ink-2">
+        <div class="inline-flex flex-wrap items-center gap-x-2 gap-y-1 rounded-full border border-line bg-surface-2 px-3 py-1 text-xs text-ink-2">
           <span class="h-1.5 w-1.5 rounded-full bg-success" aria-hidden="true"></span>
           <span class="mono">{dataVersion}</span>
           <span class="text-ink-3">·</span>
           <span class="mono tabular">{partCount}</span> 个部件
+          <span class="text-ink-3">·</span>
+          <span class="mono tabular">{equipmentCount}</span> 台设备
+          <span class="text-ink-3">·</span>
+          <span class="mono tabular">{robotsData.count}</span> 套方案
         </div>
 
         <h1 class="mt-5 text-[32px] leading-[1.15] font-extrabold tracking-tight text-ink sm:text-[46px]">
