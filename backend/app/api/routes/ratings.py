@@ -19,10 +19,11 @@ from typing import Annotated
 
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field, field_validator
+from sqlalchemy import func
 from sqlmodel import select
 
 from ...crud import shadowed_review_keys
-from ...models import Part, Rating, utcnow
+from ...models import Part, Post, Rating, utcnow
 from ...rating_stats import aggregate
 from ...rating_tags import ALL_TAGS
 from ..deps import CurrentUser, Db, MaybeUser, VerifiedUser
@@ -116,6 +117,20 @@ def _group(rows: list[Rating]) -> dict[str, list[Rating]]:
     return by
 
 
+def _review_counts(db, part_id: str | None = None) -> dict[str, int]:
+    """零件下的评价帖条数（kind=review 且 hidden=False）。
+
+    评价条数不是评分数：「3 分，5 条评价」和「3 分，0 条评价」是不同的信息，
+    所以单独统计，不参与 avg / histogram 等聚合口径。
+    """
+    stmt = select(Post.part_id, func.count(Post.id)).where(
+        Post.kind == "review", Post.hidden == False)  # noqa: E712
+    if part_id is not None:
+        stmt = stmt.where(Post.part_id == part_id)
+    return {pid: int(n) for pid, n in
+            db.exec(stmt.group_by(Post.part_id)).all() if pid is not None}
+
+
 @router.get("/summary")
 def summary(db: Db):
     """全站聚合，供静态站构建时烤成 JSON。
@@ -129,8 +144,11 @@ def summary(db: Db):
     """
     rows = db.exec(select(Rating)).all()
     shadowed = shadowed_review_keys(db)
-    parts = {pid: _summary(rs, shadowed=shadowed)
-             for pid, rs in _group(rows).items()}
+    reviews = _review_counts(db)
+    parts = {}
+    for pid, rs in _group(rows).items():
+        parts[pid] = {**_summary(rs, shadowed=shadowed),
+                      "review_count": reviews.get(pid, 0)}
     return {
         "total_ratings": sum(p["count"] for p in parts.values()),
         "parts": parts,
@@ -144,7 +162,9 @@ def get_part_rating(part_id: str, db: Db, user: MaybeUser):
     rows = db.exec(select(Rating).where(Rating.part_id == part_id)).all()
     return {"part_id": part_id,
             **_summary(rows, user.id if user is not None else None,
-                       shadowed_review_keys(db, part_id))}
+                       shadowed_review_keys(db, part_id)),
+            # 评价条数与均分口径无关：只数未隐藏的评价帖
+            "review_count": _review_counts(db, part_id).get(part_id, 0)}
 
 
 @router.post("/{part_id}", status_code=201)
@@ -171,6 +191,13 @@ def rate_part(part_id: str, payload: RateIn, user: VerifiedUser, db: Db):
         row.updated_at = utcnow()
         db.add(row)
         created = False
+    # 评价帖和评分是同一份事实：从评分入口改分时，帖子里的星级同步。
+    for post in db.exec(select(Post).where(
+            Post.kind == "review", Post.part_id == part_id,
+            Post.author_id == user.id)).all():
+        post.rating = payload.score
+        post.own_hardware = payload.own_hardware
+        db.add(post)
     db.commit()
 
     rows = db.exec(select(Rating).where(Rating.part_id == part_id)).all()
@@ -185,6 +212,15 @@ def unrate(part_id: str, user: CurrentUser, db: Db):
     if row is None:
         raise HTTPException(404, "还没有打过分")
     db.delete(row)
+    # 撤回评分时保留评价正文，但降级为普通讨论，避免出现“没有星级的评价帖”。
+    for post in db.exec(select(Post).where(
+            Post.kind == "review", Post.part_id == part_id,
+            Post.author_id == user.id)).all():
+        post.kind = "discussion"
+        post.rating = None
+        post.own_hardware = False
+        post.updated_at = utcnow()
+        db.add(post)
     db.commit()
     return None
 

@@ -13,11 +13,12 @@ from sqlmodel import Session, select
 
 from ...content_safety import check_user_text_chunks
 from ...core.config import settings
-from ...crud import (apply_vote, comments_out, posts_out, touch_comment_count,
-                     user_out)
+from ...crud import (apply_vote, clear_quote_snapshots, comment_out,
+                     comments_out, posts_out, touch_comment_count, user_out)
 from ...models import Comment, Part, Post, Rating, User, utcnow
-from ...schemas import (AcceptIn, CommentIn, CommentOut, PostIn, PostListOut,
-                        PostOut, PostPatchIn, UserOut, VoteIn, VoteOut)
+from ...schemas import (AcceptIn, CommentIn, CommentOut, CommentPatchIn,
+                        PostIn, PostListOut, PostOut, PostPatchIn, TagListOut,
+                        UserOut, VoteIn, VoteOut)
 from ..deps import CurrentUser, Db, MaybeUser, rate_limit, VerifiedUser
 from .notifications import create_notification
 
@@ -277,14 +278,32 @@ def create_comment(post_id: int, payload: CommentIn, request: Request, db: Db,
     post = db.get(Post, post_id)
     if post is None or post.hidden:
         raise HTTPException(404, "帖子不存在")
+    if post.locked and not user.is_staff:
+        raise HTTPException(409, "帖子已锁定，暂时不能回复")
     if payload.parent_id is not None:
         parent = db.get(Comment, payload.parent_id)
         if parent is None or parent.post_id != post_id:
             raise HTTPException(422, "父评论不属于这个帖子")
         if parent.hidden:
             raise HTTPException(422, "父评论已被隐藏")
+        if parent.withdrawn:
+            raise HTTPException(422, "父评论已撤回，不能再回复")
         if parent.parent_id is not None:
             raise HTTPException(422, "只支持两级回复")
+
+    # 引用回复：只校验「同帖、可见、未撤回」，不改 parent_id 语义 ——
+    # 引用与回复互相独立，一条评论可以既回复某人又引用另一条。
+    quote: Comment | None = None
+    if payload.quote_id is not None:
+        quote = db.get(Comment, payload.quote_id)
+        if quote is None:
+            raise HTTPException(422, "引用的评论不存在")
+        if quote.post_id != post_id:
+            raise HTTPException(422, "引用的评论不属于这个帖子")
+        if quote.hidden:
+            raise HTTPException(422, "引用的评论已被隐藏")
+        if quote.withdrawn:
+            raise HTTPException(422, "引用的评论已撤回，无法引用")
 
     # 内容安全：未配置微信时放行；配置且判定违规时直接拒收（社区评论没有
     # pending 态，宁可不发也不把未审内容放进公开信息流）。
@@ -292,8 +311,19 @@ def create_comment(post_id: int, payload: CommentIn, request: Request, db: Db,
     if not safety.passed:
         raise HTTPException(422, "内容可能包含违规信息，请修改后再试")
 
+    # 引用存快照而不是每次读时回查：被引用方之后编辑/删除都不该改写已有引用。
+    quote_author = ""
+    quote_excerpt = ""
+    if quote is not None:
+        quoted_author = db.get(User, quote.author_id)
+        if quoted_author is not None:
+            quote_author = quoted_author.handle.lower()
+        quote_excerpt = (quote.body or "")[:160]
+
     c = Comment(post_id=post_id, parent_id=payload.parent_id,
-                author_id=user.id, body=payload.body.strip())
+                author_id=user.id, body=payload.body.strip(),
+                quote_id=payload.quote_id, quote_author=quote_author,
+                quote_excerpt=quote_excerpt)
     db.add(c)
     db.flush()                       # 拿 id 拼通知链接，主事务稍后一起提交
 
@@ -308,9 +338,82 @@ def create_comment(post_id: int, payload: CommentIn, request: Request, db: Db,
 
     touch_comment_count(db, post_id)
     db.refresh(c)
-    return CommentOut(id=c.id or 0, post_id=c.post_id, parent_id=c.parent_id,
-                      body=c.body, score=c.score, created_at=c.created_at,
-                      author=user_out(db, user), my_vote=0, replies=[])
+    return comment_out(db, c, user.id)
+
+
+def _own_comment(db: Session, comment_id: int, user: User) -> Comment:
+    """取出可改写的评论：不存在 / 已隐藏（非站务）一律 404，越权 403。
+
+    与帖子同口径：隐藏内容对普通用户不存在，不用 403/404 的差异暴露它。
+    """
+    c = db.get(Comment, comment_id)
+    if c is None or (c.hidden and not user.is_staff):
+        raise HTTPException(404, "评论不存在")
+    if c.author_id != user.id and not user.is_staff:
+        raise HTTPException(403, "只能操作自己的评论")
+    return c
+
+
+@router.patch("/comments/{comment_id}", response_model=CommentOut)
+def update_comment(comment_id: int, payload: CommentPatchIn, request: Request,
+                   db: Db, user: CurrentUser):
+    """编辑评论正文。作者或站务可改；已撤回的评论不能再改。"""
+    rate_limit(request, "comment-update", settings.rate_max_comments, user.id)
+    c = _own_comment(db, comment_id, user)
+    if c.withdrawn:
+        raise HTTPException(409, "评论已撤回，不能再编辑")
+    body = (payload.body or "").strip()
+    if not 2 <= len(body) <= 4000:
+        raise HTTPException(422, "评论需 2–4000 字")
+    safety = check_user_text_chunks(db, user.id, body)
+    if not safety.passed:
+        raise HTTPException(422, "内容可能包含违规信息，请修改后再试")
+    c.body = body
+    c.edited_at = utcnow()
+    db.add(c)
+    db.commit()
+    db.refresh(c)
+    return comment_out(db, c, user.id)
+
+
+@router.delete("/comments/{comment_id}", status_code=204)
+def withdraw_comment(comment_id: int, db: Db, user: CurrentUser):
+    """软撤回：清正文、置 withdrawn，保留行与子回复（回复树不断）。
+
+    若撤回的正是本楼被采纳的答案，同步清空帖子的采纳字段：内容已经没了，
+    「已解决」就不该继续挂着。重复撤回仍返回 204。
+
+    同时清空所有引用这条评论的 quote_excerpt：引用块存的是正文快照，
+    留着就等于撤回无效（quote_id / quote_author 保留，前端显示占位）。
+    """
+    c = _own_comment(db, comment_id, user)
+    if not c.withdrawn:
+        c.withdrawn = True
+        c.body = ""
+        c.edited_at = utcnow()
+        db.add(c)
+    # 幂等：重复撤回也再清一次，覆盖「撤回后才出现的新引用」这类并发边缘
+    clear_quote_snapshots(db, [comment_id])
+    post = db.get(Post, c.post_id)
+    if post is not None and c.id is not None \
+            and post.accepted_comment_id == c.id:
+        # 采纳时给答主加过 3 点声望；撤回已采纳评论时按同一规则退回。
+        if c.author_id != post.author_id:
+            author = db.get(User, c.author_id)
+            if author is not None:
+                author.reputation = max(0, int(author.reputation or 0) - 3)
+                db.add(author)
+            if c.author_id != user.id:
+                create_notification(
+                    db, c.author_id, type="accepted",
+                    subject="你的回答被取消采纳",
+                    body="对应的评论已撤回，帖子的采纳状态已取消。",
+                    link=f"/post.html?id={post.id}", actor_id=user.id)
+        post.accepted_comment_id = None
+        post.updated_at = utcnow()
+        db.add(post)
+    db.commit()
+    return None
 
 
 @router.post("/posts/{post_id}/accept", response_model=PostOut)
@@ -333,6 +436,8 @@ def accept_comment(post_id: int, payload: AcceptIn, db: Db, user: VerifiedUser):
         raise HTTPException(422, "评论不属于这个帖子")
     if c.hidden:
         raise HTTPException(422, "不能采纳已隐藏的评论")
+    if c.withdrawn:
+        raise HTTPException(422, "不能采纳已撤回的评论")
 
     # 换采纳时先把旧答主的分扣回去，再把分记给新答主；自问自答不加分。
     if p.accepted_comment_id and p.accepted_comment_id != c.id:
@@ -385,6 +490,44 @@ def vote(payload: VoteIn, db: Db, user: VerifiedUser):
     except PermissionError as exc:
         raise HTTPException(403, str(exc)) from exc
     return VoteOut(score=score, my_vote=mine)
+
+
+@router.get("/tags", response_model=TagListOut)
+def list_tags(db: Db,
+              kind: str | None = None,
+              limit: Annotated[int, Query(ge=1, le=100)] = 30):
+    """标签聚合：计数单位是**帖子数**，不是出现次数。
+
+    `Post.tags` 是逗号分隔字符串，所以聚合在 Python 里做（不引新表/新列）：
+      · 只统计未隐藏的帖子，按 kind 过滤；
+      · 同一帖子内重复标签只算一次；空串/空白项丢弃；
+      · 大小写不同按同一标签合并（key = casefold），展示名保留首次出现的写法。
+    排序：count 降序、name 升序；items 截断到 limit，total 是去重标签总数。
+    """
+    # 取整行而不是只取 tags 列：SQLModel 的 exec 对单列 select 会包成 Row，
+    # 这里的语义是「逐条帖子」，用实体更直白也少一层解包歧义。
+    stmt = select(Post).where(Post.hidden == False)  # noqa: E712
+    if kind:
+        stmt = stmt.where(Post.kind == kind)
+
+    counts: dict[str, int] = {}
+    display: dict[str, str] = {}
+    for post in db.exec(stmt).all():
+        seen: set[str] = set()
+        for raw in (post.tags or "").split(","):
+            name = raw.strip()
+            if not name:
+                continue
+            key = name.casefold()
+            if key in seen:          # 同帖重复标签只计一次
+                continue
+            seen.add(key)
+            counts[key] = counts.get(key, 0) + 1
+            display.setdefault(key, name)
+
+    items = [{"name": display[k], "count": n} for k, n in counts.items()]
+    items.sort(key=lambda t: (-t["count"], t["name"]))
+    return TagListOut(items=items[:limit], total=len(items))
 
 
 @router.get("/users/{handle}", response_model=UserOut)

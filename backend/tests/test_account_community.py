@@ -413,3 +413,411 @@ def test_account_export_contains_only_own_data_and_no_credentials(client):
         assert secret not in text, secret
     # 别人的评论正文不能混进来
     assert "别人在我帖子下的评论" not in text
+
+
+# ── 5. 站务置顶 / 锁定 ────────────────────────────────────────────────────
+def test_admin_pin_lock_blocks_replies(client):
+    owner, _ = register(client, "pin")
+    other, _ = register(client, "pino")
+    staff = staff_headers(client)
+    post = create_post(client, owner, title="站务置顶锁定测试")
+    url = f"/api/v1/admin/posts/{post['id']}"
+
+    assert client.patch(url, headers=owner,
+                        json={"pinned": True}).status_code == 403
+
+    r = client.patch(url, headers=staff, json={"pinned": True, "locked": True})
+    assert r.status_code == 200, r.text
+    data = r.json()
+    assert data["pinned"] is True and data["locked"] is True
+
+    r = client.post(f"/api/v1/posts/{post['id']}/comments", headers=other,
+                    json={"body": "普通用户回复"})
+    assert r.status_code == 409, r.text
+
+    r = client.post(f"/api/v1/posts/{post['id']}/comments", headers=staff,
+                    json={"body": "站务回复"})
+    assert r.status_code == 201, r.text
+
+    r = client.patch(url, headers=staff, json={"locked": False})
+    assert r.status_code == 200, r.text
+    assert r.json()["locked"] is False
+    r = client.post(f"/api/v1/posts/{post['id']}/comments", headers=other,
+                    json={"body": "解锁后回复"})
+    assert r.status_code == 201, r.text
+
+
+# ── 6. 评分撤回同步评价帖 / 撤回已采纳评论回收声望 ────────────────────────
+def test_withdraw_rating_demotes_review_post(client):
+    owner, _ = register(client, "rwd")
+    part = first_part_id(client)
+    post = create_post(client, owner, kind="review", part_id=part, rating=5,
+                       title="评分撤回测试", body="这条评价会在撤回评分后保留为讨论。")
+
+    r = client.post(f"/api/v1/ratings/{part}", headers=owner, json={"score": 3})
+    assert r.status_code == 201, r.text
+    current = client.get(f"/api/v1/posts/{post['id']}").json()
+    assert current["rating"] == 3, "评分入口改分要同步评价帖星级"
+
+    assert client.delete(f"/api/v1/ratings/{part}", headers=owner).status_code == 204
+    after = client.get(f"/api/v1/posts/{post['id']}").json()
+    assert after["kind"] == "discussion" and after["rating"] is None
+
+
+def test_withdraw_accepted_comment_rolls_back_reputation(client):
+    owner, _ = register(client, "acc")
+    answerer, answerer_user = register(client, "ans")
+    post = create_post(client, owner, title="采纳撤回声望测试")
+    comment = add_comment(client, answerer, post["id"], "这条回答会被采纳，然后撤回。")
+
+    r = client.post(f"/api/v1/posts/{post['id']}/accept", headers=owner,
+                    json={"comment_id": comment["id"]})
+    assert r.status_code == 200, r.text
+    rep_after = client.get("/api/v1/auth/me", headers=answerer).json()["reputation"]
+    assert rep_after == int(answerer_user["reputation"]) + 3
+
+    assert client.delete(f"/api/v1/comments/{comment['id']}",
+                         headers=answerer).status_code == 204
+    rep_back = client.get("/api/v1/auth/me", headers=answerer).json()["reputation"]
+    assert rep_back == int(answerer_user["reputation"])
+
+
+# ── 6. 评论编辑与软撤回 ────────────────────────────────────────────────────
+def _reply(client: TestClient, headers: dict, post_id: int, parent_id: int,
+           body: str) -> dict:
+    r = client.post(f"/api/v1/posts/{post_id}/comments", headers=headers,
+                    json={"body": body, "parent_id": parent_id})
+    assert r.status_code == 201, r.text
+    return r.json()
+
+
+def test_comment_edit_permissions_and_validation(client):
+    author, author_user = register(client, "ced")
+    other, _ = register(client, "cedo")
+    staff = staff_headers(client)
+    post = create_post(client, author, title="评论编辑权限测试")
+    c = add_comment(client, author, post["id"], "原始评论正文")
+    url = f"/api/v1/comments/{c['id']}"
+
+    # 他人不能改，站务可以代改
+    assert client.patch(url, headers=other,
+                        json={"body": "别人的越权修改"}).status_code == 403
+    r = client.patch(url, headers=staff, json={"body": "站务代改的评论正文"})
+    assert r.status_code == 200, r.text
+    assert r.json()["body"] == "站务代改的评论正文"
+    assert r.json()["withdrawn"] is False
+    assert r.json()["edited_at"] is not None
+    # 回复关系不变
+    assert r.json()["post_id"] == post["id"]
+    assert r.json()["author"]["handle"] == author_user["handle"]
+
+    # 作者自己改 + edited_at 刷新
+    r = client.patch(url, headers=author, json={"body": "作者修改后的评论正文"})
+    assert r.status_code == 200, r.text
+    assert r.json()["body"] == "作者修改后的评论正文"
+    assert r.json()["edited_at"] is not None
+
+    # 2–4000 字
+    assert client.patch(url, headers=author,
+                        json={"body": "短"}).status_code == 422
+    assert client.patch(url, headers=author,
+                        json={"body": "x" * 4001}).status_code == 422
+
+    # 不存在的评论 404
+    assert client.patch("/api/v1/comments/999999", headers=author,
+                        json={"body": "不存在的评论"}).status_code == 404
+
+
+def test_comment_soft_withdraw_keeps_replies(client):
+    from sqlmodel import select
+
+    from app.core.db import session
+    from app.crud import touch_comment_count
+    from app.models import Comment
+
+    author, author_user = register(client, "cwd")
+    other, _ = register(client, "cwdo")
+    post = create_post(client, author, title="评论撤回保留回复树")
+    root = add_comment(client, author, post["id"], "即将被撤回的评论")
+    reply = _reply(client, other, post["id"], root["id"], "回复不会消失")
+
+    # 他人不能撤回
+    assert client.delete(f"/api/v1/comments/{root['id']}",
+                         headers=other).status_code == 403
+    r = client.delete(f"/api/v1/comments/{root['id']}", headers=author)
+    assert r.status_code == 204, r.text
+
+    nodes = {n["id"]: n for n in
+             client.get(f"/api/v1/posts/{post['id']}/comments").json()}
+    assert root["id"] in nodes, "撤回的评论保留可见占位"
+    assert nodes[root["id"]]["withdrawn"] is True
+    assert nodes[root["id"]]["body"] == ""
+    assert nodes[root["id"]]["author"]["handle"] == author_user["handle"]
+    assert nodes[root["id"]]["edited_at"] is not None
+    assert [x["id"] for x in nodes[root["id"]]["replies"]] == [reply["id"]]
+    child = nodes[root["id"]]["replies"][0]
+    assert child["parent_id"] == root["id"]
+    assert child["body"] == "回复不会消失"
+
+    # 撤回后不能再编辑、也不能再被回复
+    assert client.patch(f"/api/v1/comments/{root['id']}", headers=author,
+                        json={"body": "撤回后再编辑"}).status_code == 409
+    r = client.post(f"/api/v1/posts/{post['id']}/comments", headers=other,
+                    json={"body": "回复已撤回的评论", "parent_id": root["id"]})
+    assert r.status_code == 422, r.text
+
+    # 撤回仍算一条可见占位；hidden 才不计入
+    assert client.get(f"/api/v1/posts/{post['id']}").json()["comment_count"] == 2
+    with session() as db:
+        row = db.get(Comment, root["id"])
+        row.hidden = True
+        db.add(row)
+        db.commit()
+        touch_comment_count(db, post["id"])
+    nodes = client.get(f"/api/v1/posts/{post['id']}/comments").json()
+    assert root["id"] not in {n["id"] for n in nodes}
+    assert client.get(f"/api/v1/posts/{post['id']}").json()["comment_count"] == 1
+
+
+def test_withdraw_accepted_comment_clears_acceptance(client):
+    owner, _ = register(client, "cwa")
+    helper, _ = register(client, "cwah")
+    post = create_post(client, owner, title="撤回已采纳评论测试")
+    answer = add_comment(client, helper, post["id"], "这条回答会被采纳")
+
+    r = client.post(f"/api/v1/posts/{post['id']}/accept", headers=owner,
+                    json={"comment_id": answer["id"]})
+    assert r.status_code == 200, r.text
+    assert r.json()["accepted_comment_id"] == answer["id"]
+
+    r = client.delete(f"/api/v1/comments/{answer['id']}", headers=helper)
+    assert r.status_code == 204, r.text
+
+    after = client.get(f"/api/v1/posts/{post['id']}").json()
+    assert after["accepted_comment_id"] is None
+    nodes = {n["id"]: n for n in
+             client.get(f"/api/v1/posts/{post['id']}/comments").json()}
+    assert nodes[answer["id"]]["withdrawn"] is True
+    assert nodes[answer["id"]]["accepted"] is False
+    # 撤回的评论不能再被采纳
+    r = client.post(f"/api/v1/posts/{post['id']}/accept", headers=owner,
+                    json={"comment_id": answer["id"]})
+    assert r.status_code == 422, r.text
+    # 重复撤回仍是 204
+    assert client.delete(f"/api/v1/comments/{answer['id']}",
+                         headers=helper).status_code == 204
+
+
+# ── 7. 引用回复 ────────────────────────────────────────────────────────────
+def _quote(client: TestClient, headers: dict, post_id: int, body: str,
+           quote_id: int, parent_id: int | None = None):
+    payload = {"body": body, "quote_id": quote_id}
+    if parent_id is not None:
+        payload["parent_id"] = parent_id
+    return client.post(f"/api/v1/posts/{post_id}/comments", headers=headers,
+                       json=payload)
+
+
+def _flatten(nodes: list[dict]) -> dict[int, dict]:
+    """评论是两级树：把 replies 展开成 id → 评论。"""
+    flat: dict[int, dict] = {}
+    for node in nodes:
+        flat[node["id"]] = node
+        flat.update(_flatten(node.get("replies") or []))
+    return flat
+
+
+def test_quote_comment_snapshots_author_and_excerpt(client):
+    author, author_user = register(client, "quo")
+    quoter, _ = register(client, "quq")
+    post = create_post(client, author, title="引用回复快照测试")
+
+    long_body = "这是一段会被引用的评论正文，用来验证 160 字截断是否生效。" * 12
+    assert len(long_body) > 160
+    root = add_comment(client, author, post["id"], long_body)
+
+    # 引用与回复可以同时存在：parent_id 语义不变
+    r = _quote(client, quoter, post["id"], "我引用一下这条评论。", root["id"],
+               parent_id=root["id"])
+    assert r.status_code == 201, r.text
+    data = r.json()
+    assert data["quote_id"] == root["id"]
+    assert data["quote_author"] == author_user["handle"]
+    assert data["quote_excerpt"] == long_body[:160]
+    assert data["parent_id"] == root["id"], "引用不改变 parent_id 语义"
+
+    # 列表 / 详情同样返回三个 quote 字段
+    nodes = _flatten(client.get(f"/api/v1/posts/{post['id']}/comments").json())
+    assert nodes[data["id"]]["quote_id"] == root["id"]
+    assert nodes[data["id"]]["quote_author"] == author_user["handle"]
+    assert nodes[data["id"]]["quote_excerpt"] == long_body[:160]
+    # 没有引用的评论这三项是空值，不是 None
+    assert nodes[root["id"]]["quote_id"] is None
+    assert nodes[root["id"]]["quote_author"] == ""
+    assert nodes[root["id"]]["quote_excerpt"] == ""
+
+
+def test_quote_rejects_cross_post_and_withdrawn(client):
+    author, _ = register(client, "qrx")
+    quoter, _ = register(client, "qrxq")
+    post = create_post(client, author, title="引用校验用的帖子一")
+    other_post = create_post(client, author, title="引用校验用的帖子二")
+    foreign = add_comment(client, author, other_post["id"], "另一条帖子下的评论")
+
+    r = _quote(client, quoter, post["id"], "跨帖引用应当被拒绝。", foreign["id"])
+    assert r.status_code == 422, r.text
+    assert "不属于这个帖子" in r.json()["detail"]
+
+    # 不存在的评论同样是 422（不是 404：这是引用字段的校验，不是资源寻址）
+    r = _quote(client, quoter, post["id"], "引用不存在的评论。", 999999)
+    assert r.status_code == 422, r.text
+
+    doomed = add_comment(client, author, post["id"], "这条评论随后会被撤回")
+    assert client.delete(f"/api/v1/comments/{doomed['id']}",
+                         headers=author).status_code == 204
+    r = _quote(client, quoter, post["id"], "引用已撤回的评论。", doomed["id"])
+    assert r.status_code == 422, r.text
+    assert "已撤回" in r.json()["detail"]
+
+
+def test_withdraw_quoted_comment_clears_excerpt_only(client):
+    author, author_user = register(client, "qwd")
+    quoter, _ = register(client, "qwdq")
+    post = create_post(client, author, title="撤回被引用评论后清空快照")
+    source = add_comment(client, author, post["id"], "这段原文不该通过引用继续可读")
+    quoting = _quote(client, quoter, post["id"], "引用块里会存一份快照。",
+                     source["id"]).json()
+    assert quoting["quote_excerpt"] == "这段原文不该通过引用继续可读"
+
+    assert client.delete(f"/api/v1/comments/{source['id']}",
+                         headers=author).status_code == 204
+    # 重复撤回仍 204，且不会把引用快照写回来
+    assert client.delete(f"/api/v1/comments/{source['id']}",
+                         headers=author).status_code == 204
+
+    nodes = _flatten(client.get(f"/api/v1/posts/{post['id']}/comments").json())
+    quoted = nodes[source["id"]]
+    assert quoted["withdrawn"] is True and quoted["body"] == "", "占位仍在"
+    q = nodes[quoting["id"]]
+    assert q["quote_id"] == source["id"], "quote_id 保留"
+    assert q["quote_author"] == author_user["handle"], "quote_author 保留"
+    assert q["quote_excerpt"] == "", "撤回后不能继续泄露原文"
+    assert q["body"] == "引用块里会存一份快照。"
+
+
+def test_admin_hide_comment_clears_quote_excerpt(client):
+    """站务隐藏被引用评论时，与撤回同口径清空引用快照。
+
+    hide 的入口不在 admin.py，而在 /admin/reports 的处置分支（reports.py）。
+    """
+    author, author_user = register(client, "qhd")
+    quoter, _ = register(client, "qhdq")
+    reporter, _ = register(client, "qhdr")
+    post = create_post(client, author, title="站务隐藏被引用评论")
+    source = add_comment(client, author, post["id"], "站务隐藏后不该再被引用到")
+    quoting = _quote(client, quoter, post["id"], "引用块快照会保持到处置为止。",
+                     source["id"]).json()
+    assert quoting["quote_excerpt"] == "站务隐藏后不该再被引用到"
+
+    rid = client.post("/api/v1/reports", headers=reporter, json={
+        "target_kind": "comment", "target_id": source["id"],
+        "reason": "abuse", "detail": "测试：隐藏后清空引用快照"}).json()["id"]
+    r = client.patch(f"/api/v1/admin/reports/{rid}", headers=staff_headers(client),
+                     json={"action": "hide", "note": "确认违规，隐藏该评论"})
+    assert r.status_code == 200, r.text
+
+    nodes = _flatten(client.get(f"/api/v1/posts/{post['id']}/comments").json())
+    assert source["id"] not in nodes, "隐藏的评论不再出现在列表里"
+    q = nodes[quoting["id"]]
+    assert q["quote_id"] == source["id"] and q["quote_author"] == author_user["handle"]
+    assert q["quote_excerpt"] == "", "隐藏后引用块同样不能泄露原文"
+
+
+# ── 8. 标签聚合 ────────────────────────────────────────────────────────────def test_tags_aggregation_dedupes_hidden_and_filters_kind(client):
+    owner, _ = register(client, "tag")
+    part = first_part_id(client)
+    tag_a = f"引用测{uuid.uuid4().hex[:6]}"
+    tag_b = f"标签{uuid.uuid4().hex[:6]}"
+
+    # 同帖重复标签只计一次；B 只出现一次
+    create_post(client, owner, tags=f"{tag_a}, {tag_a}, {tag_b}",
+                title="标签聚合测试一", body="标签聚合测试用的正文内容，长度足够。")
+    # 大小写不同按同一标签合并，展示名保留首次出现的写法
+    create_post(client, owner, tags=tag_a.lower(),
+                title="标签聚合测试二", body="标签聚合测试用的正文内容，长度足够。")
+    # hidden 帖子不计
+    deleted = create_post(client, owner, tags=tag_a,
+                          title="标签聚合测试三（会被删除）",
+                          body="标签聚合测试用的正文内容，长度足够。")
+    assert client.delete(f"/api/v1/posts/{deleted['id']}",
+                         headers=owner).status_code == 204
+    # kind 过滤：评价帖的标签不混进 discussion
+    create_post(client, owner, kind="review", part_id=part, rating=4, tags=tag_a,
+                title="标签聚合测试四（评价）", body="标签聚合测试用的评价正文内容。")
+
+    def items(**params):
+        r = client.get("/api/v1/tags", params={"limit": 100, **params})
+        assert r.status_code == 200, r.text
+        return r.json()
+
+    all_tags = items()
+    by_key = {i["name"].casefold(): i for i in all_tags["items"]}
+    assert by_key[tag_a.casefold()]["name"] == tag_a, "展示名保留首次写法"
+    assert by_key[tag_a.casefold()]["count"] == 3, "两帖 + 一条评价；删除的不计"
+    assert by_key[tag_b.casefold()]["count"] == 1, "同帖重复只算一次"
+    assert all_tags["total"] == len(all_tags["items"]), "limit 足够大时 total 与 items 等长"
+    counts = [i["count"] for i in all_tags["items"]]
+    assert counts == sorted(counts, reverse=True), "按 count 降序"
+
+    discussion = items(kind="discussion")
+    by_key = {i["name"].casefold(): i for i in discussion["items"]}
+    assert by_key[tag_a.casefold()]["count"] == 2, "kind=discussion 排除评价帖"
+    assert not [i for i in discussion["items"]
+                if i["name"] is None or not str(i["name"]).strip()]
+
+    # limit 只截断 items，total 仍是去重标签总数
+    limited = items(limit=1)
+    assert len(limited["items"]) == 1
+    assert limited["total"] == all_tags["total"]
+    # 参数边界
+    assert client.get("/api/v1/tags", params={"limit": 0}).status_code == 422
+    assert client.get("/api/v1/tags", params={"limit": 101}).status_code == 422
+
+
+# ── 9. 评分摘要返回评价条数 ────────────────────────────────────────────────
+def test_rating_summary_reports_visible_review_count(client):
+    first, _ = register(client, "rvc")
+    second, _ = register(client, "rvc2")
+    # 取一个本模块其它用例没用过的零件，基线才好断言
+    part = client.get("/api/v1/parts", params={"limit": 200}).json()["items"][-1]["id"]
+
+    def rating():
+        r = client.get(f"/api/v1/ratings/{part}")
+        assert r.status_code == 200, r.text
+        return r.json()
+
+    base = rating()
+    assert base["review_count"] == 0, "新零件不该有评价帖"
+    # 原有字段与口径不变
+    assert base["count"] == 0 and base["avg"] is None
+    assert set(base) >= {"count", "avg", "histogram", "mine", "review_count"}
+
+    review1 = create_post(client, first, kind="review", part_id=part, rating=5,
+                          title="评价条数测试一", body="用于验证 review_count 的评价正文。")
+    create_post(client, second, kind="review", part_id=part, rating=3,
+                title="评价条数测试二", body="用于验证 review_count 的评价正文。")
+    d = rating()
+    assert d["review_count"] == 2
+    assert d["count"] == 2, "review_count 不改变评分数口径"
+
+    # hidden 的评价帖不计入 review_count
+    assert client.delete(f"/api/v1/posts/{review1['id']}",
+                         headers=first).status_code == 204
+    d = rating()
+    assert d["review_count"] == 1
+    assert d["count"] == 1, "隐藏评价同时退出公开聚合（原口径不变）"
+
+    summary = client.get("/api/v1/ratings/summary").json()
+    assert summary["parts"][part]["review_count"] == 1
+    assert summary["parts"][part]["count"] == 1
+

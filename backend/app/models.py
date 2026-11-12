@@ -287,6 +287,8 @@ class Post(SQLModel, table=True):
     comment_count: int = 0
     view_count: int = 0
     pinned: bool = False
+    #: 站务锁定后普通用户不能回复；作者/站务仍可编辑与查看
+    locked: bool = False
     #: 站务处置后隐藏；列表、详情与评分聚合都不再返回，站务仍可在后台查看
     hidden: bool = Field(default=False, index=True)
     #: 问答闭环：本楼被采纳的评论 id。非空即「已解决」。
@@ -305,8 +307,21 @@ class Comment(SQLModel, table=True):
     parent_id: int | None = Field(default=None, foreign_key="comments.id", index=True)
     author_id: int = Field(foreign_key="users.id", index=True)
     body: str
+    #: 引用回复：引用的那条评论 id。与 accepted_comment_id 同理**不加外键** ——
+    #: comments 自引用外键会让删除/建表形成循环依赖，引用失效应由业务处理
+    #: （被引用方撤回/隐藏时清空 quote_excerpt，前端显示「原文已不可见」）。
+    quote_id: int | None = Field(default=None, index=True)
+    #: 快照：被引用评论的作者 handle（小写）。引用不是外键投影，
+    #: 被引用方改 handle 后旧引用仍指向当时的署名，与截图语义一致。
+    quote_author: str = ""
+    #: 快照：被引用正文前 160 字。撤回/隐藏时由服务端清空，避免引用块泄露原文。
+    quote_excerpt: str = ""
     score: int = 0
     hidden: bool = Field(default=False, index=True)
+    #: 软撤回：body 清空、行与子回复保留，回复树不断。撤回后不能再编辑/被回复。
+    withdrawn: bool = Field(default=False, index=True)
+    #: 最后一次编辑时间；撤回也会写，前端据此显示「已编辑 / 已撤回」。
+    edited_at: datetime | None = Field(default=None)
     created_at: datetime = Field(default_factory=utcnow, index=True)
 
 

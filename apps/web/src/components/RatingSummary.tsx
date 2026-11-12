@@ -43,6 +43,8 @@ export default function RatingSummary({ partId, category }: { partId: string; ca
   const [state, setState] = useState<State>({ status: 'loading' })
   const [attempt, setAttempt] = useState(0)
   const [signedIn, setSignedIn] = useState(false)
+  // 只在本页提交成功后出现，刷新或重新拉取都不会再弹。
+  const [justRated, setJustRated] = useState(false)
 
   useEffect(() => {
     try {
@@ -105,6 +107,11 @@ export default function RatingSummary({ partId, category }: { partId: string; ca
   const hasRating = count > 0 && avg !== null
   const histogram = data.histogram || {}
   const mine = data.mine ?? null
+  const reviewCount = typeof data.review_count === 'number' && Number.isFinite(data.review_count)
+    ? Math.max(0, data.review_count)
+    : null
+  // 站内可能部署在子路径下，跳社区也要走 withBase。
+  const reviewHref = withBase(`/community.html?kind=review&part=${encodeURIComponent(partId)}`)
   // 新字段可能尚未出现在旧接口的 TS 类型里；缺失时整块不渲染。
   const extra = data as unknown as {
     usage_level_counts?: Record<string, number>
@@ -124,6 +131,22 @@ export default function RatingSummary({ partId, category }: { partId: string; ca
           <p className="mt-1 text-xs text-ink-3">
             {hasRating ? `${count} 人评分` : '暂无评分样本'}
           </p>
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            {reviewCount !== null && reviewCount > 0 && (
+              <a
+                href={reviewHref}
+                className="inline-flex items-center gap-1 text-xs font-medium text-brand hover:underline"
+              >
+                {reviewCount} 条评价<span aria-hidden="true">→</span>
+              </a>
+            )}
+            <a
+              href={reviewHref}
+              className="inline-flex min-h-11 items-center gap-1 rounded-md border border-line bg-surface px-2.5 text-xs font-medium text-ink-2 transition-colors hover:border-line-strong hover:text-ink sm:min-h-8"
+            >
+              {mine ? '补充使用体验' : '写评价'}<span aria-hidden="true">→</span>
+            </a>
+          </div>
         </div>
         {hasRating && count < 3 && <Badge variant="warning">样本不足</Badge>}
       </div>
@@ -190,7 +213,40 @@ export default function RatingSummary({ partId, category }: { partId: string; ca
         </div>
       )}
 
-      <RatingEditor partId={partId} category={category} onDone={() => setAttempt(v => v + 1)} />
+      <RatingEditor
+        partId={partId}
+        category={category}
+        onDone={result => {
+          if (result === 'submitted') setJustRated(true)
+          setAttempt(v => v + 1)
+        }}
+      />
+
+      {justRated && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-lg border border-brand/30 bg-brand-soft/60 px-3 py-2"
+        >
+          <p className="m-0 min-w-0 flex-1 text-xs leading-5 text-ink-2">
+            评分已记录。写一句使用场景，能帮到后来的人。
+          </p>
+          <a
+            href={reviewHref}
+            className="inline-flex items-center gap-1 text-xs font-medium text-brand hover:underline"
+          >
+            写评价<span aria-hidden="true">→</span>
+          </a>
+          <button
+            type="button"
+            onClick={() => setJustRated(false)}
+            aria-label="关闭提示"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-md text-ink-3 transition-colors hover:bg-surface-3 hover:text-ink"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+      )}
 
       {data.dims_avg && Object.keys(data.dims_avg).length > 0 && (
         <dl className="grid grid-cols-2 gap-2" aria-label="分维度评分">

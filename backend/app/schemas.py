@@ -300,6 +300,7 @@ class PostOut(BaseModel):
     comment_count: int = 0
     view_count: int = 0
     pinned: bool = False
+    locked: bool = False
     #: 非空即「已解决」；对应 CommentOut.accepted
     accepted_comment_id: int | None = None
     created_at: datetime
@@ -339,9 +340,32 @@ class PostListOut(BaseModel):
     items: list[PostOut]
 
 
+class TagCountOut(BaseModel):
+    """一个标签及挂它的帖子数（同一帖子内重复出现只算一次）。"""
+
+    name: str
+    count: int
+
+
+class TagListOut(BaseModel):
+    """`GET /tags`：按帖子数降序、同名升序；items 截断到 limit。"""
+
+    items: list[TagCountOut] = []
+    #: 去重后的标签总数（与 items 长度不同，后者已被 limit 截断）
+    total: int = 0
+
+
 class CommentIn(BaseModel):
     body: str = Field(min_length=2, max_length=4000)
     parent_id: int | None = None
+    #: 引用回复：引用同帖的另一条评论。与 parent_id 互相独立，可同时存在。
+    quote_id: int | None = None
+
+
+class CommentPatchIn(BaseModel):
+    """编辑评论正文：与创建同口径 2–4000 字。"""
+
+    body: str = Field(min_length=2, max_length=4000)
 
 
 class CommentOut(BaseModel):
@@ -350,8 +374,16 @@ class CommentOut(BaseModel):
     parent_id: int | None = None
     body: str
     score: int = 0
+    #: 引用回复：被引用评论 id 与创建时拍下的快照（作者 handle / 正文前 160 字）。
+    #: 被引用方撤回或隐藏后 excerpt 由服务端清空，quote_id / quote_author 保留。
+    quote_id: int | None = None
+    quote_author: str = ""
+    quote_excerpt: str = ""
     #: 是否是本楼被采纳的答案
     accepted: bool = False
+    #: 软撤回：body 返回空串，author / created_at / replies 仍保留
+    withdrawn: bool = False
+    edited_at: datetime | None = None
     created_at: datetime
     author: UserOut | None = None
     my_vote: int = 0

@@ -290,6 +290,7 @@ export interface Post {
   comment_count: number
   view_count: number
   pinned: boolean
+  locked: boolean
   created_at: string
   updated_at?: string | null
   accepted_comment_id?: number | null
@@ -301,6 +302,7 @@ export interface Comment {
   id: number
   post_id: number
   parent_id: number | null
+  /** 撤回后为空字符串；正文与投票不再展示，回复树保留。 */
   body: string
   score: number
   created_at: string
@@ -308,6 +310,34 @@ export interface Comment {
   author: User | null
   my_vote: number
   replies: Comment[]
+  /** 作者/站务撤回后为 true：只保留占位、作者与回复。 */
+  withdrawn: boolean
+  /** 最近一次编辑时间；未编辑为 null。 */
+  edited_at: string | null
+  /** 引用的评论 id；未引用为 null。 */
+  quote_id: number | null
+  /** 被引用评论作者的 handle；被引用方撤回后仍保留。 */
+  quote_author: string
+  /** 被引用评论的正文快照；被引用方撤回/隐藏后服务端清空。 */
+  quote_excerpt: string
+}
+
+/** 创建评论的入参：`parent_id` 只到二级，`quote_id` 与回复互相独立。 */
+export interface CommentCreateInput {
+  body: string
+  parent_id?: number
+  quote_id?: number
+}
+
+export interface TagCount {
+  name: string
+  count: number
+}
+
+export interface TagList {
+  items: TagCount[]
+  /** 去重后的标签总数（items 已被 limit 截断）。 */
+  total: number
 }
 
 export interface TokenPair {
@@ -333,10 +363,18 @@ export const api = {
     request<Post>(`/posts/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
   deletePost: (id: number) =>
     request<void>(`/posts/${id}`, { method: 'DELETE' }),
+  moderatePost: (id: number, body: { pinned?: boolean; locked?: boolean }) =>
+    adminReq<Post>(`/posts/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
 
   comments: (postId: number) => request<Comment[]>(`/posts/${postId}/comments`),
-  createComment: (postId: number, body: unknown) =>
+  createComment: (postId: number, body: CommentCreateInput) =>
     request<Comment>(`/posts/${postId}/comments`, { method: 'POST', body: JSON.stringify(body) }),
+  /** 作者/站务编辑评论正文；返回更新后的评论。 */
+  updateComment: (id: number, body: string) =>
+    request<Comment>(`/comments/${id}`, { method: 'PATCH', body: JSON.stringify({ body }) }),
+  /** 作者/站务撤回评论：保留占位与回复树，接口返回 204。 */
+  withdrawComment: (id: number) =>
+    request<void>(`/comments/${id}`, { method: 'DELETE' }),
   acceptComment: (postId: number, commentId: number) =>
     request<Post>(`/posts/${postId}/accept`,
       { method: 'POST', body: JSON.stringify({ comment_id: commentId }) }),
@@ -349,6 +387,12 @@ export const api = {
 
   parts: (p: Record<string, unknown>) =>
     request<{ total: number; items: Part[] }>(`/parts?${qs(p)}`),
+  /** 单个零件：发帖器预填标题时需要型号。 */
+  part: (id: string) => request<Part>(`/parts/${encodeURIComponent(id)}`),
+
+  /** 标签聚合：按帖子数降序；`kind` 留空时统计全部类型。 */
+  tags: (p: { kind?: string; limit?: number } = {}) =>
+    request<TagList>(`/tags?${qs(p)}`),
 
   user: (handle: string) => request<User>(`/users/${encodeURIComponent(handle)}`),
   leaderboard: (limit = 10) => request<User[]>(`/leaderboard?limit=${limit}`),

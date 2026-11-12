@@ -14,7 +14,7 @@ from sqlalchemy import func
 from sqlmodel import select
 
 from ...core.config import settings
-from ...crud import touch_comment_count
+from ...crud import clear_quote_snapshots, touch_comment_count
 from ...models import Comment, Post, Report, User, WikiComment
 from ..deps import CurrentUser, Db, rate_limit, VerifiedUser
 from .notifications import create_notification
@@ -125,6 +125,9 @@ def _set_hidden(db, kind: str, target_id: int, hidden: bool) -> None:
         for row in rows:
             row.hidden = hidden
             db.add(row)
+        if hidden:
+            # 与作者撤回同口径：隐藏后引用块不能继续泄露正文快照。
+            clear_quote_snapshots(db, [r.id for r in rows if r.id is not None])
         touch_comment_count(db, c.post_id, commit=False)
         return
 

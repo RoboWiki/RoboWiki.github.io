@@ -5,10 +5,15 @@ import {
 } from '@ant-design/icons'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Markdown, { type Components } from 'react-markdown'
-import { useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import {
   KIND_LABEL, api, assetUrl, siteHref, type Comment, type Post, type User,
 } from '@/lib/community-api'
+import { api as coreApi } from '@/lib/api'
+import {
+  clearDraft, loadDraft, normalizeDraft, recordActivity, saveDraft,
+  type ComposerDraft,
+} from '@/lib/local-activity'
 
 // ── 时间 ──────────────────────────────────────────────────────────────────
 export function ago(iso: string): string {
@@ -229,7 +234,11 @@ function Pill({ children, tone = 'bg-surface-2 text-ink-2' }: { children: ReactN
 }
 
 // ── 帖子卡片 ──────────────────────────────────────────────────────────────
-export function PostCard({ post }: { post: Post }) {
+export function PostCard({ post, onTag }: {
+  post: Post
+  /** 传入时标签变成可点筛选；不传保持纯展示，不影响其他使用处。 */
+  onTag?: (tag: string) => void
+}) {
   const qc = useQueryClient()
   const { message } = AntApp.useApp()
   const href = siteHref(`/post.html?id=${post.id}`)
@@ -247,6 +256,7 @@ export function PostCard({ post }: { post: Post }) {
     <article className="card card-hover relative mb-3 p-3.5 sm:p-4">
       <div className="flex flex-wrap items-center gap-1.5">
         {post.pinned && <Pill tone="bg-warning-soft text-warning">置顶</Pill>}
+        {post.locked && <Pill tone="bg-surface-3 text-ink-2">已锁定</Pill>}
         <Pill tone={KIND_TONE[post.kind]}>{KIND_LABEL[post.kind]}</Pill>
         {post.kind === 'discussion' && post.accepted_comment_id != null && (
           <Pill tone="bg-success-soft text-success">已解决</Pill>
@@ -285,8 +295,19 @@ export function PostCard({ post }: { post: Post }) {
           <span className="sr-only">次浏览</span>
         </span>
         {post.tags.length > 0 && (
-          <span className="flex flex-wrap items-center gap-1.5">
-            {post.tags.map(t => (
+          <span className="relative z-10 flex flex-wrap items-center gap-1.5">
+            {post.tags.map(t => onTag ? (
+              <button key={t} type="button"
+                onClick={e => {
+                  // 整张卡片被标题链接的 ::after 覆盖，点标签不能触发跳转。
+                  e.preventDefault()
+                  e.stopPropagation()
+                  onTag(t)
+                }}
+                className="mono rounded text-xs text-ink-3 transition-colors hover:text-brand focus-visible:text-brand">
+                #{t}
+              </button>
+            ) : (
               <span key={t} className="mono text-xs text-ink-3">#{t}</span>
             ))}
           </span>
@@ -315,12 +336,44 @@ function FormGroup({ title, hint, children }: {
 }
 
 // ── 发帖 ──────────────────────────────────────────────────────────────────
-export function Composer({ open, onClose }: { open: boolean; onClose: () => void }) {
+/** 零件页「写评价」入口带进来的预填参数。 */
+export interface ComposerPrefill {
+  kind: 'review'
+  partId: string
+}
+
+export function Composer({ open, onClose, prefill = null }: {
+  open: boolean
+  onClose: () => void
+  prefill?: ComposerPrefill | null
+}) {
   const qc = useQueryClient()
   const { message } = AntApp.useApp()
   const [form] = Form.useForm()
   const kind = Form.useWatch('kind', form) || 'discussion'
   const [partQuery, setPartQuery] = useState('')
+  // 本地草稿：打开时提示恢复/丢弃；编辑时自动保存；发布成功清掉。
+  const [draft, setDraft] = useState<ComposerDraft | null>(null)
+  const saveTimer = useRef<number | null>(null)
+
+  const flushDraftTimer = () => {
+    if (saveTimer.current != null) {
+      window.clearTimeout(saveTimer.current)
+      saveTimer.current = null
+    }
+  }
+
+  useEffect(() => {
+    if (!open) {
+      setDraft(null)
+      flushDraftTimer()
+      return
+    }
+    setDraft(loadDraft())
+    return () => flushDraftTimer()
+  }, [open])
+
+  useEffect(() => () => flushDraftTimer(), [])
 
   const parts = useQuery({
     queryKey: ['parts-lite', partQuery],
@@ -328,10 +381,83 @@ export function Composer({ open, onClose }: { open: boolean; onClose: () => void
     enabled: open,
   })
 
+  // 零件页「写评价」预填：标题需要型号，评分需要本人已有打分。
+  const prefillPartId = prefill?.partId ?? null
+  const prefillPart = useQuery({
+    queryKey: ['part-lite', prefillPartId],
+    queryFn: () => api.part(prefillPartId as string),
+    enabled: open && !!prefillPartId,
+    staleTime: 5 * 60_000,
+    retry: false,
+  })
+  const myRating = useQuery({
+    queryKey: ['rating-mine', prefillPartId],
+    queryFn: () => coreApi.getRating(prefillPartId as string),
+    enabled: open && !!prefillPartId,
+    staleTime: 60_000,
+    retry: false,
+  })
+
+  // 只在首次打开时填一次：用户改过（或被草稿恢复覆盖）就不再动。
+  const prefilledKind = useRef(false)
+  const prefilledTitle = useRef(false)
+  const prefilledRating = useRef(false)
+
+  useEffect(() => {
+    if (!open) {
+      prefilledKind.current = false
+      prefilledTitle.current = false
+      prefilledRating.current = false
+      return
+    }
+    if (!prefill || prefilledKind.current) return
+    prefilledKind.current = true
+    form.setFieldsValue({ kind: prefill.kind, part_id: prefill.partId })
+  }, [open, prefill, form])
+
+  useEffect(() => {
+    if (!open || !prefill || prefilledTitle.current) return
+    const model = prefillPart.data?.model?.trim()
+    if (!model) return
+    prefilledTitle.current = true
+    const current = form.getFieldValue('title')
+    if (typeof current !== 'string' || !current.trim()) {
+      form.setFieldsValue({ title: `${model} 使用体验` })
+    }
+  }, [open, prefill, prefillPart.data, form])
+
+  useEffect(() => {
+    if (!open || !prefill || prefilledRating.current) return
+    const mine = myRating.data?.mine
+    if (!mine) return
+    prefilledRating.current = true
+    if (!form.isFieldTouched('rating')) form.setFieldsValue({ rating: mine.score })
+    if (!form.isFieldTouched('own_hardware')) {
+      form.setFieldsValue({ own_hardware: !!mine.own_hardware })
+    }
+  }, [open, prefill, myRating.data, form])
+
+  const partOptions = useMemo(() => {
+    const rows = parts.data?.items || []
+    const extra = prefillPart.data && !rows.some(p => p.id === prefillPart.data?.id)
+      ? [prefillPart.data]
+      : []
+    return [...extra, ...rows].map(p => ({ value: p.id, label: `${p.model} · ${p.vendor}` }))
+  }, [parts.data, prefillPart.data])
+
   const create = useMutation({
     mutationFn: (body: unknown) => api.createPost(body),
-    onSuccess: () => {
+    onSuccess: (post) => {
+      // 先停掉待写入的自动保存，否则它会在清草稿之后把旧内容写回去。
+      flushDraftTimer()
       message.success('已发布')
+      clearDraft()
+      setDraft(null)
+      recordActivity({
+        kind: 'post',
+        title: post.title,
+        href: siteHref(`/post.html?id=${post.id}`),
+      })
       qc.invalidateQueries({ queryKey: ['posts'] })
       form.resetFields()
       onClose()
@@ -339,8 +465,49 @@ export function Composer({ open, onClose }: { open: boolean; onClose: () => void
     onError: (e: Error) => message.error(e.message),
   })
 
+  const restoreDraft = () => {
+    if (!draft) return
+    form.setFieldsValue({
+      kind: draft.kind,
+      title: draft.title,
+      body: draft.body,
+      tags: draft.tags,
+      part_id: draft.part_id ?? undefined,
+      rating: draft.rating ?? 5,
+      use_case: draft.use_case ?? undefined,
+      own_hardware: draft.own_hardware,
+      total_price_cny: draft.total_price_cny ?? undefined,
+      price_scope: draft.price_scope ?? undefined,
+    })
+    setDraft(null)
+  }
+
+  const discardDraft = () => {
+    clearDraft()
+    setDraft(null)
+    message.success('已丢弃本地草稿')
+  }
+
+  // 还在询问是否恢复时，用户直接开始写 = 以新内容为准，旧草稿不再提示。
+  const onValuesChange = (_changed: unknown, all: Record<string, unknown>) => {
+    if (draft) setDraft(null)
+    flushDraftTimer()
+    saveTimer.current = window.setTimeout(() => {
+      // 清空表单即清掉草稿，下次打开不再提示。
+      saveDraft(normalizeDraft(all))
+    }, 700)
+  }
+
+  // 直接关窗时立刻落盘，不等防抖计时器。
+  const persistNow = () => {
+    flushDraftTimer()
+    if (draft) return
+    saveDraft(normalizeDraft(form.getFieldsValue(true) as Record<string, unknown>))
+  }
+
   return (
-    <Modal open={open} onCancel={onClose} title="发帖" width={720} destroyOnHidden
+    <Modal open={open} onCancel={() => { persistNow(); onClose() }}
+      title="发帖" width={720} destroyOnHidden
       okText="发布" confirmLoading={create.isPending}
       onOk={async () => {
         const v = await form.validateFields()
@@ -356,8 +523,25 @@ export function Composer({ open, onClose }: { open: boolean; onClose: () => void
           price_verified: !!(v.kind === 'build' && v.price_verified),
         })
       }}>
+      {draft && (
+        <div role="status"
+          className="mb-3 flex flex-wrap items-center gap-2 rounded-md border border-warning/35 bg-warning-soft px-3 py-2 text-sm text-ink-2">
+          <span className="min-w-0 flex-1">
+            发现 {ago(draft.updated_at)}的本地草稿《{draft.title.trim().slice(0, 40) || '未命名'}》。
+          </span>
+          <button type="button" onClick={restoreDraft}
+            className="inline-flex min-h-9 items-center rounded-md border border-line bg-surface px-3 text-xs font-semibold text-brand transition-colors hover:border-brand sm:min-h-7">
+            恢复
+          </button>
+          <button type="button" onClick={discardDraft}
+            className="inline-flex min-h-9 items-center rounded-md px-2 text-xs text-ink-3 transition-colors hover:text-danger sm:min-h-7">
+            丢弃
+          </button>
+        </div>
+      )}
       <Form form={form} layout="vertical" initialValues={{ kind: 'discussion', rating: 5 }}
-        requiredMark={false} className="space-y-4 pt-1">
+        requiredMark={false} className="space-y-4 pt-1"
+        onValuesChange={onValuesChange}>
         <FormGroup title="内容" hint="标题一句话说清核心；正文写清工况与数据">
           <Form.Item name="kind" label="类型" rules={[{ required: true }]} className="mb-3">
             <Select options={[
@@ -382,9 +566,7 @@ export function Composer({ open, onClose }: { open: boolean; onClose: () => void
                 onSearch={setPartQuery}
                 loading={parts.isLoading}
                 placeholder="搜型号 / 厂商"
-                options={(parts.data?.items || []).map(p => ({
-                  value: p.id, label: `${p.model} · ${p.vendor}`,
-                }))} />
+                options={partOptions} />
             </Form.Item>
             <Form.Item name="tags" label="标签" className="mb-0">
               <Select mode="tags" placeholder="回车添加，如 温升 / 背隙 / CAN-FD"
@@ -433,7 +615,7 @@ export function Composer({ open, onClose }: { open: boolean; onClose: () => void
         )}
 
         <p className="m-0 text-xs leading-5 text-ink-3">
-          发布后仍可编辑；被举报并核实的内容会被隐藏，作者可申诉。
+          发布后仍可编辑；被举报并核实的内容会被隐藏，作者可申诉。未发布的草稿只存在本机浏览器。
         </p>
       </Form>
     </Modal>
@@ -446,57 +628,207 @@ type AcceptProps = {
   canAccept: boolean
   onAccept: (commentId: number, accepted: boolean) => void
   acceptingId: number | null
+  /** 当前登录用户：判断「我的评论」；站务可编辑/撤回他人的评论。 */
+  viewerId?: number | null
+  isStaff?: boolean
+  /** 顶层帖子标题，只用于本地发言记录的可读标题。 */
+  postTitle?: string
+  /** 二级评论不能继续回复，引用时交给底部顶层评论框。 */
+  onQuoteTop?: (comment: Comment) => void
 }
 
-function CommentNode({ c, postId, depth = 0, acceptedId, canAccept, onAccept, acceptingId }: {
+/** 引用块：正文快照为空表示原评论已撤回，只显示占位且不可点。 */
+function QuoteBlock({ author, excerpt, href, onRemove, className = 'mt-1.5' }: {
+  author?: string
+  excerpt: string
+  href?: string
+  onRemove?: () => void
+  className?: string
+}) {
+  const text = (
+    <span className="block min-w-0">
+      {author && <span className="font-medium text-ink-3">{author}：</span>}
+      <span className={`line-clamp-2 whitespace-pre-wrap ${excerpt ? '' : 'text-ink-3'}`}>
+        {excerpt || '引用的评论已撤回'}
+      </span>
+    </span>
+  )
+  return (
+    <div className={`flex items-start gap-2 rounded-md border border-line bg-surface-2 px-2.5 py-2 text-xs leading-5 text-ink-2 ${className}`}>
+      {excerpt && href ? (
+        <a href={href} className="min-w-0 flex-1 transition-colors hover:text-brand">{text}</a>
+      ) : (
+        <span className="min-w-0 flex-1">{text}</span>
+      )}
+      {onRemove && (
+        <button type="button" onClick={onRemove} aria-label="取消引用"
+          className="shrink-0 rounded px-1 text-ink-3 transition-colors hover:text-danger">
+          取消
+        </button>
+      )}
+    </div>
+  )
+}
+
+function CommentNode({ c, postId, depth = 0, acceptedId, canAccept, onAccept, acceptingId,
+  viewerId = null, isStaff = false, postTitle, onQuoteTop }: {
   c: Comment; postId: number; depth?: number
 } & AcceptProps) {
   const qc = useQueryClient()
-  const { message } = AntApp.useApp()
+  const { message, modal } = AntApp.useApp()
   const [replying, setReplying] = useState(false)
   const [text, setText] = useState('')
-  const accepted = c.accepted === true || c.id === acceptedId
+  const [quote, setQuote] = useState<Comment | null>(null)
+  const [editing, setEditing] = useState(false)
+  const [editText, setEditText] = useState('')
+  // 撤回后采纳状态由后端清掉；这里再做一层兜底，避免占位旁边还挂着「已采纳」。
+  const accepted = !c.withdrawn && (c.accepted === true || c.id === acceptedId)
+  const canEdit = !c.withdrawn && viewerId != null &&
+    (viewerId === c.author?.id || isStaff)
+
+  const refresh = () => {
+    qc.invalidateQueries({ queryKey: ['comments', postId] })
+    qc.invalidateQueries({ queryKey: ['post', postId] })
+    qc.invalidateQueries({ queryKey: ['posts'] })
+  }
 
   const vote = useMutation({
     mutationFn: (v: number) => api.vote('comment', c.id, v),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['comments', postId] }),
+    onSuccess: refresh,
     onError: (e: Error) => message.error(e.message),
   })
   const reply = useMutation({
-    mutationFn: () => api.createComment(postId, { body: text, parent_id: c.id }),
+    mutationFn: () => api.createComment(postId, {
+      body: text,
+      parent_id: c.id,
+      ...(quote ? { quote_id: quote.id } : {}),
+    }),
     onSuccess: () => {
       setText('')
       setReplying(false)
-      qc.invalidateQueries({ queryKey: ['comments', postId] })
-      qc.invalidateQueries({ queryKey: ['post', postId] })
+      setQuote(null)
+      refresh()
+      recordActivity({
+        kind: 'comment',
+        title: postTitle ? `回复《${postTitle}》` : '回复了一条评论',
+        href: siteHref(`/post.html?id=${postId}#comments`),
+      })
     },
     onError: (e: Error) => message.error(e.message),
   })
+  const edit = useMutation({
+    mutationFn: (body: string) => api.updateComment(c.id, body),
+    onSuccess: () => {
+      setEditing(false)
+      refresh()
+      message.success('已保存修改')
+    },
+    onError: (e: Error) => message.error(e.message),
+  })
+  const withdraw = useMutation({
+    mutationFn: () => api.withdrawComment(c.id),
+    onSuccess: () => {
+      setEditing(false)
+      setReplying(false)
+      setQuote(null)
+      refresh()
+      message.success('已撤回，回复仍保留')
+    },
+    onError: (e: Error) => message.error(e.message),
+  })
+
+  const toggleReply = () => {
+    if (replying) {
+      setQuote(null)
+      setReplying(false)
+    } else {
+      setReplying(true)
+    }
+  }
+
+  // 引用与回复互相独立：顶层评论打开自己的回复框；二级评论交给底部
+  // 顶层评论框，避免出现第三级回复。
+  const startQuote = () => {
+    if (depth === 0) {
+      setReplying(true)
+      setQuote(c)
+    } else {
+      onQuoteTop?.(c)
+    }
+  }
+
+  const startEdit = () => {
+    setEditText(c.body)
+    setEditing(true)
+  }
+
+  const saveEdit = () => {
+    const body = editText.trim()
+    if (body.length < 2) {
+      message.warning('评论至少 2 个字')
+      return
+    }
+    if (body === c.body.trim()) {
+      setEditing(false)
+      return
+    }
+    edit.mutate(body)
+  }
+
+  // 撤回不可恢复：二次确认；已采纳的评论还要说明会取消采纳。
+  const askWithdraw = () => {
+    modal.confirm({
+      title: '撤回这条评论？',
+      content: accepted
+        ? '这条评论已被采纳，撤回后会同时取消采纳。正文会替换为「该评论已撤回」，已有回复仍保留，且不能恢复。'
+        : '正文会替换为「该评论已撤回」，已有回复仍保留，且不能恢复。',
+      okText: '撤回评论',
+      cancelText: '再想想',
+      okButtonProps: { danger: true },
+      onOk: () => withdraw.mutateAsync().catch(() => {}),
+    })
+  }
 
   const nested = depth > 0
   const action = 'inline-flex min-h-11 items-center rounded px-1 text-xs transition-colors sm:min-h-8'
 
   return (
-    <div className={nested ? 'mt-3 border-l border-line pl-3 sm:pl-4' : 'mt-3'}>
+    <div id={`c${c.id}`} className={nested ? 'mt-3 scroll-mt-24 border-l border-line pl-3 sm:pl-4' : 'mt-3 scroll-mt-24'}>
       <div className={accepted ? 'rounded-lg border border-success/35 bg-success-soft/55 p-2.5 sm:p-3' : ''}>
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-ink-3">
             <UserBadge user={c.author} size={20} />
             <span className="mono tabular">{ago(c.created_at)}</span>
+            {c.edited_at && !c.withdrawn && (
+              <span className="mono tabular" title={new Date(c.edited_at).toLocaleString('zh-CN')}>
+                已编辑
+              </span>
+            )}
+            {c.withdrawn && (
+              <span className="inline-flex items-center rounded-full border border-line bg-surface-2 px-2 py-0.5 text-xs text-ink-3">
+                已撤回
+              </span>
+            )}
             {accepted && (
               <span className="inline-flex items-center gap-1 rounded-full border border-success/35 bg-success-soft px-2 py-0.5 text-xs font-semibold text-success">
                 <CheckCircleFilled aria-hidden="true" />
                 已采纳
               </span>
             )}
-            {depth === 0 && (
-              <button type="button" onClick={() => setReplying(v => !v)}
+            {!c.withdrawn && depth === 0 && (
+              <button type="button" onClick={toggleReply}
                 aria-expanded={replying}
                 className={`${action} text-ink-3 hover:text-brand`}>
                 回复
               </button>
             )}
-            {canAccept && (
+            {!c.withdrawn && (
+              <button type="button" onClick={startQuote}
+                className={`${action} text-ink-3 hover:text-brand`}>
+                引用
+              </button>
+            )}
+            {!c.withdrawn && canAccept && (
               <button type="button" disabled={acceptingId === c.id}
                 onClick={() => onAccept(c.id, accepted)}
                 aria-pressed={accepted}
@@ -506,22 +838,74 @@ function CommentNode({ c, postId, depth = 0, acceptedId, canAccept, onAccept, ac
                 {acceptingId === c.id ? '处理中…' : accepted ? '取消采纳' : '采纳'}
               </button>
             )}
+            {canEdit && !editing && (
+              <>
+                <button type="button" onClick={startEdit}
+                  className={`${action} text-ink-3 hover:text-brand`}>
+                  编辑
+                </button>
+                <button type="button" onClick={askWithdraw} disabled={withdraw.isPending}
+                  className={`${action} text-ink-3 hover:text-danger disabled:cursor-not-allowed disabled:opacity-50`}>
+                  {withdraw.isPending ? '撤回中…' : '撤回'}
+                </button>
+              </>
+            )}
           </div>
 
-          <div className="mt-1 whitespace-pre-wrap text-sm leading-6 text-ink-2">{c.body}</div>
+          {!c.withdrawn && c.quote_id != null && (
+            <QuoteBlock
+              author={c.quote_author}
+              excerpt={c.quote_excerpt}
+              href={c.quote_excerpt ? `#c${c.quote_id}` : undefined} />
+          )}
 
-          {replying && (
-            <div className="mt-2 flex flex-col gap-2 sm:flex-row">
-              <Input.TextArea autoSize={{ minRows: 1, maxRows: 4 }} value={text}
-                onChange={e => setText(e.target.value)} placeholder="回复…" />
-              <Button type="primary" loading={reply.isPending}
-                onClick={() => text.trim().length >= 2 && reply.mutate()}>发送</Button>
+          {c.withdrawn ? (
+            <p className="mt-1 rounded-md border border-dashed border-line bg-surface-2 px-3 py-2 text-sm leading-6 text-ink-3">
+              该评论已撤回{c.replies?.length ? '，下方回复仍保留' : ''}
+            </p>
+          ) : editing ? (
+            <div className="mt-2 space-y-2">
+              <Input.TextArea autoSize={{ minRows: 2, maxRows: 8 }} value={editText}
+                maxLength={4000} onChange={e => setEditText(e.target.value)}
+                aria-label="编辑评论正文" />
+              <div className="flex flex-wrap items-center gap-2">
+                <Button type="primary" size="small" loading={edit.isPending} onClick={saveEdit}>
+                  保存
+                </Button>
+                <Button size="small" disabled={edit.isPending} onClick={() => setEditing(false)}>
+                  取消
+                </Button>
+                <span className="text-xs text-ink-3">至少 2 个字，保存后标记已编辑</span>
+              </div>
+            </div>
+          ) : (
+            <div className="mt-1 whitespace-pre-wrap text-sm leading-6 text-ink-2">{c.body}</div>
+          )}
+
+          {!c.withdrawn && replying && (
+            <div className="mt-2 space-y-2">
+              {quote && (
+                <QuoteBlock
+                  author={quote.author?.display_name || quote.author?.handle || '匿名'}
+                  excerpt={quote.body}
+                  onRemove={() => setQuote(null)}
+                  className="" />
+              )}
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <Input.TextArea autoSize={{ minRows: 1, maxRows: 4 }} value={text}
+                  onChange={e => setText(e.target.value)}
+                  placeholder={quote ? '回复并引用…' : '回复…'} />
+                <Button type="primary" loading={reply.isPending}
+                  onClick={() => text.trim().length >= 2 && reply.mutate()}>发送</Button>
+              </div>
             </div>
           )}
 
-          <div className="mt-1.5 flex justify-end">
-            <VoteButtons compact score={c.score} myVote={c.my_vote} onVote={v => vote.mutate(v)} />
-          </div>
+          {!c.withdrawn && !editing && (
+            <div className="mt-1.5 flex justify-end">
+              <VoteButtons compact score={c.score} myVote={c.my_vote} onVote={v => vote.mutate(v)} />
+            </div>
+          )}
         </div>
       </div>
 
@@ -530,7 +914,9 @@ function CommentNode({ c, postId, depth = 0, acceptedId, canAccept, onAccept, ac
           {c.replies.map(r => (
             <CommentNode key={r.id} c={r} postId={postId} depth={depth + 1}
               acceptedId={acceptedId} canAccept={canAccept}
-              onAccept={onAccept} acceptingId={acceptingId} />
+              onAccept={onAccept} acceptingId={acceptingId}
+              viewerId={viewerId} isStaff={isStaff} postTitle={postTitle}
+              onQuoteTop={onQuoteTop} />
           ))}
         </div>
       )}
@@ -538,34 +924,56 @@ function CommentNode({ c, postId, depth = 0, acceptedId, canAccept, onAccept, ac
   )
 }
 
-export function CommentList({ postId, acceptedId = null, canAccept = false }: {
+export function CommentList({ postId, acceptedId = null, canAccept = false, canComment = true,
+  viewerId = null, isStaff = false, postTitle }: {
   postId: number
   acceptedId?: number | null
   canAccept?: boolean
+  canComment?: boolean
+  viewerId?: number | null
+  isStaff?: boolean
+  postTitle?: string
 }) {
   const qc = useQueryClient()
   const { message } = AntApp.useApp()
   const [text, setText] = useState('')
+  const [quote, setQuote] = useState<Comment | null>(null)
   const [acceptingId, setAcceptingId] = useState<number | null>(null)
+  const boxRef = useRef<HTMLTextAreaElement | null>(null)
   const { data, isLoading } = useQuery({
     queryKey: ['comments', postId], queryFn: () => api.comments(postId),
   })
   const add = useMutation({
-    mutationFn: () => api.createComment(postId, { body: text }),
+    mutationFn: () => api.createComment(postId, {
+      body: text,
+      ...(quote ? { quote_id: quote.id } : {}),
+    }),
     onSuccess: () => {
       setText('')
+      setQuote(null)
       qc.invalidateQueries({ queryKey: ['comments', postId] })
       qc.invalidateQueries({ queryKey: ['post', postId] })
+      recordActivity({
+        kind: 'comment',
+        title: postTitle ? `评论《${postTitle}》` : '评论了一条帖子',
+        href: siteHref(`/post.html?id=${postId}#comments`),
+      })
     },
     onError: (e: Error) => message.error(e.message),
   })
+
+  // 二级评论没有自己的回复框，引用它时落到顶部评论框（仍是最外层评论）。
+  const startQuoteTop = (comment: Comment) => {
+    setQuote(comment)
+    window.requestAnimationFrame(() => boxRef.current?.focus())
+  }
 
   // 已采纳的评论排在最前：读者先看到结论，再看讨论过程。
   const ordered = useMemo(() => {
     const rows = [...(data || [])]
     rows.sort((a, b) => {
-      const aa = a.accepted === true || a.id === acceptedId ? 1 : 0
-      const bb = b.accepted === true || b.id === acceptedId ? 1 : 0
+      const aa = !a.withdrawn && (a.accepted === true || a.id === acceptedId) ? 1 : 0
+      const bb = !b.withdrawn && (b.accepted === true || b.id === acceptedId) ? 1 : 0
       return bb - aa
     })
     return rows
@@ -591,17 +999,33 @@ export function CommentList({ postId, acceptedId = null, canAccept = false }: {
 
   return (
     <div>
-      <div className="rounded-lg border border-line bg-surface-2 p-2.5">
-        <div className="flex flex-col gap-2 sm:flex-row">
-          <Input.TextArea autoSize={{ minRows: 2, maxRows: 6 }} value={text}
-            onChange={e => setText(e.target.value)} placeholder="补充实测数据、提问或反驳…" />
-          <Button type="primary" loading={add.isPending} className="sm:self-end"
-            onClick={() => text.trim().length >= 2 && add.mutate()}>评论</Button>
+      {canComment ? (
+        <div className="rounded-lg border border-line bg-surface-2 p-2.5">
+          {quote && (
+            <QuoteBlock
+              author={quote.author?.display_name || quote.author?.handle || '匿名'}
+              excerpt={quote.body}
+              onRemove={() => setQuote(null)}
+              className="mb-2" />
+          )}
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Input.TextArea ref={el => {
+              boxRef.current = (el?.nativeElement as HTMLTextAreaElement | null) ?? null
+            }} autoSize={{ minRows: 2, maxRows: 6 }} value={text}
+              onChange={e => setText(e.target.value)}
+              placeholder={quote ? '评论并引用…' : '补充实测数据、提问或反驳…'} />
+            <Button type="primary" loading={add.isPending} className="sm:self-end"
+              onClick={() => text.trim().length >= 2 && add.mutate()}>评论</Button>
+          </div>
+          <p className="m-0 mt-1.5 text-xs text-ink-3">
+            评论至少 2 个字；写清工况比下结论有用。
+          </p>
         </div>
-        <p className="m-0 mt-1.5 text-xs text-ink-3">
-          评论至少 2 个字；写清工况比下结论有用。
-        </p>
-      </div>
+      ) : (
+        <div className="rounded-lg border border-line bg-surface-2 px-3 py-2 text-sm text-ink-2">
+          帖子已锁定，暂时不能回复。
+        </div>
+      )}
 
       {isLoading ? (
         <div className="mt-4 space-y-2" aria-hidden="true">
@@ -622,7 +1046,9 @@ export function CommentList({ postId, acceptedId = null, canAccept = false }: {
           {ordered.map(c => (
             <CommentNode key={c.id} c={c} postId={postId}
               acceptedId={acceptedId} canAccept={canAccept}
-              onAccept={accept} acceptingId={acceptingId} />
+              onAccept={accept} acceptingId={acceptingId}
+              viewerId={viewerId} isStaff={isStaff} postTitle={postTitle}
+              onQuoteTop={startQuoteTop} />
           ))}
         </div>
       )}

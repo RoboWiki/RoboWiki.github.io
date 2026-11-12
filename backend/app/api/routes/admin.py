@@ -17,6 +17,7 @@ from sqlalchemy import func, update
 from sqlmodel import select
 
 from ...catalog_fields import SPEC_KEYS, TOP_FIELDS, split_field
+from ...crud import posts_out
 from ...email_templates import render_email
 from ...mailer import MailError, send_email
 from ...models import Comment, Part, PartEdit, Post, RefreshToken, Submission, User, UserBan
@@ -32,6 +33,11 @@ class PatchIn(BaseModel):
     note: str = Field(min_length=2, max_length=500,
                       description="依据：哪份 datasheet 的哪一页 / 哪封厂商邮件")
     source_url: str | None = Field(default=None, max_length=500)
+
+
+class PostModerateIn(BaseModel):
+    pinned: bool | None = None
+    locked: bool | None = None
 
 
 class EditOut(BaseModel):
@@ -97,6 +103,26 @@ def _coerce(field: str, value: Any) -> Any:
     except (TypeError, ValueError):
         # 非数值字段（如 use_cases 的单值）原样保留，交给 pipeline 校验
         return str(value)
+
+
+@router.patch("/posts/{post_id}")
+def admin_moderate_post(post_id: int, payload: PostModerateIn,
+                        user: CurrentUser, db: Db):
+    """站务置顶 / 锁定帖子。锁定只拦普通用户回复，不隐藏内容。"""
+    _staff(user)
+    p = db.get(Post, post_id)
+    if p is None:
+        raise HTTPException(404, "帖子不存在")
+    if payload.pinned is None and payload.locked is None:
+        raise HTTPException(422, "没有要修改的状态")
+    if payload.pinned is not None:
+        p.pinned = payload.pinned
+    if payload.locked is not None:
+        p.locked = payload.locked
+    db.add(p)
+    db.commit()
+    db.refresh(p)
+    return posts_out(db, [p], user.id)[0]
 
 
 @router.get("/stats")

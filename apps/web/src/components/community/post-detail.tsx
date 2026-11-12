@@ -54,6 +54,7 @@ function Detail({ postId }: { postId: number }) {
   const [editError, setEditError] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
   const [actionError, setActionError] = useState<string | null>(null)
+  const [moderating, setModerating] = useState<'pin' | 'lock' | null>(null)
 
   const post = useQuery({
     queryKey: ['post', postId],
@@ -143,6 +144,23 @@ function Detail({ postId }: { postId: number }) {
     })
   }
 
+  const moderate = async (patch: { pinned?: boolean; locked?: boolean }) => {
+    const kind = patch.pinned !== undefined ? 'pin' : 'lock'
+    setModerating(kind)
+    try {
+      const updated = await api.moderatePost(postId, patch)
+      qc.setQueryData(['post', postId], updated)
+      await qc.invalidateQueries({ queryKey: ['posts'] })
+      message.success(kind === 'pin'
+        ? (updated.pinned ? '已置顶' : '已取消置顶')
+        : (updated.locked ? '已锁定，普通用户不能回复' : '已解锁'))
+    } catch (e) {
+      message.error((e as Error).message)
+    } finally {
+      setModerating(null)
+    }
+  }
+
   return (
     <div>
       <CommunityHeader current="community" />
@@ -173,6 +191,16 @@ function Detail({ postId }: { postId: number }) {
                 <span className={`inline-flex items-center rounded-full border border-line px-2 py-0.5 text-xs font-medium ${KIND_TONE[p.kind] || 'bg-surface-2 text-ink-2'}`}>
                   {KIND_LABEL[p.kind]}
                 </span>
+                {p.pinned && (
+                  <span className="inline-flex items-center rounded-full border border-warning/35 bg-warning-soft px-2 py-0.5 text-xs font-semibold text-warning">
+                    置顶
+                  </span>
+                )}
+                {p.locked && (
+                  <span className="inline-flex items-center rounded-full border border-line bg-surface-3 px-2 py-0.5 text-xs font-semibold text-ink-2">
+                    已锁定
+                  </span>
+                )}
                 {p.accepted_comment_id != null && (
                   <span className="inline-flex items-center rounded-full border border-success/35 bg-success-soft px-2 py-0.5 text-xs font-semibold text-success">
                     已解决
@@ -268,6 +296,20 @@ function Detail({ postId }: { postId: number }) {
                     {p.use_case && <span>用在：{p.use_case}</span>}
 
                     <span className="ml-auto flex items-center gap-1">
+                      {user?.is_staff && (
+                        <>
+                          <button type="button" disabled={moderating !== null}
+                            onClick={() => moderate({ pinned: !p.pinned })}
+                            className="inline-flex min-h-11 items-center rounded px-2 text-xs text-ink-2 transition-colors hover:bg-warning-soft hover:text-warning disabled:opacity-50 sm:min-h-8">
+                            {p.pinned ? '取消置顶' : '置顶'}
+                          </button>
+                          <button type="button" disabled={moderating !== null}
+                            onClick={() => moderate({ locked: !p.locked })}
+                            className="inline-flex min-h-11 items-center rounded px-2 text-xs text-ink-2 transition-colors hover:bg-surface-3 hover:text-ink disabled:opacity-50 sm:min-h-8">
+                            {p.locked ? '解锁' : '锁定'}
+                          </button>
+                        </>
+                      )}
                       {canManage ? (
                         <>
                           <button type="button" onClick={beginEdit}
@@ -310,12 +352,22 @@ function Detail({ postId }: { postId: number }) {
                   )}
                 </h2>
                 <span className="text-xs text-ink-3">
-                  {canManage ? '你是作者，可以采纳一条回复作为结论' : '按时间排序，采纳的回复会置顶'}
+                  {user?.is_staff
+                    ? '帖子置顶/锁定在标题右侧；评论的编辑/撤回在每条评论上'
+                    : canManage
+                      ? '你是作者，可以采纳一条回复作为结论'
+                      : '按时间排序，采纳的回复会置顶'}
                 </span>
               </header>
+              {p.locked && !user?.is_staff && (
+                <div className="mb-3 rounded-lg border border-line bg-surface-2 px-3 py-2 text-sm text-ink-2">
+                  帖子已锁定，暂时不能回复。
+                </div>
+              )}
               {user
                 ? <CommentList postId={postId} acceptedId={p.accepted_comment_id ?? null}
-                    canAccept={canManage} />
+                    canAccept={canManage} canComment={!p.locked || !!user?.is_staff}
+                    viewerId={user.id} isStaff={user.is_staff} postTitle={p.title} />
                 : (
                   <div className="flex flex-col items-start gap-2 rounded-lg border border-line bg-surface-2 p-4">
                     <p className="m-0 text-sm text-ink-2">登录后才能评论、投票。</p>

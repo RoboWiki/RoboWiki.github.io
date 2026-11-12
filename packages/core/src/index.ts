@@ -260,6 +260,8 @@ export type ReproductionSummary = {
 export type RatingSummary = {
   count: number
   avg: number | null
+  /** 该零件下未隐藏的评价帖数量；旧接口没有这个字段。 */
+  review_count?: number
   histogram: Record<string, number>
   dims_avg?: Record<string, number> | null
   dims_n?: Record<string, number> | null

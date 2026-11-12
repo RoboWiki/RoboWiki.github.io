@@ -174,7 +174,7 @@ def post_out(p: Post, author: UserOut | None, part_title: str | None,
         total_price_cny=p.total_price_cny, price_scope=p.price_scope,
         price_verified=p.price_verified, score=p.score,
         comment_count=p.comment_count, view_count=p.view_count,
-        pinned=p.pinned, accepted_comment_id=p.accepted_comment_id,
+        pinned=p.pinned, locked=p.locked, accepted_comment_id=p.accepted_comment_id,
         created_at=p.created_at, updated_at=p.updated_at,
         author=author, my_vote=my_vote,
     )
@@ -195,6 +195,7 @@ def posts_out(db: Session, posts: list[Post], viewer_id: int | None = None) -> l
 
 # ── 评论序列化（两级）───────────────────────────────────────────────────────
 def comments_out(db: Session, post_id: int, viewer_id: int | None = None) -> list[CommentOut]:
+    # hidden 是站务隐藏（整条不出现）；withdrawn 只清正文、保留占位与回复树。
     rows = db.exec(select(Comment).where(
         Comment.post_id == post_id, Comment.hidden == False)  # noqa: E712
         .order_by(Comment.created_at)).all()
@@ -205,8 +206,12 @@ def comments_out(db: Session, post_id: int, viewer_id: int | None = None) -> lis
     flat: dict[int, CommentOut] = {}
     for c in rows:
         flat[c.id or 0] = CommentOut(
-            id=c.id or 0, post_id=c.post_id, parent_id=c.parent_id, body=c.body,
+            id=c.id or 0, post_id=c.post_id, parent_id=c.parent_id,
+            body="" if c.withdrawn else c.body,
             score=c.score, accepted=(c.id is not None and c.id == accepted_id),
+            withdrawn=c.withdrawn, edited_at=c.edited_at,
+            quote_id=c.quote_id, quote_author=c.quote_author,
+            quote_excerpt=c.quote_excerpt,
             created_at=c.created_at,
             author=authors.get(c.author_id), my_vote=votes.get(c.id or 0, 0))
     roots: list[CommentOut] = []
@@ -216,6 +221,40 @@ def comments_out(db: Session, post_id: int, viewer_id: int | None = None) -> lis
         else:
             roots.append(c)
     return roots
+
+
+def comment_out(db: Session, c: Comment, viewer_id: int | None = None) -> CommentOut:
+    """单条序列化（编辑 / 撤回的响应）。回复列表由调用方按需再取。"""
+    post = db.get(Post, c.post_id)
+    accepted = bool(post is not None and c.id is not None
+                    and post.accepted_comment_id == c.id)
+    authors = users_out(db, {c.author_id})
+    votes = my_votes(db, viewer_id, "comment", [c.id] if c.id else [])
+    return CommentOut(
+        id=c.id or 0, post_id=c.post_id, parent_id=c.parent_id,
+        body="" if c.withdrawn else c.body, score=c.score, accepted=accepted,
+        withdrawn=c.withdrawn, edited_at=c.edited_at,
+        quote_id=c.quote_id, quote_author=c.quote_author,
+        quote_excerpt=c.quote_excerpt,
+        created_at=c.created_at,
+        author=authors.get(c.author_id), my_vote=votes.get(c.id or 0, 0),
+        replies=[])
+
+
+def clear_quote_snapshots(db: Session, comment_ids: list[int]) -> None:
+    """清空引用这些评论的正文快照（保留 quote_id / quote_author）。
+
+    引用块存的是创建时的正文快照，撤回/隐藏被引用评论后必须清掉，
+    否则原文会通过引用继续可见。调用方负责 commit。
+    """
+    ids = [i for i in comment_ids if i]
+    if not ids:
+        return
+    rows = db.exec(select(Comment).where(Comment.quote_id.in_(ids))).all()
+    for row in rows:
+        if row.quote_excerpt:
+            row.quote_excerpt = ""
+            db.add(row)
 
 
 def touch_comment_count(db: Session, post_id: int, commit: bool = True) -> None:

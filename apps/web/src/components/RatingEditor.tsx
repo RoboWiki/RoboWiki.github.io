@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { api } from '@/lib/api'
+import { withBase } from '@/lib/utils'
 import { TAG_LABELS, UNIVERSAL_TAGS, categoryTagSet, tagsForCategory } from '@robowiki/content'
 
 /**
@@ -21,7 +22,8 @@ const TOKEN_KEY = 'roboselect.token'
 export default function RatingEditor({ partId, category, onDone }: {
   partId: string
   category?: string | null
-  onDone?: () => void
+  /** submitted：本次提交成功；withdrawn：撤回成功。 */
+  onDone?: (result: 'submitted' | 'withdrawn') => void
 }) {
   const [signedIn, setSignedIn] = useState<boolean | null>(null)
   const [score, setScore] = useState(0)
@@ -30,8 +32,13 @@ export default function RatingEditor({ partId, category, onDone }: {
   const [note, setNote] = useState('')
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState<{ kind: 'ok' | 'err'; text: string } | null>(null)
+  /** 已存在本人评分：按钮变「修改评分」，并提供撤回。 */
+  const [existing, setExisting] = useState(false)
+  const [confirming, setConfirming] = useState(false)
 
   const universalTags = UNIVERSAL_TAGS.map(value => ({ value, label: TAG_LABELS[value] }))
+  // 写完评分再引导到长评；社区页按 kind=review + part 过滤，下同。
+  const reviewHref = withBase(`/community.html?kind=review&part=${encodeURIComponent(partId)}`)
   const specificKeys = categoryTagSet(category)
   const specificTags = tagsForCategory(category)
     .filter(value => specificKeys.has(value))
@@ -44,6 +51,32 @@ export default function RatingEditor({ partId, category, onDone }: {
       setSignedIn(false)
     }
   }, [])
+
+  // 已有评分时预填：从「再打一次分」改成「修改这条评分」。
+  useEffect(() => {
+    if (!signedIn) return
+    let alive = true
+    api.getRating(partId).then(summary => {
+      if (!alive) return
+      const mine = summary.mine
+      if (!mine || mine.hidden) return
+      setExisting(true)
+      setScore(mine.score ?? 0)
+      setUsage(mine.usage_level ?? '')
+      setTags(Array.isArray(mine.reason_tags) ? mine.reason_tags.slice(0, 3) : [])
+      setNote(mine.note ?? '')
+    }).catch(() => {
+      // 未登录或接口暂时不可用：保持空白打分即可，不打断阅读
+    })
+    return () => { alive = false }
+  }, [partId, signedIn])
+
+  const resetForm = () => {
+    setScore(0)
+    setUsage('')
+    setTags([])
+    setNote('')
+  }
 
   const ready = score > 0 && usage !== '' && tags.length > 0
   const hint = useMemo(() => {
@@ -72,15 +105,34 @@ export default function RatingEditor({ partId, category, onDone }: {
         reason_tags: tags,
         note: note.trim(),
       })
-      setMessage({ kind: 'ok', text: '已记录，感谢。你的评分会进入下一次聚合。' })
-      setScore(0)
-      setUsage('')
-      setTags([])
-      setNote('')
-      onDone?.()
+      setExisting(true)
+      setMessage({
+        kind: 'ok',
+        text: existing ? '已更新这条评分。' : '已记录，感谢。你的评分会进入下一次聚合。',
+      })
+      onDone?.('submitted')
     } catch (error) {
       const text = error instanceof Error ? error.message : '提交失败'
       setMessage({ kind: 'err', text: `没提交成功：${text}` })
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const withdraw = async () => {
+    if (busy) return
+    setBusy(true)
+    setMessage(null)
+    try {
+      await api.deleteRating(partId)
+      setExisting(false)
+      setConfirming(false)
+      resetForm()
+      setMessage({ kind: 'ok', text: '已撤回评分，分数与理由都不再计入聚合。' })
+      onDone?.('withdrawn')
+    } catch (error) {
+      const text = error instanceof Error ? error.message : '撤回失败'
+      setMessage({ kind: 'err', text: `没撤回成功：${text}` })
     } finally {
       setBusy(false)
     }
@@ -213,11 +265,47 @@ export default function RatingEditor({ partId, category, onDone }: {
           disabled={!ready || busy}
           className="inline-flex h-8 items-center rounded-md bg-brand px-3 text-xs font-semibold text-brand-fg transition-colors hover:bg-brand-hover disabled:opacity-50"
         >
-          {busy ? '提交中…' : '提交评分'}
+          {busy ? '提交中…' : existing ? '修改评分' : '提交评分'}
         </button>
+        {existing && !confirming && (
+          <button
+            type="button"
+            onClick={() => setConfirming(true)}
+            disabled={busy}
+            className="inline-flex h-8 items-center rounded-md border border-line bg-surface px-3 text-xs text-ink-2 transition-colors hover:border-danger/50 hover:text-danger disabled:opacity-50"
+          >
+            撤回评分
+          </button>
+        )}
         {hint && <span className="text-xs text-ink-3">{hint}</span>}
         <span className="text-xs text-ink-3">匿名展示，只按账号去重</span>
       </div>
+
+      {existing && confirming && (
+        <div className="mt-2 rounded-md border border-danger/35 bg-danger-soft px-3 py-2">
+          <p role="alert" className="m-0 text-xs leading-5 text-ink-2">
+            撤回后这条评分（分数、使用时长、理由和备注）会被删除，不能恢复。确认撤回？
+          </p>
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={withdraw}
+              disabled={busy}
+              className="inline-flex h-8 items-center rounded-md border border-danger/45 bg-danger-soft px-3 text-xs font-semibold text-danger transition-colors hover:border-danger disabled:opacity-50"
+            >
+              {busy ? '撤回中…' : '确认撤回'}
+            </button>
+            <button
+              type="button"
+              onClick={() => setConfirming(false)}
+              disabled={busy}
+              className="inline-flex h-8 items-center rounded-md border border-line bg-surface px-3 text-xs text-ink-2 transition-colors hover:border-line-strong hover:text-ink disabled:opacity-50"
+            >
+              取消
+            </button>
+          </div>
+        </div>
+      )}
 
       {message && (
         <p
@@ -226,6 +314,18 @@ export default function RatingEditor({ partId, category, onDone }: {
           className={`mt-2 text-xs ${message.kind === 'ok' ? 'text-success' : 'text-danger'}`}
         >
           {message.text}
+        </p>
+      )}
+
+      {existing && (
+        <p className="mt-2 text-xs leading-5 text-ink-3">
+          <a
+            href={reviewHref}
+            className="font-medium text-brand hover:underline"
+          >
+            写一条完整评价<span aria-hidden="true">→</span>
+          </a>
+          <span className="ml-1">说说具体机器、场景与踩过的坑。</span>
         </p>
       )}
     </div>
