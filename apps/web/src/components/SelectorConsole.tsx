@@ -124,12 +124,16 @@ function OptionRow({ opt, selected, onSelect }: { opt: RoleOption; selected: boo
   )
 }
 
-function RoleCard({ role, choice, selectedPart, expanded, onToggle, onSelect, onRestore, onQty }: {
+const DEFAULT_VISIBLE = 4
+const VISIBLE_STEP = 4
+
+function RoleCard({ role, choice, selectedPart, visible, onMore, onLess, onSelect, onRestore, onQty }: {
   role: RolePlan
   choice: { partId?: string | null; qty?: number } | undefined
   selectedPart: CatalogPart | null
-  expanded: boolean
-  onToggle: () => void
+  visible: number
+  onMore: () => void
+  onLess: () => void
   onSelect: (partId: string) => void
   onRestore: () => void
   onQty: (qty: number) => void
@@ -138,6 +142,8 @@ function RoleCard({ role, choice, selectedPart, expanded, onToggle, onSelect, on
   const selectedPrice = selectedPart ? (selectedOpt?.price ?? effectivePrice(selectedPart.price, selectedPart.offers)) : null
   const qty = Math.max(0, Math.min(999, Math.floor(choice?.qty ?? role.qty)))
   const subtotal = selectedPrice !== null ? selectedPrice * qty : null
+  const shown = role.options.slice(0, visible)
+  const remaining = role.options.length - shown.length
   return (
     <section className="rounded-lg border border-line bg-surface">
       <div className="flex flex-wrap items-center gap-2 border-b border-line px-3 py-2">
@@ -197,26 +203,32 @@ function RoleCard({ role, choice, selectedPart, expanded, onToggle, onSelect, on
 
         {role.options.length > 0 ? (
           <div>
-            <button
-              type="button"
-              onClick={onToggle}
-              aria-expanded={expanded}
-              className="flex w-full flex-wrap items-center gap-x-2 rounded-md border border-line bg-surface px-2.5 py-1.5 text-left text-xs text-ink-2 hover:border-brand/40"
-            >
-              <span className="font-medium text-brand">{expanded ? '收起参考选项' : `参考选项（${role.options.length}）`}</span>
+            <div className="flex w-full flex-wrap items-center gap-x-2 rounded-md border border-line bg-surface px-2.5 py-1.5 text-left text-xs text-ink-2">
+              <span className="font-medium text-brand">参考选项（{role.options.length}）</span>
               <span className="min-w-0 flex-1 truncate text-xs text-ink-3">{role.sortNote}</span>
-              <span aria-hidden="true" className="text-ink-3">{expanded ? '▴' : '▾'}</span>
-            </button>
-            {expanded && (
-              <div className="mt-1.5 space-y-1.5">
-                {role.options.map(opt => (
-                  <OptionRow
-                    key={opt.part.id}
-                    opt={opt}
-                    selected={selectedPart?.id === opt.part.id}
-                    onSelect={() => onSelect(opt.part.id)}
-                  />
-                ))}
+            </div>
+            <div className="mt-1.5 space-y-1.5">
+              {shown.map(opt => (
+                <OptionRow
+                  key={opt.part.id}
+                  opt={opt}
+                  selected={selectedPart?.id === opt.part.id}
+                  onSelect={() => onSelect(opt.part.id)}
+                />
+              ))}
+            </div>
+            {(remaining > 0 || visible > DEFAULT_VISIBLE) && (
+              <div className="mt-1.5 flex flex-wrap gap-2">
+                {remaining > 0 && (
+                  <button type="button" onClick={onMore} className="chip h-7 px-2.5 text-xs">
+                    展开剩余 {remaining} 个
+                  </button>
+                )}
+                {visible > DEFAULT_VISIBLE && (
+                  <button type="button" onClick={onLess} className="chip h-7 px-2.5 text-xs">
+                    收起
+                  </button>
+                )}
               </div>
             )}
           </div>
@@ -236,7 +248,7 @@ export default function SelectorConsole({ parts, models }: Props) {
   const [needs, setNeeds] = useState<Needs>(DEFAULT_NEEDS)
   const [manual, setManual] = useState(first ? manualOf(first) : TYPE_DEFAULT.quadruped)
   const [choices, setChoices] = useState<Choices>({})
-  const [expanded, setExpanded] = useState<Record<string, boolean>>({ actuator: true, actuator_leg: true })
+  const [visible, setVisible] = useState<Record<string, number>>({})
   const [notice, setNotice] = useState('')
   const [codeOpen, setCodeOpen] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
@@ -279,7 +291,7 @@ export default function SelectorConsole({ parts, models }: Props) {
   const result = useMemo(() => plan(input, models, parts, choices), [input, models, parts, choices])
 
   const chosenCount = result.roles.filter(r => choices[r.key]?.partId).length
-  const allExpanded = result.roles.every(r => r.options.length === 0 || expanded[r.key])
+  const allExpanded = result.roles.every(r => r.options.length === 0 || (visible[r.key] ?? DEFAULT_VISIBLE) >= r.options.length)
 
   const selectType = (next: RobotType) => {
     if (next === type) return
@@ -324,7 +336,6 @@ export default function SelectorConsole({ parts, models }: Props) {
 
   const selectPart = (key: string, partId: string) => {
     setChoices(prev => ({ ...prev, [key]: { ...prev[key], partId } }))
-    setExpanded(prev => ({ ...prev, [key]: true }))
   }
 
   const restoreVirtual = (key: string) => {
@@ -616,9 +627,9 @@ export default function SelectorConsole({ parts, models }: Props) {
           <button
             type="button"
             className="text-xs text-ink-3 hover:text-brand"
-            onClick={() => setExpanded(allExpanded ? {} : Object.fromEntries(result.roles.map(r => [r.key, true])))}
+            onClick={() => setVisible(allExpanded ? {} : Object.fromEntries(result.roles.map(r => [r.key, r.options.length])))}
           >
-            {allExpanded ? '全部收起' : '全部展开'}
+            {allExpanded ? '恢复默认' : '全部展开'}
           </button>
         </div>
 
@@ -628,8 +639,9 @@ export default function SelectorConsole({ parts, models }: Props) {
             role={role}
             choice={choices[role.key]}
             selectedPart={choices[role.key]?.partId ? byId.get(choices[role.key].partId!) ?? null : null}
-            expanded={Boolean(expanded[role.key])}
-            onToggle={() => setExpanded(prev => ({ ...prev, [role.key]: !prev[role.key] }))}
+            visible={visible[role.key] ?? DEFAULT_VISIBLE}
+            onMore={() => setVisible(prev => ({ ...prev, [role.key]: (prev[role.key] ?? DEFAULT_VISIBLE) + VISIBLE_STEP }))}
+            onLess={() => setVisible(prev => ({ ...prev, [role.key]: DEFAULT_VISIBLE }))}
             onSelect={partId => selectPart(role.key, partId)}
             onRestore={() => restoreVirtual(role.key)}
             onQty={qty => setQty(role.key, qty)}

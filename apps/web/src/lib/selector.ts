@@ -230,6 +230,29 @@ const byPriceKnownThenAsc = (a: CatalogPart, b: CatalogPart): number => {
   return a.model.localeCompare(b.model, 'zh-CN')
 }
 
+/** 电池能量：优先用录入值，缺了就按 mAh × V / 1000 折算。 */
+const energyWhOf = (p: CatalogPart): number | null => {
+  const direct = n(specs(p).energy_wh)
+  if (direct !== null) return direct
+  const mah = n(specs(p).capacity_mah)
+  const v = n(specs(p).voltage_V)
+  return mah !== null && v !== null ? (mah * v) / 1000 : null
+}
+
+/** CPU 粗评分：算法/RL 场景优先看核心数与频率，x86 迷你主机额外加权。 */
+function cpuInfoOf(p: CatalogPart) {
+  const s = specs(p)
+  const cpu = String(s.cpu ?? '')
+  const coresMatch = cpu.match(/(\d+)\s*[×xX*]\s*(?:Zen|Cortex|core|Core)/) ?? cpu.match(/(\d+)[-\s]?core/i)
+  const cores = coresMatch ? Number(coresMatch[1]) : n(s.cores)
+  const ghzMatch = cpu.match(/(\d+(?:\.\d+)?)\s*GHz/i)
+  const ghz = ghzMatch ? Number(ghzMatch[1]) : null
+  const mini = String(p.subtype ?? '') === 'mini_pc' || /Ryzen|Intel|Core i|7840|x86/i.test(cpu)
+  const score = (cores ?? 0) * (ghz ?? 2) + (mini ? 30 : 0)
+  const label = [cores ? `${cores}C` : null, ghz ? `${fmt(ghz, 1)} GHz` : null].filter(Boolean).join(' / ') || cpu || '未公布'
+  return { cores, ghz, mini, score, label }
+}
+
 function option(p: CatalogPart, evals: EvalItem[], risk?: string): RoleOption {
   return { part: p, price: priceOf(p), evals: [...evals, priceEval(p)], risk }
 }
@@ -256,12 +279,39 @@ function actuatorRole(
   const tauOf = (p: CatalogPart) => n(specs(p).tau_peak_Nm) ?? n(specs(p).stall_torque_Nm) ?? 0
   const isServo = (p: CatalogPart) => p.category === 'servo'
   const meets = (p: CatalogPart) => requirement !== null && tauOf(p) >= requirement
+  const gearOf = (p: CatalogPart) => n(specs(p).gear)
+  const densityOf = (p: CatalogPart) => {
+    const mass = n(specs(p).mass_kg)
+    return mass !== null && mass > 0 ? tauOf(p) / mass : -1
+  }
+  const valueOf = (p: CatalogPart) => {
+    const price = priceOf(p)
+    return price !== null && price > 0 ? tauOf(p) / price : -1
+  }
   const ranked = [...pool].sort((a, b) => {
     if (requirement !== null && meets(a) !== meets(b)) return meets(a) ? -1 : 1
-    if (tauOf(a) !== tauOf(b)) return tauOf(a) - tauOf(b)
-    return byPriceKnownThenAsc(a, b)
+    const pa = priceOf(a)
+    const pb = priceOf(b)
+    if (pa === null && pb !== null) return 1
+    if (pa !== null && pb === null) return -1
+    if (pa !== null && pb !== null && pa !== pb) return pa - pb
+    const ga = gearOf(a) ?? 999
+    const gb = gearOf(b) ?? 999
+    if (ga !== gb) return ga - gb
+    const da = densityOf(a)
+    const db = densityOf(b)
+    if (da !== db) return db - da
+    const va = valueOf(a)
+    const vb = valueOf(b)
+    if (va !== vb) return vb - va
+    return a.model.localeCompare(b.model, 'zh-CN')
   })
-  const options = uniqueTop(ranked, 4).map(p => {
+  const qualified = requirement === null ? ranked : ranked.filter(meets)
+  const fallback = requirement === null
+    ? ranked.slice(0, 3)
+    : [...pool].sort((a, b) => Math.abs(tauOf(a) - requirement) - Math.abs(tauOf(b) - requirement)).slice(0, 3)
+  const shownPool = qualified.length > 0 ? qualified : fallback
+  const options = shownPool.map(p => {
     const tau = tauOf(p)
     const evals: EvalItem[] = []
     let risk: string | undefined
@@ -296,9 +346,10 @@ function actuatorRole(
     return option(p, evals, risk)
   })
   const fields: Array<{ label: string; value: string }> = []
-  fields.push({ label: '峰值扭矩', value: requirement !== null ? `≥${fmt(requirement)} N·m` : '按关节表' })
+  fields.push({ label: '构型平均需求', value: requirement !== null ? `≥${fmt(requirement)} N·m（min–max 中值）` : '按关节表' })
   fields.push({ label: '总线', value: 'CAN/CANFD 优先，RS-485/串口按型号' }, { label: '电压', value: '随型号（12/24/48V 常见）' })
   const advice = [
+    '按参考机型 min–max 中值筛选；达标后先按价格，再看减速比、扭矩密度与扭矩/价格。',
     '峰值/堵转扭矩是瞬时值，持续运行按额定扭矩与散热复核；减速模组注意背隙与效率。',
     '执行器总线决定下位机/桥接与电池电压档，先定执行器再往下选。',
     ...extraAdvice,
@@ -312,7 +363,7 @@ function actuatorRole(
     group: '执行器',
     virtual: {
       summary: requirement !== null
-        ? `峰值扭矩 ≥${fmt(requirement)} N·m · CAN/CANFD 优先 · ×${qty}`
+        ? `构型平均需求 ≥${fmt(requirement)} N·m · CAN/CANFD 优先 · ×${qty}`
         : `扭矩按关节表 · CAN/CANFD 优先 · ×${qty}`,
       fields,
     },
@@ -320,8 +371,8 @@ function actuatorRole(
     options,
     advice,
     sortNote: requirement !== null
-      ? '满足扭矩的型号按扭矩升序（最贴近在前）；不足 4 个时补最接近型号并标注。总线舵机按堵转扭矩计。'
-      : '按扭矩升序展示，供按关节表挑选。',
+      ? '达标型号按价格升序；同价优先减速比小、扭矩密度高、扭矩/价格高。默认显示前 4 个，可继续展开。'
+      : '按价格优先，再看减速比、扭矩密度与扭矩/价格；默认显示前 4 个。',
   }
 }
 
@@ -343,12 +394,15 @@ function batteryRole(parts: CatalogPart[], voltageClass: 12 | 24 | 48, estimated
     { label: '电压', value: `${classLabel} 级` },
     { label: '能量', value: `估算 ≥${fmt(estimatedWh, 0)} Wh（约 1h）` },
   ]
-  const advice = ['能量按质量 ×8 Wh/kg 粗估，续航必须按实测功耗复核；低温/大倍率会缩短续航。']
+  const advice = [
+    '能量按质量 ×8 Wh/kg 粗估，续航必须按实测功耗复核；低温/大倍率会缩短续航。',
+    '电池未填能量时，按 mAh × V / 1000 折算后再参与筛选。',
+  ]
   let options: RoleOption[]
   if (voltageClass === 48) {
-    options = uniqueTop([...packs6s].sort((a, b) => (n(specs(b).energy_wh) ?? 0) - (n(specs(a).energy_wh) ?? 0)), 3)
+    options = [...packs6s].sort((a, b) => (energyWhOf(b) ?? 0) - (energyWhOf(a) ?? 0))
       .map(p => {
-        const wh = n(specs(p).energy_wh)
+        const wh = energyWhOf(p)
         return option(p, [
           { label: '电压', value: `${fmt(n(specs(p).voltage_V) ?? 0)} V`, verdict: 'bad', note: '需 2 块同批次串联成 12S' },
           { label: '能量', value: wh !== null ? `${fmt(wh, 0)} Wh` : '未公布', verdict: 'info', note: '单块值，串联后容量不变' },
@@ -357,9 +411,9 @@ function batteryRole(parts: CatalogPart[], voltageClass: 12 | 24 | 48, estimated
       })
     advice.unshift('48V 级站内暂无 12S 整包：以下为 6S 串联参考，风险见每条标注；也可外购 12S 整包。')
   } else if (voltageClass === 12) {
-    options = uniqueTop([...packs6s].sort((a, b) => (n(specs(b).energy_wh) ?? 0) - (n(specs(a).energy_wh) ?? 0)), 3)
+    options = [...packs6s].sort((a, b) => (energyWhOf(b) ?? 0) - (energyWhOf(a) ?? 0))
       .map(p => {
-        const wh = n(specs(p).energy_wh)
+        const wh = energyWhOf(p)
         return option(p, [
           { label: '电压', value: `${fmt(n(specs(p).voltage_V) ?? 0)} V`, verdict: 'bad', note: '超压，需降压到 12V' },
           { label: '能量', value: wh !== null ? `${fmt(wh, 0)} Wh` : '未公布', verdict: 'info' },
@@ -368,16 +422,17 @@ function batteryRole(parts: CatalogPart[], voltageClass: 12 | 24 | 48, estimated
     advice.unshift('12V 级站内暂无 3S 整包：可外购 3S 电池，或用 6S 电池 + 降压模块（见供电分线 / 降压）。')
   } else {
     const ranked = [...packs6s].sort((a, b) => {
-      const ea = n(specs(a).energy_wh) ?? 0
-      const eb = n(specs(b).energy_wh) ?? 0
+      const ea = energyWhOf(a) ?? 0
+      const eb = energyWhOf(b) ?? 0
       const aOk = ea >= estimatedWh
       const bOk = eb >= estimatedWh
       if (aOk !== bOk) return aOk ? -1 : 1
+      if (aOk && bOk) return byPriceKnownThenAsc(a, b)
       if (Math.abs(ea - estimatedWh) !== Math.abs(eb - estimatedWh)) return Math.abs(ea - estimatedWh) - Math.abs(eb - estimatedWh)
       return byPriceKnownThenAsc(a, b)
     })
-    options = uniqueTop(ranked, 3).map(p => {
-      const wh = n(specs(p).energy_wh)
+    options = ranked.map(p => {
+      const wh = energyWhOf(p)
       const v = n(specs(p).voltage_V) ?? 0
       return option(p, [
         { label: '电压', value: `${fmt(v)} V`, verdict: 'ok', note: '6S 级，匹配 24V 执行器' },
@@ -396,8 +451,8 @@ function batteryRole(parts: CatalogPart[], voltageClass: 12 | 24 | 48, estimated
     options,
     advice,
     sortNote: voltageClass === 24
-      ? '覆盖估算能量的优先，其余按与估算能量的接近程度排序。'
-      : '按单块能量降序展示参考（电压不匹配，需串联/降压/外购）。',
+      ? '覆盖估算能量的按价格升序；不足的按接近程度排后。默认显示前 4 个，可继续展开。'
+      : '按单块能量降序展示参考（电压不匹配，需串联/降压/外购）。默认显示前 4 个。',
   }
 }
 
@@ -426,9 +481,10 @@ function psuRole(parts: CatalogPart[]): RolePlan {
 
 // ── 下位机 / 总线桥接 ─────────────────────────────────────────────────────
 
-function lowRole(parts: CatalogPart[], actuator: CatalogPart | null, hasHigh: boolean): RolePlan {
+function lowRole(parts: CatalogPart[], actuator: CatalogPart | null, hasHigh: boolean, dof: number): RolePlan {
   const bus = actuatorBus(actuator)
   const fd = bus === 'canfd'
+  const needChannels = Math.max(1, Math.min(8, Math.ceil(dof / 6)))
   const canCount = (p: CatalogPart) => n(specs(p).can) ?? (/CAN/.test(commText(p)) ? 1 : 0)
   const boards = parts.filter(p => {
     if (p.category !== 'controller_low') return false
@@ -446,10 +502,15 @@ function lowRole(parts: CatalogPart[], actuator: CatalogPart | null, hasHigh: bo
   })
   const bridgeRank = [...bridges].sort((a, b) => {
     if (fd && hasCanFd(a) !== hasCanFd(b)) return hasCanFd(a) ? -1 : 1
-    if (canCount(a) !== canCount(b)) return canCount(b) - canCount(a)
+    const ca = canCount(a)
+    const cb = canCount(b)
+    const oka = ca >= needChannels
+    const okb = cb >= needChannels
+    if (oka !== okb) return oka ? -1 : 1
+    if (Math.abs(ca - needChannels) !== Math.abs(cb - needChannels)) return Math.abs(ca - needChannels) - Math.abs(cb - needChannels)
     return byPriceKnownThenAsc(a, b)
   })
-  const boardOptions = uniqueTop(boardRank, 3).map(p => {
+  const boardOptions = boardRank.map(p => {
     const evals: EvalItem[] = [
       { label: '类型', value: '实时 MCU', verdict: 'ok', note: '独立电流环/实时控制' },
       { label: 'CAN 通道', value: `${canCount(p)}`, verdict: 'info', note: '单总线可挂多电机' },
@@ -463,10 +524,10 @@ function lowRole(parts: CatalogPart[], actuator: CatalogPart | null, hasHigh: bo
     if (bus === 'rs485') evals.push({ label: 'RS-485', value: /485/.test(commText(p)) ? '有' : '无', verdict: /485/.test(commText(p)) ? 'ok' : 'warn', note: /485/.test(commText(p)) ? undefined : '需外接 USB-485' })
     return option(p, evals)
   })
-  const bridgeOptions = uniqueTop(bridgeRank, 3).map(p => {
+  const bridgeOptions = bridgeRank.map(p => {
     const evals: EvalItem[] = [
       { label: '类型', value: '总线桥接', verdict: 'warn', note: '无 MCU，需上位机直驱' },
-      { label: 'CAN 通道', value: `${canCount(p)}`, verdict: 'info' },
+      { label: 'USB 转接通道', value: `${canCount(p)} 路`, verdict: canCount(p) >= needChannels ? 'ok' : 'warn', note: `本构型建议约 ${needChannels} 路（每路 4–6 台，最多 8 台）` },
       { label: 'CANFD', value: hasCanFd(p) ? '支持' : '仅 CAN', verdict: fd ? (hasCanFd(p) ? 'ok' : 'warn') : 'ok' },
     ]
     const vin = rangeOf(specs(p).voltage_in_V ?? specs(p).voltage_in ?? specs(p).voltage_V)
@@ -475,15 +536,17 @@ function lowRole(parts: CatalogPart[], actuator: CatalogPart | null, hasHigh: bo
       ? '上位机直驱总线：Linux 非实时，建议 PREEMPT_RT 内核，或保留下位机做电流环。'
       : '当前方案没有上位机：桥接器没有主机，需改选带 MCU 的下位机或启用上位机。')
   })
-  const options = [...boardOptions, ...bridgeOptions].slice(0, 5)
+  const options = [...boardOptions, ...bridgeOptions]
   const advice = [
-    '单条 CAN 总线可按 ID 挂多个电机，通道数不够不等于带不满 DOF；波特率、终端电阻与供电要核对。',
+    '单条 CAN 总线可按 ID 挂多个电机，通道数不够不等于带不满 DOF；波特率、供电与分线要核对。',
     '无下位机方案：上位机 + USB-CAN(FD) 桥接直驱；无上位机方案：必须选带 MCU 的下位机。',
   ]
   if (bus === 'rs485') advice.push('宇树系执行器为 RS-485：站内暂无 USB-485 转接器，需外购（常见 CH340/CP2102/FT232 方案）；带 RS-485 的下位机可直接接。')
   if (bus === 'uart') advice.push('总线舵机为 TTL 半双工串口：站内暂无 USB-UART 调试板，需外购（Feetech 官方调试板或 CH340 方案），注意半双工方向控制。')
   if (fd) advice.push('所选执行器支持 CANFD，下位机/桥接优先 FDCAN。')
-  const bridgeNote = bus === 'can' || bus === 'canfd' ? '；USB-CAN 桥接作无下位机参考' : ''
+  advice.push(needChannels <= 2
+    ? 'USB 转接按每条总线 4–6 台、最多 8 台：本构型约 1–2 路，可优先 2×1 路或 1×2 路。'
+    : `USB 转接按每条总线 4–6 台、最多 8 台：本构型约 ${needChannels} 路，优先多通道适配器，单路别超 8 台。`)
   return {
     key: 'low',
     label: '下位机 / 总线桥接',
@@ -498,7 +561,7 @@ function lowRole(parts: CatalogPart[], actuator: CatalogPart | null, hasHigh: bo
     qty: 1,
     options,
     advice,
-    sortNote: `实时 MCU 板在前（${fd ? 'CANFD 匹配优先，' : ''}通道数降序、价格升序）${bridgeNote}。`,
+    sortNote: `实时 MCU 板在前；USB 桥接按所需通道数接近、CANFD、价格排序。默认显示前 4 个，可继续展开。`,
   }
 }
 
@@ -507,8 +570,9 @@ function lowRole(parts: CatalogPart[], actuator: CatalogPart | null, hasHigh: bo
 function highRole(parts: CatalogPart[], needs: Needs): RolePlan {
   const heavy = needs.controls.includes('autonomy') && (needs.depth || needs.lidar)
   const rl = needs.controls.includes('rl')
+  const cpuFirst = rl
   const tier: 'high' | 'mid' | 'entry' = heavy ? 'high' : rl ? 'mid' : 'entry'
-  const tierLabel = tier === 'high' ? '高算力（80 TOPS 级以上参考）' : tier === 'mid' ? '进阶（20–40 TOPS 参考）' : '入门（<20 TOPS，轻量视觉/逻辑）'
+  const tierLabel = cpuFirst ? 'RL / 规划（CPU 与内存优先）' : tier === 'high' ? '高算力（80 TOPS 级以上参考）' : tier === 'mid' ? '进阶（20–40 TOPS 参考）' : '入门（<20 TOPS，轻量视觉/逻辑）'
   const tierMin = tier === 'high' ? 80 : tier === 'mid' ? 20 : 0
   const npuOf = (p: CatalogPart) => n(specs(p).npu_tops)
   const tierOf = (p: CatalogPart): 'high' | 'mid' | 'entry' => {
@@ -521,23 +585,31 @@ function highRole(parts: CatalogPart[], needs: Needs): RolePlan {
   const pool = parts.filter(p => p.category === 'controller_high' && !isCarrier(p))
   const carriers = parts.filter(p => p.category === 'controller_high' && isCarrier(p))
   const ranked = [...pool].sort((a, b) => {
-    const da = dist(tierOf(a))
-    const db = dist(tierOf(b))
-    if (da !== db) return da - db
+    if (cpuFirst) {
+      const sa = cpuInfoOf(a).score
+      const sb = cpuInfoOf(b).score
+      if (sa !== sb) return sb - sa
+    } else {
+      const da = dist(tierOf(a))
+      const db = dist(tierOf(b))
+      if (da !== db) return da - db
+    }
     const na = npuOf(a)
     const nb = npuOf(b)
     if (na !== nb) return (nb ?? -1) - (na ?? -1)
     return byPriceKnownThenAsc(a, b)
   })
-  const options = ranked.slice(0, 4).map(p => {
+  const options = ranked.map(p => {
     const npu = npuOf(p)
     const ram = n(specs(p).ram_gb)
+    const cpu = cpuInfoOf(p)
     const evals: EvalItem[] = []
+    evals.push({ label: 'CPU', value: cpu.label, verdict: 'info', note: cpuFirst ? 'RL/规划优先看 CPU 与内存' : undefined })
     if (npu === null) {
-      evals.push({ label: '算力', value: '无 NPU（CPU）', verdict: 'warn', note: '适合逻辑/轻量视觉，重感知需外加加速' })
+      evals.push({ label: '算力', value: '无 NPU（CPU）', verdict: cpuFirst ? 'info' : 'warn', note: cpuFirst ? 'RL/规划可接受；视觉推理另配加速' : '适合逻辑/轻量视觉，重感知需外加加速' })
     } else if (npu < 10) {
-      evals.push({ label: '算力', value: `${fmt(npu, 0)} TOPS`, verdict: 'info', note: '算力偏低：适合巡线/轻量识别；激光/深度感知建议 40 TOPS 以上' })
-    } else if (tierMin > 0 && npu < tierMin) {
+      evals.push({ label: '算力', value: `${fmt(npu, 0)} TOPS`, verdict: 'info', note: cpuFirst ? 'TOPS 不影响 RL 主循环；视觉模型另看' : '算力偏低：适合巡线/轻量识别；激光/深度感知建议 40 TOPS 以上' })
+    } else if (!cpuFirst && tierMin > 0 && npu < tierMin) {
       evals.push({ label: '算力', value: `${fmt(npu, 0)} TOPS`, verdict: 'warn', note: `低于「${tierLabel}」参考档，重感知可能不够` })
     } else {
       evals.push({ label: '算力', value: `${fmt(npu, 0)} TOPS`, verdict: 'ok' })
@@ -548,8 +620,9 @@ function highRole(parts: CatalogPart[], needs: Needs): RolePlan {
     return option(p, evals)
   })
   const advice = [
+    'RL、规划与传统算法主要吃 CPU 单核/多核与内存；TOPS 只影响神经网络推理，不要只按 TOPS 选。',
+    '7840H 这类 x86 迷你主机 CPU 强，适合 RL/规划/仿真；无原生 CAN，功耗、散热与实时性要另算。',
     '训练在 PC/服务器，机上只跑推理；TOPS 为厂商标称，实际吞吐看模型与量化。',
-    '算力档只是参考分档，不是门槛；无 NPU 的板子也能跑传统控制与轻量视觉。',
     '集成盒子（如 RoboBox-7C）自带下位机与电机分线，可少配独立下位机/分线板；供电按「供电分线 / 降压」核对。',
   ]
   if (carriers.length > 0) {
@@ -561,12 +634,14 @@ function highRole(parts: CatalogPart[], needs: Needs): RolePlan {
     group: '主控',
     virtual: {
       summary: tierLabel,
-      fields: [{ label: '算力档', value: tierLabel }, { label: '接口', value: '网口/USB 接下位机与传感器' }, { label: '供电', value: '见「供电分线 / 降压」' }],
+      fields: [{ label: cpuFirst ? 'CPU' : '算力档', value: cpuFirst ? 'CPU 与内存优先' : tierLabel }, { label: '接口', value: '网口/USB 接下位机与传感器' }, { label: '供电', value: '见「供电分线 / 降压」' }],
     },
     qty: 1,
     options,
     advice,
-    sortNote: `同档按算力降序（无 NPU 在后）、同算力价格升序；裸载板不进候选。`,
+    sortNote: cpuFirst
+      ? 'RL/规划按 CPU 评分优先，再看 NPU 与价格；默认显示前 4 个，可继续展开。'
+      : '同档按算力降序（无 NPU 在后）、同算力价格升序；裸载板不进候选。默认显示前 4 个。',
   }
 }
 
@@ -918,22 +993,6 @@ function switchRole(parts: CatalogPart[], busCurrent: number | null): RolePlan {
   }
 }
 
-function terminationRole(): RolePlan {
-  return {
-    key: 'termination',
-    label: 'CAN 终端电阻 120Ω',
-    group: '其他',
-    virtual: {
-      summary: '120Ω 1/4W · 总线两端各 1 个',
-      fields: [{ label: '阻值', value: '120Ω' }, { label: '数量', value: '2' }],
-    },
-    qty: 2,
-    options: [],
-    advice: ['CAN 总线两端各 1 个；总线长度 >1 m 或高波特率时必须装。通用件，站内未收录。'],
-    sortNote: '通用件，无站内条目。',
-  }
-}
-
 // ── 线束计算 ──────────────────────────────────────────────────────────────
 
 const AWG_TABLE = [
@@ -986,17 +1045,18 @@ export function plan(input: SelectorInput, models: SelectorModel[], parts: Catal
     || needs.depth || needs.lidar || needs.camera
 
   const roles: RolePlan[] = []
+  const effortAvg = (effective.effort_min_Nm + effective.effort_max_Nm) / 2
 
   if (mixed) {
-    roles.push(actuatorRole(parts, effective.type, effective.effort_max_Nm, 12 + spare, 'actuator_leg', '执行器（腿）', [
+    roles.push(actuatorRole(parts, effective.type, effortAvg, 12 + spare, 'actuator_leg', '执行器（腿）', [
       '腿关节数默认按 12 估算，请按关节表修改数量。',
     ]))
     roles.push(actuatorRole(parts, 'arm', null, Math.max(0, effective.dof - 12), 'actuator_arm', '执行器（臂）', [
       '臂部扭矩不做估算：按关节表逐关节核对，数量默认 DOF−12，可改。',
     ]))
-    warnings.push('腿/臂混搭：腿部按参考 effort_max、臂部按关节表分别选；数量默认 12 + (DOF−12)，需复核。')
+    warnings.push('腿/臂混搭：腿部按参考机型 min–max 中值、臂部按关节表分别选；数量默认 12 + (DOF−12)，需复核。')
   } else {
-    roles.push(actuatorRole(parts, effective.type, effective.effort_max_Nm, effective.dof + spare, 'actuator', '执行器',
+    roles.push(actuatorRole(parts, effective.type, effortAvg, effective.dof + spare, 'actuator', '执行器',
       spare > 0 ? [`含备件 ${spare} 台（${needs.sparePct}%）。`] : []))
   }
   if (reference && /^M8/.test(reference.motor_tier)) {
@@ -1014,7 +1074,7 @@ export function plan(input: SelectorInput, models: SelectorModel[], parts: Catal
     roles.push(psuRole(parts))
   }
 
-  roles.push(lowRole(parts, actuator, needHigh))
+  roles.push(lowRole(parts, actuator, needHigh, effective.dof + spare))
   const lowPart = chosen('low')
   if (lowPart && lowPart.category === 'module' && !needHigh) {
     warnings.push('当前没有上位机，但下位机选了总线桥接：桥接器没有主机无法工作，请改选带 MCU 的下位机或启用上位机。')
@@ -1080,7 +1140,6 @@ export function plan(input: SelectorInput, models: SelectorModel[], parts: Catal
   roles.push(busConnectorRole(parts, busCurrent))
   roles.push(fuseRole(parts))
   roles.push(switchRole(parts, busCurrent))
-  roles.push(terminationRole())
 
   // 预算与待定统计
   let known = 0
