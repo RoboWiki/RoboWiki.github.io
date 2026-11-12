@@ -10,6 +10,7 @@ type SubtypeMeta = { id: string; label: string }
 type Props = { parts: CatalogPart[]; subtypes: SubtypeMeta[] }
 
 const PAGE = 24
+const DEFAULT_SORT = 'price:asc'
 
 function sortValue(p: CatalogPart, key: string): number | string | null {
   if (key === 'price') return typeof p.price === 'number' ? p.price : null
@@ -31,7 +32,7 @@ export default function EquipmentExplorer({ parts, subtypes }: Props) {
   const [q, setQ] = useState('')
   const [sub, setSub] = useState('')
   const [vendor, setVendor] = useState('')
-  const [sort, setSort] = useState('')
+  const [sort, setSort] = useState(DEFAULT_SORT)
   const [limit, setLimit] = useState(PAGE)
   const searchId = useId()
 
@@ -85,13 +86,13 @@ export default function EquipmentExplorer({ parts, subtypes }: Props) {
   }, [searched, sub, vendor, sort])
 
   const shown = filtered.slice(0, limit)
-  const hasFilter = Boolean(sub || vendor || q.trim() || sort)
+  const hasFilter = Boolean(sub || vendor || q.trim() || sort !== DEFAULT_SORT)
 
   const reset = () => {
     setQ('')
     setSub('')
     setVendor('')
-    setSort('')
+    setSort(DEFAULT_SORT)
     setLimit(PAGE)
   }
 

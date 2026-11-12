@@ -668,7 +668,7 @@ function powerDistRole(parts: CatalogPart[], busVoltage: number, hasHigh: boolea
     if (ca !== cb) return cb - ca
     return byPriceKnownThenAsc(a, b)
   })
-  const options = uniqueTop(ranked, 4).map(p => {
+  const options = ranked.map(p => {
     const r = rangeOf(specs(p).voltage_in)
     const ok = covers(p)
     const evals: EvalItem[] = [
@@ -725,7 +725,7 @@ function imuRole(parts: CatalogPart[]): RolePlan {
     if (kind(a) !== kind(b)) return kind(a) - kind(b)
     return byPriceKnownThenAsc(a, b)
   })
-  const options = uniqueTop(ranked, 3).map(p => {
+  const options = ranked.map(p => {
     const t = commText(p)
     const isChip = kind(p) === 2
     const gyro = specs(p).gyro_range_dps
@@ -753,7 +753,7 @@ function imuRole(parts: CatalogPart[]): RolePlan {
     qty: 1,
     options,
     advice: ['腿部机器人至少 1 个 IMU；CAN 输出方便与下位机同总线。安装位置远离电机磁干扰。'],
-    sortNote: 'CAN 模块优先，其次 UART/USB 模块，芯片级最后；同类价格升序。',
+    sortNote: 'CAN 模块优先，其次 UART/USB 模块，芯片级最后；同类价格升序。默认显示前 4 个，可继续展开。',
   }
 }
 
@@ -762,7 +762,7 @@ function imuRole(parts: CatalogPart[]): RolePlan {
 function depthRole(parts: CatalogPart[]): RolePlan {
   const pool = parts.filter(p => p.category === 'camera' && specs(p).depth_range_m != null && specs(p).depth_range_m !== '')
   const ranked = [...pool].sort(byPriceKnownThenAsc)
-  const options = uniqueTop(ranked, 3).map(p => {
+  const options = ranked.map(p => {
     const iface = String(specs(p).iface ?? '')
     const evals: EvalItem[] = [
       { label: '量程', value: String(specs(p).depth_range_m), verdict: 'info', note: '按使用距离核对' },
@@ -801,7 +801,7 @@ function lidarRole(parts: CatalogPart[], prefer3D: boolean): RolePlan {
     if (prefer3D && is3D(a) !== is3D(b)) return is3D(a) ? -1 : 1
     return byPriceKnownThenAsc(a, b)
   })
-  const options = uniqueTop(ranked, 3).map(p => {
+  const options = ranked.map(p => {
     const three = is3D(p)
     const range = n(specs(p).range_m)
     const iface = String(specs(p).iface ?? '')
@@ -835,7 +835,7 @@ function cameraRole(parts: CatalogPart[]): RolePlan {
     && (specs(p).depth_range_m == null || specs(p).depth_range_m === '')
     && !/^MVL-/i.test(p.model))
   const ranked = [...pool].sort(byPriceKnownThenAsc)
-  const options = uniqueTop(ranked, 3).map(p => {
+  const options = ranked.map(p => {
     const evals: EvalItem[] = [
       { label: '分辨率', value: String(specs(p).resolution ?? '未公布'), verdict: 'info' },
       { label: '接口', value: String(specs(p).iface ?? '未公布'), verdict: 'info' },
@@ -869,7 +869,7 @@ function remoteRole(parts: CatalogPart[]): RolePlan {
     if (ca !== cb) return cb - ca
     return byPriceKnownThenAsc(a, b)
   })
-  const options = uniqueTop(ranked, 3).map(p => {
+  const options = ranked.map(p => {
     const ch = n(specs(p).channels)
     const proto = String(specs(p).protocol ?? '')
     const evals: EvalItem[] = [

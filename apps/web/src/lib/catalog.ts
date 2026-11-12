@@ -51,7 +51,7 @@ export type CatalogPart = {
 
 export type CategoryGroup = { key: string; label: string; slugs: string[] }
 
-export const catalog = raw as {
+export const catalog = raw as unknown as {
   meta: { data_version?: string; generated_at?: string; record_count?: number }
   count: number
   parts: CatalogPart[]
