@@ -1,5 +1,5 @@
 /* RoboWiki service worker: pages network-first, static stale-while-revalidate, API network-only. */
-const CACHE = 'robowiki-v1'
+const CACHE = 'robowiki-v2'
 const PRECACHE = ['/', '/catalog.html', '/manifest.webmanifest']
 
 self.addEventListener('install', event => {
