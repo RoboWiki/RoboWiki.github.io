@@ -1,30 +1,27 @@
 name: Deploy wiki to GitHub Pages
 
-# Astro 根站 + VPT /app：目录数据从 `RoboWiki` 仓的锁定 release 取。
-# 不在本仓保存 schema/、catalog 或产品图副本。
-#
-# 唯一的例外是社区快照（data/ratings_snapshot.json、data/reviews_snapshot.json）：
-#   · 评分 / 实测来自本仓 issue，由 aggregate-ratings.yml 聚合后提交在本仓 data/；
-#   · `RoboWiki` 仓 release 只装目录数据（catalog / taxonomy / schema / assets），
-#     本仓 data/ 才是这两份快照的唯一可写产地。
-#   所以 paths 里要盯着 data/** —— 否则聚合提交后不会触发部署，线上分数永远停在旧值。
+# Astro 静态站：目录从 `RoboWiki` 仓的锁定 release 取。
+# 评分 / 实测来自数据仓的 GitHub Issue，构建时按标签拉取并聚合，
+# 不写数据库、不提交快照；Issue 是数据的一部分。
 on:
   push:
     branches: [main]
     paths:
       - 'pipeline/**'
       - 'apps/web/**'
-      - 'apps/app/**'
       - 'packages/**'
       - 'data.lock.json'
-      - 'data/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
+  # Issue 在数据仓，站点仓收不到 issues 事件；每日重建一次让新评分/实测生效。
+  schedule:
+    - cron: '23 3 * * *'
 
 permissions:
   contents: read
   pages: write
   id-token: write
+  issues: read
 
 concurrency:
   group: pages
@@ -61,22 +58,18 @@ jobs:
           test -f .data/schema/semantics.json
           test -d .data/assets/parts
 
-      # pipeline 读的是 $ROBOWIKI_DATA_DIR/ratings_snapshot.json、reviews_snapshot.json。
-      # 这两份社区快照归本仓 data/，release 里即使有同名文件也是发布时的旧值，
-      # 所以用本仓的版本覆盖进解压目录。文件不存在就跳过：
-      # 新 fork、或还没人评分 / 提实测时，构建不能因此中断。
-      - name: overlay community snapshots
+      # Issue 是数据的一部分：构建时从数据仓拉取 rating/review 标签，
+      # 聚合到解压后的 .data/data，再由 pipeline build 烤进 ratings.json。
+      - name: aggregate issues from data repo
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ROBOWIKI_DATA_DIR: ${{ github.workspace }}/.data/data
+          ROBOWIKI_SCHEMA_DIR: ${{ github.workspace }}/.data/schema
         run: |
           set -euo pipefail
-          for name in ratings_snapshot.json reviews_snapshot.json; do
-            src="data/$name"
-            if [ -f "$src" ]; then
-              cp "$src" ".data/data/$name"
-              echo "覆盖 .data/data/$name <- $src"
-            else
-              echo "跳过 $src（本仓暂无此快照，构建继续）"
-            fi
-          done
+          python -m pipeline.fetch_issues /tmp/issues
+          python -m pipeline.ingest_ratings /tmp/issues/issues-rating.json --out "$ROBOWIKI_DATA_DIR"
+          python -m pipeline.ingest_reviews /tmp/issues/issues-review.json --out "$ROBOWIKI_DATA_DIR"
 
       - name: generate wiki pages from pinned data
         env:
@@ -96,22 +89,14 @@ jobs:
       - name: build Astro site
         run: pnpm --filter @robowiki/web build
 
-      - name: build app H5
-        env:
-          APP_BASE: /app/
-        run: pnpm --filter @robowiki/app build:h5
-
       - name: assemble GitHub Pages artifact
         run: |
           set -euo pipefail
           rm -rf site
           mkdir -p site
           cp -R apps/web/dist/. site/
-          mkdir -p site/app
-          cp -R apps/app/dist/h5/. site/app/
           test -f site/index.html
           test -f site/catalog.html
-          test -f site/app/index.html
 
       - uses: actions/configure-pages@v5
 

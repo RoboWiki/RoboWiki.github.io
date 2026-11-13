@@ -5,9 +5,6 @@
   "scripts": {
     "dev:web": "pnpm --filter @robowiki/web dev",
     "build:web": "pnpm --filter @robowiki/web build",
-    "dev:app": "pnpm --filter @robowiki/app dev:h5",
-    "build:app:h5": "pnpm --filter @robowiki/app build:h5",
-    "build:app:wx": "pnpm --filter @robowiki/app build:wx",
     "typecheck": "pnpm -r typecheck"
   }
 }

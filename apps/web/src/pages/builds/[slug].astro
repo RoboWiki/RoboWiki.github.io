@@ -3,7 +3,6 @@ import Base from '@/layouts/Base.astro'
 import Breadcrumbs from '@/components/library/Breadcrumbs.astro'
 import Intro from '@/components/Intro.astro'
 import SeoJsonLd from '@/components/SeoJsonLd.astro'
-import ReproductionPanel from '@/components/ReproductionPanel'
 import { specRows } from '@/components/library/specs'
 import robotsData from '@/data/robots.json'
 import { formatPrice, withBase } from '@/lib/utils'
@@ -351,7 +350,6 @@ const docs = [
         </section>
       )}
 
-      <ReproductionPanel client:visible buildId={robot.id} />
 
       <section class="card p-5 sm:p-6" aria-labelledby="specs">
         <div class="flex flex-wrap items-baseline justify-between gap-2">

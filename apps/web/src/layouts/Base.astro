@@ -1,21 +1,17 @@
 ---
 import '../styles/global.css'
-import Comments from '@/components/comments/Comments'
 import SitePet from '@/components/pets/SitePet.astro'
 import { BASE, withBase } from '@/lib/utils'
 import { imageSize } from '@/lib/imageSize'
-import { DISCUSSION, POSITIONING, WEB_NAV } from '@robowiki/content'
+import { POSITIONING, WEB_NAV } from '@robowiki/content'
 
-type Props = { title?: string; description?: string; accountHref?: string; image?: string; noindex?: boolean }
+type Props = { title?: string; description?: string; image?: string; noindex?: boolean }
 const {
-  title = 'RoboWiki · 机器人制作工程知识库',
+  title = 'RoboWiki · 社区共建的机器人知识库',
   description = POSITIONING.full,
-  accountHref = withBase('/account.html'),
   image = '',
   noindex = false,
 } = Astro.props
-const loginHref = withBase('/login.html')
-const apiBase = (import.meta.env.PUBLIC_API_BASE || '').trim()
 
 const rawPath = Astro.url.pathname
 const stripped = BASE && rawPath.startsWith(BASE) ? (rawPath.slice(BASE.length) || '/') : rawPath
@@ -32,11 +28,7 @@ const shareImage = (() => {
   return new URL(withBase(value || '/og-default.png'), siteUrl).href
 })()
 const imageMeta = imageSize(String(image || '').trim() || '/og-default.png', BASE)
-// 讨论串按旧站路径存库：parts/actuator/xxx、learn/control-chain。
-const commentsPage = path === '/' ? 'index' : path.replace(/^\//, '').replace(/\.html$/, '')
-// 工具型页面（搜索、对比、路径选择、开源索引）不挂讨论区：那里没有可讨论的对象。
-const showComments = !/^(admin|login|account|community|post|top|u|404|search|compare|start|open|paths|selector)/.test(commentsPage)
-// 一级入口与小程序共用一份：学习 / 方案 / 部件 / 社区 / 采购。
+// 一级入口：学习 / 方案 / 部件 / 采购 / 设备。
 const nav = WEB_NAV
 const themeOptions = [
   { key: 'light', label: '浅色', swatch: '#0e7a6d' },
@@ -76,7 +68,6 @@ const footerGroups = [
     title: '教程与参与',
     links: [
       { href: '/learn/index.html', label: '教程库' },
-      { href: '/community.html', label: '社区' },
       { href: '/paths/electrical-14d.html', label: '14 天电控路径' },
       { href: '/tools.html', label: '工具链' },
       { href: '/open.html', label: '开源索引' },
@@ -247,31 +238,6 @@ const footerGroups = [
             </div>
           </details>
 
-          <a
-            id="account-link"
-            href={loginHref}
-            data-account-href={accountHref}
-            data-login-href={loginHref}
-            data-api-base={apiBase}
-            data-state="guest"
-            title="登录或注册"
-            aria-label="登录或注册"
-            class="inline-flex h-9 items-center justify-center text-sm font-semibold transition-colors"
-          >
-            <span data-account-label class="max-w-[7.5rem] truncate sm:max-w-[10rem]">登录/注册</span>
-            <span
-              data-account-avatar
-              class="is-hidden relative h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-full border border-line bg-surface-3 text-sm font-bold text-white"
-            >
-              <span data-account-initial aria-hidden="true"></span>
-              <img data-account-avatar-img alt="" class="is-hidden absolute inset-0 h-full w-full object-cover" />
-              <svg data-account-user-icon class="is-hidden" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                <circle cx="12" cy="8.5" r="3.5" />
-                <path d="M5.5 20a6.5 6.5 0 0 1 13 0" stroke-linecap="round" />
-              </svg>
-            </span>
-          </a>
-
           <details class="mobile-nav lg:hidden">
             <summary
               class="grid h-9 w-9 place-items-center rounded-md border border-line text-ink-2 hover:bg-surface-3"
@@ -334,248 +300,8 @@ const footerGroups = [
       </div>
     </header>
 
-    <style>
-      #account-link[data-state='guest'] {
-        padding-inline: 0.875rem;
-        border-radius: 0.375rem;
-        background-color: var(--color-brand);
-        color: var(--color-brand-fg);
-      }
-      #account-link[data-state='guest']:hover {
-        background-color: var(--color-brand-hover);
-      }
-      #account-link[data-state='account'] {
-        border-radius: 9999px;
-      }
-      #account-link[data-state='account'] [data-account-avatar] {
-        display: grid;
-      }
-      #account-link[data-state='account']:hover [data-account-avatar] {
-        border-color: var(--color-line-strong);
-      }
-      #account-link:focus-visible {
-        outline: 2px solid var(--color-brand);
-        outline-offset: 2px;
-      }
-      #account-link .is-hidden {
-        display: none !important;
-      }
-    </style>
-
-    <script is:inline>
-      // 账号入口：未登录显示「登录/注册」，登录后换成圆形头像，昵称放在 title / aria-label。
-      // 放在 header 之后同步执行，避免整页都是「登录/注册」再跳变。
-      (() => {
-        const link = document.getElementById('account-link')
-        const label = link && link.querySelector('[data-account-label]')
-        const avatar = link && link.querySelector('[data-account-avatar]')
-        const initial = link && link.querySelector('[data-account-initial]')
-        const avatarImg = link && link.querySelector('[data-account-avatar-img]')
-        const userIcon = link && link.querySelector('[data-account-user-icon]')
-        if (!link || !label || !avatar || !initial || !avatarImg || !userIcon) return
-
-        const ACCESS = 'roboselect.token'
-        const REFRESH = 'roboselect.refresh'
-        const apiBase = (link.dataset.apiBase || '').replace(/\/+$/, '') ||
-          (/(^|\.)robowiki\.github\.io$/.test(location.hostname)
-            ? 'https://robowiki.org.cn/api/v1'
-            : '/api/v1')
-        const accountHref = link.dataset.accountHref || '/account.html'
-        const loginHref = link.dataset.loginHref || '/login.html'
-
-        // 与 community-api 的 assetUrl 同口径：/media/… 相对 API 前缀，不是站点根。
-        const assetUrl = url => {
-          if (!url) return null
-          if (/^(https?:)?\/\//i.test(url) || url.startsWith('data:') || url.startsWith('blob:')) return url
-          const base = apiBase.replace(/\/+$/, '')
-          if (url.startsWith('/media/')) {
-            if (/^https?:/i.test(base)) {
-              const api = new URL(base)
-              return api.origin + api.pathname.replace(/\/$/, '') + url
-            }
-            return base + url
-          }
-          if (url.startsWith('/') && /^https?:/i.test(base)) return new URL(url, base).href
-          return url
-        }
-
-        // 图片没加载出来就露出底色 + 首字，避免空白圆圈
-        const showImg = url => {
-          avatarImg.onerror = () => avatarImg.classList.add('is-hidden')
-          avatarImg.onload = () => avatarImg.classList.remove('is-hidden')
-          if (!url) {
-            avatarImg.classList.add('is-hidden')
-            avatarImg.removeAttribute('src')
-            return
-          }
-          avatarImg.src = url
-        }
-
-        const guest = () => {
-          link.dataset.state = 'guest'
-          label.textContent = '登录/注册'
-          label.classList.remove('is-hidden')
-          avatar.classList.add('is-hidden')
-          initial.textContent = ''
-          showImg(null)
-          link.href = loginHref
-          link.title = '登录或注册'
-          link.setAttribute('aria-label', '登录或注册')
-        }
-        // 有会话但还没拿到资料：先占住头像位，不闪回「登录/注册」
-        const pending = () => {
-          link.dataset.state = 'account'
-          label.classList.add('is-hidden')
-          avatar.classList.remove('is-hidden')
-          avatar.style.backgroundColor = ''
-          initial.textContent = ''
-          showImg(null)
-          userIcon.classList.remove('is-hidden')
-          link.href = accountHref
-          link.title = '账号中心'
-          link.setAttribute('aria-label', '账号中心')
-        }
-        const named = user => {
-          const name = ((user && (user.display_name || user.handle)) || '').trim() || '账号'
-          link.dataset.state = 'account'
-          label.textContent = name
-          label.classList.add('is-hidden')
-          avatar.classList.remove('is-hidden')
-          userIcon.classList.add('is-hidden')
-          const hue = typeof user?.avatar_hue === 'number' && user.avatar_hue >= 0 ? user.avatar_hue : 160
-          initial.textContent = name.slice(0, 1)
-          avatar.style.backgroundColor = 'hsl(' + hue + ' 52% 40%)'
-          showImg(assetUrl(user && user.avatar_url))
-          link.href = accountHref
-          link.title = name + ' · 账号中心'
-          link.setAttribute('aria-label', name + '，账号中心')
-        }
-
-        let seq = 0
-        async function sync() {
-          const mine = ++seq
-          const access = localStorage.getItem(ACCESS)
-          const refresh = localStorage.getItem(REFRESH)
-          if (!access && !refresh) { guest(); return }
-          pending()
-
-          const fetchMe = token => fetch(apiBase + '/auth/me', {
-            headers: token ? { Authorization: 'Bearer ' + token } : {},
-          })
-          // refresh token 每次使用都会轮换，同一枚用两次会被后端当成泄露并撤销整条链。
-          // community-api 的 AuthProvider 现在也在刷新：把它标记为准，页头不抢。
-          // 反过来，页头先开始刷新时把 Promise 挂到 window，让 community-api 等它。
-          const authOwnedByIsland = () => window.__rwCommunityAuth === true
-          // outcome：ok 换到新令牌；rejected 后端明确拒绝（会话失效）；failed 网络/5xx/限流。
-          // 只有 rejected 才能确定会话没救了，failed 一律保留令牌。
-          const rotate = refreshToken => {
-            let outcome = 'failed'
-            const tracked = (async () => {
-              try {
-                const rr = await fetch(apiBase + '/auth/refresh', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ refresh_token: refreshToken }),
-                })
-                if (!rr.ok) {
-                  const transient = rr.status >= 500 || rr.status === 408 || rr.status === 429
-                  if (!transient) outcome = 'rejected'
-                  return false
-                }
-                const pair = await rr.json().catch(() => null)
-                if (!pair || !pair.access_token) return false
-                localStorage.setItem(ACCESS, pair.access_token)
-                if (pair.refresh_token) localStorage.setItem(REFRESH, pair.refresh_token)
-                outcome = 'ok'
-                return true
-              } catch {
-                return false
-              }
-            })().finally(() => {
-              if (window.__rwHeaderRefresh === tracked) delete window.__rwHeaderRefresh
-            })
-            window.__rwHeaderRefresh = tracked
-            return { promise: tracked, outcome: () => outcome }
-          }
-          try {
-            let res = await fetchMe(access)
-            if (mine !== seq) return
-            let usedAccess = access
-            let rotated = false
-            let rotateOutcome = null
-            if (res.status === 401 && refresh && !authOwnedByIsland()) {
-              const rotation = rotate(refresh)
-              rotated = await rotation.promise
-              rotateOutcome = rotation.outcome()
-              if (mine !== seq) return
-              if (rotated) {
-                usedAccess = localStorage.getItem(ACCESS)
-                res = await fetchMe(usedAccess)
-                if (mine !== seq) return
-              }
-              // 新令牌仍是 401，或后端明确拒绝 refresh：能确定会话失效才清理
-              if (res.status === 401 && (rotated || rotateOutcome === 'rejected')) {
-                const latest = localStorage.getItem(ACCESS)
-                if (!latest || latest === usedAccess) {
-                  localStorage.removeItem(ACCESS)
-                  localStorage.removeItem(REFRESH)
-                }
-              }
-            }
-            if (res.status === 401) {
-              const latest = localStorage.getItem(ACCESS)
-              if (latest && latest !== usedAccess) { sync(); return }
-              // 社区岛屿会自己刷新；等它派发 rw:auth，避免这里误报未登录
-              if (authOwnedByIsland()) { pending(); return }
-              // 刷新只是网络/限流失败：保留会话，下次导航再试
-              if (rotateOutcome === 'failed') { pending(); return }
-              guest()
-              return
-            }
-            if (!res.ok) { pending(); return }
-            const user = await res.json().catch(() => null)
-            if (mine !== seq) return
-            const name = ((user && (user.display_name || user.handle)) || '').trim()
-            if (name) named(user); else guest()
-          } catch {
-            if (mine === seq) pending()
-          }
-        }
-
-        // community-api 的 auth.setTokens / auth.clear 会派发 rw:auth，登录、退出即时生效。
-        window.addEventListener('rw:auth', sync)
-        window.addEventListener('storage', event => {
-          if (!event.key || event.key === ACCESS || event.key === REFRESH) sync()
-        })
-        sync()
-      })()
-    </script>
-
     <main id="main" tabindex="-1" class="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
       <slot />
-      {showComments && (
-        <details id="discussion" class="group mt-10">
-          <summary
-            class="flex cursor-pointer list-none items-center justify-between gap-3 rounded-lg border border-line bg-surface px-5 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
-          >
-            <span class="flex min-w-0 flex-col gap-0.5">
-              <span>{DISCUSSION.title}与纠错</span>
-              <span class="text-xs font-normal text-ink-3">{DISCUSSION.collapsedHint}</span>
-            </span>
-            <span
-              class="grid h-6 w-6 shrink-0 place-items-center rounded-md border border-line text-ink-3 transition-transform group-open:rotate-180"
-              aria-hidden="true"
-            >
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </span>
-          </summary>
-          <div class="mt-3">
-            <Comments client:idle page={commentsPage} />
-          </div>
-        </details>
-      )}
     </main>
 
     <footer class="mt-20 border-t border-line bg-surface">
@@ -593,7 +319,7 @@ const footerGroups = [
               <span class="text-sm font-bold text-ink">RoboWiki</span>
             </div>
             <p class="mt-3 max-w-xs text-xs leading-6 text-ink-3">
-              机器人制作工程知识库：教程、方案、采购、设备、社区与部件库都在同一站。不卖零件，不收佣金。
+              社区共建的机器人知识库：教程、方案、采购、设备与部件库在同一站。评分与实测由 GitHub Issue 收集，不卖零件、不收佣金。
             </p>
           </div>
           {footerGroups.map(group => (
@@ -613,7 +339,7 @@ const footerGroups = [
         </div>
         <div class="mt-8 flex flex-col gap-2 border-t border-line pt-5 text-xs text-ink-3 sm:flex-row sm:items-center sm:justify-between">
           <p>AGPL-3.0 · 厂商手册与商品图版权归原方</p>
-          <p class="mono">教程 · 方案 · 采购 · 设备 · 部件 · 社区</p>
+          <p class="mono">教程 · 方案 · 采购 · 设备 · 部件 · 数据</p>
         </div>
       </div>
     </footer>
@@ -654,26 +380,6 @@ const footerGroups = [
           }
         })
       })
-
-      // 通知链接带 #comment-2 / #c2，但讨论区默认收起：先展开，再等 React 渲染后滚过去。
-      const discussion = document.getElementById('discussion')
-      if (discussion && /^#(?:comment-|c)\d+$/.test(location.hash)) {
-        discussion.open = true
-        const jump = () => {
-          const matched = location.hash.match(/^#(?:comment-|c)(\d+)$/)
-          if (!matched) return false
-          const target =
-            document.getElementById(`comment-${matched[1]}`) || document.getElementById(`c${matched[1]}`)
-          if (!target) return false
-          target.scrollIntoView({ block: 'center' })
-          return true
-        }
-        // 评论列表是 client:idle 岛屿，首帧通常还没有节点：按 300/1200/2500ms 重试。
-        if (!jump()) {
-          requestAnimationFrame(jump)
-          ;[300, 1200, 2500].forEach(ms => setTimeout(jump, ms))
-        }
-      }
     </script>
   </body>
 </html>

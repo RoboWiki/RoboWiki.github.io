@@ -37,7 +37,7 @@ const steps = [
   { k: '查参数', v: '进部件库核对参数、来源与实测评价', href: '/catalog.html' },
   { k: '看方案', v: '对着整机与 BOM 确认怎么组合、能不能复现', href: '/builds.html' },
   { k: '试配', v: '用选型台按构型试配 BOM（试验版）', href: '/selector.html' },
-  { k: '买与记录', v: '找加工与元件渠道，把实测写回社区', href: '/suppliers.html' },
+  { k: '买与记录', v: '找加工与元件渠道，把实测提交到 GitHub Issue', href: '/suppliers.html' },
 ]
 
 const faqs = [
@@ -86,7 +86,7 @@ const faqs = [
         </h1>
 
         <p class="mt-5 max-w-2xl text-base leading-7 text-ink-2 sm:text-base">
-          教程库看教程，选型台试配 BOM，部件库查评价与资料；方案库看开源生态与 BOM，采购库找加工和商家，设备库找工具仪器，社区写实测和建议。
+          教程库看教程，选型台试配 BOM，部件库查参数、评分与实测；方案库看开源生态与 BOM，采购库找加工和商家，设备库找工具仪器；评分与实测统一走数据仓 GitHub Issue。
         </p>
 
         <div class="mt-7 flex flex-wrap items-center gap-3">
@@ -210,9 +210,9 @@ const faqs = [
         { href: '/builds.html', title: '方案库', desc: '可复现方案，含 BOM 与步骤', count: `${robotsData.count} 套`, eg: '例：四足 5k 方案' },
         { href: '/suppliers.html', title: '采购库', desc: '按加工品类找店，先看有没有坑', count: `${suppliersData.count} 家`, eg: '例：嘉立创打样' },
         { href: '/equipment.html', title: '设备库', desc: '做机器人的工具与仪器', count: `${equipmentCount} 台设备`, eg: '例：拓竹 A1、优利德 UT89X' },
-        { href: '/community.html', title: '社区', desc: '提出您的宝贵建议', count: '开放讨论', eg: '例：选型求助' },
+        { href: 'https://github.com/RoboWiki/RoboWiki/issues', title: '参与共建', desc: '评分、实测、纠错与投稿统一走 GitHub Issue', count: 'GitHub', eg: '无需站内注册' },
       ].map(item => (
-        <a href={withBase(item.href)} class="card card-hover group flex flex-col p-5">
+        <a href={withBase(item.href)} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noopener' : undefined} class="card card-hover group flex flex-col p-5">
           <div class="flex items-start justify-between">
             <span class="text-base font-semibold text-ink group-hover:text-brand">{item.title}</span>
             <span class="text-ink-3 transition-transform group-hover:translate-x-0.5" aria-hidden="true">↗</span>
@@ -230,7 +230,7 @@ const faqs = [
   <section class="mt-12 grid gap-4 lg:grid-cols-[minmax(0,1fr)_380px]">
     <div class="card p-6">
       <h2 class="text-lg font-bold tracking-tight text-ink">怎么用本站</h2>
-      <p class="mt-1.5 text-sm leading-6 text-ink-3">先在部件库核对参数与来源，再看方案、用选型台试配，最后找渠道并把实测写回社区。</p>
+      <p class="mt-1.5 text-sm leading-6 text-ink-3">先在部件库核对参数与来源，再看方案、用选型台试配，最后找渠道并把实测提交到 GitHub Issue。</p>
       <ol class="mt-5 grid gap-2 sm:grid-cols-2">
         {steps.map((s, i) => (
           <li>
@@ -267,7 +267,7 @@ const faqs = [
     <div class="flex flex-wrap items-end justify-between gap-3">
       <div>
         <h2 class="text-xl font-bold tracking-tight text-ink">值得先看</h2>
-        <p class="mt-1 text-sm text-ink-3">来源清楚、参数完整、社区关注度高。</p>
+        <p class="mt-1 text-sm text-ink-3">来源清楚、参数完整、GitHub 评分与实测可追溯。</p>
       </div>
       <a href={withBase('/catalog.html')} class="text-sm font-medium text-brand hover:underline">全部部件 →</a>
     </div>
@@ -325,7 +325,7 @@ const faqs = [
   </section>
 
   <section class="mt-12 grid gap-3 sm:grid-cols-3">
-    <a href={withBase('/community.html')} class="card card-hover p-5">
+    <a href="https://github.com/RoboWiki/RoboWiki/issues" target="_blank" rel="noopener" class="card card-hover p-5">
       <div class="text-sm font-semibold text-ink">实测与评价</div>
       <p class="mt-1.5 text-sm leading-6 text-ink-3">每个部件页下都有用过的人写的实测与评价；选型前先看具体差在哪，而不是只看均分。</p>
     </a>
@@ -370,10 +370,11 @@ const faqs = [
           参与投稿
         </a>
         <a
-          href={withBase('/community.html')}
+          href="https://github.com/RoboWiki/RoboWiki/issues"
+          target="_blank" rel="noopener"
           class="inline-flex h-10 items-center rounded-md border border-line px-4 text-sm text-ink transition-colors hover:bg-surface-2"
         >
-          去社区
+          去 GitHub Issue
         </a>
       </div>
     </div>

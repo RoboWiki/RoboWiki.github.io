@@ -1,19 +1,16 @@
 /**
- * 双端共用的信息架构与文案。
- *
- * 只放「两端必须一致」的东西：一级入口、页面命名、空态/错误/加载文案、
- * 讨论区措辞。组件实现仍各自留在 apps/web 与 apps/app。
+ * 站点共用的信息架构与文案：一级入口、页面命名、空态文案。
  */
 
 export type WebNavItem = {
-  key: 'home' | 'learn' | 'builds' | 'catalog' | 'selector' | 'equipment' | 'suppliers' | 'community'
+  key: 'home' | 'learn' | 'builds' | 'catalog' | 'selector' | 'equipment' | 'suppliers'
   label: string
   desc: string
   href: string
   match: string[]
 }
 
-/** 网页端一级导航：首页 / 教程库 / 选型台 / 部件库 / 方案库 / 采购库 / 设备库 / 社区 */
+/** 网页端一级导航：首页 / 教程库 / 选型台 / 部件库 / 方案库 / 采购库 / 设备库 */
 export const WEB_NAV: WebNavItem[] = [
   {
     key: 'home',
@@ -64,36 +61,9 @@ export const WEB_NAV: WebNavItem[] = [
     href: '/equipment.html',
     match: ['/equipment'],
   },
-  {
-    key: 'community',
-    label: '社区',
-    desc: '提出您的宝贵建议',
-    href: '/community.html',
-    match: ['/community', '/post', '/u', '/top', '/contributors'],
-  },
 ]
 
-export type AppTab = {
-  key: 'home' | 'catalog' | 'builds' | 'community' | 'account'
-  label: string
-  pagePath: string
-}
 
-/** 小程序 tabBar：首页 / 部件 / 方案 / 社区 / 我的 */
-export const APP_TABS: AppTab[] = [
-  { key: 'home', label: '首页', pagePath: 'pages/home/index' },
-  { key: 'catalog', label: '部件库', pagePath: 'pages/index/index' },
-  { key: 'builds', label: '方案库', pagePath: 'pages/builds/index' },
-  { key: 'community', label: '社区', pagePath: 'pages/community/index' },
-  { key: 'account', label: '我的', pagePath: 'pages/account/index' },
-]
-
-export const DISCUSSION = {
-  title: '讨论',
-  collapsedHint: '展开查看讨论与纠错',
-  empty: '还没有讨论，成为第一个留下实测记录的人',
-  loginHint: '登录后可以参与讨论',
-}
 
 export const EMPTY = {
   catalog: {
@@ -105,11 +75,6 @@ export const EMPTY = {
     title: '没有匹配的方案',
     hint: '换个关键词，或切回全部形态',
     action: '清除筛选',
-  },
-  community: {
-    title: '还没有帖子',
-    hint: '第一条实测，从你开始',
-    action: '去发帖',
   },
   learn: {
     title: '还没有指南',
@@ -126,14 +91,12 @@ export const EMPTY = {
 export const PAGE_SIZE = {
   catalog: 20,
   builds: 12,
-  community: 20,
 } as const
 
 export const SECTION_TITLES = {
   catalog: '部件库',
   equipment: '设备库',
   builds: '方案库',
-  community: '社区',
   learn: '教程库',
   suppliers: '采购库',
 } as const
@@ -143,9 +106,9 @@ export const SECTION_TITLES = {
 // 同一台机器并收口。两端、文档、数据页都从这里取同一套命名，避免各写一套。
 
 export const POSITIONING = {
-  short: '机器人制作工程知识库',
-  full: '教程、方案、采购、设备、社区与部件库在同一站；部件页保留参数、价格、来源和实测评价。',
-  tagline: '教程、方案、采购、设备、社区与部件库在同一站。',
+  short: '社区共建的机器人知识库',
+  full: '教程、方案、采购、设备与部件库在同一站；部件页保留参数、价格、来源和 GitHub Issue 收集的实测评价。',
+  tagline: '教程、方案、采购、设备与部件库在同一站。',
 } as const
 
 export type LayerId = 'mechanical' | 'hardware' | 'embedded' | 'algorithm' | 'system'

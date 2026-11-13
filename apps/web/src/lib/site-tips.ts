@@ -5,7 +5,7 @@ export type GuideRule = { selector: string; title: string; text: string }
 
 type Page = { test: RegExp; tips: PageTip[]; guides?: GuideRule[] }
 
-export const WELCOME = '我是鲸鲸娘，社区来的；点我换条提示。'
+export const WELCOME = '我是鲸鲸娘，知识库来的；点我换条提示。'
 
 export function greetingFor(hour: number): string {
   if (hour < 6) return '这个点还在；参数核完早点睡。'
@@ -36,7 +36,7 @@ const PAGES: Page[] = [
     tips: [
       { text: '先看资料和评价，别急着下单。', href: '/catalog.html', label: '去部件库' },
       { text: '数都有出处；null 是没公布。', href: '/method.html', label: '看方法' },
-      { text: '均分不算数，看具体差评。', href: '/community.html', label: '去社区' },
+      { text: '均分不算数，看具体差评。', href: 'https://github.com/RoboWiki/RoboWiki/issues', label: '去 GitHub' },
     ],
   },
   {
@@ -130,16 +130,6 @@ const PAGES: Page[] = [
     tips: [
       { text: '这页没东西，回部件库翻。', href: '/catalog.html', label: '去部件库' },
       { text: '型号可能改名了，搜一下。', href: '/search.html', label: '去搜索' },
-    ],
-  },
-  {
-    test: /^\/community/,
-    tips: [
-      { text: '写实测，别写「好用」。' },
-      { text: '装过机和没装过机分开算。' },
-    ],
-    guides: [
-      { selector: '[data-guide="community-post"]', title: '发帖', text: '选型求助、踩坑、报价都能写。' },
     ],
   },
 ]

@@ -1,7 +1,7 @@
 # RoboWiki UI 规范
 
 日期：2026-11-05  
-适用：Astro 静态站、Taro H5/小程序、Console
+适用：Astro 静态站
 
 > 定位沿用根 README：机器人制作工程知识库；当前核心是部件库，选型台为试验版。
 
@@ -10,12 +10,12 @@
 主链路只有一个：
 
 ```text
-首页 → 部件库 → 型号页 → 看参数/来源 → 看评分与讨论 → 登录参与
+首页 → 部件库 → 型号页 → 看参数/来源 → 看评分与实测 → 去 GitHub Issue 参与
 ```
 
 - 文档、材料、整机是并列内容库，不抢型号页的主动作。
 - 型号页只保留两类写操作：**评分**、**讨论/纠错**。GitHub issue 收进“其他方式”。
-- 静态 Astro 页负责阅读与 SEO；登录、评分、评论、通知、投稿统一进 Taro 互动版。
+- 静态 Astro 页负责阅读与 SEO；评分、实测、纠错、投稿统一跳转数据仓 GitHub Issue。
 - 术语统一：**评分**（1–5 分）、**讨论**（站内评论/回复）、**实测**（GitHub 长文）、**纠错**（参数提案）。
 
 ## 2. Token
@@ -65,4 +65,4 @@ component  --rw-control-*, --rw-focus, --rw-dur-*
 - Astro：只读内容；客户端 JS 只给搜索/筛选/评分快照。
 - Taro：所有写操作；组件按平台 adapter 处理 storage/router/request/share。
 - Console：站务高密度表格/表单，继续 Ant Design。
-- 共享：`packages/tokens`、`packages/core`；不共享 DOM 组件到小程序。
+- 共享：`packages/tokens`；站点不引入账号或互动端依赖。

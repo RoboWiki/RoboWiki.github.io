@@ -1121,6 +1121,10 @@ def main() -> None:
             reviews = json.loads(_vw.read_text(encoding="utf-8")).get("parts") or {}
         except Exception:
             reviews = {}
+    # 评分卡要显示「N 条实测」；两个快照都来自数据仓 Issue，构建时合并计数。
+    for pid, rv in reviews.items():
+        if pid in ratings:
+            ratings[pid]["review_count"] = int(rv.get("count") or 0)
 
     from .load import load_offers
 

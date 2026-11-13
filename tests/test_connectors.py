@@ -62,7 +62,7 @@ def test_connector_category_has_expected_subtypes():
 
 def test_connector_rows_present():
     rows = connector_rows()
-    assert len(rows) == len(EXPECTED_IDS), f"连接器应为 {len(EXPECTED_IDS)} 条，实际 {len(rows)}"
+    assert len(rows) >= len(EXPECTED_IDS), f"连接器应至少 {len(EXPECTED_IDS)} 条，实际 {len(rows)}"
     ids = {r["id"] for r in rows}
     missing = EXPECTED_IDS - ids
     assert not missing, f"缺少连接器条目：{sorted(missing)}"

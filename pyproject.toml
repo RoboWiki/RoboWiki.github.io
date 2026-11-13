@@ -1,7 +1,7 @@
 [project]
 name = "robowiki"
 version = "0.1.0"
-description = "面向机器人制作全流程的可追溯工程知识库：四层能力骨架 + 社区共建的部件选型、加工采购、教程案例与开源索引"
+description = "面向机器人制作全流程的可追溯工程知识库：部件选型、加工采购、教程案例与开源索引"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "GPL-3.0-only" }
@@ -9,8 +9,7 @@ authors = [{ name = "zeitvex" }]
 keywords = ["robotics", "actuator", "quadruped", "catalog", "open-data"]
 
 # 构建链只需要很少的东西：读 JSON、校验、生成 Markdown。
-# 后端依赖（fastapi / sqlmodel）单独在 backend/requirements.txt，
-# 因为它们只对「有服务端的部署」有意义 —— 纯静态 fork 不需要装。
+# 站点是纯静态的，不依赖 Web 框架或数据库。
 dependencies = [
     "pydantic>=2.9",
 ]
@@ -29,22 +28,21 @@ tools = [
 [project.urls]
 Homepage = "https://robowiki.github.io/"
 Repository = "https://github.com/RoboWiki/RoboWiki.github.io"
-Issues = "https://github.com/RoboWiki/RoboWiki.github.io/issues"
+Issues = "https://github.com/RoboWiki/RoboWiki/issues"
 
 [project.scripts]
 robowiki = "pipeline.__main__:main"
 
 [tool.setuptools]
-# 只打包 pipeline；apps/backend/clients 是各自独立的运行时，不是 Python 包。
+# 只打包 pipeline；apps/web 是独立的前端构建，不是 Python 包。
 # 不显式声明时 setuptools 的 flat-layout 自动发现会因多个顶层目录而构建失败。
 packages = ["pipeline"]
 
 [tool.pytest.ini_options]
-# 两条测试线：pipeline（构建链）与 backend（API）。
-# 合在一个 rootdir 下，CI 一条命令跑完。
-testpaths = ["tests", "backend/tests"]
+# 一条测试线：pipeline（构建链 / 数据聚合）。
+testpaths = ["tests"]
 addopts = "-q"
-pythonpath = [".", "backend"]
+pythonpath = ["."]
 
 [tool.ruff]
 line-length = 100

@@ -482,10 +482,11 @@ const keyStats = STAT_PRIORITY
         <div class="flex flex-wrap items-baseline justify-between gap-2">
           <h2 class="text-sm font-semibold text-ink">实际使用</h2>
           <a
-            href={withBase(`/community.html?kind=review&part=${encodeURIComponent(part.id)}`)}
+            href={`https://github.com/RoboWiki/RoboWiki/issues?q=${encodeURIComponent(`is:issue ${part.id}`)}`}
+            target="_blank" rel="noopener"
             class="text-xs font-medium text-brand hover:underline"
           >
-            查看全部评价 <span aria-hidden="true">→</span>
+            全部 issue <span aria-hidden="true">↗</span>
           </a>
         </div>
         <div class="mt-3">

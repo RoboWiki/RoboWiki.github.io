@@ -36,7 +36,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 OUT = DATA_DIR / "ratings_snapshot.json"
-#: 部件目录只存在于`RoboWiki` 仓的锁定 release 里（本仓没有 data/catalog）。
+#: 部件目录来自数据仓锁定 release；站点构建时通过 ROBOWIKI_DATA_DIR 指向它。
 #: 用 ROBOWIKI_DATA_DIR 指到解压后的 .data/data，本脚本不复制一份目录逻辑。
 CATALOG = DATA_DIR / "catalog"
 
@@ -60,7 +60,7 @@ def field(body: str, name: str) -> str | None:
 
 def main() -> None:
     # --out 让聚合产物与目录分开：CI 里目录在 .data/data（release 解压物），
-    # 快照要写回本仓 data/；测试也用它写到临时目录，不覆盖真实快照。
+    # 快照写到构建目录；测试也用它写到临时目录，不覆盖真实快照。
     argv = [a for a in sys.argv[1:]]
     out_dir = DATA_DIR
     if "--out" in argv:
@@ -203,7 +203,7 @@ def main() -> None:
             # 样本量太少时，页面要显示「样本不足」而不是一个看起来很确定的均分
             "low_sample": len(rs) < 3,
             "mine": None,
-            # 明细留着：后台能查「谁打的、依据是什么」，公开页不展示昵称
+            # 明细留着：Issue 里能查「谁打的、依据是什么」，公开页不展示昵称
             "votes": sorted(rs, key=lambda x: -x["score"]),
         }
 

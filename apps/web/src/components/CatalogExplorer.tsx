@@ -29,7 +29,7 @@ export type MaterialItem = {
 type Props = { parts: CatalogPart[]; categories: CategoryMeta[]; materials?: MaterialItem[] }
 
 const PAGE = 24
-const INTERACTIVE_HOME = '/community.html'
+const INTERACTIVE_HOME = 'https://github.com/RoboWiki/RoboWiki/issues'
 const DEFAULT_SORT = 'effective_price:asc'
 const DEFAULT_CATEGORY = 'actuator'
 const MATERIAL_CATEGORY = 'materials'
@@ -787,9 +787,10 @@ export default function CatalogExplorer({ parts, categories, materials = [] }: P
             ) : (
               <a
                 href={INTERACTIVE_HOME}
+                target="_blank" rel="noopener"
                 className="inline-flex min-h-11 items-center gap-1 rounded-md px-3 text-sm font-medium text-brand hover:bg-brand-soft sm:min-h-9"
               >
-                去社区提问<span aria-hidden="true">→</span>
+                去 GitHub 提问<span aria-hidden="true">→</span>
               </a>
             )}
           </div>

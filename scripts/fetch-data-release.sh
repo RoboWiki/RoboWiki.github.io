@@ -3,10 +3,9 @@
 # CI 里会把 ROBOWIKI_* 写入 GITHUB_ENV；本地运行时只准备 .data/。
 #
 # 先落到 .data.new 并完成全部校验，最后才替换 .data/：
-# 下载失败或校验不符时，正在运行的 API 仍能读旧数据。
+# 下载失败或校验不符时，保留旧数据。
 #
-# 服务器上请通过 scripts/update-data.sh 调用（它会先停 api/worker）；
-# 直接运行本脚本时，替换前后要自行停/启容器，否则旧容器仍绑定旧 inode。
+# 站点是纯静态构建，本地和 CI 都直接运行本脚本即可。
 set -euo pipefail
 
 # Ubuntu/Debian 默认只有 python3；CI 与旧镜像里可能是 python。显式选一次，
