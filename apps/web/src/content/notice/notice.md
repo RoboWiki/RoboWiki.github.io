@@ -92,7 +92,7 @@ AGPL-3.0 本身**允许商业使用**。上面那句「仅用于非商业」说�
 ## 引用格式
 
 ```
-RoboWiki. 机器人制作工程知识库[DB/OL]. https://robowiki.org.cn, 2026-11-11.
+RoboWiki. 机器人工程知识库[DB/OL]. https://robowiki.org.cn, 2026-11-11.
 ```
 
 ---
