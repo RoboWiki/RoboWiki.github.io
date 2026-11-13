@@ -83,7 +83,7 @@ git（文件级，免费）+ part_edits/edits 目录（字段级，谁改的+依
 | 单仓→拆仓 | ADR-002 §5 满足≥2条 | semantics 解耦(硬阻塞)+产物版本化+月度Release≥3期 |
 | 静态→动静混合 | 构建>5min(约1000件) / 评分要实时 | 产物版本化+API↔静态对账脚本 |
 | 图片→OSS/CDN | pack>800MB / clone 流失 | 全量图片SHA256校验+image_url 重写后逐条HEAD 200 |
-| GitHub→其它平台 | 平台风险/社区转移 | issue 全量归档进 data/_archive/+ingest 模块化+git clone --mirror |
+| GitHub→其它平台 | 平台风险/内容迁移 | issue 全量归档进 data/_archive/+ingest 模块化+git clone --mirror |
 | 单机→分布式 | 多区域/高可用 | Postgres+Redis+OSS 已就位+唯一写者 |
 
 **OpenCode 教训的元规则**：短期省事选型不可怕，可怕的是没标注偿还条件。RoboWiki 每条「短期省事」（SQLite/内存限流/中文 id/semantics 藏后端/create_all 无迁移工具）都要挂上偿还触发，让省事不构成债务黑洞。

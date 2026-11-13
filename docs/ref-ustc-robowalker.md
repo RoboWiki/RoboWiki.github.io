@@ -76,7 +76,7 @@
 
 ## 5. 明确没采用的
 
-- **C++ 电控代码本身** —— 与选型/社区无交集
+- **C++ 电控代码本身** —— 与选型/内容无交集
 - **教学章节**（GPIO/EXTI/TIM/UART/ADC/CAN/PID/前馈/Kalman/欧拉角）—— 是课程不是数据
 - **`05_chassis` 功率模型** —— 想抄它的「功率 = f(扭矩, 转速)」，但该章的
   `0_text/formula.md` 讲的是 Taylor 展开与最小二乘，`derivation_process.md` 讲的是旋转矩阵，

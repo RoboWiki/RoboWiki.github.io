@@ -36,7 +36,7 @@ AGPL-3.0 本身**允许商业使用**。上面那句「仅用于非商业」说�
 | **厂商参数** | 各条目的 `specs` 字段 | 事实性数据不主张版权；**我们整理的口径与集合**适用 AGPL-3.0 | 转载时保留来源、`source_tier` 与 `last_checked`，删掉这些字段数字的含义就变了 |
 | **厂商手册 / 商品图** | `doc_pdf`、`image_url` | **版权归原厂 / 原商城**。手册原则上只给链接（当前唯一例外：用户提供并同意分发的 `Amass XT30(2+2)` 规格书，位于 `/docs/amass/xt30-2p2.pdf`，收到通知即下架）；**产品图随条目托管在`RoboWiki` 仓**（`assets/parts/`，页面走 `/parts/*.jpg`），出处逐条写在 `image_source` | 未逐张取得书面许可：你要用请回源头确认；权利人要求撤下，我们说撤就撤 |
 | **第三方仓库与代码** | `repo_urls` | 归各仓库作者，页面标了 `repo_license` | 按原方许可使用，本站不主张任何权利 |
-| **看板娘素材** | `apps/web/public/vendor/ds-pet/`（首页、404、空态） | 作者 zhouwu97，MIT；角色为社区二创，**非 DeepSeek 官方** | 保留同目录 `LICENSE` 与 `NOTICE.md`；不要暗示官方关联 |
+| **看板娘素材** | `apps/web/public/vendor/ds-pet/`（首页、404、空态） | 作者 zhouwu97，MIT；角色为非官方二创，**非 DeepSeek 官方** | 保留同目录 `LICENSE` 与 `NOTICE.md`；不要暗示官方关联 |
 
 ## 产品图为什么是托管的，不是外链
 

@@ -1,6 +1,6 @@
 # 前端
 
-当前只有一种前端形态：Astro 静态站 + React islands。旧的 Taro `/app/`、社区页、账号页、站务后台已删除。
+当前只有一种前端形态：Astro 静态站 + React islands。旧的 Taro `/app/`、账号页、站务后台已删除。
 
 ## 页面
 

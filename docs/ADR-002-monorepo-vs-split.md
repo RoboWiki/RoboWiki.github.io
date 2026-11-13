@@ -25,7 +25,7 @@
 | 视角 | 核心论据 | 结论 |
 |---|---|---|
 | **数据/管线工程**（Mill） | pipeline 源码级 import 后端 semantics 常量（build_site.py:1201）、schema 是 PR/issue/API 三方契约、taxonomy 是导航+筛选+slug 唯一注册表——这些同仓原子性是防漂移的关键设计，拆仓只能降级成 submodule/版本包/复制三种更差方案 | **不拆** |
-| **社区/贡献者体验**（Bernoulli） | 80% 投稿路径走 issue 表单、与仓数无关；CODEOWNERS 全部路径 owner 是同一人（@zeitvex），「两仓各自负责人」的组织前提不存在；拆仓打碎单一社区入口 | **不拆** |
+| **投稿/贡献者体验**（Bernoulli） | 80% 投稿路径走 issue 表单、与仓数无关；CODEOWNERS 全部路径 owner 是同一人（@zeitvex），「两仓各自负责人」的组织前提不存在；拆仓打碎单一投稿入口 | **不拆** |
 | **部署/平台限制**（Euclid，联网核实官方文档） | 站点实测 39.4 MiB vs Pages 1 GB 上限（余量 25 倍）；最大单文件 1.2 MiB vs 100 MiB 阻断（差 80 倍）；拆仓后 Pages 链路完全不变，解决不了任何真实限制；repository_dispatch 需 PAT/App、fire-and-forget、跨仓原子性丢失 | **不拆** |
 | **长期演进/投入产出**（Averroes） | 项目处于「单人主笔、刚上线、按天投稿」的冷启动期；拆仓无一条给出量化触发条件 = 过早抽象；ARCHITECTURE.md 一个月前已写好 L0→L1 迁移路径并标注「现在不要做」 | **不拆** |
 | **反面/拆仓派**（Kant，steelman） | 数据与代码 commit 语义互相污染；二进制膨胀（75MB 且批量爬取增长）是单仓结构性无解；CI 为数据 PR 跑前端构建是成本错配；GitHub 权限是仓库级，单仓无法分离数据审核权与代码合并权 | **拆（趁小拆）** |
@@ -82,7 +82,7 @@ Kant 的 4 条硬约束是真的，裁定：**不拆仓，但必须满足下列�
 ---
 
 ### 附录：论证来源
-- Mill（数据/管线）、Bernoulli（社区）、Euclid（部署/平台，含 GitHub 官方文档引用）、Averroes（长期演进）、Kant（反面 steelman）五个独立智能体，2026-10-30 并行产出，本文件为汇总裁定。
+- Mill（数据/管线）、Bernoulli（投稿）、Euclid（部署/平台，含 GitHub 官方文档引用）、Averroes（长期演进）、Kant（反面 steelman）五个独立智能体，2026-10-30 并行产出，本文件为汇总裁定。
 
 ---
 

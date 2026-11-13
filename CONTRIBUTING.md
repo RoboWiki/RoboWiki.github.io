@@ -39,7 +39,7 @@ Node 版本以仓库根 `.nvmrc` 为准（22），CI（`pages.yml` / `pr-gate.ym
 | 加产品图 | `RoboWiki` 仓 `assets/parts/` |
 | 改页面文案、导航、样式、组件 | 本仓 `apps/web/` |
 | 改 API / 提案审核 / outbox worker | 本仓 `backend/` |
-| 改社区或站务后台 | 本仓 `apps/web/src/components/{community,admin}/` |
+| 改投稿或数据入口 | 本仓 `apps/web/src/pages/submit.astro`、数据仓 Issue 模板 |
 | 改部署 / 1Panel 反代 / Compose | 本仓 `deploy/` |
 | 改多端契约 / QQ 机器人 | 本仓 `clients/` |
 | 导入竞赛文档 | 本仓 `tools/site/` |
