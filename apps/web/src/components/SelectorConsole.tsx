@@ -323,9 +323,17 @@ export default function SelectorConsole({ parts, models }: Props) {
 
   const toggleControl = (mode: ControlMode) => {
     setNeeds(prev => {
-      const on = prev.controls.includes(mode)
-      const next = on ? prev.controls.filter(c => c !== mode) : [...prev.controls, mode]
-      return { ...prev, controls: next.length ? next : ['classical'] }
+      // 传统控制是「不启用额外控制能力」的基线，与其他模式互斥；
+      // 其余模式可以叠加，并自动带出它们必须的硬件需求。
+      if (mode === 'classical') return { ...prev, controls: ['classical'] }
+      const base = prev.controls.filter(c => c !== 'classical')
+      const on = base.includes(mode)
+      const next = on ? base.filter(c => c !== mode) : [...base, mode]
+      const patch: Partial<Needs> = { controls: next.length ? next : ['classical'] }
+      if (!on && mode === 'rl') patch.compute = true
+      if (!on && mode === 'autonomy') { patch.lidar = true; patch.compute = true }
+      if (!on && mode === 'teleop') patch.remote = true
+      return { ...prev, ...patch }
     })
   }
 
@@ -527,6 +535,9 @@ export default function SelectorConsole({ parts, models }: Props) {
                   </button>
                 ))}
               </div>
+              <p className="mb-0 mt-1.5 text-[11px] leading-5 text-ink-3">
+                控制方式改变候选和必需角色，不会自动选中具体型号：传统控制为基础方案；强化学习让上位机按 CPU 优先；自主导航自动加入激光雷达并按高算力档；遥操作自动加入遥控器。
+              </p>
             </div>
             <div className="grid grid-cols-2 gap-x-3 gap-y-1.5 text-xs text-ink-2">
               {([
@@ -715,7 +726,7 @@ export default function SelectorConsole({ parts, models }: Props) {
         </section>
 
         <section className="rounded-lg border border-line bg-surface p-3 text-xs leading-5 text-ink-3">
-          <p><span className="text-ink-2">选型口径：</span>每个角色先给虚拟件（按参考机型推导的需求占位），不默认推荐具体型号；参考选项附评价供对比，排序规则写在每个角色里。电池电压档、下位机/桥接总线、分线板输入范围随所选执行器联动。站内没有的（12S 整包、USB-485/UART 转换器、大电流急停等）明确标缺口，不拿估算值冒充。</p>
+          <p><span className="text-ink-2">选型口径：</span>每个角色先给虚拟件（按参考机型推导的需求占位），不默认推荐具体型号；参考选项附评价供对比，排序规则写在每个角色里。电池电压档按执行器额定电压定 12/24/48V，输入范围只做兼容性校验（同一执行器支持多档时会提示）；下位机/桥接总线、分线板输入范围随所选执行器联动。站内没有的（12S 整包、USB-485/UART 转换器、大电流急停等）明确标缺口，不拿估算值冒充。</p>
           <p className="mt-1"><span className="text-ink-2">范围：</span>执行器、电源、主控、感知与关键线束小件；结构件、紧固件、3D 打印件不在选型台内。</p>
           <p className="mt-1"><span className="text-ink-2">参考：</span>{models.length} 个可信型号来自 enkeebot 的 URDF 解析与交叉验证；线束规则来自 ENCOS《电机线束推荐说明》（2026-06-22）。</p>
         </section>

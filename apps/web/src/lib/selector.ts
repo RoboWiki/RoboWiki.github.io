@@ -150,7 +150,7 @@ export const TYPE_DEFAULT: Record<RobotType, { dof: number; mass_kg: number; eff
 
 export const PRESETS: Array<{ id: string; label: string; hint: string; needs: Partial<Needs> }> = [
   { id: 'blind', label: '盲走', hint: 'IMU + 主控 + 执行器，不带感知和上位机', needs: { controls: ['classical'], depth: false, lidar: false, camera: false, remote: false, compute: false } },
-  { id: 'teleop', label: '遥控', hint: '盲走 + 遥控器', needs: { controls: ['classical', 'teleop'], depth: false, lidar: false, camera: false, remote: true, compute: false } },
+  { id: 'teleop', label: '遥控', hint: '盲走 + 遥控器', needs: { controls: ['teleop'], depth: false, lidar: false, camera: false, remote: true, compute: false } },
   { id: 'perception', label: '感知', hint: '加深度相机或雷达，需要上位机', needs: { controls: ['classical'], depth: true, lidar: true, camera: false, remote: false, compute: true } },
   { id: 'rl', label: 'RL', hint: '强化学习部署，必须上位机', needs: { controls: ['rl'], depth: false, lidar: false, camera: false, remote: false, compute: true } },
   { id: 'autonomy', label: '自主', hint: '雷达 + 上位机，可不要遥控器', needs: { controls: ['autonomy'], depth: false, lidar: true, camera: false, remote: false, compute: true } },
@@ -202,6 +202,48 @@ function rangeOf(v: unknown): [number, number] | null {
   if (!nums?.length) return null
   if (nums.length === 1) return [nums[0], nums[0]]
   return [Math.min(nums[0], nums[1]), Math.max(nums[0], nums[1])]
+}
+
+/** 系统母线只按 3S / 6S / 12S 三档；选档的唯一依据是额定电压。 */
+export type VoltageClass = 12 | 24 | 48
+const VOLTAGE_CLASSES: VoltageClass[] = [12, 24, 48]
+
+/**
+ * 执行器电压口径：额定电压定档，输入范围只排除不兼容档位并给出提示。
+ *
+ * 各厂商对 `voltage_V` 的定义不完全一致（有的写额定、有的写推荐值），
+ * 所以不能只看范围上限；否则 24V 额定、12–50V 输入的电机就会被误判成 48V。
+ * 范围也不直接当额定值用：它只回答「哪些标准档位可用」。
+ */
+export function voltageInfoOf(p: CatalogPart) {
+  const nominal = n(specs(p).voltage_V)
+  const range = rangeOf(specs(p).voltage_range_V
+    ?? specs(p).voltage_range
+    ?? specs(p).voltage_in_V)
+  const basis = nominal ?? (range ? (range[0] + range[1]) / 2 : null)
+
+  let voltageClass: VoltageClass = 24
+  if (basis !== null) {
+    // 范围覆盖的标准档优先；没有覆盖的档时退回最近档，交给调用方给出警告。
+    const inRange = range
+      ? VOLTAGE_CLASSES.filter(c => c >= range[0] - 0.5 && c <= range[1] + 0.5)
+      : []
+    const pool = inRange.length ? inRange : VOLTAGE_CLASSES
+    voltageClass = pool.reduce((best, c) => {
+      const d = Math.abs(c - basis)
+      const bd = Math.abs(best - basis)
+      return d < bd || (d === bd && c > best) ? c : best
+    }, pool[0])
+  }
+
+  const inRange = range
+    ? voltageClass >= range[0] - 0.5 && voltageClass <= range[1] + 0.5
+    : true
+  const alternatives = range
+    ? VOLTAGE_CLASSES.filter(c => c !== voltageClass
+        && c >= range[0] - 0.5 && c <= range[1] + 0.5)
+    : []
+  return { voltageClass, nominal, range, inRange, alternatives }
 }
 
 function priceEval(p: CatalogPart): EvalItem {
@@ -330,8 +372,15 @@ function actuatorRole(
     if (isServo(p)) {
       risk = (risk ? risk + ' ' : '') + '总线舵机标的是堵转扭矩，持续输出要按占空比降额；TTL 串口需 USB-UART 桥接。'
     }
-    const v = n(specs(p).voltage_V)
-    evals.push({ label: '电压', value: v !== null ? `${fmt(v, 0)} V` : '未公布', verdict: 'info' })
+    const volt = voltageInfoOf(p)
+    evals.push({
+      label: '电压',
+      value: volt.nominal !== null
+        ? `${fmt(volt.nominal, 0)} V${volt.range ? `（${fmt(volt.range[0])}–${fmt(volt.range[1])} V）` : ''}`
+        : '未公布',
+      verdict: volt.range && !volt.inRange ? 'warn' : 'info',
+      note: volt.range ? '额定电压；括号内为允许输入范围' : '额定电压；未公布输入范围',
+    })
     const bus = actuatorBus(p)
     evals.push({
       label: '总线',
@@ -419,7 +468,7 @@ function batteryRole(parts: CatalogPart[], voltageClass: 12 | 24 | 48, estimated
           { label: '能量', value: wh !== null ? `${fmt(wh, 0)} Wh` : '未公布', verdict: 'info' },
         ], '站内电池均为 6S 22V 级：12V 舵机/执行器需 3S 电池（外购）或经降压模块供电，见「供电分线 / 降压」。')
       })
-    advice.unshift('12V 级站内暂无 3S 整包：可外购 3S 电池，或用 6S 电池 + 降压模块（见供电分线 / 降压）。')
+    advice.unshift('12V 级站内暂无 3S 整包：可外购 3S 电池，或用 6S 电池 + 降压模块（见供电分线 / 降压）。当前供电分线按 6S 22V 母线 + 降压核算；改用 3S 后母线按 12V 重算。')
   } else {
     const ranked = [...packs6s].sort((a, b) => {
       const ea = energyWhOf(a) ?? 0
@@ -568,12 +617,15 @@ function lowRole(parts: CatalogPart[], actuator: CatalogPart | null, hasHigh: bo
 // ── 上位机 ────────────────────────────────────────────────────────────────
 
 function highRole(parts: CatalogPart[], needs: Needs): RolePlan {
-  const heavy = needs.controls.includes('autonomy') && (needs.depth || needs.lidar)
   const rl = needs.controls.includes('rl')
-  const cpuFirst = rl
-  const tier: 'high' | 'mid' | 'entry' = heavy ? 'high' : rl ? 'mid' : 'entry'
-  const tierLabel = cpuFirst ? 'RL / 规划（CPU 与内存优先）' : tier === 'high' ? '高算力（80 TOPS 级以上参考）' : tier === 'mid' ? '进阶（20–40 TOPS 参考）' : '入门（<20 TOPS，轻量视觉/逻辑）'
-  const tierMin = tier === 'high' ? 80 : tier === 'mid' ? 20 : 0
+  // 点云、SLAM、规划与传统控制主要吃 CPU 单核/多核频率与内存带宽；
+  // 只有视觉神经网络推理才把 NPU TOPS 当主指标。
+  const pointCloud = needs.lidar || needs.depth || needs.controls.includes('autonomy')
+  const cpuFirst = rl || pointCloud
+  const tier: 'high' | 'mid' | 'entry' = cpuFirst ? 'mid' : 'entry'
+  const tierLabel = cpuFirst
+    ? 'CPU / 内存优先（点云 / SLAM / 规划）'
+    : '入门（<20 TOPS，轻量视觉/逻辑）'
   const npuOf = (p: CatalogPart) => n(specs(p).npu_tops)
   const tierOf = (p: CatalogPart): 'high' | 'mid' | 'entry' => {
     const npu = npuOf(p) ?? 0
@@ -604,13 +656,19 @@ function highRole(parts: CatalogPart[], needs: Needs): RolePlan {
     const ram = n(specs(p).ram_gb)
     const cpu = cpuInfoOf(p)
     const evals: EvalItem[] = []
-    evals.push({ label: 'CPU', value: cpu.label, verdict: 'info', note: cpuFirst ? 'RL/规划优先看 CPU 与内存' : undefined })
-    if (npu === null) {
-      evals.push({ label: '算力', value: '无 NPU（CPU）', verdict: cpuFirst ? 'info' : 'warn', note: cpuFirst ? 'RL/规划可接受；视觉推理另配加速' : '适合逻辑/轻量视觉，重感知需外加加速' })
+    evals.push({ label: 'CPU', value: cpu.label, verdict: 'info',
+      note: cpuFirst ? '点云/SLAM/规划优先看 CPU 频率、核数与内存' : undefined })
+    if (cpuFirst) {
+      evals.push({
+        label: 'NPU',
+        value: npu === null ? '无 / 未公布' : `${fmt(npu, 0)} TOPS（标称）`,
+        verdict: 'info',
+        note: '点云/SLAM/规划主要看 CPU；TOPS 只作视觉推理参考，厂商标称可能虚高',
+      })
+    } else if (npu === null) {
+      evals.push({ label: '算力', value: '无 NPU（CPU）', verdict: 'warn', note: '适合逻辑/轻量视觉，重感知需外加加速' })
     } else if (npu < 10) {
-      evals.push({ label: '算力', value: `${fmt(npu, 0)} TOPS`, verdict: 'info', note: cpuFirst ? 'TOPS 不影响 RL 主循环；视觉模型另看' : '算力偏低：适合巡线/轻量识别；激光/深度感知建议 40 TOPS 以上' })
-    } else if (!cpuFirst && tierMin > 0 && npu < tierMin) {
-      evals.push({ label: '算力', value: `${fmt(npu, 0)} TOPS`, verdict: 'warn', note: `低于「${tierLabel}」参考档，重感知可能不够` })
+      evals.push({ label: '算力', value: `${fmt(npu, 0)} TOPS`, verdict: 'info', note: '算力偏低：适合巡线/轻量识别；激光/深度感知建议 40 TOPS 以上' })
     } else {
       evals.push({ label: '算力', value: `${fmt(npu, 0)} TOPS`, verdict: 'ok' })
     }
@@ -620,10 +678,10 @@ function highRole(parts: CatalogPart[], needs: Needs): RolePlan {
     return option(p, evals)
   })
   const advice = [
-    'RL、规划与传统算法主要吃 CPU 单核/多核与内存；TOPS 只影响神经网络推理，不要只按 TOPS 选。',
-    '7840H 这类 x86 迷你主机 CPU 强，适合 RL/规划/仿真；无原生 CAN，功耗、散热与实时性要另算。',
-    '训练在 PC/服务器，机上只跑推理；TOPS 为厂商标称，实际吞吐看模型与量化。',
-    '集成盒子（如 RoboBox-7C）自带下位机与电机分线，可少配独立下位机/分线板；供电按「供电分线 / 降压」核对。',
+    '点云处理、配准、SLAM、规划与传统控制主要吃 CPU 单核/多核频率与内存带宽；TOPS 是神经网络推理指标，且常为厂商标称峰值，跨厂商不可直接比较，不要按 TOPS 排序。',
+    '主要跑点云或规划时，优先高主频 CPU（如 7840HS 这类 x86 迷你主机）；核数与频率都要看，单核频率影响预处理与规划循环。',
+    '只有跑视觉神经网络推理时才需要重点看 NPU/GPU TOPS，并要按具体模型、量化与 batch 实测吞吐，不能只看宣传页数字。',
+    '训练在 PC/服务器，机上只跑推理；集成盒子（如 RoboBox-7C）自带下位机与电机分线，可少配独立下位机/分线板，供电按「供电分线 / 降压」核对。',
   ]
   if (carriers.length > 0) {
     advice.push(`载板本身不含算力（如 ${carriers.map(p => p.model).join('、')}）：选 NVIDIA Orin 计算模组时需另配载板，算力按所插模组核对。`)
@@ -640,7 +698,7 @@ function highRole(parts: CatalogPart[], needs: Needs): RolePlan {
     options,
     advice,
     sortNote: cpuFirst
-      ? 'RL/规划按 CPU 评分优先，再看 NPU 与价格；默认显示前 4 个，可继续展开。'
+      ? '点云/SLAM/规划/RL 按 CPU 评分优先（核数 × 频率，x86 迷你主机加权），NPU 只作参考，再按价格；默认显示前 4 个，可继续展开。'
       : '同档按算力降序（无 NPU 在后）、同算力价格升序；裸载板不进候选。默认显示前 4 个。',
   }
 }
@@ -1063,9 +1121,23 @@ export function plan(input: SelectorInput, models: SelectorModel[], parts: Catal
     warnings.push(`${reference.model} 的峰值需求 ${reference.effort_max_Nm} N·m 属于 M8 档，站内没有对应执行器。`)
   }
 
-  const motorVolt = actuator ? n(specs(actuator).voltage_V) : null
-  const voltageClass: 12 | 24 | 48 = motorVolt === null ? 24 : motorVolt >= 30 ? 48 : motorVolt < 15 ? 12 : 24
+  const volt = actuator ? voltageInfoOf(actuator) : null
+  const voltageClass: VoltageClass = volt?.voltageClass ?? 24
   const estimatedWh = Math.min(800, Math.max(50, effective.mass_kg * 8))
+  if (volt) {
+    const v = volt.nominal !== null ? `${fmt(volt.nominal, 0)}V` : '额定电压未公布'
+    const r = volt.range ? `${fmt(volt.range[0])}–${fmt(volt.range[1])}V` : '无输入范围'
+    if (volt.range && !volt.inRange) {
+      warnings.push(`执行器额定 ${v}，输入 ${r} 不包含 ${voltageClass}V 标准档；电源上限或电池串数需按实物复核。`)
+    }
+    if (volt.nominal !== null && Math.abs(voltageClass - volt.nominal) / volt.nominal > 0.25) {
+      warnings.push(`标准 ${voltageClass}V 档与执行器额定 ${v} 偏差较大；不要只看档位，按输入范围复核。`)
+    }
+    const alt = volt.alternatives.filter(c => c >= 24)
+    if (alt.length) {
+      warnings.push(`执行器输入 ${r}，${voltageClass}V / ${alt.join('V / ')}V 母线均可用；当前按 ${voltageClass}V 出 BOM，改压需重算电流与线束。`)
+    }
+  }
   if (needs.power === 'battery') {
     roles.push(batteryRole(parts, voltageClass, estimatedWh, reference?.vendor ?? '', actuator !== null))
     if (voltageClass === 48) warnings.push('48V 级电池站内暂无整包；2×6S 串联需要同批次同容量电芯，BMS 必须按 12S 选。')
@@ -1082,8 +1154,12 @@ export function plan(input: SelectorInput, models: SelectorModel[], parts: Catal
 
   if (needHigh) roles.push(highRole(parts, needs))
 
-  const busVoltage = voltageClass === 48 ? 48 : voltageClass === 12 ? 22 : 24
-  roles.push(powerDistRole(parts, needs.power === 'tethered' ? 24 : busVoltage, needHigh, bus))
+  // 电池方案：12V 执行器站内没有 3S 整包，按 6S（22V）母线 + 降压核算；
+  // 外接电源没有这个限制，直接按执行器档位给母线电压。
+  const busVoltage = needs.power === 'tethered'
+    ? voltageClass
+    : voltageClass === 12 ? 22 : voltageClass
+  roles.push(powerDistRole(parts, busVoltage, needHigh, bus))
 
   if (effective.type !== 'arm') roles.push(imuRole(parts))
   if (needs.depth) roles.push(depthRole(parts))
