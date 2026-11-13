@@ -1,7 +1,7 @@
 /** 评分理由词表：通用标签 + 品类专属标签。
  *
  * 只收可聚合的白名单，自由文本仍放在备注里。
- * 新增品类标签时，同步 backend/app/api/routes/ratings.py 的 REASON_TAGS。
+ * 新增品类标签时，同步数据仓 Issue 评分表单的选项白名单。
  */
 export const UNIVERSAL_TAGS = [
   'good_value',
@@ -128,7 +128,7 @@ export const TAG_LABELS: Record<string, string> = {
   availability: '缺货',
   docs: '资料完整',
   bom: 'BOM 可复现',
-  community: '社区支持',
+  community: '生态支持',
   build: '做工',
   usability: '易用',
   accessories: '配件',

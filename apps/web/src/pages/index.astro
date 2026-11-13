@@ -82,7 +82,7 @@ const faqs = [
         </div>
 
         <h1 class="mt-5 text-[32px] leading-[1.15] font-extrabold tracking-tight text-ink sm:text-[46px]">
-          社区共建的机器人知识库（内测）
+          机器人知识库（内测）
         </h1>
 
         <p class="mt-5 max-w-2xl text-base leading-7 text-ink-2 sm:text-base">
@@ -210,7 +210,7 @@ const faqs = [
         { href: '/builds.html', title: '方案库', desc: '可复现方案，含 BOM 与步骤', count: `${robotsData.count} 套`, eg: '例：四足 5k 方案' },
         { href: '/suppliers.html', title: '采购库', desc: '按加工品类找店，先看有没有坑', count: `${suppliersData.count} 家`, eg: '例：嘉立创打样' },
         { href: '/equipment.html', title: '设备库', desc: '做机器人的工具与仪器', count: `${equipmentCount} 台设备`, eg: '例：拓竹 A1、优利德 UT89X' },
-        { href: 'https://github.com/RoboWiki/RoboWiki/issues', title: '参与共建', desc: '评分、实测、纠错与投稿统一走 GitHub Issue', count: 'GitHub', eg: '无需站内注册' },
+        { href: 'https://github.com/RoboWiki/RoboWiki/issues', title: '参与方式', desc: '评分、实测、纠错与投稿统一走 GitHub Issue', count: 'GitHub', eg: '无需站内注册' },
       ].map(item => (
         <a href={withBase(item.href)} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noopener' : undefined} class="card card-hover group flex flex-col p-5">
           <div class="flex items-start justify-between">

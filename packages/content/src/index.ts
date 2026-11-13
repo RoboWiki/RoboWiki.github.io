@@ -106,7 +106,7 @@ export const SECTION_TITLES = {
 // 同一台机器并收口。两端、文档、数据页都从这里取同一套命名，避免各写一套。
 
 export const POSITIONING = {
-  short: '社区共建的机器人知识库',
+  short: '机器人知识库',
   full: '教程、方案、采购、设备与部件库在同一站；部件页保留参数、价格、来源和 GitHub Issue 收集的实测评价。',
   tagline: '教程、方案、采购、设备与部件库在同一站。',
 } as const

@@ -253,7 +253,7 @@ import 'driver.js/dist/hints.css'
     if (!hidden) loadPet()
   }
 
-  // 后台与登录页不放看板娘，避免挡住表单。
+  // 表单页不放看板娘，避免挡住输入。
   const quietPage = /^\/(admin|login)/.test(location.pathname)
   if (quietPage) {
     if (dock) dock.hidden = true

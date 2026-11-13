@@ -32,7 +32,7 @@ const fastCount = suppliers.filter(s => s.signals?.punctual === 'fast').length
 const lowPriceCount = suppliers.filter(s => s.signals?.price === 'low').length
 
 // 采购库的两个划分轴：①采购加工品类（shop_type）②有没有坑。
-// 「有坑」= 上过黑榜，或社区原话点名质量有坑；其余记「未见坑」（不等于背书）。
+// 「有坑」= 上过黑榜，或公开原话点名质量有坑；其余记「未见坑」（不等于背书）。
 const hasPitfall = (s: Supplier) => s.listing === '黑榜' || s.signals?.quality === 'bad'
 const pitfallCount = suppliers.filter(hasPitfall).length
 
@@ -98,7 +98,7 @@ const searchText = (item: Supplier) =>
 
 <Base
   title="采购库 · RoboWiki"
-  description={`${total} 家机器人零件与加工店铺：先按加工品类找店，再按红榜、踩坑、开票、交期、价格筛选采购目的，直接看社区评价原文。`}
+  description={`${total} 家机器人零件与加工店铺：先按加工品类找店，再按红榜、踩坑、开票、交期、价格筛选采购目的，直接看公开记录原文。`}
 >
   <div class="mx-auto max-w-6xl">
     <nav aria-label="面包屑" class="mb-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-ink-3">
@@ -115,7 +115,7 @@ const searchText = (item: Supplier) =>
       <p class="mt-3 max-w-3xl text-sm leading-7 text-ink-2">
         先按<span class="font-medium text-ink">买什么</span>（加工品类）缩小范围，再按<span class="font-medium text-ink">怎么买</span>
         挑出符合自己采购目的的记录：红榜优先、避开有坑、需要开票、交期快、价格低。
-        每张卡保留社区原话里的质量、交期、价格、发票和踩雷原因，不做“适合所有人”的抽象推荐。
+        每张卡保留公开原话里的质量、交期、价格、发票和踩雷原因，不做“适合所有人”的抽象推荐。
       </p>
 
       <dl class="mt-6 grid max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-4">
@@ -194,7 +194,7 @@ const searchText = (item: Supplier) =>
     </form>
 
     <p class="mt-4 rounded-md border border-amber-200 bg-amber-50 p-3 text-xs leading-6 text-amber-900">
-      「质量、交期、价格、发票」来自社区原话，是某次交易的记录，不是量化评分；同一家店不同批次可能完全不同。
+      「质量、交期、价格、发票」来自公开原话，是某次交易的记录，不是量化评分；同一家店不同批次可能完全不同。
       红黑榜不展示填写人、掌柜 ID、店铺链接或联系方式。
     </p>
 
@@ -262,7 +262,7 @@ const searchText = (item: Supplier) =>
                   <div class="rounded-md border border-line bg-surface-2/60 p-2.5">
                     <div class="flex items-baseline justify-between gap-2">
                       <span class={`text-xs font-semibold ${item.listing === '黑榜' ? 'text-danger' : 'text-ink-3'}`}>
-                        {item.listing === '黑榜' ? '踩雷记录' : '社区评价'}
+                        {item.listing === '黑榜' ? '踩雷记录' : '公开记录'}
                       </span>
                       <span class="mono text-xs text-ink-3">{feedbackChars(item)} 字</span>
                     </div>
@@ -307,7 +307,7 @@ const searchText = (item: Supplier) =>
                 </dl>
 
                 <p class="mt-auto text-xs text-ink-3">
-                  {item.reported_at ? `反馈 ${item.reported_at}` : '社区记录'}
+                  {item.reported_at ? `反馈 ${item.reported_at}` : '公开记录'}
                 </p>
               </div>
             </article>
@@ -317,7 +317,7 @@ const searchText = (item: Supplier) =>
     </ul>
 
     <p class="mt-10 rounded-md border border-line bg-surface-2 p-4 text-xs leading-6 text-ink-3">
-      店铺名来自社区表与公开名录；链接、掌柜 ID、填写人和联系方式均已移除。记录仅供参考，不代表本站推荐或背书。
+      店铺名来自公开名录与公开名录；链接、掌柜 ID、填写人和联系方式均已移除。记录仅供参考，不代表本站推荐或背书。
     </p>
   </div>
 </Base>

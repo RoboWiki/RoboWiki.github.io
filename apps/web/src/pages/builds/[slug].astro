@@ -58,13 +58,13 @@ const artifacts = robot.artifacts ?? {}
 const eco = robot.ecosystem ?? null
 const ecoProjects = (eco?.projects ?? []).filter(p => p && p.url)
 // 只展示可点开的公开链接；本地克隆的文件数不代表项目质量，已从数据中移除。
-const ECO_ROLE_ORDER = ['官方项目', '官方描述/资产', '官方 SDK', '仿真', '训练', '部署', '导航', '控制/MPC', '社区复刻', 'BOM/复现', '工具/资料']
+const ECO_ROLE_ORDER = ['官方项目', '官方描述/资产', '官方 SDK', '仿真', '训练', '部署', '导航', '控制/MPC', '外部复刻', 'BOM/复现', '工具/资料']
 const ecoGroups = ECO_ROLE_ORDER
   .map(role => ({ role, items: ecoProjects.filter(p => p.role === role) }))
   .filter(group => group.items.length > 0)
 const artifactLink = (key: string) => (artifacts[key] ? String(artifacts[key]) : '')
-const artifactTag = (key: string) => robot.artifacts_origin?.[key] === 'community' ? '社区' : ''
-const artifactLabel = (key: string, label: string) => `${label}${artifactTag(key) ? '（社区）' : ''}`
+const artifactTag = (key: string) => robot.artifacts_origin?.[key] === 'community' ? '外部' : ''
+const artifactLabel = (key: string, label: string) => `${label}${artifactTag(key) ? '（外部）' : ''}`
 const isFull = robot.openness === 'full'
 const bom = (robot.bom ?? []).filter(item => item && item.name)
 const hasBom = bom.length > 0 || Boolean(artifactLink('bom'))
@@ -224,7 +224,7 @@ const docs = [
             {
               label: 'BOM（型号 + 数量）',
               ok: hasBom,
-              note: bom.length ? `${bom.length} 项` : hasBom ? (artifactTag('bom') ? '社区清单' : '外部清单') : '未收录',
+              note: bom.length ? `${bom.length} 项` : hasBom ? (artifactTag('bom') ? '外部清单' : '外部清单') : '未收录',
             },
           ].map(item => (
             <li class="flex items-center gap-2.5 rounded-md border border-line bg-surface-2 px-3 py-2">
@@ -268,7 +268,7 @@ const docs = [
           <div class="flex flex-wrap items-baseline justify-between gap-2">
             <h2 id="bom" class="text-base font-bold tracking-tight text-ink">物料清单</h2>
             <span class="mono tabular text-xs text-ink-3">
-              {bom.length > 0 ? `${bom.length} 项 · 合计 ${bomTotal} 件` : hasBom ? (artifactTag('bom') ? '社区清单' : '外部清单') : '未收录'}
+              {bom.length > 0 ? `${bom.length} 项 · 合计 ${bomTotal} 件` : hasBom ? (artifactTag('bom') ? '外部清单' : '外部清单') : '未收录'}
             </span>
           </div>
 
@@ -374,7 +374,7 @@ const docs = [
             <span class="mono tabular text-xs text-ink-3">{ecoProjects.length} 个项目 · {eco?.count ?? ecoProjects.length} 个索引</span>
           </div>
           <p class="mt-1 text-xs leading-5 text-ink-3">
-            官方子仓、官方资料与社区复刻按角色分组；社区项目不代表官方支持，也不代表全部直接适配这台机器。
+            官方子仓、官方资料与外部复刻按角色分组；外部项目不代表官方支持，也不代表全部直接适配这台机器。
           </p>
           <div class="mt-3 flex flex-wrap gap-1.5">
             {ECO_ROLE_ORDER.filter(role => eco?.roles?.[role]).map(role => (

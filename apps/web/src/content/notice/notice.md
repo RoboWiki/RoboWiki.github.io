@@ -32,7 +32,7 @@ AGPL-3.0 本身**允许商业使用**。上面那句「仅用于非商业」说�
 
 | 内容 | 位置 | 谁的权利 | 你要注意什么 |
 |---|---|---|---|
-| **代码与整理成果** | 本仓 `pipeline/` `backend/` `apps/` `packages/` `tools/`；`RoboWiki` 仓 `data/` `schema/` | 按 AGPL-3.0 发布 | 分发时附上 LICENSE 与源码 |
+| **代码与整理成果** | 本仓 `pipeline/` `apps/` `packages/` `tools/`；`RoboWiki` 仓 `data/` `schema/` | 按 AGPL-3.0 发布 | 分发时附上 LICENSE 与源码 |
 | **厂商参数** | 各条目的 `specs` 字段 | 事实性数据不主张版权；**我们整理的口径与集合**适用 AGPL-3.0 | 转载时保留来源、`source_tier` 与 `last_checked`，删掉这些字段数字的含义就变了 |
 | **厂商手册 / 商品图** | `doc_pdf`、`image_url` | **版权归原厂 / 原商城**。手册原则上只给链接（当前唯一例外：用户提供并同意分发的 `Amass XT30(2+2)` 规格书，位于 `/docs/amass/xt30-2p2.pdf`，收到通知即下架）；**产品图随条目托管在`RoboWiki` 仓**（`assets/parts/`，页面走 `/parts/*.jpg`），出处逐条写在 `image_source` | 未逐张取得书面许可：你要用请回源头确认；权利人要求撤下，我们说撤就撤 |
 | **第三方仓库与代码** | `repo_urls` | 归各仓库作者，页面标了 `repo_license` | 按原方许可使用，本站不主张任何权利 |
