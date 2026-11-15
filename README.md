@@ -4,7 +4,7 @@
 
 部件参数、整机方案、采购渠道、设备与教程在同一站；部件页保留参数、价格、来源，以及通过 GitHub Issue 收集的评分和实测。缺的写 `null`。
 
-线上：<https://robowiki.org.cn/>（GitHub Pages 镜像：<https://robowiki.github.io/>）
+主站：<https://robowiki.github.io/>）
 
 ```
 417 个条目（部件库 342 + 设备库 75） · 21 个品类 · 32 种材料 + 9 种工艺
