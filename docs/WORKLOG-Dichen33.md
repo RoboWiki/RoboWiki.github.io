@@ -5,6 +5,12 @@
 > 2026-11-09 重建本文件，继续记录重构后（Astro/Taro）的工作。
 > 2026-11-08 及更早的记录见 `docs/archive/WORKLOG-Dichen33.md`；归档只读，不再追加。
 
+## 2026-11-20
+
+| 时间 | 类型 | 分支 / 提交 | 修改内容 | 验证 |
+|---|---|---|---|---|
+| 17:01 | 功能 / 参与 | 站点 ccc `8a37f2e`；数据仓 ccc_dt `2b0080d` | 新增「提建议」参与入口：页头 GitHub 图标与主题按钮之间加实心胶囊（上传图标 + 短标签），颜色不写死、随主题品牌色走 `bg-brand`/`text-brand-fg`/`hover:bg-brand-hover`，`<768px` 隐藏（移动端经既有移动菜单「参与投稿」进投稿页）；投稿页加第 5 张「提建议」卡。数据仓新增 `suggestion.yml` Issue Form（类型下拉 + 场景必填 + 期望/页面可选，自动打 `suggestion` 标签），两处均链到数据仓 issue 模板。ccc 与 ccc_dt 提交前均 `--ff-only` 快进到 `origin/main`（站点 d05c32c / 数据 821c50e） | pipeline build data-v2026.11.12.5 生成 654 页；Astro 生产构建 754 页通过（Node 24，6.67s）；对生产产物起静态服务，计算样式探针确认 light/dark/ios/ios-dark 四模式 CTA 底色/字色与 `bg-brand` 探针逐一相等（青碧 `#0e7a6d`/薄荷 `#45d6b8`/蓝 `#0066cc`/`#0a84ff`），hover 走 `--rw-primary-hover`；360px CTA 隐藏、页头无横向溢出；投稿页 5 卡、「提建议」卡指向 `suggestion.yml`；数据仓 `tests/test_issue_forms.py` 7 项全过（含新模板）；控制台零报错 |
+
 ## 2026-11-11
 
 | 时间 | 类型 | 分支 / 提交 | 修改内容 | 验证 |
